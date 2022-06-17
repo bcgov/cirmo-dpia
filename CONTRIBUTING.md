@@ -19,7 +19,7 @@ All Contributions to this repository start with a Jira Item associated with the 
 
 ## Digital Privacy Impact Assessment Bug Reports!
 
-When a bug is detected in the application, a jira bug task must be opened. The following information should be included in your bug report:
+- When a bug is detected in the application, a jira bug task must be opened. The following information should be included in your bug report:
         - Expected application behavior
         - Current application behavior
         - Steps you took to produce said bug
