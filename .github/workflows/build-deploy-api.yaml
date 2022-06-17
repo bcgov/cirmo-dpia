@@ -1,1 +1,9 @@
+name: DEV Build and Deploy DPIA API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
 
