@@ -7,10 +7,10 @@
 
     .
     ├── .github                                 # Contains GitHub Related sources
-    |   ├── workflows                           # Contains Github Actions for CI/CD tasks
+    |   └── workflows                           # Contains Github Actions for CI/CD tasks
     ├── docs                                    # Project specific documentation ex// lo/hi fidelity wireframes etc.
     ├── openshift                               # Openshift Object Repository
-    |   ├── templates                           # Openshift Object Templates sub directory
+    |   └── templates                           # Openshift Object Templates sub directory
     ├── src/                                    # Directory Containing all Project Components source code
     │   ├── backend                             # API source code
     │   └── frontend                            # WebApp source code
