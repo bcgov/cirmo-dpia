@@ -1,1 +1,9 @@
+name: DEV Build and Deploy DPIA WebApp
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/frontend/**"
+  workflow_dispatch:
 
