@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  #############################################################################################
+  ###                                         API                                           ###
+  #############################################################################################
+  dpia-api:
+    container_name: dpia-api
+    build:
+      context: .
+      dockerfile: ./src/backend/Dockerfile
+      networks:
+        - dpia-network
+      ports:
+      volumes:
+  
+  #############################################################################################
+  ###                                       Frontend                                        ###
+  #############################################################################################
+  dpia-webapp:
+    container_name: dpia-webapp
+    build:
+      context: .
+      dockerfile: ./src/frontend/Dockerfile
+      networks:
+        - dpia-network
+      ports:
+      volumes:
+  
+networks:
+  dpia-network: 
+  driver: "bridge"
