@@ -17,8 +17,8 @@
     ├── .env-template                           # Template file to base local workstation .env file off of
     ├── .gitattributes                          # Simple text file that gives attributes to pathnames inside git repository
     ├── .gitignore                              # Specifies intentionally untracked files to ignore
-    ├── CONTRIBUTING.md                         # Readme explaining how to contribute to this project
     ├── COMPLIANCE.yaml                         # Tracks PIA and STRA status of project
+    ├── CONTRIBUTING.md                         # Readme explaining how to contribute to this project
     ├── LICENSE                                 # Apache License
     ├── README.md                               # This file.    
     └── docker-compose.yaml                     # Project Specific Docker Compose file
