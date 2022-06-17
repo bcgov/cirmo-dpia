@@ -13,7 +13,7 @@
     │   ├── backend                             # API source code
     │   └── frontend                            # WebApp source code
     ├── docker-compose.yaml                     # Project Specific Docker Compose file
-    ├── COMPLIANCE.yaml                         # 
+    ├── COMPLIANCE.yaml                         # Tracks PIA and STRA status of project
     ├── CONTRIBUTING.md                         # Readme explaining how to contribute to this project
     ├── LICENSE                                 # Apache License
     └── README.md                               # This file.
