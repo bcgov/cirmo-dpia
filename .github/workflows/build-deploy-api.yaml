@@ -13,6 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      
       - name: Cluster Login
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -28,3 +33,11 @@ jobs:
       - name: Build the Docker image
         run: |
           docker-compose build dpia-api
+      
+      - name: Docker Tag Version
+        run: |
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ steps.extract_branch.outputs.branch }}
+      
+      - name: Docker List Images
+        run: |
+          docker image ls 
