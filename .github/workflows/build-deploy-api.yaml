@@ -34,6 +34,10 @@ jobs:
         run: |
           docker-compose build dpia-api
       
+      - name: Docker List Images
+        run: |
+          docker image ls 
+      
       - name: Docker Tag Version
         run: |
           echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
