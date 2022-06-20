@@ -8,10 +8,10 @@ services:
     build:
       context: .
       dockerfile: ./src/backend/Dockerfile
-      networks:
-        - dpia-network
-      ports:
-      volumes:
+    networks:
+      - dpia-network
+    ports:
+      - "3000:3000"
   
   #############################################################################################
   ###                                       Frontend                                        ###
@@ -21,11 +21,9 @@ services:
     build:
       context: .
       dockerfile: ./src/frontend/Dockerfile
-      networks:
-        - dpia-network
-      ports:
-      volumes:
+    networks:
+      - dpia-network
   
 networks:
   dpia-network: 
-  driver: "bridge"
+    driver: "bridge"
