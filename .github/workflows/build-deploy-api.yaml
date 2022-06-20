@@ -13,7 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Hello, world!
-        run: |
-          echo "Hello, world!"
-
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
