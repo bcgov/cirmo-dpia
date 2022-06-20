@@ -40,7 +40,7 @@ jobs:
       
       - name: Docker Tag Version
         run: |
-          echo "GIT_COMMIT_SHA=${{ git rev-parse --abbrev-ref HEAD }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ extract_branch.outputs.branch }}" >> $GITHUB_ENV
           docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.GIT_COMMIT_SHA }}
       
       - name: Docker List Images
