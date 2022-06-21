@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Cluster Login
+      - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
@@ -36,7 +36,22 @@ jobs:
       - name: Docker Tag Version
         run: |
           docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:latest
-      
-      - name: Docker List Images
+          
+      - name: Docker Push Version
         run: |
-          docker image ls 
+          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:latest
+          
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    
+      - uses: actions/checkout@v2
+      
+      - name: Cluster Login -> DEV Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
