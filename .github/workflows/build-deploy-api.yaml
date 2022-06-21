@@ -70,6 +70,6 @@ jobs:
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-dc.yaml
+          DEPLOYMENT_CONFIG: api-dc-template.yaml
         run: |
-          ./.github/helpers/deploy-api.sh 
+          ./.github/helpers/deploy.sh 
