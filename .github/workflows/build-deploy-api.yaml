@@ -44,7 +44,7 @@ jobs:
       
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$GIT_BRANCH
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ github.event.pull_request.title }}
       
       - name: Docker List Images
         run: |
@@ -52,7 +52,7 @@ jobs:
           
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$GIT_BRANCH
+          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ github.event.pull_request.title }}
           
   deploy-to-dev:
     runs-on: ubuntu-latest
