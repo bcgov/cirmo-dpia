@@ -15,9 +15,9 @@ jobs:
       
       - name: Set ENV for Action Run
         run: | 
-          echo "GIT_BRANCH=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          echo "GIT_PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           echo "THIS IS THE GIT BRANCH"
-          echo $GIT_BRANCH
+          echo $GIT_PULL_REQUEST_NUMBER
     
       - name: Checkout Repository
         uses: actions/checkout@v2
