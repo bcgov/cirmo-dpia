@@ -1,0 +1,40 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-github-actions-rolebinding-template
+labels:
+  template: ${APPLICATION_NAME}-github-actions-rolebinding-template
+objects:
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: >
+        {"apiVersion":"networking.k8s.io/v1","kind":"NetworkPolicy","metadata":{"annotations":{},"labels":{"template":"platform-registry"},"name":"any-to-any","namespace":"d63404-tools"},"spec":{"description":"allow
+        all pods to
+        communicate\n","destination":[["$namespace=*"]],"source":[["$namespace=d63404-tools"]]}}
+    name: any-to-any
+    namespace: ${NAMESPACE}-${ENVIRONMENT}
+    labels:
+      template: platform-registry
+  spec:
+    podSelector: {}
+    policyTypes:
+      - Ingress
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: tools
+  - description: Namespace 
+    displayName: Namespace
+    name: NAMESPACE 
+    required: true
+    value: b996e6

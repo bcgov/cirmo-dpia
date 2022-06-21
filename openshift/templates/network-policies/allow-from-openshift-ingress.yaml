@@ -1,0 +1,44 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-github-actions-rolebinding-template
+labels:
+  template: ${APPLICATION_NAME}-github-actions-rolebinding-template
+objects:
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: >
+        {"apiVersion":"networking.k8s.io/v1","kind":"NetworkPolicy","metadata":{"annotations":{},"labels":{"template":"platform-registry"},"name":"allow-from-openshift-ingress","namespace":"d63404-tools"},"spec":{"ingress":[{"from":[{"namespaceSelector":{"matchLabels":{"network.openshift.io/policy-group":"ingress"}}}]}],"podSelector":{},"policyTypes":["Ingress"]}}
+    name: allow-from-openshift-ingress
+    generation: 1
+    namespace: ${NAMESPACE}-${ENVIRONMENT}
+    labels:
+      template: platform-registry
+  spec:
+    podSelector: {}
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                network.openshift.io/policy-group: ingress
+    policyTypes:
+      - Ingress
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: tools
+  - description: Namespace 
+    displayName: Namespace
+    name: NAMESPACE 
+    required: true
+    value: b996e6
