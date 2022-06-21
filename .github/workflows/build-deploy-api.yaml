@@ -8,12 +8,14 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
+  build-dpia-api-image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
       
-      - name: Cluster Login
+      - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
@@ -40,3 +42,18 @@ jobs:
       - name: Docker List Images
         run: |
           docker image ls 
+          
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Cluster Login -> DEV Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
