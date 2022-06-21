@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - name: Set ENV for Action Run
+      - name: Extract branch name
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      
+      - name: Echo Branch Name
         run: | 
-          echo "GIT_PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          echo "THIS IS THE GIT BRANCH"
-          echo $GIT_PULL_REQUEST_NUMBER
+          echo "BRANCH NAME"
+          echo ${{ steps.extract_branch.outputs.branch }}
     
       - name: Checkout Repository
         uses: actions/checkout@v2
