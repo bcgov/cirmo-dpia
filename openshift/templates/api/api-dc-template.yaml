@@ -1,9 +1,9 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: ${APPLICATION_NAME}-github-actions-rolebinding-template
+  name: ${APPLICATION_NAME}-template
 labels:
-  template: ${APPLICATION_NAME}-github-actions-rolebinding-template
+  template: ${APPLICATION_NAME}-template
 objects:
 - kind: DeploymentConfig
   apiVersion: apps.openshift.io/v1
@@ -12,7 +12,7 @@ objects:
       openshift.io/generated-by: OpenShiftWebConsole
     name: ${APPLICATION_NAME}
     generation: 3
-    namespace: ${NAMESPACE}-${ENVIRONMENT}
+    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       app: ${APPLICATION_NAME}
       app.kubernetes.io/component: ${APPLICATION_NAME}
@@ -20,7 +20,7 @@ objects:
       app.kubernetes.io/name: ${APPLICATION_NAME}
       app.kubernetes.io/part-of: dpia-application
       app.openshift.io/runtime: nodejs
-      app.openshift.io/runtime-namespace: ${NAMESPACE}-${ENVIRONMENT}
+      app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
     strategy:
       type: Rolling
@@ -40,7 +40,7 @@ objects:
             - ${APPLICATION_NAME}
           from:
             kind: ImageStreamTag
-            namespace: ${NAMESPACE}-tools
+            namespace: ${LICENSE_PLATE}-tools
             name: '${APPLICATION_NAME}:latest'
           lastTriggeredImage: >-
             image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-api@sha256:c6912fa14495b62ec86b9e1eeb567cb7d95a6523c7e235f38497a9efcb89ebed
@@ -91,8 +91,8 @@ parameters:
     name: ENVIRONMENT
     required: true
     value: dev
-  - description: Namespace 
-    displayName: Namespace
-    name: NAMESPACE 
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
     required: true
     value: b996e6
