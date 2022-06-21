@@ -15,7 +15,7 @@ jobs:
       
       - name: Set ENV for Action Run
         run: | 
-          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${{ github.pull_request.head.ref }}" >> $GITHUB_ENV
           echo "THIS IS THE GIT BRANCH"
           echo $GIT_BRANCH
     
