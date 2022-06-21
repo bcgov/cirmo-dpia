@@ -9,7 +9,7 @@ objects:
   apiVersion: rbac.authorization.k8s.io/v1
   metadata:
     name: Github-Actions-Admin
-    namespace: b996e6-${ENVIRONMENT}
+    namespace: ${NAMESPACE}-${ENVIRONMENT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -17,7 +17,7 @@ objects:
   subjects:
   - kind: ServiceAccount
     name: github-actions
-    namespace: b996e6-${ENVIRONMENT}
+    namespace: ${NAMESPACE}-${ENVIRONMENT}
 
 parameters:
   - description: Application Name
@@ -29,4 +29,9 @@ parameters:
     displayName: Environment
     name: ENVIRONMENT
     required: true
-    value: dev
+    value: tools
+  - description: Namespace 
+    displayName: Namespace
+    name: NAMESPACE 
+    required: true
+    value: b996e6
