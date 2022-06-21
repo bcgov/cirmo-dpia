@@ -1,0 +1,31 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-github-actions-rolebinding-template
+labels:
+  template: ${APPLICATION_NAME}-github-actions-rolebinding-template
+objects:
+- kind: RoleBinding
+  metadata:
+    name: Github-Actions-Admin
+    namespace: b996e6-${ENVIRONMENT}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: admin
+  subjects:
+  - kind: ServiceAccount
+    name: github-actions
+    namespace: b996e6-${ENVIRONMENT}
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
