@@ -9,6 +9,7 @@ on:
   
 jobs:
   build-dpia-api-image:
+    environment: Dev
     runs-on: ubuntu-latest
     steps:
     
