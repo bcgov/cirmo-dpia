@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script to process either the DPIA frontend or api deployment config templates and deploy it to a given namespace
+# script to process either the DPIA app or api deployment config templates and deploy it to a given namespace
 
 oc process -f /home/runner/work/cirmo-dpia/cirmo-dpia/openshift/templates/api/$DEPLOYMENT_CONFIG --namespace=$NAMESPACE \
     -p APPLICATION_NAME=$APPLICATION_NAME \
