@@ -63,3 +63,13 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
           cmd: |
             'version'
+            
+      - name: Deploy to DEV
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-dc.yaml
+        run: |
+          ./.github/helpers/deploy-api.sh 
