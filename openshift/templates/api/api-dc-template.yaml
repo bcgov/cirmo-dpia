@@ -41,7 +41,7 @@ objects:
           from:
             kind: ImageStreamTag
             namespace: ${LICENSE_PLATE}-tools
-            name: '${APPLICATION_NAME}:latest'
+            name: '${APPLICATION_NAME}:${IMAGE_TAG}'
           lastTriggeredImage: >-
             image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-api@sha256:c6912fa14495b62ec86b9e1eeb567cb7d95a6523c7e235f38497a9efcb89ebed
       - type: ConfigChange
@@ -96,3 +96,8 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
+  - description: Image Tag
+    displayName: Image Tag
+    required: true
+    name: IMAGE_TAG
+    value: latest
