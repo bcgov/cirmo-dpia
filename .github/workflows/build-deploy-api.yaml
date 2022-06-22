@@ -116,6 +116,7 @@ jobs:
     
   health-check:
     runs-on: ubuntu-latest
+    environment: Dev
     needs: [build-dpia-api-image, deploy-to-dev]
     steps:
     
@@ -136,4 +137,4 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
         run: |
-          ./.github/helpers/application_health.sh
+          ./.github/helpers/application-health.sh
