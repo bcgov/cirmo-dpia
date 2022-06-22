@@ -15,11 +15,8 @@ jobs:
     
       - name: Echo branch name
         run: |
-          echo "Github Ref"
-          echo "${{ github.ref }}"
-          echo ""
-          echo "Github Ref Name"
-          echo "${{ github.ref_name }}"
+          echo "Github Event Pull Request"
+          echo "${{ github.event.pull_request }}"
           echo ""
     
       - name: Checkout Repository
