@@ -40,6 +40,24 @@ jobs:
         run: |
           commit_hash=$(echo $(git rev-parse --short HEAD))
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          
+      - name: Create JSON file for Image Tag State
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: 'pull-request-hash.json'
+          json: '{ "hash":"${{ env.pull_request_hash }} }'
+          
+      - name: WHERE AM I?
+        run: |
+          pwd
+          
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: pull-request-hash.json
+          path: pull-request-hash.json
+        
       
       - name: Docker Tag Version
         run: |
