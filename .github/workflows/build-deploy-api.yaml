@@ -13,14 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
       - name: Echo branch name
         run: |
           echo "Github Latest Commit Hash"
           echo $(git rev-parse --short HEAD)
           echo ""
-    
-      - name: Checkout Repository
-        uses: actions/checkout@v2
       
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
