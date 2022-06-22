@@ -71,6 +71,24 @@ objects:
               - name: API_PORT
                 value: '3000'
             resources: {}
+            readinessProbe:
+              httpGet:
+                path: /api/v1/health
+                port: 3000
+                scheme: HTTP
+              timeoutSeconds: 1
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+            livenessProbe:
+              httpGet:
+                path: /api/v1/health
+                port: 3000
+                scheme: HTTP
+              timeoutSeconds: 1
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             imagePullPolicy: IfNotPresent
