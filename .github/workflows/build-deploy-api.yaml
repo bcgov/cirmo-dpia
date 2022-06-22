@@ -77,5 +77,6 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DEPLOYMENT_CONFIG: api-dc-template.yaml
+          IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
