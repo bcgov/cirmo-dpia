@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
+      - name: Echo branch name
+        run: |
+          echo "Github Ref"
+          echo "${{ github.ref }}"
+          echo ""
+          echo "Github Ref Name"
+          echo "${{ github.ref_name }}"
+          echo ""
+    
       - name: Checkout Repository
         uses: actions/checkout@v2
       
