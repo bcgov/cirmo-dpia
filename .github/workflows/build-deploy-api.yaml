@@ -38,9 +38,9 @@ jobs:
       
       - name: Docker Tag Version
         env:
-          BRANCH_NAME: ${{ github.base_ref }} 
+          BRANCH_NAME: ${{ github.event.pull_request.base.ref }} 
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$BRANCH_NAME
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.BRANCH_NAME }}
       
       - name: Docker List Images
         run: |
