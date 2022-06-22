@@ -13,4 +13,9 @@ app.get('/api/v1/health', (req, res) => {
     console.log('GET to Application Health');
 });
 
+app.get('/api/v1/user', (req, res) => {
+    res.status(404).send('User not found');
+    console.log('GET to Users');
+});
+
 app.listen(API_PORT, () => console.log(`Server started and is listening on port ${API_PORT}`));
