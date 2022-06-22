@@ -113,3 +113,27 @@ jobs:
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
+    
+  health-check:
+    runs-on: ubuntu-latest
+    needs: [build-dpia-api-image, deploy-to-dev]
+    steps:
+    
+      - uses: actions/checkout@v2
+    
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+            
+      - name: Health Check DEV deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+        run: |
+          ./.github/helpers/application_health.sh
