@@ -12,17 +12,6 @@ jobs:
     environment: Dev
     runs-on: ubuntu-latest
     steps:
-      
-      - name: Extract branch name
-        shell: bash
-        run: |
-          echo "##[set-output name=branch;]$(echo ${GITHUB_HEAD_REF#refs/heads/})"
-        id: extract_branch
-      
-      - name: Echo Branch Name
-        run: | 
-          echo "BRANCH NAME"
-          echo ${{ steps.extract_branch.outputs.branch }}
     
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -48,8 +37,10 @@ jobs:
           docker image ls 
       
       - name: Docker Tag Version
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ github.event.pull_request.title }}
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$BRANCH_NAME
       
       - name: Docker List Images
         run: |
