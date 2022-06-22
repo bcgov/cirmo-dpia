@@ -15,12 +15,6 @@ jobs:
     
       - name: Checkout Repository
         uses: actions/checkout@v2
-        
-      - name: Echo branch name
-        run: |
-          echo "Github Latest Commit Hash"
-          echo $(git rev-parse --short HEAD)
-          echo ""
       
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
@@ -44,9 +38,9 @@ jobs:
       
       - name: Docker Tag Version
         env:
-          BRANCH_NAME: ${{ github.event.pull_request.base.ref }} 
+          BRANCH_NAME: $(git rev-parse --short HEAD)
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ github.event.pull_request.base.ref }}
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$BRANCH_NAME
       
       - name: Docker List Images
         run: |
@@ -54,7 +48,7 @@ jobs:
           
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ github.event.pull_request.title }}
+          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$BRANCH_NAME
           
   deploy-to-dev:
     runs-on: ubuntu-latest
