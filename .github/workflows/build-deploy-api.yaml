@@ -70,6 +70,11 @@ jobs:
           cmd: |
             'version'
             
+      - name: Set Commit Hash for Image Tag
+        run: |
+          commit_hash=$(echo $(git rev-parse --short HEAD))
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+            
       - name: Deploy to DEV
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
