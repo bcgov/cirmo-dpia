@@ -37,10 +37,9 @@ jobs:
           docker image ls 
       
       - name: Docker Tag Version
-        env:
-          BRANCH_NAME: $(git rev-parse --short HEAD)
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:$BRANCH_NAME
+          echo "COMMIT_HASH"=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.COMMIT_HASH }}
       
       - name: Docker List Images
         run: |
