@@ -15,8 +15,8 @@ jobs:
     
       - name: Echo branch name
         run: |
-          echo "Github Event Pull Request"
-          echo "${{ github.event.pull_request }}"
+          echo "Github Latest Commit Hash"
+          echo $(git rev-parse --short HEAD)
           echo ""
     
       - name: Checkout Repository
