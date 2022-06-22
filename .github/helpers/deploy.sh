@@ -5,5 +5,6 @@
 oc process -f /home/runner/work/cirmo-dpia/cirmo-dpia/openshift/templates/api/$DEPLOYMENT_CONFIG --namespace=$NAMESPACE \
     -p APPLICATION_NAME=$APPLICATION_NAME \
     -p LICENSE_PLATE=$LICENSE_PLATE \
-    -p ENVIRONMENT=$ENVIRONMENT | \
+    -p ENVIRONMENT=$ENVIRONMENT \
+    -p IMAGE_TAG=$IMAGE_TAG | \
     oc apply -f -
