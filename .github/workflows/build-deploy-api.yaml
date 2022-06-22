@@ -35,12 +35,14 @@ jobs:
       - name: Docker List Images
         run: |
           docker image ls 
-      
-      - name: Docker Tag Version
+          
+      - name: Set Commit Hash for Image Tag
         run: |
           commit_hash=$(echo $(git rev-parse --short HEAD))
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "${{ env.pull_request_hash }}"
+      
+      - name: Docker Tag Version
+        run: |
           docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
       
       - name: Docker List Images
