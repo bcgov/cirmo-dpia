@@ -38,7 +38,7 @@ jobs:
       
       - name: Docker Tag Version
         run: |
-          commit_hash=$(git rev-parse --short HEAD)
+          commit_hash=$(echo $(git rev-parse --short HEAD))
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
           echo "${{ env.pull_request_hash }}"
           docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
