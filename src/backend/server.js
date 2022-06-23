@@ -4,7 +4,7 @@ const app = express();
 const API_PORT = process.env.API_PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send('Hello, world!!!!');
+    res.send('Hello, world!');
     console.log('GET to ROOT');
 });
 
