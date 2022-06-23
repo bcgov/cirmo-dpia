@@ -186,7 +186,7 @@ jobs:
           HASH_IMAGE: "${{ env.pull_request_hash }}"
           ENVIRONMENT: "test"
         run: |
-          ./.github/helpers/tag-imagestream.yaml
+          ./.github/helpers/tag-imagestream.sh
           
   deploy-dpia-api-test:
     environment: Test
@@ -282,4 +282,4 @@ jobs:
           HASH_IMAGE: "${{ env.pull_request_hash }}"
           ENVIRONMENT: "prod"
         run: |
-          ./.github/helpers/tag-imagestream.yaml
+          ./.github/helpers/tag-imagestream.sh
