@@ -283,3 +283,50 @@ jobs:
           ENVIRONMENT: "prod"
         run: |
           ./.github/helpers/tag-imagestream.sh
+          
+  deploy-dpia-api-prod:
+    environment: Prod
+    runs-on: ubuntu-latest
+    needs: [build-dpia-api-image, deploy-to-dev, health-check, tag-dpia-api-test, deploy-dpia-api-test, tag-dpia-api-prod]
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
+
+      - name: Cluster Login -> PROD Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request-hash.json
+
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request-hash.json'
+          prop_path: 'hash'
+
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
+
+      - name: Deploy to TEST
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-dc-template.yaml
+          IMAGE_TAG: ${{ env.pull_request_hash }}-prod
+        run: |
+          ./.github/helpers/deploy.sh 
