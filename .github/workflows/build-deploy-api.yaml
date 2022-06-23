@@ -147,3 +147,69 @@ jobs:
     
       - name: Checkout Repository
         uses: actions/checkout@v2
+        
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request-hash.json
+          
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request-hash.json'
+          prop_path: 'hash'
+          
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
+        
+      - name: Update tag for Imagestream
+        env:
+          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+          DPIA_COMPONENT: "dpia-api"
+          HASH_IMAGE: "${{ env.pull_request_hash }}"
+        run: |
+          ./.github/helpers/tag-imagestream.yaml
+          
+  deploy-dpia-api-test:
+    environment: Test
+    runs-on: ubuntu-latest
+    needs: [build-dpia-api-image, deploy-to-dev, health-check, tag-dpia-api-test]
+    steps:
+      
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
+        
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request-hash.json
+          
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request-hash.json'
+          prop_path: 'hash'
+          
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
+          
+      - name: Deploy to DEV
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-dc-template.yaml
+          IMAGE_TAG: ${{ env.pull_request_hash }}-test
+        run: |
+          ./.github/helpers/deploy.sh 
