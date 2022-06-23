@@ -234,3 +234,52 @@ jobs:
           IMAGE_TAG: ${{ env.pull_request_hash }}-test
         run: |
           ./.github/helpers/deploy.sh 
+    
+  tag-dpia-api-prod:
+    environment: Prod
+    runs-on: ubuntu-latest
+    needs: [build-dpia-api-image, deploy-to-dev, health-check, tag-dpia-api-test, deploy-dpia-api-test]
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Cluster Login -> TOOLS Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request-hash.json
+
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request-hash.json'
+          prop_path: 'hash'
+
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
+
+      - name: Update tag for Imagestream
+        env:
+          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+          DPIA_COMPONENT: "dpia-api"
+          HASH_IMAGE: "${{ env.pull_request_hash }}"
+          ENVIRONMENT: "prod"
+        run: |
+          ./.github/helpers/tag-imagestream.yaml
