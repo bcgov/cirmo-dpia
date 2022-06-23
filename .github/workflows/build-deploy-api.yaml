@@ -20,13 +20,13 @@ jobs:
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
           cmd: |
             'version'
             
       - name: Login to Openshift Docker
         run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_SA_PASSWORD }}
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           
       - name: Build the Docker image
         run: |
@@ -80,7 +80,7 @@ jobs:
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
             
@@ -126,7 +126,7 @@ jobs:
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}"}'
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
             
@@ -152,13 +152,13 @@ jobs:
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
           cmd: |
             'version'
             
       - name: Login to Openshift Docker
         run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_SA_PASSWORD }}
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
         
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
@@ -201,13 +201,13 @@ jobs:
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
           cmd: |
             'version'
             
       - name: Login to Openshift Docker
         run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_SA_PASSWORD }}
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
         
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
