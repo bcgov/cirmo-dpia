@@ -138,3 +138,11 @@ jobs:
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
         run: |
           ./.github/helpers/application-health.sh
+          
+  tag-dpia-api-test:
+    environment: Test
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
