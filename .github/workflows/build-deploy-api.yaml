@@ -320,9 +320,9 @@ jobs:
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
 
-      - name: Deploy to TEST
+      - name: Deploy to PROD
         env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
