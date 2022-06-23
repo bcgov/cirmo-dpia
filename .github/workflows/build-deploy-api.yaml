@@ -172,6 +172,7 @@ jobs:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
           HASH_IMAGE: "${{ env.pull_request_hash }}"
+          ENVIRONMENT: "test"
         run: |
           ./.github/helpers/tag-imagestream.yaml
           
