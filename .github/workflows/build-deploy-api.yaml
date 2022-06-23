@@ -142,6 +142,7 @@ jobs:
   tag-dpia-api-test:
     environment: Test
     runs-on: ubuntu-latest
+    needs: [build-dpia-api-image, deploy-to-dev, health-check]
     steps:
     
       - name: Checkout Repository
