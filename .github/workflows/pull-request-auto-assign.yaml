@@ -2,7 +2,10 @@ name: Pull Request - Auto Assign BC Gov Internal Developers and Government Contr
 
 on:
   pull_request:
-    types: [ opened, reopened]
+    types:
+      - opened
+      - reopened
+      - synchronize
 jobs:
   assign-team-members:
     runs-on: ubuntu-latest
@@ -10,5 +13,5 @@ jobs:
       - name: Auto Assign Teams
         uses: delivery-much/actions-assigner@v1
         with:
-          token: ${{ secrets.GH_TOKEN }}
-          team-reviewers: bcgov-cirmo-dpia, contractor-cirmo-dpia
+          token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: akroon3r,antsand
