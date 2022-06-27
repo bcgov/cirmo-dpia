@@ -5,13 +5,17 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "Adam Kroon",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.16"
   },
   "dependencies": {
