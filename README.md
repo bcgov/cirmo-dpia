@@ -1,7 +1,7 @@
 # Digital Privacy Impact Assessment Modernization Application
 
 ## Project Information
-![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999) [![img](https://img.shields.io/badge/Chat-on%20RocketChat-%230f95d0.svg)](https://chat.developer.gov.bc.ca/group/cirmo-dpia)
+![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999) [![img](https://img.shields.io/badge/Chat-on%20RocketChat-%230f95d0.svg)](https://chat.developer.gov.bc.ca/group/cirmo-dpia) [![Test Coverage](https://api.codeclimate.com/v1/badges/93a4d760a14d759fff9c/test_coverage)](https://codeclimate.com/github/bcgov/cirmo-dpia/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/93a4d760a14d759fff9c/maintainability)](https://codeclimate.com/github/bcgov/cirmo-dpia/maintainability)
 
 ## Project Structure
 
