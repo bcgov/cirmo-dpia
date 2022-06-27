@@ -16,6 +16,11 @@ jobs:
       - name: Apply executable perms to Code Climate Binary
         run: chmod +x ./cc-test-reporter
 
+      - name: WHERE AM I?
+        run: |
+          pwd 
+          ls -al
+          
       - name: Before build
         run: ./cc-test-reporter before-build
 
