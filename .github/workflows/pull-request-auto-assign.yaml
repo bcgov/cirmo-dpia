@@ -1,5 +1,4 @@
-name: Pull Request - Auto Assign BC Gov Internal Developers and Government Contractors
-
+name: Pull Request - Auto Assign Development Team
 on:
   pull_request:
     types:
