@@ -6,22 +6,22 @@ on:
 
 jobs:
     snyk:
-    name: Snyk
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        continue-on-error: true 
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
-          
-      - name: Upload result to Github Code Scanner
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
+      name: Snyk
+      runs-on: ubuntu-latest
+      steps:
+
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+
+        - name: Run Snyk to check for vulnerabilities
+          uses: snyk/actions/node@master
+          continue-on-error: true 
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          with:
+            args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
+
+        - name: Upload result to Github Code Scanner
+          uses: github/codeql-action/upload-sarif@v2
+          with:
+            sarif_file: snyk.sarif
