@@ -25,5 +25,8 @@ jobs:
         run: |
           docker image ls 
           
+      - name: Scan Image and Dockerfile
+        run: |
+          docker scan cirmo-dpia_dpia-api:latest --file ./src/backend/Dockerfile
       
         
