@@ -10,6 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
+      - name: Pull Git Repository
+        uses: actions/checkout@v2
+        
+      - name: Install Project Dependencies
+        run: |
+          npm --prefix ./src/backend ci
+          
+      - name: Generate Code Coverage 
+        run: |
+          npm --prefix ./src/backend run test-with-coverage
+          
+      - name: List Coverage File
+        run: |
+          ls -al ./src/backend/coverage
+          
       - name: Download Code Climate Binary
         run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 
@@ -41,28 +56,10 @@ jobs:
         run: |
           echo "GIT_BRANCH=master" >> $GITHUB_ENV
         if: env.GIT_BRANCH == 'refs/heads/master'
-    
-      - name: Pull Git Repository
-        uses: actions/checkout@v2
-        
-      - name: Install Project Dependencies
-        run: |
-          npm --prefix ./src/backend ci
-          
-      - name: Generate Code Coverage 
-        run: |
-          npm --prefix ./src/backend run test-with-coverage
-          
-      - name: List Coverage File
-        run: |
-          ls -al ./src/backend/coverage
           
       - name: Format the API coverage report
         run: |          
-          pushd .
-          cd ${{github.workspace}}/src/backend/coverage
-          ${{github.workspace}}/cc-test-reporter format-coverage lcov.info --input-type lcov --output ${{github.workspace}}/coverage/dpia-api.lcov
-          popd
+          ${{github.workspace}}/cc-test-reporter format-coverage lcov.info --input-type lcov --output ${{ github.workspace }}/coverage/dpia-api.lcov
 
       - name: List LCOV Formatted Report
         run: |
