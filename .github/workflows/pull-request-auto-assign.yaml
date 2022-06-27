@@ -2,7 +2,10 @@ name: Pull Request - Auto Assign BC Gov Internal Developers and Government Contr
 
 on:
   pull_request:
-    types: [ opened, reopened]
+    types:
+      - opened
+      - reopened
+      - synchronize
 jobs:
   assign-team-members:
     runs-on: ubuntu-latest
