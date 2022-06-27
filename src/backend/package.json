@@ -7,7 +7,7 @@
     "start": "node server",
     "dev": "nodemon server",
     "test": "mocha",
-    "test-with-coverage": "nyc --reporter=json mocha ./test/test.js"
+    "test-with-coverage": "nyc --reporter=lcov mocha ./test/test.js"
   },
   "keywords": [],
   "author": "Adam Kroon",
