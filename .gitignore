@@ -4,3 +4,5 @@
 
 src/backend/node_modules
 src/backend/.env
+src/backend/.nyc_output
+src/backend/coverage
