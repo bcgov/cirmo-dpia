@@ -1,0 +1,28 @@
+name: Code Coverage
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  generate-code-coverage-api:
+    name: generate-code-coverage-api
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Pull Git Repository
+        uses: actions/checkout@v2
+        
+      - name: Install Project Dependencies
+        run: |
+          cd ./src/backend
+          npm ci
+          
+      - name: Generate Code Coverage 
+        run: |
+          cd ./src/backend
+          npm run test-with-coverage --reporter=json mocha
+          
+      - name: List Coverage File
+        run: |
+          ls -al ./src/backend/coverage
