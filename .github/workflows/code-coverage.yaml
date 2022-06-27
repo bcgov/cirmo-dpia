@@ -42,7 +42,7 @@ jobs:
         
       - name: Install Project Dependencies
         run: |
-          npm -- prefix ./src/backend ci
+          npm --prefix ./src/backend ci
           
       - name: Generate Code Coverage 
         run: |
