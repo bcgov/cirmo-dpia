@@ -3,11 +3,12 @@ name: Pull Request - Auto Assign BC Gov Internal Developers and Government Contr
 on:
   pull_request:
     types: [ opened, reopened]
-job:
+jobs:
   assign-team-members:
     runs-on: ubuntu-latest
     steps:
-      - uses: delivery-much/actions-assign@v1
+      - name: Auto Assign Teams
+        uses: delivery-much/actions-assign@v1
         with:
-        token: ${{ secrets.GH_TOKEN }}
-        team-reviewers: bcgov-cirmo-dpia, contractor-cirmo-dpia
+          token: ${{ secrets.GH_TOKEN }}
+          team-reviewers: bcgov-cirmo-dpia, contractor-cirmo-dpia
