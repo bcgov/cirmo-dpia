@@ -1,0 +1,29 @@
+name: CI - API
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "src/backend/**"
+  push:
+    branches: [ main ]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
+
+jobs:
+  dpia-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Git repo.
+        uses: actions/checkout@v2
+        
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-api
+          
+      - name: Docker List Images
+        run: |
+          docker image ls 
+          
+      
+        
