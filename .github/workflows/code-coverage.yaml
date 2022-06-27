@@ -77,5 +77,5 @@ jobs:
           path: coverage/dpia-api.json
           
       - name: Upload coverage report to Code Climate
-        run: ./cc-test-reporter upload-coverage -d -i coverage/dpia-api.lcov
+        run: ./cc-test-reporter upload-coverage -d -i coverage/dpia-api.json
           
