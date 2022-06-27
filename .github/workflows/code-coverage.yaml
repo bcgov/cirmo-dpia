@@ -57,7 +57,7 @@ jobs:
       - name: Format the FRONTEND coverage report
         run: |          
           pushd .
-          cd ${{github.workspace}}/src/backend/coverage/lcov-report
+          cd ${{github.workspace}}/src/backend/coverage
           ${{github.workspace}}/cc-test-reporter format-coverage --input-type lcov --output ${{github.workspace}}/coverage/dpia-api.lcov lcov.info
           popd
 
