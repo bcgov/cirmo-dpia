@@ -57,7 +57,7 @@ jobs:
         run: |
           ls -al ./src/backend/coverage
           
-      - name: Format the FRONTEND coverage report
+      - name: Format the API coverage report
         run: |          
           pushd .
           cd ${{github.workspace}}/src/backend/coverage
