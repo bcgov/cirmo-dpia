@@ -59,7 +59,6 @@ jobs:
           
       - name: Format the API coverage report
         run: | 
-          cd 
           ./cc-test-reporter format-coverage ${{ github.workspace }}/src/backend/coverage/lcov.info --input-type lcov --output ${{ github.workspace }}/coverage/dpia-api.lcov
 
       - name: List LCOV Formatted Report
