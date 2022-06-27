@@ -1,4 +1,4 @@
-name: CI - API
+name: API - Docker Image Build
 on:
   pull_request:
     branches: [ main ]
