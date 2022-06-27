@@ -6,6 +6,8 @@ on:
 
 jobs:
   generate-code-coverage-api:
+    env:
+      CC_TEST_REPORTER_ID: 861e868a6d2776ca55c53ef1ee5042f1de0db45137b89eeeda67e15549bfcdbf
     name: generate-code-coverage-api
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: formatted-api-coverage-report
-          path: coverage/dpia-api.lcov
+          path: coverage/dpia-api.json
           
       - name: Upload coverage report to Code Climate
         run: ./cc-test-reporter upload-coverage -d -i coverage/dpia-api.lcov
