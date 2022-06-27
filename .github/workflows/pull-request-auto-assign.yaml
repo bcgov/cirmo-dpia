@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto Assign Teams
-        uses: delivery-much/actions-assign@v1
+        uses: delivery-much/actions-assigner@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
           team-reviewers: bcgov-cirmo-dpia, contractor-cirmo-dpia
