@@ -13,6 +13,11 @@ jobs:
       - name: Pull Git Repository
         uses: actions/checkout@v2
         
+      - name: Install Project Dependencies
+        run: |
+          cd ./src/backend
+          npm ci
+          
       - name: Generate Code Coverage 
         run: |
           cd ./src/backend
