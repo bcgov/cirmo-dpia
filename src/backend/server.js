@@ -1,4 +1,5 @@
 const express = require('express');
+const { clear } = require('winston');
 
 const app = express();
 const API_PORT = process.env.API_PORT || 3000;
@@ -12,4 +13,4 @@ app.get('/api/v1/health', (req, res) => {
     console.log('GET to Application Health');
 });
 
-app.listen(API_PORT, () => console.log(`Server started and is listening on port ${API_PORT}`));
+module.exports = app.listen(API_PORT, () => console.log(`Server started and is listening on port ${API_PORT}`));
