@@ -11,22 +11,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  dpia-api:
+  api-image-build:
+    name: api-image-build
     runs-on: ubuntu-latest
     steps:
+    
       - name: Pull Git repo.
         uses: actions/checkout@v2
         
       - name: Build the Docker image
         run: |
           docker-compose build dpia-api
-          
-      - name: Docker List Images
-        run: |
-          docker image ls 
-          
-      - name: Scan Image and Dockerfile
-        run: |
-          docker scan cirmo-dpia_dpia-api:latest --file ./src/backend/Dockerfile
-      
-        
