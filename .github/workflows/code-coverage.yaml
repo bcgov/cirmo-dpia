@@ -10,23 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-      - name: Pull Git Repository
-        uses: actions/checkout@v2
-        
-      - name: Install Project Dependencies
-        run: |
-          cd ./src/backend
-          npm ci
-          
-      - name: Generate Code Coverage 
-        run: |
-          cd ./src/backend
-          npm run test-with-coverage --reporter=lcov mocha
-          
-      - name: List Coverage File
-        run: |
-          ls -al ./src/backend/coverage
-          
       - name: Download Code Climate Binary
         run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 
@@ -53,7 +36,22 @@ jobs:
         run: |
           echo "GIT_BRANCH=master" >> $GITHUB_ENV
         if: env.GIT_BRANCH == 'refs/heads/master'
-
+    
+      - name: Pull Git Repository
+        uses: actions/checkout@v2
+        
+      - name: Install Project Dependencies
+        run: |
+          npm -- prefix ./src/backend ci
+          
+      - name: Generate Code Coverage 
+        run: |
+          npm --prefix ./src/backend run test-with-coverage
+          
+      - name: List Coverage File
+        run: |
+          ls -al ./src/backend/coverage
+          
       - name: Format the FRONTEND coverage report
         run: |          
           pushd .
