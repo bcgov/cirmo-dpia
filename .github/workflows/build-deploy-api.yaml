@@ -108,18 +108,18 @@ jobs:
           echo "PREVIOUS DC NAME"
           echo ${{ env.previous_dc_name }}
           
-      - name: Update package.json version
-        uses: jossef/action-set-json-field@v2
+      - name: Create JSON file for Image Tag State
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
         with:
-          file: pull-request.json
-          field: previous_dc_name
-          value: ${{ env.previous_dc_name }}
-          
+          name: 'dev-deploy.json'
+          json: '{ "hash":"${{ env.pull_request_hash }}", "dc_name":"${{ env.previous_dc_name}}"}'
+
       - name: Upload JSON file
         uses: actions/upload-artifact@v3
         with: 
-          name: pull-request.json
-          path: pull-request.json
+          name: dev-deploy.json
+          path: dev-deploy.json
             
       - name: Process and Apply API Deployment Config Template
         env:
@@ -169,24 +169,36 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
+
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name: pull-request.json
+          name: dev-deploy.json
           
       - name: Read JSON File
-        id: json-file
+        id: json-file-hash
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request.json'
+          path: 'dev-deploy.json'
           prop_path: 'hash'
+
+      - name: Read JSON File
+        id: json-file-dc-name
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'dev-deploy.json'
+          prop_path: 'dc_name'
           
       - name: Set Commit Hash Value to Environment
         run: |
-          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
+          dc_name=$(echo ${{ steps.json-file-dc-hash.outputs.prop }})
+          echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
+          echo "PREVIOUS DC NAME"
+          echo ${{ env.previous_dc_name }}
             
       - name: Health Check DEV deployment
         env:
