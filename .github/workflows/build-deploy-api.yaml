@@ -102,11 +102,9 @@ jobs:
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
  
-      - name: Find Name of Previous DC deployed
+      - name: OC GET
         run: |
-          previous_dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk '{print $1}'))
-          echo "PREVIOUS DC NAME"
-          echo ${{ env.previous_dc_name }}
+          oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk '{print $1}'
           
       - name: Create JSON file for Image Tag State
         id: create-json
