@@ -1,4 +1,4 @@
-name: Code Coverage
+name: Code Climate - Code Coverage Generation, Formatting and Publishing
 on:
   pull_request:
     branches: [ main ]
