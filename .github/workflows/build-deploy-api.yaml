@@ -45,15 +45,14 @@ jobs:
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: 'pull-request-hash.json'
+          name: 'pull-request.json'
           json: '{ "hash":"${{ env.pull_request_hash }}" }'
           
       - name: Upload JSON file
         uses: actions/upload-artifact@v3
         with: 
-          name: pull-request-hash.json
-          path: pull-request-hash.json
-        
+          name: pull-request.json
+          path: pull-request.json
       
       - name: Docker Tag Version
         run: |
@@ -87,13 +86,13 @@ jobs:
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name: pull-request-hash.json
+          name: pull-request.json
           
       - name: Read JSON File
         id: json-file
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request-hash.json'
+          path: 'pull-request.json'
           prop_path: 'hash'
           
       - name: Set Commit Hash Value to Environment
@@ -102,26 +101,25 @@ jobs:
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
-
-      # FUTURE USE FOR CLEANUP    
-      # - name: Find Name of Previous DC deployed
-      #   run: |
-      #     previous_dc_name=$(echo $(oc get dc | awk '{print $1}'))
-      #     echo "PREVIOUS DC NAME"
-      #     echo ${{ env.previous_dc_name }}
+ 
+      - name: Find Name of Previous DC deployed
+        run: |
+          previous_dc_name=$(echo $(oc get dc | awk '{print $1}'))
+          echo "PREVIOUS DC NAME"
+          echo ${{ env.previous_dc_name }}
           
-      # - name: Update package.json version
-      #   uses: jossef/action-set-json-field@v2
-      #   with:
-      #     file: pull-request-hash.json
-      #     field: previous_dc_name
-      #     value: ${{ env.previous_dc_name }}
+      - name: Update package.json version
+        uses: jossef/action-set-json-field@v2
+        with:
+          file: pull-request.json
+          field: previous_dc_name
+          value: ${{ env.previous_dc_name }}
           
-      # - name: Upload JSON file
-      #   uses: actions/upload-artifact@v3
-      #   with: 
-      #     name: pull-request-hash.json
-      #     path: pull-request-hash.json
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: pull-request.json
+          path: pull-request.json
             
       - name: Process and Apply API Deployment Config Template
         env:
@@ -174,13 +172,13 @@ jobs:
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name: pull-request-hash.json
+          name: pull-request.json
           
       - name: Read JSON File
         id: json-file
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request-hash.json'
+          path: 'pull-request.json'
           prop_path: 'hash'
           
       - name: Set Commit Hash Value to Environment
@@ -199,7 +197,44 @@ jobs:
           IMAGE_TAG: "${{ env.pull_request_hash }}"
         run: |
           ./.github/helpers/application-health.sh
+
+  DEV-cleanup-previous-deploy:
+    runs-on: ubuntu-latest
+    environment: Dev
+    needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check]
+    steps:
+
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request.json
+
+      - name: Read JSON File - hash value
+        id: json-file-hash
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request.json'
+          prop_path: 'hash'
           
+      - name: Read JSON File - hash value
+        id: json-file-previous-deploy
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request.json'
+          prop_path: 'previous_dc_name'
+
+      - name: Set Commit Hash Value and Previous Deploy Name to Environemtn
+        run: |
+          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
+          dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
+          echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
+          echo "PREVIOUS DEPLOY NAME"
+          echo ${{ env.previous_deploy_name }}
+
+      
   # TEST-tag-dpia-api-image:
   #   environment: Test
   #   runs-on: ubuntu-latest
