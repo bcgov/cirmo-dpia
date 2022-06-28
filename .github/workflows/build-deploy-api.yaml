@@ -182,13 +182,6 @@ jobs:
         with:
           path: 'dev-deploy.json'
           prop_path: 'hash'
-
-      - name: Read JSON File
-        id: json-file-dc-name
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'dc_name'
           
       - name: Set Commit Hash Value to Environment
         run: |
@@ -196,10 +189,6 @@ jobs:
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
-          dc_name=$(echo ${{ steps.json-file-dc-hash.outputs.prop }})
-          echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
-          echo "PREVIOUS DC NAME"
-          echo ${{ env.previous_dc_name }}
             
       - name: Health Check DEV deployment
         env:
@@ -220,23 +209,23 @@ jobs:
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name: pull-request.json
+          name: dev-deploy.json
 
       - name: Read JSON File - hash value
         id: json-file-hash
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request.json'
+          path: 'dev-deploy.json'
           prop_path: 'hash'
           
       - name: Read JSON File - hash value
         id: json-file-previous-deploy
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request.json'
+          path: 'dev-deploy.json'
           prop_path: 'previous_dc_name'
 
-      - name: Set Commit Hash Value and Previous Deploy Name to Environemtn
+      - name: Set Commit Hash Value and Previous Deploy Name to Environment
         run: |
           commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
@@ -247,7 +236,30 @@ jobs:
           echo "PREVIOUS DEPLOY NAME"
           echo ${{ env.previous_deploy_name }}
 
-      
+      - name: Cleanup Previous Deployment Config
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          OBJECT_TYPE: dc
+          OBJECT_NAME: "${{ env.previous_deploy_name }}"
+        run: |
+          ./.github/helpers/cleanup.sh
+
+      - name: Cleanup Previous Route
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          OBJECT_TYPE: route
+          OBJECT_NAME: "${{ env.previous_deploy_name }}"
+        run: |
+          ./.github/helpers/cleanup.sh
+
+      - name: Cleanup Previous Service
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          OBJECT_TYPE: service
+          OBJECT_NAME: "${{ env.previous_deploy_name }}"
+        run: |
+          ./.github/helpers/cleanup.sh
+
   # TEST-tag-dpia-api-image:
   #   environment: Test
   #   runs-on: ubuntu-latest
