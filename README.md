@@ -28,7 +28,7 @@
 
 ## Project Setup
 
-### Environment Variable
+### Environment Variables
 
 ### .env File
 
@@ -37,8 +37,6 @@
 ### Quick Start
 
 ## NPM Scripts
-
-## Environment Variable
 
 ## Deployment
 
