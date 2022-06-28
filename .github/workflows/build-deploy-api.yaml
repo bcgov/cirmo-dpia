@@ -206,6 +206,8 @@ jobs:
     needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check]
     steps:
 
+      - uses: actions/checkout@v2
+
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
