@@ -218,12 +218,12 @@ jobs:
           path: 'dev-deploy.json'
           prop_path: 'hash'
           
-      - name: Read JSON File - hash value
+      - name: Read JSON File - deployment name
         id: json-file-previous-deploy
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'dev-deploy.json'
-          prop_path: 'previous_dc_name'
+          prop_path: 'dc_name'
 
       - name: Set Commit Hash Value and Previous Deploy Name to Environment
         run: |
