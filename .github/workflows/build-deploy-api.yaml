@@ -134,7 +134,7 @@ jobs:
         run: |
           ./.github/helpers/deploy.sh 
 
-        - name: Process and Apply API Service Template
+      - name: Process and Apply API Service Template
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
@@ -145,7 +145,7 @@ jobs:
         run: |
           ./.github/helpers/deploy.sh 
 
-        - name: Process and Apply API Route Template
+      - name: Process and Apply API Route Template
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
