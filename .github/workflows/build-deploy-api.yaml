@@ -200,7 +200,7 @@ jobs:
         run: |
           ./.github/helpers/application-health.sh
 
-  DEV-cleanup-previous-deploy:
+  DEV-cleanup:
     runs-on: ubuntu-latest
     environment: Dev
     needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check]
