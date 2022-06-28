@@ -104,7 +104,10 @@ jobs:
  
       - name: OC GET
         run: |
-          oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk '{print $1}'
+          dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk '{print $1}'))
+          echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
+          echo "PREVIOUS DC NAME"
+          echo ${{ env.previous_dc_name }}
           
       - name: Create JSON file for Image Tag State
         id: create-json
