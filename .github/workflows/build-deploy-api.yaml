@@ -123,13 +123,35 @@ jobs:
       #     name: pull-request-hash.json
       #     path: pull-request-hash.json
             
-      - name: Deploy to DEV
+      - name: Process and Apply API Deployment Config Template
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DEPLOYMENT_CONFIG: api-dc-template.yaml
+          IMAGE_TAG: ${{ env.pull_request_hash }}
+        run: |
+          ./.github/helpers/deploy.sh 
+
+        - name: Process and Apply API Service Template
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-service.yaml
+          IMAGE_TAG: ${{ env.pull_request_hash }}
+        run: |
+          ./.github/helpers/deploy.sh 
+
+        - name: Process and Apply API Route Template
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-service.yaml
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
