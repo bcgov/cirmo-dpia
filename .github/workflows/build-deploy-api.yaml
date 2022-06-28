@@ -104,7 +104,7 @@ jobs:
  
       - name: Find Name of Previous DC deployed
         run: |
-          previous_dc_name=$(echo $(oc get dc | awk '{print $1}'))
+          previous_dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk '{print $1}'))
           echo "PREVIOUS DC NAME"
           echo ${{ env.previous_dc_name }}
           
