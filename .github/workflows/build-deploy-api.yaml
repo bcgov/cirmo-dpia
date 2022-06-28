@@ -102,6 +102,25 @@ jobs:
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
+          
+      - name: Find Name of Previous DC deployed
+        run: |
+          previous_dc_name=$(echo $(oc get dc | awk '{print $1}'))
+          echo "PREVIOUS DC NAME"
+          echo ${{ env.previous_dc_name }}
+          
+      - name: Update package.json version
+        uses: jossef/action-set-json-field@v2
+        with:
+          file: pull-request-hash.json
+          field: previous_dc_name
+          value: ${{ env.previous_dc_name }}
+          
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: pull-request-hash.json
+          path: pull-request-hash.json
             
       - name: Deploy to DEV
         env:
