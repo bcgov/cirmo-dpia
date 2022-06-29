@@ -102,7 +102,7 @@ jobs:
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
  
-      - name: OC GET
+      - name: Get Previous Deployment Hash Value
         run: |
           dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} | awk 'FNR == 2 {print $1}'))
           echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
@@ -128,32 +128,32 @@ jobs:
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-dc-template.yaml
+          TEMPLATE_ARRAY: ["api-dc-template.yaml", "api-service.yaml", "api-route.yaml"] 
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
 
-      - name: Process and Apply API Service Template
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-service.yaml
-          IMAGE_TAG: ${{ env.pull_request_hash }}
-        run: |
-          ./.github/helpers/deploy.sh 
+      # - name: Process and Apply API Service Template
+      #   env:
+      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+      #     APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+      #     LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+      #     ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+      #     TEMPLATE_NAME: api-service.yaml
+      #     IMAGE_TAG: ${{ env.pull_request_hash }}
+      #   run: |
+      #     ./.github/helpers/deploy.sh 
 
-      - name: Process and Apply API Route Template
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-route.yaml
-          IMAGE_TAG: ${{ env.pull_request_hash }}
-        run: |
-          ./.github/helpers/deploy.sh 
+      # - name: Process and Apply API Route Template
+      #   env:
+      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+      #     APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+      #     LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+      #     ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+      #     TEMPLATE_NAME: api-route.yaml
+      #     IMAGE_TAG: ${{ env.pull_request_hash }}
+      #   run: |
+      #     ./.github/helpers/deploy.sh 
     
   DEV-health-check:
     runs-on: ubuntu-latest
