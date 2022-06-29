@@ -278,52 +278,52 @@ jobs:
         run: |
           ./.github/helpers/tag-imagestream.sh
           
-  # TEST-deploy:
-  #   environment: Test
-  #   runs-on: ubuntu-latest
-  #   needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check, TEST-tag-dpia-api-image]
-  #   steps:
+  TEST-deploy:
+    environment: Test
+    runs-on: ubuntu-latest
+    needs: [TEST-tag-dpia-api-image]
+    steps:
       
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2 
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
         
-  #     - name: Cluster Login -> TEST Namespace
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      - name: Cluster Login -> TEST Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
         
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: pull-request-hash.json
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pull-request-hash.json
           
-  #     - name: Read JSON File
-  #       id: json-file
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'pull-request-hash.json'
-  #         prop_path: 'hash'
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pull-request-hash.json'
+          prop_path: 'hash'
           
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-  #         echo "PULL REQUEST HASH"
-  #         echo ${{ env.pull_request_hash }}
-          
-  #     - name: Deploy to TEST
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         DEPLOYMENT_CONFIG: api-dc-template.yaml
-  #         IMAGE_TAG: ${{ env.pull_request_hash }}-test
-  #       run: |
-  #         ./.github/helpers/deploy.sh 
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+      
+      - name: Process and Apply API DeploymentConfig, Service, Route templates
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          API_DC_TEMPLATE: "api-dc-template.yaml"
+          API_SERVICE_TEMPLATE: "api-service-template.yaml"
+          API_ROUTE_TEMPLATE: "api-route-template.yaml"
+          IMAGE_TAG: ${{ env.pull_request_hash }}
+        run: |
+          ./.github/helpers/deploy.sh 
           
   # TEST-health-check:
   #   runs-on: ubuntu-latest
