@@ -208,6 +208,14 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
@@ -244,7 +252,7 @@ jobs:
           OBJECT_TYPE: deploymentconfig
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          oc delete --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} deploymentconfig/${{ env.previous_deploy_name }}
+          ./.github/helpers/cleanup.sh
 
       - name: Cleanup Previous Route
         env:
@@ -252,7 +260,7 @@ jobs:
           OBJECT_TYPE: route
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
+          ./.github/helpers/cleanup.sh
 
       - name: Cleanup Previous Service
         env:
@@ -260,7 +268,7 @@ jobs:
           OBJECT_TYPE: service
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
+          ./.github/helpers/cleanup.sh
 
   # TEST-tag-dpia-api-image:
   #   environment: Test
