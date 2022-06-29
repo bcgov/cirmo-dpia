@@ -129,11 +129,11 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           TEMPLATE_ARRAY: | 
-                      [
-                        "api-dc-template.yaml", 
-                        "api-service.yaml",
+                      (
+                        "api-dc-template.yaml"
+                        "api-service.yaml"
                         "api-route.yaml"
-                      ]
+                      )
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
