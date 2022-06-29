@@ -241,10 +241,10 @@ jobs:
       - name: Cleanup Previous Deployment Config
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          OBJECT_TYPE: dc
+          OBJECT_TYPE: deploymentconfig
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          ./.github/helpers/cleanup.sh
+          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
 
       - name: Cleanup Previous Route
         env:
@@ -252,7 +252,7 @@ jobs:
           OBJECT_TYPE: route
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          ./.github/helpers/cleanup.sh
+          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
 
       - name: Cleanup Previous Service
         env:
@@ -260,7 +260,7 @@ jobs:
           OBJECT_TYPE: service
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          ./.github/helpers/cleanup.sh
+          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
 
   # TEST-tag-dpia-api-image:
   #   environment: Test
