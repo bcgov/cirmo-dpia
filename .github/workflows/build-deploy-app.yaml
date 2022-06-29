@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   
 jobs:
-  DPIA-API-Build-Tag-Push:
+  DPIA-App-Build-Tag-Push:
     environment: Dev
     runs-on: ubuntu-latest
     steps:
