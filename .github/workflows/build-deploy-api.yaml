@@ -109,7 +109,7 @@ jobs:
           echo "PREVIOUS DC NAME"
           echo "${{ env.previous_dc_name }}"
           
-      - name: Create JSON file for Image Tag State
+      - name: Create new JSON file for current and Previous Deployment Hash
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
@@ -122,40 +122,18 @@ jobs:
           name: dev-deploy.json
           path: dev-deploy.json
             
-      - name: Process and Apply API Deployment Config Template
+      - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           API_DC_TEMPLATE: "api-dc-template.yaml"
-          API_SERVICE_TEMPLATE: "api-service.yaml"
-          API_ROUTE_TEMPLATE: "api-route.yaml"
+          API_SERVICE_TEMPLATE: "api-service-template.yaml"
+          API_ROUTE_TEMPLATE: "api-route-template.yaml"
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
-
-      # - name: Process and Apply API Service Template
-      #   env:
-      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-      #     APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-      #     LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-      #     ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-      #     TEMPLATE_NAME: api-service.yaml
-      #     IMAGE_TAG: ${{ env.pull_request_hash }}
-      #   run: |
-      #     ./.github/helpers/deploy.sh 
-
-      # - name: Process and Apply API Route Template
-      #   env:
-      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-      #     APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-      #     LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-      #     ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-      #     TEMPLATE_NAME: api-route.yaml
-      #     IMAGE_TAG: ${{ env.pull_request_hash }}
-      #   run: |
-      #     ./.github/helpers/deploy.sh 
     
   DEV-health-check:
     runs-on: ubuntu-latest
@@ -165,7 +143,7 @@ jobs:
     
       - uses: actions/checkout@v2
     
-      - name: Cluster Login
+      - name: Cluster Login -> DEV Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
@@ -230,7 +208,7 @@ jobs:
           path: 'dev-deploy.json'
           prop_path: 'hash'
           
-      - name: Read JSON File - deployment name
+      - name: Read JSON File - previous deployment hash
         id: json-file-previous-deploy
         uses: notiz-dev/github-action-json-property@release
         with:
@@ -241,36 +219,31 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.pull_request_hash }}
           dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
           echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
-          echo "PREVIOUS DEPLOY NAME"
-          echo ${{ env.previous_deploy_name }}
 
       - name: Cleanup Previous Deployment Config
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          OBJECT_TYPE: deploymentconfig
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
           ./.github/helpers/cleanup.sh
 
-      - name: Cleanup Previous Route
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          OBJECT_TYPE: route
-          OBJECT_NAME: "${{ env.previous_deploy_name }}"
-        run: |
-          ./.github/helpers/cleanup.sh
+      # - name: Cleanup Previous Route
+      #   env:
+      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+      #     OBJECT_TYPE: route
+      #     OBJECT_NAME: "${{ env.previous_deploy_name }}"
+      #   run: |
+      #     ./.github/helpers/cleanup.sh
 
-      - name: Cleanup Previous Service
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          OBJECT_TYPE: service
-          OBJECT_NAME: "${{ env.previous_deploy_name }}"
-        run: |
-          ./.github/helpers/cleanup.sh
+      # - name: Cleanup Previous Service
+      #   env:
+      #     NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+      #     OBJECT_TYPE: service
+      #     OBJECT_NAME: "${{ env.previous_deploy_name }}"
+      #   run: |
+      #     ./.github/helpers/cleanup.sh
 
   # TEST-tag-dpia-api-image:
   #   environment: Test

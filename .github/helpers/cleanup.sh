@@ -2,4 +2,9 @@
 
 # script to cleanup kubernetes objects of a previous deployment after a new deployment has occured
 
-oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
+objects=( dc service route )
+
+for i in "${objects[@]}"
+do
+    oc delete --namespace=$NAMESPACE "$i"/$OBJECT_NAME
+done
