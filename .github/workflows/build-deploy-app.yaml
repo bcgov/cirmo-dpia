@@ -1,4 +1,4 @@
-name: DEV Build and Deploy DPIA WebApp
+name: Github Environment - DPIA Web App
 
 on:
   push:
@@ -6,14 +6,63 @@ on:
     paths:
       - "src/frontend/**"
   workflow_dispatch:
-
+  
 jobs:
-  build:
+  DPIA-API-Build-Tag-Push:
+    environment: Dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
       
-      - name: Hello, world!
+      - name: Cluster Login -> TOOLS Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+            
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+          
+      - name: Build the Docker image
         run: |
-          echo "Hello, world!"
+          docker-compose build dpia-webapp
+      
+      - name: Docker List Images
+        run: |
+          docker image ls 
+          
+      - name: Set Commit Hash for Image Tag
+        run: |
+          commit_hash=$(echo $(git rev-parse --short HEAD))
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          
+      - name: Create JSON file for Image Tag State
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: 'pull-request.json'
+          json: '{ "hash":"${{ env.pull_request_hash }}" }'
+          
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: pull-request.json
+          path: pull-request.json
+      
+      - name: Docker Tag Version
+        run: |
+          docker tag cirmo-dpia_dpia-webapp ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
+      
+      - name: Docker List Images
+        run: |
+          docker image ls 
+          
+      - name: Docker Push Version
+        run: |
+          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
 
