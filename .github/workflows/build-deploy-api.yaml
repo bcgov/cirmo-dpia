@@ -244,7 +244,7 @@ jobs:
           OBJECT_TYPE: deploymentconfig
           OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          oc delete --namespace=$NAMESPACE $OBJECT_TYPE/$OBJECT_NAME
+          oc delete --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} deploymentconfig/${{ env.previous_deploy_name }}
 
       - name: Cleanup Previous Route
         env:
