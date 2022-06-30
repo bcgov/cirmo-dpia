@@ -6,7 +6,7 @@ WORKDIR /usr/src/src/frontend
 
 # Copy in build artifacts, build project dependencies
 COPY src/frontend/package*.json ./
-RUN npm ci
+RUN npm install
 COPY src/frontend/. .
 RUN npm run build
 
@@ -16,11 +16,9 @@ RUN npm run build
 FROM nginx:stable-alpine as production
 
 # Remove default static NGINX files
-USER nginx
-COPY --from=build --chown=nginx:nginx /usr/src/src/frontend/dist /usr/share/nginx/html
+COPY --from=build /usr/src/src/frontend/dist/. /usr/share/nginx/html
 
-# Expose Container Port
-EXPOSE 80
+COPY src/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Run NGINX
 CMD ["nginx", "-g", "daemon off;"]  
