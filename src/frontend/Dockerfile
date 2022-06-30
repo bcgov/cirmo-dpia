@@ -13,10 +13,15 @@ RUN npm run build
 #############################################################################################
 ###                                 PRODUCTION IMAGE                                      ###
 #############################################################################################
-FROM nginx:latest as production
+FROM nginx:stable-alpine as production
 
 # Remove default static NGINX files
-COPY --from=build /usr/src/src/frontend/dist /usr/share/nginx/html
+USER nginx
+COPY --from=build --chown=nginx:nginx /usr/src/src/frontend/dist /usr/share/nginx/html
+
+# Elevate!
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
+RUN chmod g+rwx /etc/nginx/html/efilinghub
 
 # Expose Container Port
 EXPOSE 80
