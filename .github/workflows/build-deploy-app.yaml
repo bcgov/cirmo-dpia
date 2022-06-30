@@ -140,8 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Dev
-      url: ${{ secrets.APP_APPLICATION_NAME }}-${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}.apps.silver.devops.gov.bc.ca
-    needs: [DPIA-App-Build-Tag-Push]
+    needs: [DEV-deploy]
     steps:
     
       - uses: actions/checkout@v2
