@@ -131,6 +131,7 @@ jobs:
           API_DC_TEMPLATE: "api-dc-template.yaml"
           API_SERVICE_TEMPLATE: "api-service-template.yaml"
           API_ROUTE_TEMPLATE: "api-route-template.yaml"
+          DIR: "api"
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
           ./.github/helpers/deploy.sh 
