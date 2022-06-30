@@ -125,12 +125,12 @@ jobs:
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.AP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          API_DC_TEMPLATE: "app-dc-template.yaml"
-          API_SERVICE_TEMPLATE: "app-service-template.yaml"
-          API_ROUTE_TEMPLATE: "app-route-template.yaml"
+          DC_TEMPLATE: "app-dc-template.yaml"
+          SERVICE_TEMPLATE: "app-service-template.yaml"
+          ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
           IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
