@@ -16,8 +16,8 @@ objects:
     ports:
       - name: 3000-tcp
         protocol: TCP
-        port: ${SERVICE_PORT}
-        targetPort: ${SERVICE_TARGET_PORT}
+        port: 3000
+        targetPort: 3000
 
 parameters:
   - description: Application Name
@@ -40,13 +40,3 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
-  - description: Service Port
-    displayName: servicePort
-    name: SERVICE_PORT
-    required: false
-    value: 3000
-  - description: Service Target Port
-    displayName: serviceTargetPort
-    name: SERVICE_TARGET_PORT
-    required: false
-    value: 3000

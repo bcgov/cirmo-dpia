@@ -16,8 +16,8 @@ objects:
     ports:
       - name: tcp
         protocol: TCP
-        port: ${SERVICE_PORT}
-        targetPort: ${SERVICE_TARGET_PORT}
+        port: 8080
+        targetPort: 8080
 
 parameters:
   - description: Application Name
@@ -40,14 +40,3 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
-  - description: Service Port
-    displayName: servicePort
-    name: SERVICE_PORT
-    required: true 
-    value: false
-  - description: Service Target Port
-    displayName: serviceTargetPort
-    name: SERVICE_TARGET_PORT
-    required: false
-    value: 8080
-
