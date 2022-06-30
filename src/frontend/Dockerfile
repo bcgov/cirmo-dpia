@@ -13,7 +13,7 @@ RUN npm run build
 #############################################################################################
 ###                                 PRODUCTION IMAGE                                      ###
 #############################################################################################
-FROM nginx:stable-alpine as production
+FROM nginx:latest as production
 
 # Remove default static NGINX files
 COPY --from=build /usr/src/src/frontend/dist /usr/share/nginx/html
