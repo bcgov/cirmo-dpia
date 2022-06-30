@@ -14,10 +14,10 @@ objects:
     selector:
       app: ${APPLICATION_NAME}-${IMAGE_TAG}
     ports:
-      - name: 3000-tcp
+      - name: tcp
         protocol: TCP
-        port: 3000
-        targetPort: 3000
+        port: ${SERVICE_PORT}
+        targetPort: ${SERVICE_TARGET_PORT}
 
 parameters:
   - description: Application Name
@@ -40,4 +40,14 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
+  - description: Service Port
+    displayName: servicePort
+    name: SERVICE_PORT
+    required: true 
+    value: 8080
+  - description: Service Target Port
+    displayName: serviceTargetPort
+    name: SERVICE_TARGET_PORT
+    required: true 
+    value: 8080
 
