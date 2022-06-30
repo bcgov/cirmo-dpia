@@ -19,10 +19,6 @@ FROM nginx:stable-alpine as production
 USER nginx
 COPY --from=build --chown=nginx:nginx /usr/src/src/frontend/dist /usr/share/nginx/html
 
-# Elevate!
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
-RUN chmod g+rwx /etc/nginx/html/efilinghub
-
 # Expose Container Port
 EXPOSE 80
 
