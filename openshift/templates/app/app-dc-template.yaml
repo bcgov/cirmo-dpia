@@ -1,1 +1,102 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-template
+labels:
+  template: ${APPLICATION_NAME}-template
+objects:
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    annotations:
+      app.openshift.io/connects-to: >-
+        [{"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","name":"dpia-api-23a925d"}]
+      openshift.io/generated-by: OpenShiftWebConsole
+    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+    labels:
+      app: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app.kubernetes.io/component: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app.kubernetes.io/instance: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app.kubernetes.io/name: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app.kubernetes.io/part-of: dpia-application
+      app.openshift.io/runtime: js
+      app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+      app.openshift.io/runtime-version: e87d91c
+  spec:
+    strategy:
+      type: Rolling
+      rollingParams:
+        updatePeriodSeconds: 1
+        intervalSeconds: 1
+        timeoutSeconds: 600
+        maxUnavailable: 25%
+        maxSurge: 25%
+      resources: {}
+      activeDeadlineSeconds: 21600
+    triggers:
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - ${APPLICATION_NAME}-${IMAGE_TAG}
+          from:
+            kind: ImageStreamTag
+            namespace: ${LICENSE_PLATE}-tools
+            name: '${APPLICATION_NAME}:${IMAGE_TAG}'
+          lastTriggeredImage: >-
+            image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
+      - type: ConfigChange
+    replicas: 1
+    revisionHistoryLimit: 10
+    test: false
+    selector:
+      app: ${APPLICATION_NAME}-${IMAGE_TAG}
+      deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: ${APPLICATION_NAME}-${IMAGE_TAG}
+          deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+      spec:
+        containers:
+          - name: ${APPLICATION_NAME}-${IMAGE_TAG}
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            imagePullPolicy: IfNotPresent
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+        dnsPolicy: ClusterFirst
+        securityContext: {}
+        schedulerName: default-scheduler
 
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-webapp
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
+    required: true
+    value: b996e6
+  - description: Image Tag
+    displayName: Image Tag
+    required: true
+    name: IMAGE_TAG
+    value: latest

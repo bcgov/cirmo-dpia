@@ -40,3 +40,4 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
+
