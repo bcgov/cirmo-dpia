@@ -138,7 +138,9 @@ jobs:
 
   DEV-health-check:
     runs-on: ubuntu-latest
-    environment: Dev
+    environment:
+      name: Dev
+      url: url: ${{ secrets.APP_APPLICATION_NAME }}-${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}.apps.silver.devops.gov.bc.ca
     needs: [DPIA-App-Build-Tag-Push]
     steps:
     
@@ -180,4 +182,3 @@ jobs:
           IMAGE_TAG: "${{ env.pull_request_hash }}"
         run: |
           ./.github/helpers/application-health.sh
-    url: ${{ secrets.APP_APPLICATION_NAME }}-${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}.apps.silver.devops.gov.bc.ca
