@@ -2,7 +2,7 @@
 
 # script to process either the DPIA app or api deployment config templates and deploy it to a given namespace
 
-objects=( $API_DC_TEMPLATE $API_SERVICE_TEMPLATE $API_ROUTE_TEMPLATE )
+objects=( $DC_TEMPLATE $SERVICE_TEMPLATE $ROUTE_TEMPLATE )
 
 for i in "${objects[@]}"
 do
