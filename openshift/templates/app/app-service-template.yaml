@@ -44,10 +44,10 @@ parameters:
     displayName: servicePort
     name: SERVICE_PORT
     required: true 
-    value: 8080
+    value: false
   - description: Service Target Port
     displayName: serviceTargetPort
     name: SERVICE_TARGET_PORT
-    required: true 
+    required: false
     value: 8080
 
