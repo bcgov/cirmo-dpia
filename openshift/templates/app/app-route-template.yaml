@@ -21,7 +21,7 @@ objects:
       targetPort: 3000-tcp
     tls:
       termination: edge
-      insecureEdgeTerminationPolicy: None
+      insecureEdgeTerminationPolicy: Redirect
     wildcardPolicy: None
   status:
     ingress:
