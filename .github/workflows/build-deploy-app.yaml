@@ -185,7 +185,7 @@ jobs:
   DEV-cleanup:  
     runs-on: ubuntu-latest
     environment: Dev
-    needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check]
+    needs: [DEV-health-check]
     steps:
 
       - uses: actions/checkout@v2
