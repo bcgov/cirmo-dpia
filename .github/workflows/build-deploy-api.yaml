@@ -313,6 +313,7 @@ jobs:
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
       
+      #diff
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
@@ -323,6 +324,7 @@ jobs:
           API_SERVICE_TEMPLATE: "api-service-template.yaml"
           API_ROUTE_TEMPLATE: "api-route-template.yaml"
           IMAGE_TAG: ${{ env.pull_request_hash }}
+          DIR: "api"
         run: |
           ./.github/helpers/deploy.sh 
           
