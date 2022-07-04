@@ -374,7 +374,7 @@ jobs:
 
   TEST-cleanup:
     runs-on: ubuntu-latest
-    environment: Dev
+    environment: Test
     needs: [TEST-health-check]
     steps:
 
