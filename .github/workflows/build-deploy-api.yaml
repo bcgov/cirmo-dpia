@@ -362,7 +362,7 @@ jobs:
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
             
-      - name: Health Check DEV deployment
+      - name: Health Check TEST deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
