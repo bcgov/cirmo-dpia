@@ -182,6 +182,55 @@ jobs:
           IMAGE_TAG: "${{ env.pull_request_hash }}"
         run: |
           ./.github/helpers/application-health.sh
+  
+  DEV-cleanup:
+    runs-on: ubuntu-latest
+    environment: Dev
+    needs: [DEV-health-check]
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dev-deploy.json
+
+      - name: Read JSON File - hash value
+        id: json-file-hash
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'dev-deploy.json'
+          prop_path: 'hash'
+          
+      - name: Read JSON File - previous deployment hash
+        id: json-file-previous-deploy
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'dev-deploy.json'
+          prop_path: 'dc_name'
+
+      - name: Set Commit Hash Value and Previous Deploy Name to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
+          echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
+
+      - name: Cleanup Previous Deployment Config
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          OBJECT_NAME: "${{ env.previous_deploy_name }}"
+        run: |
+          ./.github/helpers/cleanup.sh
 
   TEST-tag-dpia-app-image:
     environment: Test
