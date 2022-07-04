@@ -342,6 +342,25 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
+
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dev-deploy.json
+          
+      - name: Read JSON File
+        id: json-file-hash
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'dev-deploy.json'
+          prop_path: 'hash'
+          
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.pull_request_hash }}
             
       - name: Health Check TEST deployment
         env:
@@ -349,6 +368,7 @@ jobs:
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          IMAGE_TAG: "${{ env.pull_request_hash }}"
         run: |
           ./.github/helpers/application-health.sh
 
