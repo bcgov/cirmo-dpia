@@ -1,3 +1,4 @@
+
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
@@ -5,26 +6,31 @@ metadata:
 labels:
   template: ${APPLICATION_NAME}-template
 objects:
-- apiVersion: v1
-  kind: Service
+- kind: Service
+  apiVersion: v1
   metadata:
     name: ${APPLICATION_NAME}-${IMAGE_TAG}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
-    selector:
-      app: ${APPLICATION_NAME}-${IMAGE_TAG}
+    ipFamilies:
+      - IPv4
     ports:
-      - name: http
-        protocol: TCP
+      - protocol: TCP
         port: 8080
         targetPort: 8080
+    internalTrafficPolicy: Cluster
+    type: ClusterIP
+    ipFamilyPolicy: SingleStack
+    sessionAffinity: None
+    selector:
+      app: ${APPLICATION_NAME}-${IMAGE_TAG}
 
 parameters:
   - description: Application Name
     displayName: AppName
     name: APPLICATION_NAME
     required: true
-    value: dpia-api
+    value: dpia-webapp
   - description: Environment
     displayName: Environment
     name: ENVIRONMENT

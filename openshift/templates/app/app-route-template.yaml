@@ -1,4 +1,3 @@
-
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
@@ -10,29 +9,21 @@ objects:
   apiVersion: route.openshift.io/v1
   metadata:
     name: ${APPLICATION_NAME}-${IMAGE_TAG}
-    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+    namespace: b996e6-dev
+    annotations:
+      openshift.io/host.generated: 'true'
   spec:
-    host: ${APPLICATION_NAME}-${IMAGE_TAG}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    host: ${APPLICATION_NAME}-${IMAGE_TAG}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:
       kind: Service
       name: ${APPLICATION_NAME}-${IMAGE_TAG}
       weight: 100
     port:
-      targetPort: 3000-tcp
+      targetPort: 8080
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
     wildcardPolicy: None
-  status:
-    ingress:
-      - host: ${APPLICATION_NAME}-${IMAGE_TAG}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-        routerName: default
-        conditions:
-          - type: Admitted
-            status: 'True'
-            lastTransitionTime: '2022-06-28T18:13:10Z'
-        wildcardPolicy: None
-        routerCanonicalHostname: router-default.apps.silver.devops.gov.bc.ca
 
 parameters:
   - description: Application Name
