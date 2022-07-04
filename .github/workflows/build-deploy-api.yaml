@@ -108,6 +108,13 @@ jobs:
           echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
           echo "PREVIOUS DC NAME"
           echo "${{ env.previous_dc_name }}"
+        
+      - name: Check for empty previous deploy
+        run: |
+          if previous_dc_name == ""; then
+            echo "Empty value detected";
+            exit 0
+          fi
           
       - name: Create new JSON file for current and Previous Deployment Hash
         id: create-json
