@@ -104,7 +104,7 @@ jobs:
 
       - name: Get Previous Deployment Hash Value
         run: |
-          dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-app | awk 'FNR == 2 {print $1}'))
+          dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-webapp | awk 'FNR == 2 {print $1}'))
           echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
           echo "PREVIOUS DC NAME"
           echo "${{ env.previous_dc_name }}"
