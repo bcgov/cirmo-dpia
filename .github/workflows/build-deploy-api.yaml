@@ -313,6 +313,7 @@ jobs:
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
       
+      #Diff
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
