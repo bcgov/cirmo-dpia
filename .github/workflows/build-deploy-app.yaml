@@ -136,7 +136,6 @@ jobs:
         run: |
           ./.github/helpers/deploy.sh 
 
-  # Diff
   DEV-health-check:
     runs-on: ubuntu-latest
     environment:
@@ -367,7 +366,7 @@ jobs:
       - name: Health Check TEST deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           IMAGE_TAG: "${{ env.pull_request_hash }}"
