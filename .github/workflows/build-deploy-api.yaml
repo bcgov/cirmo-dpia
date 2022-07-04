@@ -364,7 +364,7 @@ jobs:
             
       - name: Health Check DEV deployment
         env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
