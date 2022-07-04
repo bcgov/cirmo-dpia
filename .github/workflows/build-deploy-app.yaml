@@ -283,7 +283,7 @@ jobs:
   TEST-deploy:
     environment: Test
     runs-on: ubuntu-latest
-    needs: [TEST-tag-dpia-api-image]
+    needs: [TEST-tag-dpia-app-image]
     steps:
       
       - name: Checkout Repository
