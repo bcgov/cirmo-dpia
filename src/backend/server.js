@@ -15,7 +15,7 @@ const {
 app.get("/", (req, res) => res.send("Express API is healthy!"));
 
 app.use(
-    "/api-docs",
+    "/api/v1/api-docs",
     swaggerUI.serve,
     swaggerUI.setup(swaggerConf.specs, swaggerConf.uiOptions)
 );
