@@ -15,7 +15,7 @@ objects:
     name: ${APPLICATION_NAME}-${IMAGE_TAG}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
-      app: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app: ${APPLICATION_NAME}
       app.kubernetes.io/component: ${APPLICATION_NAME}-${IMAGE_TAG}
       app.kubernetes.io/instance: ${APPLICATION_NAME}-${IMAGE_TAG}
       app.kubernetes.io/name: ${APPLICATION_NAME}-${IMAGE_TAG}
