@@ -12,7 +12,7 @@ objects:
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
     host: ${APPLICATION_NAME}-${IMAGE_TAG}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-    path: /api/v1/health
+    path: /api/v1/api-docs
     to:
       kind: Service
       name: ${APPLICATION_NAME}-${IMAGE_TAG}
