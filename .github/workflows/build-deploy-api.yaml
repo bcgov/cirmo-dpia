@@ -472,7 +472,7 @@ jobs:
 
       - name: Increment Git Repo Tag Patch +1
         run: |
-          version_output=$(echo (./github/helpers/increment-tag.sh))
+          version_output=$(echo (./github/helpers/increment-tag.sh -p))
           echo "version_tag=$version_output" >> GITHUB_ENV
           echo "VERSION TAG"
           echo ${{ env.version_tag }}
