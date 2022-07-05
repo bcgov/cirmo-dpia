@@ -9,7 +9,7 @@
 # USE: ./increment-tag.sh -[ARGUMENT]
 
 # Retrieve latest tag from github remote repo
-LATEST_TAG=$(git describe --tags --abbrev=0)
+LATEST_TAG=`git describe --tags --abbrev=0`
 #echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
 # Trim v char from tag
 LATEST_TAG=$'{LATEST_TAG:1}'
