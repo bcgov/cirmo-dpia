@@ -445,13 +445,13 @@ jobs:
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name: pull-request-hash.json
+          name: dev-deploy.json
 
       - name: Read JSON File
         id: json-file
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'pull-request-hash.json'
+          path: 'dev-deploy.json'
           prop_path: 'hash'
 
       - name: Set Commit Hash Value to Environment
