@@ -9,35 +9,36 @@
 # USE: ./increment-tag.sh -[ARGUMENT]
 
 # Retrieve latest tag from github remote repo
-LATEST_TAG="$(git describe --tags --abbrev=0)"
+LATEST_TAG=`git describe --tags --abbrev=0`;
 echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
 # Trim v char from tag
-LATEST_TAG=$"{LATEST_TAG:1}"
+LATEST_TAG="${LATEST_TAG:1}"
+echo "Trimmed: ${LATEST_TAG}"
 
 # Split tag at '.' char and assign major, minor, patch values
-IFS='.' read -a vers <<< $'{LATEST_TAG}'
+IFS='.' read -a vers <<< "${LATEST_TAG}"
 MAJOR=${vers[0]}
 MINOR=${vers[1]}
 PATCH=${vers[2]}
 
 while getopts "Mmp" flag; do
-    case `${flag}` in
+    case ${flag} in
         M)
             # Increment Major version, reset minor and patch to zero
-            #echo "Incrementing major version +1" 
+            echo "Incrementing major version +1" 
             ((MAJOR+=1))
             MINOR=0
             PATCH=0
             ;;
         m) 
             # Increment minor version, reset patch to zero
-            #echo "Incrementing minor version +1"
+            echo "Incrementing minor version +1"
             ((MINOR+=1))
             PATCH=0
             ;;
         p) 
             # Increment patch version
-            #echo "Incrementing patch version +1"
+            echo "Incrementing patch version +1"
             ((PATCH+=1))
             ;;
     esac
@@ -45,7 +46,7 @@ done
 
 # echo new tag before 
 NEWEST_TAG="v${MAJOR}.${MINOR}.${PATCH}"
-echo "${NEWEST_TAG}"
+echo "Newest Tag: ${NEWEST_TAG}"
 
 # Tag Repository with new version
 # TODO add message to tag
