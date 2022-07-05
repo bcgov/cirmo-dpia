@@ -10,7 +10,7 @@
 
 # Retrieve latest tag from github remote repo
 LATEST_TAG=`git describe --tags --abbrev=0`
-echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
+#echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
 # Trim v char from tag
 LATEST_TAG="${LATEST_TAG:1}"
 
@@ -24,20 +24,20 @@ while getopts 'Mmp' flag; do
     case "${flag}" in
         M)
             # Increment Major version, reset minor and patch to zero
-            echo "Incrementing major version +1" 
+            #echo "Incrementing major version +1" 
             ((MAJOR+=1))
             MINOR=0
             PATCH=0
             ;;
         m) 
             # Increment minor version, reset patch to zero
-            echo "Incrementing minor version +1"
+            #echo "Incrementing minor version +1"
             ((MINOR+=1))
             PATCH=0
             ;;
         p) 
             # Increment patch version
-            echo "Incrementing patch version +1"
+            #echo "Incrementing patch version +1"
             ((PATCH+=1))
             ;;
     esac
@@ -45,7 +45,7 @@ done
 
 # echo new tag before 
 NEWEST_TAG="v${MAJOR}.${MINOR}.${PATCH}"
-echo "NEW TAG: ${NEWEST_TAG}"
+echo "${NEWEST_TAG}"
 
 # Tag Repository with new version
 git tag -a ${NEWEST_TAG} -m ""
