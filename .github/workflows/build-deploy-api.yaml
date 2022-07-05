@@ -461,7 +461,7 @@ jobs:
           echo "PULL REQUEST HASH"
           echo ${{ env.pull_request_hash }}
 
-      - name: Update tag for Imagestream
+      - name: Promote Test tag to Prod
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
@@ -469,6 +469,22 @@ jobs:
           ENVIRONMENT: "prod"
         run: |
           ./.github/helpers/tag-imagestream.sh
+
+      - name: Increment Git Repo Tag Patch +1
+        run: |
+          version_output=$(echo (./github/helpers/increment-tag.sh))
+          echo "version_tag=$version_output" >> GITHUB_ENV
+          echo "VERSION TAG"
+          echo ${{ env.version_tag }}
+
+      - name: Promote Prod tag to version 
+        env:
+          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+          DPIA_COMPONENT: "dpia-api"
+          HASH_IMAGE: "${{ env.pull_request_hash }}"
+          VERSION: "${{ env.version_tag }}"
+        run: |
+          ./.github/helpers/tag-imagestream-release.sh
           
   # PROD-deploy:
   #   environment: Prod
