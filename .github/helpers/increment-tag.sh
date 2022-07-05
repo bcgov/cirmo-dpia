@@ -51,3 +51,6 @@ echo "Newest Tag: ${NEWEST_TAG}"
 # Tag Repository with new version
 # TODO add message to tag
 git tag -a ${NEWEST_TAG} -m ''
+
+# TODO push git tag to repo
+# git push origin <tag_name>
