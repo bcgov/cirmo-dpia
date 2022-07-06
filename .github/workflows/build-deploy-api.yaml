@@ -498,6 +498,7 @@ jobs:
           echo "VERSION TAG"
           echo ${{ env.version_tag }}
 
+      # diff
       - name: Promote Prod tag to version 
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
