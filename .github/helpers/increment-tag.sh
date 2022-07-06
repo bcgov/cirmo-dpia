@@ -58,6 +58,3 @@ git tag -a ${NEWEST_TAG} -m ''
 
 # TODO push git tag to repo
 git push origin ${NEWEST_TAG}
-
-# echo new tag before 
-echo "$NEWEST_TAG"
