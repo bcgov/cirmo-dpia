@@ -1,13 +1,13 @@
 name: API - Docker Image Build
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "src/backend/**"
-  push:
-    branches: [ main ]
-    paths:
-      - "src/backend/**"
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #     - "src/backend/**"
+  # push:
+  #   branches: [ main ]
+  #   paths:
+  #     - "src/backend/**"
   workflow_dispatch:
 
 jobs:
