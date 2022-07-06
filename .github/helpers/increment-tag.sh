@@ -9,11 +9,11 @@
 # USE: ./increment-tag.sh -[ARGUMENT]
 
 # Retrieve latest tag from github remote repo
-LATEST_TAG=`git describe --tags --abbrev=0`;
-echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
+LATEST_TAG=$TAG
+#echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
 # Trim v char from tag
 LATEST_TAG="${LATEST_TAG:1}"
-echo "Trimmed: ${LATEST_TAG}"
+#echo "Trimmed: ${LATEST_TAG}"
 
 # Split tag at '.' char and assign major, minor, patch values
 IFS='.' read -a vers <<< "${LATEST_TAG}"
