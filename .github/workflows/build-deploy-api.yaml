@@ -493,7 +493,7 @@ jobs:
           EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
           NAME: ${{ secrets.GLOBAL_USER_NAME }}
         run: |
-          version_output=$(./.github/helpers/increment-tag.sh -p)
+          ./.github/helpers/increment-tag.sh -p
 
       - name: Find Tag
         id: tagger-2
