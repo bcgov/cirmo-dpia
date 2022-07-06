@@ -435,9 +435,8 @@ jobs:
         uses: jimschubert/query-tag-action@v1
         with:
           include: 'v*'
-          commit-ish: 'HEAD~'
           # if you unshallow in a separate step, use the following option:
-          # skip-unshallow: 'true'
+          skip-unshallow: 'true'
 
       - name: Show Tag
         id: display
