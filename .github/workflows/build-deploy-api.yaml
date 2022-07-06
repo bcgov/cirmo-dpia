@@ -494,16 +494,29 @@ jobs:
           NAME: ${{ secrets.GLOBAL_USER_NAME }}
         run: |
           version_output=$(./.github/helpers/increment-tag.sh -p)
-          echo "version_tag=$version_output" >> GITHUB_ENV
-          echo "VERSION TAG"
-          echo ${{ env.version_tag }}
+
+      - name: Find Tag
+        id: tagger-2
+        uses: jimschubert/query-tag-action@v1
+        with:
+          include: 'v*'
+          commit-ish: 'HEAD~'
+          # if you unshallow in a separate step, use the following option:
+          # skip-unshallow: 'true'
+
+      - name: Show Tag
+        id: display
+        run: |
+          echo 'Output from Find Tag: ${{steps.tagger-2.outputs.tag}}'
+          new_tag=$(echo ${{steps.tagger-2.outputs.tag}})
+          echo "latest_tag=$new_tag" >> $GITHUB_ENV
 
       - name: Promote Prod tag to version 
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
           HASH_IMAGE: "${{ env.pull_request_hash }}"
-          VERSION: "${{ env.version_tag }}"
+          VERSION: "${{ env.latest_tag }}"
         run: |
           ./.github/helpers/tag-imagestream-release.sh
           
