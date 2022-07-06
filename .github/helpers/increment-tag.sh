@@ -8,6 +8,10 @@
 #
 # USE: ./increment-tag.sh -[ARGUMENT]
 
+# Setup Git Config
+git config --global user.email $EMAIL
+git config --global user.name $NAME
+
 # Retrieve latest tag from github remote repo
 LATEST_TAG=$TAG
 #echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
@@ -54,4 +58,4 @@ echo "Newest Tag: ${NEWEST_TAG}"
 git tag -a ${NEWEST_TAG} -m ''
 
 # TODO push git tag to repo
-# git push origin <tag_name>
+git push origin ${NEWEST_TAG}
