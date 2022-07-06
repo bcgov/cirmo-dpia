@@ -436,7 +436,7 @@ jobs:
         with:
           include: 'v*'
           # if you unshallow in a separate step, use the following option:
-          skip-unshallow: 'true'
+          # skip-unshallow: 'true'
 
       - name: Show Tag
         id: display
