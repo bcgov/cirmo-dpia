@@ -518,11 +518,11 @@ jobs:
         run: |
           ./.github/helpers/tag-imagestream-release.sh
 
-      - name: Create new JSON file for current and Previous Deployment Hash
+      - name: Create new JSON file Prod Deploy Version
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: 'prod-verson.json'
+          name: 'prod-version.json'
           json: '{ "version-tag":"${{ env.latest_tag }}"}'
 
       - name: Upload JSON file
