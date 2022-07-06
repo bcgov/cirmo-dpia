@@ -518,53 +518,66 @@ jobs:
           VERSION: "${{ env.latest_tag }}"
         run: |
           ./.github/helpers/tag-imagestream-release.sh
+
+      - name: Create new JSON file for current and Previous Deployment Hash
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: 'prod-verson.json'
+          json: '{ "version-tag":"${{ env.latest_tag }}"}'
+
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: prod-version.json
+          path: prod-version.json
           
-  # PROD-deploy:
-  #   environment: Prod
-  #   runs-on: ubuntu-latest
-  #   needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check, TEST-tag-dpia-api-image, TEST-deploy, TEST-health-check, PROD-tag-dpia-api-image]
-  #   steps:
+  PROD-deploy:
+    environment: Prod
+    runs-on: ubuntu-latest
+    needs: [PROD-tag-dpia-api-image]
+    steps:
 
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2 
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
 
-  #     - name: Cluster Login -> PROD Namespace
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      - name: Cluster Login -> PROD Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
 
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: pull-request-hash.json
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: prod-version.json
 
-  #     - name: Read JSON File
-  #       id: json-file
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'pull-request-hash.json'
-  #         prop_path: 'hash'
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'prod-version.json'
+          prop_path: 'version-tag'
 
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-  #         echo "PULL REQUEST HASH"
-  #         echo ${{ env.pull_request_hash }}
+      - name: Set Commit Hash Value to Environment
+        run: |
+          version_tag=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "image_tag=$version_tag" >> $GITHUB_ENV
+          echo "PULL REQUEST HASH"
+          echo ${{ env.version_tag }}
 
-  #     - name: Deploy to PROD
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         DEPLOYMENT_CONFIG: api-dc-template.yaml
-  #         IMAGE_TAG: ${{ env.pull_request_hash }}-prod
-  #       run: |
-  #         ./.github/helpers/deploy.sh 
+      - name: Deploy to PROD
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DEPLOYMENT_CONFIG: api-dc-template.yaml
+          IMAGE_TAG: ${{ env.version_tag }}
+        run: |
+          ./.github/helpers/deploy.sh 
   
   # PROD-health-check:
   #   runs-on: ubuntu-latest
