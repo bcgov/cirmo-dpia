@@ -430,21 +430,28 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      # - name: Find Tag
+      #   id: tagger
+      #   uses: jimschubert/query-tag-action@v1
+      #   with:
+      #     include: 'v*'
+      #     # if you unshallow in a separate step, use the following option:
+      #     # skip-unshallow: 'true'
+
+      # - name: Show Tag
+      #   id: display
+      #   run: |
+      #     echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
+
+      #     tag=$(echo ${{steps.tagger.outputs.tag}})
+      #     echo "previous_tag=$tag" >> $GITHUB_ENV
+
       - name: Find Tag
         id: tagger
-        uses: jimschubert/query-tag-action@v1
-        with:
-          include: 'v*'
-          # if you unshallow in a separate step, use the following option:
-          # skip-unshallow: 'true'
-
-      - name: Show Tag
-        id: display
         run: |
-          echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
-
-          tag=$(echo ${{steps.tagger.outputs.tag}})
-          echo "previous_tag=$tag" >> $GITHUB_ENV
+          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+          git describe --tags --abbrev=0
 
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
