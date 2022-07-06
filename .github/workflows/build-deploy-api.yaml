@@ -505,7 +505,7 @@ jobs:
           # skip-unshallow: 'true'
 
       - name: Show Tag
-        id: display
+        id: display-2
         run: |
           echo 'Output from Find Tag: ${{steps.tagger-2.outputs.tag}}'
           new_tag=$(echo ${{steps.tagger-2.outputs.tag}})
