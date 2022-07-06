@@ -21,6 +21,7 @@ MAJOR=${vers[0]}
 MINOR=${vers[1]}
 PATCH=${vers[2]}
 
+#diff
 while getopts "Mmp" flag; do
     case ${flag} in
         M)
