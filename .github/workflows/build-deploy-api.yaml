@@ -444,6 +444,9 @@ jobs:
         run: |
           echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
 
+          tag=$(echo ${{steps.tagger.outputs.tag}})
+          echo "previous_tag=$tag" >> $GITHUB_ENV
+
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -485,6 +488,10 @@ jobs:
           ./.github/helpers/tag-imagestream.sh
 
       - name: Increment Git Repo Tag Patch +1
+        env:
+          TAG: ${{ env.previous_tag }}
+          EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
+          NAME: ${{ secrets.GLOBAL_USER_NAME }}
         run: |
           version_output=$(./.github/helpers/increment-tag.sh -p)
           echo "version_tag=$version_output" >> GITHUB_ENV

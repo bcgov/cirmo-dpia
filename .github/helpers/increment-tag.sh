@@ -8,12 +8,16 @@
 #
 # USE: ./increment-tag.sh -[ARGUMENT]
 
+# Setup Git Config
+git config --global user.email $EMAIL
+git config --global user.name $NAME
+
 # Retrieve latest tag from github remote repo
-LATEST_TAG=`git describe --tags --abbrev=0`;
-echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
+LATEST_TAG=$TAG
+#echo "CIRMO DPIA Latest Tag: ${LATEST_TAG}"
 # Trim v char from tag
 LATEST_TAG="${LATEST_TAG:1}"
-echo "Trimmed: ${LATEST_TAG}"
+#echo "Trimmed: ${LATEST_TAG}"
 
 # Split tag at '.' char and assign major, minor, patch values
 IFS='.' read -a vers <<< "${LATEST_TAG}"
@@ -54,4 +58,4 @@ echo "Newest Tag: ${NEWEST_TAG}"
 git tag -a ${NEWEST_TAG} -m ''
 
 # TODO push git tag to repo
-# git push origin <tag_name>
+git push origin ${NEWEST_TAG}
