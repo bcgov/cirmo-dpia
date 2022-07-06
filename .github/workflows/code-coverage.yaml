@@ -1,7 +1,7 @@
 name: Code Climate - Code Coverage Generation, Formatting and Publishing
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
 
 jobs:
