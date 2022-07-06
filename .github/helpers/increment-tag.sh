@@ -49,9 +49,8 @@ while getopts "Mmp" flag; do
     esac
 done
 
-# echo new tag before 
+# Set Newest Tag
 NEWEST_TAG="v${MAJOR}.${MINOR}.${PATCH}"
-echo "Newest Tag: ${NEWEST_TAG}"
 
 # Tag Repository with new version
 # TODO add message to tag
@@ -59,3 +58,6 @@ git tag -a ${NEWEST_TAG} -m ''
 
 # TODO push git tag to repo
 git push origin ${NEWEST_TAG}
+
+# echo new tag before 
+echo "$NEWEST_TAG"
