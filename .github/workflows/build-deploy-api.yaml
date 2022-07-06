@@ -451,7 +451,7 @@ jobs:
         run: |
           git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          git fetch && git describe --tags --abbrev=0
+          git fetch origin && git describe --tags --abbrev=0
 
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
