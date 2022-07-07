@@ -593,7 +593,9 @@ jobs:
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-dc-template-prod.yaml
+          DC_TEMPLATE: api-dc-template-prod.yaml
+          SERVICE_TEMPLATE: api-service-template.yaml
+          ROUTE_TEMPLATE: api-route-template.yaml
           IMAGE_TAG: ${{ env.image_tag }}
           DIR: "api"
         run: |
