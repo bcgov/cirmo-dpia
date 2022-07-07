@@ -593,7 +593,7 @@ jobs:
           APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DEPLOYMENT_CONFIG: api-dc-template.yaml
+          DEPLOYMENT_CONFIG: api-dc-template-prod.yaml
           IMAGE_TAG: ${{ env.image_tag }}
         run: |
           ./.github/helpers/deploy.sh 
