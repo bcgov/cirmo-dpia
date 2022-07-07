@@ -8,11 +8,12 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
     selector:
       app: ${APPLICATION_NAME}
+    ports:
       - name: 3000-tcp
         protocol: TCP
         port: 3000
