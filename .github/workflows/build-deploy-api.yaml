@@ -585,7 +585,7 @@ jobs:
           version_tag=$(echo ${{ steps.json-file.outputs.prop }})
           echo "image_tag=$version_tag" >> $GITHUB_ENV
           echo "PULL REQUEST HASH"
-          echo ${{ env.version_tag }}
+          echo ${{ env.image_tag }}
 
       - name: Deploy to PROD
         env:
@@ -594,7 +594,7 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DEPLOYMENT_CONFIG: api-dc-template.yaml
-          IMAGE_TAG: ${{ env.version_tag }}
+          IMAGE_TAG: ${{ env.image_tag }}
         run: |
           ./.github/helpers/deploy.sh 
   
