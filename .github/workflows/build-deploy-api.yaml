@@ -565,12 +565,10 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: api-dc-template-prod.yaml
-          SERVICE_TEMPLATE: api-service-template-prod.yaml
-          ROUTE_TEMPLATE: api-route-template-prod.yaml
           IMAGE_TAG: ${{ env.image_tag }}
           DIR: "api"
         run: |
-          ./.github/helpers/deploy.sh 
+          ./.github/helpers/deploy-prod.sh 
   
   PROD-health-check:
     runs-on: ubuntu-latest
