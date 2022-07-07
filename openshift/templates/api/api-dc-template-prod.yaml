@@ -10,14 +10,15 @@ objects:
   metadata:
     annotations:
       openshift.io/generated-by: OpenShiftWebConsole
-    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    name: ${APPLICATION_NAME}
     generation: 3
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
+      tag: ${IMAGE_TAG}
       app: ${APPLICATION_NAME}
-      app.kubernetes.io/component: ${APPLICATION_NAME}-${IMAGE_TAG}
-      app.kubernetes.io/instance: ${APPLICATION_NAME}-${IMAGE_TAG}
-      app.kubernetes.io/name: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app.kubernetes.io/component: ${APPLICATION_NAME}
+      app.kubernetes.io/instance: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
       app.kubernetes.io/part-of: dpia-application
       app.openshift.io/runtime: nodejs
       app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
@@ -49,19 +50,19 @@ objects:
     revisionHistoryLimit: 10
     test: false
     selector:
-      app: ${APPLICATION_NAME}-${IMAGE_TAG}
-      deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: ${APPLICATION_NAME}-${IMAGE_TAG}
-          deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
       spec:
         containers:
-          - name: ${APPLICATION_NAME}-${IMAGE_TAG}
+          - name: ${APPLICATION_NAME}
             image: >-
               image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-api@sha256:c6912fa14495b62ec86b9e1eeb567cb7d95a6523c7e235f38497a9efcb89ebed
             ports:
