@@ -595,6 +595,7 @@ jobs:
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DEPLOYMENT_CONFIG: api-dc-template-prod.yaml
           IMAGE_TAG: ${{ env.image_tag }}
+          DIR: "api"
         run: |
           ./.github/helpers/deploy.sh 
   
