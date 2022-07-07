@@ -455,6 +455,11 @@ jobs:
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
           git describe --tags --abbrev=0
 
+          tag=`git describe --tags --abbrev=0)`;
+          echo "latest_tag=$tag" >> $GITHUB_ENV
+          echo "LATEST TAG"
+          echo ${{ env.latest_tag }}
+
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -497,26 +502,32 @@ jobs:
 
       - name: Increment Git Repo Tag Patch +1
         env:
-          TAG: ${{ env.previous_tag }}
+          TAG: ${{ env.latest_tag }}
           EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
           NAME: ${{ secrets.GLOBAL_USER_NAME }}
         run: |
           ./.github/helpers/increment-tag.sh -p
 
-      - name: Find Tag
-        id: tagger-2
-        uses: jimschubert/query-tag-action@v1
-        with:
-          include: 'v*'
-          # if you unshallow in a separate step, use the following option:
-          skip-unshallow: 'true'
+      # - name: Find Tag
+      #   id: tagger-2
+      #   uses: jimschubert/query-tag-action@v1
+      #   with:
+      #     include: 'v*'
+      #     # if you unshallow in a separate step, use the following option:
+      #     skip-unshallow: 'true'
 
-      - name: Show Tag
-        id: display-2
+      # - name: Show Tag
+      #   id: display-2
+      #   run: |
+      #     echo 'Output from Find Tag: ${{steps.tagger-2.outputs.tag}}'
+      #     new_tag=$(echo ${{steps.tagger-2.outputs.tag}})
+      #     echo "latest_tag=$new_tag" >> $GITHUB_ENV
+
+      - name: Find New Tag
         run: |
-          echo 'Output from Find Tag: ${{steps.tagger-2.outputs.tag}}'
-          new_tag=$(echo ${{steps.tagger-2.outputs.tag}})
-          echo "latest_tag=$new_tag" >> $GITHUB_ENV
+          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+          git describe --tags --abbrev=0
 
       - name: Promote Prod tag to version 
         env:
