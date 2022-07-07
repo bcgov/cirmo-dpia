@@ -476,7 +476,7 @@ jobs:
       - name: Promote Test tag to Prod
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-app"
+          DPIA_COMPONENT: "dpia-webapp"
           HASH_IMAGE: "${{ env.pull_request_hash }}"
           ENVIRONMENT: "prod"
         run: |
@@ -501,7 +501,7 @@ jobs:
       - name: Promote Prod tag to version 
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-app"
+          DPIA_COMPONENT: "dpia-webapp"
           HASH_IMAGE: "${{ env.pull_request_hash }}"
           VERSION: "${{ env.new_tag }}"
         run: |
