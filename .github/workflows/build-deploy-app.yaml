@@ -570,7 +570,9 @@ jobs:
   
   PROD-health-check:
     runs-on: ubuntu-latest
-    environment: Prod
+    environment:
+      name: Prod
+      url: https://pia.apps.silver.devops.gov.bc.ca/
     needs: [PROD-deploy]
     steps:
     
