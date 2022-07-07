@@ -491,33 +491,21 @@ jobs:
         run: |
           ./.github/helpers/increment-tag.sh -p
 
-      # - name: Find Tag
-      #   id: tagger-2
-      #   uses: jimschubert/query-tag-action@v1
-      #   with:
-      #     include: 'v*'
-      #     # if you unshallow in a separate step, use the following option:
-      #     skip-unshallow: 'true'
-
-      # - name: Show Tag
-      #   id: display-2
-      #   run: |
-      #     echo 'Output from Find Tag: ${{steps.tagger-2.outputs.tag}}'
-      #     new_tag=$(echo ${{steps.tagger-2.outputs.tag}})
-      #     echo "latest_tag=$new_tag" >> $GITHUB_ENV
-
       - name: Find New Tag
         run: |
           git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          git describe --tags --abbrev=0
+
+          tag_two=$(git describe --tags --abbrev=0)
+          echo "new_tag=$tag_two" >> $GITHUB_ENV
+          echo ${{ env.new_tag }}
 
       - name: Promote Prod tag to version 
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
           HASH_IMAGE: "${{ env.pull_request_hash }}"
-          VERSION: "${{ env.latest_tag }}"
+          VERSION: "${{ env.new_tag }}"
         run: |
           ./.github/helpers/tag-imagestream-release.sh
 
@@ -526,7 +514,7 @@ jobs:
         uses: jsdaniell/create-json@1.1.2
         with:
           name: 'prod-version.json'
-          json: '{ "version-tag":"${{ env.latest_tag }}"}'
+          json: '{ "version-tag":"${{ env.new_tag }}"}'
 
       - name: Upload JSON file
         uses: actions/upload-artifact@v3
