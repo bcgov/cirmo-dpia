@@ -422,9 +422,7 @@ jobs:
           ./.github/helpers/cleanup.sh
     
   PROD-tag-dpia-api-image:
-    environment:
-      name: Prod
-      url: https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs
+    environment: Prod
     runs-on: ubuntu-latest
     needs: [TEST-cleanup]
     steps:
@@ -525,9 +523,7 @@ jobs:
           path: prod-version.json
           
   PROD-deploy:
-    environment:
-      name: Prod
-      url: https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs
+    environment: Prod
     runs-on: ubuntu-latest
     needs: [PROD-tag-dpia-api-image]
     steps:
