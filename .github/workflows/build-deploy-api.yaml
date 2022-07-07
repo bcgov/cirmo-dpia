@@ -426,27 +426,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [TEST-cleanup]
     steps:
-      #diff
       - name: Checkout Repository
         uses: actions/checkout@v2
         with: 
           fetch-depth: 0
-
-      # - name: Find Tag
-      #   id: tagger
-      #   uses: jimschubert/query-tag-action@v1
-      #   with:
-      #     include: 'v*'
-      #     # if you unshallow in a separate step, use the following option:
-      #     # skip-unshallow: 'true'
-
-      # - name: Show Tag
-      #   id: display
-      #   run: |
-      #     echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
-
-      #     tag=$(echo ${{steps.tagger.outputs.tag}})
-      #     echo "previous_tag=$tag" >> $GITHUB_ENV
 
       - name: Find Tag
         id: tagger
@@ -594,34 +577,34 @@ jobs:
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: api-dc-template-prod.yaml
-          SERVICE_TEMPLATE: api-service-template.yaml
-          ROUTE_TEMPLATE: api-route-template.yaml
+          SERVICE_TEMPLATE: api-service-template-prod.yaml
+          ROUTE_TEMPLATE: api-route-template-prod.yaml
           IMAGE_TAG: ${{ env.image_tag }}
           DIR: "api"
         run: |
           ./.github/helpers/deploy.sh 
   
-  # PROD-health-check:
-  #   runs-on: ubuntu-latest
-  #   environment: Prod
-  #   needs: [DPIA-API-Build-Tag-Push, DEV-deploy, DEV-health-check, TEST-tag-dpia-api-image, TEST-deploy, TEST-health-check, PROD-tag-dpia-api-image, PROD-deploy]
-  #   steps:
+  PROD-health-check:
+    runs-on: ubuntu-latest
+    environment: Prod
+    needs: [PROD-deploy]
+    steps:
     
-  #     - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
     
-  #     - name: Cluster Login
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
             
-  #     - name: Health Check PROD deployment
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #       run: |
-  #         ./.github/helpers/application-health.sh
+      - name: Health Check PROD deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.API_APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+        run: |
+          ./.github/helpers/application-health.sh

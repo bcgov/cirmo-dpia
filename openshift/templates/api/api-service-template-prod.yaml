@@ -1,0 +1,41 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-template
+labels:
+  template: ${APPLICATION_NAME}-template
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+  spec:
+    selector:
+      app: ${APPLICATION_NAME}
+      - name: 3000-tcp
+        protocol: TCP
+        port: 3000
+        targetPort: 3000
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-api
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
+    required: true
+    value: b996e6
+  - description: Image Tag
+    displayName: Image Tag
+    required: true
+    name: IMAGE_TAG
+    value: latest
