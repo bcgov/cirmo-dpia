@@ -455,7 +455,7 @@ jobs:
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
           git describe --tags --abbrev=0
 
-          tag=`git describe --tags --abbrev=0)`;
+          tag=$(git describe --tags --abbrev=0)
           echo "latest_tag=$tag" >> $GITHUB_ENV
           echo "LATEST TAG"
           echo ${{ env.latest_tag }}
