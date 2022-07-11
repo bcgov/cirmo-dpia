@@ -42,6 +42,15 @@
 
 ## Project Setup
 
+### Docker
+
+To setup project specific docker containers, first make sure you have Docker Desktop installed on your machine. Next, run the following command.
+
+```bash
+docker compose up -d dpia-api dpia-webapp
+```
+This command will build the project API and Web App containers in headless mode. If you need to only run one container remove "dpia-api dpia-webapp" and replace with the name of the container you'd like to build and run. The name of all containers used within the DPIA project can be found in the docker-compose file found at the root level of this repository.
+
 ### Environment Variables
 
 ### .env File
