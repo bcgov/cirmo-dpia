@@ -58,7 +58,7 @@ If you're contributing to this project via Pull Request (PR), and your code cont
 run this project on other local machines or in the project Openshift Environment, please make sure that your changes are captured in the ```.env-template```
 file as well as the table found above in the project README.md.
 
-### Docker
+### Docker and Docker Compose
 
 To setup project specific docker containers, first make sure you have Docker Desktop installed on your machine. Next, run the following command.
 
