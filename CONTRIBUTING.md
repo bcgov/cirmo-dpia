@@ -11,7 +11,7 @@ All Contributions to this repository start with a Jira Item associated with the 
 1. Develop changes related to your Jira task number
 1. Update relevant documentation with details of your changes (ie// environment variable changes etc.)
 1. Push your branch up to this remote Github Repository
-1. Create a Pull Request comparing your branch against the remote repository main branch. Use the [Pull Request Template](.github/PULL_REQUEST_TEMPLATE) provided and fill out ALL relevant information regarding your changes
+1. Create a Pull Request comparing your branch against the remote repository main branch. Use the [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) provided and fill out ALL relevant information regarding your changes
 1. Assign all relevant team members to review your development changes.
 1. If some changes are required, you will be notified in the PR, address any change requested and push to the same branch. Change notifications may come via team member or Github Action
 1. When your development changes meet the requirements put in place to be merged into the main branch, click the MERGE button on the Pull Request.
