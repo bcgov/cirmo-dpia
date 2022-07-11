@@ -71,7 +71,24 @@ root level of this repository.
 
 ### Project Dependencies
 
+To be filled out at a later date once the Project Stack starts to take shape. 
+
 ## NPM Scripts
+
+| Component                 | Script                                        | Use case description                                  |
+|---------------------------|-----------------------------------------------|-------------------------------------------------------|
+| API                       | start                                         |                                                       |
+| API                       | dev                                           |                                                       |
+| API                       | test                                          |                                                       |
+| API                       | test-with-coverage                            |                                                       |
+| Web App                   | dev                                           |                                                       |
+| Web App                   | build                                         |                                                       |
+| Web App                   | preview                                       |                                                       |
+| Web App                   | test:e2e                                      |                                                       |
+| Web App                   | test:e2e:ci                                   |                                                       |
+| Web App                   | test:unit                                     |                                                       |
+| Web App                   | test:unit:ci                                  |                                                       |
+| Web App                   | lint                                          |                                                       |
 
 ## Deployment
 
