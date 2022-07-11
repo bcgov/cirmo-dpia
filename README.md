@@ -13,10 +13,24 @@
     ├── docs                                    # Project specific documentation ex// lo/hi fidelity wireframes etc.
     ├── openshift                               # Openshift Object Repository
     |   └── templates                           # Openshift Object Templates sub directory
+    |       ├── api                             # API specific templates
+    |       ├── app                             # Web App specific templates
+    |       ├── network-policies                # network policies applied to all Openshift namespaces
+    |       └── rolebindings                    # Rolebindings applied to all Openshift namespaces
     ├── src/                                    # Directory Containing all Project Components source code
-    │   ├── backend                             # API source code
+    │   ├── backend                             # API source code, Dockerfiles
+    |   |   ├── swagger                         # API Swagger Config
+    |   |   ├── versions                        # version specific Express components
+    |   |   |   └── v1                          # v1 specific components
+    |   |   |       └── routes                  # v1 routes
     │   │   └── test                            # API unit test directory  
     │   └── frontend                            # WebApp source code
+    |       ├── .vscode                         # vscode config
+    |       ├── cypress                         # cyrpress testing code, config
+    |       ├── public                          # Assests copied into dist upon build
+    |       └── src                             # Vue project source code
+    |           ├── assets                      # Store for project images, videos, fonts
+    |           └── components                  # Store for project specific Vue components
     ├── .env-template                           # Template file to base local workstation .env file off of
     ├── .gitattributes                          # Simple text file that gives attributes to pathnames inside git repository
     ├── .gitignore                              # Specifies intentionally untracked files to ignore
