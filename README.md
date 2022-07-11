@@ -40,7 +40,23 @@
     ├── README.md                               # This file.    
     └── docker-compose.yaml                     # Project Specific Docker Compose file
 
-## Project Setup
+## Project Setup -> Quick Start
+
+### Environment Variables -> The .env File
+
+Before getting building or starting any project components on your local development machine, create a ```.env``` file at the root level of this project.
+This file should contain the contents of the .env-template also found at the root level of this project. Please take the time to read the following table
+and assign values to the environment variables listed in order to configure and run the project components on your local development machine.
+
+| Environment Variable      | Description                                   | Value                                                 |
+|---------------------------|-----------------------------------------------|-------------------------------------------------------|
+| API_PORT                  | Local port that serves API requests           | 3000                                                  |
+
+### Environment Variables -> Additions or Changes
+
+If you're contributing to this project via Pull Request (PR), and your code contains additions or changes to environment variables that are required to
+run this project on other local machines or in the project Openshift Environment, please make sure that your changes are captured in the ```.env-template```
+file as well as the table found above in the project README.md.
 
 ### Docker
 
@@ -49,15 +65,11 @@ To setup project specific docker containers, first make sure you have Docker Des
 ```bash
 docker compose up -d dpia-api dpia-webapp
 ```
-This command will build the project API and Web App containers in headless mode. If you need to only run one container remove "dpia-api dpia-webapp" and replace with the name of the container you'd like to build and run. The name of all containers used within the DPIA project can be found in the docker-compose file found at the root level of this repository.
-
-### Environment Variables
-
-### .env File
+This command will build the project API and Web App containers in headless mode. If you need to only run one container remove "dpia-api dpia-webapp" and replace with
+the name of the container you'd like to build and run. The name of all containers used within the DPIA project can be found in the docker-compose file found at the
+root level of this repository.
 
 ### Project Dependencies
-
-### Quick Start
 
 ## NPM Scripts
 
