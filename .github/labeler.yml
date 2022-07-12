@@ -1,0 +1,11 @@
+'Github Actions':
+  - .github/workflows/*
+
+'Openshift':
+  - openshift/templates/**/*
+
+'DPIA API':
+  - src/backend/**/*
+
+'DPIA Web App':
+  - src/frontend/**/*
