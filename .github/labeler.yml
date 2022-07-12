@@ -1,3 +1,7 @@
+# Auto Label Git Action Config
+# 'label_name'
+#   - path_of_diff/where/code_lives/to_base_label_upon
+
 'Github Actions':
   - .github/workflows/*
 
