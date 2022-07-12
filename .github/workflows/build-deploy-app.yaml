@@ -99,15 +99,11 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.pull_request_hash }}
 
       - name: Get Previous Deployment Hash Value
         run: |
           dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-webapp | awk 'FNR == 2 {print $1}'))
           echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
-          echo "PREVIOUS DC NAME"
-          echo "${{ env.previous_dc_name }}"
           
       - name: Create new JSON file for current and Previous Deployment Hash
         id: create-json
@@ -168,8 +164,6 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.pull_request_hash }}
             
       - name: Health Check DEV deployment
         env:
@@ -359,8 +353,6 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.pull_request_hash }}
             
       - name: Health Check TEST deployment
         env:
@@ -438,8 +430,6 @@ jobs:
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
           tag=$(git describe --tags --abbrev=0)
           echo "latest_tag=$tag" >> $GITHUB_ENV
-          echo "LATEST TAG"
-          echo ${{ env.latest_tag }}
 
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
@@ -469,8 +459,6 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.pull_request_hash }}
 
       - name: Promote Test tag to Prod
         env:
@@ -495,7 +483,6 @@ jobs:
           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
           tag_two=$(git describe --tags --abbrev=0)
           echo "new_tag=$tag_two" >> $GITHUB_ENV
-          echo ${{ env.new_tag }}
 
       - name: Promote Prod tag to version 
         env:
@@ -552,8 +539,6 @@ jobs:
         run: |
           version_tag=$(echo ${{ steps.json-file.outputs.prop }})
           echo "image_tag=$version_tag" >> $GITHUB_ENV
-          echo "PULL REQUEST HASH"
-          echo ${{ env.image_tag }}
 
       - name: Deploy to PROD
         env:
