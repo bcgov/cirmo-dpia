@@ -50,7 +50,10 @@ and assign values to the environment variables listed in order to configure and 
 
 | Environment Variable      | Description                                   | Value                                                 |
 |---------------------------|-----------------------------------------------|-------------------------------------------------------|
-| API_PORT                  | Local port that serves API requests           | 3000                                                  |
+| API_PORT                  | Local port that serves API requests           | 3000 or 300X                                          |
+| API_VERSION               | Version of the API being served               | v1                                                    |
+| API_IP_ADDRESS            | Configurable value to host API                | localhost or 127.0.0.X                                |
+
 
 ### Environment Variables -> Additions or Changes
 
