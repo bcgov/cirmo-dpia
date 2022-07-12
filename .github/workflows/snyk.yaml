@@ -1,7 +1,9 @@
 name: Snyk 
+
 on:
-  # push:
-  #   branches: [ main ]
+  # Fire Github Action every Monday at Noon
+  schedule:
+    - cron: '0 12 * * 1'
   workflow_dispatch:
 
 jobs:
