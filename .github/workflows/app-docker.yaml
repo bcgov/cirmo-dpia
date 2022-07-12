@@ -1,4 +1,4 @@
-name: API - Docker Image Build
+name: APP - Docker Image Build
 on:
   # pull_request:
   #   branches: [ main ]
@@ -12,7 +12,7 @@ on:
 
 jobs:
   api-image-build:
-    name: api-image-build
+    name: app-image-build
     runs-on: ubuntu-latest
     steps:
     
