@@ -1,0 +1,25 @@
+name: OWASP Zap Scan
+on:
+  # Fire Github Action every Monday at Noon
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          format: openapi
+          target: 'https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
+          cmd_options: '-a'
