@@ -521,7 +521,7 @@ jobs:
   
   PROD-deploy:
     runs-on: ubuntu-latest
-    environment: Prod
+    environment: APP-Prod
     needs: [PROD-tag-dpia-app-image]
     steps:
 
