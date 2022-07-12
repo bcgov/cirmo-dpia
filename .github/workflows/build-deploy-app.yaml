@@ -9,8 +9,8 @@ on:
   
 jobs:
   DPIA-App-Build-Tag-Push:
-    environment: Dev
     runs-on: ubuntu-latest
+    environment: APP-Dev
     steps:
     
       - name: Checkout Repository
@@ -68,7 +68,7 @@ jobs:
 
   DEV-deploy:
     runs-on: ubuntu-latest
-    environment: Dev
+    environment: APP-Dev
     needs: [DPIA-App-Build-Tag-Push]
     steps:
     
@@ -125,7 +125,7 @@ jobs:
       - name: Process and Apply APP DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: "app-dc-template.yaml"
@@ -138,8 +138,7 @@ jobs:
 
   DEV-health-check:
     runs-on: ubuntu-latest
-    environment:
-      name: Dev
+    environment: APP-Dev
     needs: [DEV-deploy]
     steps:
     
@@ -175,7 +174,7 @@ jobs:
       - name: Health Check DEV deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           IMAGE_TAG: "${{ env.pull_request_hash }}"
@@ -184,7 +183,7 @@ jobs:
   
   DEV-cleanup:
     runs-on: ubuntu-latest
-    environment: Dev
+    environment: APP-Dev
     needs: [DEV-health-check]
     steps:
 
@@ -232,8 +231,8 @@ jobs:
           ./.github/helpers/cleanup.sh
 
   TEST-tag-dpia-app-image:
-    environment: Test
     runs-on: ubuntu-latest
+    environment: APP-Test
     needs: [DEV-cleanup]
     steps:
     
@@ -281,8 +280,8 @@ jobs:
           ./.github/helpers/tag-imagestream.sh
           
   TEST-deploy:
-    environment: Test
     runs-on: ubuntu-latest
+    environment: APP-Test
     needs: [TEST-tag-dpia-app-image]
     steps:
       
@@ -317,7 +316,7 @@ jobs:
       - name: Process and Apply APP DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: "app-dc-template.yaml"
@@ -330,7 +329,7 @@ jobs:
           
   TEST-health-check:
     runs-on: ubuntu-latest
-    environment: Test
+    environment: APP-Test
     needs: [TEST-deploy]
     steps:
     
@@ -366,7 +365,7 @@ jobs:
       - name: Health Check TEST deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           IMAGE_TAG: "${{ env.pull_request_hash }}"
@@ -375,7 +374,7 @@ jobs:
 
   TEST-cleanup:
     runs-on: ubuntu-latest
-    environment: Test
+    environment: APP-Test
     needs: [TEST-health-check]
     steps:
 
@@ -423,8 +422,8 @@ jobs:
           ./.github/helpers/cleanup.sh
     
   PROD-tag-dpia-app-image:
-    environment: Prod
     runs-on: ubuntu-latest
+    environment: APP-Prod
     needs: [TEST-cleanup]
     steps:
       - name: Checkout Repository
@@ -521,8 +520,8 @@ jobs:
           path: prod-version.json
   
   PROD-deploy:
-    environment: Prod
     runs-on: ubuntu-latest
+    environment: Prod
     needs: [PROD-tag-dpia-app-image]
     steps:
 
@@ -559,7 +558,7 @@ jobs:
       - name: Deploy to PROD
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: app-dc-template-prod.yaml
@@ -571,8 +570,8 @@ jobs:
   PROD-health-check:
     runs-on: ubuntu-latest
     environment:
-      name: Prod
-      url: https://pia.apps.silver.devops.gov.bc.ca/
+      name: APP-Prod
+      url: https://pia.apps.silver.devops.gov.bc.ca
     needs: [PROD-deploy]
     steps:
     
@@ -589,7 +588,7 @@ jobs:
       - name: Health Check PROD deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APP_APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
         run: |
