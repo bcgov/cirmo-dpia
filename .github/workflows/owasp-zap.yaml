@@ -1,0 +1,12 @@
+name: OWASP Zap Scan
+on:
+  # Fire Github Action every Monday at Noon
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+
+steps:
+  - name: ZAP Scan
+    uses: zaproxy/action-full-scan@v0.4.0
+    with:
+      target: 'https://pia.apps.silver.devops.gov.bc.ca/'
