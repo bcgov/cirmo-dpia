@@ -1,0 +1,4 @@
+{
+    "DPIA_API_URL":"localhost:3000",
+    "EXAMPLE_STRING":"hello,world"
+}
