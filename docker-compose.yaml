@@ -5,6 +5,8 @@ services:
   #############################################################################################
   dpia-api:
     container_name: dpia-api
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: ./src/backend/Dockerfile
