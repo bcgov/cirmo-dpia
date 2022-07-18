@@ -12,6 +12,7 @@ import TheWelcome from "./components/TheWelcome.vue";
       width="125"
       height="125"
     />
+    
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
@@ -51,3 +52,4 @@ header {
   }
 }
 </style>
+
