@@ -13,13 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: master
-
+          ref: main
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
           format: openapi
-          target: 'https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
+          target: 'https://dpia-api-3b99259-dev.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
           cmd_options: '-a'
