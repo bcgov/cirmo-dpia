@@ -7,8 +7,17 @@ on:
 
 jobs:
   zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
         with:
-          target: 'https://pia.apps.silver.devops.gov.bc.ca/'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: 'https://dpia-api-3b99259-dev.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
+          cmd_options: '-a'
