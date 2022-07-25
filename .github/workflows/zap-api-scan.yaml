@@ -1,4 +1,4 @@
-name: OWASP Zap Scan
+name: OWASP Zap API Scan
 on:
   # Fire Github Action every Monday at Noon
   schedule:
