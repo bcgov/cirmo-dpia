@@ -54,7 +54,6 @@ and assign values to the environment variables listed in order to configure and 
 | API_VERSION               | Version of the API being served               | v1                                                    |
 | API_IP_ADDRESS            | Configurable value to host API                | localhost or 127.0.0.X                                |
 
-
 ### Environment Variables -> Additions or Changes
 
 If you're contributing to this project via Pull Request (PR), and your code contains additions or changes to environment variables that are required to
