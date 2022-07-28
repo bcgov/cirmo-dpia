@@ -1,4 +1,4 @@
-name: OWASP Zap Scan
+name: OWASP Zap Frontend Scan
 on:
   # Fire Github Action every Monday at Noon
   schedule:
@@ -7,8 +7,17 @@ on:
 
 jobs:
   zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
         with:
-          target: 'https://pia.apps.silver.devops.gov.bc.ca/'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: 'https://dpia-webapp-59b4eb8-b996e6-dev.apps.silver.devops.gov.bc.ca/'
+          cmd_options: '-a'
