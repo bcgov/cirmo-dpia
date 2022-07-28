@@ -48,9 +48,11 @@ Before getting building or starting any project components on your local develop
 This file should contain the contents of the .env-template also found at the root level of this project. Please take the time to read the following table
 and assign values to the environment variables listed in order to configure and run the project components on your local development machine.
 
-|Component                  | Environment Variable      | Description                                   | Value                                                 |
-|---------------------------|---------------------------|-----------------------------------------------|-------------------------------------------------------|
-|API                        | API_PORT                  | Local port that serves API requests           | 3000                                                  |
+| Environment Variable      | Description                                   | Value                                                 |
+|---------------------------|-----------------------------------------------|-------------------------------------------------------|
+| API_PORT                  | Local port that serves API requests           | 3000 or 300X                                          |
+| API_VERSION               | Version of the API being served               | v1                                                    |
+| API_IP_ADDRESS            | Configurable value to host API                | localhost or 127.0.0.X                                |
 
 ### Environment Variables -> Additions or Changes
 
