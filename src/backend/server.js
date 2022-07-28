@@ -5,7 +5,9 @@ const swaggerUI = require('swagger-ui-express');
 const app = express();
 
 // Environment Configuration
+require('dotenv').config();
 const API_PORT = process.env.API_PORT || 3000;
+const API_IP_ADDRESS = process.env.API_IP_ADDRESS || 'localhost';
 
 // Route Imports
 const {
@@ -22,4 +24,4 @@ app.use(
 
 app.get('/api/v1/health', healthCheckRouter);
 
-module.exports = app.listen(API_PORT, () => console.log(`Server started and is listening on port ${API_PORT}`));
+module.exports = app.listen(API_PORT, API_IP_ADDRESS, () => console.log(`Server started and is listening on port ${API_PORT}`));
