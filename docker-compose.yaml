@@ -20,7 +20,7 @@ services:
     container_name: dpia-webapp
     build:
       context: .
-      dockerfile: ./src/frontend/Dockerfile
+      dockerfile: ./src/frontend/dpia-webapp/Dockerfile
     networks:
       - dpia-network
     ports:
