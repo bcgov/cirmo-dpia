@@ -103,7 +103,7 @@ jobs:
       - name: Get Previous Deployment Hash Value
         run: |
           dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-api | awk 'FNR == 2 {print $1}'))
-          echo "previous_dc_name=$dc_name" >> $GITHUB_ENVf
+          echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
     
       - name: Create new JSON file for current and Previous Deployment Hash
         id: create-json
