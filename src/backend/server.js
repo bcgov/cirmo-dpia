@@ -8,10 +8,8 @@ const app = express();
 require('dotenv').config();
 const API_PORT = process.env.API_PORT || 3000;
 const API_IP_ADDRESS = process.env.API_IP_ADDRESS || 'localhost';
-const API_VERSION  = process.env.API_VERSION || 'v1';
 
-// Route Importsclear
-
+// Route Imports
 const {
     healthCheckRouter
 } = require('./versions/v1/routes/routeImports');
@@ -26,4 +24,4 @@ app.use(
 
 app.get('/api/v1/health', healthCheckRouter);
 
-module.exports = app.listen(API_PORT, API_IP_ADDRESS, API_VERSION, () => console.log(`API Version ${API_VERSION} started and is listening on port ${API_PORT} for host ${API_IP_ADDRESS}`));
+module.exports = app.listen(API_PORT, () => console.log(`Server started and is listening on port ${API_PORT}`));
