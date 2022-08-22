@@ -1,0 +1,192 @@
+@charset "UTF-8";
+:root {
+  --df-messenger-bot-message: #fff;
+  --df-messenger-button-titlebar-color: #42a5f5;
+  --df-messenger-button-titlebar-font-color: #fff;
+  --df-messenger-chat-background-color: #fafafa;
+  --df-messenger-font-color: rgba(0,0,0,.87);
+  --df-messenger-input-box-color: #fff;
+  --df-messenger-input-font-color: rgba(0,0,0,.87);
+  --df-messenger-input-placeholder-font-color: #757575;
+  --df-messenger-minimized-chat-close-icon-color: rgba(0,0,0,.87);
+  --df-messenger-send-icon: #42a5f5;
+  --df-messenger-user-message: #ddd;
+  --df-messenger-chip-color: #fff;
+  --df-messenger-chip-border-color: #e0e0e0; }
+
+/* Variables
+ * The variables here define the default branding of BC GOV. This includes properties like color, font, fontsize, spacing and more.
+ * Varabiles naming must follow '$component-state-property-size' convention. 
+ * Ex: $nav-link-hover-color or $close-link-color-sm
+ */
+body {
+  min-height: 100vh;
+  position: relative; }
+
+.spacer {
+  height: 105px; }
+
+.wrapper {
+  padding: 0px 5px 0px 5px;
+  position: relative;
+  max-width: 1286;
+  margin-left: auto;
+  margin-right: auto; }
+
+.main-content {
+  pading-bottom: 65px; }
+
+.color-blue {
+  color: #003366; }
+
+.display-flex {
+  display: flex; }
+
+.header {
+  background-color: #003366; }
+
+header {
+  background-color: #036;
+  border-bottom: 2px solid #fcba19;
+  padding: 0 65px 0 65px;
+  color: #fff;
+  display: flex;
+  height: 65px;
+  top: 0px;
+  position: fixed;
+  z-index: 99;
+  width: 100%; }
+  header .logo {
+    height: 46px; }
+
+header h1 {
+  font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
+  font-weight: normal;
+  /* 400 */
+  margin: 5px 5px 0 18px;
+  visibility: hidden; }
+
+header .banner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 10px 0 0;
+  /* border-style: dotted;
+  border-width: 1px;
+  border-color: lightgrey; */ }
+
+header .other {
+  display: flex;
+  flex-grow: 1;
+  /* border-style: dotted;
+  border-width: 1px;
+  border-color: lightgrey; */
+  flex-direction: row-reverse;
+  align-items: center; }
+  header .other a {
+    color: white;
+    font-weight: bold;
+    font-size: 22px; }
+
+/*
+  These are sample media queries only. Media queries are quite subjective
+  but, in general, should be made for the three different classes of screen
+  size: phone, tablet, full.
+*/
+@media screen and (min-width: 600px) and (max-width: 899px) {
+  header h1 {
+    font-size: calc(7px + 2.2vw);
+    visibility: visible; } }
+@media screen and (min-width: 900px) {
+  header h1 {
+    font-size: 2.0em;
+    visibility: visible; } }
+footer {
+  background-color: #036;
+  border-top: 2px solid #fcba19;
+  color: #fff;
+  font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
+  /* need to test */
+  position: absolute;
+  bottom: 0px;
+  width: 100%; }
+
+footer .container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 46px; }
+
+footer ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  color: #fff;
+  list-style: none;
+  align-items: center;
+  height: 100%; }
+
+footer ul li a {
+  font-size: 0.813em;
+  font-weight: normal;
+  /* 400 */
+  color: #fff;
+  border-right: 1px solid #4b5e7e;
+  padding-left: 5px;
+  padding-right: 5px; }
+
+a:hover {
+  color: #fff;
+  text-decoration: underline; }
+
+:focus {
+  outline: 4px solid #3B99FC;
+  outline-offset: 1px; }
+
+.login_container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 45px 0px; }
+
+.btn-primary {
+  background-color: #003366; }
+
+a {
+  font-size: 14px;
+  color: #169BD5;
+  text-decoration: none; }
+
+a:hover {
+  color: #003366; }
+
+.BC-Gov-PrimaryButton {
+  background-color: #003366;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 12px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 18px;
+  font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer; }
+
+.BC-Gov-PrimaryButton:hover {
+  text-decoration: underline;
+  opacity: 0.80; }
+
+:focus {
+  outline: 4px solid #3B99FC;
+  outline-offset: 1px; }
+
+.BC-Gov-PrimaryButton:active {
+  opacity: 1; }
+
+/*# sourceMappingURL=common-dpia.css.map */

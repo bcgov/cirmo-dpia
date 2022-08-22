@@ -1,0 +1,40 @@
+<html>
+	{% include '../../common/template/head.nj' %}
+	{% include '../../common/template/header.html' %}
+ <div class="wrapper">
+ <div class="spacer"></div>
+	<div class="">
+		<p> This page is located at <code> app/public/pid/index.html </code></p>
+	</div>
+  <div class="login_container">
+	<div>
+		<form>
+		  <div class="mb-3">
+			<h2>Log in with IDIR</h2>
+		    <label for="exampleInputEmail1" class="form-label">Email address</label>
+		    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+		    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+		  </div>
+		  <div class="mb-3">
+		    <label for="exampleInputPassword1" class="form-label">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword1">
+		  </div>
+		  <div class="mb-3 form-check">
+		    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+		    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+		  </div>
+		  <button onclick="window.location.href='/app/private/dashboard';" type="submit" class="btn btn-primary BC-Gov-PrimaryButton">Submit</button>
+	</form>
+	  <div class="forgot-password">
+		<a href="">Forgot Password</a>	  
+	  </div>	
+	</div>	
+	<div>
+		<a href="/app/public/pid/">
+		  <button class="btn btn-primary BC-Gov-PrimaryButton">View PID</button></a>
+	</div>
+	<div class="divider"></div>
+  </div>	
+</div>
+	{% include '../../common/template/footer.html' %}
+</html>
