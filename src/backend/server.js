@@ -8,6 +8,8 @@ const app = express();
 require('dotenv').config();
 const API_PORT = process.env.API_PORT || 3000;
 const API_IP_ADDRESS = process.env.API_IP_ADDRESS || 'localhost';
+const API_VERSION = process.env.API_VERSION || 'v1';
+const PLATFORM = process.env.PLATFORM || 'NOT_LOCAL';
 
 // Route Imports
 const {
@@ -22,6 +24,10 @@ app.use(
     swaggerUI.setup(swaggerConf.specs, swaggerConf.uiOptions)
 );
 
-app.get('/api/v1/health', healthCheckRouter);
+app.get('/api/v1/health', healthCheckRouter)
 
-module.exports = app.listen(API_PORT, API_IP_ADDRESS, () => console.log(`Server started and is listening on port ${API_PORT}`));
+if (PLATFORM === 'LOCAL') {
+    module.exports = app.listen(API_PORT, "${API_IP_ADDRESS}", () => console.log(`Server version is ${API_VERSION} and is being hosted on ${API_IP_ADDRESS}, listening on port ${API_PORT}`));
+} else {
+    module.exports = app.listen(API_PORT, () => console.log(`Server version is ${API_VERSION} and is being hosted on ${API_IP_ADDRESS}, listening on port ${API_PORT}`));
+}
