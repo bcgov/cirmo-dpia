@@ -13,8 +13,6 @@
     "build": "vue-tsc --noEmit && vite build",
     "build_dev": "vue-tsc --noEmit && vite build -m development",
     "preview": "vite preview",
-    "devs": "cross-env NODE_ENV=development webpack --progress  --hot",
-    "buildss": "cross-env NODE_ENV=production webpack --progress --hot"
   },
   "type": "module",
   "author": "",
