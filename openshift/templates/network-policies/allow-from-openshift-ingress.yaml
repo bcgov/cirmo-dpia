@@ -36,7 +36,7 @@ parameters:
     displayName: Environment
     name: ENVIRONMENT
     required: true
-    value: tools
+    value: dev
   - description: Namespace 
     displayName: Namespace
     name: NAMESPACE 

@@ -2,12 +2,12 @@
 ###                                 BUILD ARTIFACT                                        ###
 #############################################################################################
 FROM node:lts-alpine as build
-WORKDIR /usr/src/src/frontend
+WORKDIR /usr/src/src/frontend/dpia-webapp
 
 # Copy in build artifacts, build project dependencies
-COPY src/frontend/package*.json ./
+COPY src/frontend/dpia-webapp/package*.json ./
 RUN npm install
-COPY src/frontend/. .
+COPY src/frontend/dpia-webapp/. .
 RUN npm run build
 
 #############################################################################################
@@ -17,10 +17,10 @@ FROM nginx:stable-alpine as production
 
 # Remove default static NGINX files
 RUN rm /usr/share/nginx/html/*
-COPY --from=build /usr/src/src/frontend/dist/. /usr/share/nginx/html
+COPY --from=build /usr/src/src/frontend/dpia-webapp/dist/. /usr/share/nginx/html
 
 # Copy project specific NGINX config file
-COPY src/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY src/frontend/dpia-webapp/nginx.conf /etc/nginx/conf.d/default.conf
 
 #Elevate!
 RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
