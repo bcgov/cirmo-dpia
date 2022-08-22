@@ -1,0 +1,32 @@
+<html>
+	{% include '../../common/template/head.nj' %}
+	<head>
+<link rel="stylesheet" type="text/css" href="/builds/css/public-pid.css"  integrity="1" />
+	</head>
+	{% include '../../common/template/header.html' %}
+ <div>
+ <div class="spacer"></div>
+ <div class="wrapper main-content">
+	<div class="">
+		<p> This page is located at <code> app/public/pid/index.html </code></p>
+	</div>
+	<div>
+		<h1 class="color-blue"> Personal Information Directory (PID)</h1>
+	</div>
+	
+	<div class="display-flex" style="padding:30px 0px;">
+		<div>
+			<p>
+	The purpose of the <b>BC Personal Information Directory (PID)</b> is to document the management of personal information holdings of government and to assist the public in identifying the location of personal information about them held by government.
+			</p>
+		</div>
+		<div class="last_update">
+			Last Updated: <b>April 2022</b>
+		</div>
+	</div> 
+		<bcgov-pid-public>
+		</bc-gov-pid-public> 	
+ </div> 
+	{% include '../../common/template/footer.html' %}
+	 <script src="/dist/public_pid.js" integrity='1'></script> 
+</html>

@@ -1,0 +1,19 @@
+:root {
+  --df-messenger-bot-message: #fff;
+  --df-messenger-button-titlebar-color: #42a5f5;
+  --df-messenger-button-titlebar-font-color: #fff;
+  --df-messenger-chat-background-color: #fafafa;
+  --df-messenger-font-color: rgba(0,0,0,.87);
+  --df-messenger-input-box-color: #fff;
+  --df-messenger-input-font-color: rgba(0,0,0,.87);
+  --df-messenger-input-placeholder-font-color: #757575;
+  --df-messenger-minimized-chat-close-icon-color: rgba(0,0,0,.87);
+  --df-messenger-send-icon: #42a5f5;
+  --df-messenger-user-message: #ddd;
+  --df-messenger-chip-color: #fff;
+  --df-messenger-chip-border-color: #e0e0e0; }
+
+.header {
+  background-color: #003366; }
+
+/*# sourceMappingURL=common.css.map */

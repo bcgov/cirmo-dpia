@@ -1,0 +1,61 @@
+{
+	"public":{
+		"auth": false,
+		"hierarchy": [
+			{
+				"name": "login",
+				"path": "app/public/login/",
+				"controller": {
+					"login":{
+						"action":{
+							"signup": {
+								"view":{
+									"index": {
+										"auth": false,
+										"frontend_framework": "vue",
+										"components": {},
+										"title":"Sign In"
+                                    }
+								}
+							}
+						}
+					},
+					"signup":{
+						"name": "signup",
+						"views":{
+							"index": {
+								"auth": false,
+								"frontend_framework": "vue",
+								"components": {}
+                            }
+						}
+					}
+
+				}
+			},
+			{
+				"name": "pid",
+				"path": "app/public/pid/",
+				"controller": {
+					"login":{
+						"action":{
+							"signup": {
+								"view":{
+									"index": {
+										"auth": false,
+										"frontend_framework": "vue",
+										"components": {},
+										"title":"Personal Information Directory"
+                                    }
+								}
+							}
+						}
+					}
+				}
+			}
+		]
+	},
+	"private": {
+
+	}	
+}

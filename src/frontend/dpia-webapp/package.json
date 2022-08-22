@@ -1,31 +1,50 @@
 {
-  "name": "dpia-webapp",
-  "version": "0.0.0",
+  "name": "dpia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "builds": "tsc -p tsconfig.json",
+    "start": "node index.js",
+    "start_fs": "fastify start -l info test_fastify.js",
+    "dev_fs": "fastify start -w -l info -P test_fastify.js",
     "dev": "vite",
-    "build": "run-p type-check build-only",
-    "preview": "vite preview --port 4173",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "build": "vue-tsc --noEmit && vite build",
+    "build_dev": "vue-tsc --noEmit && vite build -m development",
+    "preview": "vite preview",
+    "devs": "cross-env NODE_ENV=development webpack --progress  --hot",
+    "buildss": "cross-env NODE_ENV=production webpack --progress --hot"
   },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2",
-    "vue": "^3.2.37"
+    "@fastify/autoload": "^5.0.0",
+    "@fastify/sensible": "^4.1.0",
+    "@fastify/view": "^7.0.0",
+    "babel-loader": "^8.2.5",
+    "fastify": "^4.3.0",
+    "fastify-cli": "^4.4.0",
+    "fastify-cors": "^6.1.0",
+    "fastify-plugin": "^3.0.0",
+    "nunjucks": "^3.2.3",
+    "point-of-view": "^6.3.0",
+    "vue": "^3.2.37",
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.7.8"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.1.0",
-    "@types/node": "^16.11.43",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@types/node": "^18.6.3",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
     "@vue/tsconfig": "^0.1.3",
+    "typescript": "^4.7.4",
+    "webpack-cli": "^4.10.0",
+    "@vitejs/plugin-vue": "^3.0.1",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.5.1",
-    "typescript": "~4.7.4",
-    "vite": "^2.9.14",
-    "vue-tsc": "^0.38.4"
+    "vite": "^3.0.4",
+    "vue-tsc": "^0.39.4"
   }
 }
