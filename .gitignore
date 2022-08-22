@@ -17,3 +17,4 @@ src/backend/.env
 ###############################################################################
 
 src/frontend/dpia-webapp/node_modules
+src/frontend/dpia-webapp/builds/css/*
