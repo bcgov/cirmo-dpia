@@ -12,8 +12,8 @@ objects:
     namespace: b996e6-dev
     annotations:
       openshift.io/host.generated: 'true'
-    label:
-     hash: ${IMAGE_TAG}
+    labels:
+      hash: ${IMAGE_TAG}
   spec:
     host: ${APPLICATION_NAME}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:
