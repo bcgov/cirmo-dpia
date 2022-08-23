@@ -16,13 +16,10 @@ objects:
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       app: ${APPLICATION_NAME}
-      app.kubernetes.io/component: ${APPLICATION_NAME}-${IMAGE_TAG}
-      app.kubernetes.io/instance: ${APPLICATION_NAME}-${IMAGE_TAG}
-      app.kubernetes.io/name: ${APPLICATION_NAME}-${IMAGE_TAG}
+      hash: ${IMAGE_TAG}
       app.kubernetes.io/part-of: dpia-application
       app.openshift.io/runtime: js
       app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-      app.openshift.io/runtime-version: e87d91c
   spec:
     strategy:
       type: Rolling
@@ -39,7 +36,7 @@ objects:
         imageChangeParams:
           automatic: true
           containerNames:
-            - ${APPLICATION_NAME}-${IMAGE_TAG}
+            - ${APPLICATION_NAME}
           from:
             kind: ImageStreamTag
             namespace: ${LICENSE_PLATE}-tools
@@ -51,19 +48,19 @@ objects:
     revisionHistoryLimit: 10
     test: false
     selector:
-      app: ${APPLICATION_NAME}-${IMAGE_TAG}
-      deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: ${APPLICATION_NAME}-${IMAGE_TAG}
-          deploymentconfig: ${APPLICATION_NAME}-${IMAGE_TAG}
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
       spec:
         containers:
-          - name: ${APPLICATION_NAME}-${IMAGE_TAG}
+          - name: ${APPLICATION_NAME}
             image: >-
               image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
             ports:
