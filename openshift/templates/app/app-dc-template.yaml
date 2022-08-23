@@ -48,7 +48,6 @@ objects:
     revisionHistoryLimit: 10
     test: false
     selector:
-      hash: ${IMAGE_TAG}
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
     template:
