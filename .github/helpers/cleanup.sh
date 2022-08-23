@@ -2,9 +2,5 @@
 
 # script to cleanup kubernetes objects of a previous deployment after a new deployment has occured
 
-objects=( dc service route )
+oc delete pod --namespace=$NAMESPACE --field-selector status.phase=Succeeded
 
-for i in "${objects[@]}"
-do
-    oc delete --namespace=$NAMESPACE "$i"/$OBJECT_NAME
-done
