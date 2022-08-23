@@ -9,8 +9,10 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+    labels:
+      hash: ${IMAGE_TAG}
   spec:
     ipFamilies:
       - IPv4
@@ -23,7 +25,7 @@ objects:
     ipFamilyPolicy: SingleStack
     sessionAffinity: None
     selector:
-      app: ${APPLICATION_NAME}-${IMAGE_TAG}
+      app: ${APPLICATION_NAME}
 
 parameters:
   - description: Application Name
