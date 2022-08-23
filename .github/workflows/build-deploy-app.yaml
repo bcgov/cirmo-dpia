@@ -150,48 +150,49 @@ jobs:
         run: |
           ./.github/helpers/deploy.sh 
 
-  # DEV-health-check:
-  #   runs-on: ubuntu-latest
-  #   environment: APP-Dev
-  #   needs: [DEV-deploy]
-  #   steps:
+  DEV-health-check:
+    runs-on: ubuntu-latest
+    environment: APP-Dev
+    needs: [DEV-deploy]
+    steps:
     
-  #     - uses: actions/checkout@v2
+      # - uses: actions/checkout@v2
     
-  #     - name: Cluster Login -> DEV Namespace
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      # Login to BC Gov Openshift (DPIA DEV Namespace)
+      - name: Cluster Login -> DEV Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
 
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: dev-deploy.json
+      # - name: Download JSON artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: dev-deploy.json
           
-  #     - name: Read JSON File
-  #       id: json-file-hash
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'dev-deploy.json'
-  #         prop_path: 'hash'
+      # - name: Read JSON File
+      #   id: json-file-hash
+      #   uses: notiz-dev/github-action-json-property@release
+      #   with:
+      #     path: 'dev-deploy.json'
+      #     prop_path: 'hash'
           
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-            
-  #     - name: Health Check DEV deployment
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         IMAGE_TAG: "${{ env.pull_request_hash }}"
-  #       run: |
-  #         ./.github/helpers/application-health.sh
+      # - name: Set Commit Hash Value to Environment
+      #   run: |
+      #     commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+      #     echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+
+      # Use application health helper script to monitor readiness/liveness probe response post deployment 
+      - name: Health Check DEV deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          # LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          # ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+        run: |
+          ./.github/helpers/application-health.sh
   
   # DEV-cleanup:
   #   runs-on: ubuntu-latest
