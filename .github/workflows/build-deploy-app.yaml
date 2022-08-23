@@ -115,25 +115,6 @@ jobs:
         run: |
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-
-      
-      # - name: Get Previous Deployment Hash Value
-      #   run: |
-      #     dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-webapp | awk 'FNR == 2 {print $1}'))
-      #     echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
-          
-      # - name: Create new JSON file for current and Previous Deployment Hash
-      #   id: create-json
-      #   uses: jsdaniell/create-json@1.1.2
-      #   with:
-      #     name: 'dev-deploy.json'
-      #     json: '{ "hash":"${{ env.pull_request_hash }}", "dc_name":"${{ env.previous_dc_name}}"}'
-
-      # - name: Upload JSON file
-      #   uses: actions/upload-artifact@v3
-      #   with: 
-      #     name: dev-deploy.json
-      #     path: dev-deploy.json
             
       # Use deploy helper script to process and apply DPIA Frontend Application template into DEV namespace
       - name: Process and Apply APP DeploymentConfig, Service, Route templates
@@ -166,23 +147,6 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
-
-      # - name: Download JSON artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: dev-deploy.json
-          
-      # - name: Read JSON File
-      #   id: json-file-hash
-      #   uses: notiz-dev/github-action-json-property@release
-      #   with:
-      #     path: 'dev-deploy.json'
-      #     prop_path: 'hash'
-          
-      # - name: Set Commit Hash Value to Environment
-      #   run: |
-      #     commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-      #     echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
 
       # Use application health helper script to monitor readiness/liveness probe response post deployment  
       - name: Health Check DEV deployment
