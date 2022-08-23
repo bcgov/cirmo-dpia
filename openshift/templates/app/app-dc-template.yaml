@@ -12,7 +12,7 @@ objects:
       app.openshift.io/connects-to: >-
         [{"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","name":"dpia-api-23a925d"}]
       openshift.io/generated-by: OpenShiftWebConsole
-    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       app: ${APPLICATION_NAME}
