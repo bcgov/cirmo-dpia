@@ -323,37 +323,37 @@ jobs:
         run: |
           ./.github/helpers/application-health.sh
 
-TEST-cleanup:
-  runs-on: ubuntu-latest
-  environment: APP-Test
-  needs: [TEST-health-check]
-  steps:
+  TEST-cleanup:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    needs: [TEST-health-check]
+    steps:
 
-    # Checkout Repository
-    - uses: actions/checkout@v2
+      # Checkout Repository
+      - uses: actions/checkout@v2
 
-    # Login to BC Gov Openshift (DPIA TEST Namespace)
-    - name: Cluster Login
-      uses: redhat-developer/openshift-actions@v1.1
-      with:
-        openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-        parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-        cmd: |
-          'version'
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
 
-    # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
-    - name: Cleanup previous deployment pod objects
-      env:
-        NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-      run: |
-        ./.github/helpers/cleanup-pods.sh
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous deployment pod objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-pods.sh
 
-    # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
-    - name: Cleanup previous replication controller objects
-      env:
-        NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-      run: |
-        ./.github/helpers/cleanup-rc.sh
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous replication controller objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-rc.sh
     
   PROD-tag-dpia-app-image:
     runs-on: ubuntu-latest
