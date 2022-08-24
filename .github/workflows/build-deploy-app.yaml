@@ -529,7 +529,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: APP-Prod
-      url: https://pia.apps.silver.devops.gov.bc.ca
+      url: https://dpia-webapp-b996e6-prod.apps.silver.devops.gov.bc.ca/
     needs: [PROD-deploy]
     steps:
     
