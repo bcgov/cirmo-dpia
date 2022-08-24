@@ -240,8 +240,6 @@ jobs:
           DPIA_COMPONENT: "dpia-webapp"
           HASH_SRC: "${{ env.pull_request_hash}}"-dev
           HASH_DEST: "${{ env.pull_request_hash }}"-test
-          #HASH_IMAGE: "${{ env.pull_request_hash }}"
-          #ENVIRONMENT: "test"
         run: |
           ./.github/helpers/tag-imagestream.sh
           
@@ -419,8 +417,6 @@ TEST-cleanup:
           DPIA_COMPONENT: "dpia-webapp"
           HASH_SRC: ${{ env.pull_request_hash }}-test
           HASH_DEST: ${{ env.pull_request_hash }}-prod
-          #HASH_IMAGE: "${{ env.pull_request_hash }}"
-          #ENVIRONMENT: "prod"
         run: |
           ./.github/helpers/tag-imagestream.sh
 
@@ -453,8 +449,6 @@ TEST-cleanup:
           DPIA_COMPONENT: "dpia-webapp"
           HASH_SRC: "${{ env.pull_request_hash }}"-prod
           HASH_DEST: "${{ env.new_tag}}"
-          #HASH_IMAGE: "${{ env.pull_request_hash }}"
-          #VERSION: "${{ env.new_tag }}"
         run: |
           ./.github/helpers/tag-imagestream.sh
 
