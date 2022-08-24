@@ -127,7 +127,7 @@ jobs:
           SERVICE_TEMPLATE: "app-service-template.yaml"
           ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
-          IMAGE_TAG: ${{ env.pull_request_hash }}
+          IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
         run: |
           ./.github/helpers/deploy.sh 
 
@@ -293,7 +293,7 @@ jobs:
           SERVICE_TEMPLATE: "app-service-template.yaml"
           ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
-          IMAGE_TAG: ${{ env.pull_request_hash }}
+          IMAGE_TAG: "${{ env.pull_request_hash }}-test"
         run: |
           ./.github/helpers/deploy.sh 
           
