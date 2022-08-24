@@ -134,6 +134,7 @@ jobs:
   DEV-health-check:
     runs-on: ubuntu-latest
     environment: APP-Dev
+      url: https://dpia-webapp-b996e6-dev.apps.silver.devops.gov.bc.ca
     needs: [DEV-deploy]
     steps:
     
@@ -300,6 +301,7 @@ jobs:
   TEST-health-check:
     runs-on: ubuntu-latest
     environment: APP-Test
+      url: https://dpia-webapp-b996e6-test.apps.silver.devops.gov.bc.ca
     needs: [TEST-deploy]
     steps:
     
@@ -467,75 +469,84 @@ jobs:
           name: prod-version.json
           path: prod-version.json
   
-  # PROD-deploy:
-  #   runs-on: ubuntu-latest
-  #   environment: APP-Prod
-  #   needs: [PROD-tag-dpia-app-image]
-  #   steps:
+  PROD-deploy:
+    runs-on: ubuntu-latest
+    environment: APP-Prod
+    needs: [PROD-tag-dpia-app-image]
+    steps:
 
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2 
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
 
-  #     - name: Cluster Login -> PROD Namespace
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      # Login to the BC Gov Openshift cluster (DPIA PROD Namespace)
+      - name: Cluster Login -> PROD Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
 
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: prod-version.json
+      # Download JSON Artifact with newest semantic version
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: prod-version.json
 
-  #     - name: Read JSON File
-  #       id: json-file
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'prod-version.json'
-  #         prop_path: 'version-tag'
+      # Read semantic version as step output
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'prod-version.json'
+          prop_path: 'version-tag'
 
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         version_tag=$(echo ${{ steps.json-file.outputs.prop }})
-  #         echo "image_tag=$version_tag" >> $GITHUB_ENV
+      # Set semantic version tag as environment variable
+      - name: Set Commit Hash Value to Environment
+        run: |
+          version_tag=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "image_tag=$version_tag" >> $GITHUB_ENV
 
-  #     - name: Deploy to PROD
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         DC_TEMPLATE: app-dc-template-prod.yaml
-  #         IMAGE_TAG: ${{ env.image_tag }}
-  #         DIR: "app"
-  #       run: |
-  #         ./.github/helpers/deploy-prod.sh 
+      # Use deploy helper script to process and apply DPIA Frontend Application template into PROD namespace
+      - name: Deploy to PROD
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DC_TEMPLATE: app-dc-template-prod.yaml
+          SERVICE_TEMPLATE: "app-service-template.yaml"
+          ROUTE_TEMPLATE: "app-route-template.yaml"
+          DIR: "app"
+          IMAGE_TAG: ${{ env.image_tag }}
+        run: |
+          ./.github/helpers/deploy.sh 
   
-  # PROD-health-check:
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: APP-Prod
-  #     url: https://pia.apps.silver.devops.gov.bc.ca
-  #   needs: [PROD-deploy]
-  #   steps:
+  PROD-health-check:
+    runs-on: ubuntu-latest
+    environment:
+      name: APP-Prod
+      url: https://pia.apps.silver.devops.gov.bc.ca
+    needs: [PROD-deploy]
+    steps:
     
-  #     - uses: actions/checkout@v2
+      # Checkout Repository
+      - uses: actions/checkout@v2
     
-  #     - name: Cluster Login
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      # Login to BC Gov Openshift (DPIA PROD Namespace)
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
             
-  #     - name: Health Check PROD deployment
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #       run: |
-  #         ./.github/helpers/application-health.sh
+      # Use application health helper script to monitor readiness/liveness probe response post deployment
+      - name: Health Check PROD deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+        run: |
+          ./.github/helpers/application-health.sh
