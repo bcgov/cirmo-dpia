@@ -243,96 +243,85 @@ jobs:
         run: |
           ./.github/helpers/tag-imagestream.sh
           
-  # TEST-deploy:
-  #   runs-on: ubuntu-latest
-  #   environment: APP-Test
-  #   needs: [TEST-tag-dpia-app-image]
-  #   steps:
+  TEST-deploy:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    needs: [TEST-tag-dpia-app-image]
+    steps:
       
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2 
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2 
         
-  #     - name: Cluster Login -> TEST Namespace
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login -> TEST Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
         
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: dev-deploy.json
+      # Download JSON artifact
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hash.json
           
-  #     - name: Read JSON File
-  #       id: json-file
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'dev-deploy.json'
-  #         prop_path: 'hash'
+      # Read hash value from JSON artifact
+      - name: Read JSON File
+        id: json-file
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'hash.json'
+          prop_path: 'hash'
           
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+      # Set pull request hash value as environment variable
+      - name: Set Commit Hash Value to Environment
+        run: |
+          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
       
-  #     - name: Process and Apply APP DeploymentConfig, Service, Route templates
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         DC_TEMPLATE: "app-dc-template.yaml"
-  #         SERVICE_TEMPLATE: "app-service-template.yaml"
-  #         ROUTE_TEMPLATE: "app-route-template.yaml"
-  #         DIR: "app"
-  #         IMAGE_TAG: ${{ env.pull_request_hash }}
-  #       run: |
-  #         ./.github/helpers/deploy.sh 
+      # Use deploy helper script to process and apply DPIA Frontend Application template into TEST namespace
+      - name: Process and Apply APP DeploymentConfig, Service, Route templates
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DC_TEMPLATE: "app-dc-template.yaml"
+          SERVICE_TEMPLATE: "app-service-template.yaml"
+          ROUTE_TEMPLATE: "app-route-template.yaml"
+          DIR: "app"
+          IMAGE_TAG: ${{ env.pull_request_hash }}
+        run: |
+          ./.github/helpers/deploy.sh 
           
-  # TEST-health-check:
-  #   runs-on: ubuntu-latest
-  #   environment: APP-Test
-  #   needs: [TEST-deploy]
-  #   steps:
+  TEST-health-check:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    needs: [TEST-deploy]
+    steps:
     
-  #     - uses: actions/checkout@v2
+      # Checkout Repository
+      - uses: actions/checkout@v2
     
-  #     - name: Cluster Login
-  #       uses: redhat-developer/openshift-actions@v1.1
-  #       with:
-  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-  #         cmd: |
-  #           'version'
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
 
-  #     - name: Download JSON artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: dev-deploy.json
-          
-  #     - name: Read JSON File
-  #       id: json-file-hash
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'dev-deploy.json'
-  #         prop_path: 'hash'
-          
-  #     - name: Set Commit Hash Value to Environment
-  #       run: |
-  #         commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-            
-  #     - name: Health Check TEST deployment
-  #       env:
-  #         NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-  #         IMAGE_TAG: "${{ env.pull_request_hash }}"
-  #       run: |
-  #         ./.github/helpers/application-health.sh
+      # Use application health helper script to monitor readiness/liveness probe response post deployment    
+      - name: Health Check TEST deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+        run: |
+          ./.github/helpers/application-health.sh
 
   # TEST-cleanup:
   #   runs-on: ubuntu-latest
