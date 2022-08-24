@@ -75,7 +75,7 @@ jobs:
       # Push docker image to BC Gov Repository
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_APP_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
+          docker push ${{ secrets.OPENSHIFT4_APP_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
 
   DEV-deploy:
     runs-on: ubuntu-latest
