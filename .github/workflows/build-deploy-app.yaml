@@ -133,7 +133,8 @@ jobs:
 
   DEV-health-check:
     runs-on: ubuntu-latest
-    environment: APP-Dev
+    environment:
+      name: APP-Dev
       url: https://dpia-webapp-b996e6-dev.apps.silver.devops.gov.bc.ca
     needs: [DEV-deploy]
     steps:
@@ -300,7 +301,8 @@ jobs:
           
   TEST-health-check:
     runs-on: ubuntu-latest
-    environment: APP-Test
+    environment:
+      name: APP-Test
       url: https://dpia-webapp-b996e6-test.apps.silver.devops.gov.bc.ca
     needs: [TEST-deploy]
     steps:
