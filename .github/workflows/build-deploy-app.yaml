@@ -238,8 +238,8 @@ jobs:
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-webapp"
-          HASH_SRC: "${{ env.pull_request_hash}}"-dev
-          HASH_DEST: "${{ env.pull_request_hash }}"-test
+          HASH_SRC: "${{ env.pull_request_hash}}-dev"
+          HASH_DEST: "${{ env.pull_request_hash }}-test"
         run: |
           ./.github/helpers/tag-imagestream.sh
           
@@ -415,8 +415,8 @@ TEST-cleanup:
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-webapp"
-          HASH_SRC: ${{ env.pull_request_hash }}-test
-          HASH_DEST: ${{ env.pull_request_hash }}-prod
+          HASH_SRC: "${{ env.pull_request_hash }}-test"
+          HASH_DEST: "${{ env.pull_request_hash }}-prod"
         run: |
           ./.github/helpers/tag-imagestream.sh
 
