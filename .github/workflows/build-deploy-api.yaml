@@ -275,7 +275,7 @@ jobs:
         id: json-file
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'dev-deploy.json'
+          path: 'hash.json'
           prop_path: 'hash'
           
       # Set pull request hash value as environment variable
