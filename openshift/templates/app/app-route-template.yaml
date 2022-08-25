@@ -9,7 +9,7 @@ objects:
   apiVersion: route.openshift.io/v1
   metadata:
     name: ${APPLICATION_NAME}
-    namespace: b996e6-dev
+    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     annotations:
       openshift.io/host.generated: 'true'
     labels:

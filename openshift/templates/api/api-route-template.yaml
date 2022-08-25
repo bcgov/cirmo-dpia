@@ -8,14 +8,16 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: ${APPLICATION_NAME}-${IMAGE_TAG}
+    name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+    labels:
+      hash: ${IMAGE_TAG}
   spec:
-    host: ${APPLICATION_NAME}-${IMAGE_TAG}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    host: ${APPLICATION_NAME}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     path: /api/v1/api-docs
     to:
       kind: Service
-      name: ${APPLICATION_NAME}-${IMAGE_TAG}
+      name: ${APPLICATION_NAME}
       weight: 100
     port:
       targetPort: 3000-tcp
@@ -23,16 +25,6 @@ objects:
       termination: edge
       insecureEdgeTerminationPolicy: None
     wildcardPolicy: None
-  status:
-    ingress:
-      - host: ${APPLICATION_NAME}-${IMAGE_TAG}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-        routerName: default
-        conditions:
-          - type: Admitted
-            status: 'True'
-            lastTransitionTime: '2022-06-28T18:13:10Z'
-        wildcardPolicy: None
-        routerCanonicalHostname: router-default.apps.silver.devops.gov.bc.ca
 
 parameters:
   - description: Application Name
