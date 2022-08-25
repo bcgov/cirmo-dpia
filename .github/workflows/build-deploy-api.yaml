@@ -240,7 +240,7 @@ jobs:
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
-          HASH_SRC: "${{ env.pull_request_hash}}-dev"
+          HASH_SRC: "${{ env.pull_request_hash }}-dev"
           HASH_DEST: "${{ env.pull_request_hash }}-test"
         run: |
           ./.github/helpers/tag-imagestream.sh
@@ -268,7 +268,7 @@ jobs:
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
-          name:  hash.json
+          name: hash.json
           
       # Read hash value from JSON artifact
       - name: Read JSON File
