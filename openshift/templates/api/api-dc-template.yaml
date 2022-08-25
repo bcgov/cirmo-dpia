@@ -16,7 +16,7 @@ objects:
       app: ${APPLICATION_NAME}
       hash: ${IMAGE_TAG}
       app.kubernetes.io/part-of: dpia-application
-      app.openshift.io/runtime: js
+      app.openshift.io/runtime: nodejs
       app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
     strategy:
