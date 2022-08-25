@@ -455,7 +455,7 @@ jobs:
           HHASH_SRC: "${{ env.pull_request_hash }}-prod"
           HASH_DEST: "${{ env.new_tag}}"
         run: |
-          ./.github/helpers/tag-imagestream-release.sh
+          ./.github/helpers/tag-imagestream.sh
 
       # Create new JSON artifact containing the latest tagged version
       - name: Create new JSON file Prod Deploy Version
