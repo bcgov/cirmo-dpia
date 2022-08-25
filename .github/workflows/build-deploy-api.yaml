@@ -13,9 +13,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
+      # Checkout CIRMO-DPIA Github Repository
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
+
+      # Find Latest Commit on Github Repository main branch (last PR merged to main)
+      - name: Set Commit Hash for Image Tag
+        run: |
+          commit_hash=$(echo $(git rev-parse --short HEAD))
+          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+          
+      # Create a JSON file containing latest commit hash for use throughout pipeline
+      - name: Create JSON file for Image Tag State
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: 'hash.json'
+          json: '{ "hash":"${{ env.pull_request_hash }}" }'
+          
+      # Upload JSON file as github action artifact to be downloaded for later use
+      - name: Upload JSON file
+        uses: actions/upload-artifact@v3
+        with: 
+          name: hash.json
+          path: hash.json
+
+      # Login the BC Gov Openshift (DPIA TOOLS Namespace)
       - name: Cluster Login -> TOOLS Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -24,43 +47,35 @@ jobs:
           cmd: |
             'version'
             
+      # Login to BC Gov Docker Image Repository
       - name: Login to Openshift Docker
         run : |
           docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           
+      # Build the DPIA API Application Image via docker-compose
       - name: Build the Docker image
         run: |
           docker-compose build dpia-api
       
+      # TROUBLESHOOTING - view images present in github action run
       - name: Docker List Images
         run: |
           docker image ls 
-          
-      - name: Set Commit Hash for Image Tag
-        run: |
-          commit_hash=$(echo $(git rev-parse --short HEAD))
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          
-      - name: Create JSON file for Image Tag State
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: 'hash.json'
-          json: '{ "hash":"${{ env.pull_request_hash }}" }'
-          
-      - name: Upload JSON file
-        uses: actions/upload-artifact@v3
-        with: 
-          name: hash.json
-          path: hash.json
       
+      # Tag Docker Image built with latest commit hash (ex// $HASH-dev)
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
+          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
           
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
+
+      # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}
+          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
           
   DEV-deploy:
     runs-on: ubuntu-latest
@@ -68,9 +83,11 @@ jobs:
     needs: [DPIA-API-Build-Tag-Push]
     steps:
     
+      # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v2
       
+      # Login to BC Gov Openshift (DPIA DEV Namespace)
       - name: Cluster Login -> DEV Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -78,42 +95,28 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
-            
+
+      # Download JSON Artifact with pull request hash 
       - name: Download JSON artifact
         uses: actions/download-artifact@v3
         with:
           name: hash.json
-          
+      
+      # Read value from JSON artifact as a step output
       - name: Read JSON File
         id: json-file
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'hash.json'
           prop_path: 'hash'
-          
+      
+      # Access step output of pull request hash value and set as a environment variable
       - name: Set Commit Hash Value to Environment
         run: |
           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV 
-      
-      - name: Get Previous Deployment Hash Value
-        run: |
-          dc_name=$(echo $(oc get dc --namespace=${{ secrets.OPENSHIFT_DEV_NAMESPACE }} -l app=dpia-api | awk 'FNR == 2 {print $1}'))
-          echo "previous_dc_name=$dc_name" >> $GITHUB_ENV
-    
-      - name: Create new JSON file for current and Previous Deployment Hash
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: 'dev-deploy.json'
-          json: '{ "hash":"${{ env.pull_request_hash }}", "dc_name":"${{ env.previous_dc_name}}"}'
 
-      - name: Upload JSON file
-        uses: actions/upload-artifact@v3
-        with: 
-          name: dev-deploy.json
-          path: dev-deploy.json
-            
+      # Use deploy helper script to process and apply DPIA Frontend Application template into DEV namespace
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
@@ -124,18 +127,22 @@ jobs:
           SERVICE_TEMPLATE: "api-service-template.yaml"
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
-          IMAGE_TAG: ${{ env.pull_request_hash }}
+          IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
         run: |
           ./.github/helpers/deploy.sh 
     
   DEV-health-check:
     runs-on: ubuntu-latest
-    environment: API-Dev
+    environment:
+      name: API-Dev
+      url: https://dpia-api-b996e6-dev.apps.silver.devops.gov.bc.ca
     needs: [DEV-deploy]
     steps:
     
+      # Checkout Repository
       - uses: actions/checkout@v2
     
+      # Login to BC Gov Openshift (DPIA DEV Namespace)
       - name: Cluster Login -> DEV Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -143,31 +150,12 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
           cmd: |
             'version'
-
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-          
-      - name: Read JSON File
-        id: json-file-hash
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-          
-      - name: Set Commit Hash Value to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
             
+      # Use application health helper script to monitor readiness/liveness probe response post deployment  
       - name: Health Check DEV deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          IMAGE_TAG: "${{ env.pull_request_hash }}"
         run: |
           ./.github/helpers/application-health.sh
 
@@ -177,8 +165,10 @@ jobs:
     needs: [DEV-health-check]
     steps:
 
+      # Checkout Repository
       - uses: actions/checkout@v2
 
+      # Login to BC Gov Openshift (DPIA DEV Namespace)
       - name: Cluster Login
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -187,391 +177,372 @@ jobs:
           cmd: |
             'version'
 
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-
-      - name: Read JSON File - hash value
-        id: json-file-hash
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-          
-      - name: Read JSON File - previous deployment hash
-        id: json-file-previous-deploy
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'dc_name'
-
-      - name: Set Commit Hash Value and Previous Deploy Name to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
-          echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
-
-      - name: Cleanup Previous Deployment Config
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous deployment pod objects
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          OBJECT_NAME: "${{ env.previous_deploy_name }}"
         run: |
-          ./.github/helpers/cleanup.sh
+          ./.github/helpers/cleanup-pods.sh
 
-  TEST-tag-dpia-api-image:
-    environment: API-Test
-    runs-on: ubuntu-latest
-    needs: [DEV-cleanup]
-    steps:
-    
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        
-      - name: Cluster Login -> TOOLS Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
-            
-      - name: Login to Openshift Docker
-        run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
-        
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-          
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-          
-      - name: Set Commit Hash Value and Previous Deploy Name to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
-          echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
-        
-      - name: Update tag for Imagestream
-        env:
-          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-api"
-          HASH_IMAGE: "${{ env.pull_request_hash }}"
-          ENVIRONMENT: "test"
-        run: |
-          ./.github/helpers/tag-imagestream.sh
-          
-  TEST-deploy:
-    environment: API-Test
-    runs-on: ubuntu-latest
-    needs: [TEST-tag-dpia-api-image]
-    steps:
-      
-      - name: Checkout Repository
-        uses: actions/checkout@v2 
-        
-      - name: Cluster Login -> TEST Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
-        
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-          
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-          
-      - name: Set Commit Hash Value to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-      
-      - name: Process and Apply API DeploymentConfig, Service, Route templates
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous replication controller objects
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "api-dc-template.yaml"
-          SERVICE_TEMPLATE: "api-service-template.yaml"
-          ROUTE_TEMPLATE: "api-route-template.yaml"
-          DIR: "api"
-          IMAGE_TAG: ${{ env.pull_request_hash }}
         run: |
-          ./.github/helpers/deploy.sh 
-          
-  TEST-health-check:
-    runs-on: ubuntu-latest
-    environment: API-Test
-    needs: [TEST-deploy]
-    steps:
-    
-      - uses: actions/checkout@v2
-    
-      - name: Cluster Login
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+          ./.github/helpers/cleanup-rc.sh
 
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-          
-      - name: Read JSON File
-        id: json-file-hash
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-          
-      - name: Set Commit Hash Value to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+  # TEST-tag-dpia-api-image:
+  #   environment: API-Test
+  #   runs-on: ubuntu-latest
+  #   needs: [DEV-cleanup]
+  #   steps:
+    
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+        
+  #     - name: Cluster Login -> TOOLS Namespace
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
             
-      - name: Health Check TEST deployment
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          IMAGE_TAG: "${{ env.pull_request_hash }}"
-        run: |
-          ./.github/helpers/application-health.sh
-
-  TEST-cleanup:
-    runs-on: ubuntu-latest
-    environment: API-Test
-    needs: [TEST-health-check]
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Cluster Login
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
-
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-
-      - name: Read JSON File - hash value
-        id: json-file-hash
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
+  #     - name: Login to Openshift Docker
+  #       run : |
+  #         docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+        
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-deploy.json
           
-      - name: Read JSON File - previous deployment hash
-        id: json-file-previous-deploy
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'dc_name'
-
-      - name: Set Commit Hash Value and Previous Deploy Name to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-          dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
-          echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
-
-      - name: Cleanup Previous Deployment Config
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
-          OBJECT_NAME: "${{ env.previous_deploy_name }}"
-        run: |
-          ./.github/helpers/cleanup.sh
+  #     - name: Read JSON File
+  #       id: json-file
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'hash'
+          
+  #     - name: Set Commit Hash Value and Previous Deploy Name to Environment
+  #       run: |
+  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+  #         dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
+  #         echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
+        
+  #     - name: Update tag for Imagestream
+  #       env:
+  #         TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+  #         DPIA_COMPONENT: "dpia-api"
+  #         HASH_IMAGE: "${{ env.pull_request_hash }}"
+  #         ENVIRONMENT: "test"
+  #       run: |
+  #         ./.github/helpers/tag-imagestream.sh
+          
+  # TEST-deploy:
+  #   environment: API-Test
+  #   runs-on: ubuntu-latest
+  #   needs: [TEST-tag-dpia-api-image]
+  #   steps:
+      
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2 
+        
+  #     - name: Cluster Login -> TEST Namespace
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
+        
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-deploy.json
+          
+  #     - name: Read JSON File
+  #       id: json-file
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'hash'
+          
+  #     - name: Set Commit Hash Value to Environment
+  #       run: |
+  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+      
+  #     - name: Process and Apply API DeploymentConfig, Service, Route templates
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+  #         DC_TEMPLATE: "api-dc-template.yaml"
+  #         SERVICE_TEMPLATE: "api-service-template.yaml"
+  #         ROUTE_TEMPLATE: "api-route-template.yaml"
+  #         DIR: "api"
+  #         IMAGE_TAG: ${{ env.pull_request_hash }}
+  #       run: |
+  #         ./.github/helpers/deploy.sh 
+          
+  # TEST-health-check:
+  #   runs-on: ubuntu-latest
+  #   environment: API-Test
+  #   needs: [TEST-deploy]
+  #   steps:
     
-  PROD-tag-dpia-api-image:
-    environment: API-Prod
-    runs-on: ubuntu-latest
-    needs: [TEST-cleanup]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
+  #     - uses: actions/checkout@v2
+    
+  #     - name: Cluster Login
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
 
-      - name: Find Tag
-        id: tagger
-        run: |
-          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
-          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          git describe --tags --abbrev=0
-          tag=$(git describe --tags --abbrev=0)
-          echo "latest_tag=$tag" >> $GITHUB_ENV
-
-      - name: Cluster Login -> TOOLS Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
-
-      - name: Login to Openshift Docker
-        run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
-
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-deploy.json
-
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'dev-deploy.json'
-          prop_path: 'hash'
-
-      - name: Set Commit Hash Value to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
-
-      - name: Promote Test tag to Prod
-        env:
-          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-api"
-          HASH_IMAGE: "${{ env.pull_request_hash }}"
-          ENVIRONMENT: "prod"
-        run: |
-          ./.github/helpers/tag-imagestream.sh
-
-      - name: Increment Git Repo Tag Patch +1
-        env:
-          TAG: ${{ env.latest_tag }}
-          EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
-          NAME: ${{ secrets.GLOBAL_USER_NAME }}
-        run: |
-          ./.github/helpers/increment-tag.sh -p
-
-      - name: Find New Tag
-        run: |
-          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
-          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          tag_two=$(git describe --tags --abbrev=0)
-          echo "new_tag=$tag_two" >> $GITHUB_ENV
-
-      - name: Promote Prod tag to version 
-        env:
-          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-api"
-          HASH_IMAGE: "${{ env.pull_request_hash }}"
-          VERSION: "${{ env.new_tag }}"
-        run: |
-          ./.github/helpers/tag-imagestream-release.sh
-
-      - name: Create new JSON file Prod Deploy Version
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: 'prod-version.json'
-          json: '{ "version-tag":"${{ env.new_tag }}"}'
-
-      - name: Upload JSON file
-        uses: actions/upload-artifact@v3
-        with: 
-          name: prod-version.json
-          path: prod-version.json
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-deploy.json
           
-  PROD-deploy:
-    environment: API-Prod
-    runs-on: ubuntu-latest
-    needs: [PROD-tag-dpia-api-image]
-    steps:
+  #     - name: Read JSON File
+  #       id: json-file-hash
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'hash'
+          
+  #     - name: Set Commit Hash Value to Environment
+  #       run: |
+  #         commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+            
+  #     - name: Health Check TEST deployment
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+  #         IMAGE_TAG: "${{ env.pull_request_hash }}"
+  #       run: |
+  #         ./.github/helpers/application-health.sh
 
-      - name: Checkout Repository
-        uses: actions/checkout@v2 
+  # TEST-cleanup:
+  #   runs-on: ubuntu-latest
+  #   environment: API-Test
+  #   needs: [TEST-health-check]
+  #   steps:
 
-      - name: Cluster Login -> PROD Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+  #     - uses: actions/checkout@v2
 
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: prod-version.json
+  #     - name: Cluster Login
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
 
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'prod-version.json'
-          prop_path: 'version-tag'
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-deploy.json
 
-      - name: Set Commit Hash Value to Environment
-        run: |
-          version_tag=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "image_tag=$version_tag" >> $GITHUB_ENV
+  #     - name: Read JSON File - hash value
+  #       id: json-file-hash
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'hash'
+          
+  #     - name: Read JSON File - previous deployment hash
+  #       id: json-file-previous-deploy
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'dc_name'
 
-      - name: Deploy to PROD
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: api-dc-template-prod.yaml
-          IMAGE_TAG: ${{ env.image_tag }}
-          DIR: "api"
-        run: |
-          ./.github/helpers/deploy-prod.sh 
+  #     - name: Set Commit Hash Value and Previous Deploy Name to Environment
+  #       run: |
+  #         commit_hash=$(echo ${{ steps.json-file-hash.outputs.prop }})
+  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+  #         dc_name=$(echo ${{ steps.json-file-previous-deploy.outputs.prop }})
+  #         echo "previous_deploy_name=$dc_name" >> $GITHUB_ENV
+
+  #     - name: Cleanup Previous Deployment Config
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+  #         OBJECT_NAME: "${{ env.previous_deploy_name }}"
+  #       run: |
+  #         ./.github/helpers/cleanup.sh
+    
+  # PROD-tag-dpia-api-image:
+  #   environment: API-Prod
+  #   runs-on: ubuntu-latest
+  #   needs: [TEST-cleanup]
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+  #       with: 
+  #         fetch-depth: 0
+
+  #     - name: Find Tag
+  #       id: tagger
+  #       run: |
+  #         git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+  #         git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+  #         git describe --tags --abbrev=0
+  #         tag=$(git describe --tags --abbrev=0)
+  #         echo "latest_tag=$tag" >> $GITHUB_ENV
+
+  #     - name: Cluster Login -> TOOLS Namespace
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
+
+  #     - name: Login to Openshift Docker
+  #       run : |
+  #         docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-deploy.json
+
+  #     - name: Read JSON File
+  #       id: json-file
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'dev-deploy.json'
+  #         prop_path: 'hash'
+
+  #     - name: Set Commit Hash Value to Environment
+  #       run: |
+  #         commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+  #         echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+
+  #     - name: Promote Test tag to Prod
+  #       env:
+  #         TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+  #         DPIA_COMPONENT: "dpia-api"
+  #         HASH_IMAGE: "${{ env.pull_request_hash }}"
+  #         ENVIRONMENT: "prod"
+  #       run: |
+  #         ./.github/helpers/tag-imagestream.sh
+
+  #     - name: Increment Git Repo Tag Patch +1
+  #       env:
+  #         TAG: ${{ env.latest_tag }}
+  #         EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
+  #         NAME: ${{ secrets.GLOBAL_USER_NAME }}
+  #       run: |
+  #         ./.github/helpers/increment-tag.sh -p
+
+  #     - name: Find New Tag
+  #       run: |
+  #         git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+  #         git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+  #         tag_two=$(git describe --tags --abbrev=0)
+  #         echo "new_tag=$tag_two" >> $GITHUB_ENV
+
+  #     - name: Promote Prod tag to version 
+  #       env:
+  #         TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+  #         DPIA_COMPONENT: "dpia-api"
+  #         HASH_IMAGE: "${{ env.pull_request_hash }}"
+  #         VERSION: "${{ env.new_tag }}"
+  #       run: |
+  #         ./.github/helpers/tag-imagestream-release.sh
+
+  #     - name: Create new JSON file Prod Deploy Version
+  #       id: create-json
+  #       uses: jsdaniell/create-json@1.1.2
+  #       with:
+  #         name: 'prod-version.json'
+  #         json: '{ "version-tag":"${{ env.new_tag }}"}'
+
+  #     - name: Upload JSON file
+  #       uses: actions/upload-artifact@v3
+  #       with: 
+  #         name: prod-version.json
+  #         path: prod-version.json
+          
+  # PROD-deploy:
+  #   environment: API-Prod
+  #   runs-on: ubuntu-latest
+  #   needs: [PROD-tag-dpia-api-image]
+  #   steps:
+
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2 
+
+  #     - name: Cluster Login -> PROD Namespace
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
+
+  #     - name: Download JSON artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: prod-version.json
+
+  #     - name: Read JSON File
+  #       id: json-file
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'prod-version.json'
+  #         prop_path: 'version-tag'
+
+  #     - name: Set Commit Hash Value to Environment
+  #       run: |
+  #         version_tag=$(echo ${{ steps.json-file.outputs.prop }})
+  #         echo "image_tag=$version_tag" >> $GITHUB_ENV
+
+  #     - name: Deploy to PROD
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+  #         DC_TEMPLATE: api-dc-template-prod.yaml
+  #         IMAGE_TAG: ${{ env.image_tag }}
+  #         DIR: "api"
+  #       run: |
+  #         ./.github/helpers/deploy-prod.sh 
   
-  PROD-health-check:
-    runs-on: ubuntu-latest
-    environment:
-      name: API-Prod
-      url: https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs
-    needs: [PROD-deploy]
-    steps:
+  # PROD-health-check:
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: API-Prod
+  #     url: https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs
+  #   needs: [PROD-deploy]
+  #   steps:
     
-      - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v2
     
-      - name: Cluster Login
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+  #     - name: Cluster Login
+  #       uses: redhat-developer/openshift-actions@v1.1
+  #       with:
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+  #         cmd: |
+  #           'version'
             
-      - name: Health Check PROD deployment
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-        run: |
-          ./.github/helpers/application-health.sh
+  #     - name: Health Check PROD deployment
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+  #         APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+  #       run: |
+  #         ./.github/helpers/application-health.sh
