@@ -452,7 +452,7 @@ jobs:
         env:
           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
           DPIA_COMPONENT: "dpia-api"
-          HHASH_SRC: "${{ env.pull_request_hash }}-prod"
+          HASH_SRC: "${{ env.pull_request_hash }}-prod"
           HASH_DEST: "${{ env.new_tag}}"
         run: |
           ./.github/helpers/tag-imagestream.sh
