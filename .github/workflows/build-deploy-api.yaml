@@ -123,7 +123,7 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "api-dc-template-prod.yaml"
+          DC_TEMPLATE: "api-dc-template.yaml"
           SERVICE_TEMPLATE: "api-service-template.yaml"
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
