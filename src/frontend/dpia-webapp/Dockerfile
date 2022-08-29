@@ -1,32 +1,18 @@
-#############################################################################################
-###                                 BUILD ARTIFACT                                        ###
-#############################################################################################
-FROM node:lts-alpine as build
-WORKDIR /usr/src/src/frontend/dpia-webapp
+FROM nginx/unit:1.27.0-node16
+
+EXPOSE 8080
+
+WORKDIR /usr/app
 
 # Copy in build artifacts, build project dependencies
 COPY src/frontend/dpia-webapp/package*.json ./
 RUN npm install -g sass
 RUN npm install
-RUN apk update && apk add make
+RUN apt-get update && apt install make
 COPY src/frontend/dpia-webapp/. .
 RUN make compile
 
-#############################################################################################
-###                                 PRODUCTION IMAGE                                      ###
-#############################################################################################
-FROM nginx:stable-alpine as production
+#RUN unitd --control 127.0.0.1:8224
 
-# Remove default static NGINX files
-RUN rm /usr/share/nginx/html/*
-COPY --from=build /usr/src/src/frontend/dpia-webapp /usr/share/nginx/html
-
-# Copy project specific NGINX config file
-COPY src/frontend/dpia-webapp/nginx.conf /etc/nginx/conf.d/default.conf
-
-#Elevate!
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
-RUN chmod g+rwx /usr/share/nginx/html
-
-# Run NGINX
-CMD ["nginx", "-g", "daemon off;"]  
+CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:8080", "--log", "/usr/app/unit.log"]
+#CMD ["curl", "-X", "PUT", "-d@/usr/app/unitd-conf.json", "0.0.0.0:8080/config"]

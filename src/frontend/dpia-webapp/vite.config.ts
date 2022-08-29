@@ -24,6 +24,7 @@ export default defineConfig({
 	entryFileNames: "[name].js"
       },
     },
+    outDir: 'dist/entry/builds/js/'
     },
 });
 

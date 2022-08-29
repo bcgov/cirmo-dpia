@@ -9,7 +9,7 @@
     <h1>Hello British Columbia</h1>
   </div>
   <div class="other">
-	  <a href="/app/public/login/">Login</a>
+	  <a href="/login/">Login</a>
   <!--
     This place is for anything that needs to be right aligned
     beside the logo.

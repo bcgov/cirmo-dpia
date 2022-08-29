@@ -3,7 +3,7 @@
 	<head>
 <link rel="stylesheet" type="text/css" href="/builds/css/public-pid.css"  integrity="1" />
 	</head>
-	{% include '../../common/template/header.html' %}
+	{% include '../../common/template/header.nj' %}
  <div>
  <div class="spacer"></div>
  <div class="wrapper main-content">
@@ -27,6 +27,6 @@
 		<bcgov-pid-public>
 		</bc-gov-pid-public> 	
  </div> 
-	{% include '../../common/template/footer.html' %}
-	 <script src="/dist/public_pid.js" integrity='1'></script> 
+	{% include '../../common/template/footer.nj' %}
+	 <script src="/builds/js/public_pid.js" integrity='1'></script> 
 </html>

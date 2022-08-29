@@ -1,0 +1,15 @@
+{
+		"listeners": {
+			"*:8400": {
+				"application": "node",
+				"pass": "applications/node"
+			} 
+		},
+		"applications": {
+           "node":{
+                "type": "external",
+                "working_directory": "/usr/app/dist/entry",
+                "executable": "main.js"
+		}
+	}
+}

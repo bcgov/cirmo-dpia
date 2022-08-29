@@ -1,6 +1,6 @@
 <html>
 	{% include '../../common/template/head.nj' %}
-	{% include '../../common/template/header.html' %}
+	{% include '../../common/template/header.nj' %}
  <div class="wrapper">
  <div class="spacer"></div>
 	<div class="">
@@ -30,11 +30,11 @@
 	  </div>	
 	</div>	
 	<div>
-		<a href="/app/public/pid/">
+		<a href="/pid">
 		  <button class="btn btn-primary BC-Gov-PrimaryButton">View PID</button></a>
 	</div>
 	<div class="divider"></div>
   </div>	
 </div>
-	{% include '../../common/template/footer.html' %}
+	{% include '../../common/template/footer.nj' %}
 </html>
