@@ -15,7 +15,7 @@ init:
 	chmod +x dist/entry/main.js
 	cp route.json dist/app/config/
 	cp -r assets dist/entry/
-	cp favicon.png dist/entry/
+#	cp favicon.png dist/entry/
 
 .PHONY: init
 

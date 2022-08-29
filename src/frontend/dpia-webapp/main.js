@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/local/bin/env node
 /*
  *   Documentation link:https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 */

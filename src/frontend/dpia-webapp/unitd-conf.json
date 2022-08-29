@@ -3,15 +3,12 @@
 			"*:8400": {
 				"application": "node",
 				"pass": "applications/node"
-			},
-            "127.0.0.1:8080": {
-                "pass": "routes"
-            }
+			} 
 		},
 		"applications": {
            "node":{
                 "type": "external",
-                "working_directory": "/home/anthony/workspace/cirmo-dpia/src/frontend/dpia-webapp/dist/entry/",
+                "working_directory": "/usr/app/dist/entry",
                 "executable": "main.js"
 		}
 	}
