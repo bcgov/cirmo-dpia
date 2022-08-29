@@ -3,7 +3,7 @@
  * Email: anthony.shivakumar@gov.bc.ca
  *
  * This file converts a high level view of our files 
- * in route.json and transforms it into a folder 
+ * in config.json and transforms it into a folder 
  * structure.
  *
  * To add files or folder, edit the .json file
@@ -16,16 +16,24 @@
 
 import nunjucks from 'nunjucks'
 import fs from 'fs'
-import routes_info  from './route.json' assert {type:'json'}
+import routes_info  from './config.json' assert {type:'json'}
 
 /* 
  * Loop throught public and private and generate htmk code 
  */
  var public_page  = routes_info.public; 
  var private_page  = routes_info.private; 
+ var generate_folder = 'dist/' 
+
+process.argv.forEach(function (val, index, array) {
+ if (val == 'production') {
+    console.log("Building for production")
+ }   
+});
 
 public_page.hierarchy.forEach(function(value, index) {
-	var path = value.path;
+	var read_path =  value.path;
+	var write_path = 'dist/' + value.path;
 	console.log(value);
 	if (!value.hasOwnProperty('controller')) {
 		return;
@@ -43,8 +51,13 @@ public_page.hierarchy.forEach(function(value, index) {
 			var views = Object.keys(value.controller[controller].action[action].view);
 			views.forEach(function(view) {
 				var title = value.controller[controller].action[action].view[view].title;
-				var res = nunjucks.render(path + view + '.nj', {title: title } );
-				fs.writeFile(path + view +'.html', res, (err) => {
+				var res = nunjucks.render(read_path + view + '.nj', {title: title } );
+                
+                fs.mkdirSync(write_path + view, { recursive: true }, (err) => {
+                  if (err) throw err;
+                });
+				
+                fs.writeFile(write_path + view +'.html', res, (err) => {
 				  if (err)
 				    console.log(err);
 				  else {

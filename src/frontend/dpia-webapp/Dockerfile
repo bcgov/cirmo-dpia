@@ -15,7 +15,8 @@ RUN make compile
 #############################################################################################
 ###                                 PRODUCTION IMAGE                                      ###
 #############################################################################################
-FROM nginx:stable-alpine as production
+#FROM nginx:stable-alpine as production
+FROM nginx/unit:1.27.0-node16 as production
 
 # Remove default static NGINX files
 RUN rm /usr/share/nginx/html/*
