@@ -1,5 +1,7 @@
 FROM nginx/unit:1.27.0-node16
 
+USER unit
+
 # EXPOSE 8080
 # EXPOSE 8400
 
