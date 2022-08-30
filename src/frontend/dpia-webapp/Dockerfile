@@ -78,7 +78,12 @@ ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
+
+#FROM nginx/unit:1.27.0-node16
+
 EXPOSE 8080
+
+WORKDIR /usr/app
 
 # Copy in build artifacts, build project dependencies
 COPY src/frontend/dpia-webapp/package*.json ./
@@ -88,5 +93,12 @@ RUN apt-get update && apt install make
 COPY src/frontend/dpia-webapp/. .
 RUN make compile
 COPY src/frontend/dpia-webapp/unitd-conf.json /docker-entrypoint.d/
+#RUN unitd --control 127.0.0.1:8224
 
 CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock", "--log", "/usr/app/unit.log"]
+#CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:8400", "--log", "/usr/app/unit.log"]
+#CMD ["service", "unit", "restart"]
+#CMD ["curl", "-X", "PUT", "-d@/usr/app/unitd-conf.json", "0.0.0.0:8080/config"]
+#RUN unitd --no-daemon --control 0.0.0.0:8400 --log /usr/app/unit.log
+# RUN curl -X PUT -d@/usr/app/unitd-conf.json 0.0.0.0:8400/config
+#CMD ["bash"]
