@@ -1,17 +1,11 @@
 FROM nginx/unit:1.27.0-node16
 
-WORKDIR /usr/app
-
-RUN chown -R nginx:nginx && \
-    chown -R 755 /usr/app && \
-    chown -R nginx:nginx /var/lib/unit/certs/
-
-USER nginx
+USER unit
 
 # EXPOSE 8080
 # EXPOSE 8400
 
-
+# WORKDIR /usr/app
 
 # # Copy in build artifacts, build project dependencies
 # COPY src/frontend/dpia-webapp/package*.json ./
