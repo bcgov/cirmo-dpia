@@ -1,6 +1,6 @@
 {
 		"listeners": {
-			"*:8400": {
+			"*:8080": {
 				"application": "node",
 				"pass": "applications/node"
 			} 
