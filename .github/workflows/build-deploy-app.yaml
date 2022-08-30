@@ -55,7 +55,7 @@ jobs:
       # Build the DPIA Frontend Application Image via docker-compose
       - name: Build the Docker image
         run: |
-          docker-compose build dpia-webapp
+          sudo docker-compose build dpia-webapp
       
       # TROUBLESHOOTING - view images present in github action run
       - name: Docker List Images
