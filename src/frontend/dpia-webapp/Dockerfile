@@ -72,6 +72,7 @@ RUN set -x \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && rm -f /requirements.apt \
     && ln -sf /dev/stdout /var/log/unit.log
+    && apt-get install -y sudo
 
 STOPSIGNAL SIGTERM
 
