@@ -71,7 +71,7 @@ RUN set -x \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && rm -f /requirements.apt \
     && ln -sf /dev/stdout /var/log/unit.log
-USER unit
+USER root
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
@@ -80,7 +80,7 @@ CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
 
 #FROM nginx/unit:1.27.0-node16
-USER root
+
 EXPOSE 8080
 
 WORKDIR /usr/app
