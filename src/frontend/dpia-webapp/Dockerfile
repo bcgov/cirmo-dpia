@@ -95,6 +95,7 @@ COPY src/frontend/dpia-webapp/. .
 RUN make compile
 COPY src/frontend/dpia-webapp/unitd-conf.json /docker-entrypoint.d/
 RUN chown unit:unit /usr/sbin/unitd
+RUN chmod g+rwx /usr/sbin/unitd
 #RUN unitd --control 127.0.0.1:8224
 
 #CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock", "--log", "/usr/app/unit.log"]
