@@ -78,7 +78,7 @@ RUN set -x \
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
-
+RUN mkdir /var/lib/unit/certs/
 CMD ["sudo", "unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
 
