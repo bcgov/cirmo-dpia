@@ -2,7 +2,7 @@ FROM node:16 as BUILDER
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-USER unit:unit
+USER root
 
 RUN set -ex \
     && apt-get update \
@@ -42,7 +42,7 @@ RUN set -ex \
     && make -j $NCPU node node-install libunit-install \
     && ldd /usr/sbin/unitd | awk '/=>/{print $(NF-1)}' | while read n; do dpkg-query -S $n; done | sed 's/^\([^:]\+\):.*$/\1/' | sort | uniq > /requirements.apt
 
-FROM node:16
+FROM node:16 as PRODUCTION
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY --from=BUILDER /usr/sbin/unitd /usr/sbin/unitd
 COPY --from=BUILDER /usr/sbin/unitd-debug /usr/sbin/unitd-debug
@@ -51,6 +51,7 @@ COPY --from=BUILDER /requirements.apt /requirements.apt
 COPY --from=BUILDER /usr/lib/*-linux-gnu/libunit.a /tmp/
 COPY --from=BUILDER /usr/include/nxt_* /usr/include/
 COPY --from=BUILDER /usr/local/lib/node_modules/unit-http/ /usr/local/lib/node_modules/unit-http/
+USER root
 RUN set -x \
     && if [ -f "/tmp/libunit.a" ]; then \
         mv /tmp/libunit.a /usr/lib/$(dpkg-architecture -q DEB_HOST_MULTIARCH)/libunit.a; \
