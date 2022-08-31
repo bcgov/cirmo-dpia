@@ -99,7 +99,7 @@ COPY src/frontend/dpia-webapp/unitd-conf.json /docker-entrypoint.d/
 #RUN unitd --control 127.0.0.1:8224
 
 #CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock", "--log", "/usr/app/unit.log"]
-CMD ["sleep", "3600"]
+CMD ["node", "/usr/app/dist/entry/main.js"]
 #CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:8400", "--log", "/usr/app/unit.log"]
 #CMD ["service", "unit", "restart"]
 #CMD ["curl", "-X", "PUT", "-d@/usr/app/unitd-conf.json", "0.0.0.0:8080/config"]
