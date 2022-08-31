@@ -2,7 +2,7 @@ FROM node:16 as BUILDER
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-USER root
+USER unit:unit
 
 RUN set -ex \
     && apt-get update \
