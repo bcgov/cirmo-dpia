@@ -21,8 +21,8 @@ RUN set -ex \
                 --pid=/var/run/unit.pid \
                 --log=/var/log/unit.log \
                 --tmp=/var/tmp \
-                --user=unit \
-                --group=unit \
+                --user=root \
+                --group=root \
                 --openssl \
                 --libdir=/usr/lib/$DEB_HOST_MULTIARCH" \
     && ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modules=/usr/lib/unit/debug-modules --debug \
