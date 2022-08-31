@@ -2,6 +2,8 @@ FROM node:16 as BUILDER
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
+USER unit:unit
+
 RUN set -ex \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates mercurial build-essential libssl-dev libpcre2-dev \
@@ -80,7 +82,7 @@ CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
 
 #FROM nginx/unit:1.27.0-node16
-USER root
+
 EXPOSE 8080
 
 WORKDIR /usr/app
