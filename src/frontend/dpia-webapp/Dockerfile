@@ -2,8 +2,6 @@ FROM node:16 as BUILDER
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-USER root
-
 RUN set -ex \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates mercurial build-essential libssl-dev libpcre2-dev \
@@ -51,7 +49,6 @@ COPY --from=BUILDER /requirements.apt /requirements.apt
 COPY --from=BUILDER /usr/lib/*-linux-gnu/libunit.a /tmp/
 COPY --from=BUILDER /usr/include/nxt_* /usr/include/
 COPY --from=BUILDER /usr/local/lib/node_modules/unit-http/ /usr/local/lib/node_modules/unit-http/
-USER root
 RUN set -x \
     && if [ -f "/tmp/libunit.a" ]; then \
         mv /tmp/libunit.a /usr/lib/$(dpkg-architecture -q DEB_HOST_MULTIARCH)/libunit.a; \
@@ -68,6 +65,7 @@ RUN set -x \
          --home /nonexistent \
          --gecos "unit user" \
          --shell /bin/false \
+         --disabled-password \
          unit \
     && apt update \
     && apt --no-install-recommends --no-install-suggests -y install curl $(cat /requirements.apt) \
@@ -99,7 +97,7 @@ COPY src/frontend/dpia-webapp/unitd-conf.json /docker-entrypoint.d/
 #RUN unitd --control 127.0.0.1:8224
 
 #CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock", "--log", "/usr/app/unit.log"]
-CMD ["node", "/usr/app/dist/entry/main.js"]
+CMD ["sleep", "3600"]
 #CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:8400", "--log", "/usr/app/unit.log"]
 #CMD ["service", "unit", "restart"]
 #CMD ["curl", "-X", "PUT", "-d@/usr/app/unitd-conf.json", "0.0.0.0:8080/config"]
