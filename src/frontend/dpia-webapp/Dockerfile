@@ -71,7 +71,7 @@ RUN set -x \
     && apt --no-install-recommends --no-install-suggests -y install curl $(cat /requirements.apt) \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && rm -f /requirements.apt \
-    && ln -sf /dev/stdout /var/log/unit.log
+    && ln -sf /dev/stdout /var/log/unit.log \
     && apt-get install -y sudo
 
 STOPSIGNAL SIGTERM
