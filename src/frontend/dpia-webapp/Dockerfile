@@ -2,6 +2,8 @@ FROM node:16 as BUILDER
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
+USER root
+
 RUN set -ex \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates mercurial build-essential libssl-dev libpcre2-dev \
@@ -71,7 +73,7 @@ RUN set -x \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && rm -f /requirements.apt \
     && ln -sf /dev/stdout /var/log/unit.log
-USER root
+
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
