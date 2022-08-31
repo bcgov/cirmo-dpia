@@ -19,8 +19,8 @@ RUN set -ex \
                 --pid=/var/run/unit.pid \
                 --log=/var/log/unit.log \
                 --tmp=/var/tmp \
-                --user=unit \
-                --group=unit \
+                --user=root \
+                --group=root \
                 --openssl \
                 --libdir=/usr/lib/$DEB_HOST_MULTIARCH" \
     && ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modules=/usr/lib/unit/debug-modules --debug \
@@ -72,11 +72,12 @@ RUN set -x \
     && rm -f /requirements.apt \
     && ln -sf /dev/stdout /var/log/unit.log
 
+USER root
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
 
-CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
+CMD ["sudo" , "unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
 
 #FROM nginx/unit:1.27.0-node16
