@@ -79,7 +79,7 @@ STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["bash", "/usr/local/bin/docker-entrypoint.sh"]
 
-CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
+CMD ["sudo", "unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
 
 
 #FROM nginx/unit:1.27.0-node16
