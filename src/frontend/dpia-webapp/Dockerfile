@@ -99,8 +99,8 @@ RUN chmod g+rwx /usr/sbin/unitd
 #RUN unitd --control 127.0.0.1:8224
 
 #CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock", "--log", "/usr/app/unit.log"]
-RUN sysctl kernel.unprivileged_bpf_disabled=0
-RUN sysctl kernel.unprivileged_userns_clone=1
+#RUN sysctl kernel.unprivileged_bpf_disabled=0
+#RUN sysctl kernel.unprivileged_userns_clone=1
 CMD ["sleep", "3600"]
 #CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:8400", "--log", "/usr/app/unit.log"]
 #CMD ["service", "unit", "restart"]
