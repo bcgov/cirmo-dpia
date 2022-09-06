@@ -20,8 +20,8 @@ init:
 .PHONY: init
 
 compile: init
-	sass app/common/sass/common.scss dist/entry/builds/css/common-dpia.css
-	sass app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
+	sass --load-path=node_modules  app/common/sass/common.scss dist/entry/builds/css/common-dpia.css
+	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 	npm run build_dev
 	node render_nunchuck.js production
 
@@ -33,13 +33,13 @@ compile-nj:
 .PHONY: compile-nj              # Compiles numchuck .nj to .html
 
 compile-sass:	
-	sass app/common/sass/common.scss dist/entry/builds/css/common-dpia.css
-	sass app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
+	sass --load-path=node_modules app/common/sass/common.scss dist/entry/builds/css/common-dpia.css
+	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 .PHONY: compile-sass            # Compiles all SASS files .scss to .css
 
 compile-nj-sass:	
 	node render_nunchuck.js
-	sass app/common/sass/common.scss bdist/entry/uilds/css/common-dpia.css
-	sass app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
+	sass --load-path=node_modules  app/common/sass/common.scss bdist/entry/uilds/css/common-dpia.css
+	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 .PHONY: compile-nj-sass         # Compiles nunchuck and sass files only
 	
