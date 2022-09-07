@@ -23,12 +23,12 @@ compile: init
 	sass --load-path=node_modules  app/common/sass/common.scss dist/entry/builds/css/common-dpia.css
 	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 	npm run build_dev
-	node render_nunchuck.js production
+	node render_nunjucks.js production
 
 .PHONY: compile                 # Compiles all dependencies. .scss to .css, .vue to .js and route.json to file structure
 
 compile-nj:
-	node render_nunchuck.js
+	node render_nunjucks.js
 	cp main.js dist/entry/
 .PHONY: compile-nj              # Compiles numchuck .nj to .html
 
@@ -38,7 +38,7 @@ compile-sass:
 .PHONY: compile-sass            # Compiles all SASS files .scss to .css
 
 compile-nj-sass:	
-	node render_nunchuck.js
+	node render_nunjucks.js
 	sass --load-path=node_modules  app/common/sass/common.scss bdist/entry/uilds/css/common-dpia.css
 	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 .PHONY: compile-nj-sass         # Compiles nunchuck and sass files only
