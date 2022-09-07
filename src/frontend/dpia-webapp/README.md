@@ -1,46 +1,25 @@
 # dpia-webapp
 
-This template should help get you started developing with Vue 3 in Vite.
+## Frontend Architecture
+The DPIA front end will follow a modular architecture. Some call it micro-frontend architecture. The objective is to avoid a single point of failure architecture. A system with one framework or one entry point a.k.a single-page application (SPA) has a single point of failure. Long-term maintainability gets tricky as version updates, dependencies break and vulnerabilities creep in.
 
-## Recommended IDE Setup
+### How is the folder structured:
+The folder is a structure with an HMVC architecture in mind. It has an easy way to follow the code and understand how the page and routes work.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Note: Update this table as new files are added/ edited or deleted
+App - (source code)
+	| - public (public facing to the whole world)
+		|- Login
+		|- PID
+	| - private ( needs authentication to view)	
 
-## Type Support for `.vue` Imports in TS
+### How does it work 
+The source code is placed in the app folder. 
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+![High Level Build Process](wiki/assets/images/high-level-build-process.jpg?raw=true "High Level Build Process")
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+![Folder Structure](wiki/assets/images/folder-structure.jpg?raw=true "Folder Structure")
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+![Code Compile Process](wiki/assets/images/high-level-build-process.jpg?raw=true "Code Compile Process")
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+![Dist folder structure](wiki/assets/images/high-level-build-process.jpg?raw=true "Dist folder structure")
