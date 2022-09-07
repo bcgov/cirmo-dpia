@@ -27,6 +27,6 @@
     "got": ">=11.8.5",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
-    "winston": "^3.7.2"
+    "winston": "^3.8.1"
   }
 }
