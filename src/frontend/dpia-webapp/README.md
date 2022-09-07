@@ -9,6 +9,7 @@ The folder is a structure with an HMVC architecture in mind. It has an easy way 
 Note: Update this table as new files are added/ edited or deleted
 
 App - (source code)
+
 .
 ├── common
 │   ├── sass
@@ -43,8 +44,7 @@ App - (source code)
             ├── listpid.vue
             ├── main.ts
             └── searchpid.vue
-
-	
+	    
 
 ### How does it work 
 The source code is placed in the app folder. 
