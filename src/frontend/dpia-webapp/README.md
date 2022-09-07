@@ -55,13 +55,19 @@ This project uses templating engines to help write modular code.
 > **_NOTE:_**  For CSS we use SASS. 
 Since CSS by default does not have any programming logic, SASS is a tool we can use to write progammable CSS
 
-> **_NOTE:_**  For HTML we use nunjuck.
+> For HTML we use nunjuck.
 HTML does not have any programming logic. Nunjuck is an HTML template engine that helps write progammable HTML
 
-> **_NOTE:_**   For Javascript we use VUE/typescript
+> For Javascript we use VUE/typescript
 Typescript is a tool to typecheck javascript code. VUE is a tool that can help write modular Javascript code and can help add reactivity to HTML pages easily. 
 
 > It is not necessary to always use these tools. If raw css, html or javascript can do the job, by all means use the right tool for the job. 
+
+All these files must be placed in the app folder. When you run make compile, it call the necessary compilers to compile sass to css, .nj to html and .vue to js.
+
+The process of navigating the folder structure is written in a json file called config.json. The file render_nunjuck.js parses config.json and build a dist folder accordingly. It will read through the contents of config.json, know where to find all the files to compile, compile .nj files to html and store the output in the dist/app folder. 
+
+
 
 ![Folder Structure](wiki/assets/images/folder-structure.jpg?raw=true "Folder Structure")
 
