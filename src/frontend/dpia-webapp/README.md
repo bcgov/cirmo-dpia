@@ -10,40 +10,40 @@ Note: Update this table as new files are added/ edited or deleted
 
 App - (source code)
 
-.
-├── common
-│   ├── sass
-│   │   ├── _bootstrap_variables.scss
-│   │   ├── _buttons.scss
-│   │   ├── common.scss
-│   │   ├── _default.scss
-│   │   ├── _font.scss
-│   │   ├── _footer.scss
-│   │   ├── _header.scss
-│   │   ├── _login.scss
-│   │   ├── _root.scss
-│   │   └── _variables.scss
-│   └── template
-│       ├── footer.nj
-│       ├── header.nj
-│       └── head.nj
-├── private
-│   ├── dashboard
-│   ├── pia
-│   └── pid
-└── public
-    ├── login
-    │   └── index.nj
-    └── pid
-        ├── index.nj
-        ├── sass
-        │   ├── _default.scss
-        │   └── pid.scss
-        └── vue
-            ├── App.vue
-            ├── listpid.vue
-            ├── main.ts
-            └── searchpid.vue
+	.
+	├── common
+	│   ├── sass
+	│   │   ├── _bootstrap_variables.scss
+	│   │   ├── _buttons.scss
+	│   │   ├── common.scss
+	│   │   ├── _default.scss
+	│   │   ├── _font.scss
+	│   │   ├── _footer.scss
+	│   │   ├── _header.scss
+	│   │   ├── _login.scss
+	│   │   ├── _root.scss
+	│   │   └── _variables.scss
+	│   └── template
+	│       ├── footer.nj
+	│       ├── header.nj
+	│       └── head.nj
+	├── private
+	│   ├── dashboard
+	│   ├── pia
+	│   └── pid
+	└── public
+	    ├── login
+	    │   └── index.nj
+	    └── pid
+		├── index.nj
+		├── sass
+		│   ├── _default.scss
+		│   └── pid.scss
+		└── vue
+		    ├── App.vue
+		    ├── listpid.vue
+		    ├── main.ts
+		    └── searchpid.vue
 	    
 
 ### How does it work 
