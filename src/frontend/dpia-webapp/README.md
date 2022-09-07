@@ -7,8 +7,9 @@ The DPIA front end will follow a modular architecture. Some call it micro-fronte
 The folder is a structure with an HMVC architecture in mind. It has an easy way to follow the code and understand how the page and routes work.
 
 Note: Update this table as new files are added/ edited or deleted
-.
+
 App - (source code)
+.
 ├── common
 │   ├── sass
 │   │   ├── _bootstrap_variables.scss
