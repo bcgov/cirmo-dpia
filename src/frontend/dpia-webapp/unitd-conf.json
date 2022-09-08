@@ -1,14 +1,14 @@
 {
 		"listeners": {
-			"*:8080": {
-				"application": "node",
-				"pass": "applications/node"
+			"*:8090": {
+				"application": "nodejs",
+				"pass": "applications/nodejs"
 			} 
 		},
 		"applications": {
-           "node":{
+           "nodejs":{
                 "type": "external",
-                "working_directory": "/usr/app/dist/entry",
+                "working_directory": "/home/anthony/workspace/cirmo-dpia/src/frontend/dpia-webapp/dist/entry/",
                 "executable": "main.js"
 		}
 	}

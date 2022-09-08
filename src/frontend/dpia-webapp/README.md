@@ -71,11 +71,23 @@ All these files must be placed in the app folder. When you run make compile, it 
 
 The process of navigating the folder structure is written in a JSON file called config.json. The file render_nunjuck.js parses config.json and builds a dist folder accordingly. It will read through the contents of config.json, know where to find all the files to compile, compile .nj files to HTML and store the output in the dist/app folder. 
 
+### How to get started Locally
+> make run
 
+OR Manually 
+> make compile
+> cd dist/entry
+> node main.js
+
+the dist folder is where all generated files will be stored. 
+
+### The code compile Process
 ![Code Compile Process](wiki/assets/images/code-compile-process.jpg?raw=true "Code Compile Process")
 
+### The generated file - DIST
 ![Dist folder structure](wiki/assets/images/dist-folder-structure.jpg?raw=true "Dist folder structure")
 
+### Overview of the overall process
 ![Frontend Build Process](wiki/assets/images/frontend-build-proces.jpg?raw=true "Frontend Build Process")
 
 

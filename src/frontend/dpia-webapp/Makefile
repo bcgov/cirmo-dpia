@@ -42,4 +42,8 @@ compile-nj-sass:
 	sass --load-path=node_modules  app/common/sass/common.scss bdist/entry/uilds/css/common-dpia.css
 	sass --load-path=node_modules  app/public/pid/sass/pid.scss dist/entry/builds/css/public-pid.css
 .PHONY: compile-nj-sass         # Compiles nunchuck and sass files only
+
+run: compile
+	cd dist/entry/;node main.js;
+.PHONY: run         # Compiles and runs the application
 	
