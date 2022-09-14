@@ -87,6 +87,9 @@ the dist folder is where all generated files will be stored.
 ### The generated file - DIST
 ![Dist folder structure](wiki/assets/images/dist-folder-structure.jpg?raw=true "Dist folder structure")
 
+### The code generation workflow
+![Code generation workflow](wiki/assets/images/code-generation-workflow.jpg?raw=true "Code generation workflow")
+
 ### Overview of the overall process
 ![Frontend Build Process](wiki/assets/images/frontend-build-proces.jpg?raw=true "Frontend Build Process")
 
