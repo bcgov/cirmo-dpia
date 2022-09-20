@@ -14,6 +14,9 @@
         },
         "/pid": {
             "path": "../app/public/pid/index.html"
+        },
+        "/404": {
+            "path": "../app/public/404/index.html"
         }
     },
     "session": {
