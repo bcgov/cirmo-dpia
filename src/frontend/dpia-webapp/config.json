@@ -52,6 +52,26 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "404",
+				"path": "app/public/404/",
+				"controller": {
+					"404": {
+						"action": {
+							"404": {
+								"view": {
+									"index": {
+										"auth": false,
+										"frontend_framework": "vue",
+										"components": {},
+										"title": "404 - Page Not Found"
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		]
 	},

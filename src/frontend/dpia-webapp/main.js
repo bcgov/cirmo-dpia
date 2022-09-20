@@ -59,7 +59,8 @@ http.createServer((request, response) => {
 		  data = fs.readFileSync(process.cwd() + '/' +  url_stripped, 'utf8');
         } catch (err) {
             //console.log('Error - Page not found');
-            data = 'Page not Found';
+          data = fs.readFileSync(public_session['/404'].path, 'utf8');
+          type = 'text/html'
         } 
     }
   let body = [];
