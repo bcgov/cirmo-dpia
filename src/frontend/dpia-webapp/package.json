@@ -4,29 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "builds": "tsc -p tsconfig.json",
-    "start": "node index.js",
-    "start_fs": "fastify start -l info test_fastify.js",
-    "dev_fs": "fastify start -w -l info -P test_fastify.js",
-    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "build_dev": "vue-tsc --noEmit && vite build -m development",
-    "preview": "vite preview"
+    "build_dev": "vue-tsc --noEmit && vite build -m development"
   },
   "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/autoload": "^5.0.0",
-    "@fastify/sensible": "^4.1.0",
-    "@fastify/view": "^7.0.0",
     "axios": "^0.27.2",
     "babel-loader": "^8.2.5",
-    "fastify": "^4.3.0",
-    "fastify-cli": "^4.4.0",
-    "fastify-cors": "^6.1.0",
-    "fastify-plugin": "^3.0.0",
+    "breakpoint-sass": "^3.0.0",
     "nunjucks": "^3.2.3",
     "point-of-view": "^6.3.0",
     "vue": "^3.2.37",
@@ -43,7 +30,6 @@
     "eslint-plugin-vue": "^9.0.0",
     "typescript": "^4.7.4",
     "vite": "^3.0.4",
-    "vue-tsc": "^0.39.4",
-    "webpack-cli": "^4.10.0"
+    "vue-tsc": "^0.39.4"
   }
 }
