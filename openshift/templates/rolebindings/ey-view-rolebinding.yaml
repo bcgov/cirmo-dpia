@@ -27,7 +27,7 @@ objects:
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
-    name: edit
+    name: view
 
 parameters:
   - description: Application Name
