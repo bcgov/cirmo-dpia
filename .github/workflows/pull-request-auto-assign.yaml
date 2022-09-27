@@ -14,4 +14,4 @@ jobs:
         uses: delivery-much/actions-assigner@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          reviewers: akroon3r,antsand,will-freshworks,binggaofw,kushal-arora-fw
+          reviewers: akroon3r,antsand,will-freshworks,binggaofw,kushal-arora-fw,bottle7
