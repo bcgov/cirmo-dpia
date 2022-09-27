@@ -1,0 +1,41 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-subcontractor-rolebinding-template
+labels:
+  template: ${APPLICATION_NAME}-subcontractor-rolebinding-template
+objects:
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: citz-imb-developers-edit
+    namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+    labels:
+      devops.gov.bc.ca/argocd-app: ${LICENSE_PLATE}
+      environment: ${ENVIRONMENT}
+      name: ${LICENSE_PLATE}
+  subjects:
+    - apiGroup: rbac.authorization.k8s.io
+      kind: User
+      name: bottle7@github
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edit
+  
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
+    required: true
+    value: b996e6
