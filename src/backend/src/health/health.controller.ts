@@ -1,23 +1,19 @@
-
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import {
   HealthCheckService,
   HttpHealthIndicator,
   HealthCheck,
 } from '@nestjs/terminus';
-
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 @Controller('health')
 export class HealthController {
-  constructor(
-    private health: HealthCheckService,
-    private http: HttpHealthIndicator,
-  ) {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  constructor() {}
 
   @Get()
   @HealthCheck()
-  check() {
-    return this.health.check([
-      () => this.http.pingCheck('dpia-web', 'http://localhost:3000/api'),
-    ]);
+  @ApiExcludeEndpoint()
+  async check() {
+    return HttpStatus.OK;
   }
 }
