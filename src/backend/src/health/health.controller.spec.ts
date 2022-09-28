@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
 
@@ -14,5 +15,6 @@ describe('HealthController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(controller.check()).toEqual(HttpStatus.OK);
   });
 });
