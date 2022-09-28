@@ -17,7 +17,7 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.http.pingCheck('dpia-web', 'http://localhost:3000'),
+      () => this.http.pingCheck('dpia-web', 'http://localhost:3000/api'),
     ]);
   }
 }

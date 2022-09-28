@@ -1,11 +1,16 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import 'dotenv/config';
+
+import { createNestApp } from './app.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
 
-  // Starts listening for shutdown hooks
+  // Initialize the Express based Nest application
+  const { app } = await createNestApp();
+  await app.init();
+
+   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
-  await app.listen(3000);
+  // App listen to a port
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();

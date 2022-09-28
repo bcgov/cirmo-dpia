@@ -14,9 +14,43 @@ src/backend/.env
 src/backend/dist
 
 ###############################################################################
+##                                  Node Modules                             ##
+###############################################################################
+src/frontend/node_modules
+src/backend/node_modules
+
+
+###############################################################################
 ##                                  Web App                                  ##
 ###############################################################################
+# Logs
+src/frontend/logs
+src/frontend/*.log
+src/frontend/npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.scssc
+
+###############################################################################
+##           ** Delete when commom code is ported                            ##
+###############################################################################
 src/frontend/dpia-webapp/node_modules
 src/frontend/dpia-webapp/builds/css/*
 
