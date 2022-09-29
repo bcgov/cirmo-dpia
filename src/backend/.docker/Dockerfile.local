@@ -1,0 +1,14 @@
+FROM node:18.9-alpine
+
+# Create an app directory
+WORKDIR /usr/src/app
+
+# Install Project Specific Dependencies
+COPY src/backend/package*.json ./
+RUN npm ci
+
+# Note: contents of the backend folder to be mounted as volume to /usr/src/app for hot reloading
+
+# Expose port and run app in watch mode
+EXPOSE 3000
+CMD ["npm",  "run", "start:dev"]

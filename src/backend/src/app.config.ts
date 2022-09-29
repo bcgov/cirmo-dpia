@@ -32,12 +32,11 @@ export async function createNestApp(): Promise<{
   // append request logs
   app.use(morgan('tiny'));
 
+  // Assign global prefix to all endpoints
   app.setGlobalPrefix('/api');
 
-  // Enable Swagger for non prod environment
-  if (process.env.NODE_ENV !== 'production') {
-    SwaggerDocs(app);
-  }
+  // Enable Swagger
+  SwaggerDocs(app);
 
   return {
     app,
