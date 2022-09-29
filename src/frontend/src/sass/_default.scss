@@ -1,7 +1,7 @@
 body {
 	min-height: 100vh;
-position: relative;
-
+	position: relative;
+	font-family: $font-family;
 }
 
 .spacer {
@@ -22,7 +22,7 @@ position: relative;
 }
 
 .color-blue {
-	color:$blue;
+	color:$bc-blue;
 }
 
 .display-flex {

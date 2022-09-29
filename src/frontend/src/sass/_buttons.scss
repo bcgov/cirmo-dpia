@@ -1,19 +1,15 @@
-.btn-primary {
-	background-color: $blue;
-}
-
 a {
 	font-size: 14px;
-	color: $lightblue;
+	color: $bc-lightblue;
 	text-decoration:none;
 }
 
 a:hover {
-	color: $blue;
+	color: $bc-blue;
 }
 
-.BC-Gov-PrimaryButton {
-    background-color: #003366;
+.btn-primary {
+    background-color: $bc-blue;
     border: none;
     border-radius: 4px;
     color: white;
@@ -22,22 +18,25 @@ a:hover {
     text-decoration: none;
     display: block;
     font-size: 18px;
-    font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
     cursor: pointer;
 }
 
-.BC-Gov-PrimaryButton:hover {
+.btn-primary:hover {
   text-decoration: underline;
   opacity: 0.80;
 }
 
 :focus {
-  outline: 4px solid #3B99FC;
+  outline: 4px solid $bc-lightblue;
   outline-offset: 1px;
 }
 
-.BC-Gov-PrimaryButton:active {
+.btn-primary:active {
   opacity: 1;
+}
+
+.btn-bordered {
+  border: 2px solid $bg-color;
 }
