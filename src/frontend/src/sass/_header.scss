@@ -18,13 +18,16 @@ header {
    }	  
 }
 
-
-
 header h1 {
   font-family: $font-family;
   font-weight: normal;  /* 400 */
   margin: 5px 5px 0 18px;
-  visibility: hidden;
+
+  span {
+    color: $bc-yellow;
+    vertical-align: super;
+    font-weight: inherit;
+  }
 }
 
 header .banner {
