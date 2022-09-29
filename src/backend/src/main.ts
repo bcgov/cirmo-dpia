@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import 'dotenv/config';
 
 import { createNestApp } from './app.config';
@@ -8,6 +9,10 @@ async function bootstrap() {
   await app.init();
 
   // App listen to a port
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.API_PORT, () => {
+    Logger.log(
+      `${process.env.API_NAME} is live and serving traffic on port ${process.env.API_PORT}`,
+    );
+  });
 }
 bootstrap();
