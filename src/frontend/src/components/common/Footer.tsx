@@ -2,16 +2,16 @@ import React from 'react'
 
 function Footer() {
   return (
-    <div>
+    <footer>
         <ul>
-            <li>Home</li>
-            <li>About gov.bc.ca</li>
-            <li>Disclaimer</li>
-            <li>Accessibility</li>
-            <li>Copyright</li>
-            <li>Contact us</li>
+            <li><a>Home</a></li>
+            <li><a>About gov.bc.ca</a></li>
+            <li><a>Disclaimer</a></li>
+            <li><a>Accessiblility</a></li>
+            <li><a>Copyright</a></li>
+            <li><a>Contact us</a></li>
         </ul>
-    </div>
+    </footer>
   )
 }
 

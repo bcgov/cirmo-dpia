@@ -3,8 +3,8 @@
 }
 
 header {
-  background-color: #036;
-  border-bottom: 2px solid #fcba19;
+  background-color: $bc-blue;
+  border-bottom: 2px solid $bc-yellow;
   padding: 0 65px 0 65px;
   color: #fff;
   display: flex;
@@ -21,7 +21,7 @@ header {
 
 
 header h1 {
-  font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
+  font-family: $font-family;
   font-weight: normal;  /* 400 */
   margin: 5px 5px 0 18px;
   visibility: hidden;

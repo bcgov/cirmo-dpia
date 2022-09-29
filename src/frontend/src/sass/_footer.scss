@@ -38,6 +38,10 @@ footer ul li a {
   padding-right: 5px;
 }
 
+footer ul li a:last-child {
+  border-right: none;
+}
+
 a:hover {
   color: #fff;
   text-decoration: underline;
