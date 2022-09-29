@@ -22,6 +22,10 @@ help:
 # Setup Commands
 ##############################################################################
 
+api-setup-local-env:
+	@echo "+\n++ Make: Preparing project for local environment...\n+"
+	@cp src/backend/.config/.env.local src/backend/.env
+
 api-setup-development-env:
 	@echo "+\n++ Make: Preparing project for dev environment...\n+"
 	@cp src/backend/.config/.env.dev src/backend/.env
@@ -36,7 +40,7 @@ api-setup-production-env:
 
 
 ##############################################################################
-# Docker Development
+# Docker helper commands
 ##############################################################################
 
 restart: ## Restart local docker environment (n=service name)
@@ -71,39 +75,39 @@ rebuild: ## Build the local contains (n=service name) and then start them after 
 	@make up n=$(n)
 
 ##############################################################################
-# Development environment specefic commands
+# Local environment helper commands
 ##############################################################################
 
-restart-dev: ## Restart local docker environment (n=service name)
+restart-local: ## Restart local docker environment (n=service name)
 	$(info Restart local docker environment)
-	@make stop-dev n=$(n)
-	@make up-dev n=$(n)
+	@make stop-local n=$(n)
+	@make up-local n=$(n)
 
-refresh-dev: ## Recreates local docker environment (n=service name)
+refresh-local: ## Recreates local docker environment (n=service name)
 	$(info Recreates local docker environment)
-	@make stop-dev n=$(n)
-	@make build-dev n=$(n)
-	@make up-dev n=$(n)
+	@make stop-local n=$(n)
+	@make build-local n=$(n)
+	@make up-local n=$(n)
 
-up-dev: ## Runs the local containers (n=service name)
+up-local: ## Runs the local containers (n=service name)
 	@echo "$(P) Running client and server..."
 	@docker-compose -f docker-compose.dev.yaml up -d $(n)
 
-down-dev: ## Stops the local containers and removes them
+down-local: ## Stops the local containers and removes them
 	@echo "$(P) Stopping client and server..."
 	@docker-compose -f docker-compose.dev.yaml down
 
-stop-dev: ## Stops the local containers
+stop-local: ## Stops the local containers
 	@echo "$(P) Stopping client and server..."
 	@docker-compose -f docker-compose.dev.yaml stop ${n}
 
-build-dev: ## Builds the local containers (n=service name)
+build-local: ## Builds the local containers (n=service name)
 	@echo "$(P) Building images..."
 	@docker-compose -f docker-compose.dev.yaml build --no-cache $(n)
 
-rebuild-dev: ## Build the local contains (n=service name) and then start them after building
+rebuild-local: ## Build the local contains (n=service name) and then start them after building
 	@make build n=$(n)
-	@make up-dev n=$(n)
+	@make up-local n=$(n)
 
 exec: ## Access the development workspace (n=service name)
 	@echo "Shelling into local application..."
@@ -117,69 +121,40 @@ logs: ## Access application logs (n=service name)
 # Local development commands
 ##############################################################################
 
-build-local-development:
+build-local:
 	@echo "+\n++ Building local development Docker image...\n+"
-	@make build-dev n=$(API_SERVICE)
-	@make build-dev n=$(FRONTEND_SERVICE)
-	
-build-local-production:
-	@echo "+\n++ Building local production Docker image...\n+"
-	@make build n=$(API_SERVICE)
-	@make build n=$(FRONTEND_SERVICE)
+	@make build-local n=$(API_SERVICE)
+	@make build-local n=$(FRONTEND_SERVICE)
 
-run-local-development:
+run-local:
 	@echo "+\n++ Running development container locally\n+"
-	@make up-dev n=$(API_SERVICE)
-	@make up-dev n=$(FRONTEND_SERVICE)
+	@make up-local n=$(API_SERVICE)
+	@make up-local n=$(FRONTEND_SERVICE)
 
-run-local-production:
-	@echo "+\n++ Running production container locally\n+"
-	@make up n=$(API_SERVICE)
-	@make up n=$(FRONTEND_SERVICE)
-
-restart-local-development:
+restart-local:
 	@echo "+\n++ Restart local development...\n+"
-	@make restart-dev n=$(API_SERVICE)
-	@make restart-dev n=$(FRONTEND_SERVICE)
-	
-restart-local-production:
-	@echo "+\n++ Restart local production...\n+"
-	@make restart n=$(API_SERVICE)
-	@make restart n=$(FRONTEND_SERVICE)
+	@make restart-local n=$(API_SERVICE)
+	@make restart-local n=$(FRONTEND_SERVICE)
 
-refresh-local-development:
+refresh-local:
 	@echo "+\n++ Refresh local development...\n+"
-	@make refresh-dev n=$(API_SERVICE)
-	@make refresh-dev n=$(FRONTEND_SERVICE)
-	
-refresh-local-production:
-	@echo "+\n++ Refresh local production...\n+"
-	@make refresh n=$(API_SERVICE)
-	@make refresh n=$(FRONTEND_SERVICE)
+	@make refresh-local n=$(API_SERVICE)
+	@make refresh-local n=$(FRONTEND_SERVICE)
 
-rebuild-local-development:
+rebuild-local:
 	@echo "+\n++ Rebuild local development...\n+"
-	@make rebuild-dev n=$(API_SERVICE)
-	@make rebuild-dev n=$(FRONTEND_SERVICE)
-	
-rebuild-local-production:
-	@echo "+\n++ Rebuild local production...\n+"
-	@make rebuild n=$(API_SERVICE)
-	@make rebuild n=$(FRONTEND_SERVICE)
+	@make rebuild-local n=$(API_SERVICE)
+	@make rebuild-local n=$(FRONTEND_SERVICE)
 
-close-local-development:
+close-local:
 	@echo "+\n++ Closing local development container\n+"
-	@make down-dev
+	@make down-local
 
-close-local-production:
-	@echo "+\n++ Closing local production container\n+"
-	@make down
-
-api-development-workspace:
+api-workspace:
 	@echo "Shelling into local API application..."
 	@make exec n=$(API_SERVICE)
 
-frontend-development-workspace:
+frontend-workspace:
 	@echo "Shelling into local Frontend application..."
 	@make exec n=$(FRONTEND_SERVICE)
 

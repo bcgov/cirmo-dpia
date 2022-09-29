@@ -7,7 +7,7 @@ services:
     container_name: dpia-api
     build:
       context: .
-      dockerfile: ./src/backend/.docker/Dockerfile.dev
+      dockerfile: ./src/backend/.docker/Dockerfile.local
     volumes:
       # Binds the application folder from the host inside the container enabling hot reloading
       - ./src/backend:/usr/src/app
