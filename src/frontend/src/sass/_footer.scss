@@ -1,8 +1,8 @@
 footer {
-  background-color: #036;
-  border-top: 2px solid #fcba19;
+  background-color: $bc-blue;
+  border-top: 2px solid $bc-yellow;
   color: #fff;
-  font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif; 
+  font-family: $font-family;
   /* need to test */
   position: absolute;
   bottom: 0px;
@@ -33,7 +33,7 @@ footer ul li a {
   font-size: 0.813em;
   font-weight: normal;  /* 400 */
   color: #fff;
-  border-right: 1px solid #4b5e7e;
+  border-right: 1px solid $bc-lightgray;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -44,6 +44,6 @@ a:hover {
 }
 
 :focus {
-  outline: 4px solid #3B99FC;
+  outline: 4px solid $bc-lightblue;
   outline-offset: 1px;
 }
