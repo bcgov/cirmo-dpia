@@ -9,6 +9,6 @@ RUN npm ci
 
 # Note: contents of the backend folder to be mounted as volume to /usr/src/app for hot reloading
 
-# Expose port and run app in dev - watch mode
+# Expose port and run app in watch mode
 EXPOSE 3000
 CMD ["npm",  "run", "start:dev"]
