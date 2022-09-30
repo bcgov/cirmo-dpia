@@ -17,6 +17,6 @@ export class HealthController {
   }
 
   liveness() {
-                      return HttpStatus.ACCEPTED;
+    return HttpStatus.ACCEPTED;
   }
 }
