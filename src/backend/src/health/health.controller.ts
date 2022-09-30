@@ -16,7 +16,7 @@ export class HealthController {
     return HttpStatus.OK;
   }
 
-  liveness() {
+  readness() {
     return HttpStatus.ACCEPTED;
   }
 }
