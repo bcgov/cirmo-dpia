@@ -92,8 +92,23 @@ To be filled out at a later date once the Project Stack starts to take shape.
 | Web App                   | test:unit:ci                                  |                                                       |
 | Web App                   | lint                                          |                                                       |
 
+## Prerequisites
+
+- Docker
+- Docker compose
+
+## Locally running the development app
+```bash
+$ make api-setup-local-env
+$ make run-local
+```
+
 ## Deployment
 
 ### Environments
+- local
+- development
+- staging
+- production
 
-### Github Envirnoments
+### Github Environments
