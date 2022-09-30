@@ -13,7 +13,6 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "precommit": "lint-staged",
     "prepush": "",
     "prepare": "cd ../.. && husky install src/backend/.husky",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -79,6 +78,11 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
+  "husky": {
+    "hooks": {
+        "pre-commit": "lint-staged"
+    }
+},
   "lint-staged": {
     "*.{js,ts,tsx,jsx}": [
       "lint"
