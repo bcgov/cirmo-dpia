@@ -25,6 +25,7 @@ function App() {
           count is {count}
         </button>
       </div>
+      <Footer />
     </div>
   )
 }

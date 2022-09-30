@@ -10,24 +10,36 @@ header {
   display: flex;
   height: 65px;
   top: 0px;
+  left: 0px;
   position: fixed;
   z-index:99;
   width: 100%;
+  justify-content: normal;
+  align-items: center;
+  
   .logo {
-	height: 46px;
+    width: 200px;
+    height: 150px;
+    padding: 0;
    }	  
 }
 
 header h1 {
   font-family: $font-family;
-  font-weight: normal;  /* 400 */
-  margin: 5px 5px 0 18px;
+  font-weight: 600;
+  margin-block: 5px;
 
   span {
     color: $bc-yellow;
     vertical-align: super;
     font-weight: inherit;
+    font-variant: small-caps;
+    font-size: 1.44rem;
   }
+}
+
+.header-h1 {
+  font-size: 1.7028rem;
 }
 
 header .banner {
@@ -51,7 +63,6 @@ header .other {
   a {
 	color: white;
 	font-weight:bold;
-	font-size:22px;
   }
 }
 
