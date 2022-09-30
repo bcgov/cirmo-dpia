@@ -43,11 +43,13 @@
     "@types/jest": "28.1.8",
     "@types/node": "16.0.0",
     "@types/supertest": "2.0.11",
-    "@typescript-eslint/eslint-plugin": "5.0.0",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
     "@typescript-eslint/parser": "5.0.0",
     "eslint": "8.24.0",
     "eslint-config-airbnb-base": "15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "8.3.0",
+    "eslint-import-resolver-typescript": "3.5.1",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.0.0",
     "husky": "8.0.1",
@@ -81,10 +83,10 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx, jsx}": [
-        "eslint --quiet --fix"
+      "eslint"
     ],
     "*.{json,md,html,js,jsx,ts,tsx}": [
-        "prettier --write"
+      "prettier --write"
     ]
-}
+  }
 }

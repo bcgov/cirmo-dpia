@@ -1,11 +1,12 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from 'src/app.module';
 import { HealthModule } from 'src/health/health.module';
 
 export const SwaggerDocs = (app: INestApplication) => {
-  const API_NAME = process.env.API_NAME;
-  const API_VERSION = process.env.API_VERSION;
+  const { API_NAME } = process.env;
+  const { API_VERSION } = process.env;
 
   const options = new DocumentBuilder()
     .setTitle(API_NAME)
