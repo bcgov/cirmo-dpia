@@ -15,8 +15,4 @@ export class HealthController {
   check() {
     return HttpStatus.OK;
   }
-
-  readness() {
-    return HttpStatus.ACCEPTED;
-  }
 }
