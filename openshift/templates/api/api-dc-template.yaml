@@ -76,7 +76,7 @@ objects:
                 memory: 100Mi
             readinessProbe:
               httpGet:
-                path: /api/v1/health
+                path: /api/health
                 port: 3000
                 scheme: HTTP
               timeoutSeconds: 1
@@ -85,7 +85,7 @@ objects:
               failureThreshold: 3
             livenessProbe:
               httpGet:
-                path: /api/v1/health
+                path: /api/health
                 port: 3000
                 scheme: HTTP
               timeoutSeconds: 1

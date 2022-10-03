@@ -6,8 +6,8 @@ services:
   dpia-api:
     container_name: dpia-api
     build:
-      context: .
-      dockerfile: ./src/backend/.docker/Dockerfile
+      context: ./src/backend
+      dockerfile: .docker/Dockerfile
     volumes:
       - /usr/src/app/node_modules
       - /usr/src/app/dist
