@@ -20,7 +20,7 @@ services:
   ###                                       Frontend                                        ###
   #############################################################################################
   dpia-frontend:
-    container_name: dpia-frontend
+    container_name: dpia-webapp
     build:
       context: .
       dockerfile: ./src/frontend/Dockerfile
