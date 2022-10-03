@@ -11,7 +11,7 @@ endif
 
 export GIT_LOCAL_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 export API_SERVICE=dpia-api
-export FRONTEND_SERVICE=dpia-frontend
+export FRONTEND_SERVICE=dpia-webapp
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
