@@ -4,11 +4,11 @@ FROM node:18.9-alpine
 WORKDIR /usr/src/app
 
 # Install Project Specific Dependencies
-COPY src/backend/package*.json ./
+COPY package*.json ./
 RUN npm ci
 
 # Copy entire code
-COPY src/backend/. ./
+COPY . ./
 
 # Bundle project artifact
 RUN npm run build

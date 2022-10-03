@@ -91,19 +91,19 @@ refresh-local: ## Recreates local docker environment (n=service name)
 
 up-local: ## Runs the local containers (n=service name)
 	@echo "$(P) Running client and server..."
-	@docker-compose -f docker-compose.dev.yaml up -d $(n)
+	@docker-compose -f docker-compose.local.yaml up -d $(n)
 
 down-local: ## Stops the local containers and removes them
 	@echo "$(P) Stopping client and server..."
-	@docker-compose -f docker-compose.dev.yaml down
+	@docker-compose -f docker-compose.local.yaml down
 
 stop-local: ## Stops the local containers
 	@echo "$(P) Stopping client and server..."
-	@docker-compose -f docker-compose.dev.yaml stop ${n}
+	@docker-compose -f docker-compose.local.yaml stop ${n}
 
 build-local: ## Builds the local containers (n=service name)
 	@echo "$(P) Building images..."
-	@docker-compose -f docker-compose.dev.yaml build --no-cache $(n)
+	@docker-compose -f docker-compose.local.yaml build --no-cache $(n)
 
 rebuild-local: ## Build the local contains (n=service name) and then start them after building
 	@make build n=$(n)
@@ -121,32 +121,32 @@ logs: ## Access application logs (n=service name)
 # Local development commands
 ##############################################################################
 
-build-local:
+app-build-local:
 	@echo "+\n++ Building local development Docker image...\n+"
 	@make build-local n=$(API_SERVICE)
 	@make build-local n=$(FRONTEND_SERVICE)
 
-run-local:
+app-run-local:
 	@echo "+\n++ Running development container locally\n+"
 	@make up-local n=$(API_SERVICE)
 	@make up-local n=$(FRONTEND_SERVICE)
 
-restart-local:
+app-restart-local:
 	@echo "+\n++ Restart local development...\n+"
 	@make restart-local n=$(API_SERVICE)
 	@make restart-local n=$(FRONTEND_SERVICE)
 
-refresh-local:
+app-refresh-local:
 	@echo "+\n++ Refresh local development...\n+"
 	@make refresh-local n=$(API_SERVICE)
 	@make refresh-local n=$(FRONTEND_SERVICE)
 
-rebuild-local:
+app-rebuild-local:
 	@echo "+\n++ Rebuild local development...\n+"
 	@make rebuild-local n=$(API_SERVICE)
 	@make rebuild-local n=$(FRONTEND_SERVICE)
 
-close-local:
+app-close-local:
 	@echo "+\n++ Closing local development container\n+"
 	@make down-local
 
