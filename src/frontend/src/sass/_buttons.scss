@@ -13,11 +13,10 @@ a:hover {
     border: none;
     border-radius: 4px;
     color: white;
-    padding: 12px 32px;
     text-align: center;
+    padding-block: 10px;
     text-decoration: none;
     display: block;
-    font-size: 18px;
     font-weight: 700;
     letter-spacing: 1px;
     cursor: pointer;
@@ -28,13 +27,35 @@ a:hover {
   opacity: 0.80;
 }
 
-:focus {
+.btn-primary:focus {
   outline: 4px solid $bc-lightblue;
   outline-offset: 1px;
 }
 
 .btn-primary:active {
   opacity: 1;
+}
+
+.btn-login {
+  background: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  padding-block: 10px;
+  padding-inline: 1.2em;
+  border-radius: 4px;
+  border: 2px solid white;
+  box-shadow: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0.5 0;
+  max-width: 300px;
+
+  .icon {
+    margin-left: 1.2em;
+  }
 }
 
 .btn-bordered {

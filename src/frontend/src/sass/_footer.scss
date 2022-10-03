@@ -6,7 +6,9 @@ footer {
   /* need to test */
   position: absolute;
   bottom: 0px;
+  left: 0px;
   width:100%;
+  height: 46px;
   //top: calc(100vh - 72px);;
 }
 
@@ -29,21 +31,32 @@ footer ul {
   height: 100%;
 }
 
+footer ul li {
+  display: inherit;
+  align-items: center;
+  border-right: 1px solid white;
+  line-height: 1rem;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
 footer ul li a {
   font-size: 0.813em;
   font-weight: normal;  /* 400 */
   color: #fff;
-  border-right: 1px solid $bc-lightgray;
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  margin-inline: 10px;
+  position: relative;
+  cursor: pointer;
 
-a:hover {
-  color: #fff;
-  text-decoration: underline;
-}
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
 
-:focus {
-  outline: 4px solid $bc-lightblue;
-  outline-offset: 1px;
+  &:focus {
+    outline: 4px solid $bc-lightblue;
+    outline-offset: 1px;
+  }
 }
