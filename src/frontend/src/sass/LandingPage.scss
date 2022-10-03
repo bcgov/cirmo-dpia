@@ -1,0 +1,68 @@
+.hero-section {
+    display: flex;
+    justify-content: space-around;
+    height: 952px;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 80ch;
+}
+
+.ctas {
+    display: flex;
+    width: 400px;
+
+    :last-child {
+        margin-left: 1em;
+    }
+}
+
+.hero-svg {
+    display: flex;
+    align-items: center;
+}
+
+.hero-svg > img {
+    max-width: 600px;
+}
+
+.what-is-a-pia {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    height: 411px;
+    padding-block: 4rem;
+    background-color: $bc-lightgray;
+    text-align: center;
+}
+
+.what-is-a-pia p {
+    max-width: 80ch;
+}
+
+.info-section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: space-evenly;
+    height: 1062px;
+}
+
+.info-section > div {
+    display: flex;
+    flex-direction: column;
+    max-width: 50ch;
+    margin-top: 268px;
+    align-items: center;
+}
+
+.info-section > div > img {
+    display: flex;
+    max-width: 400px;
+    max-height: 250px;
+    margin-bottom: 3rem;
+}
