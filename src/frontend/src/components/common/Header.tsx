@@ -13,7 +13,7 @@ function Header() {
             <h1 className='header-h1'>Digital Privacy Impact Assessment (DPIA) <span>beta</span></h1>
         </div>
         <div className="other">
-            <a href="/" className='btn-login btn-bordered'>Log in with IDIR <FontAwesomeIcon className='icon' icon={faUser} /></a>
+            <a href="/" className='btn-login'>Log in with IDIR <FontAwesomeIcon className='icon' icon={faUser} /></a>
         </div>
     </header>
   )
