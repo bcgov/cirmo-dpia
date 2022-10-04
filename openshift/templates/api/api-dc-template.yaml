@@ -67,6 +67,8 @@ objects:
             env:
               - name: API_PORT
                 value: '3000'
+              - name: API_ENV
+                value: ${ENVIRONMENT}
             resources:
               limits:
                 cpu: 150m

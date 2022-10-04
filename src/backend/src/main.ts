@@ -11,7 +11,7 @@ async function bootstrap() {
   // App listen to a port
   await app.listen(process.env.API_PORT, () => {
     Logger.log(
-      `${process.env.API_NAME} is live and serving traffic on port ${process.env.API_PORT}`,
+      `${process.env.API_NAME} is live on ${process.env.API_ENV} and serving traffic on port ${process.env.API_PORT}`,
     );
   });
 }
