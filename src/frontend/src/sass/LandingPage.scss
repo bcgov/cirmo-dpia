@@ -49,14 +49,14 @@
     display: flex;
     justify-content: space-evenly;
     align-items: space-evenly;
-    height: 1062px;
+    height: 710px;
 }
 
 .info-section > div {
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     max-width: 50ch;
-    margin-top: 268px;
     align-items: center;
 }
 
@@ -65,4 +65,23 @@
     max-width: 400px;
     max-height: 250px;
     margin-bottom: 3rem;
+}
+
+.callout-section {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
+.callout {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background-color: $bc-lightgray;
+    border-left: 10px solid $bc-blue;
+    width: 1088px;
+    height: 76px;
+    padding: 25px;
 }
