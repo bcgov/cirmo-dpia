@@ -14,7 +14,7 @@ objects:
       hash: ${IMAGE_TAG}
   spec:
     host: ${APPLICATION_NAME}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-    path: /api/api-docs
+    path: /
     to:
       kind: Service
       name: ${APPLICATION_NAME}

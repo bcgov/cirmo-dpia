@@ -22,6 +22,10 @@ help:
 # Setup Commands
 ##############################################################################
 
+api-setup-env:
+	@echo "+\n++ Make: Preparing project for local environment...\n+"
+	@cp src/backend/.config/.env.local src/backend/.env
+
 api-setup-local-env:
 	@echo "+\n++ Make: Preparing project for local environment...\n+"
 	@cp src/backend/.config/.env.local src/backend/.env
@@ -111,7 +115,7 @@ rebuild-local: ## Build the local contains (n=service name) and then start them 
 
 exec: ## Access the development workspace (n=service name)
 	@echo "Shelling into local application..."
-	@docker exec -it $(n) bash
+	@docker exec -it $(n) sh
 
 logs: ## Access application logs (n=service name)
 	@echo "Watching logging output for local development container..."
@@ -121,15 +125,15 @@ logs: ## Access application logs (n=service name)
 # Local development commands
 ##############################################################################
 
-app-build-local:
-	@echo "+\n++ Building local development Docker image...\n+"
-	@make build-local n=$(API_SERVICE)
-	@make build-local n=$(FRONTEND_SERVICE)
-
 app-run-local:
 	@echo "+\n++ Running development container locally\n+"
 	@make up-local n=$(API_SERVICE)
 	@make up-local n=$(FRONTEND_SERVICE)
+
+app-build-local:
+	@echo "+\n++ Building local development Docker image...\n+"
+	@make build-local n=$(API_SERVICE)
+	@make build-local n=$(FRONTEND_SERVICE)
 
 app-restart-local:
 	@echo "+\n++ Restart local development...\n+"
