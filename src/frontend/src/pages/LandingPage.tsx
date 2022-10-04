@@ -10,7 +10,7 @@ import sharedGoals from '../assets/undraw_shared_goals.svg'
 
 function LandingPage() {
     return (
-        <div>
+        <div> 
             <section className='hero-section'>
                 <div className="hero-content">
                     <h1>Digital Privacy Impact Assessment (DPIA)</h1>
@@ -28,6 +28,9 @@ function LandingPage() {
                 <h2>What is a Privacy Impact Assessment</h2>
                 <p>A PIA is a step-by-step review process to make sure you protect the personal information you collect, use or disclose in your project. Doing a PIA can help protect privacy and build public trust by being clear about what information government is collecting, who has access to it, and where and how it’s stored.</p> 
                 <a href='https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessmentS'>Learn about the current PIA process</a>
+            </section>
+            <section className="callout-section">
+                <div className="callout">These are draft statements and may change and evolve with feedback from interested parties.</div>
             </section>
             <section className="info-section">
                 <div className="problem-subsec">
