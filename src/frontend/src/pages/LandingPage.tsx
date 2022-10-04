@@ -17,7 +17,7 @@ function LandingPage() {
                     <p>The Government of BC is creating a flagship Digital Privacy Impact Assessment (DPIA). This project will leverage service design findings to build a novel product that reimages the Privacy Impact Assessment (PIA) tools to support streamlined business processes and improved user experience.</p>
                     <div className="ctas">
                         <a href="/" className="btn-primary">Log in with IDIR <FontAwesomeIcon className='icon' icon={faUser} /></a>
-                        <a href="mailto:privacy.helpline@gov.bc.ca" className="btn-secondary">Contact <FontAwesomeIcon className='icon' icon={faEnvelope} /></a>
+                        <a href="mailto:pia.intake@gov.bc.ca" className="btn-secondary">Contact <FontAwesomeIcon className='icon' icon={faEnvelope} /></a>
                     </div>
                 </div>
                 <div className="hero-svg">
