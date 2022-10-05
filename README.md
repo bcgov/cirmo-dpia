@@ -99,8 +99,8 @@ To be filled out at a later date once the Project Stack starts to take shape.
 
 ## Locally running the development app
 ```bash
-$ make api-setup-local-env
-$ make app-run-local
+$ make api-setup-env
+$ make app-run
 ```
 
 ## Deployment
