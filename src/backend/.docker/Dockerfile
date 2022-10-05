@@ -17,8 +17,11 @@ RUN npm run build
 RUN chown -R 1001:0 /usr/src/app && \
     chmod -R ug+rwx /usr/src/app
 
+# Provide access to node for adding logs
+RUN mkdir -p /.npm && chown -R 1001:0 /.npm && chmod -R ug+rwx /.npm
+
 USER 1001
 
 # Expose port and run app in prod (equivalent of "node dist/main.js")
 EXPOSE 3000
-CMD ["npm",  "run", "start:prod"] 
+CMD ["npm",  "run", "start:prod"]
