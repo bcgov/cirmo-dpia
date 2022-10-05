@@ -23,25 +23,8 @@ help:
 ##############################################################################
 
 api-setup-env:
-	@echo "+\n++ Make: Preparing project for local environment...\n+"
+	@echo "+\n++ Make: Preparing environment for the project...\n+"
 	@cp src/backend/.config/.env.local src/backend/.env
-
-api-setup-local-env:
-	@echo "+\n++ Make: Preparing project for local environment...\n+"
-	@cp src/backend/.config/.env.local src/backend/.env
-
-api-setup-development-env:
-	@echo "+\n++ Make: Preparing project for dev environment...\n+"
-	@cp src/backend/.config/.env.dev src/backend/.env
-
-api-setup-staging-env:
-	@echo "+\n++ Make: Preparing project for staging environment...\n+"
-	@cp src/backend/.config/.env.staging src/backend/.env
-
-api-setup-production-env:
-	@echo "+\n++ Make: Preparing project for production environment...\n+"
-	@cp src/backend/.config/.env.production src/backend/.env	
-
 
 ##############################################################################
 # Docker helper commands
@@ -60,58 +43,23 @@ refresh: ## Recreates local docker environment (n=service name)
 
 up: ## Runs the local containers (n=service name)
 	@echo "$(P) Running client and server..."
-	@docker-compose up -d $(n)
+	@docker-compose -f docker-compose.local.yaml up -d $(n)
 
 down: ## Stops the local containers and removes them
 	@echo "$(P) Stopping and removing client and server..."
-	@docker-compose down
+	@docker-compose -f docker-compose.local.yaml down
 
 stop: ## Stops the local containers
 	@echo "$(P) Stopping client and server..."
-	@docker-compose stop ${n}
+	@docker-compose -f docker-compose.local.yaml stop ${n}
 
 build: ## Builds the local containers (n=service name)
 	@echo "$(P) Building images..."
-	@docker-compose build --no-cache $(n)
+	@docker-compose -f docker-compose.local.yaml build --no-cache $(n)
 
 rebuild: ## Build the local contains (n=service name) and then start them after building
 	@make build n=$(n)
 	@make up n=$(n)
-
-##############################################################################
-# Local environment helper commands
-##############################################################################
-
-restart-local: ## Restart local docker environment (n=service name)
-	$(info Restart local docker environment)
-	@make stop-local n=$(n)
-	@make up-local n=$(n)
-
-refresh-local: ## Recreates local docker environment (n=service name)
-	$(info Recreates local docker environment)
-	@make stop-local n=$(n)
-	@make build-local n=$(n)
-	@make up-local n=$(n)
-
-up-local: ## Runs the local containers (n=service name)
-	@echo "$(P) Running client and server..."
-	@docker-compose -f docker-compose.local.yaml up -d $(n)
-
-down-local: ## Stops the local containers and removes them
-	@echo "$(P) Stopping client and server..."
-	@docker-compose -f docker-compose.local.yaml down
-
-stop-local: ## Stops the local containers
-	@echo "$(P) Stopping client and server..."
-	@docker-compose -f docker-compose.local.yaml stop ${n}
-
-build-local: ## Builds the local containers (n=service name)
-	@echo "$(P) Building images..."
-	@docker-compose -f docker-compose.local.yaml build --no-cache $(n)
-
-rebuild-local: ## Build the local contains (n=service name) and then start them after building
-	@make build n=$(n)
-	@make up-local n=$(n)
 
 exec: ## Access the development workspace (n=service name)
 	@echo "Shelling into local application..."
@@ -122,50 +70,41 @@ logs: ## Access application logs (n=service name)
 	@docker logs -f $(shell docker inspect --format="{{.Id}}" ${n})
 
 ##############################################################################
-# Local development commands
+# APP commands
 ##############################################################################
 
-app-run-local:
-	@echo "+\n++ Running development container locally\n+"
-	@make up-local n=$(API_SERVICE)
-	@make up-local n=$(FRONTEND_SERVICE)
+app-run:
+	@echo "+\n++ Running app containers...\n+"
+	@make up n=$(API_SERVICE)
+	@make up n=$(FRONTEND_SERVICE)
 
-app-build-local:
-	@echo "+\n++ Building local development Docker image...\n+"
-	@make build-local n=$(API_SERVICE)
-	@make build-local n=$(FRONTEND_SERVICE)
+app-build:
+	@echo "+\n++ Building app images...\n+"
+	@make build n=$(API_SERVICE)
+	@make build n=$(FRONTEND_SERVICE)
 
-app-restart-local:
-	@echo "+\n++ Restart local development...\n+"
-	@make restart-local n=$(API_SERVICE)
-	@make restart-local n=$(FRONTEND_SERVICE)
+app-restart:
+	@echo "+\n++ Restarting app containers...\n+"
+	@make restart n=$(API_SERVICE)
+	@make restart n=$(FRONTEND_SERVICE)
 
-app-refresh-local:
-	@echo "+\n++ Refresh local development...\n+"
-	@make refresh-local n=$(API_SERVICE)
-	@make refresh-local n=$(FRONTEND_SERVICE)
-
-app-rebuild-local:
-	@echo "+\n++ Rebuild local development...\n+"
-	@make rebuild-local n=$(API_SERVICE)
-	@make rebuild-local n=$(FRONTEND_SERVICE)
-
-app-close-local:
-	@echo "+\n++ Closing local development container\n+"
-	@make down-local
+app-rebuild:
+	@echo "+\n++ Rebuilding app containers...\n+"
+	@make rebuild n=$(API_SERVICE)
+	@make rebuild n=$(FRONTEND_SERVICE)
 
 api-workspace:
-	@echo "Shelling into local API application..."
+	@echo "+\n++ Shelling into the API application...\n+"
 	@make exec n=$(API_SERVICE)
 
 frontend-workspace:
-	@echo "Shelling into local Frontend application..."
+	@echo "+\n++ Shelling into the Frontend application...\n+"
 	@make exec n=$(FRONTEND_SERVICE)
 
 api-logs:
-	@echo "Watching logging output for local API development container..."
+	@echo "+\n++ Watching logging output for the API container...\n+"
 	@make logs n=$(API_SERVICE)
 
 frontend-logs:
-	@echo "Watching logging output for local API development container..."
+	@echo "+\n++ Watching logging output for the Frontend container...\n+"
 	@make logs n=$(FRONTEND_SERVICE)
