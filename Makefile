@@ -75,19 +75,23 @@ logs: ## Access application logs (n=service name)
 
 app-run:
 	@echo "+\n++ Running app containers...\n+"
-	@make up
+	@make up n=$(API_SERVICE)
+	@make up n=$(FRONTEND_SERVICE)
 
 app-build:
 	@echo "+\n++ Building app images...\n+"
-	@make build
+	@make build n=$(API_SERVICE)
+	@make build n=$(FRONTEND_SERVICE)
 
 app-restart:
 	@echo "+\n++ Restarting app containers...\n+"
-	@make restart
+	@make restart n=$(API_SERVICE)
+	@make restart n=$(FRONTEND_SERVICE)
 
 app-rebuild:
 	@echo "+\n++ Rebuilding app containers...\n+"
-	@make rebuild
+	@make rebuild n=$(API_SERVICE)
+	@make rebuild n=$(FRONTEND_SERVICE)
 
 api-workspace:
 	@echo "+\n++ Shelling into the API application...\n+"
