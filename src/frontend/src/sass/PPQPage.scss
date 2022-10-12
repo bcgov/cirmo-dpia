@@ -1,0 +1,45 @@
+.ppq-section {
+    display: flex;
+    justify-content: space-around;
+  
+    height: 600px;
+    padding: 150px;
+}
+.ppq-nav-bar {
+    display: flex; 
+   
+    font-size: 32px;
+    background-color: lightblue;
+    z-index:-999;
+    bottom:0px;   
+    
+}
+.ppq-nav-bar  p {
+    margin-left: 10px; 
+}
+.ppq-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 80ch;
+    font-weight: 400;
+}
+.ppq-header {
+    font-weight: 700;
+    font-size: 36px;
+    margin-bottom: 10px; 
+}
+.ppq-svg {
+    display: flex;
+    align-items: center;
+}
+
+.ppq-svg > img {
+    max-width: 600px;
+}
+
+
+
+
+
+
