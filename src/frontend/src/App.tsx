@@ -5,16 +5,15 @@ import './sass/App.scss'
 import './sass/common.scss'
 
 function App() {
-
-  return (
-    <div className="App">
-      <Header />
-      <main>
-        <LandingPage />
-      </main>
-      <Footer />
-    </div>
-  )
+    return (
+        <div className="App">
+            <Header />
+            <main>
+                <LandingPage />
+            </main>
+            <Footer />
+        </div>
+    )
 }
 
 export default App
