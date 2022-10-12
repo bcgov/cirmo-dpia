@@ -1,9 +1,9 @@
 import { ReactElement } from 'react'
-import { StageProps } from './interfaces';
+import { StageProps } from './interfaces'
 
-const Stage = ({id, label, icon, active}: StageProps): ReactElement => {
+const Stage = ({ id, label, icon, active }: StageProps): ReactElement => {
     return (
-        <div className={`stage-block ${active ? "active" : ""}`}>
+        <div className={`stage-block ${active ? 'active' : ''}`}>
             <div className="circle">
                 <div className="inner-circle">
                     <img src={icon} />
@@ -14,4 +14,4 @@ const Stage = ({id, label, icon, active}: StageProps): ReactElement => {
     )
 }
 
-export default Stage;
+export default Stage

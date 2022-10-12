@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 export interface StagesProps {
-    stages: StageProps[];
+    stages: StageProps[]
 }
 
 export interface StageProps {
-    id: number;
-    label: string;
-    icon: string;
-    active: boolean;
+    id: number
+    label: string
+    icon: string
+    active: boolean
 }
