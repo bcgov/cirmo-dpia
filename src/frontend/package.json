@@ -8,7 +8,7 @@
         "preview": "vite preview",
         "prettier": "prettier src -check",
         "precommit": "lint-staged",
-        "prepare": "cd ../.. && husky install src/frontend/.husky",
+        "prepare": "cd ../.. && husky install ./.husky",
         "format": "prettier --write src/**/*.ts{,x}",
         "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\" ",
         "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\" --fix"

@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-echo "lint frontend"
-cd ./src/frontend
-npm run precommit
