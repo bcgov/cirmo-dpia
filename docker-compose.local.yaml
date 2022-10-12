@@ -27,8 +27,8 @@ services:
   dpia-webapp:
     container_name: dpia-webapp
     build:
-      context: ./src/frontend
-      dockerfile: .docker/Dockerfile.local
+      context: .
+      dockerfile: ./src/frontend/Dockerfile
     volumes:
       # Binds the application folder from the host inside the container enabling hot reloading
       - ./src/frontend:/app
