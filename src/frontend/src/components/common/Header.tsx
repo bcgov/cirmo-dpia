@@ -1,9 +1,12 @@
 import React from 'react'
 import BCGovLogo from '../../assets/BC_Logo_Horizontal.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faUser } from '@fortawesome/free-solid-svg-icons'
 
-function Header() {
+type Props = {
+    user: string | null
+}
+function Header({ user }: Props) {
     return (
         <header>
             <div className="banner">
@@ -19,10 +22,21 @@ function Header() {
                 </h1>
             </div>
             <div className="other">
-                <a href="/" className="btn-login">
-                    Log in with IDIR{' '}
-                    <FontAwesomeIcon className="icon" icon={faUser} />
-                </a>
+                {!user ? (
+                    <a href="/" className="btn-login">
+                        Log in with IDIR{' '}
+                        <FontAwesomeIcon className="icon" icon={faUser} />
+                    </a>
+                ) : (
+                    <p>
+                        {' '}
+                        {user}{' '}
+                        <FontAwesomeIcon
+                            className="icon"
+                            icon={faChevronDown}
+                        />
+                    </p>
+                )}
             </div>
         </header>
     )

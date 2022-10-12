@@ -6,12 +6,16 @@
     padding: 150px;
 }
 .ppq-nav-bar {
+    
     display: flex; 
-   
-    font-size: 32px;
-    background-color: lightblue;
-    z-index:-999;
-    bottom:0px;   
+    position: absolute;
+    padding: 25px;
+    align-items: center;
+    
+    color: #FFFFFF;
+    background-color: #38598A;
+    width: 100%;
+    
     
 }
 .ppq-nav-bar  p {

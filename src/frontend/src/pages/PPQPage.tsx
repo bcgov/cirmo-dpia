@@ -11,10 +11,9 @@ import Footer from '../components/common/Footer'
 function PPQLandingPage() {
     return (
         <div>
-            <Header />
+            <Header user="first.last@gov.bc.ca" />
             <section className="ppq-nav-bar">
                 <a href="/">
-                    {' '}
                     <p> Home </p>
                 </a>
 
@@ -25,6 +24,7 @@ function PPQLandingPage() {
             <section className="ppq-section">
                 <div className="what-is-a-ppq">
                     <h2 className="ppq-header">PIA Pathway Questionnaire</h2>
+                    <br />
                     <h2>what is it?</h2>
                     <p>
                         The PIA Pathways Questionnaire asks for some basic
