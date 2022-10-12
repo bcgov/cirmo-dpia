@@ -29,17 +29,15 @@ services:
     build:
       context: .
       dockerfile: ./src/frontend/Dockerfile
-    volumes:
-      # Binds the application folder from the host inside the container enabling hot reloading
-      - ./src/frontend:/app
-      # Ignores the node_modules of the host and uses it's own instead
-      - /app/node_modules
     networks:
       - dpia-network
     ports:
       - "8080:8080"
     tty: true
 
+  #############################################################################################
+  ###                                       Database                                        ###
+  #############################################################################################
   dpia-db:
     image: postgres:14.5-alpine
     restart: always
