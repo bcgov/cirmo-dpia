@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
     return (
-        <footer>
+        <footer data-cy="footer">
             <ul>
                 <li>
                     <a>Home</a>
@@ -14,7 +14,7 @@ function Footer() {
                     <a>Disclaimer</a>
                 </li>
                 <li>
-                    <a>Accessiblility</a>
+                    <a>Accessibility</a>
                 </li>
                 <li>
                     <a>Copyright</a>

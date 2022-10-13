@@ -51,10 +51,22 @@ src/frontend/*.local
 ###############################################################################
 ##           ** Delete when commom code is ported                            ##
 ###############################################################################
-src/frontend/dpia-webapp/node_modules
-src/frontend/dpia-webapp/builds/css/*
+src/frontend/node_modules
+src/frontend/builds/css/*
 
 ###############################################################################
 ##                                  Plugins                                  ##
 ###############################################################################
 .history
+###############################################################################
+##                                  Cypress output                               ##
+###############################################################################
+src/fronted/cypress/videos/*
+src/fronted/cypress/screenshots/*
+cypress.env.json
+cypress.meta.json
+src/fronted/cypress/logs/
+src/fronted/cypress/integration/_generated/*
+src/fronted/cypress/data/migration/generated/*.csv
+src/fronted/cypress/fixtures/example.json
+src/fronted/cypress/build/*
