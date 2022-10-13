@@ -17,14 +17,14 @@
     "cy:run-headless": "cypress run"
   },
   "dependencies": {
-    "@bcgov/bc-sans": "^1.0.1",
-    "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@bcgov/bc-sans": "1.0.1",
+    "@fortawesome/fontawesome-svg-core": "6.2.0",
+    "@fortawesome/free-solid-svg-icons": "6.2.0",
+    "@fortawesome/react-fontawesome": "0.2.0",
     "breakpoint-sass": "3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "^6.4.2",
+    "react-router-dom": "6.4.2",
     "sass": "1.55.0"
   },
   "devDependencies": {
