@@ -1,49 +1,40 @@
 .ppq-section {
-    display: flex;
-    justify-content: space-around;
-  
-    height: 725px;
-    padding: 150px;
+  display: flex;
+  justify-content: space-around;
+
+  height: 725px;
+  padding: 150px;
 }
 .ppq-nav-bar {
-    
-    display: flex; 
-    position:absolute;
-    padding: 5px;
-    align-items: center;
-    margin-top: 0; 
-    color: #FFFFFF;
-    background-color: #38598A;
-    width: 100%;
-    
-    
+  display: flex;
+  position: absolute;
+  padding: 5px;
+  align-items: center;
+  margin-top: 0;
+  color: #ffffff;
+  background-color: #38598a;
+  width: 100%;
 }
-.ppq-nav-bar  p {
-    margin-left: 10px; 
+.ppq-nav-bar p {
+  margin-left: 10px;
 }
 .ppq-content {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    max-width: 80ch;
-    font-weight: 400;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 80ch;
+  font-weight: 400;
 }
 .ppq-header {
-    font-weight: 700;
-    font-size: 36px;
-    margin-bottom: 10px; 
+  font-weight: 700;
+  font-size: 36px;
+  margin-bottom: 10px;
 }
 .ppq-svg {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .ppq-svg > img {
-    max-width: 600px;
+  max-width: 600px;
 }
-
-
-
-
-
-

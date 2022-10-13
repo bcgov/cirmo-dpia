@@ -1,12 +1,12 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "target": "es5",
-        "baseUrl": "/",
-        "lib": ["dom", "es2015"],
-        "types": ["cypress", "cypress-wait-until"],
-        "resolveJsonModule": true,
-        "esModuleInterop": true
-    },
-    "include": ["**/*.tsx"]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "baseUrl": "/",
+    "lib": ["dom", "es2015"],
+    "types": ["cypress", "cypress-wait-until"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["**/*.tsx"]
 }
