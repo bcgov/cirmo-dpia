@@ -36,7 +36,7 @@ function PPQLandingPage() {
           <p> Which PIA template you should fill out</p>
           <p>Where to go for help with your PIA</p>
 
-          <div data-cy="ppq=-btn" className="ctas">
+          <div data-cy="ppq-btn" className="ctas">
             <a href="/" className="btn-primary">
               Get started{' '}
               <FontAwesomeIcon className="icon" icon={faChevronRight} />

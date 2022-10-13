@@ -11,7 +11,7 @@ function LandingPage() {
   return (
     <div>
       <section className="hero-section">
-        <div className="hero-content">
+        <div data-cy="landing" className="hero-content">
           <h1>Digital Privacy Impact Assessment (DPIA)</h1>
           <p>
             The Government of BC is creating a flagship Digital Privacy Impact
@@ -20,17 +20,21 @@ function LandingPage() {
             Assessment (PIA) tools to support streamlined business processes and
             improved user experience.
           </p>
-          <div className="ctas">
+          <div data-cy="contact-btn" className="ctas">
             <a href="/" className="btn-primary">
               Log in with IDIR{' '}
               <FontAwesomeIcon className="icon" icon={faUser} />
             </a>
-            <a href="mailto:pia.intake@gov.bc.ca" className="btn-secondary">
+            <a
+              href="mailto:pia.intake@gov.bc.ca"
+              data-cy="email"
+              className="btn-secondary"
+            >
               Contact <FontAwesomeIcon className="icon" icon={faEnvelope} />
             </a>
           </div>
         </div>
-        <div className="hero-svg">
+        <div data-cy="landing-img" className="hero-svg">
           <img src={heroImg} alt="Fill form image" />
         </div>
       </section>
