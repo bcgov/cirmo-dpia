@@ -21,7 +21,7 @@ function Header({ user }: Props) {
                     Digital Privacy Impact Assessment (DPIA) <span>beta</span>
                 </h1>
             </div>
-            <div className="other">
+            <div data-cy="login" className="other">
                 {!user ? (
                     <a href="/" className="btn-login">
                         Log in with IDIR{' '}

@@ -10,8 +10,11 @@
         "precommit": "lint-staged",
         "prepare": "cd ../.. && husky install ./.husky",
         "format": "prettier --write src/**/*.ts{,x}",
-        "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\" ",
-        "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\" --fix"
+        "lint": "eslint \"{src,apps,libs,test,cypress}/**/*.ts{,x}\" ",
+        "lint:fix": "eslint \"{src,apps,libs,test,cypress}/**/*.ts{,x}\" --fix",
+        "cy:run-comp": "cypress run --component --browser chrome",
+        "cy:open": "cypress open",
+        "cy:run-headless": "cypress run"
     },
     "dependencies": {
         "@bcgov/bc-sans": "^1.0.1",
@@ -31,6 +34,7 @@
         "@typescript-eslint/eslint-plugin": "5.40.0",
         "@typescript-eslint/parser": "5.40.0",
         "@vitejs/plugin-react": "2.1.0",
+        "cypress": "^10.10.0",
         "eslint": "8.25.0",
         "eslint-config-airbnb": "19.0.4",
         "eslint-config-airbnb-typescript": "17.0.0",

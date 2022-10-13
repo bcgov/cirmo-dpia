@@ -11,8 +11,8 @@ import Footer from '../components/common/Footer'
 function PPQLandingPage() {
     return (
         <div>
-            <Header user="first.last@gov.bc.ca" />
-            <section className="ppq-nav-bar">
+            <Header data-cy="header" user="first.last@gov.bc.ca" />
+            <section data-cy="ppq-nav-bar" className="ppq-nav-bar">
                 <a href="/">
                     <p> Home </p>
                 </a>
@@ -36,7 +36,7 @@ function PPQLandingPage() {
                     <p> Which PIA template you should fill out</p>
                     <p>Where to go for help with your PIA</p>
 
-                    <div className="ctas">
+                    <div data-cy="ppq=-btn" className="ctas">
                         <a href="/" className="btn-primary">
                             Get started{' '}
                             <FontAwesomeIcon
@@ -51,7 +51,7 @@ function PPQLandingPage() {
                         <b>Estimated time:</b> 20 minutes
                     </span>
                 </div>
-                <div className="ppq-svg">
+                <div data-cy="ppq-img" className="ppq-svg">
                     <img src={ppqImg} alt="Fill form image" />
                 </div>
             </section>
