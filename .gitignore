@@ -61,12 +61,12 @@ src/frontend/builds/css/*
 ###############################################################################
 ##                                  Cypress output                               ##
 ###############################################################################
-src/fronted/cypress/videos/*
-src/fronted/cypress/screenshots/*
+src/frontend/cypress/videos/*
+src/frontend/cypress/screenshots/*
 cypress.env.json
 cypress.meta.json
-src/fronted/cypress/logs/
-src/fronted/cypress/integration/_generated/*
-src/fronted/cypress/data/migration/generated/*.csv
-src/fronted/cypress/fixtures/example.json
-src/fronted/cypress/build/*
+src/frontend/cypress/logs/
+src/frontend/cypress/integration/_generated/*
+src/frontend/cypress/data/migration/generated/*.csv
+src/frontend/cypress/fixtures/example.json
+src/frontend/cypress/build/*
