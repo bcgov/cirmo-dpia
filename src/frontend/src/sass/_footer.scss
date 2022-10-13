@@ -3,13 +3,14 @@ footer {
   border-top: 2px solid $bc-yellow;
   color: #fff;
   font-family: $font-family;
+
   /* need to test */
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 46px;
-  //top: calc(100vh - 72px);;
+  // top: calc(100vh - 72px);;
 }
 
 footer .container {
@@ -22,8 +23,8 @@ footer .container {
 
 footer ul {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row warp;
+  // flex-wrap: wrap;
   margin: 0;
   color: #fff;
   list-style: none;

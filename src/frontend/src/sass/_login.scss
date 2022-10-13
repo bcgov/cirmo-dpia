@@ -1,14 +1,15 @@
 /* This sass file is associated with the login page */
 
-.login_container {
+.login-container {
   @include breakpoint($tablet) {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   width: 100%;
-  //height: 100%;
-  padding: 45px 0px;
+  // height: 100%;
+  padding: 45px 0;
 }
 
 .view-other-info {
@@ -20,7 +21,7 @@
 }
 
 .login-sub-container {
-  padding: 45px 0px;
+  padding: 45px 0;
 }
 
 .view-pid {
@@ -31,13 +32,14 @@
 
 .view-community {
   display: flex;
-  margin: 45px 0px;
+  margin: 45px 0;
   text-align: center;
   border: 1px solid rgba(225, 225, 225, 1);
   padding: 25px;
   border-radius: 32px;
   flex-direction: column;
-  .stackoverflow-logo {
+
+  .stack-overflow-logo {
     width: 250px;
     display: block;
   }

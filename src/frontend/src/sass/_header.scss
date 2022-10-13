@@ -5,8 +5,8 @@ header {
   color: #fff;
   display: flex;
   height: 65px;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   position: fixed;
   z-index: 99;
   width: 100%;
@@ -43,6 +43,7 @@ header .banner {
   justify-content: flex-start;
   align-items: center;
   margin: 0 10px 0 0;
+
   /* border-style: dotted;
   border-width: 1px;
   border-color: lightgrey; */
@@ -51,11 +52,13 @@ header .banner {
 header .other {
   display: flex;
   flex-grow: 1;
+
   /* border-style: dotted;
   border-width: 1px;
   border-color: lightgrey; */
   flex-direction: row-reverse;
   align-items: center;
+
   a {
     color: white;
     font-weight: bold;
