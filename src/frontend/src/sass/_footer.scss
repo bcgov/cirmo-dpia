@@ -1,6 +1,6 @@
 footer {
-  background-color: $bc-blue;
-  border-top: 2px solid $bc-yellow;
+  background-color: $primary-blue;
+  border-top: 2px solid $secondary-yellow;
   color: #fff;
   font-family: $font-family;
 
@@ -57,7 +57,7 @@ footer ul li a {
   }
 
   &:focus {
-    outline: 4px solid $bc-lightblue;
+    outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
   }
 }

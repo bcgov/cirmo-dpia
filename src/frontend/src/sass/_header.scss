@@ -1,6 +1,6 @@
 header {
-  background-color: $bc-blue;
-  border-bottom: 2px solid $bc-yellow;
+  background-color: $primary-blue;
+  border-bottom: 2px solid $secondary-yellow;
   padding: 0 65px 0 65px;
   color: #fff;
   display: flex;
@@ -26,7 +26,7 @@ header h1 {
   margin-block: 5px;
 
   span {
-    color: $bc-yellow;
+    color: $secondary-yellow;
     vertical-align: super;
     font-weight: inherit;
     font-variant: small-caps;
