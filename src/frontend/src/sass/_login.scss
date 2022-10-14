@@ -1,52 +1,52 @@
 /* This sass file is associated with the login page */
 
-.login_container {
-	@include breakpoint($tablet) { 
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	width: 100%;
-	//height: 100%;
-	padding:45px 0px;
+.login-container {
+  @include breakpoint($tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  width: 100%;
+  // height: 100%;
+  padding: 45px 0;
 }
 
 .view-other-info {
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	align-content: center;
-	justify-content: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
 }
 
 .login-sub-container {
-	padding:45px 0px;
+  padding: 45px 0;
 }
 
 .view-pid {
-	text-align: center;
-	display: flex;
-	justify-content: center;
-} 
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
 
 .view-community {
-	display: flex;
-	margin: 45px 0px;
-	text-align: center;
-	border: 1px solid rgba(225,225,225,1);
-	padding: 25px;
-	border-radius: 32px;
-	flex-direction: column;
-	.stackoverflow-logo {
-		width: 250px;
-		display: block;
-	} 
+  display: flex;
+  margin: 45px 0;
+  text-align: center;
+  border: 1px solid rgba(225, 225, 225, 1);
+  padding: 25px;
+  border-radius: 32px;
+  flex-direction: column;
+
+  .stack-overflow-logo {
+    width: 250px;
+    display: block;
+  }
 }
 
 @include breakpoint(0 $tablet) {
-	.bottom-border-sm-tablet {
-		border-bottom:1px solid rgba(225,225,225,1);	
-	}
+  .bottom-border-sm-tablet {
+    border-bottom: 1px solid rgba(225, 225, 225, 1);
+  }
 }
-
-

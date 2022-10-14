@@ -1,7 +1,7 @@
-import { StageProps, StagesProps } from "./interfaces";
+import { StageProps, StagesArrayProps } from "./interfaces";
 import Stage from "./Stage";
 
-const Stages = ({stages}: StagesProps) => {
+const StagesArray = ({stages}: StagesArrayProps) => {
     return (
         <div className="stages-wrapper">
             {stages.map((stage: StageProps ) => {
@@ -13,4 +13,4 @@ const Stages = ({stages}: StagesProps) => {
     )
 }
 
-export default Stages;
+export default StagesArray;

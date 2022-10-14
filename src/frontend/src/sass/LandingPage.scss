@@ -1,32 +1,32 @@
 .hero-section {
-    display: flex;
-    justify-content: space-around;
-    height: 952px;
+  display: flex;
+  justify-content: space-around;
+  height: 952px;
 }
 
 .hero-content {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    max-width: 80ch;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 80ch;
 }
 
 .ctas {
-    display: flex;
-    width: 400px;
+  display: flex;
+  width: 400px;
 
-    :last-child {
-        margin-left: 1em;
-    }
+  :last-child {
+    margin-left: 1em;
+  }
 }
 
 .hero-svg {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .hero-svg > img {
-    max-width: 600px;
+  max-width: 600px;
 }
 
 .what-is-a-pia {
@@ -37,50 +37,50 @@
     width: 100vw;
     height: 411px;
     padding-block: 4rem;
-    background-color: $bc-lightgray;
+    background-color: $ntrl-lightgray;
     text-align: center;
 }
 
 .what-is-a-pia p {
-    max-width: 80ch;
+  max-width: 80ch;
 }
 
 .info-section {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: space-evenly;
-    height: 710px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: space-evenly;
+  height: 710px;
 }
 
 .info-section > div {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    max-width: 50ch;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  max-width: 50ch;
+  align-items: center;
 }
 
 .info-section > div > img {
-    display: flex;
-    max-width: 400px;
-    max-height: 250px;
-    margin-bottom: 3rem;
+  display: flex;
+  max-width: 400px;
+  max-height: 250px;
+  margin-bottom: 3rem;
 }
 
 .callout-section {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
 }
 
 .callout {
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: $bc-lightgray;
-    border-left: 10px solid $bc-blue;
+    background-color: $ntrl-lightgray;
+    border-left: 10px solid $primary-blue;
     width: 1088px;
     height: 76px;
     padding: 25px;

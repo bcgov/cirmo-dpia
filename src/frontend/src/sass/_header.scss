@@ -1,23 +1,23 @@
 header {
-  background-color: $bc-blue;
-  border-bottom: 2px solid $bc-yellow;
+  background-color: $primary-blue;
+  border-bottom: 2px solid $secondary-yellow;
   padding: 0 65px 0 65px;
   color: #fff;
   display: flex;
   height: 65px;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   position: fixed;
-  z-index:99;
+  z-index: 99;
   width: 100%;
   justify-content: normal;
   align-items: center;
-  
+
   .logo {
     width: 200px;
-    height: 150px;
+    height: 65px;
     padding: 0;
-   }	  
+  }
 }
 
 header h1 {
@@ -26,7 +26,7 @@ header h1 {
   margin-block: 5px;
 
   span {
-    color: $bc-yellow;
+    color: $secondary-yellow;
     vertical-align: super;
     font-weight: inherit;
     font-variant: small-caps;
@@ -43,6 +43,7 @@ header .banner {
   justify-content: flex-start;
   align-items: center;
   margin: 0 10px 0 0;
+
   /* border-style: dotted;
   border-width: 1px;
   border-color: lightgrey; */
@@ -51,14 +52,16 @@ header .banner {
 header .other {
   display: flex;
   flex-grow: 1;
+
   /* border-style: dotted;
   border-width: 1px;
   border-color: lightgrey; */
   flex-direction: row-reverse;
   align-items: center;
+
   a {
-	color: white;
-	font-weight:bold;
+    color: white;
+    font-weight: bold;
   }
 }
 
@@ -77,7 +80,7 @@ header .other {
 
 @media screen and (min-width: 900px) {
   header h1 {
-    font-size: 2.0em;
+    font-size: 2em;
     visibility: visible;
   }
 }
