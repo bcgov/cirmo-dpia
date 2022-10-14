@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="ppq" element={<PPQLandingPage />} />
+        <Route path="/ppq" element={<PPQLandingPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
