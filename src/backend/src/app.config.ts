@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   ExpressAdapter,
@@ -32,6 +33,9 @@ export async function createNestApp(): Promise<{
 
   // append request logs
   app.use(morgan('tiny'));
+
+  // Transform types during DTO Validation
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // Assign global prefix to all endpoints
   app.setGlobalPrefix('/api');

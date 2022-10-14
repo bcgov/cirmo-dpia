@@ -24,25 +24,27 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
 
-## Installation
+## Migrations
 
-```bash
-$ npm install
-```
-
-## Running the app
+<p>Migrations run every time before the app starts</p>
 
 ```bash
-# development
-$ npm run start
+# get inside the api workspace
+$ make api-workspace
 
-# watch mode
-$ npm run start:dev
+# generate a migration once entity changes are done
+$ npm run migration:generate src/migrations/<your-migration-name>
 
-# production mode
-$ npm run start:prod
+# run a migration after validating the generated file to make changes to the Database
+$ npm run migration:run
+
+# revert an erroneous migration
+$ npm run migration:revert
+
+# create an empty migration
+$ npm run migration:create
 ```
 
 ## Test
@@ -60,14 +62,6 @@ $ npm run test:cov
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+<!-- Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support). -->
 
 ## License
-
-Nest is [MIT licensed](LICENSE).
