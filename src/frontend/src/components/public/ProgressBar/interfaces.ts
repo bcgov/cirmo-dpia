@@ -1,12 +1,13 @@
-import { ReactNode } from 'react';
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { ReactNode } from "react";
 
-export interface StagesProps {
-  stages: StageProps[];
+export interface StagesArrayProps {
+    stages: StageProps[];
 }
 
 export interface StageProps {
-  id: number;
-  label: string;
-  icon: string;
-  active: boolean;
+    id: number;
+    label: string;
+    icon: IconDefinition;
+    active: boolean;
 }
