@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "precommit": "lint-staged",
-    "prepare": "cd ../.. && husky install src/backend/.husky",
+    "prepare": "cd ../.. && husky install ./.husky",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" ",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",

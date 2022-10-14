@@ -3,13 +3,14 @@ footer {
   border-top: 2px solid $bc-yellow;
   color: #fff;
   font-family: $font-family;
+
   /* need to test */
   position: absolute;
-  bottom: 0px;
-  left: 0px;
-  width:100%;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 46px;
-  //top: calc(100vh - 72px);;
+  // top: calc(100vh - 72px);;
 }
 
 footer .container {
@@ -22,8 +23,8 @@ footer .container {
 
 footer ul {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row warp;
+  // flex-wrap: wrap;
   margin: 0;
   color: #fff;
   list-style: none;
@@ -44,7 +45,7 @@ footer ul li {
 
 footer ul li a {
   font-size: 0.813em;
-  font-weight: normal;  /* 400 */
+  font-weight: normal; /* 400 */
   color: #fff;
   margin-inline: 10px;
   position: relative;

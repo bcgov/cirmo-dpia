@@ -1,11 +1,11 @@
 a {
-	font-size: 14px;
-	color: $bc-lightblue;
-	text-decoration:none;
+  font-size: 14px;
+  color: $bc-lightblue;
+  text-decoration: none;
 }
 
 a:hover {
-	color: $bc-blue;
+  color: $bc-blue;
 }
 
 .btn-primary {
@@ -32,7 +32,7 @@ a:hover {
 
   :hover {
     text-decoration: underline;
-    opacity: 0.80;
+    opacity: 0.8;
   }
 
   :focus {
@@ -69,7 +69,7 @@ a:hover {
 
   :hover {
     text-decoration: underline;
-    opacity: 0.80;
+    opacity: 0.8;
   }
 
   :focus {
@@ -102,13 +102,13 @@ a:hover {
   cursor: pointer;
 
   .icon {
-    margin-left: .8em;
+    margin-left: 0.8em;
     font-size: large;
   }
 
   :hover {
     text-decoration: underline;
-    opacity: 0.80;
+    opacity: 0.8;
   }
 
   :focus {

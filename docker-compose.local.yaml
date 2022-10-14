@@ -8,6 +8,9 @@ services:
     build:
       context: ./src/backend
       dockerfile: .docker/Dockerfile.local
+    depends_on:
+      dpia-db:
+        condition: service_healthy
     volumes:
       # Binds the application folder from the host inside the container enabling hot reloading
       - ./src/backend:/usr/src/app
@@ -31,7 +34,29 @@ services:
     ports:
       - "8080:8080"
     tty: true
-  
+
+  #############################################################################################
+  ###                                       Database                                        ###
+  #############################################################################################
+  dpia-db:
+    image: postgres:14.5-alpine
+    restart: always
+    env_file: ./src/backend/.env
+    ports:
+      - '${DB_PORT:-5432}:${DB_PORT:-5432}'
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}'"]
+      timeout: 3s
+      interval: 3s
+      retries: 30
+
+volumes:
+  pgdata:
+
 networks:
-  dpia-network: 
+  dpia-network:
     driver: "bridge"
