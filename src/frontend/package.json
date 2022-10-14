@@ -9,7 +9,7 @@
     "prettier": "prettier src -check",
     "precommit": "lint-staged",
     "prepare": "cd ../.. && husky install ./.husky",
-    "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}' 'cypress/**/*.{ts,tsx,scss,css,json}' ",
+    "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}' 'cypress/**/*.{html,ts,tsx}' ",
     "lint": "eslint \"{src,apps,libs,test,cypress}/**/*.ts{,x}\" ",
     "lint:fix": "eslint \"{src,apps,libs,test,cypress}/**/*.ts{,x}\" --fix",
     "cy:run-comp": "cypress run --component --browser chrome",
