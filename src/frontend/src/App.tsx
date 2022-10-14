@@ -7,7 +7,7 @@ import './sass/common.scss';
 function App() {
   return (
     <div className="App">
-      <Header />
+      <Header user="" />
       <main>
         <LandingPage />
       </main>
