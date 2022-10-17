@@ -1,0 +1,29 @@
+.callout-section {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+
+  &.results-callout-section {
+    justify-content: start;
+    height: auto;
+    margin-block: 1.5em 3em;
+  }
+}
+
+.callout {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background-color: $ntrl-lightgray;
+    border-left: 10px solid $primary-blue;
+    width: 1088px;
+    height: 76px;
+    padding: 25px;
+
+    &.results-callout {
+      padding-block: 5px;
+      width: 100%;
+    }
+}
