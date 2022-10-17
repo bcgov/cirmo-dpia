@@ -69,6 +69,8 @@ objects:
                 value: '3000'
               - name: API_ENV
                 value: ${ENVIRONMENT}
+              - name: POSTGRES_HOST
+                value: ${DATABASE_SERVICE}
             resources:
               limits:
                 cpu: 150m
@@ -124,3 +126,6 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
+  - description: Database Service
+    displayName: Database Service
+    name: DATABASE_SERVICE

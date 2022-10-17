@@ -133,6 +133,7 @@ jobs:
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
           IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
+          DATABASE_SERVICE: "postgresql"
         run: |
           ./.github/helpers/deploy.sh 
     
