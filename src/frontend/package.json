@@ -24,7 +24,7 @@
     "@fortawesome/free-solid-svg-icons": "6.2.0",
     "@fortawesome/react-fontawesome": "0.2.0",
     "breakpoint-sass": "3.0.0",
-    "esbuild-darwin-arm64": "^0.15.11",
+    "esbuild-darwin-arm64": "0.15.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.4.2",
