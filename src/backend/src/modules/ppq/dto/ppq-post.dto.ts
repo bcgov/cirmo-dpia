@@ -9,7 +9,7 @@ import {
   IsOptional,
   IsString,
   MaxLength,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { YesNoNotSureEnum } from 'src/common/enums/yes-no-not-sure.enum';
 import { PpqOtherFactorsEnum } from '../enums/ppq-other-factors.enum';
