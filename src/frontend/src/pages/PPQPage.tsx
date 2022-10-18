@@ -17,7 +17,7 @@ function PPQLandingPage() {
 
       <PPQNavBar />
 
-      <div className=" container ppq-section">
+      <div className="  ppq-section">
         <div className="row what-is-a-ppq">
         <div className='col-md-6'>
           <h2 >PIA Pathway Questionnaire</h2>
