@@ -23,6 +23,11 @@ export class PpqService {
   async getPpqResult(ppqForm): Promise<PpqResultRO> {
     let complexity = PiaComplexity.LOW;
 
+    // if user is sure of having personal information, it is at-least Standard
+    if (ppqForm.containsPersonalInformation === true) {
+      complexity = PiaComplexity.STANDARD;
+    }
+
     // if user is unsure, PIA is high complexity
     if (ppqForm.containsPersonalInformation === null) {
       complexity = PiaComplexity.HIGH;
