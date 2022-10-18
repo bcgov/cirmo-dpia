@@ -48,8 +48,3 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
-  - description: Database Service
-    displayName: Database Service
-    required: false
-    name: DATABASE_SERVICE
-    value: postgresql
