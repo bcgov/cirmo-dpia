@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
-  IsArray,
+  IsBoolean,
   IsDate,
   IsEmail,
   IsEnum,
@@ -10,23 +10,29 @@ import {
   IsString,
   MaxLength,
 } from '@nestjs/class-validator';
-import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
-import { YesNoNotSureEnum } from 'src/common/enums/yes-no-not-sure.enum';
-import { PpqOtherFactorsEnum } from '../enums/ppq-other-factors.enum';
-import { PpqPiaTypesEnum } from '../enums/ppq-pia-types.enum';
+import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
+import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
 
 export class PpqPostDTO {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: 'Figma PPQ',
+  })
   name: string;
 
   @IsString()
   @IsNotEmpty()
   @IsEmail()
   @MaxLength(50)
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: 'name@bc.gov.in',
+  })
   email: string;
 
   @IsEnum(GovMinistriesEnum)
@@ -34,7 +40,7 @@ export class PpqPostDTO {
   @ApiProperty({
     enum: GovMinistriesEnum,
     required: true,
-    example: GovMinistriesEnum.HEALTH,
+    example: GovMinistriesEnum.AGRICULTURE_AND_FOOD,
   })
   ministry: GovMinistriesEnum;
 
@@ -50,7 +56,7 @@ export class PpqPostDTO {
   @ApiProperty({
     type: String,
     required: true,
-    example: 'Add Figma to BC Gov Project',
+    example: 'Add Figma to my BC Gov Project',
   })
   initiativeName: string;
 
@@ -64,32 +70,131 @@ export class PpqPostDTO {
   @ApiProperty({ type: String, required: true })
   dataElements: string;
 
-  @IsEnum(PpqPiaTypesEnum)
-  @IsNotEmpty()
-  @ApiProperty({ enum: PpqPiaTypesEnum, required: true })
-  piaType: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    enum: YesNoNotSureEnum,
-    required: true,
-    example: YesNoNotSureEnum.YES,
-  })
-  containsPersonalInformation: string;
-
-  @IsEnum(PpqOtherFactorsEnum, { each: true })
-  @IsArray()
+  @IsEnum(PiaTypesEnum)
   @IsOptional()
   @ApiProperty({
-    enum: PpqOtherFactorsEnum,
-    isArray: true,
-    example: [
-      PpqOtherFactorsEnum.HAS_BC_SERVICES_CARD_ONBOARDING,
-      PpqOtherFactorsEnum.HAS_SENSITIVE_PERSONAL_INFORMATION,
-    ],
+    enum: PiaTypesEnum,
+    required: false,
+    example: PiaTypesEnum.CORPORATE_CHECKLIST,
   })
-  otherFactors?: PpqOtherFactorsEnum[];
+  piaType: PiaTypesEnum;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  containsPersonalInformation: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasSensitivePersonalInformation: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasSharingOfPersonalInformation: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasProgramAgreement: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasOthersAccessToPersonalInformation: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasCloudTechnology: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasPotentialPublicInterest: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasDisclosureOutsideOfCanada: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasHighVolumesPersonalInformation: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasDataLinking: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasBcServicesCardOnboarding: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasAiOrMl: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
+  hasPartnershipNonMinistry: boolean;
 
   @IsDate()
   @IsOptional()

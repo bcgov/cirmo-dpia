@@ -1,4 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { repositoryMock } from '../../test-utils/repository.mock';
+import { PpqEntity } from './entities/ppq.entity';
+import { PpqController } from './ppq.controller';
 import { PpqService } from './ppq.service';
 
 describe('PpqService', () => {
@@ -6,7 +10,14 @@ describe('PpqService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PpqService],
+      controllers: [PpqController],
+      providers: [
+        PpqService,
+        {
+          provide: getRepositoryToken(PpqEntity),
+          useValue: { ...repositoryMock },
+        },
+      ],
     }).compile();
 
     service = module.get<PpqService>(PpqService);
