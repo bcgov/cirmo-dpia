@@ -1,10 +1,10 @@
 .stages-wrapper {
-  display: flex;
-  width: 50vw;
-  min-height: 5vh;
-  justify-content: space-evenly;
-  margin: 10rem auto;
-  gap: 4em;
+    display: flex;
+    width: 50vw;
+    min-height: 5vh;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    gap: 4em;
 
   & > .stage-lead-line:first-child {
     display: none;

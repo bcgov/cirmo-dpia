@@ -1,0 +1,39 @@
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  max-width: 253px;
+  height: fit-content;
+  padding-inline: 23px;
+  padding-block: 53.5px;
+}
+
+.card-icon {
+  font-size: 72px;
+  color: $bg-blue
+}
+
+.card-title {
+  font-size: 2em;
+  line-height: 50px;
+}
+
+.card-text {
+  text-align: center;
+  white-space: pre-line;
+}
+
+.card-button {
+  display: flex;
+  gap: 4px;
+  padding-inline: 50px;
+}
+
+.button-icon {
+  font-size: large;
+  color: $primary-blue;
+}

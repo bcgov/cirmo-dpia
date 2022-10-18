@@ -2,6 +2,10 @@ FROM node:18.9-alpine as build
 
 WORKDIR /app
 
+# creating diff
+RUN apk update
+RUN apk add curl
+
 # Copy in build artifacts, build project dependencies
 
 COPY src/frontend/package*.json ./
