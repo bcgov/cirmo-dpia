@@ -1,0 +1,14 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 150px;
+}
+.ppq-form-section {
+  display: flex;
+  height: 725px;
+  padding: 150px;
+}
+
+.btn-submit {
+  float: right;
+}
