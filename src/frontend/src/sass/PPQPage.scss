@@ -1,23 +1,8 @@
 .ppq-section {
   display: flex;
   justify-content: space-around;
-  height: 725px;
+  height: 1024px;
   padding: 150px;
-}
-
-.ppq-nav-bar {
-  display: flex;
-  position: absolute;
-  padding: 5px;
-  align-items: center;
-  margin-top: 0;
-  color: #fff;
-  background-color: #38598a;
-  width: 100%;
-}
-
-.ppq-nav-bar p {
-  margin-left: 10px;
 }
 
 .ppq-content {

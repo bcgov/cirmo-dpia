@@ -1,12 +1,12 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export interface StagesArrayProps {
-    stages: StageProps[];
+  stages: StageProps[];
 }
 
 export interface StageProps {
-    id: number;
-    label: string;
-    icon: IconDefinition;
-    active: boolean;
+  id: number;
+  label: string;
+  icon: IconDefinition;
+  active: boolean;
 }
