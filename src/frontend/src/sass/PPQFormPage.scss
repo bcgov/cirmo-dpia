@@ -3,12 +3,32 @@
   grid-template-columns: 1fr 1fr;
   column-gap: 150px;
 }
+.form-header {
+    padding-bottom: 50px;
+}
+
+.ppq-form-nav-bar {
+    display: flex;
+    word-spacing: normal;
+    padding-top: 85px;
+    align-items: center;
+    margin-top: 0;
+    color: #fff;
+    background-color: #38598a;
+    width: 100%;
+  } 
+  .ppq-nav-header {
+    padding:10px;
+  }
 .ppq-form-section {
   display: flex;
   
   padding: 150px;
 }
 
+.ppq-form-content {
+    padding-top:  45px;
+}
 .btn-submit {
   float: right;
 }

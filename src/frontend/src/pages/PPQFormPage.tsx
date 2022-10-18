@@ -31,31 +31,38 @@ function PPQFormPage() {
     <div>
       <Header data-cy="header" user="first.last@gov.bc.ca" />
 
-      <section data-cy="ppq-nav-bar" className="ppq-nav-bar">
-        <a href="/">
-          <p> Home </p>
-        </a>
-
-        <a href="/ppq">
-          <p> PIA Pathway Questionnaire</p>
-        </a>
+      <section data-cy="ppq-form-nav-bar" className="ppq-form-nav-bar">
+        <div className="ppq-nav-header">
+          <a href="/">
+            <p> Home </p>
+          </a>
+        </div>
+        <div>
+          <a href="/ppq">
+            <p> PIA Pathway Questionnaire</p>
+          </a>
+        </div>
       </section>
       <section className="ppq-form-section">
         <div>
           <form onSubmit={handleSubmit}>
-            <h2> Fill out the PPQ</h2>
-            <span>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
-              massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-              fringilla, mattis ligula consectetur, ultrices mauris. Maecenas
-              vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum
-              auctor ornare leo, non suscipit magna interdum eu.{' '}
-            </span>
+            <div className="form-header">
+              <h1> Fill out the PPQ</h1>
+              <span>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
+                massa mi. Aliquam in hendrerit urna. Pellentesque sit amet
+                sapien fringilla, mattis ligula consectetur, ultrices mauris.
+                Maecenas vitae mattis tellus. Nullam quis imperdiet augue.
+                Vestibulum auctor ornare leo, non suscipit magna interdum eu.{' '}
+              </span>
+            </div>
+
             <h3>1. Contact information</h3>
-            <div className="wrapper">
-              <label>
-                Name
-                <select value="">
+            <div className="row">
+              <div className="form-group col-md-6">
+                <label>Name</label>
+
+                <select className="form-control" id="name" value="">
                   <option disabled={true} value="">
                     Select one
                   </option>
@@ -63,16 +70,16 @@ function PPQFormPage() {
                     <option value={option}> {option}</option>
                   ))}
                 </select>
-              </label>
-              <label>
-                Work Email
-                <input type="text" name="name" />
-              </label>
+              </div>
+              <div className="form-group col-md-6">
+                <label>Work Email</label>
+                <input className="form-control" type="text" name="email" />
+              </div>
             </div>
-            <div className="wrapper">
-              <label>
-                Ministry
-                <select value="">
+            <div className="row">
+              <div className="form-group col-md-6">
+                <label>Ministry</label>
+                <select className="form-control" value="">
                   <option disabled={true} value="">
                     Select one
                   </option>
@@ -80,61 +87,64 @@ function PPQFormPage() {
                     <option value={option}>{option}</option>
                   ))}
                 </select>
-              </label>
-              <label>
-                Branch
-                <input type="text" name="name" />
-              </label>
+              </div>
+              <div className="form-group col-md-6">
+                <label>Branch</label>
+                <input className="form-control" type="text" name="branch" />
+              </div>
             </div>
 
-            <div>
+            <div className="ppq-form-content">
               {' '}
               <h2>2. Your initiative</h2>
-              <label>
-                Name of initiative
-                <input type="text" name="name" />
-              </label>
-              <h3>About your initiative</h3>
-              <span>
-                Describe your initiative in enough detail that a reader who
-                knows nothing about your work will understand the purpose of
-                your initiative and who your partners and other interested
-                parties are.
-              </span>
-              <div className="container">
-                <MDEditor preview="edit" value={value} onChange={setValue} />
+              <div className="form-group col-md-12">
+                <label>Name of initiative</label>
+                <input className="form-control" type="text" name="name" />
+              </div>
+              <div>
+                <h3>About your initiative</h3>
+                <span>
+                  Describe your initiative in enough detail that a reader who
+                  knows nothing about your work will understand the purpose of
+                  your initiative and who your partners and other interested
+                  parties are.
+                </span>
+
+                <div >
+                  <MDEditor preview="edit" value={value} onChange={setValue} />
+                </div>
+              </div>
+              <div >
+                <h3>
+                  What are the data or information elements involved in your
+                  initiative?{' '}
+                </h3>
+                <span>
+                  Please list all the elements of information or data that you
+                  might collect, use, store, disclose, or access as part of your
+                  initiative.{' '}
+                </span>
+
+                <div >
+                  <MDEditor preview="edit" value={value} onChange={setValue} />
+                </div>
+              </div>
+              <div >
+                {' '}
+                <div className="form-group col-md-6">
+                  <label>What type of PIA do you need to complete?</label>
+                  <select className="form-control" value="">
+                    <option disabled={true} value="">
+                      Select one
+                    </option>
+                    <option value="standard"> Standard</option>
+                    <option value="complex">Complex</option>
+                  </select>
+                </div>
               </div>
             </div>
-            <div>
-              <h3>
-                What are the data or information elements involved in your
-                initiative?{' '}
-              </h3>
-              <span>
-                Please list all the elements of information or data that you
-                might collect, use, store, disclose, or access as part of your
-                initiative.{' '}
-              </span>
 
-              <div className="container">
-                <MDEditor preview="edit" value={value} onChange={setValue} />
-              </div>
-            </div>
-
-            <div>
-              {' '}
-              <label>
-                What type of PIA do you need to complete?
-                <select value="">
-                  <option disabled={true} value="">
-                    Select one
-                  </option>
-                  <option value="standard"> Standard</option>
-                  <option value="complex">Complex</option>
-                </select>
-              </label>
-            </div>
-            <div>
+            <div className="ppq-form-content">
               {' '}
               <h2>3. Personal information</h2>
               <h3>Is personal information involved in your initiative?</h3>
@@ -164,7 +174,7 @@ function PPQFormPage() {
                 </label>
               </div>
             </div>
-            <div>
+            <div className="ppq-form-content">
               <h3>4. Other factors</h3>
               <span>
                 Does your initiative involve any of the following? Check all
@@ -191,7 +201,7 @@ function PPQFormPage() {
               </div>
             </div>
 
-            <div>
+            <div className="ppq-form-content">
               {' '}
               <h2>5. Start date </h2>
               <span>
@@ -227,9 +237,7 @@ function PPQFormPage() {
               >
                 Back
               </button>
-              <button
-                className="btn-primary btn-next"
-              >Submit</button>
+              <button className="btn-primary btn-next">Submit</button>
             </div>
           </form>
         </div>
