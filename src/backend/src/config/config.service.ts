@@ -31,6 +31,7 @@ class ConfigService {
       migrationsTableName: 'migrations',
       entities: ['dist/**/*.entity{.ts,.js}'],
       migrations: ['dist/migrations/*.js'],
+      migrationsRun: this.getValue('API_ENV') !== 'local', // auto run migrations on dev, test and prod
 
       synchronize: false,
     };

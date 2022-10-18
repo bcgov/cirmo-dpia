@@ -1,0 +1,13 @@
+.ppq-connect section {
+  display: flex;
+  flex-direction: column;
+  margin-block: 2rem;
+
+  & > *:not(h2) {
+    margin-left: 2rem;
+  }
+
+  & > button {
+    margin-top: 1rem;
+  }
+}
