@@ -128,4 +128,6 @@ parameters:
     value: latest
   - description: Database Service
     displayName: Database Service
+    required: true
     name: DATABASE_SERVICE
+    value: postgresql
