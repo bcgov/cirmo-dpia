@@ -3,17 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-
+import {
+  faChevronRight,
+  faFile,
+  faHandshake,
+} from '@fortawesome/free-solid-svg-icons';
+import Stage from '../components/public/ProgressBar/Stage';
+import StagesArray from '../components/public/ProgressBar/StagesArray';
 import ppqImg from '../assets/ppq_homepage.svg';
 import {
-  otherFactor,
-  contactUserName,
-  ministryList,
+  OtherFactor,
+  ContactUserName,
+  MinistryList,
+  PIATypes,
 } from '../constant/constant';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
+import { StageProps } from '../components/public/ProgressBar/interfaces';
+import PPQNavBar from '../components/common/PPQNavBar';
 
+const stages: StageProps[] = [
+  {
+    id: 1,
+    label: 'Fill out the PPQ',
+    icon: faFile,
+    active: true,
+  },
+  {
+    id: 2,
+    label: 'Review results',
+    icon: faFile,
+    active: false,
+  },
+  {
+    id: 3,
+    label: 'Connect with your MPO',
+    icon: faHandshake,
+    active: false,
+  },
+];
 function PPQFormPage() {
   const [value, setValue] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -30,19 +58,10 @@ function PPQFormPage() {
   return (
     <div>
       <Header data-cy="header" user="first.last@gov.bc.ca" />
-
-      <section data-cy="ppq-form-nav-bar" className="ppq-form-nav-bar">
-        <div className="ppq-nav-header">
-          <a href="/">
-            <p> Home </p>
-          </a>
-        </div>
-        <div>
-          <a href="/ppq">
-            <p> PIA Pathway Questionnaire</p>
-          </a>
-        </div>
-      </section>
+      <PPQNavBar />
+      <div>
+        <StagesArray stages={stages} />
+      </div>
       <section className="ppq-form-section">
         <div>
           <form onSubmit={handleSubmit}>
@@ -66,7 +85,7 @@ function PPQFormPage() {
                   <option disabled={true} value="">
                     Select one
                   </option>
-                  {contactUserName.map((option) => (
+                  {ContactUserName.map((option) => (
                     <option value={option}> {option}</option>
                   ))}
                 </select>
@@ -83,7 +102,7 @@ function PPQFormPage() {
                   <option disabled={true} value="">
                     Select one
                   </option>
-                  {ministryList.map((option) => (
+                  {MinistryList.map((option) => (
                     <option value={option}>{option}</option>
                   ))}
                 </select>
@@ -137,8 +156,9 @@ function PPQFormPage() {
                     <option disabled={true} value="">
                       Select one
                     </option>
-                    <option value="standard"> Standard</option>
-                    <option value="complex">Complex</option>
+                    {PIATypes.map((option) => (
+                      <option value={option}> {option}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -181,7 +201,7 @@ function PPQFormPage() {
                 that apply.
               </span>
               <div>
-                {otherFactor.map((name, index) => {
+                {OtherFactor.map((name, index) => {
                   return (
                     <div>
                       <div>

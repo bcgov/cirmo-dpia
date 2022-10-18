@@ -1,4 +1,4 @@
-export const otherFactor = [
+export const OtherFactor = [
   'Sensitive personal information',
   'Regular or systematic sharing of personal information',
   'Common or integrated program agreement',
@@ -12,7 +12,7 @@ export const otherFactor = [
   'Artificial intelligence (AI) or machine learning',
   'Partnership with non-ministry public bodies or other organizations',
 ];
-export const contactUserName = [
+export const ContactUserName = [
   'David Malcolm',
   'Luke Dupuis',
   'Melissa Sexsmith',
@@ -28,7 +28,7 @@ export const contactUserName = [
   'Chris Mutadi',
   'Brent Grover',
 ];
-export const ministryList = [
+export const MinistryList = [
   'Advanced Education and Skills Training',
   'Agriculture and Food',
   'Attorney General',
@@ -54,4 +54,11 @@ export const ministryList = [
   'Social Development and Poverty Reduction',
   'Tourism, Arts, Culture and Sport',
   'Transportation and Infrastructure',
+];
+
+export const PIATypes = [
+  'New initiative',
+  'Initiative update',
+  'Corporate Checklist',
+  'I’m not sure',
 ];

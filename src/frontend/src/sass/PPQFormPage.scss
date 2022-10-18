@@ -4,42 +4,30 @@
   column-gap: 150px;
 }
 .form-header {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
-.ppq-form-nav-bar {
-    display: flex;
-    word-spacing: normal;
-    padding-top: 85px;
-    align-items: center;
-    margin-top: 0;
-    color: #fff;
-    background-color: #38598a;
-    width: 100%;
-  } 
-  .ppq-nav-header {
-    padding:10px;
-  }
 .ppq-form-section {
   display: flex;
-  
+
   padding: 150px;
 }
 
 .ppq-form-content {
-    padding-top:  45px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .btn-submit {
   float: right;
 }
 .horizontal-divider {
-    width: 100%;
-    height: 0px;
-    border: 2px solid #CFCFCF;
-    margin-block: 45px 25px;
-  }
-  
-  .form-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
+  width: 100%;
+  height: 0px;
+  border: 2px solid #cfcfcf;
+  margin-block: 45px 25px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}

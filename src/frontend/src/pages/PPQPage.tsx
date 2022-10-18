@@ -8,20 +8,15 @@ import ppqImg from '../assets/ppq_homepage.svg';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { Link } from 'react-router-dom';
+import PPQNavBar from '../components/common/PPQNavBar';
 
 function PPQLandingPage() {
   return (
     <div>
       <Header data-cy="header" user="first.last@gov.bc.ca" />
-      <section data-cy="ppq-nav-bar" className="ppq-nav-bar">
-        <Link to="/">
-          <p> Home </p>
-        </Link>
 
-        <Link to="/ppq">
-          <p> PIA Pathway Questionnaire</p>
-        </Link>
-      </section>
+      <PPQNavBar />
+
       <section className="ppq-section">
         <div className="what-is-a-ppq">
           <h2 className="ppq-header">PIA Pathway Questionnaire</h2>
