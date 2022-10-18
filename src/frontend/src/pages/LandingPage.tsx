@@ -6,6 +6,7 @@ import heroImg from '../assets/hero-img.svg';
 import newIdeas from '../assets/undraw_new_ideas.svg';
 import webSearch from '../assets/undraw_web_search.svg';
 import sharedGoals from '../assets/undraw_shared_goals.svg';
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
   return (
