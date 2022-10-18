@@ -64,7 +64,7 @@ function PPQFormPage() {
       </div>
       <section className="ppq-form-section">
         <div>
-          <form onSubmit={()=> handleSubmit}>
+          <form onSubmit={() => handleSubmit}>
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <span>
@@ -130,7 +130,11 @@ function PPQFormPage() {
                 </span>
 
                 <div>
-                  <MDEditor preview="edit" value={value} onChange={() =>setValue} />
+                  <MDEditor
+                    preview="edit"
+                    value={value}
+                    onChange={() => setValue}
+                  />
                 </div>
               </div>
               <div>
@@ -145,7 +149,11 @@ function PPQFormPage() {
                 </span>
 
                 <div>
-                  <MDEditor preview="edit" value={value} onChange={()=>setValue} />
+                  <MDEditor
+                    preview="edit"
+                    value={value}
+                    onChange={() => setValue}
+                  />
                 </div>
               </div>
               <div>
@@ -250,7 +258,7 @@ function PPQFormPage() {
                     placeholderText="yyyy-MM-dd"
                     dateFormat="yyyy/MM/dd"
                     //  selected={startDate}
-                     onChange={(date) => setStartDate(startDate)}
+                    onChange={(date) => setStartDate(startDate)}
                   />
                 </div>
               </div>

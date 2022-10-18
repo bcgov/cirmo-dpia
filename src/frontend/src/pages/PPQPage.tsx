@@ -17,9 +17,10 @@ function PPQLandingPage() {
 
       <PPQNavBar />
 
-      <section className="ppq-section">
-        <div className="what-is-a-ppq">
-          <h2 className="ppq-header">PIA Pathway Questionnaire</h2>
+      <div className=" container ppq-section">
+        <div className="row what-is-a-ppq">
+        <div className='col-md-6'>
+          <h2 >PIA Pathway Questionnaire</h2>
           <br />
           <h2>what is it?</h2>
           <p>
@@ -44,10 +45,11 @@ function PPQLandingPage() {
             <b>Estimated time:</b> 20 minutes
           </span>
         </div>
-        <div data-cy="ppq-img" className="ppq-svg">
+        <div data-cy="ppq-img" className="col-md-6 ppq-svg">
           <img src={ppqImg} alt="Fill form image" />
         </div>
-      </section>
+        </div>
+     </div>
       <Footer />
     </div>
   );
