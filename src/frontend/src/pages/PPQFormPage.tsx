@@ -204,6 +204,8 @@ function PPQFormPage() {
             <div className="ppq-form-content">
               {' '}
               <h2>5. Start date </h2>
+              <div className='row'> 
+              <div className='form-group col-md-6'>
               <span>
                 Do you have a proposed go-live or start date for the initative?
               </span>
@@ -219,7 +221,9 @@ function PPQFormPage() {
                   No
                 </label>
               </div>
-              <div>
+              </div>
+
+              <div className='form-group col-md-6'>
                 <label>Proposed go-live or start date</label>
                 <DatePicker
                   placeholderText="yyyy-MM-dd"
@@ -227,6 +231,7 @@ function PPQFormPage() {
                   //  selected={startDate}
                   // onChange={(date) => setStartDate(date)}
                 />
+              </div>
               </div>
             </div>
             <div className="horizontal-divider"></div>
