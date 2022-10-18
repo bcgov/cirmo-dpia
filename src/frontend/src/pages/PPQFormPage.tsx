@@ -110,11 +110,11 @@ function PPQFormPage() {
                   parties are.
                 </span>
 
-                <div >
+                <div>
                   <MDEditor preview="edit" value={value} onChange={setValue} />
                 </div>
               </div>
-              <div >
+              <div>
                 <h3>
                   What are the data or information elements involved in your
                   initiative?{' '}
@@ -125,11 +125,11 @@ function PPQFormPage() {
                   initiative.{' '}
                 </span>
 
-                <div >
+                <div>
                   <MDEditor preview="edit" value={value} onChange={setValue} />
                 </div>
               </div>
-              <div >
+              <div>
                 {' '}
                 <div className="form-group col-md-6">
                   <label>What type of PIA do you need to complete?</label>
@@ -170,7 +170,7 @@ function PPQFormPage() {
               <div className="radio">
                 <label>
                   <input type="radio" value="notsure" />
-                  I'am not sure
+                  I'm not sure
                 </label>
               </div>
             </div>
@@ -204,34 +204,35 @@ function PPQFormPage() {
             <div className="ppq-form-content">
               {' '}
               <h2>5. Start date </h2>
-              <div className='row'> 
-              <div className='form-group col-md-6'>
-              <span>
-                Do you have a proposed go-live or start date for the initative?
-              </span>
-              <div>
-                <label>
-                  <input type="radio" value="yes" checked={true} />
-                  Yes
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="no" />
-                  No
-                </label>
-              </div>
-              </div>
+              <div className="row">
+                <div className="form-group col-md-6">
+                  <span>
+                    Do you have a proposed go-live or start date for the
+                    initative?
+                  </span>
+                  <div>
+                    <label>
+                      <input type="radio" value="yes" checked={true} />
+                      Yes
+                    </label>
+                  </div>
+                  <div className="radio">
+                    <label>
+                      <input type="radio" value="no" />
+                      No
+                    </label>
+                  </div>
+                </div>
 
-              <div className='form-group col-md-6'>
-                <label>Proposed go-live or start date</label>
-                <DatePicker
-                  placeholderText="yyyy-MM-dd"
-                  dateFormat="yyyy/MM/dd"
-                  //  selected={startDate}
-                  // onChange={(date) => setStartDate(date)}
-                />
-              </div>
+                <div className="form-group col-md-6">
+                  <label>Proposed go-live or start date</label>
+                  <DatePicker
+                    placeholderText="yyyy-MM-dd"
+                    dateFormat="yyyy/MM/dd"
+                    //  selected={startDate}
+                    // onChange={(date) => setStartDate(date)}
+                  />
+                </div>
               </div>
             </div>
             <div className="horizontal-divider"></div>
