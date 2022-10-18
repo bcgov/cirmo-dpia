@@ -18,14 +18,16 @@ a:hover {
   padding-inline: 25px;
   text-decoration: none;
   display: flex;
+  gap: 4px;
   align-items: center;
   justify-content: space-evenly;
+  max-width: fit-content;
+  white-space: nowrap;
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
 
   .icon {
-    margin-left: 0.8em;
     font-size: large;
   }
 
@@ -54,15 +56,17 @@ a:hover {
   padding-inline: 25px;
   text-decoration: none;
   display: flex;
+  max-width: fit-content;
+  white-space: nowrap;
+  gap: .7em;
   align-items: center;
   justify-content: space-evenly;
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
 
-  .icon {
-    margin-left: 0.8em;
-    font-size: large;
+  & > .icon {
+    font-size: x-large;
   }
 
   &:hover {
