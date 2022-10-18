@@ -1,13 +1,13 @@
-import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
 import heroImg from '../assets/hero-img.svg';
 import newIdeas from '../assets/undraw_new_ideas.svg';
 import webSearch from '../assets/undraw_web_search.svg';
 import sharedGoals from '../assets/undraw_shared_goals.svg';
+import Callout from '../components/common/Callout';
 
 function LandingPage() {
+
   return (
     <div>
       <section className="hero-section">
@@ -51,12 +51,7 @@ function LandingPage() {
           Learn about the current PIA process
         </a>
       </section>
-      <section className="callout-section">
-        <div className="callout">
-          These are draft statements and may change and evolve with feedback
-          from interested parties.
-        </div>
-      </section>
+      <Callout text="These are draft statements and may change and evolve with feedback from interested parties." />
       <section className="info-section">
         <div className="problem-subsec">
           <img src={webSearch} alt="Web Search" />

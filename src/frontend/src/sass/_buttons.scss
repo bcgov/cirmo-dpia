@@ -14,15 +14,14 @@ a:hover {
   border: none;
   color: white;
   text-align: center;
-  padding-block: 10px;
-  padding-inline: 1.2em;
+  padding-block: 12px;
+  padding-inline: 25px;
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   font-weight: 700;
   letter-spacing: 1px;
-  max-width: 200px;
   cursor: pointer;
 
   .icon {
@@ -30,17 +29,17 @@ a:hover {
     font-size: large;
   }
 
-  :hover {
+  &:hover {
     text-decoration: underline;
     opacity: 0.8;
   }
 
-  :focus {
+  &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
   }
 
-  :active {
+  &:active {
     opacity: 1;
   }
 }
@@ -51,15 +50,14 @@ a:hover {
   border: 2px solid $primary-blue;
   border-radius: 4px;
   text-align: center;
-  padding-block: 10px;
-  padding-inline: 1.2em;
+  padding-block: 12px;
+  padding-inline: 25px;
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   font-weight: 700;
   letter-spacing: 1px;
-  max-width: 200px;
   cursor: pointer;
 
   .icon {
@@ -67,17 +65,17 @@ a:hover {
     font-size: large;
   }
 
-  :hover {
+  &:hover {
     text-decoration: underline;
     opacity: 0.8;
   }
 
-  :focus {
+  &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
   }
 
-  :active {
+  &:active {
     opacity: 1;
   }
 }
@@ -98,7 +96,6 @@ a:hover {
   align-items: center;
   justify-content: space-evenly;
   margin: 0.5 0;
-  max-width: 300px;
   cursor: pointer;
 
   .icon {
@@ -106,17 +103,17 @@ a:hover {
     font-size: large;
   }
 
-  :hover {
+  &:hover {
     text-decoration: underline;
     opacity: 0.8;
   }
 
-  :focus {
+  &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
   }
 
-  :active {
+  &:active {
     opacity: 1;
   }
 }
