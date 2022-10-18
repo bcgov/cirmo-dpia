@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PiaComplexity } from 'src/common/enums/pia-complexity.enum';
+import { PiaComplexity } from '../../common/enums/pia-complexity.enum';
 import { Repository } from 'typeorm';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqEntity } from './entities/ppq.entity';

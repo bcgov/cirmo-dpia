@@ -1,7 +1,7 @@
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { Column, Entity } from 'typeorm';
-import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
-import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
+import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
+import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
 
 @Entity('ppq')
 export class PpqEntity extends BaseEntity {

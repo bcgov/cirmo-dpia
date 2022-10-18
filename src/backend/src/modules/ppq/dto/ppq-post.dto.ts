@@ -10,8 +10,8 @@ import {
   IsString,
   MaxLength,
 } from '@nestjs/class-validator';
-import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
-import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
+import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
+import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
 
 export class PpqPostDTO {
   @IsString()

@@ -1,4 +1,4 @@
-import { PiaComplexity } from 'src/common/enums/pia-complexity.enum';
+import { PiaComplexity } from '../../../common/enums/pia-complexity.enum';
 
 export class PpqResultRO {
   id: number;
