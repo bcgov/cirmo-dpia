@@ -219,18 +219,17 @@ function PPQFormPage() {
                 />
               </div>
             </div>
-            <div>
+            <div className="horizontal-divider"></div>
+            <div className="form-buttons">
               <button
                 className="btn-secondary btn-back"
                 onClick={handleBackClick}
               >
                 Back
               </button>
-              <input
-                className="btn-primary btn-submit"
-                type="submit"
-                value="Submit"
-              />
+              <button
+                className="btn-primary btn-next"
+              >Submit</button>
             </div>
           </form>
         </div>

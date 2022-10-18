@@ -5,10 +5,21 @@
 }
 .ppq-form-section {
   display: flex;
-  height: 725px;
+  
   padding: 150px;
 }
 
 .btn-submit {
   float: right;
 }
+.horizontal-divider {
+    width: 100%;
+    height: 0px;
+    border: 2px solid #CFCFCF;
+    margin-block: 45px 25px;
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
