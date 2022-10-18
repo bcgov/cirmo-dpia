@@ -3,6 +3,10 @@ FROM node:18.9-alpine
 # Create an app directory
 WORKDIR /usr/src/app
 
+RUN apt-get update
+RUN apt-get install -y gcc
+RUN apt-get install -y curl
+
 # Install Project Specific Dependencies
 COPY package*.json ./
 RUN npm ci
