@@ -12,7 +12,7 @@
     "start": "npm run migration:run && nest start",
     "start:dev": "npm run migration:run && nest start --watch",
     "start:debug": "npm run migration:run:no-build && nest start --debug --watch",
-    "start:prod": "npm run migration:run:no-build && node dist/main",
+    "start:prod": "node dist/main",
     "precommit": "lint-staged",
     "prepare": "cd ../.. && husky install ./.husky",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" ",
