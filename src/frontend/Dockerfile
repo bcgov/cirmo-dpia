@@ -2,7 +2,7 @@ FROM node:18.9-alpine as build
 
 WORKDIR /app
 
-# diff
+# creating diff
 RUN apk update
 RUN apk add curl
 
