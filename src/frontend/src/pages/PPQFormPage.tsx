@@ -69,13 +69,12 @@ function PPQFormPage() {
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
     });
-    console.log('testt 1111',checkedPIItems)
+    console.log('testt 1111', checkedPIItems);
   };
-  const handleSubmit = async (event: Event) => {
-
-    event.preventDefault();
-
-
+  const handleSubmit = (event: Event) => {
+    // event.preventDefault();
+    navigate('/ppq-result');
+    /*
     try {
       let res = await fetch('http://dpia-api/ppq', {
         method: 'POST',
@@ -102,6 +101,7 @@ function PPQFormPage() {
     } catch (err) {
       console.log(err);
     }
+    */
   };
   return (
     <div>
@@ -139,7 +139,10 @@ function PPQFormPage() {
                     Select one
                   </option>
                   {ContactUserName.map((option, index) => (
-                    <option key={index} value={option}> {option}</option>
+                    <option key={index} value={option}>
+                      {' '}
+                      {option}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -157,7 +160,7 @@ function PPQFormPage() {
               <div className="form-group col-md-6">
                 <label>Ministry</label>
                 <select
-                name="ministry"
+                  name="ministry"
                   className="form-control"
                   value=""
                   onChange={(e) => setMinistry(e.target.value)}
@@ -166,7 +169,9 @@ function PPQFormPage() {
                     Select one
                   </option>
                   {MinistryList.map((option, index) => (
-                    <option key={index} value={option}>{option}</option>
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -241,8 +246,11 @@ function PPQFormPage() {
                     <option disabled={true} value="">
                       Select one
                     </option>
-                    {PIATypes.map((option,index) => (
-                      <option key={index} value={option}> {option}</option>
+                    {PIATypes.map((option, index) => (
+                      <option key={index} value={option}>
+                        {' '}
+                        {option}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -265,7 +273,7 @@ function PPQFormPage() {
                   <div onChange={(e) => setContainsPI(e.target.value)}>
                     <label> {option}</label>
                     <input
-                    key={index}
+                      key={index}
                       type="radio"
                       name="pi"
                       value={option}
@@ -285,7 +293,13 @@ function PPQFormPage() {
               <div>
                 {OtherFactor.map((factor, index) => {
                   return (
-                    <Checkbox key={index} checked ={false} value = {factor.value} label={factor.label} onChange={handleCheckBoxChange}  />
+                    <Checkbox
+                      key={index}
+                      checked={false}
+                      value={factor.value}
+                      label={factor.label}
+                      onChange={handleCheckBoxChange}
+                    />
                   );
                 })}
               </div>
