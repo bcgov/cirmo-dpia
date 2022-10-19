@@ -7,7 +7,6 @@ import sharedGoals from '../assets/undraw_shared_goals.svg';
 import Callout from '../components/common/Callout';
 
 function LandingPage() {
-
   return (
     <div>
       <section className="hero-section">
