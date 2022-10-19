@@ -1,6 +1,6 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const PPQConnect = () => {
   return (
@@ -41,8 +41,8 @@ const PPQConnect = () => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
-        <button className="btn-secondary btn-back">Back</button>
-        <button className="btn-primary btn-next">Done</button>
+        <Link to='/ppq-results' className="btn-secondary btn-back">Back</Link>
+        <Link to='/' className="btn-primary btn-next">Done</Link>
       </div>
     </div>
   );

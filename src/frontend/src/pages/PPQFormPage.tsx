@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronRight,
-  faFile,
+  faFileLines,
+  faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
 import Stage from '../components/public/ProgressBar/Stage';
@@ -26,13 +28,13 @@ const stages: StageProps[] = [
   {
     id: 1,
     label: 'Fill out the PPQ',
-    icon: faFile,
+    icon: faFileLines,
     active: true,
   },
   {
     id: 2,
     label: 'Review results',
-    icon: faFile,
+    icon: faFileCircleCheck,
     active: false,
   },
   {
@@ -263,7 +265,7 @@ function PPQFormPage() {
               >
                 Back
               </button>
-              <button className="btn-primary btn-next">Submit</button>
+              <button type='submit' className="btn-primary btn-next">Submit</button>
             </div>
           </form>
         </div>
