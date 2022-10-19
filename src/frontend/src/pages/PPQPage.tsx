@@ -17,21 +17,21 @@ function PPQLandingPage() {
 
       <PPQNavBar />
 
-      <section className="ppq-section">
-        <div className="what-is-a-ppq">
-          <h2 className="ppq-header">PIA Pathway Questionnaire</h2>
+      <div className="  ppq-section">
+        <div className="row what-is-a-ppq">
+        <div className='col-md-6'>
+          <h2 >PIA Pathway Questionnaire</h2>
           <br />
-          <h2>what is it?</h2>
-          <p>
+          <p className='col-mb-6'>
             The PIA Pathways Questionnaire asks for some basic information about
             the initiative you're assessing in the PIA. Your answers will help
             us estimate{' '}
           </p>
-          <h2>Value of the PPQ</h2>
-          <p>The relative complexity of your PIA </p>
-          <p> Which PIA template you should fill out</p>
-          <p>Where to go for help with your PIA</p>
-
+         <ul className='col-mb-6 list'>
+          <li>The relative complexity of your PIA </li>
+          <li> Which PIA template you should fill out</li>
+          <li>Where to go for help with your PIA</li>
+          </ul> 
           <div data-cy="ppq-btn" className="ctas">
             <Link to="/ppq-form" className="btn-primary">
               Get started{' '}
@@ -44,10 +44,11 @@ function PPQLandingPage() {
             <b>Estimated time:</b> 20 minutes
           </span>
         </div>
-        <div data-cy="ppq-img" className="ppq-svg">
+        <div data-cy="ppq-img" className="col-md-6 ppq-svg">
           <img src={ppqImg} alt="Fill form image" />
         </div>
-      </section>
+        </div>
+     </div>
       <Footer />
     </div>
   );
