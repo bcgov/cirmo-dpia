@@ -1,7 +1,15 @@
+.ppq-connect {
+  margin: 2em 14%;
+}
+
 .ppq-connect section {
   display: flex;
   flex-direction: column;
   margin-block: 2rem;
+
+  & > h1 {
+    margin-bottom: 0;
+  }
 
   & > *:not(h2) {
     margin-left: 2rem;
@@ -10,4 +18,8 @@
   & > button {
     margin-top: 1rem;
   }
+}
+
+.privacy-helpline-contact {
+  margin-bottom: 0;
 }

@@ -1,6 +1,7 @@
-import Card from '../../common/Card';
-import { CardProps } from '../../common/Card/interfaces';
-import ppqTestResults from './test-ppq-results';
+import Card from "../../common/Card";
+import { CardProps } from "../../common/Card/interfaces";
+import ppqTestResults from "./test-ppq-results";
+import { Link } from "react-router-dom";
 
 const PPQResults = () => {
   return (
@@ -22,8 +23,8 @@ const PPQResults = () => {
       </div>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
-        <button className="btn-secondary btn-back">Back</button>
-        <button className="btn-primary btn-next">Next</button>
+        <Link to='/ppq-form' className="btn-secondary btn-back">Back</Link>
+        <Link to='/ppq-connect' className="btn-primary btn-next">Next</Link>
       </div>
     </div>
   );
