@@ -103,8 +103,20 @@ function PPQFormPage() {
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const otherFactor = Object.entries(checkedPIItems);
-
+    // it should refactor here later
+    const bodyPart1 = {
+      name: name,
+      email: workEmail,
+      ministry: ministry,
+      branch: branch,
+      initiativeName: initiativeName,
+      initiativeDescription: initiativeDesc,
+      dataElements: initiativeDataElements,
+      piaType: piaType,
+      containsPersonalInformation: containsPI,
+      proposedStartDate: startDate,
+    };
+    const requestBody = { ...bodyPart1, ...checkedPIItems };
     try {
       const res = await fetch(
         `http://${import.meta.env.VITE_REACT_API_HOST}:${
@@ -117,19 +129,7 @@ function PPQFormPage() {
             'Access-Control-Allow-Origin': '*',
           },
 
-          body: JSON.stringify({
-            name: name,
-            email: workEmail,
-            ministry: ministry,
-            branch: branch,
-            initiativeName: initiativeName,
-            initiativeDescription: initiativeDesc,
-            dataElements: initiativeDataElements,
-            piaType: piaType,
-            containsPersonalInformation: containsPI,
-            ...otherFactor,
-            proposedStartDate: startDate,
-          }),
+          body: JSON.stringify(requestBody),
         },
       );
       console.log('test222222 ', res);
