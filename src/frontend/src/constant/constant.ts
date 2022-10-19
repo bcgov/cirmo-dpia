@@ -1,16 +1,55 @@
 export const OtherFactor = [
-  'Sensitive personal information',
-  'Regular or systematic sharing of personal information',
-  'Common or integrated program agreement',
-  'Vendor or third-party access to personal information',
-  'Cloud technology',
-  'Potential public interest in the initiative',
-  'Disclosure of personal information outside of Canada',
-  'High volumes of personal information',
-  'Data-linking',
-  'BC Services Card Onboarding',
-  'Artificial intelligence (AI) or machine learning',
-  'Partnership with non-ministry public bodies or other organizations',
+  {
+    label:'Sensitive personal information',
+    value:'hasSensitivePersonalInformation' 
+  },
+  {
+    label:'Regular or systematic sharing of personal information',
+    value:'hasSharingOfPersonalInformation' 
+  },
+  {
+    label:'Common or integrated program agreement',
+    value:'hasProgramAgreement' 
+  } ,
+  {
+    label:'Vendor or third-party access to personal information',
+    value:'hasOthersAccessToPersonalInformation' 
+  } ,
+  {
+    label:'Cloud technology',
+    value:'hasCloudTechnology' 
+  } ,
+  {
+    label:'Potential public interest in the initiative',
+    value:'hasPotentialPublicInterest' 
+  } ,
+  {
+    label:'Disclosure of personal information outside of Canada',
+    value:'hasDisclosureOutsideOfCanada' 
+  } ,
+  {
+    label:'High volumes of personal information',
+    value:'hasHighVolumesPersonalInformation' 
+  } ,
+  {
+    label:'Data-linking',
+    value:'hasDataLinking' 
+  } ,
+  {
+    label:'BC Services Card Onboarding',
+    value:'hasBcServicesCardOnboarding' 
+  } ,
+  {
+    label:'Artificial intelligence (AI) or machine learning',
+    value:'hasAiOrMl' 
+  } ,
+  {
+    label:'Partnership with non-ministry public bodies or other organizations',
+    value:'hasPartnershipNonMinistry' 
+  }  
+
+
+  
 ];
 export const ContactUserName = [
   'David Malcolm',
@@ -62,3 +101,8 @@ export const PIATypes = [
   'Corporate Checklist',
   'I’m not sure',
 ];
+export const PIOptions = [
+  'Yes',
+  'No',
+  "I'm not sure"
+]

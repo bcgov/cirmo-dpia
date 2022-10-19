@@ -16,11 +16,13 @@ import {
   ContactUserName,
   MinistryList,
   PIATypes,
+  PIOptions,
 } from '../constant/constant';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import PPQNavBar from '../components/common/PPQNavBar';
+import Checkbox from '../components/common/CheckBox';
 
 const stages: StageProps[] = [
   {
@@ -43,17 +45,63 @@ const stages: StageProps[] = [
   },
 ];
 function PPQFormPage() {
-  const [value, setValue] = useState('');
+  const [name, setName] = useState('');
+  const [ministry, setMinistry] = useState('');
+  const [branch, setBranch] = useState('');
+  const [message, setMessage] = useState('');
+  const [workEmail, setWorkEmail] = useState('');
+  const [initiativeName, setInitiativeName] = useState('');
+  const [initiativeDesc, setInitiativeDesc] = useState('');
+  const [initiativeDataElements, setInitiativeDataElements] = useState('');
+  const [piaType, setPiaType] = useState('');
+  const [containsPI, setContainsPI] = useState('Yes');
+  const [containsStartDate, setContainsStartDate] = useState('yes');
   const [startDate, setStartDate] = useState(new Date());
+  const [checkedPIItems, setCheckedPIItems] = useState({});
   const navigate = useNavigate();
 
   const handleBackClick = () => {
     // 👇️ replace set to true
     navigate('/ppq', { replace: true });
   };
-  const handleSubmit = (event: Event) => {
+  const handleCheckBoxChange = (event: any) => {
+    setCheckedPIItems({
+      ...checkedPIItems,
+      [event.target.value]: event.target.checked,
+    });
+    console.log('testt 1111',checkedPIItems)
+  };
+  const handleSubmit = async (event: Event) => {
+
     event.preventDefault();
-    alert('A name was submitted: ');
+
+
+    try {
+      let res = await fetch('http://dpia-api/ppq', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: name,
+          email: workEmail,
+          ministry: ministry,
+          branch: branch,
+          initiativeName: initiativeName,
+          initiativeDescription: initiativeDesc,
+          dataElements: initiativeDataElements,
+          piaType: piaType,
+          containsPersonalInformation: containsPI,
+          
+          proposedStartDate:startDate
+        }),
+      });
+      let resJson = await res.json();
+      if (res.status === 200) {
+        navigate('/ppq-result');
+      } else {
+        setMessage('Some error occured');
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div>
@@ -64,7 +112,7 @@ function PPQFormPage() {
       </div>
       <section className="ppq-form-section">
         <div>
-          <form onSubmit={()=> handleSubmit}>
+          <form onSubmit={() => handleSubmit}>
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <span>
@@ -81,35 +129,55 @@ function PPQFormPage() {
               <div className="form-group col-md-6">
                 <label>Name</label>
 
-                <select className="form-control" id="name" value="">
+                <select
+                  className="form-control"
+                  id="name"
+                  value=""
+                  onChange={(e) => setName(e.target.value)}
+                >
                   <option disabled={true} value="">
                     Select one
                   </option>
-                  {ContactUserName.map((option) => (
-                    <option value={option}> {option}</option>
+                  {ContactUserName.map((option, index) => (
+                    <option key={index} value={option}> {option}</option>
                   ))}
                 </select>
               </div>
               <div className="form-group col-md-6">
                 <label>Work Email</label>
-                <input className="form-control" type="text" name="email" />
+                <input
+                  className="form-control"
+                  type="text"
+                  name="email"
+                  onChange={(e) => setWorkEmail(e.target.value)}
+                />
               </div>
             </div>
             <div className="row">
               <div className="form-group col-md-6">
                 <label>Ministry</label>
-                <select className="form-control" value="">
+                <select
+                name="ministry"
+                  className="form-control"
+                  value=""
+                  onChange={(e) => setMinistry(e.target.value)}
+                >
                   <option disabled={true} value="">
                     Select one
                   </option>
-                  {MinistryList.map((option) => (
-                    <option value={option}>{option}</option>
+                  {MinistryList.map((option, index) => (
+                    <option key={index} value={option}>{option}</option>
                   ))}
                 </select>
               </div>
               <div className="form-group col-md-6">
                 <label>Branch</label>
-                <input className="form-control" type="text" name="branch" />
+                <input
+                  className="form-control"
+                  type="text"
+                  name="branch"
+                  onChange={(e) => setBranch(e.target.value)}
+                />
               </div>
             </div>
 
@@ -118,7 +186,12 @@ function PPQFormPage() {
               <h2>2. Your initiative</h2>
               <div className="form-group col-md-12">
                 <label>Name of initiative</label>
-                <input className="form-control" type="text" name="name" />
+                <input
+                  className="form-control"
+                  type="text"
+                  name="initiativeName"
+                  onChange={(e) => setInitiativeName(e.target.value)}
+                />
               </div>
               <div>
                 <h3>About your initiative</h3>
@@ -130,7 +203,11 @@ function PPQFormPage() {
                 </span>
 
                 <div>
-                  <MDEditor preview="edit" value={value} onChange={() =>setValue} />
+                  <MDEditor
+                    preview="edit"
+                    value={initiativeDesc}
+                    onChange={(e) => setInitiativeDesc(e.target.value)}
+                  />
                 </div>
               </div>
               <div>
@@ -145,19 +222,27 @@ function PPQFormPage() {
                 </span>
 
                 <div>
-                  <MDEditor preview="edit" value={value} onChange={()=>setValue} />
+                  <MDEditor
+                    preview="edit"
+                    value={initiativeDataElements}
+                    onChange={(e) => setInitiativeDataElements(e.target.value)}
+                  />
                 </div>
               </div>
               <div>
                 {' '}
                 <div className="form-group col-md-6">
                   <label>What type of PIA do you need to complete?</label>
-                  <select className="form-control" value="">
+                  <select
+                    className="form-control"
+                    value=""
+                    onChange={(e) => setPiaType(e.target.value)}
+                  >
                     <option disabled={true} value="">
                       Select one
                     </option>
-                    {PIATypes.map((option) => (
-                      <option value={option}> {option}</option>
+                    {PIATypes.map((option,index) => (
+                      <option key={index} value={option}> {option}</option>
                     ))}
                   </select>
                 </div>
@@ -176,24 +261,21 @@ function PPQFormPage() {
                 reference.
               </span>
               <div>
-                <label>
-                  <input type="radio" value="yes" checked={true} />
-                  Yes
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="no" />
-                  No
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="notsure" />
-                  I'm not sure
-                </label>
+                {PIOptions.map((option, index) => (
+                  <div onChange={(e) => setContainsPI(e.target.value)}>
+                    <label> {option}</label>
+                    <input
+                    key={index}
+                      type="radio"
+                      name="pi"
+                      value={option}
+                      checked={containsPI === option}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
+
             <div className="ppq-form-content">
               <h3>4. Other factors</h3>
               <span>
@@ -201,21 +283,9 @@ function PPQFormPage() {
                 that apply.
               </span>
               <div>
-                {OtherFactor.map((name, index) => {
+                {OtherFactor.map((factor, index) => {
                   return (
-                    <div>
-                      <div>
-                        <input
-                          type="checkbox"
-                          id={`custom-checkbox-${index}`}
-                          name={name}
-                          value={name}
-                        />
-                        <label htmlFor={`custom-checkbox-${index}`}>
-                          {name}
-                        </label>
-                      </div>
-                    </div>
+                    <Checkbox key={index} checked ={false} value = {factor.value} label={factor.label} onChange={handleCheckBoxChange}  />
                   );
                 })}
               </div>
@@ -228,31 +298,45 @@ function PPQFormPage() {
                 <div className="form-group col-md-6">
                   <span>
                     Do you have a proposed go-live or start date for the
-                    initative?
+                    initiative?
                   </span>
-                  <div>
-                    <label>
-                      <input type="radio" value="yes" checked={true} />
-                      Yes
-                    </label>
+                  <div
+                    onClick={() => {
+                      setContainsStartDate('yes');
+                    }}
+                  >
+                    <label>Yes</label>
+                    <input
+                      type="radio"
+                      value="yes"
+                      checked={containsStartDate === 'yes'}
+                    />
                   </div>
-                  <div className="radio">
-                    <label>
-                      <input type="radio" value="no" />
-                      No
-                    </label>
+                  <div
+                    className="radio"
+                    onClick={() => {
+                      setContainsStartDate('no');
+                    }}
+                  >
+                    <label>No</label>
+                    <input
+                      type="radio"
+                      value="no"
+                      checked={containsStartDate === 'no'}
+                    />
                   </div>
                 </div>
-
-                <div className="form-group col-md-6">
-                  <label>Proposed go-live or start date</label>
-                  <DatePicker
-                    placeholderText="yyyy-MM-dd"
-                    dateFormat="yyyy/MM/dd"
-                    //  selected={startDate}
-                     onChange={(date) => setStartDate(startDate)}
-                  />
-                </div>
+                {containsStartDate == 'yes' && (
+                  <div className="form-group col-md-6">
+                    <label>Proposed go-live or start date</label>
+                    <DatePicker
+                      placeholderText="yyyy-MM-dd"
+                      dateFormat="yyyy/MM/dd"
+                      //  selected={startDate}
+                      onChange={(date) => setStartDate(startDate)}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="horizontal-divider"></div>
@@ -265,6 +349,7 @@ function PPQFormPage() {
               </button>
               <button className="btn-primary btn-next">Submit</button>
             </div>
+            <div className="message">{message ? <p>{message}</p> : null}</div>
           </form>
         </div>
       </section>
