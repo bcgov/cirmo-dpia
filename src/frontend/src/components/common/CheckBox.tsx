@@ -22,3 +22,4 @@ const Checkbox = ({ label, checked, ...props }) => {
   };
   
   export default Checkbox;
+  
