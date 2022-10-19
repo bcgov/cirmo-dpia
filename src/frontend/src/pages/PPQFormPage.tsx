@@ -167,7 +167,7 @@ function PPQFormPage() {
                       Select one
                     </option>
                     {PIATypes.map((option) => (
-                      <option value={option}> {option}</option>
+                      <option value={option}>{option}</option>
                     ))}
                   </select>
                 </div>
@@ -187,19 +187,24 @@ function PPQFormPage() {
               </span>
               <div>
                 <label>
-                  <input type="radio" value="yes" checked={true} />
+                  <input
+                    name="pi-radio"
+                    type="radio"
+                    value="yes"
+                    defaultChecked
+                  />
                   Yes
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" value="no" />
+                  <input name="pi-radio" type="radio" value="no" />
                   No
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" value="notsure" />
+                  <input name="pi-radio" type="radio" value="notsure" />
                   I'm not sure
                 </label>
               </div>
@@ -242,13 +247,22 @@ function PPQFormPage() {
                   </span>
                   <div>
                     <label>
-                      <input type="radio" value="yes" checked={true} />
+                      <input
+                        name="start-initiative-radio"
+                        type="radio"
+                        value="yes"
+                        defaultChecked
+                      />
                       Yes
                     </label>
                   </div>
                   <div className="radio">
                     <label>
-                      <input type="radio" value="no" />
+                      <input
+                        name="start-initiative-radio"
+                        type="radio"
+                        value="no"
+                      />
                       No
                     </label>
                   </div>
@@ -273,7 +287,9 @@ function PPQFormPage() {
               >
                 Back
               </button>
-              <button type='submit' className="btn-primary btn-next">Submit</button>
+              <button type="submit" className="btn-primary btn-next">
+                Submit
+              </button>
             </div>
           </form>
         </div>
