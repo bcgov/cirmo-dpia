@@ -71,12 +71,12 @@ function PPQFormPage() {
     });
     console.log('testt 1111', checkedPIItems);
   };
-  const handleSubmit = (event: Event) => {
+  const handleSubmit = async (event: Event) => {
     // event.preventDefault();
     navigate('/ppq-result');
     /*
     try {
-      let res = await fetch('http://dpia-api/ppq', {
+      let res = await fetch('http://dpia-api/api/ppq/submission', {
         method: 'POST',
         body: JSON.stringify({
           name: name,
