@@ -59,7 +59,20 @@ function PPQFormPage() {
   const [containsPI, setContainsPI] = useState('Yes');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(new Date());
-  const [checkedPIItems, setCheckedPIItems] = useState({});
+  const [checkedPIItems, setCheckedPIItems] = useState({
+    hasSensitivePersonalInformation: false,
+    hasSharingOfPersonalInformation: false,
+    hasProgramAgreement: false,
+    hasOthersAccessToPersonalInformation: false,
+    hasCloudTechnology: false,
+    hasPotentialPublicInterest: false,
+    hasDisclosureOutsideOfCanada: false,
+    hasHighVolumesPersonalInformation: false,
+    hasDataLinking: false,
+    hasBcServicesCardOnboarding: false,
+    hasAiOrMl: false,
+    hasPartnershipNonMinistry: false,
+  });
   const navigate = useNavigate();
 
   const choosePIOption = (event: any) => {
@@ -74,6 +87,13 @@ function PPQFormPage() {
     navigate('/ppq', { replace: true });
   };
 
+  const setInitiativeDescription = (newMessage: any) => {
+    setInitiativeDesc(newMessage);
+  };
+  const setInitiativeDataElementsInput = (newMessage: any) => {
+    setInitiativeDataElements(newMessage);
+  };
+
   const handleCheckboxChange = (event: any) => {
     setCheckedPIItems({
       ...checkedPIItems,
@@ -86,22 +106,32 @@ function PPQFormPage() {
     const otherFactor = Object.entries(checkedPIItems);
 
     try {
-      const res = await fetch('http://dpia-api/api/ppq', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: name,
-          email: workEmail,
-          ministry: ministry,
-          branch: branch,
-          initiativeName: initiativeName,
-          initiativeDescription: initiativeDesc,
-          dataElements: initiativeDataElements,
-          piaType: piaType,
-          containsPersonalInformation: containsPI,
-          ...otherFactor,
-          proposedStartDate: startDate,
-        }),
-      });
+      const res = await fetch(
+        `http://${import.meta.env.VITE_REACT_API_HOST}:${
+          import.meta.env.VITE_REACT_API_PORT
+        }/api/ppq`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+
+          body: JSON.stringify({
+            name: name,
+            email: workEmail,
+            ministry: ministry,
+            branch: branch,
+            initiativeName: initiativeName,
+            initiativeDescription: initiativeDesc,
+            dataElements: initiativeDataElements,
+            piaType: piaType,
+            containsPersonalInformation: containsPI,
+            ...otherFactor,
+            proposedStartDate: startDate,
+          }),
+        },
+      );
       console.log('test222222 ', res);
       const resJson = await res.json();
       if (res.status === 200) {
@@ -223,7 +253,7 @@ function PPQFormPage() {
                   <MDEditor
                     preview="edit"
                     value={initiativeDesc}
-                    onChange={() => setInitiativeDesc}
+                    onChange={setInitiativeDescription}
                   />
                 </div>
               </div>
@@ -242,7 +272,7 @@ function PPQFormPage() {
                   <MDEditor
                     preview="edit"
                     value={initiativeDataElements}
-                    onChange={() => setInitiativeDataElements}
+                    onChange={setInitiativeDataElementsInput}
                   />
                 </div>
               </div>
