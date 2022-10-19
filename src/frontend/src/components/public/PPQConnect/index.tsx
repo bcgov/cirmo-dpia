@@ -26,7 +26,10 @@ const PPQConnect = () => {
       </section>
       <section className="download-results">
         <h2>2. Download your results</h2>
-        <button className="btn-secondary">
+        <button
+          className="btn-secondary"
+          onClick={window.open('src/assets/sample-ppq-result.pdf', '_blank')}
+        >
           Download PPQ Results{' '}
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
         </button>
@@ -42,8 +45,12 @@ const PPQConnect = () => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
-        <Link to='/ppq-results' className="btn-secondary btn-back">Back</Link>
-        <Link to='/' className="btn-primary btn-next">Done</Link>
+        <Link to="/ppq-results" className="btn-secondary btn-back">
+          Back
+        </Link>
+        <Link to="/" className="btn-primary btn-next">
+          Done
+        </Link>
       </div>
     </div>
   );
