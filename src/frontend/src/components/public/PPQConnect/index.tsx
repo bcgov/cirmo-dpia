@@ -28,7 +28,9 @@ const PPQConnect = () => {
         <h2>2. Download your results</h2>
         <button
           className="btn-secondary"
-          onClick={window.open('src/assets/sample-ppq-result.pdf', '_blank')}
+          onClick={() =>
+            window.open('src/assets/sample-ppq-result.pdf', '_blank')
+          }
         >
           Download PPQ Results{' '}
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
