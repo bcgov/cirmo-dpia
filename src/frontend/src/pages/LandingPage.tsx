@@ -15,7 +15,7 @@ function LandingPage() {
           <p>
             The Government of BC is creating a flagship Digital Privacy Impact
             Assessment (DPIA). This project will leverage service design
-            findings to build a novel product that reimages the Privacy Impact
+            findings to build a novel product that reimagines the Privacy Impact
             Assessment (PIA) tools to support streamlined business processes and
             improved user experience.
           </p>
