@@ -99,3 +99,4 @@ export const PIATypes = [
   'I’m not sure',
 ];
 export const PIOptions = ['Yes', 'No', "I'm not sure"];
+export const startDateOptions = ['Yes', 'No'];

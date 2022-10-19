@@ -17,6 +17,7 @@ import {
   MinistryList,
   PIATypes,
   PIOptions,
+  startDateOptions
 } from '../constant/constant';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
@@ -55,28 +56,36 @@ function PPQFormPage() {
   const [initiativeDataElements, setInitiativeDataElements] = useState('');
   const [piaType, setPiaType] = useState('');
   const [containsPI, setContainsPI] = useState('Yes');
-  const [containsStartDate, setContainsStartDate] = useState('yes');
+  const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(new Date());
   const [checkedPIItems, setCheckedPIItems] = useState({});
   const navigate = useNavigate();
+
+  const choosePIOption = (event: any) => {
+    setContainsPI(event.target.value);
+  }
+  const chooseStartDate = (event: any) => {
+    setContainsStartDate(event.target.value);
+  } 
 
   const handleBackClick = () => {
     // 👇️ replace set to true
     navigate('/ppq', { replace: true });
   };
-  const handleCheckBoxChange = (event: any) => {
+  
+  const handleCheckboxChange = (event: any) => {
     setCheckedPIItems({
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
     });
     console.log('testt 1111', checkedPIItems);
   };
-  const handleSubmit = async (event: Event) => {
-    // event.preventDefault();
-    navigate('/ppq-result');
+  const handleSubmit = async (event: any) => {
+      event.preventDefault();
+    const otherFactor = Object.entries(checkedPIItems);
 
     try {
-      const res = await fetch('http://dpia-api/api/ppq/submission', {
+      const res = await fetch('http://dpia-api/api/ppq', {
         method: 'POST',
         body: JSON.stringify({
           name: name,
@@ -88,10 +97,11 @@ function PPQFormPage() {
           dataElements: initiativeDataElements,
           piaType: piaType,
           containsPersonalInformation: containsPI,
-
+          ...otherFactor, 
           proposedStartDate: startDate,
         }),
       });
+      console.log('test222222 ', res)
       const resJson = await res.json();
       if (res.status === 200) {
         navigate('/ppq-result');
@@ -111,7 +121,7 @@ function PPQFormPage() {
       </div>
       <section className="ppq-form-section">
         <div>
-          <form onSubmit={() => handleSubmit}>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <span>
@@ -130,11 +140,11 @@ function PPQFormPage() {
 
                 <select
                   className="form-control"
-                  id="name"
-                  value=""
+                  key="name"
+                  value={name} 
                   onChange={(e) => setName(e.target.value)}
                 >
-                  <option disabled={true} value="">
+                  <option key='selectName' disabled={true} value="">
                     Select one
                   </option>
                   {ContactUserName.map((option, index) => (
@@ -149,8 +159,9 @@ function PPQFormPage() {
                 <label>Work Email</label>
                 <input
                   className="form-control"
-                  type="text"
-                  name="email"
+                  type="email"
+                  key="email"
+                  value={workEmail}
                   onChange={(e) => setWorkEmail(e.target.value)}
                 />
               </div>
@@ -159,12 +170,13 @@ function PPQFormPage() {
               <div className="form-group col-md-6">
                 <label>Ministry</label>
                 <select
-                  name="ministry"
+                  
+                  key="ministry"
                   className="form-control"
-                  value=""
+                  value={ministry}
                   onChange={(e) => setMinistry(e.target.value)}
                 >
-                  <option disabled={true} value="">
+                  <option key="selectMinistry" disabled={true} value="">
                     Select one
                   </option>
                   {MinistryList.map((option, index) => (
@@ -179,7 +191,8 @@ function PPQFormPage() {
                 <input
                   className="form-control"
                   type="text"
-                  name="branch"
+                  key="branch"
+                  value={branch}
                   onChange={(e) => setBranch(e.target.value)}
                 />
               </div>
@@ -193,9 +206,10 @@ function PPQFormPage() {
                 <input
                   className="form-control"
                   type="text"
-                  name="initiativeName"
+                  key="initiativeName"
                   onChange={(e) => setInitiativeName(e.target.value)}
                 />
+                
               </div>
               <div>
                 <h3>About your initiative</h3>
@@ -210,8 +224,9 @@ function PPQFormPage() {
                   <MDEditor
                     preview="edit"
                     value={initiativeDesc}
-                    onChange={(e) => setInitiativeDesc(e.target.value)}
+                    onChange={()=>setInitiativeDesc}
                   />
+                
                 </div>
               </div>
               <div>
@@ -227,10 +242,11 @@ function PPQFormPage() {
 
                 <div>
                   <MDEditor
-                    preview="edit"
+                   preview="edit"
                     value={initiativeDataElements}
-                    onChange={(e) => setInitiativeDataElements(e.target.value)}
+                    onChange={() =>setInitiativeDataElements}
                   />
+                  
                 </div>
               </div>
               <div>
@@ -238,11 +254,12 @@ function PPQFormPage() {
                 <div className="form-group col-md-6">
                   <label>What type of PIA do you need to complete?</label>
                   <select
+                    key='pia'
                     className="form-control"
-                    value=""
+                    value={piaType}
                     onChange={(e) => setPiaType(e.target.value)}
                   >
-                    <option disabled={true} value="">
+                    <option key='selectPiaType' disabled={true} value="">
                       Select one
                     </option>
                     {PIATypes.map((option, index) => (
@@ -269,14 +286,14 @@ function PPQFormPage() {
               </span>
               <div>
                 {PIOptions.map((option, index) => (
-                  <div onChange={(e) => setContainsPI(e.target.value)}>
+                  <div onChange={choosePIOption}>
                     <label> {option}</label>
                     <input
                       key={index}
                       type="radio"
                       name="pi"
                       value={option}
-                      checked={containsPI === option}
+                      // checked={containsPI === option}
                     />
                   </div>
                 ))}
@@ -297,7 +314,7 @@ function PPQFormPage() {
                       checked={false}
                       value={factor.value}
                       label={factor.label}
-                      onChange={handleCheckBoxChange}
+                      onChange={handleCheckboxChange}
                     />
                   );
                 })}
@@ -313,39 +330,29 @@ function PPQFormPage() {
                     Do you have a proposed go-live or start date for the
                     initiative?
                   </span>
-                  <div
-                    onClick={() => {
-                      setContainsStartDate('yes');
-                    }}
-                  >
-                    <label>Yes</label>
+                  <div >
+                   {startDateOptions.map((option, index) => (
+                  <div onChange={chooseStartDate}>
+                    <label> {option}</label>
                     <input
+                      key={index}
                       type="radio"
-                      value="yes"
-                      checked={containsStartDate === 'yes'}
+                      name="needStartDate"
+                      value={option}
+                      // checked={containsStartDate === option}
                     />
                   </div>
-                  <div
-                    className="radio"
-                    onClick={() => {
-                      setContainsStartDate('no');
-                    }}
-                  >
-                    <label>No</label>
-                    <input
-                      type="radio"
-                      value="no"
-                      checked={containsStartDate === 'no'}
-                    />
+                ))} 
                   </div>
                 </div>
-                {containsStartDate == 'yes' && (
+                {containsStartDate === 'Yes' && (
                   <div className="form-group col-md-6">
                     <label>Proposed go-live or start date</label>
                     <DatePicker
+                      key='startDate'
                       placeholderText="yyyy-MM-dd"
                       dateFormat="yyyy/MM/dd"
-                      //  selected={startDate}
+                      // selected={startDate}
                       onChange={(date) => setStartDate(startDate)}
                     />
                   </div>
