@@ -1,55 +1,52 @@
 export const OtherFactor = [
   {
-    label:'Sensitive personal information',
-    value:'hasSensitivePersonalInformation' 
+    label: 'Sensitive personal information',
+    value: 'hasSensitivePersonalInformation',
   },
   {
-    label:'Regular or systematic sharing of personal information',
-    value:'hasSharingOfPersonalInformation' 
+    label: 'Regular or systematic sharing of personal information',
+    value: 'hasSharingOfPersonalInformation',
   },
   {
-    label:'Common or integrated program agreement',
-    value:'hasProgramAgreement' 
-  } ,
+    label: 'Common or integrated program agreement',
+    value: 'hasProgramAgreement',
+  },
   {
-    label:'Vendor or third-party access to personal information',
-    value:'hasOthersAccessToPersonalInformation' 
-  } ,
+    label: 'Vendor or third-party access to personal information',
+    value: 'hasOthersAccessToPersonalInformation',
+  },
   {
-    label:'Cloud technology',
-    value:'hasCloudTechnology' 
-  } ,
+    label: 'Cloud technology',
+    value: 'hasCloudTechnology',
+  },
   {
-    label:'Potential public interest in the initiative',
-    value:'hasPotentialPublicInterest' 
-  } ,
+    label: 'Potential public interest in the initiative',
+    value: 'hasPotentialPublicInterest',
+  },
   {
-    label:'Disclosure of personal information outside of Canada',
-    value:'hasDisclosureOutsideOfCanada' 
-  } ,
+    label: 'Disclosure of personal information outside of Canada',
+    value: 'hasDisclosureOutsideOfCanada',
+  },
   {
-    label:'High volumes of personal information',
-    value:'hasHighVolumesPersonalInformation' 
-  } ,
+    label: 'High volumes of personal information',
+    value: 'hasHighVolumesPersonalInformation',
+  },
   {
-    label:'Data-linking',
-    value:'hasDataLinking' 
-  } ,
+    label: 'Data-linking',
+    value: 'hasDataLinking',
+  },
   {
-    label:'BC Services Card Onboarding',
-    value:'hasBcServicesCardOnboarding' 
-  } ,
+    label: 'BC Services Card Onboarding',
+    value: 'hasBcServicesCardOnboarding',
+  },
   {
-    label:'Artificial intelligence (AI) or machine learning',
-    value:'hasAiOrMl' 
-  } ,
+    label: 'Artificial intelligence (AI) or machine learning',
+    value: 'hasAiOrMl',
+  },
   {
-    label:'Partnership with non-ministry public bodies or other organizations',
-    value:'hasPartnershipNonMinistry' 
-  }  
-
-
-  
+    label: 'Partnership with non-ministry public bodies or other organizations',
+    value: 'hasPartnershipNonMinistry',
+  },
 ];
 export const ContactUserName = [
   'David Malcolm',
@@ -101,8 +98,4 @@ export const PIATypes = [
   'Corporate Checklist',
   'I’m not sure',
 ];
-export const PIOptions = [
-  'Yes',
-  'No',
-  "I'm not sure"
-]
+export const PIOptions = ['Yes', 'No', "I'm not sure"];

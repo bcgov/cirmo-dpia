@@ -22,7 +22,7 @@ const router = createHashRouter([
   },
   {
     path: '/ppq-results',
-    element: <PPQResults />
-  }
+    element: <PPQResults />,
+  },
 ]);
 export default router;

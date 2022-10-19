@@ -74,9 +74,9 @@ function PPQFormPage() {
   const handleSubmit = async (event: Event) => {
     // event.preventDefault();
     navigate('/ppq-result');
-    /*
+
     try {
-      let res = await fetch('http://dpia-api/api/ppq/submission', {
+      const res = await fetch('http://dpia-api/api/ppq/submission', {
         method: 'POST',
         body: JSON.stringify({
           name: name,
@@ -88,11 +88,11 @@ function PPQFormPage() {
           dataElements: initiativeDataElements,
           piaType: piaType,
           containsPersonalInformation: containsPI,
-          
-          proposedStartDate:startDate
+
+          proposedStartDate: startDate,
         }),
       });
-      let resJson = await res.json();
+      const resJson = await res.json();
       if (res.status === 200) {
         navigate('/ppq-result');
       } else {
@@ -101,7 +101,6 @@ function PPQFormPage() {
     } catch (err) {
       console.log(err);
     }
-    */
   };
   return (
     <div>
