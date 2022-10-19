@@ -5,6 +5,7 @@ import newIdeas from '../assets/undraw_new_ideas.svg';
 import webSearch from '../assets/undraw_web_search.svg';
 import sharedGoals from '../assets/undraw_shared_goals.svg';
 import Callout from '../components/common/Callout';
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
   return (
@@ -15,15 +16,15 @@ function LandingPage() {
           <p>
             The Government of BC is creating a flagship Digital Privacy Impact
             Assessment (DPIA). This project will leverage service design
-            findings to build a novel product that reimages the Privacy Impact
+            findings to build a novel product that reimagines the Privacy Impact
             Assessment (PIA) tools to support streamlined business processes and
             improved user experience.
           </p>
           <div data-cy="contact-btn" className="ctas">
-            <a href="/" className="btn-primary">
+            <Link to="/ppq" className="btn-primary">
               Log in with IDIR{' '}
               <FontAwesomeIcon className="icon" icon={faUser} />
-            </a>
+            </Link>
             <a
               href="mailto:pia.intake@gov.bc.ca"
               data-cy="email"

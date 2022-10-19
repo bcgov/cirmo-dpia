@@ -3,9 +3,10 @@ import * as ReactDOM from 'react-dom';
 import { createHashRouter } from 'react-router-dom';
 
 import App from '../App';
-import PPQResults from '../components/public/PPQResults';
+import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage';
+import PPQResultsPage from '../pages/PPQResultsPage';
 
 const router = createHashRouter([
   {
@@ -22,7 +23,11 @@ const router = createHashRouter([
   },
   {
     path: '/ppq-results',
-    element: <PPQResults />,
+    element: <PPQResultsPage />,
+  },
+  {
+    path: '/ppq-connect',
+    element: <PPQConnectPage />,
   },
 ]);
 export default router;

@@ -17,37 +17,38 @@ function PPQLandingPage() {
 
       <PPQNavBar />
 
-      <section className="ppq-section">
-        <div className="what-is-a-ppq">
-          <h2 className="ppq-header">PIA Pathway Questionnaire</h2>
-          <br />
-          <h2>what is it?</h2>
-          <p>
-            The PIA Pathways Questionnaire asks for some basic information about
-            the initiative you're assessing in the PIA. Your answers will help
-            us estimate{' '}
-          </p>
-          <h2>Value of the PPQ</h2>
-          <p>The relative complexity of your PIA </p>
-          <p> Which PIA template you should fill out</p>
-          <p>Where to go for help with your PIA</p>
-
-          <div data-cy="ppq-btn" className="ctas">
-            <Link to="/ppq-form" className="btn-primary">
-              Get started{' '}
-              <FontAwesomeIcon className="icon" icon={faChevronRight} />
-            </Link>
+      <div className="  ppq-section">
+        <div className="row what-is-a-ppq">
+          <div className="col-md-6">
+            <h2>PIA Pathway Questionnaire</h2>
+            <br />
+            <p className="col-mb-6">
+              The PIA Pathways Questionnaire asks for some basic information
+              about the initiative you're assessing in the PIA. Your answers
+              will help us estimate{' '}
+            </p>
+            <ul className="col-mb-6 list">
+              <li>The relative complexity of your PIA </li>
+              <li> Which PIA template you should fill out</li>
+              <li>Where to go for help with your PIA</li>
+            </ul>
+            <div data-cy="ppq-btn" className="ctas">
+              <Link to="/ppq-form" className="btn-primary">
+                Get started{' '}
+                <FontAwesomeIcon className="icon" icon={faChevronRight} />
+              </Link>
+            </div>
+            <br />
+            <span>
+              {' '}
+              <b>Estimated time:</b> 20 minutes
+            </span>
           </div>
-          <br />
-          <span>
-            {' '}
-            <b>Estimated time:</b> 20 minutes
-          </span>
+          <div data-cy="ppq-img" className="col-md-6 ppq-svg">
+            <img src={ppqImg} alt="Fill form image" />
+          </div>
         </div>
-        <div data-cy="ppq-img" className="ppq-svg">
-          <img src={ppqImg} alt="Fill form image" />
-        </div>
-      </section>
+      </div>
       <Footer />
     </div>
   );

@@ -1,15 +1,26 @@
 import { useState } from 'react';
 
-const Checkbox = ({ label, checked, value, onChange, ...props }: { label: string; checked: any,value:string, onChange: any }) => {
+const Checkbox = ({
+  label,
+  checked,
+  value,
+  onChange,
+  ...props
+}: {
+  label: string;
+  checked: any;
+  value: string;
+  onChange: any;
+}) => {
   const defaultChecked = checked ? checked : false;
   const [isChecked, setIsChecked] = useState(defaultChecked);
   return (
     <div className="checkbox-wrapper">
       <input
         type="checkbox"
-        value = {value}
+        value={value}
         checked={isChecked}
-        onChange = {onChange}
+        onChange={onChange}
         onClick={() => setIsChecked((prev: any) => !prev)}
         className={isChecked ? 'checked' : ''}
         {...props}
