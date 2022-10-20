@@ -119,7 +119,7 @@ function PPQFormPage() {
     const requestBody = { ...bodyPart1, ...checkedPIItems };
     try {
       const res = await fetch(
-        `http://${import.meta.env.VITE_REACT_API_HOST}:${
+        `${import.meta.env.VITE_REACT_API_HOST}:${
           import.meta.env.VITE_REACT_API_PORT
         }/api/ppq`,
         {
