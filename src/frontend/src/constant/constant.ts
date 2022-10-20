@@ -182,7 +182,7 @@ export const PIATypes = [
   },
   {
     label: 'I’m not sure',
-    value: 'I_AM_NOT_SURE',
+    value: 'null',
   },
 ];
 export const PIOptions = ['Yes', 'No', "I'm not sure"];

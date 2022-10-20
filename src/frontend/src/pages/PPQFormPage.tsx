@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
   faChevronRight,
   faFileLines,
@@ -58,7 +59,7 @@ function PPQFormPage() {
   const [piaType, setPiaType] = useState('');
   const [containsPI, setContainsPI] = useState('Yes');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [checkedPIItems, setCheckedPIItems] = useState({
     hasSensitivePersonalInformation: false,
     hasSharingOfPersonalInformation: false,
@@ -111,7 +112,7 @@ function PPQFormPage() {
       initiativeName: initiativeName,
       initiativeDescription: initiativeDesc,
       dataElements: initiativeDataElements,
-      piaType: piaType,
+      piaType: piaType === 'null' ? null : piaType,
       containsPersonalInformation: containsPI === 'Yes' ? true : false,
       proposedStartDate: startDate,
     };
@@ -377,10 +378,10 @@ function PPQFormPage() {
                     <label>Proposed go-live or start date</label>
                     <DatePicker
                       key="startDate"
-                      placeholderText="yyyy-MM-dd"
+                      placeholderText={'yyyy-MM-dd'}
                       dateFormat="yyyy/MM/dd"
-                      // selected={startDate}
-                      onChange={(date) => setStartDate(startDate)}
+                      selected={startDate === null ? null : startDate}
+                      onChange={(date: any) => setStartDate(date)}
                     />
                   </div>
                 )}
