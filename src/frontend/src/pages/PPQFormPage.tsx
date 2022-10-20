@@ -158,11 +158,9 @@ function PPQFormPage() {
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <span>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
-                massa mi. Aliquam in hendrerit urna. Pellentesque sit amet
-                sapien fringilla, mattis ligula consectetur, ultrices mauris.
-                Maecenas vitae mattis tellus. Nullam quis imperdiet augue.
-                Vestibulum auctor ornare leo, non suscipit magna interdum eu.{' '}
+                By answering this first 4 questions from the PIA template you
+                can give the information to your MPO and find out whether I have
+                to do a full PIA.{' '}
               </span>
             </div>
 
@@ -318,9 +316,9 @@ function PPQFormPage() {
                   <div onChange={choosePIOption}>
                     <label> {option}</label>
                     <input
+                      name="pi-radio"
                       key={index}
                       type="radio"
-                      name="pi"
                       value={option}
                       // checked={containsPI === option}
                     />
@@ -366,7 +364,7 @@ function PPQFormPage() {
                         <input
                           key={index}
                           type="radio"
-                          name="needStartDate"
+                          name="start-initiative-radio"
                           value={option}
                           // checked={containsStartDate === option}
                         />
