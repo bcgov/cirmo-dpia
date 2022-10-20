@@ -1,7 +1,11 @@
-import PPQResults from "../components/public/PPQResults"
-import { faFileLines, faFileCircleCheck, faHandshake } from "@fortawesome/free-solid-svg-icons";
-import { StageProps } from "../components/public/ProgressBar/interfaces";
-import StagesArray from "../components/public/ProgressBar/StagesArray";
+import PPQResults from '../components/public/PPQResults';
+import {
+  faFileLines,
+  faFileCircleCheck,
+  faHandshake,
+} from '@fortawesome/free-solid-svg-icons';
+import { StageProps } from '../components/public/ProgressBar/interfaces';
+import StagesArray from '../components/public/ProgressBar/StagesArray';
 
 const PPQResultsPage = () => {
   const stages: StageProps[] = [
@@ -30,7 +34,7 @@ const PPQResultsPage = () => {
       <StagesArray stages={stages} />
       <PPQResults />
     </>
-  )
-}
+  );
+};
 
 export default PPQResultsPage;
