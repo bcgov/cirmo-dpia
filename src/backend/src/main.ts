@@ -7,13 +7,6 @@ async function bootstrap() {
   // Initialize the Express based Nest application
   const { app } = await createNestApp();
   await app.init();
-  app.enableCors();
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
-    next();
-  });
   // App listen to a port
   await app.listen(process.env.API_PORT, () => {
     Logger.log(

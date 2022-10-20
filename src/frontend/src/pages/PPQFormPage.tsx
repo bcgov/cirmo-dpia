@@ -99,7 +99,6 @@ function PPQFormPage() {
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
     });
-    console.log('testt 1111', checkedPIItems);
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -113,7 +112,7 @@ function PPQFormPage() {
       initiativeDescription: initiativeDesc,
       dataElements: initiativeDataElements,
       piaType: piaType,
-      containsPersonalInformation: containsPI,
+      containsPersonalInformation: containsPI === 'Yes' ? true : false,
       proposedStartDate: startDate,
     };
     const requestBody = { ...bodyPart1, ...checkedPIItems };
@@ -126,6 +125,7 @@ function PPQFormPage() {
           method: 'POST',
           mode: 'cors',
           headers: {
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
           },
 
@@ -134,8 +134,8 @@ function PPQFormPage() {
       );
 
       const resJson = await res.json();
-      if (res.status === 200) {
-        navigate('/ppq-result', {
+      if (res.status === 201) {
+        navigate('/ppq-results', {
           state: { id: resJson.id, complexity: resJson.complexity },
         });
       } else {
@@ -212,8 +212,8 @@ function PPQFormPage() {
                     Select one
                   </option>
                   {MinistryList.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={index} value={option.value}>
+                      {option.label}
                     </option>
                   ))}
                 </select>
@@ -292,9 +292,9 @@ function PPQFormPage() {
                       Select one
                     </option>
                     {PIATypes.map((option, index) => (
-                      <option key={index} value={option}>
+                      <option key={index} value={option.value}>
                         {' '}
-                        {option}
+                        {option.label}
                       </option>
                     ))}
                   </select>
