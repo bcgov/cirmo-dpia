@@ -132,10 +132,12 @@ function PPQFormPage() {
           body: JSON.stringify(requestBody),
         },
       );
-      console.log('test222222 ', res);
+
       const resJson = await res.json();
       if (res.status === 200) {
-        navigate('/ppq-result');
+        navigate('/ppq-result', {
+          state: { id: resJson.id, complexity: resJson.complexity },
+        });
       } else {
         setMessage('Some error occured');
       }
