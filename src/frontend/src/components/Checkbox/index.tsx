@@ -1,17 +1,7 @@
 import { useState } from 'react';
+import { ICheckbox } from './interfaces';
 
-const Checkbox = ({
-  label,
-  checked,
-  value,
-  onChange,
-  ...props
-}: {
-  label: string;
-  checked: any;
-  value: string;
-  onChange: any;
-}) => {
+const Checkbox = ({ label, checked, value, onChange, ...props }: ICheckbox) => {
   const defaultChecked = checked ? checked : false;
   const [isChecked, setIsChecked] = useState(defaultChecked);
   return (
@@ -21,7 +11,7 @@ const Checkbox = ({
         value={value}
         checked={isChecked}
         onChange={onChange}
-        onClick={() => setIsChecked((prev: any) => !prev)}
+        onClick={() => setIsChecked((prev: boolean) => !prev)}
         className={isChecked ? 'checked' : ''}
         {...props}
       />

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +10,6 @@ import {
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
-import Stage from '../components/public/ProgressBar/Stage';
 import StagesArray from '../components/public/ProgressBar/StagesArray';
 import ppqImg from '../assets/ppq_homepage.svg';
 import {
@@ -25,7 +24,7 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import PPQNavBar from '../components/common/PPQNavBar';
-import Checkbox from '../components/common/CheckBox';
+import Checkbox from '../components/Checkbox';
 
 const stages: StageProps[] = [
   {
@@ -95,7 +94,7 @@ function PPQFormPage() {
     setInitiativeDataElements(newMessage);
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
