@@ -2,6 +2,8 @@ export const OtherFactor = [
   {
     label: 'Sensitive personal information',
     value: 'hasSensitivePersonalInformation',
+    tooltip: true,
+    tooltipText: 'This is a tooltip render test',
   },
   {
     label: 'Regular or systematic sharing of personal information',

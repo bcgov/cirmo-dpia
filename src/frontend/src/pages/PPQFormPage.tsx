@@ -338,6 +338,8 @@ function PPQFormPage() {
                       checked={false}
                       value={factor.value}
                       label={factor.label}
+                      tooltip={factor.tooltip}
+                      tooltipText={factor.tooltipText}
                       onChange={handleCheckboxChange}
                     />
                   );
