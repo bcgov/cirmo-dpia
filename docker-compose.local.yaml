@@ -33,7 +33,7 @@ services:
       - ./src/frontend/.env
     volumes:
     # Binds the application folder from the host inside the container for fast changes
-      - ./src:/usr/src/app
+      - ./src/frontend:/app
     networks:
       - dpia-network
     ports:
