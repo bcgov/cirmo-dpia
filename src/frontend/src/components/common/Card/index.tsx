@@ -20,7 +20,7 @@ const Card = ({
       <p className="card-text">{text}</p>
       {!button ? null : (
         <button className="card-button btn-secondary">
-          {buttonText}{' '}
+          {buttonText}
           {!buttonIcon ? null : (
             <FontAwesomeIcon className="button-icon" icon={buttonIcon} />
           )}
