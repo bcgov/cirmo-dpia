@@ -46,7 +46,9 @@ export async function createNestApp(): Promise<{
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
     next();
   });
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:8080'],
+  });
   // Enable Swagger
   SwaggerDocs(app);
 
