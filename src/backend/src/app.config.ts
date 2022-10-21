@@ -47,7 +47,7 @@ export async function createNestApp(): Promise<{
     next();
   });
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:8080'],
+    origin: ['http://localhost:3000'],
   });
   // Enable Swagger
   SwaggerDocs(app);
