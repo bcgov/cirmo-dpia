@@ -29,7 +29,7 @@ import Checkbox from '../components/common/CheckBox';
 import { client } from '../utils/requestUtil';
 import { API_ROUTES } from '../constant/apiRoutes';
 import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
-import { PPQFormSubmissionResult } from '../ts/interfaces/ppq-submission.interface';
+import { routes } from '../constant/routes';
 const stages: StageProps[] = [
   {
     id: 1,
@@ -90,7 +90,7 @@ function PPQFormPage() {
     // 👇️ replace set to true
 
     // TODO replace hardcode value to const value in a central file
-    navigate('/ppq', { replace: true });
+    navigate(routes.PPQ_LANDING_PAGE, { replace: true });
   };
 
   const setInitiativeDescription = (newMessage: any) => {
@@ -131,7 +131,7 @@ function PPQFormPage() {
         },
       );
 
-      navigate('/ppq-results', {
+      navigate(routes.PPQ_FORM_RESULTS, {
         state: { id: res.id, complexity: res.complexity },
       });
     } catch (err) {
