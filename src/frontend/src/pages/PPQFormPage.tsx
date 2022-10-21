@@ -26,7 +26,10 @@ import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import PPQNavBar from '../components/common/PPQNavBar';
 import Checkbox from '../components/common/CheckBox';
-
+import { client } from '../utils/requestUtil';
+import { API_ROUTES } from '../constant/apiRoutes';
+import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
+import { PPQFormSubmissionResult } from '../ts/interfaces/ppq-submission.interface';
 const stages: StageProps[] = [
   {
     id: 1,
@@ -85,6 +88,8 @@ function PPQFormPage() {
 
   const handleBackClick = () => {
     // 👇️ replace set to true
+
+    // TODO replace hardcode value to const value in a central file
     navigate('/ppq', { replace: true });
   };
 
@@ -103,8 +108,7 @@ function PPQFormPage() {
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // it should refactor here later
-    const bodyPart1 = {
+    const requestBody: IPPQFrom = {
       name: name,
       email: workEmail,
       ministry: ministry,
@@ -115,34 +119,23 @@ function PPQFormPage() {
       piaType: piaType === 'null' ? null : piaType,
       containsPersonalInformation: containsPI === 'Yes' ? true : false,
       proposedStartDate: startDate,
+      ...checkedPIItems,
     };
-    const requestBody = { ...bodyPart1, ...checkedPIItems };
     try {
-      const res = await fetch(
-        `http://${import.meta.env.VITE_REACT_API_HOST}:${
-          import.meta.env.VITE_REACT_API_PORT
-        }/api/ppq`,
+      const res = await client(
+        API_ROUTES.PPQ_FORM_SUBMISSION,
+        'POST',
+        requestBody,
         {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-
-          body: JSON.stringify(requestBody),
+          'Access-Control-Allow-Origin': '*',
         },
       );
 
-      const resJson = await res.json();
-      if (res.status === 201) {
-        navigate('/ppq-results', {
-          state: { id: resJson.id, complexity: resJson.complexity },
-        });
-      } else {
-        setMessage('Some error occured');
-      }
+      navigate('/ppq-results', {
+        state: { id: res.id, complexity: res.complexity },
+      });
     } catch (err) {
+      setMessage('Some error occured');
       console.log(err);
     }
   };

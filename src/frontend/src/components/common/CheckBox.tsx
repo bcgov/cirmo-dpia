@@ -8,7 +8,7 @@ const Checkbox = ({
   ...props
 }: {
   label: string;
-  checked: any;
+  checked: boolean;
   value: string;
   onChange: any;
 }) => {
