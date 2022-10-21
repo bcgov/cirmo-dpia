@@ -3,15 +3,25 @@ export const OtherFactor = [
     label: 'Sensitive personal information',
     value: 'hasSensitivePersonalInformation',
     tooltip: true,
-    tooltipText: 'This is a tooltip render test',
+    tooltipText: `There is no complete definition for sensitive personal information. That’s because 
+    sensitivity depends on context and the type of personal information involved. Any type of personal 
+    information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
+    and learn more about sensitive personal information.`,
   },
   {
-    label: 'Regular or systematic sharing of personal information',
+    label: 'Information Sharing Agreement',
     value: 'hasSharingOfPersonalInformation',
+    tooltip: true,
+    tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
+    to share personal information with another government or government agency on a regular basis. ISAs are 
+    not necessary when one B.C. government ministry shares personal information with another.`
   },
   {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
+    tooltip: true,
+    tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
+    for the purpose of providing a service.`
   },
   {
     label: 'Vendor or third-party access to personal information',
@@ -20,6 +30,11 @@ export const OtherFactor = [
   {
     label: 'Cloud technology',
     value: 'hasCloudTechnology',
+    tooltip: true,
+    tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
+    service through a web browser, that’s a good indication that you’re using a cloud service. If you’re 
+    working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using 
+    cloud.`
   },
   {
     label: 'Potential public interest in the initiative',
@@ -30,16 +45,11 @@ export const OtherFactor = [
     value: 'hasDisclosureOutsideOfCanada',
   },
   {
-    label: 'High volumes of personal information',
-    value: 'hasHighVolumesPersonalInformation',
-  },
-  {
-    label: 'Data-linking',
-    value: 'hasDataLinking',
-  },
-  {
     label: 'BC Services Card Onboarding',
     value: 'hasBcServicesCardOnboarding',
+    tooltip: true,
+    tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate 
+    a user’s identity when the user accesses a service.`
   },
   {
     label: 'Artificial intelligence (AI) or machine learning',

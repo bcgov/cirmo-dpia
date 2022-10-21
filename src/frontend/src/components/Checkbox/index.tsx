@@ -25,6 +25,8 @@ const Checkbox = (
         onChange={onChange}
         onClick={() => setIsChecked((prev: boolean) => !prev)}
         className={isChecked ? 'checked' : ''}
+        aria-describedby={value}
+        aria-label={label}
         {...props}
       />
       <label>
@@ -33,7 +35,13 @@ const Checkbox = (
       {!tooltip ? null : (
         <>
           <FontAwesomeIcon data-tip={tooltipText} data-for={value} className='cbInfoIcon' icon={faInfoCircle} />
-          <Tooltip className='tooltip' id={value} place='right' effect='solid' multiline />
+          <Tooltip className='tooltip' id={value} place='right' effect='solid' arrowColor='#1A5A96' getContent={() => {
+            return (
+              <div>
+                {tooltipText}
+              </div>
+            )
+          }}/>
         </>
       )}
     </div>
