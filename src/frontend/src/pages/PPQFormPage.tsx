@@ -24,7 +24,7 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import PPQNavBar from '../components/common/PPQNavBar';
-import Checkbox from '../components/Checkbox';
+import Checkbox from '../components/common/Checkbox';
 
 const stages: StageProps[] = [
   {
