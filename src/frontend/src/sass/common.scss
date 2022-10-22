@@ -1,15 +1,16 @@
 @import 'breakpoint-sass/stylesheets/breakpoint';
 @import '@bcgov/bc-sans/css/BCSans';
 @import 'root';
-@import 'App';
 @import 'variables';
 @import 'default';
 @import 'header';
 @import 'footer';
 @import 'login';
 @import 'buttons';
+@import 'Checkbox';
 @import 'Card';
 @import 'Callout';
+@import 'App';
 @import 'LandingPage';
 @import 'PPQPage';
 @import 'PPQFormPage';
@@ -17,4 +18,3 @@
 @import 'PPQNavBar';
 @import 'PPQResults';
 @import 'PPQConnect';
-@import 'Checkbox';
