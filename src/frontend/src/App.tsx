@@ -11,9 +11,7 @@ function App() {
     <div className="App">
       <Header user="" />
       <NavBar pages={pages} />
-      <div>
-        <Router />
-      </div>
+      <Router />
       <Footer />
     </div>
   );
