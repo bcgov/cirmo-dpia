@@ -5,6 +5,8 @@ module.exports = {
     jest: true,
   },
   extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
     'airbnb-typescript',
     'airbnb/hooks',
     'plugin:import/recommended',
@@ -22,13 +24,14 @@ module.exports = {
     project: './tsconfig.eslint.json',
     extraFileExtensions: ['.scss'],
   },
-  plugins: ['react', '@typescript-eslint', 'jest'],
+  plugins: ['@typescript-eslint', 'jest'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'import/named': 'error',
+    'react/jsx-child-element-spacing': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {

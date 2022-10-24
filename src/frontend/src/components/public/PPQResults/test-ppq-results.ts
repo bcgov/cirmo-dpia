@@ -1,5 +1,5 @@
 import {
-  faSlidersH,
+  faGaugeSimpleHigh,
   faHandsHelping,
   faFileSignature,
   faFileDownload,
@@ -8,8 +8,8 @@ import {
 const ppqTestResults = [
   {
     id: 1,
-    icon: faSlidersH,
-    title: 'Implication',
+    icon: faGaugeSimpleHigh,
+    title: 'Complexity',
     text: "We'll estimate whether your initiative has a relatively low, medium or high level of potential privacy implications.",
     button: false,
   },
