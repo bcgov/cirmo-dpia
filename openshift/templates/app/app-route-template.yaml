@@ -8,23 +8,21 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: ${APPLICATION_NAME}
+    name: dpia-dev-route
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-    annotations:
-      openshift.io/host.generated: 'true'
     labels:
       hash: ${IMAGE_TAG}
   spec:
-    host: ${APPLICATION_NAME}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:
       kind: Service
-      name: ${APPLICATION_NAME}
+      name: dpia-webapp
       weight: 100
     port:
       targetPort: 8080
     tls:
       termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      insecureEdgeTerminationPolicy: None
     wildcardPolicy: None
 
 parameters:
