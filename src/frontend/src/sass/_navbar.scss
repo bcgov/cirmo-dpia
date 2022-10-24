@@ -1,0 +1,27 @@
+.navbar-container {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  height: 56px;
+  width: 100%;
+  background-color: $bg-blue;
+  margin-top: 4rem;
+  padding-inline: 5rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  max-width: 80%;
+  gap: 3em;
+  list-style: none;
+  margin-bottom: 0;
+
+  & > li > a {
+    color: $bg-white;
+
+    &.active {
+      color: $secondary-yellow;
+    }
+  }
+}

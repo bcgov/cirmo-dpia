@@ -3,7 +3,6 @@
     width: 50vw;
     min-height: 5vh;
     justify-content: space-evenly;
-    margin-block: 4em;
     margin-inline: 25vw;
     gap: 4em;
 
@@ -13,9 +12,7 @@
 }
 
 .stage-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 11em;
 }
 
 .stage-label {
@@ -45,7 +42,7 @@
 }
 
 .stage-lead-line {
-  display: flex;
+  margin-top: 15%;
   align-self: center;
   width: 100%;
   background-color: grey;
