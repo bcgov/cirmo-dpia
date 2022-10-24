@@ -26,7 +26,7 @@ import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import PPQNavBar from '../components/common/PPQNavBar';
 import Checkbox from '../components/common/CheckBox';
-import { client } from '../utils/requestUtil';
+import { httpClient } from '../utils/requestUtil';
 import { API_ROUTES } from '../constant/apiRoutes';
 import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
 import { routes } from '../constant/routes';
@@ -122,10 +122,10 @@ function PPQFormPage() {
       ...checkedPIItems,
     };
     try {
-      const res = await client(
+      const res = await httpClient(
         API_ROUTES.PPQ_FORM_SUBMISSION,
-        'POST',
         requestBody,
+        'POST',
         {
           'Access-Control-Allow-Origin': '*',
         },

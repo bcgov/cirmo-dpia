@@ -1,9 +1,9 @@
 import { BASE_URL } from '../constant/api';
 
-export const client = async (
+export const httpClient = async (
   endpoint: string,
+  body: any,
   method = 'POST',
-  body = {},
   headers = {},
   customConfig = {},
 ) => {
