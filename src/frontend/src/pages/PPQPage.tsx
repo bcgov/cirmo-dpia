@@ -1,23 +1,14 @@
-import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import ppqImg from '../assets/ppq_homepage.svg';
 
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import { Link } from 'react-router-dom';
-import PPQNavBar from '../components/common/PPQNavBar';
 
 function PPQLandingPage() {
   return (
-    <div>
-      <Header data-cy="header" user="first.last@gov.bc.ca" />
-
-      <PPQNavBar />
-
-      <div className="  ppq-section">
+    <div className='ppq-container'>
+      <div className="ppq-section">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
             <h2>PIA Pathway Questionnaire</h2>
@@ -49,7 +40,6 @@ function PPQLandingPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

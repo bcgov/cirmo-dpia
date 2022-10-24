@@ -24,7 +24,8 @@ import {
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
-import PPQNavBar from '../components/common/PPQNavBar';
+import NavBar from '../components/common/Navbar';
+import { NavPages as pages } from '../components/common/Navbar/navPages'
 import Checkbox from '../components/common/CheckBox';
 
 const stages: StageProps[] = [
@@ -147,12 +148,8 @@ function PPQFormPage() {
     }
   };
   return (
-    <div>
-      <Header data-cy="header" user="first.last@gov.bc.ca" />
-      <PPQNavBar />
-      <div>
-        <StagesArray stages={stages} />
-      </div>
+    <>
+      <StagesArray stages={stages} />
       <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -403,8 +400,7 @@ function PPQFormPage() {
           </form>
         </div>
       </section>
-      <Footer />
-    </div>
+    </>
   );
 }
 
