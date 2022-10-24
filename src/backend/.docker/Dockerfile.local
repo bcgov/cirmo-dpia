@@ -1,5 +1,27 @@
 FROM node:18.9-alpine
 
+RUN apk update
+
+# Installs latest Chromium (100) package.
+RUN apk add --no-cache \
+      chromium \
+      nss \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont \
+      nodejs \
+      yarn
+
+# Puppeteer v13.5.0 works with Chromium 100.
+# RUN yarn add puppeteer@13.5.0
+
+# Add user so we don't need --no-sandbox.
+RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
+    && mkdir -p /home/pptruser/Downloads /usr/src/app \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /usr/src/app
+
 # Create an app directory
 WORKDIR /usr/src/app
 
@@ -8,6 +30,9 @@ COPY package*.json ./
 RUN npm ci
 
 # Note: contents of the backend folder to be mounted as volume to /usr/src/app for hot reloading
+
+# Run everything after as non-privileged user.
+USER pptruser
 
 # Expose port and run app in watch mode
 EXPOSE 3000
