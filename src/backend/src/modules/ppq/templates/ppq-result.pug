@@ -1,0 +1,52 @@
+- var color_default = '#444444';
+- var color_grey = '#808080'
+- var key_style = `color:${color_grey}; font-size: 0.8rem; margin-bottom: 0.2rem; opacity: 0.6;`
+
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+div(style='margin: 50px; padding-left: 5px; color: #444444')
+  div(style='display: flex; flex-direction: row; justify-content: space-between')
+    div
+      img(src='https://moa.ubc.ca/wp-content/uploads/2021/02/BCID_H_rgb_pos.png' height='65px')
+    div(style='margin-top: 10px; font-size: 0.8rem')
+      div COMPLETED
+      div(style='text-align: right') #{updatedAt}
+  div(style='margin-top: 60px')
+    h1 #{initiativeName}
+  div(style='margin-top: 50px; display: flex; flex-direction: row')
+    div(style='width: 30%')
+      div
+        div(style=`${key_style}`) Filled By
+        div #{name}
+        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{email}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Ministry
+        div #{ministry}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Branch
+        div #{branch}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Type
+        div #{piaType}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Proposed Go-live in
+        div #{proposedStartDate}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Contains Personal Info
+        div #{containsPersonalInformation}
+    div(style='width: 70%')
+      div
+        div(style=`${key_style}`) About your initiative
+        div !{initiativeDescription}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Data or information involved
+        div !{dataElements}
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Involves
+        ul
+          each factor in otherFactors
+            li #{factor}
