@@ -1,17 +1,14 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  faChevronRight,
   faFileLines,
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
 import StagesArray from '../components/public/ProgressBar/StagesArray';
-import ppqImg from '../assets/ppq_homepage.svg';
 import {
   OtherFactor,
   ContactUserName,
@@ -20,37 +17,36 @@ import {
   PIOptions,
   startDateOptions,
 } from '../constant/constant';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
+
 import { StageProps } from '../components/public/ProgressBar/interfaces';
-import NavBar from '../components/common/Navbar';
-import { NavPages as pages } from '../components/common/Navbar/navPages';
 import Checkbox from '../components/common/Checkbox';
 import { httpClient } from '../utils/requestUtil';
 import { API_ROUTES } from '../constant/apiRoutes';
 import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
 import { routes } from '../constant/routes';
-const stages: StageProps[] = [
-  {
-    id: 1,
-    label: 'Fill out the PPQ',
-    icon: faFileLines,
-    active: true,
-  },
-  {
-    id: 2,
-    label: 'Review results',
-    icon: faFileCircleCheck,
-    active: false,
-  },
-  {
-    id: 3,
-    label: 'Connect with your MPO',
-    icon: faHandshake,
-    active: false,
-  },
-];
-function PPQFormPage() {
+
+const PPQFormPage = () => {
+  const stages: StageProps[] = [
+    {
+      id: 1,
+      label: 'Fill out the PPQ',
+      icon: faFileLines,
+      active: true,
+    },
+    {
+      id: 2,
+      label: 'Review results',
+      icon: faFileCircleCheck,
+      active: false,
+    },
+    {
+      id: 3,
+      label: 'Connect with your MPO',
+      icon: faHandshake,
+      active: false,
+    },
+  ];
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [ministry, setMinistry] = useState('');
   const [branch, setBranch] = useState('');
@@ -77,7 +73,6 @@ function PPQFormPage() {
     hasAiOrMl: false,
     hasPartnershipNonMinistry: false,
   });
-  const navigate = useNavigate();
 
   const choosePIOption = (event: any) => {
     setContainsPI(event.target.value);
@@ -139,6 +134,7 @@ function PPQFormPage() {
       console.log(err);
     }
   };
+
   return (
     <>
       <StagesArray stages={stages} />
@@ -390,6 +386,6 @@ function PPQFormPage() {
       </section>
     </>
   );
-}
+};
 
 export default PPQFormPage;

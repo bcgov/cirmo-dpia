@@ -15,7 +15,7 @@ function PPQLandingPage() {
             <br />
             <p className="col-mb-6">
               The PIA Pathways Questionnaire asks for some basic information
-              about the initiative you&quot;re assessing in the PIA. Your
+              about the initiative you&lsquo; re assessing in the PIA. Your
               answers will help us estimate
             </p>
             <ul className="col-mb-6 list">
