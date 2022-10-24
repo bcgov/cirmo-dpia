@@ -24,8 +24,8 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import NavBar from '../components/common/Navbar';
-import { NavPages as pages } from '../components/common/Navbar/navPages'
-import Checkbox from '../components/common/CheckBox';
+import { NavPages as pages } from '../components/common/Navbar/navPages';
+import Checkbox from '../components/common/Checkbox';
 import { httpClient } from '../utils/requestUtil';
 import { API_ROUTES } from '../constant/apiRoutes';
 import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
@@ -300,7 +300,7 @@ function PPQFormPage() {
               </span>
               <div>
                 {PIOptions.map((option, index) => (
-                  <div onChange={choosePIOption}>
+                  <div key={index} onChange={choosePIOption}>
                     <label> {option}</label>
                     <input
                       name="pi-radio"
@@ -347,7 +347,7 @@ function PPQFormPage() {
                   </span>
                   <div>
                     {startDateOptions.map((option, index) => (
-                      <div onChange={chooseStartDate}>
+                      <div key={index} onChange={chooseStartDate}>
                         <label> {option}</label>
                         <input
                           key={index}
