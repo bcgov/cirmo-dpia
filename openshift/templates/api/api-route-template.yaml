@@ -8,16 +8,17 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: ${APPLICATION_NAME}
+    name: dpia-${ENVIRONMENT}-route-api
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       hash: ${IMAGE_TAG}
+      template: dpia-api-template
   spec:
-    host: ${APPLICATION_NAME}-${LICENSE_PLATE}-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-    path: /api/api-docs
+    host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    path: /api
     to:
       kind: Service
-      name: ${APPLICATION_NAME}
+      name: dpia-api
       weight: 100
     port:
       targetPort: 3000-tcp
