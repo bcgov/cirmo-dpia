@@ -20,7 +20,7 @@ export class PpqPostDTO {
   @ApiProperty({
     type: String,
     required: true,
-    example: 'Figma PPQ',
+    example: 'Marvin McKinney',
   })
   name: string;
 
