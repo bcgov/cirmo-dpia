@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
@@ -150,7 +150,7 @@ function PPQFormPage() {
               <span>
                 By answering this first 4 questions from the PIA template you
                 can give the information to your MPO and find out whether I have
-                to do a full PIA.{' '}
+                to do a full PIA.
               </span>
             </div>
 
@@ -170,7 +170,6 @@ function PPQFormPage() {
                   </option>
                   {ContactUserName.map((option, index) => (
                     <option key={index} value={option}>
-                      {' '}
                       {option}
                     </option>
                   ))}
@@ -279,7 +278,6 @@ function PPQFormPage() {
                     </option>
                     {PIATypes.map((option, index) => (
                       <option key={index} value={option.value}>
-                        {' '}
                         {option.label}
                       </option>
                     ))}

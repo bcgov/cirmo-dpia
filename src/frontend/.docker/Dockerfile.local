@@ -12,6 +12,6 @@ COPY src/frontend/package*.json ./
 
 RUN npm install
 
-COPY src/frontend/. .
+COPY src/frontend/* .
 EXPOSE 8080
 CMD ["npm", "run", "dev"]
