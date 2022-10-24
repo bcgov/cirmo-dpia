@@ -8,7 +8,7 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: dpia-dev-route
+    name: dpia-${ENVIRONMENT}-route
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       hash: ${IMAGE_TAG}
