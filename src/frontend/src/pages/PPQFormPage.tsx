@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +10,6 @@ import {
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
-import Stage from '../components/public/ProgressBar/Stage';
 import StagesArray from '../components/public/ProgressBar/StagesArray';
 import ppqImg from '../assets/ppq_homepage.svg';
 import {
@@ -96,7 +95,7 @@ function PPQFormPage() {
     setInitiativeDataElements(newMessage);
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
@@ -227,7 +226,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>2. Your initiative</h2>
               <div className="form-group col-md-12">
                 <label>Name of initiative</label>
@@ -258,12 +256,12 @@ function PPQFormPage() {
               <div>
                 <h3>
                   What are the data or information elements involved in your
-                  initiative?{' '}
+                  initiative?
                 </h3>
                 <span>
                   Please list all the elements of information or data that you
                   might collect, use, store, disclose, or access as part of your
-                  initiative.{' '}
+                  initiative.
                 </span>
 
                 <div>
@@ -275,7 +273,6 @@ function PPQFormPage() {
                 </div>
               </div>
               <div>
-                {' '}
                 <div className="form-group col-md-6">
                   <label>What type of PIA do you need to complete?</label>
                   <select
@@ -299,7 +296,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>3. Personal information</h2>
               <h3>Is personal information involved in your initiative?</h3>
               <span>
@@ -339,6 +335,8 @@ function PPQFormPage() {
                       checked={false}
                       value={factor.value}
                       label={factor.label}
+                      tooltip={factor.tooltip}
+                      tooltipText={factor.tooltipText}
                       onChange={handleCheckboxChange}
                     />
                   );
@@ -347,7 +345,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>5. Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
