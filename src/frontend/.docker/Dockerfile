@@ -8,7 +8,7 @@ RUN apk add curl
 
 # Copy in build artifacts, build project dependencies
 
-COPY src/frontend/package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
@@ -18,7 +18,7 @@ RUN npm install -D sass
 # Needed for serve to be available within the container
 RUN npm install -g serve
 
-COPY src/frontend/. .
+COPY . .
 
 RUN npm run build
 
