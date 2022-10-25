@@ -8,10 +8,10 @@ RUN apk add curl
 
 # Copy in build artifacts, build project dependencies
 
-COPY src/frontend/package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
-COPY src/frontend/* .
+COPY . .
 EXPOSE 8080
 CMD ["npm", "run", "dev"]
