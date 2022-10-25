@@ -21,7 +21,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
     extraFileExtensions: ['.scss'],
   },
   plugins: ['@typescript-eslint', 'jest'],
@@ -31,20 +31,12 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'import/named': 'error',
+    'react/react-in-jsx-scope': 'off',
     'react/jsx-child-element-spacing': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: [
-          'test.{ts,tsx}', // repos with a single test file
-          'test-*.{ts,tsx}', // repos with multiple top-level test files
-          '**/*{.,_}{test,spec,cy}.{ts,tsx}', // tests where the extension or filename suffix denotes that it is a test
-          '**/jest.config.ts', // jest config
-          '**/jest.setup.ts', // jest setup
-          './cypress/support/component.ts',
-          './cypress.config.ts',
-        ],
-        optionalDependencies: false,
+        devDependencies: true,
       },
     ],
   },

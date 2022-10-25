@@ -2,16 +2,13 @@ import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  faChevronRight,
   faFileLines,
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
 import StagesArray from '../components/public/ProgressBar/StagesArray';
-import ppqImg from '../assets/ppq_homepage.svg';
 import {
   OtherFactor,
   ContactUserName,
@@ -20,34 +17,36 @@ import {
   PIOptions,
   startDateOptions,
 } from '../constant/constant';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
-import { StageProps } from '../components/public/ProgressBar/interfaces';
-import NavBar from '../components/common/Navbar';
-import { NavPages as pages } from '../components/common/Navbar/navPages'
-import Checkbox from '../components/common/CheckBox';
 
-const stages: StageProps[] = [
-  {
-    id: 1,
-    label: 'Fill out the PPQ',
-    icon: faFileLines,
-    active: true,
-  },
-  {
-    id: 2,
-    label: 'Review results',
-    icon: faFileCircleCheck,
-    active: false,
-  },
-  {
-    id: 3,
-    label: 'Connect with your MPO',
-    icon: faHandshake,
-    active: false,
-  },
-];
-function PPQFormPage() {
+import { StageProps } from '../components/public/ProgressBar/interfaces';
+import Checkbox from '../components/common/Checkbox';
+import { httpClient } from '../utils/requestUtil';
+import { API_ROUTES } from '../constant/apiRoutes';
+import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
+import { routes } from '../constant/routes';
+
+const PPQFormPage = () => {
+  const stages: StageProps[] = [
+    {
+      id: 1,
+      label: 'Fill out the PPQ',
+      icon: faFileLines,
+      active: true,
+    },
+    {
+      id: 2,
+      label: 'Review results',
+      icon: faFileCircleCheck,
+      active: false,
+    },
+    {
+      id: 3,
+      label: 'Connect with your MPO',
+      icon: faHandshake,
+      active: false,
+    },
+  ];
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [ministry, setMinistry] = useState('');
   const [branch, setBranch] = useState('');
@@ -74,7 +73,6 @@ function PPQFormPage() {
     hasAiOrMl: false,
     hasPartnershipNonMinistry: false,
   });
-  const navigate = useNavigate();
 
   const choosePIOption = (event: any) => {
     setContainsPI(event.target.value);
@@ -85,7 +83,9 @@ function PPQFormPage() {
 
   const handleBackClick = () => {
     // 👇️ replace set to true
-    navigate('/ppq', { replace: true });
+
+    // TODO replace hardcode value to const value in a central file
+    navigate(routes.PPQ_LANDING_PAGE, { replace: true });
   };
 
   const setInitiativeDescription = (newMessage: any) => {
@@ -103,8 +103,7 @@ function PPQFormPage() {
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // it should refactor here later
-    const bodyPart1 = {
+    const requestBody: IPPQFrom = {
       name: name,
       email: workEmail,
       ministry: ministry,
@@ -115,37 +114,27 @@ function PPQFormPage() {
       piaType: piaType === 'null' ? null : piaType,
       containsPersonalInformation: containsPI === 'Yes' ? true : false,
       proposedStartDate: startDate,
+      ...checkedPIItems,
     };
-    const requestBody = { ...bodyPart1, ...checkedPIItems };
     try {
-      const res = await fetch(
-        `http://${import.meta.env.VITE_REACT_API_HOST}:${
-          import.meta.env.VITE_REACT_API_PORT
-        }/api/ppq`,
+      const res = await httpClient(
+        API_ROUTES.PPQ_FORM_SUBMISSION,
+        requestBody,
+        'POST',
         {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-
-          body: JSON.stringify(requestBody),
+          'Access-Control-Allow-Origin': '*',
         },
       );
 
-      const resJson = await res.json();
-      if (res.status === 201) {
-        navigate('/ppq-results', {
-          state: { id: resJson.id, complexity: resJson.complexity },
-        });
-      } else {
-        setMessage('Some error occured');
-      }
+      navigate(routes.PPQ_FORM_RESULTS, {
+        state: { id: res.id, complexity: res.complexity },
+      });
     } catch (err) {
+      setMessage('Some error occured');
       console.log(err);
     }
   };
+
   return (
     <>
       <StagesArray stages={stages} />
@@ -157,7 +146,7 @@ function PPQFormPage() {
               <span>
                 By answering this first 4 questions from the PIA template you
                 can give the information to your MPO and find out whether I have
-                to do a full PIA.{' '}
+                to do a full PIA.
               </span>
             </div>
 
@@ -177,7 +166,6 @@ function PPQFormPage() {
                   </option>
                   {ContactUserName.map((option, index) => (
                     <option key={index} value={option}>
-                      {' '}
                       {option}
                     </option>
                   ))}
@@ -286,7 +274,6 @@ function PPQFormPage() {
                     </option>
                     {PIATypes.map((option, index) => (
                       <option key={index} value={option.value}>
-                        {' '}
                         {option.label}
                       </option>
                     ))}
@@ -307,7 +294,7 @@ function PPQFormPage() {
               </span>
               <div>
                 {PIOptions.map((option, index) => (
-                  <div onChange={choosePIOption}>
+                  <div key={index} onChange={choosePIOption}>
                     <label> {option}</label>
                     <input
                       name="pi-radio"
@@ -354,7 +341,7 @@ function PPQFormPage() {
                   </span>
                   <div>
                     {startDateOptions.map((option, index) => (
-                      <div onChange={chooseStartDate}>
+                      <div key={index} onChange={chooseStartDate}>
                         <label> {option}</label>
                         <input
                           key={index}
@@ -399,6 +386,6 @@ function PPQFormPage() {
       </section>
     </>
   );
-}
+};
 
 export default PPQFormPage;

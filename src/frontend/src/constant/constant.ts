@@ -14,14 +14,14 @@ export const OtherFactor = [
     tooltip: true,
     tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
     to share personal information with another government or government agency on a regular basis. ISAs are 
-    not necessary when one B.C. government ministry shares personal information with another.`
+    not necessary when one B.C. government ministry shares personal information with another.`,
   },
   {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
     tooltip: true,
     tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
-    for the purpose of providing a service.`
+    for the purpose of providing a service.`,
   },
   {
     label: 'Vendor or third-party access to personal information',
@@ -34,7 +34,7 @@ export const OtherFactor = [
     tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
     service through a web browser, that’s a good indication that you’re using a cloud service. If you’re 
     working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using 
-    cloud.`
+    cloud.`,
   },
   {
     label: 'Potential public interest in the initiative',
@@ -49,7 +49,7 @@ export const OtherFactor = [
     value: 'hasBcServicesCardOnboarding',
     tooltip: true,
     tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate 
-    a user’s identity when the user accesses a service.`
+    a user’s identity when the user accesses a service.`,
   },
   {
     label: 'Artificial intelligence (AI) or machine learning',
