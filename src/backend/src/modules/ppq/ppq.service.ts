@@ -103,7 +103,9 @@ export class PpqService {
         ministry: ministry || 'NA',
         branch: ppqForm.branch || 'N/A',
         piaType: piaType || 'N/A',
-        proposedStartDate: shortDate(ppqForm.proposedStartDate) || 'N/A',
+        proposedStartDate: ppqForm.proposedStartDate
+          ? shortDate(ppqForm.proposedStartDate)
+          : 'N/A',
         containsPersonalInformation,
         initiativeDescription: marked.parse(ppqForm.initiativeDescription),
         dataElements: marked.parse(ppqForm.dataElements),
