@@ -27,13 +27,12 @@ services:
   dpia-webapp:
     container_name: dpia-webapp
     build:
-      context: .
-      dockerfile: ./src/frontend/.docker/Dockerfile.local
-    env_file:
-      - ./src/frontend/.env
+      context: ./src/frontend
+      dockerfile: .docker/Dockerfile.local
     volumes:
     # Binds the application folder from the host inside the container for fast changes
       - ./src/frontend:/app
+      - /app/node_modules
     networks:
       - dpia-network
     ports:

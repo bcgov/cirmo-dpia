@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite.config.local.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prettier": "prettier src -check",
@@ -29,6 +29,7 @@
     "react-datepicker": "4.8.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.4.2",
+    "react-tooltip": "4.4.2",
     "sass": "1.55.0"
   },
   "devDependencies": {

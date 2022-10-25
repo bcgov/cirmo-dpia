@@ -23,8 +23,12 @@ help:
 ##############################################################################
 
 api-setup-env:
-	@echo "+\n++ Make: Preparing environment for the project...\n+"
+	@echo "+\n++ Make: Preparing environment for the API project...\n+"
 	@cp src/backend/.config/.env.local src/backend/.env
+
+web-setup-env:
+	@echo "+\n++ Make: Preparing environment for the web project...\n+"
+	@cp src/frontend/.config/.env.local src/frontend/.env
 
 ##############################################################################
 # Docker helper commands

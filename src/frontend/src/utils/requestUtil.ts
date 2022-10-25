@@ -1,9 +1,7 @@
-import { BASE_URL } from '../constant/api';
-
-export const client = async (
+export const httpClient = async (
   endpoint: string,
+  body: any,
   method = 'POST',
-  body = {},
   headers = {},
   customConfig = {},
 ) => {
@@ -14,7 +12,7 @@ export const client = async (
     ...customConfig,
   };
 
-  const response = await fetch(`${BASE_URL}/${endpoint}`, options);
+  const response = await fetch(`/${endpoint}`, options);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }

@@ -1,31 +1,22 @@
-import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import ppqImg from '../assets/ppq_homepage.svg';
 
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import { Link } from 'react-router-dom';
-import PPQNavBar from '../components/common/PPQNavBar';
 
 function PPQLandingPage() {
   return (
-    <div>
-      <Header data-cy="header" user="first.last@gov.bc.ca" />
-
-      <PPQNavBar />
-
-      <div className="  ppq-section">
+    <div className="ppq-container">
+      <div className="ppq-section">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
             <h2>PIA Pathway Questionnaire</h2>
             <br />
             <p className="col-mb-6">
               The PIA Pathways Questionnaire asks for some basic information
-              about the initiative you're assessing in the PIA. Your answers
-              will help us estimate{' '}
+              about the initiative you&lsquo; re assessing in the PIA. Your
+              answers will help us estimate
             </p>
             <ul className="col-mb-6 list">
               <li>The relative complexity of your PIA </li>
@@ -34,13 +25,12 @@ function PPQLandingPage() {
             </ul>
             <div data-cy="ppq-btn" className="ctas">
               <Link to="/ppq-form" className="btn-primary">
-                Get started{' '}
+                Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>
             </div>
             <br />
             <span>
-              {' '}
               <b>Estimated time:</b> 20 minutes
             </span>
           </div>
@@ -49,7 +39,6 @@ function PPQLandingPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

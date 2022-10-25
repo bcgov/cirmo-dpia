@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  faChevronRight,
   faFileLines,
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
-import Stage from '../components/public/ProgressBar/Stage';
 import StagesArray from '../components/public/ProgressBar/StagesArray';
-import ppqImg from '../assets/ppq_homepage.svg';
 import {
   OtherFactor,
   ContactUserName,
@@ -21,36 +17,36 @@ import {
   PIOptions,
   startDateOptions,
 } from '../constant/constant';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
+
 import { StageProps } from '../components/public/ProgressBar/interfaces';
-import PPQNavBar from '../components/common/PPQNavBar';
-import Checkbox from '../components/common/CheckBox';
-import { client } from '../utils/requestUtil';
+import Checkbox from '../components/common/Checkbox';
+import { httpClient } from '../utils/requestUtil';
 import { API_ROUTES } from '../constant/apiRoutes';
 import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
 import { routes } from '../constant/routes';
-const stages: StageProps[] = [
-  {
-    id: 1,
-    label: 'Fill out the PPQ',
-    icon: faFileLines,
-    active: true,
-  },
-  {
-    id: 2,
-    label: 'Review results',
-    icon: faFileCircleCheck,
-    active: false,
-  },
-  {
-    id: 3,
-    label: 'Connect with your MPO',
-    icon: faHandshake,
-    active: false,
-  },
-];
-function PPQFormPage() {
+
+const PPQFormPage = () => {
+  const stages: StageProps[] = [
+    {
+      id: 1,
+      label: 'Fill out the PPQ',
+      icon: faFileLines,
+      active: true,
+    },
+    {
+      id: 2,
+      label: 'Review results',
+      icon: faFileCircleCheck,
+      active: false,
+    },
+    {
+      id: 3,
+      label: 'Connect with your MPO',
+      icon: faHandshake,
+      active: false,
+    },
+  ];
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [ministry, setMinistry] = useState('');
   const [branch, setBranch] = useState('');
@@ -77,7 +73,6 @@ function PPQFormPage() {
     hasAiOrMl: false,
     hasPartnershipNonMinistry: false,
   });
-  const navigate = useNavigate();
 
   const choosePIOption = (event: any) => {
     setContainsPI(event.target.value);
@@ -100,7 +95,7 @@ function PPQFormPage() {
     setInitiativeDataElements(newMessage);
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
@@ -122,10 +117,10 @@ function PPQFormPage() {
       ...checkedPIItems,
     };
     try {
-      const res = await client(
+      const res = await httpClient(
         API_ROUTES.PPQ_FORM_SUBMISSION,
-        'POST',
         requestBody,
+        'POST',
         {
           'Access-Control-Allow-Origin': '*',
         },
@@ -139,13 +134,10 @@ function PPQFormPage() {
       console.log(err);
     }
   };
+
   return (
-    <div>
-      <Header data-cy="header" user="first.last@gov.bc.ca" />
-      <PPQNavBar />
-      <div>
-        <StagesArray stages={stages} />
-      </div>
+    <>
+      <StagesArray stages={stages} />
       <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -154,7 +146,7 @@ function PPQFormPage() {
               <span>
                 By answering this first 4 questions from the PIA template you
                 can give the information to your MPO and find out whether I have
-                to do a full PIA.{' '}
+                to do a full PIA.
               </span>
             </div>
 
@@ -174,7 +166,6 @@ function PPQFormPage() {
                   </option>
                   {ContactUserName.map((option, index) => (
                     <option key={index} value={option}>
-                      {' '}
                       {option}
                     </option>
                   ))}
@@ -223,7 +214,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>2. Your initiative</h2>
               <div className="form-group col-md-12">
                 <label>Name of initiative</label>
@@ -254,12 +244,12 @@ function PPQFormPage() {
               <div>
                 <h3>
                   What are the data or information elements involved in your
-                  initiative?{' '}
+                  initiative?
                 </h3>
                 <span>
                   Please list all the elements of information or data that you
                   might collect, use, store, disclose, or access as part of your
-                  initiative.{' '}
+                  initiative.
                 </span>
 
                 <div>
@@ -271,7 +261,6 @@ function PPQFormPage() {
                 </div>
               </div>
               <div>
-                {' '}
                 <div className="form-group col-md-6">
                   <label>What type of PIA do you need to complete?</label>
                   <select
@@ -285,7 +274,6 @@ function PPQFormPage() {
                     </option>
                     {PIATypes.map((option, index) => (
                       <option key={index} value={option.value}>
-                        {' '}
                         {option.label}
                       </option>
                     ))}
@@ -295,7 +283,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>3. Personal information</h2>
               <h3>Is personal information involved in your initiative?</h3>
               <span>
@@ -307,7 +294,7 @@ function PPQFormPage() {
               </span>
               <div>
                 {PIOptions.map((option, index) => (
-                  <div onChange={choosePIOption}>
+                  <div key={index} onChange={choosePIOption}>
                     <label> {option}</label>
                     <input
                       name="pi-radio"
@@ -335,6 +322,8 @@ function PPQFormPage() {
                       checked={false}
                       value={factor.value}
                       label={factor.label}
+                      tooltip={factor.tooltip}
+                      tooltipText={factor.tooltipText}
                       onChange={handleCheckboxChange}
                     />
                   );
@@ -343,7 +332,6 @@ function PPQFormPage() {
             </div>
 
             <div className="ppq-form-content">
-              {' '}
               <h2>5. Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
@@ -353,7 +341,7 @@ function PPQFormPage() {
                   </span>
                   <div>
                     {startDateOptions.map((option, index) => (
-                      <div onChange={chooseStartDate}>
+                      <div key={index} onChange={chooseStartDate}>
                         <label> {option}</label>
                         <input
                           key={index}
@@ -396,9 +384,8 @@ function PPQFormPage() {
           </form>
         </div>
       </section>
-      <Footer />
-    </div>
+    </>
   );
-}
+};
 
 export default PPQFormPage;

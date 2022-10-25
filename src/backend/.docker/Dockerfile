@@ -6,6 +6,19 @@ WORKDIR /usr/src/app
 RUN apk update
 RUN apk add curl
 
+# Installs latest Chromium (100) package.
+RUN apk add --no-cache \
+      chromium \
+      nss \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont
+
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 # Install Project Specific Dependencies
 COPY package*.json ./
 RUN npm ci
@@ -15,6 +28,14 @@ COPY . ./
 
 # Bundle project artifact
 RUN npm run build
+
+# Add user so we don't need --no-sandbox.
+RUN mkdir -p /home/1001/Downloads /usr/src/app \
+    && chown -R 1001:0 /home/1001 \
+    && chown -R 1001:0 /usr/src/app
+
+# Twindle the permissions to ensure things can be run as an arbitary user
+RUN chmod -R ug+rwx /usr/src/app
 
 # Twindle the permissions to ensure things can be run as an arbitary user
 RUN chown -R 1001:0 /usr/src/app && \
