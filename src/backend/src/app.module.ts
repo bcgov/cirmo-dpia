@@ -12,12 +12,17 @@ import { AppService } from './app.service';
 import { configService } from './config/config.service';
 import { HealthModule } from './health/health.module';
 import { PpqModule } from './modules/ppq/ppq.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     HealthModule,
     PpqModule,
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
     KeycloakConnectModule.register(configService.getKeycloakConfig()),
   ],
   controllers: [AppController],

@@ -1,5 +1,5 @@
-import { HttpException, HttpService, Injectable } from '@nestjs/common';
-
+import { HttpException, Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import * as queryString from 'querystring';
 import { catchError, map } from 'rxjs/operators';
 import { configService } from 'src/config/config.service';
@@ -23,7 +23,7 @@ export class AuthService {
 
   private keycloakLogoutUri: string;
 
-  constructor(private readonly _http: HttpService) {
+  constructor(private readonly httpService: HttpService) {
     this.keycloakAuthServerUri = configService.getValue(
       'KEYCLOAK_AUTH_SERVER_URI',
     );
@@ -60,7 +60,7 @@ export class AuthService {
       redirect_uri: this.keycloakRedirectUri,
     };
 
-    return this._http
+    return this.httpService
       .post(
         this.keycloakTokenUri,
         queryString.stringify(params),
@@ -91,7 +91,7 @@ export class AuthService {
       redirect_uri: this.keycloakRedirectUri,
     };
 
-    return this._http
+    return this.httpService
       .post(
         this.keycloakTokenUri,
         queryString.stringify(params),
@@ -120,7 +120,7 @@ export class AuthService {
       refresh_token: refresh_token,
     };
 
-    return this._http
+    return this.httpService
       .post(
         this.keycloakLogoutUri,
         queryString.stringify(params),

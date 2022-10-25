@@ -45,8 +45,6 @@ export const AuthError = {
     httpStatus: HttpStatus.FORBIDDEN,
   } as GenericError,
 
- 
-
   INVALID_SESSION_LEVEL: {
     errorType: 'INVALID_SESSION_LEVEL',
     errorMessage: 'Invalid session level',
@@ -71,15 +69,11 @@ export const AuthError = {
     httpStatus: HttpStatus.FORBIDDEN,
   } as GenericError,
 
-
-
   INVALID_ACCESS_CODE: {
     errorType: 'INVALID_ACCESS_CODE',
     errorMessage: 'Invalid access code',
     httpStatus: HttpStatus.UNPROCESSABLE_ENTITY,
   } as GenericError,
-
-
 
   INVALID_PASSWORD: {
     errorType: 'INVALID_PASSWORD',

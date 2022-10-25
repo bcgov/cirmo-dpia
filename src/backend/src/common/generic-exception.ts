@@ -1,6 +1,5 @@
 import { HttpStatus, HttpException } from '@nestjs/common';
 import { CommonError } from './common.errors';
-import { TechnicalSupportErrorCode } from './enums/technical-support-error-code';
 
 export class GenericError {
   /** Internal code */
@@ -13,12 +12,13 @@ export class GenericError {
   httpStatus?: HttpStatus;
 
   /** Error code to be displayed to the user */
-  supportCode?: TechnicalSupportErrorCode;
+  supportCode?: string;
 }
 
 // tslint:disable-next-line: max-classes-per-file
 export class GenericException extends HttpException {
   public originalError: any;
+
   public errorDetails: object;
 
   constructor(
