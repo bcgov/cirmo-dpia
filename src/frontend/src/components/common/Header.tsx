@@ -7,6 +7,16 @@ type Props = {
   user: string | null;
 };
 function Header({ user }: Props) {
+  const apiURI = !import.meta.env.VITE_REACT_APP_LOCAL_DEV
+    ? `${import.meta.env.VITE_REACT_API_BASE_URL}`
+    : `http://${import.meta.env.VITE_REACT_API_HOST}:${
+        import.meta.env.VITE_REACT_API_PORT
+      }`;
+
+  const login = () => {
+    window.location.href = `${apiURI}/api/keycloakLogin`;
+  };
+
   return (
     <header>
       <div className="banner">
@@ -23,7 +33,7 @@ function Header({ user }: Props) {
       </div>
       <div data-cy="login" className="other">
         {!user ? (
-          <a href="/" className="btn-login">
+          <a href="/" className="btn-login" onClick={login}>
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
           </a>
         ) : (
