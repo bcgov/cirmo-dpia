@@ -14,7 +14,11 @@ function Header({ user }: Props) {
       }`;
 
   const login = () => {
-    window.location.href = `${apiURI}/api/keycloakLogin`;
+    // https://github.com/microsoft/TypeScript/issues/48949
+    // workaround
+    const win: Window = window;
+    console.log('test ' ,apiURI)
+    win.location = `${apiURI}/api/auth/keycloakLogin`;
   };
 
   return (
@@ -33,9 +37,9 @@ function Header({ user }: Props) {
       </div>
       <div data-cy="login" className="other">
         {!user ? (
-          <a href="/" className="btn-login" onClick={login}>
+          <button className="btn-login" onClick={login}>
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
-          </a>
+          </button>
         ) : (
           <p>
             {' '}

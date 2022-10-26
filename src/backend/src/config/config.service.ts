@@ -39,7 +39,7 @@ class ConfigService {
 
   public getKeycloakConfig(): KeycloakConnectOptions {
     return {
-      authServerUrl: this.getValue('KEYCLOAK_AUTH_SERVER_URL'),
+      authServerUrl: this.getValue('KEYCLOAK_AUTH_SERVER_URI'),
       secret: this.getValue('KEYCLOAK_CLIENT_SECRET'),
       realm: this.getValue('KEYCLOAK_REALM'),
       resource: this.getValue('KEYCLOAK_RESOURCE'),

@@ -13,11 +13,13 @@ import { configService } from './config/config.service';
 import { HealthModule } from './health/health.module';
 import { PpqModule } from './modules/ppq/ppq.module';
 import { HttpModule } from '@nestjs/axios';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     HealthModule,
+    AuthModule,
     PpqModule,
     HttpModule.register({
       timeout: 5000,
@@ -28,14 +30,15 @@ import { HttpModule } from '@nestjs/axios';
   controllers: [AppController],
   providers: [
     AppService,
-    {
+    /* {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
     {
       provide: APP_GUARD,
       useClass: RoleGuard,
-    },
+    }, 
+    */
   ],
 })
 export class AppModule {}
