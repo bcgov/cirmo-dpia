@@ -3,6 +3,7 @@ footer {
   border-top: 2px solid $secondary-yellow;
   color: #fff;
   font-family: $font-family;
+  padding-inline: 200px;
 
   /* need to test */
   position: fixed;
@@ -21,29 +22,33 @@ footer .container {
   height: 46px;
 }
 
-footer ul {
+footer > ul {
   display: flex;
-  flex-flow: row warp;
-  // flex-wrap: wrap;
+  flex-flow: row wrap;
   margin: 0;
+  padding: 0;
   color: #fff;
   list-style: none;
   align-items: center;
   height: 100%;
 }
 
-footer ul li {
+footer > ul > li {
   display: inherit;
   align-items: center;
   border-right: 1px solid white;
   line-height: 1rem;
+
+  &:first-child > a {
+    margin-left: 0;
+  }
 
   &:last-child {
     border-right: none;
   }
 }
 
-footer ul li a {
+footer > ul > li > a {
   font-size: 0.813em;
   font-weight: normal; /* 400 */
   color: #fff;

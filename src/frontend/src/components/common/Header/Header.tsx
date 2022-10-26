@@ -1,5 +1,5 @@
 import React from 'react';
-import BCGovLogo from '../../assets/BC_Logo_Horizontal.svg';
+import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faUser } from '@fortawesome/free-solid-svg-icons';
 

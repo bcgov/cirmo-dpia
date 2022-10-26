@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-import ppqImg from '../assets/ppq_homepage.svg';
+import ppqImg from '../../assets/ppq_homepage.svg';
 
 import { Link } from 'react-router-dom';
 

@@ -8,7 +8,12 @@ import {
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
+<<<<<<< HEAD:src/frontend/src/pages/PPQFormPage.tsx
 import StagesArray from '../components/public/ProgressBar/StagesArray';
+=======
+import StagesArray from '../../components/common/ProgressBar/StagesArray';
+import ppqImg from '../assets/ppq_homepage.svg';
+>>>>>>> 7c48468 (Beginning of frontend refactor.):src/frontend/src/pages/PPQFormPage/PPQFormPage.tsx
 import {
   OtherFactor,
   ContactUserName,
@@ -16,7 +21,17 @@ import {
   PIATypes,
   PIOptions,
   startDateOptions,
+<<<<<<< HEAD:src/frontend/src/pages/PPQFormPage.tsx
 } from '../constant/constant';
+=======
+} from '../../constant/constant';
+import Header from '../../components/common/Header/Header';
+import Footer from '../../components/common/Footer/Footer';
+import { StageProps } from '../../components/common/ProgressBar/interfaces';
+import NavBar from '../../components/common/Navbar';
+import { NavPages as pages } from '../../components/common/Navbar/navPages'
+import Checkbox from '../../components/common/CheckBox';
+>>>>>>> 7c48468 (Beginning of frontend refactor.):src/frontend/src/pages/PPQFormPage/PPQFormPage.tsx
 
 import { StageProps } from '../components/public/ProgressBar/interfaces';
 import Checkbox from '../components/common/Checkbox';

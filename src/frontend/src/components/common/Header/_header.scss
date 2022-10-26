@@ -1,7 +1,7 @@
 header {
   background-color: $primary-blue;
   border-bottom: 2px solid $secondary-yellow;
-  padding: 0 65px 0 65px;
+  padding-inline: 185px;
   color: #fff;
   display: flex;
   height: 65px;
@@ -14,7 +14,7 @@ header {
   align-items: center;
 
   .logo {
-    width: 200px;
+    width: 170px;
     height: 65px;
     padding: 0;
   }
