@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement } from 'react';
 import { StageProps } from './interfaces';
 
-const Stage = ({ id, label, icon, active }: StageProps): ReactElement => {
+const Stage = ({ label, icon, active }: StageProps): ReactElement => {
   return (
     <>
       <div className={`stage-lead-line ${active ? 'active' : ''}`}></div>

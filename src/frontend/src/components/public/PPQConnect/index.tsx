@@ -1,8 +1,33 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { IPPQResult } from '../../../ts/interfaces/ppq-result.interface';
+import { API_ROUTES } from '../../../constant/apiRoutes';
+import {
+  FileDownload,
+  FileDownloadTypeEnum,
+} from '../../../utils/file-download.util';
 
-const PPQConnect = () => {
+interface IComponentProps {
+  result: IPPQResult;
+}
+
+const PPQConnect = (props: IComponentProps) => {
+  const { result } = props;
+  const handleDownload = () => {
+    if (!result?.id) {
+      console.error(
+        'Something went wrong. Result Id not available for download',
+      );
+      throw new Error('Something went wrong.');
+    }
+
+    return FileDownload.download(
+      API_ROUTES.PPQ_RESULT_DOWNLOAD.replace(':id', `${result.id}`),
+      FileDownloadTypeEnum.PDF,
+    );
+  };
+
   return (
     <div className="results-wrapper ppq-connect">
       <h1 className="results-header">Connect with your MPO</h1>
@@ -26,12 +51,7 @@ const PPQConnect = () => {
       </section>
       <section className="download-results">
         <h2>2. Download your results</h2>
-        <button
-          className="btn-secondary"
-          onClick={() =>
-            window.open('src/assets/sample-ppq-result.pdf', '_blank')
-          }
-        >
+        <button className="btn-secondary" onClick={handleDownload}>
           Download PPQ Results{' '}
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
         </button>
