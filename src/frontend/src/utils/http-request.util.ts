@@ -25,7 +25,7 @@ export class HttpRequest {
       return response.json();
     }
 
-    return response as T;
+    return response as unknown as T;
   }
 
   public static async get<T>(

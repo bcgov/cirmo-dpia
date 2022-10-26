@@ -10,7 +10,7 @@ export class FileDownload {
     contentType: FileDownloadTypeEnum,
     additionalConfig = {},
   ) {
-    const response: Response = await HttpRequest.get(
+    const response = await HttpRequest.get<Response>(
       endpoint,
       { 'Content-Type': `application/${contentType}` },
       additionalConfig,
