@@ -3,7 +3,6 @@ import { ReactElement } from 'react';
 import { CardProps } from './interfaces';
 
 const Card = ({
-  id,
   icon,
   title,
   text,
