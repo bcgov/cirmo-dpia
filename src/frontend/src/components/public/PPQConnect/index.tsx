@@ -34,13 +34,14 @@ const PPQConnect = (props: IComponentProps) => {
       <section className="find-your-mpo">
         <h2>1. Find your MPO</h2>
         <p className="mpo-find-contact">
-          Every ministry has a Ministry Privacy Officer (MPO).{' '}
+          Every ministry has a Ministry Privacy Officer (MPO).
           <a href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers">
             Identify your MPO and their contact information.
           </a>
         </p>
         <p className="privacy-helpline-contact">
-          Can't find what you're looking for? Contact the Privacy Helpline.
+          Can&lsquo;t find what you&lsquo;re looking for? Contact the Privacy
+          Helpline.
           <br />
           <a href="tel:250-356-1851">250 356-1851</a>
           <br />
@@ -70,7 +71,7 @@ const PPQConnect = (props: IComponentProps) => {
         <Link to="/ppq-results" className="btn-secondary btn-back">
           Back
         </Link>
-        <Link to="/" className="btn-primary btn-next">
+        <Link to="/ppq" className="btn-primary btn-next">
           Done
         </Link>
       </div>
