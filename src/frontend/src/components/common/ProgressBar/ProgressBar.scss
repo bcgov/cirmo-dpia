@@ -4,7 +4,7 @@
     min-height: 5vh;
     justify-content: space-evenly;
     margin-inline: 25vw;
-    gap: 4em;
+    gap: 2em;
 
   & > .stage-lead-line:first-child {
     display: none;
@@ -12,12 +12,11 @@
 }
 
 .stage-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 11em;
-}
-
-.stage-label {
-  text-align: center;
-  font-weight: 700;
+  width: 70ch;
 }
 
 .circle {
@@ -27,9 +26,16 @@
   border-radius: 50%;
   border: none;
   background-color: grey;
-  min-width: 85px;
+  width: 100px;
   aspect-ratio: 1;
   padding: 0.3em;
+}
+
+.stage-label {
+  text-align: center;
+  max-width: fit-content;
+  align-self: center;
+  margin: 0;
 }
 
 .inner-circle svg {
@@ -39,16 +45,16 @@
 
 .active {
   background-color: $bg-blue;
+  color: $bg-blue;
 }
 
 .stage-lead-line {
-  margin-top: 15%;
+  margin-top: 10rem;
   align-self: center;
   width: 100%;
   background-color: grey;
   height: 2px;
   border: none;
-  border-radius: 15px;
 
   &.active {
     height: 4px;

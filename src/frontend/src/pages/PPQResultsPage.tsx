@@ -4,19 +4,14 @@ import {
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
-<<<<<<< HEAD
-import { StageProps } from '../components/public/ProgressBar/interfaces';
-import StagesArray from '../components/public/ProgressBar/StagesArray';
+import { StageProps } from '../components/common/ProgressBar/interfaces';
+import StagesArray from '../components/common/ProgressBar/StagesArray';
 import { useLocation } from 'react-router-dom';
 import { IPPQResult } from '../ts/interfaces/ppq-result.interface';
 
 interface IPagePropState {
   result: IPPQResult;
 }
-=======
-import { StageProps } from '../components/common/ProgressBar/interfaces';
-import StagesArray from '../components/common/ProgressBar/StagesArray';
->>>>>>> 7c48468 (Beginning of frontend refactor.)
 
 const PPQResultsPage = () => {
   const location = useLocation();
