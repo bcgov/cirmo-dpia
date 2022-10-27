@@ -19,3 +19,9 @@
 .privacy-helpline-contact {
   margin-bottom: 0;
 }
+
+.mpo-find-contact {
+  & > a {
+    margin-left: .3em;
+  }
+}
