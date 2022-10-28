@@ -6,7 +6,7 @@ export default {
     en: `Your MPO can answer questions and review your PIA.`,
   },
   LowComplexityTemplateText: {
-    en: `If you're doing a corporate checklist, [find the checklist you need](https://www2.gov.bc.ca/gov/content?id=22BB6ECD7F7D44A58995C413C885E0A1). \n\n Otherwise, complete the first four questions on the standard PIA template.`,
+    en: `If you're doing a corporate checklist, [find the checklist you need here](https://www2.gov.bc.ca/gov/content?id=22BB6ECD7F7D44A58995C413C885E0A1). \n\n Otherwise, complete the first four questions on the standard PIA template.`,
   },
 
   StandardComplexityText: {
