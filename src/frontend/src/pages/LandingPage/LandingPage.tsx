@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
-import heroImg from '../assets/hero-img.svg';
-import newIdeas from '../assets/undraw_new_ideas.svg';
-import webSearch from '../assets/undraw_web_search.svg';
-import sharedGoals from '../assets/undraw_shared_goals.svg';
-import Callout from '../components/common/Callout';
+import heroImg from '../../assets/hero-img.svg';
+import newIdeas from '../../assets/undraw_new_ideas.svg';
+import webSearch from '../../assets/undraw_web_search.svg';
+import sharedGoals from '../../assets/undraw_shared_goals.svg';
+import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
 
 function LandingPage() {
