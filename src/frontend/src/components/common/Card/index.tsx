@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 import { CardProps } from './interfaces';
 
 const Card = ({
@@ -9,6 +10,7 @@ const Card = ({
   button,
   buttonText,
   buttonIcon,
+  buttonUrl,
 }: CardProps): ReactElement => {
   return (
     <div className="card-wrapper">
@@ -16,14 +18,18 @@ const Card = ({
         <FontAwesomeIcon icon={icon} />
       </div>
       <h2 className="card-title">{title}</h2>
-      <p className="card-text">{text}</p>
+      <MDEditor.Markdown
+        className="card-text"
+        source={text}
+        linkTarget="_blank"
+      />
       {!button ? null : (
-        <button className="card-button btn-secondary">
+        <a href={buttonUrl} className="card-button btn-secondary">
           {buttonText}
           {!buttonIcon ? null : (
             <FontAwesomeIcon className="button-icon" icon={buttonIcon} />
           )}
-        </button>
+        </a>
       )}
     </div>
   );

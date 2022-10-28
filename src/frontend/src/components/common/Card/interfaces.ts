@@ -12,4 +12,5 @@ export interface CardProps {
   button: boolean;
   buttonText?: string;
   buttonIcon?: IconDefinition;
+  buttonUrl?: string;
 }

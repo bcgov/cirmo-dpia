@@ -1,6 +1,6 @@
 import Card from '../../common/Card';
 import { CardProps } from '../../common/Card/interfaces';
-import ppqTestResults from './test-ppq-results';
+import ppqResultByComplexity from './ppq-result-by-complexity';
 import { Link } from 'react-router-dom';
 import { IPPQResult } from '../../../ts/interfaces/ppq-result.interface';
 
@@ -22,9 +22,15 @@ const PPQResults = (props: IComponentProps) => {
         </div>
       </section>
       <div className="cards">
-        {ppqTestResults.map((card: CardProps) => {
-          return <Card key={card.id} {...card} />;
-        })}
+        {!props.result.complexity && (
+          <div> Something went wrong. Please try again.</div>
+        )}
+
+        {ppqResultByComplexity(props.result.complexity).map(
+          (card: CardProps) => {
+            return <Card key={card.id} {...card} />;
+          },
+        )}
       </div>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
