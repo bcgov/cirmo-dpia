@@ -6,7 +6,7 @@ export const OtherFactor = [
     tooltipText: `There is no complete definition for sensitive personal information. That’s because 
     sensitivity depends on context and the type of personal information involved. Any type of personal 
     information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
-    and learn more about sensitive personal information.Ask your MPO for help to identify whether 
+    and learn more about sensitive personal information. Ask your MPO for help to identify whether 
     personal information in your initiative is sensitive.`,
   },
   {
