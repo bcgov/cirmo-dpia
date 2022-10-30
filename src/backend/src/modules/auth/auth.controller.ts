@@ -3,11 +3,13 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpStatus,
   Post,
-  Query,
   Redirect,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
+
 import { Unprotected } from 'nest-keycloak-connect';
 import { AuthService } from './auth.service';
 import { KeycloakToken } from './keycloack-token.model';
@@ -18,7 +20,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('keycloakLogin')
-  @Redirect('', 301)
+  @Redirect('', HttpStatus.MOVED_PERMANENTLY)
   @Unprotected()
   @ApiOkResponse({
     description: 'redirect to keycloak sso server for user login',
@@ -27,11 +29,25 @@ export class AuthController {
     return this.authService.getUrlLogin();
   }
 
-  @Get('callback')
+  @Post('callback')
   @Unprotected()
   @ApiOkResponse({ description: 'Get access token payload with credentials' })
-  getAccessToken(@Query('code') code: string) {
-    return this.authService.getAccessToken(code);
+  async getAccessToken(@Body('code') code: string) {
+    if (code === '') return;
+    console.log('controller authorization code', code);
+    const keycloakToken: KeycloakToken = await this.authService.getAccessToken(
+      code,
+    );
+    return keycloakToken;
+  }
+
+  @Get('user')
+  async getUserInfo(@Req() req) {
+    if (req.headers.authorization === 'Bearer') return;
+    const accessToken = req.headers.authorization.replace('Bearer ', '');
+    const kcUserInfo = await this.authService.getUserInfo(accessToken);
+    console.log('user ', kcUserInfo);
+    return kcUserInfo;
   }
 
   @Post('refreshToken')
@@ -44,9 +60,14 @@ export class AuthController {
   }
 
   @Post('logout')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOkResponse({ description: 'Logout from keycloak sso server' })
-  logout(@Body() token: KeycloakToken) {
-    return this.authService.logout(token.refresh_token);
+  async logout(@Body() token: KeycloakToken) {
+    try {
+      await this.authService.logout(token.refresh_token);
+    } catch {
+      throw Error('Logout failed');
+    }
+    return;
   }
 }

@@ -2,8 +2,10 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import * as queryString from 'querystring';
 import { catchError, map } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 import { configService } from 'src/config/config.service';
 import { KeycloakToken } from './keycloack-token.model';
+import { KeycloakUser } from './keycloak-user.model';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +23,8 @@ export class AuthService {
 
   private keycloakTokenUri: string;
 
+  private keycloakUserInfoUri: string;
+
   private keycloakLogoutUri: string;
 
   constructor(private readonly httpService: HttpService) {
@@ -36,6 +40,7 @@ export class AuthService {
     this.keycloakClientSecret = configService.getValue(
       'KEYCLOAK_CLIENT_SECRET',
     );
+    this.keycloakUserInfoUri = configService.getValue('KEYCLOAK_USER_INFO_URI');
     this.keycloakTokenUri = configService.getValue('KEYCLOAK_TOKEN_URI');
     this.keycloakLogoutUri = configService.getValue('KEYCLOAK_LOGOUT_URI');
   }
@@ -51,7 +56,7 @@ export class AuthService {
     };
   }
 
-  getAccessToken(code: string) {
+  async getAccessToken(code: string): Promise<KeycloakToken> {
     const params = {
       grant_type: 'authorization_code',
       client_id: this.keycloakClientId,
@@ -60,29 +65,52 @@ export class AuthService {
       redirect_uri: this.keycloakRedirectUri,
     };
 
-    return this.httpService
-      .post(
-        this.keycloakTokenUri,
-        queryString.stringify(params),
-        this.getContentType(),
-      )
-      .pipe(
-        map(
-          (res: any) =>
-            new KeycloakToken(
-              res.data.access_token,
-              res.data.refresh_token,
-              res.data.expires_in,
-              res.data.refresh_expires_in,
-            ),
+    const data = await firstValueFrom(
+      this.httpService
+        .post(
+          this.keycloakTokenUri,
+          queryString.stringify(params),
+          this.getContentType(),
+        )
+        .pipe(
+          map(
+            (res: any) =>
+              new KeycloakToken(
+                res.data.access_token,
+                res.data.refresh_token,
+                res.data.expires_in,
+                res.data.refresh_expires_in,
+              ),
+          ),
+          catchError((e) => {
+            console.log('service log get access token', e.response.data);
+            throw new HttpException(e.response.data, e.response.status);
+          }),
         ),
-        catchError((e) => {
-          throw new HttpException(e.response.data, e.response.status);
-        }),
-      );
+    );
+    return data;
   }
 
-  refreshAccessToken(refresh_token: string) {
+  async getUserInfo(accessToken: string): Promise<KeycloakUser> {
+    const params = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+    const data = await firstValueFrom(
+      this.httpService.get(this.keycloakUserInfoUri, params).pipe(
+        map((res: any) => new KeycloakUser(res.data.name)),
+        catchError((e) => {
+          console.log('service log', e.response.data);
+          throw new HttpException(e.response.data, e.response.status);
+        }),
+      ),
+    );
+
+    return data;
+  }
+
+  async refreshAccessToken(refresh_token: string): Promise<KeycloakToken> {
     const params = {
       grant_type: 'refresh_token',
       client_id: this.keycloakClientId,
@@ -91,47 +119,53 @@ export class AuthService {
       redirect_uri: this.keycloakRedirectUri,
     };
 
-    return this.httpService
-      .post(
-        this.keycloakTokenUri,
-        queryString.stringify(params),
-        this.getContentType(),
-      )
-      .pipe(
-        map(
-          (res: any) =>
-            new KeycloakToken(
-              res.data.access_token,
-              res.data.refresh_token,
-              res.data.expires_in,
-              res.data.refresh_expires_in,
-            ),
+    const data = await firstValueFrom(
+      this.httpService
+        .post(
+          this.keycloakTokenUri,
+          queryString.stringify(params),
+          this.getContentType(),
+        )
+        .pipe(
+          map(
+            (res: any) =>
+              new KeycloakToken(
+                res.data.access_token,
+                res.data.refresh_token,
+                res.data.expires_in,
+                res.data.refresh_expires_in,
+              ),
+          ),
+          catchError((e) => {
+            throw new HttpException(e.response.data, e.response.status);
+          }),
         ),
-        catchError((e) => {
-          throw new HttpException(e.response.data, e.response.status);
-        }),
-      );
+    );
+    return data;
   }
 
-  logout(refresh_token: string) {
+  async logout(refresh_token: string) {
     const params = {
       client_id: this.keycloakClientId,
       client_secret: this.keycloakClientSecret,
       refresh_token: refresh_token,
     };
 
-    return this.httpService
-      .post(
-        this.keycloakLogoutUri,
-        queryString.stringify(params),
-        this.getContentType(),
-      )
-      .pipe(
-        map((res: any) => res.data),
-        catchError((e) => {
-          throw new HttpException(e.response.data, e.response.status);
-        }),
-      );
+    const data = await firstValueFrom(
+      this.httpService
+        .post(
+          this.keycloakLogoutUri,
+          queryString.stringify(params),
+          this.getContentType(),
+        )
+        .pipe(
+          map((res: any) => res.data),
+          catchError((e) => {
+            throw new HttpException(e.response.data, e.response.status);
+          }),
+        ),
+    );
+    return data;
   }
 
   getContentType() {

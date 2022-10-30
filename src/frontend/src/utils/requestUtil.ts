@@ -16,6 +16,7 @@ export const httpClient = async (
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  const data = await response.json();
+  const text = await response.text();
+  const data = text === '' ? {} : JSON.parse(text);
   return data;
 };

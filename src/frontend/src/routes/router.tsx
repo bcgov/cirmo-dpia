@@ -11,6 +11,7 @@ const Router = () => {
     <Routes>
       <Route path="/ppq" element={<PPQLandingPage />} />
       <Route path="/ppq-form" element={<PPQFormPage />} />
+      <Route path="/authentication/callback" element={<PPQLandingPage />} />
       <Route path="/ppq-results" element={<PPQResultsPage />} />
       <Route path="/ppq-connect" element={<PPQConnectPage />} />
       <Route path="/" element={<LandingPage />} />
