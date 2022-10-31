@@ -28,14 +28,6 @@ export const PpqOtherFactors = [
     value: 'hasDisclosureOutsideOfCanada',
   },
   {
-    label: 'High volumes of personal information',
-    value: 'hasHighVolumesPersonalInformation',
-  },
-  {
-    label: 'Data-linking',
-    value: 'hasDataLinking',
-  },
-  {
     label: 'BC Services Card Onboarding',
     value: 'hasBcServicesCardOnboarding',
   },

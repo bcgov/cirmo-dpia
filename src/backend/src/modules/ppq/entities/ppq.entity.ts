@@ -93,20 +93,6 @@ export class PpqEntity extends BaseEntity {
   hasDisclosureOutsideOfCanada: boolean;
 
   @Column({
-    name: 'has_high_volumes_personal_information',
-    type: 'boolean',
-    nullable: true,
-  })
-  hasHighVolumesPersonalInformation: boolean;
-
-  @Column({
-    name: 'has_data_linking',
-    type: 'boolean',
-    nullable: true,
-  })
-  hasDataLinking: boolean;
-
-  @Column({
     name: 'has_bc_services_card_onboarding',
     type: 'boolean',
     nullable: true,
