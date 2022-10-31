@@ -158,24 +158,6 @@ export class PpqPostDTO {
     required: false,
     example: false,
   })
-  hasHighVolumesPersonalInformation: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  @ApiProperty({
-    type: Boolean,
-    required: false,
-    example: false,
-  })
-  hasDataLinking: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  @ApiProperty({
-    type: Boolean,
-    required: false,
-    example: false,
-  })
   hasBcServicesCardOnboarding: boolean;
 
   @IsBoolean()

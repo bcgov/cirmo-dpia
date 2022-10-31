@@ -68,8 +68,6 @@ const PPQFormPage = () => {
     hasCloudTechnology: false,
     hasPotentialPublicInterest: false,
     hasDisclosureOutsideOfCanada: false,
-    hasHighVolumesPersonalInformation: false,
-    hasDataLinking: false,
     hasBcServicesCardOnboarding: false,
     hasAiOrMl: false,
     hasPartnershipNonMinistry: false,

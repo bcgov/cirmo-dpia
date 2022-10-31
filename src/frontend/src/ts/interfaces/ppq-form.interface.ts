@@ -18,8 +18,6 @@ export interface IPPQFrom {
   hasCloudTechnology?: boolean;
   hasPotentialPublicInterest?: boolean;
   hasDisclosureOutsideOfCanada?: boolean;
-  hasHighVolumesPersonalInformation?: boolean;
-  hasDataLinking?: boolean;
   hasBcServicesCardOnboarding?: boolean;
   hasAiOrMl?: boolean;
   hasPartnershipNonMinistry?: boolean;
