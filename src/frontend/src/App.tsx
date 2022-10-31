@@ -12,7 +12,6 @@ function App() {
       <Header user="" />
       <NavBar pages={pages} />
       <Router />
-
       <Footer />
     </div>
   );
