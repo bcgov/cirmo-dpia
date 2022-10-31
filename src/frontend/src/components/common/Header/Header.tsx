@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import BCGovLogo from '../../assets/BC_Logo_Horizontal.svg';
+import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { httpClient } from '../../utils/requestUtil';
-import { API_ROUTES } from '../../constant/apiRoutes';
-import { routes } from '../../constant/routes';
-import Modal from './Modal';
+import { API_ROUTES } from '../../../constant/apiRoutes';
+import { routes } from '../../../constant/routes';
+import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
 
 type Props = {

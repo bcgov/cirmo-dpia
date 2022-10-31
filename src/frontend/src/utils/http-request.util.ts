@@ -22,7 +22,9 @@ export class HttpRequest {
     }
 
     if (config.headers?.['Content-Type'] === 'application/json') {
-      return response.json();
+      const text = await response.text();
+      const data = text === '' ? {} : JSON.parse(text);
+      return data;
     }
 
     return response as unknown as T;
