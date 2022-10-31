@@ -1,9 +1,14 @@
 import Card from '../../common/Card';
 import { CardProps } from '../../common/Card/interfaces';
-import ppqTestResults from './test-ppq-results';
+import ppqResultByComplexity from './ppq-result-by-complexity';
 import { Link } from 'react-router-dom';
+import { IPPQResult } from '../../../ts/interfaces/ppq-result.interface';
 
-const PPQResults = () => {
+interface IComponentProps {
+  result: IPPQResult;
+}
+
+const PPQResults = (props: IComponentProps) => {
   return (
     <div className="results-wrapper">
       <h1 className="results-header">Review Results</h1>
@@ -17,16 +22,26 @@ const PPQResults = () => {
         </div>
       </section>
       <div className="cards">
-        {ppqTestResults.map((card: CardProps) => {
-          return <Card key={card.id} {...card} />;
-        })}
+        {!props.result.complexity && (
+          <div> Something went wrong. Please try again.</div>
+        )}
+
+        {ppqResultByComplexity(props.result.complexity).map(
+          (card: CardProps) => {
+            return <Card key={card.id} {...card} />;
+          },
+        )}
       </div>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
         <Link to="/ppq-form" className="btn-secondary btn-back">
           Back
         </Link>
-        <Link to="/ppq-connect" className="btn-primary btn-next">
+        <Link
+          to="/ppq-connect"
+          className="btn-primary btn-next"
+          state={{ result: props.result }}
+        >
           Next
         </Link>
       </div>

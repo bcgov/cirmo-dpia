@@ -8,6 +8,7 @@ import { httpClient } from '../../utils/requestUtil';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
 import Modal from './Modal';
+import { HttpRequest } from '../../../utils/http-request.util';
 
 type Props = {
   user: string | null;
@@ -82,7 +83,7 @@ function Header({ user }: Props) {
       expires_in: win.localStorage.getItem('expires_in'),
       refresh_expires_in: win.localStorage.getItem('refresh_expires_in'),
     };
-    await httpClient(API_ROUTES.KEYCLOAK_LOGOUT, keycloakToken);
+    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakToken);
     win.localStorage.removeItem('access_token');
     win.localStorage.removeItem('refresh_token');
     win.localStorage.removeItem('userName');

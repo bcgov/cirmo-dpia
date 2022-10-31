@@ -8,7 +8,7 @@ import {
   faFileCircleCheck,
   faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
-import StagesArray from '../components/public/ProgressBar/StagesArray';
+import StagesArray from '../../components/common/ProgressBar/StagesArray';
 import {
   OtherFactor,
   ContactUserName,
@@ -16,14 +16,15 @@ import {
   PIATypes,
   PIOptions,
   startDateOptions,
-} from '../constant/constant';
+} from '../../constant/constant';
 
-import { StageProps } from '../components/public/ProgressBar/interfaces';
-import Checkbox from '../components/common/Checkbox';
-import { httpClient } from '../utils/requestUtil';
-import { API_ROUTES } from '../constant/apiRoutes';
-import { IPPQFrom } from '../ts/interfaces/ppq-form.interface';
-import { routes } from '../constant/routes';
+import { StageProps } from '../../components/common/ProgressBar/interfaces';
+import Checkbox from '../../components/common/Checkbox';
+import { HttpRequest } from '../../utils/http-request.util';
+import { API_ROUTES } from '../../constant/apiRoutes';
+import { IPPQFrom } from '../../ts/interfaces/ppq-form.interface';
+import { routes } from '../../constant/routes';
+import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -117,17 +118,13 @@ const PPQFormPage = () => {
       ...checkedPIItems,
     };
     try {
-      const res = await httpClient(
+      const res = await HttpRequest.post<IPPQResult>(
         API_ROUTES.PPQ_FORM_SUBMISSION,
         requestBody,
-        'POST',
-        {
-          'Access-Control-Allow-Origin': '*',
-        },
       );
 
       navigate(routes.PPQ_FORM_RESULTS, {
-        state: { id: res.id, complexity: res.complexity },
+        state: { result: res },
       });
     } catch (err) {
       setMessage('Some error occured');

@@ -4,4 +4,5 @@ export const API_ROUTES = {
   KEYCLOAK_USER: 'api/auth/user',
   KEYCLOAK_LOGOUT: 'api/auth/logout',
   KEYCLOAK_LOGIN: 'api/auth/keycloakLogin',
+  PPQ_RESULT_DOWNLOAD: '/api/ppq/download/:id',
 };
