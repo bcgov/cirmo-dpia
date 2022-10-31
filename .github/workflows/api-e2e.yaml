@@ -1,0 +1,21 @@
+name: 'API End to End Tests'
+on:
+  pull_request:
+    branches: [ 'main' ]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
+
+jobs: 
+  API-unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Navigate to Backend, npm run test:e2e
+        run: | 
+          cd src/backend
+          npm run test:e2e
