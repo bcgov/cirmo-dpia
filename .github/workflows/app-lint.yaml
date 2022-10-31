@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Navigate to Backend, run npm tests
+      - name: Navigate to Frontend, npm run lint
         run: | 
           cd src/frontend
           npm run lint
