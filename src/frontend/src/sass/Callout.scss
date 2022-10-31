@@ -13,17 +13,17 @@
 }
 
 .callout {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    background-color: $ntrl-lightgray;
-    border-left: 10px solid $primary-blue;
-    width: 1088px;
-    height: 76px;
-    padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background-color: $ntrl-lightgray;
+  border-left: 10px solid $primary-blue;
+  width: 1088px;
+  height: 76px;
+  padding: 25px;
 
-    &.results-callout {
-      padding-block: 5px;
-      width: 100%;
-    }
+  &.results-callout {
+    padding-block: 5px;
+    width: 100%;
+  }
 }

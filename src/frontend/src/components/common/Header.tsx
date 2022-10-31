@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { httpClient } from '../../utils/requestUtil';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
+import Modal from './Modal';
 
 type Props = {
   user: string | null;
@@ -17,6 +18,7 @@ function Header({ user }: Props) {
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem('access_token'),
   );
+  const [showModal, setShowModal] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [message, setMessage] = useState('');
   const code = searchParams.get('code');
@@ -41,7 +43,7 @@ function Header({ user }: Props) {
         setAccessToken(data.access_token);
         navigate(routes.PPQ_LANDING_PAGE);
       });
-  }, [code, navigate, win.localStorage]);
+  }, [code]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -52,13 +54,13 @@ function Header({ user }: Props) {
         Authorization: `Bearer ${win.localStorage.getItem('access_token')}`,
       },
     };
-    fetch(`/${API_ROUTES.KEYCLOAK_USER}`, options)
+    fetch(`${API_ROUTES.KEYCLOAK_USER}`, options)
       .then((response) => response.json())
       .then((data) => {
         setUserInfo(data);
         win.localStorage.setItem('userName', data.name);
       });
-  }, [accessToken, navigate, win.localStorage]);
+  }, [accessToken]);
 
   console.log('accessToken', accessToken);
   console.log('userInfo', userInfo);
@@ -87,6 +89,14 @@ function Header({ user }: Props) {
     setUserInfo(null);
     navigate('/');
   };
+  const hideModalDialog = async () => {
+    await logout();
+    setShowModal(false);
+  };
+  const showModalDialog = () => {
+    console.log('test modal open');
+    setShowModal(true);
+  };
 
   return (
     <header>
@@ -109,9 +119,16 @@ function Header({ user }: Props) {
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
         )}
+        <Modal
+          buttonLabel="logout"
+          show={showModal}
+          handleClose={hideModalDialog}
+        >
+          <p>Are you sure you want to logout curren session?</p>
+        </Modal>
         {win.localStorage.getItem('userName') !== null &&
           win.localStorage.getItem('userName') !== 'undefined' && (
-            <button className="btn-login" onClick={logout}>
+            <button className="btn-logout" onClick={() => showModalDialog()}>
               Sign Out
               <FontAwesomeIcon className="icon" icon={faChevronDown} />
             </button>

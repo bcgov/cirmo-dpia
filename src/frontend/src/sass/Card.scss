@@ -4,7 +4,7 @@
   justify-content: stretch;
   align-items: center;
   gap: 10px;
-  box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   max-width: 253px;
   height: fit-content;
@@ -14,7 +14,7 @@
 
 .card-icon {
   font-size: 72px;
-  color: $bg-blue
+  color: $bg-blue;
 }
 
 .card-title {
