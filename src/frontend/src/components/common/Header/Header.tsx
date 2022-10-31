@@ -62,14 +62,9 @@ function Header({ user }: Props) {
       });
   }, [accessToken]);
 
-  const apiURI = !import.meta.env.VITE_REACT_APP_LOCAL_DEV
-    ? `${import.meta.env.VITE_REACT_API_BASE_URL}`
-    : `http://${import.meta.env.VITE_REACT_API_HOST}:${
-        import.meta.env.VITE_REACT_API_PORT
-      }`;
 
   const login = () => {
-    win.location = `${apiURI}/${API_ROUTES.KEYCLOAK_LOGIN}`;
+    win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
   };
 
   const logout = async () => {
