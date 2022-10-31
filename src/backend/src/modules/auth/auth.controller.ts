@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   Redirect,
@@ -64,7 +65,7 @@ export class AuthController {
     try {
       await this.authService.logout(token.refresh_token);
     } catch {
-      throw Error('Logout failed');
+      throw new HttpException('Logout failed', HttpStatus.NOT_FOUND);
     }
     return;
   }

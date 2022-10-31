@@ -54,7 +54,7 @@ function Header({ user }: Props) {
         Authorization: `Bearer ${win.localStorage.getItem('access_token')}`,
       },
     };
-    fetch(`${API_ROUTES.KEYCLOAK_USER}`, options)
+    fetch(`/${API_ROUTES.KEYCLOAK_USER}`, options)
       .then((response) => response.json())
       .then((data) => {
         setUserInfo(data);
