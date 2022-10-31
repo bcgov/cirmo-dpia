@@ -97,7 +97,9 @@ function Header({ user }: Props) {
     console.log('test modal open');
     setShowModal(true);
   };
-
+  const cancelModalDialog = () => {
+    setShowModal(false);
+  };
   return (
     <header>
       <div className="banner">
@@ -120,9 +122,11 @@ function Header({ user }: Props) {
           </button>
         )}
         <Modal
-          buttonLabel="logout"
+          confirmLabel="logout"
+          cancelLabel="Cancel"
           show={showModal}
           handleClose={hideModalDialog}
+          handleCancel={cancelModalDialog}
         >
           <p>Are you sure you want to logout curren session?</p>
         </Modal>
