@@ -2,6 +2,7 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
+  margin-left: 1.5em;
 
   & > .cbInfoIcon {
     color: $link-blue;
@@ -15,5 +16,4 @@
     background-color: $link-blue;
     font-weight: 700;
   }
-  
 }

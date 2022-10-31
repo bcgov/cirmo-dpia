@@ -4,18 +4,39 @@
   column-gap: 150px;
 }
 
-.form-header {
-  padding-bottom: 50px;
-}
-
 .ppq-form-section {
   display: flex;
   padding: 150px;
 }
 
-.ppq-form-content {
-  padding-top: 25px;
-  padding-bottom: 25px;
+.row > h2 {
+  margin-top: 2.5em;
+  margin-bottom: 0.8em;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .35em;
+
+  & > h2 {
+    margin: 0;
+    margin-top: 3em;
+    margin-bottom: 0.8em;
+  }
+
+  & > label:not(.input-label) {
+    margin-top: 1em;
+  }
+
+  & > label:is(.h2-label) {
+    margin: 0;
+    margin-bottom: 1em;
+  }
+
+  &.pi-collect {
+    margin-top: 1em;
+  }
 }
 
 .btn-submit {
@@ -32,6 +53,15 @@
 .form-buttons {
   display: flex;
   justify-content: space-between;
+}
+
+label:not(.input-label) {
+  color: $ntrl-darkgray;
+  font-weight: 700;
+}
+
+span {
+  color: $text-gray;
 }
 
 .input-label {
