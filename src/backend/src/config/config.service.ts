@@ -5,7 +5,7 @@ import { KeycloakConnectOptions } from 'nest-keycloak-connect';
 class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
 
-  public getValue(key: string, throwOnMissing = true): string {
+  getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
     if (!value && throwOnMissing) {
       throw new Error(`config error - missing env.${key}`);

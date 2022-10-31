@@ -15,10 +15,6 @@ export class KeycloakUser {
 
   email?: string;
 
-  idir_user_guid?: string;
-
-  sub?: string;
-
   constructor(name: string) {
     this.name = name;
   }

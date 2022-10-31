@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-// import { APP_GUARD } from '@nestjs/core';
 import { KeycloakConnectModule } from 'nest-keycloak-connect';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -24,17 +23,6 @@ import { AuthModule } from './modules/auth/auth.module';
     KeycloakConnectModule.register(configService.getKeycloakConfig()),
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    /*{
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },
-    */
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
