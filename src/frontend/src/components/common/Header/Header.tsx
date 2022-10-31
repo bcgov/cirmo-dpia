@@ -62,8 +62,6 @@ function Header({ user }: Props) {
       });
   }, [accessToken]);
 
-  console.log('accessToken', accessToken);
-  console.log('userInfo', userInfo);
   const apiURI = !import.meta.env.VITE_REACT_APP_LOCAL_DEV
     ? `${import.meta.env.VITE_REACT_API_BASE_URL}`
     : `http://${import.meta.env.VITE_REACT_API_HOST}:${
@@ -75,7 +73,6 @@ function Header({ user }: Props) {
   };
 
   const logout = async () => {
-    console.log('test logout');
     const keycloakToken = {
       access_token: win.localStorage.getItem('access_token'),
       refresh_token: win.localStorage.getItem('refresh_token'),
@@ -94,7 +91,6 @@ function Header({ user }: Props) {
     setShowModal(false);
   };
   const showModalDialog = () => {
-    console.log('test modal open');
     setShowModal(true);
   };
   const cancelModalDialog = () => {
@@ -122,7 +118,7 @@ function Header({ user }: Props) {
           </button>
         )}
         <Modal
-          confirmLabel="logout"
+          confirmLabel="Logout"
           cancelLabel="Cancel"
           show={showModal}
           handleClose={hideModalDialog}

@@ -83,7 +83,6 @@ export class AuthService {
               ),
           ),
           catchError((e) => {
-            console.log('service log get access token', e.response.data);
             throw new HttpException(e.response.data, e.response.status);
           }),
         ),
@@ -101,7 +100,6 @@ export class AuthService {
       this.httpService.get(this.keycloakUserInfoUri, params).pipe(
         map((res: any) => new KeycloakUser(res.data.name)),
         catchError((e) => {
-          console.log('service log', e.response.data);
           throw new HttpException(e.response.data, e.response.status);
         }),
       ),

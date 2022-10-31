@@ -14,10 +14,10 @@ const Modal = ({
       <section className="modal-main">
         {children}
         <button className="btn-primary" type="button" onClick={handleClose}>
-          {confirmLabel} Sign Out
+          {confirmLabel}
         </button>
         <button type="button" className="btn-secondary" onClick={handleCancel}>
-          {cancelLabel} Cancel
+          {cancelLabel}
         </button>
       </section>
     </div>
