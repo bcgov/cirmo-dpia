@@ -17,19 +17,19 @@ const Checkbox = ({
   const [isChecked, setIsChecked] = useState(defaultChecked);
   return (
     <div className="checkbox-wrapper">
-      <input
-        type="checkbox"
-        value={value}
-        checked={isChecked}
-        onChange={onChange}
-        onClick={() => setIsChecked((prev: boolean) => !prev)}
-        className={isChecked ? 'checked' : ''}
-        aria-describedby={value}
-        aria-label={label}
-        {...props}
-      />
-      <label>
-        <span>{label}</span>
+      <label className='input-label'>
+        <input
+          type="checkbox"
+          value={value}
+          checked={isChecked}
+          onChange={onChange}
+          onClick={() => setIsChecked((prev: boolean) => !prev)}
+          className={isChecked ? 'checked' : ''}
+          aria-describedby={value}
+          aria-label={label}
+          {...props}
+        />
+        {label}
       </label>
       {!tooltip ? null : (
         <>

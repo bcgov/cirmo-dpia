@@ -33,3 +33,9 @@
   display: flex;
   justify-content: space-between;
 }
+
+.input-label {
+  display: flex;
+  gap: .5em;
+  user-select: none;
+}

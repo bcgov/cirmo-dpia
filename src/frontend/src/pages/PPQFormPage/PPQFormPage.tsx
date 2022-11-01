@@ -288,18 +288,34 @@ const PPQFormPage = () => {
                 reference.
               </span>
               <div>
-                {PIOptions.map((option, index) => (
+                {PIOptions.map((option, index) => {
+                  return PIOptions[0] === option ? (
                   <div key={index} onChange={choosePIOption}>
-                    <label> {option}</label>
-                    <input
+                    <label className='input-label'>
+                      <input
                       name="pi-radio"
                       key={index}
                       type="radio"
                       value={option}
-                      // checked={containsPI === option}
+                      defaultChecked
                     />
+                    {option}
+                    </label>
                   </div>
-                ))}
+                  ) : (
+                  <div key={index} onChange={choosePIOption}>
+                    <label className='input-label'>
+                      <input
+                      name="pi-radio"
+                      key={index}
+                      type="radio"
+                      value={option}
+                    />
+                    {option}
+                    </label>
+                  </div>
+                  )
+                })}
               </div>
             </div>
 
@@ -335,18 +351,34 @@ const PPQFormPage = () => {
                     initiative?
                   </span>
                   <div>
-                    {startDateOptions.map((option, index) => (
+                    {startDateOptions.map((option, index) => {
+                      return startDateOptions[0] === option ? (
                       <div key={index} onChange={chooseStartDate}>
-                        <label> {option}</label>
+                        <label className='input-label'>
                         <input
                           key={index}
                           type="radio"
                           name="start-initiative-radio"
                           value={option}
-                          // checked={containsStartDate === option}
+                          defaultChecked
                         />
+                        {option}
+                        </label>
                       </div>
-                    ))}
+                      ) : (
+                      <div key={index} onChange={chooseStartDate}>
+                        <label className='input-label'>
+                        <input
+                          key={index}
+                          type="radio"
+                          name="start-initiative-radio"
+                          value={option}
+                        />
+                        {option}
+                        </label>
+                      </div>
+                      )
+                    })}
                   </div>
                 </div>
                 {containsStartDate === 'Yes' && (
