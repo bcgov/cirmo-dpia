@@ -8,6 +8,8 @@ import { API_ROUTES } from '../../../constant/apiRoutes';
 import { routes } from '../../../constant/routes';
 import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
+import { useFetchAuthCode } from '../../../hooks/useFtechAuthCode';
+import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 
 type Props = {
   user: string | null;
@@ -19,66 +21,55 @@ function Header({ user }: Props) {
     localStorage.getItem('access_token'),
   );
   const [showModal, setShowModal] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({ name: '' });
   const [message, setMessage] = useState('');
   const code = searchParams.get('code');
+
+  const { keycloakToken, error: authCodeError } = useFetchAuthCode(code);
+  const { keycloakUserDetail, error: userInfoError } =
+    useFetchKeycloakUserInfo(accessToken);
+
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
   const win: Window = window;
-
   useEffect(() => {
-    if (!code) return;
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }, // by default setting the content-type to be json type
-      body: JSON.stringify({ code: code }),
-    };
-    fetch(`/${API_ROUTES.KEYCLOAK_CALLBACK}`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        win.localStorage.setItem('access_token', data.access_token);
-        win.localStorage.setItem('refresh_token', data.refresh_token);
-        win.localStorage.setItem('expires_in', data.expires_in);
-        win.localStorage.setItem('refresh_expires_in', data.refresh_expires_in);
-        setAccessToken(data.access_token);
-        navigate(routes.PPQ_LANDING_PAGE);
-      });
-  }, [code]);
+    if (keycloakToken !== undefined) {
+      win.localStorage.setItem('access_token', keycloakToken.access_token);
+      win.localStorage.setItem('refresh_token', keycloakToken.refresh_token);
+      win.localStorage.setItem('expires_in', keycloakToken.expires_in);
+      win.localStorage.setItem(
+        'refresh_expires_in',
+        keycloakToken.refresh_expires_in,
+      );
+      setAccessToken(keycloakToken.access_token);
+      navigate(routes.PPQ_LANDING_PAGE);
+    } else return;
+  }, [code, keycloakToken, authCodeError]);
 
   useEffect(() => {
     if (!accessToken) return;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${win.localStorage.getItem('access_token')}`,
-      },
-    };
-    fetch(`/${API_ROUTES.KEYCLOAK_USER}`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        setUserInfo(data);
-        win.localStorage.setItem('userName', data.name);
-      });
-  }, [accessToken]);
-
+    if (keycloakUserDetail !== undefined) {
+      setUserInfo(keycloakUserDetail);
+      win.localStorage.setItem('userName', keycloakUserDetail.name);
+    }
+  }, [accessToken, keycloakUserDetail, userInfoError]);
 
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
   };
 
   const logout = async () => {
-    const keycloakToken = {
+    const keycloakTokenObj = {
       access_token: win.localStorage.getItem('access_token'),
       refresh_token: win.localStorage.getItem('refresh_token'),
       expires_in: win.localStorage.getItem('expires_in'),
       refresh_expires_in: win.localStorage.getItem('refresh_expires_in'),
     };
-    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakToken);
+    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
     win.localStorage.removeItem('access_token');
     win.localStorage.removeItem('refresh_token');
     win.localStorage.removeItem('userName');
-    setUserInfo(null);
+    setUserInfo({ name: '' });
     navigate('/');
   };
   const hideModalDialog = async () => {
@@ -107,7 +98,7 @@ function Header({ user }: Props) {
       </div>
       <div className="message">{message ? <p>{message}</p> : null}</div>
       <div data-cy="login" className="other">
-        {userInfo === null && (
+        {userInfo.name === '' && (
           <button className="btn-login" onClick={() => login()}>
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
