@@ -11,7 +11,6 @@ import {
 import StagesArray from '../../components/common/ProgressBar/StagesArray';
 import {
   OtherFactor,
-  ContactUserName,
   MinistryList,
   PIATypes,
   PIOptions,
@@ -25,6 +24,7 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { IPPQForm } from '../../ts/interfaces/ppq-form.interface';
 import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
+import InputText from '../../components/common/InputText/InputText';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -158,24 +158,14 @@ const PPQFormPage = () => {
 
             <div className="row">
               <h2>1. Contact information</h2>
-              <div className="form-group col-md-6">
-                <label>Name</label>
-                <select
-                  className="form-control"
-                  key="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                >
-                  <option key="selectName" disabled={true} value="">
-                    Select one
-                  </option>
-                  {ContactUserName.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+
+              <InputText
+                label="Name"
+                className="col-md-6"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+
               <div className="form-group col-md-6">
                 <label>Work Email</label>
                 <input
@@ -313,31 +303,31 @@ const PPQFormPage = () => {
               <div>
                 {PIOptions.map((option, index) => {
                   return PIOptions[0] === option ? (
-                  <div key={index} onChange={choosePIOption}>
-                    <label className='input-label'>
-                      <input
-                      name="pi-radio"
-                      key={index}
-                      type="radio"
-                      value={option}
-                      defaultChecked
-                    />
-                    {option}
-                    </label>
-                  </div>
+                    <div key={index} onChange={choosePIOption}>
+                      <label className="input-label">
+                        <input
+                          name="pi-radio"
+                          key={index}
+                          type="radio"
+                          value={option}
+                          defaultChecked
+                        />
+                        {option}
+                      </label>
+                    </div>
                   ) : (
-                  <div key={index} onChange={choosePIOption}>
-                    <label className='input-label'>
-                      <input
-                      name="pi-radio"
-                      key={index}
-                      type="radio"
-                      value={option}
-                    />
-                    {option}
-                    </label>
-                  </div>
-                  )
+                    <div key={index} onChange={choosePIOption}>
+                      <label className="input-label">
+                        <input
+                          name="pi-radio"
+                          key={index}
+                          type="radio"
+                          value={option}
+                        />
+                        {option}
+                      </label>
+                    </div>
+                  );
                 })}
               </div>
             </div>
@@ -389,31 +379,31 @@ const PPQFormPage = () => {
                   <div>
                     {startDateOptions.map((option, index) => {
                       return startDateOptions[0] === option ? (
-                      <div key={index} onChange={chooseStartDate}>
-                        <label className='input-label'>
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          defaultChecked
-                        />
-                        {option}
-                        </label>
-                      </div>
+                        <div key={index} onChange={chooseStartDate}>
+                          <label className="input-label">
+                            <input
+                              key={index}
+                              type="radio"
+                              name="start-initiative-radio"
+                              value={option}
+                              defaultChecked
+                            />
+                            {option}
+                          </label>
+                        </div>
                       ) : (
-                      <div key={index} onChange={chooseStartDate}>
-                        <label className='input-label'>
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                        />
-                        {option}
-                        </label>
-                      </div>
-                      )
+                        <div key={index} onChange={chooseStartDate}>
+                          <label className="input-label">
+                            <input
+                              key={index}
+                              type="radio"
+                              name="start-initiative-radio"
+                              value={option}
+                            />
+                            {option}
+                          </label>
+                        </div>
+                      );
                     })}
                   </div>
                 </div>
