@@ -68,7 +68,7 @@ objects:
               - name: API_PORT
                 value: '3000'
               - name: API_ENV
-                value: ${ENVIRONMENT}
+                value: dev
               - name: POSTGRES_USER
                 valueFrom:
                   secretKeyRef:
@@ -89,6 +89,71 @@ objects:
                   secretKeyRef:
                     name: postgres-connection-secret
                     key: POSTGRES_PORT
+              - name: POSTGRES_DB
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_DB
+              - name: KEYCLOAK_AUTH_SERVER_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_AUTH_SERVER_URI
+              - name: KEYCLOAK_RESPONSE_TYPE
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_RESPONSE_TYPE
+              - name: KEYCLOAK_SCOPE
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_SCOPE
+              - name: KEYCLOAK_REDIRECT_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_REDIRECT_URI
+              - name: KEYCLOAK_CLIENT_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_CLIENT_ID
+              - name: KEYCLOAK_REALM
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_REALM
+              - name: KEYCLOAK_CONFIDENTIAL_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_CONFIDENTIAL_PORT
+              - name: KEYCLOAK_SSL_REQUIRED
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_SSL_REQUIRED
+              - name: KEYCLOAK_RESOURCE
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_RESOURCE
+              - name: KEYCLOAK_CLIENT_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_TOKEN_URI
+              - name: KEYCLOAK_TOKEN_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_TOKEN_URI
+              - name: KEYCLOAK_LOGOUT_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_LOGOUT_URI
             resources:
               limits:
                 cpu: 150m
