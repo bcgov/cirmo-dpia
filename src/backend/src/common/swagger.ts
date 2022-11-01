@@ -1,10 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from 'src/app.module';
+import { HealthModule } from 'src/health/health.module';
+import { PpqModule } from 'src/modules/ppq/ppq.module';
 
 export const SwaggerDocs = (app: INestApplication) => {
-  const API_NAME = process.env.API_NAME;
-  const API_VERSION = process.env.API_VERSION;
+  const { API_NAME } = process.env;
+  const { API_VERSION } = process.env;
 
   const options = new DocumentBuilder()
     .setTitle(API_NAME)
@@ -18,7 +21,7 @@ export const SwaggerDocs = (app: INestApplication) => {
     .build();
 
   const baseDocument = SwaggerModule.createDocument(app, options, {
-    include: [AppModule],
+    include: [AppModule, HealthModule, PpqModule],
   });
 
   const uiOptions = {

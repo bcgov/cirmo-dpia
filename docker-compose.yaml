@@ -6,8 +6,11 @@ services:
   dpia-api:
     container_name: dpia-api
     build:
-      context: .
-      dockerfile: ./src/backend/Dockerfile
+      context: ./src/backend
+      dockerfile: .docker/Dockerfile
+    volumes:
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
     networks:
       - dpia-network
     ports:
@@ -16,11 +19,11 @@ services:
   #############################################################################################
   ###                                       Frontend                                        ###
   #############################################################################################
-  dpia-frontend:
-    container_name: dpia-frontend
+  dpia-webapp:
+    container_name: dpia-webapp
     build:
-      context: .
-      dockerfile: ./src/frontend/Dockerfile
+      context: ./src/frontend
+      dockerfile: .docker/Dockerfile
     networks:
       - dpia-network
     ports:

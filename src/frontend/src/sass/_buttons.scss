@@ -1,43 +1,123 @@
-.btn-primary {
-	background-color: $blue;
-}
-
 a {
-	font-size: 14px;
-	color: $lightblue;
-	text-decoration:none;
+  font-size: 14px;
+  color: $accent-lightblue;
+  text-decoration: none;
 }
 
 a:hover {
-	color: $blue;
+  color: $primary-blue;
 }
 
-.BC-Gov-PrimaryButton {
-    background-color: #003366;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    padding: 12px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-size: 18px;
-    font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-    cursor: pointer;
+.btn-primary {
+  background-color: $primary-blue;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  text-align: center;
+  padding-block: 12px;
+  padding-inline: 25px;
+  text-decoration: none;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: space-evenly;
+  max-width: fit-content;
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  .icon {
+    font-size: large;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: 4px solid $accent-lightblue;
+    outline-offset: 1px;
+  }
+
+  &:active {
+    opacity: 1;
+  }
 }
 
-.BC-Gov-PrimaryButton:hover {
-  text-decoration: underline;
-  opacity: 0.80;
+.btn-secondary {
+  background-color: $bg-white;
+  color: $primary-blue;
+  border: 2px solid $primary-blue;
+  border-radius: 4px;
+  text-align: center;
+  padding-block: 12px;
+  padding-inline: 25px;
+  text-decoration: none;
+  display: flex;
+  max-width: fit-content;
+  white-space: nowrap;
+  gap: .7em;
+  align-items: center;
+  justify-content: space-evenly;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  & > .icon {
+    font-size: x-large;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: 4px solid $accent-lightblue;
+    outline-offset: 1px;
+  }
+
+  &:active {
+    opacity: 1;
+  }
 }
 
-:focus {
-  outline: 4px solid #3B99FC;
-  outline-offset: 1px;
-}
+.btn-login {
+  background: none;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  padding-block: 10px;
+  padding-inline: 1.2em;
+  border-radius: 4px;
+  border: 2px solid white;
+  box-shadow: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0.5 0;
+  cursor: pointer;
 
-.BC-Gov-PrimaryButton:active {
-  opacity: 1;
+  .icon {
+    margin-left: 0.8em;
+    font-size: large;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: 4px solid $accent-lightblue;
+    outline-offset: 1px;
+  }
+
+  &:active {
+    opacity: 1;
+  }
 }

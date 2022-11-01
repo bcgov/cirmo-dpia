@@ -67,6 +67,28 @@ objects:
             env:
               - name: API_PORT
                 value: '3000'
+              - name: API_ENV
+                value: ${ENVIRONMENT}
+              - name: POSTGRES_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_USER
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PASSWORD
+              - name: POSTGRES_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_HOST
+              - name: POSTGRES_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PORT
             resources:
               limits:
                 cpu: 150m
@@ -76,19 +98,21 @@ objects:
                 memory: 100Mi
             readinessProbe:
               httpGet:
-                path: /api/v1/health
+                path: /api/health
                 port: 3000
                 scheme: HTTP
-              timeoutSeconds: 1
+              initialDelaySeconds: 60
+              timeoutSeconds: 10
               periodSeconds: 10
               successThreshold: 1
               failureThreshold: 3
             livenessProbe:
               httpGet:
-                path: /api/v1/health
+                path: /api/health
                 port: 3000
                 scheme: HTTP
-              timeoutSeconds: 1
+              initialDelaySeconds: 45
+              timeoutSeconds: 10
               periodSeconds: 10
               successThreshold: 1
               failureThreshold: 3

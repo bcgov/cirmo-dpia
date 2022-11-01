@@ -1,0 +1,27 @@
+.ppq-connect section {
+  display: flex;
+  flex-direction: column;
+  margin-block: 2rem;
+
+  & > h1 {
+    margin-bottom: 0;
+  }
+
+  & > *:not(h2) {
+    margin-left: 2rem;
+  }
+
+  & > button {
+    margin-top: 1rem;
+  }
+}
+
+.privacy-helpline-contact {
+  margin-bottom: 0;
+}
+
+.mpo-find-contact {
+  & > a {
+    margin-left: .3em;
+  }
+}

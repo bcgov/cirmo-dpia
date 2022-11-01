@@ -1,30 +1,53 @@
-body {
-	min-height: 100vh;
-position: relative;
+:root {
+  box-sizing: border-box;
+}
 
+body {
+  min-height: 100vh;
+  position: relative;
+  font-family: $font-family;
+  font-size: 16px;
+  min-width: 100vw;
+}
+
+h1 {
+  font-size: 2.074rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.728rem;
+}
+
+h3 {
+  font-size: 1.44rem;
+}
+
+h4 {
+  font-size: 1.2rem;
 }
 
 .spacer {
-	height:105px;;
+  height: 105px;
 }
 
 .wrapper {
-	padding:0px 5px 0px 5px;
-	position: relative;
-	max-width: 1286;
-	margin-left: auto;
-	margin-right: auto;
-	//height:100%;
+  padding: 0 5px 0 5px;
+  position: relative;
+  max-width: 1286;
+  margin-left: auto;
+  margin-right: auto;
+  // height:100%;
 }
 
 .main-content {
-    padding-bottom:65px;
+  padding-bottom: 65px;
 }
 
 .color-blue {
-	color:$blue;
+  color: $primary-blue;
 }
 
 .display-flex {
-	display:flex;
+  display: flex;
 }

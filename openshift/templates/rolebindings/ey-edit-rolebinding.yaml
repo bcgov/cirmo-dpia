@@ -11,7 +11,6 @@ objects:
     name: ey-developers-edit
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
-      devops.gov.bc.ca/argocd-app: ${LICENSE_PLATE}
       environment: ${ENVIRONMENT}
       name: ${LICENSE_PLATE}
   subjects:

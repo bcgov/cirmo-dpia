@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   ExpressAdapter,
@@ -5,6 +6,7 @@ import {
 } from '@nestjs/platform-express';
 import * as express from 'express';
 import * as morgan from 'morgan';
+
 import { AppModule } from './app.module';
 import { SwaggerDocs } from './common/swagger';
 
@@ -32,12 +34,23 @@ export async function createNestApp(): Promise<{
   // append request logs
   app.use(morgan('tiny'));
 
+  // Transform types during DTO Validation
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  // Assign global prefix to all endpoints
   app.setGlobalPrefix('/api');
 
-  // Enable Swagger for non prod environment
-  if (process.env.NODE_ENV !== 'production') {
-    SwaggerDocs(app);
-  }
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+  });
+  // Enable Swagger
+  SwaggerDocs(app);
 
   return {
     app,

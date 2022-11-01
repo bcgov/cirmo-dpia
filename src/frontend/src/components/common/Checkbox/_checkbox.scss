@@ -1,0 +1,19 @@
+.checkbox-wrapper {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  margin-left: 1.5em;
+
+  & > .cbInfoIcon {
+    color: $link-blue;
+  }
+
+  & > .tooltip {
+    display: flex;
+    flex-direction: column;
+    max-width: 50ch;
+    align-items: start;
+    background-color: $link-blue;
+    font-weight: 700;
+  }
+}

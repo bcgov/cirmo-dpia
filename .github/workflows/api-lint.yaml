@@ -1,0 +1,25 @@
+name: 'API Pull Request Lint'
+on:
+  pull_request:
+    branches: [ 'main' ]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
+
+jobs: 
+  API-unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - name: Install Project Dependencies
+        run: |
+          cd src/backend
+          npm ci
+
+      - name: Run lint
+        run: | 
+          npm run lint

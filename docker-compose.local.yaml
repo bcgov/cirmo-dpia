@@ -1,0 +1,68 @@
+version: "3.7"
+services:
+  #############################################################################################
+  ###                                         API                                           ###
+  #############################################################################################
+  dpia-api:
+    container_name: dpia-api
+    build:
+      context: ./src/backend
+      dockerfile: .docker/Dockerfile.local
+    depends_on:
+      dpia-db:
+        condition: service_healthy
+    volumes:
+      # Binds the application folder from the host inside the container enabling hot reloading
+      - ./src/backend:/usr/src/app
+      # Ignores the node_modules of the host and uses it's own instead
+      - /usr/src/app/node_modules
+    networks:
+      - dpia-network
+    ports:
+      - "3000:3000"
+  
+  #############################################################################################
+  ###                                       Frontend                                        ###
+  #############################################################################################
+  dpia-webapp:
+    container_name: dpia-webapp
+    build:
+      context: ./src/frontend
+      dockerfile: .docker/Dockerfile.local
+    volumes:
+    # Binds the application folder from the host inside the container for fast changes
+      - ./src/frontend:/app
+      - /app/node_modules
+    networks:
+      - dpia-network
+    ports:
+      - "8080:8080"
+    tty: true
+
+  #############################################################################################
+  ###                                       Database                                        ###
+  #############################################################################################
+  dpia-db:
+    image: postgres:10.21-alpine3.16
+    restart: always
+    env_file: ./src/backend/.env
+    ports:
+      - '${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}'
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - dpia-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}'"]
+      timeout: 3s
+      interval: 3s
+      retries: 30
+
+volumes:
+  pgdata:
+
+networks:
+  dpia-network:
+    driver: "bridge"

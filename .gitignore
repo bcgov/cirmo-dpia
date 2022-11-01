@@ -34,7 +34,7 @@ lerna-debug.log*
 
 dist
 dist-ssr
-*.local
+src/frontend/*.local
 
 # Editor directories and files
 .vscode/*
@@ -51,6 +51,22 @@ dist-ssr
 ###############################################################################
 ##           ** Delete when commom code is ported                            ##
 ###############################################################################
-src/frontend/dpia-webapp/node_modules
-src/frontend/dpia-webapp/builds/css/*
+src/frontend/node_modules
+src/frontend/builds/css/*
 
+###############################################################################
+##                                  Plugins                                  ##
+###############################################################################
+.history
+###############################################################################
+##                                  Cypress output                               ##
+###############################################################################
+src/frontend/cypress/videos/*
+src/frontend/cypress/screenshots/*
+cypress.env.json
+cypress.meta.json
+src/frontend/cypress/logs/
+src/frontend/cypress/integration/_generated/*
+src/frontend/cypress/data/migration/generated/*.csv
+src/frontend/cypress/fixtures/example.json
+src/frontend/cypress/build/*

@@ -1,0 +1,86 @@
+header {
+  background-color: $primary-blue;
+  border-bottom: 2px solid $secondary-yellow;
+  padding-inline: 185px;
+  color: #fff;
+  display: flex;
+  height: 65px;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+  justify-content: normal;
+  align-items: center;
+
+  .logo {
+    width: 170px;
+    height: 65px;
+    padding: 0;
+  }
+}
+
+header h1 {
+  font-family: $font-family;
+  font-weight: 600;
+  margin-block: 5px;
+
+  span {
+    color: $secondary-yellow;
+    vertical-align: super;
+    font-weight: inherit;
+    font-variant: small-caps;
+    font-size: 1.44rem;
+  }
+}
+
+.header-h1 {
+  font-size: 1.7028rem;
+}
+
+header .banner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 10px 0 0;
+
+  /* border-style: dotted;
+  border-width: 1px;
+  border-color: lightgrey; */
+}
+
+header .other {
+  display: flex;
+  flex-grow: 1;
+
+  /* border-style: dotted;
+  border-width: 1px;
+  border-color: lightgrey; */
+  flex-direction: row-reverse;
+  align-items: center;
+
+  a {
+    color: white;
+    font-weight: bold;
+  }
+}
+
+/*
+  These are sample media queries only. Media queries are quite subjective
+  but, in general, should be made for the three different classes of screen
+  size: phone, tablet, full.
+*/
+
+@media screen and (min-width: 600px) and (max-width: 899px) {
+  header h1 {
+    font-size: calc(7px + 2.2vw);
+    visibility: visible;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  header h1 {
+    font-size: 2em;
+    visibility: visible;
+  }
+}

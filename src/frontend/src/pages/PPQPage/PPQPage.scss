@@ -1,0 +1,40 @@
+.ppq-container {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  padding: 0px;
+  height: 100vh;
+}
+
+.ppq-section {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 1024px;
+  width: 100%;
+}
+
+.list {
+ padding-bottom: 85px;
+}
+
+.ppq-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 80ch;
+  font-weight: 400;
+}
+
+.ppq-svg {
+  display: flex;
+  align-items: center;
+}
+
+.ppq-svg > img {
+  max-width: 600px;
+}
+
+.col-md-6 img {
+  width:100%;
+}
