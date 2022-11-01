@@ -1,0 +1,15 @@
+.custom-input-date-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dee2e6;
+  max-width: 250px;
+
+  .input-placeholder {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+}

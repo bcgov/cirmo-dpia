@@ -26,6 +26,7 @@ import { IPPQForm } from '../../ts/interfaces/ppq-form.interface';
 import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
+import { CustomInputDate } from '../../components/common/CustomInputDate';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -389,10 +390,11 @@ const PPQFormPage = () => {
                     <label>Proposed go-live or start date</label>
                     <DatePicker
                       key="startDate"
-                      placeholderText={'yyyy-MM-dd'}
+                      placeholderText={'yyyy-mm-dd'}
                       dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
+                      customInput={<CustomInputDate />}
                     />
                   </div>
                 )}
