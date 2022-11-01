@@ -68,7 +68,7 @@ objects:
               - name: API_PORT
                 value: '3000'
               - name: API_ENV
-                value: dev
+                value: ${ENVIRONMENT}
               - name: POSTGRES_USER
                 valueFrom:
                   secretKeyRef:
