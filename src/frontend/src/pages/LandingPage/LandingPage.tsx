@@ -28,10 +28,19 @@ function LandingPage() {
             improved user experience.
           </p>
           <div data-cy="contact-btn" className="ctas">
-            <button className="btn-primary" onClick={() => login()}>
-              Log in with IDIR{' '}
-              <FontAwesomeIcon className="icon" icon={faUser} />
-            </button>
+            {(win.localStorage.getItem('userName') === null ||
+              win.localStorage.getItem('userName') === 'undefined') && (
+              <button className="btn-primary" onClick={() => login()}>
+                Log in with IDIR
+                <FontAwesomeIcon className="icon" icon={faUser} />
+              </button>
+            )}
+            {win.localStorage.getItem('userName') !== null &&
+              win.localStorage.getItem('userName') !== 'undefined' && (
+                <Link className="btn-primary" to="/ppq">
+                  Access App
+                </Link>
+              )}
             <a
               href="mailto:pia.intake@gov.bc.ca"
               data-cy="email"
