@@ -65,6 +65,7 @@ export class AuthController {
     try {
       await this.authService.logout(token.refresh_token);
     } catch {
+      // TODO define a correct status code
       throw new HttpException('Logout failed', HttpStatus.NOT_FOUND);
     }
     return;
