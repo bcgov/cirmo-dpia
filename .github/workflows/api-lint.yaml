@@ -14,8 +14,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Navigate to Frontend, npm run lint
-        run: | 
+        
+      - name: Install Project Dependencies
+        run: |
           cd src/backend
+          npm ci
+
+      - name: Run lint
+        run: | 
           npm run lint
