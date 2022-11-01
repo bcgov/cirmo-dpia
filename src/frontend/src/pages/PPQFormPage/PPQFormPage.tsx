@@ -58,7 +58,6 @@ const PPQFormPage = () => {
   const [initiativeName, setInitiativeName] = useState('');
   const [initiativeDesc, setInitiativeDesc] = useState('');
   const [initiativeDataElements, setInitiativeDataElements] = useState('');
-  const [initiativePICollectReduce, setInitiativePICollectReduce] = useState('');
   const [piaType, setPiaType] = useState('');
   const [containsPI, setContainsPI] = useState('Yes');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
@@ -98,10 +97,6 @@ const PPQFormPage = () => {
     setInitiativeDataElements(newMessage);
   };
 
-  const handleSetInitiativePICollectReduce = (newMessage: any) => {
-    setInitiativePICollectReduce(newMessage);
-  };
-
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
@@ -119,7 +114,8 @@ const PPQFormPage = () => {
       initiativeDescription: initiativeDesc,
       dataElements: initiativeDataElements,
       piaType: piaType === 'null' ? null : piaType,
-      containsPersonalInformation: containsPI === 'Yes' ? true : false,
+      containsPersonalInformation:
+        containsPI === 'Yes' ? true : containsPI === 'No' ? false : undefined,
       proposedStartDate: startDate,
       ...checkedPIItems,
     };
@@ -153,7 +149,6 @@ const PPQFormPage = () => {
                 />
               </p>
             </div>
-
             <div className="row">
               <h2>1. Contact information</h2>
 
@@ -197,7 +192,6 @@ const PPQFormPage = () => {
                 onChange={(e) => setBranch(e.target.value)}
               />
             </div>
-
             <div className="form-group">
               <h2>2. Your initiative</h2>
               <InputText
@@ -306,48 +300,33 @@ const PPQFormPage = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <h2>4. Other factors</h2>
-              <label className="h2-label">
-                Does your initiative involve any of the following? Check all
-                that apply.
-              </label>
-              <div>
-                {OtherFactor.map((factor, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      checked={false}
-                      value={factor.value}
-                      label={factor.label}
-                      tooltip={factor.tooltip}
-                      tooltipText={factor.tooltipText}
-                      onChange={handleCheckboxChange}
-                    />
-                  );
-                })}
+            {containsPI !== 'No' && (
+              <div className="form-group">
+                <h2>4. Other factors</h2>
+                <label className="h2-label">
+                  Does your initiative involve any of the following? Check all
+                  that apply.
+                </label>
+                <div>
+                  {OtherFactor.map((factor, index) => {
+                    return (
+                      <Checkbox
+                        key={index}
+                        checked={false}
+                        value={factor.value}
+                        label={factor.label}
+                        tooltip={factor.tooltip}
+                        tooltipText={factor.tooltipText}
+                        onChange={handleCheckboxChange}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="form-group pi-collect">
-              <label>
-                How will you reduce the risk of unintentionally collecting
-                personal information?
-              </label>
-              <span>
-                <MDEditor.Markdown
-                  source={Messages.ReduceRiskDescriptionText.en}
-                />
-              </span>
-              <div>
-                <MDEditor
-                  preview="edit"
-                  value={initiativePICollectReduce}
-                  onChange={handleSetInitiativePICollectReduce}
-                />
-              </div>
-            </div>
+            )}
+
             <div className="form-group">
-              <h2>5. Start date </h2>
+              <h2>{containsPI !== 'No' ? '5.' : '4.'} Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
                   <label className="h2-label">
