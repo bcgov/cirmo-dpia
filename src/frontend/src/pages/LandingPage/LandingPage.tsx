@@ -6,8 +6,15 @@ import webSearch from '../../assets/undraw_web_search.svg';
 import sharedGoals from '../../assets/undraw_shared_goals.svg';
 import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
+import { API_ROUTES } from '../../constant/apiRoutes';
 
 function LandingPage() {
+  // https://github.com/microsoft/TypeScript/issues/48949
+  // workaround
+  const win: Window = window;
+  const login = () => {
+    win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
+  };
   return (
     <div>
       <section className="hero-section">
@@ -21,10 +28,10 @@ function LandingPage() {
             improved user experience.
           </p>
           <div data-cy="contact-btn" className="ctas">
-            <Link to="/ppq" className="btn-primary">
+            <button className="btn-primary" onClick={() => login()}>
               Log in with IDIR{' '}
               <FontAwesomeIcon className="icon" icon={faUser} />
-            </Link>
+            </button>
             <a
               href="mailto:pia.intake@gov.bc.ca"
               data-cy="email"
