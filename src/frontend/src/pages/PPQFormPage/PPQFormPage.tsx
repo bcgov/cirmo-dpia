@@ -56,7 +56,6 @@ const PPQFormPage = () => {
   const [workEmail, setWorkEmail] = useState('');
   const [initiativeName, setInitiativeName] = useState('');
   const [initiativeDesc, setInitiativeDesc] = useState('');
-  const [initiativeScope, setInitiativeScope] = useState('');
   const [initiativeDataElements, setInitiativeDataElements] = useState('');
   const [initiativePICollectReduce, setInitiativePICollectReduce] = useState('');
   const [piaType, setPiaType] = useState('');
@@ -92,10 +91,6 @@ const PPQFormPage = () => {
 
   const setInitiativeDescription = (newMessage: any) => {
     setInitiativeDesc(newMessage);
-  };
-
-  const handleSetInitiativeScope = (newMessage: any) => {
-    setInitiativeScope(newMessage);
   };
 
   const setInitiativeDataElementsInput = (newMessage: any) => {
@@ -151,9 +146,10 @@ const PPQFormPage = () => {
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <p>
-                By answering these <strong>first 4 questions</strong> from the PIA template you
-                can give the information to your MPO and find out whether you have
-                to do a full PIA.
+                <MDEditor.Markdown
+                  source={Messages.FillPpqDescriptionText.en}
+                  linkTarget="_blank"
+                />
               </p>
             </div>
 
@@ -166,17 +162,13 @@ const PPQFormPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-
-              <div className="form-group col-md-6">
-                <label>Work Email</label>
-                <input
-                  className="form-control"
-                  type="email"
-                  key="email"
-                  value={workEmail}
-                  onChange={(e) => setWorkEmail(e.target.value)}
-                />
-              </div>
+              <InputText
+                label="Work Email"
+                className="col-md-6"
+                type="email"
+                value={workEmail}
+                onChange={(e) => setWorkEmail(e.target.value)}
+              />
             </div>
             <div className="row">
               <div className="form-group col-md-6">
@@ -197,29 +189,22 @@ const PPQFormPage = () => {
                   ))}
                 </select>
               </div>
-              <div className="form-group col-md-6">
-                <label>Branch</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  key="branch"
-                  value={branch}
-                  onChange={(e) => setBranch(e.target.value)}
-                />
-              </div>
+              <InputText
+                label="Branch"
+                className="col-md-6"
+                value={branch}
+                onChange={(e) => setBranch(e.target.value)}
+              />
             </div>
 
             <div className="form-group">
               <h2>2. Your initiative</h2>
-              <div className="form-group col-md-12">
-                <label>Name of initiative</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  key="initiativeName"
-                  onChange={(e) => setInitiativeName(e.target.value)}
-                />
-              </div>
+              <InputText
+                label="Name of initiative"
+                className="col-md-6"
+                value={initiativeName}
+                onChange={(e) => setInitiativeName(e.target.value)}
+              />
               <div className="form-group col-md-6">
                 <label>What type of PIA do you need to complete?</label>
                 <select
@@ -238,13 +223,13 @@ const PPQFormPage = () => {
                   ))}
                 </select>
               </div>
-              <div className='form-group'>
+              <div className="form-group">
                 <label>About your initiative</label>
                 <span>
-                  Describe your initiative in enough detail that a reader who
-                  knows nothing about your work will understand the purpose of
-                  your initiative and who your partners and other interested
-                  parties are.
+                  <MDEditor.Markdown
+                    source={Messages.AboutInitiativeDescriptionText.en}
+                    linkTarget="_blank"
+                  />
                 </span>
                 <div>
                   <MDEditor
@@ -254,30 +239,17 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              <div className='form-group'>
-                <label>What is the scope of the PIA?</label>
-                <span>
-                Your initiative might be part of a larger one or might be rolled 
-                out in phases. What part of the initiative is covered by this 
-                PIA? What is out of scope of this PIA?
-                </span>
-                <div>
-                  <MDEditor
-                    preview="edit"
-                    value={initiativeScope}
-                    onChange={handleSetInitiativeScope}
-                  />
-                </div>
-              </div>
-              <div className='form-group'>
+
+              <div className="form-group">
                 <label>
                   What are the data or information elements involved in your
                   initiative?
                 </label>
                 <span>
-                  Please list all the elements of information or data that you
-                  might collect, use, store, disclose, or access as part of your
-                  initiative.
+                  <MDEditor.Markdown
+                    source={Messages.DataElementsDescriptionText.en}
+                    linkTarget="_blank"
+                  />
                 </span>
 
                 <div>
@@ -288,12 +260,13 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              
             </div>
 
             <div className="form-group">
               <h2>3. Personal information</h2>
-              <label className='h2-label'>Is personal information involved in your initiative?</label>
+              <label className="h2-label">
+                Is personal information involved in your initiative?
+              </label>
               <span>
                 <MDEditor.Markdown
                   source={Messages.PersonalInformationDescriptionText.en}
@@ -334,7 +307,7 @@ const PPQFormPage = () => {
 
             <div className="form-group">
               <h2>4. Other factors</h2>
-              <label className='h2-label'>
+              <label className="h2-label">
                 Does your initiative involve any of the following? Check all
                 that apply.
               </label>
@@ -354,11 +327,15 @@ const PPQFormPage = () => {
                 })}
               </div>
             </div>
-            <div className='form-group pi-collect'>
-              <label>How will you reduce the risk of unintentionally collecting personal information?</label>
+            <div className="form-group pi-collect">
+              <label>
+                How will you reduce the risk of unintentionally collecting
+                personal information?
+              </label>
               <span>
-                Some initiatives that do not require personal information are at risk of collecting personal 
-                information inadvertently, which could result in an information incident or privacy breach. 
+                <MDEditor.Markdown
+                  source={Messages.ReduceRiskDescriptionText.en}
+                />
               </span>
               <div>
                 <MDEditor
@@ -372,7 +349,7 @@ const PPQFormPage = () => {
               <h2>5. Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
-                  <label className='h2-label'>
+                  <label className="h2-label">
                     Do you have a proposed go-live or start date for the
                     initiative?
                   </label>
