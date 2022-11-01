@@ -55,7 +55,9 @@ const PPQFormPage = () => {
   const [workEmail, setWorkEmail] = useState('');
   const [initiativeName, setInitiativeName] = useState('');
   const [initiativeDesc, setInitiativeDesc] = useState('');
+  const [initiativeScope, setInitiativeScope] = useState('');
   const [initiativeDataElements, setInitiativeDataElements] = useState('');
+  const [initiativePICollectReduce, setInitiativePICollectReduce] = useState('');
   const [piaType, setPiaType] = useState('');
   const [containsPI, setContainsPI] = useState('Yes');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
@@ -90,8 +92,17 @@ const PPQFormPage = () => {
   const setInitiativeDescription = (newMessage: any) => {
     setInitiativeDesc(newMessage);
   };
+
+  const handleSetInitiativeScope = (newMessage: any) => {
+    setInitiativeScope(newMessage);
+  };
+
   const setInitiativeDataElementsInput = (newMessage: any) => {
     setInitiativeDataElements(newMessage);
+  };
+
+  const handleSetInitiativePICollectReduce = (newMessage: any) => {
+    setInitiativePICollectReduce(newMessage);
   };
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -138,18 +149,17 @@ const PPQFormPage = () => {
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
-              <span>
-                By answering this first 4 questions from the PIA template you
-                can give the information to your MPO and find out whether I have
+              <p>
+                By answering these <strong>first 4 questions</strong> from the PIA template you
+                can give the information to your MPO and find out whether you have
                 to do a full PIA.
-              </span>
+              </p>
             </div>
 
-            <h3>1. Contact information</h3>
             <div className="row">
+              <h2>1. Contact information</h2>
               <div className="form-group col-md-6">
                 <label>Name</label>
-
                 <select
                   className="form-control"
                   key="name"
@@ -208,7 +218,7 @@ const PPQFormPage = () => {
               </div>
             </div>
 
-            <div className="ppq-form-content">
+            <div className="form-group">
               <h2>2. Your initiative</h2>
               <div className="form-group col-md-12">
                 <label>Name of initiative</label>
@@ -219,15 +229,32 @@ const PPQFormPage = () => {
                   onChange={(e) => setInitiativeName(e.target.value)}
                 />
               </div>
-              <div>
-                <h3>About your initiative</h3>
+              <div className="form-group col-md-6">
+                <label>What type of PIA do you need to complete?</label>
+                <select
+                  key="pia"
+                  className="form-control"
+                  value={piaType}
+                  onChange={(e) => setPiaType(e.target.value)}
+                >
+                  <option key="selectPiaType" disabled={true} value="">
+                    Select one
+                  </option>
+                  {PIATypes.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className='form-group'>
+                <label>About your initiative</label>
                 <span>
                   Describe your initiative in enough detail that a reader who
                   knows nothing about your work will understand the purpose of
                   your initiative and who your partners and other interested
                   parties are.
                 </span>
-
                 <div>
                   <MDEditor
                     preview="edit"
@@ -236,11 +263,26 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              <div>
-                <h3>
+              <div className='form-group'>
+                <label>What is the scope of the PIA?</label>
+                <span>
+                Your initiative might be part of a larger one or might be rolled 
+                out in phases. What part of the initiative is covered by this 
+                PIA? What is out of scope of this PIA?
+                </span>
+                <div>
+                  <MDEditor
+                    preview="edit"
+                    value={initiativeScope}
+                    onChange={handleSetInitiativeScope}
+                  />
+                </div>
+              </div>
+              <div className='form-group'>
+                <label>
                   What are the data or information elements involved in your
                   initiative?
-                </h3>
+                </label>
                 <span>
                   Please list all the elements of information or data that you
                   might collect, use, store, disclose, or access as part of your
@@ -255,31 +297,12 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              <div>
-                <div className="form-group col-md-6">
-                  <label>What type of PIA do you need to complete?</label>
-                  <select
-                    key="pia"
-                    className="form-control"
-                    value={piaType}
-                    onChange={(e) => setPiaType(e.target.value)}
-                  >
-                    <option key="selectPiaType" disabled={true} value="">
-                      Select one
-                    </option>
-                    {PIATypes.map((option, index) => (
-                      <option key={index} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+              
             </div>
 
-            <div className="ppq-form-content">
+            <div className="form-group">
               <h2>3. Personal information</h2>
-              <h3>Is personal information involved in your initiative?</h3>
+              <label className='h2-label'>Is personal information involved in your initiative?</label>
               <span>
                 Personal information is any recorded information about an
                 identifiable individual, other than business contact
@@ -319,12 +342,12 @@ const PPQFormPage = () => {
               </div>
             </div>
 
-            <div className="ppq-form-content">
-              <h3>4. Other factors</h3>
-              <span>
+            <div className="form-group">
+              <h2>4. Other factors</h2>
+              <label className='h2-label'>
                 Does your initiative involve any of the following? Check all
                 that apply.
-              </span>
+              </label>
               <div>
                 {OtherFactor.map((factor, index) => {
                   return (
@@ -341,15 +364,28 @@ const PPQFormPage = () => {
                 })}
               </div>
             </div>
-
-            <div className="ppq-form-content">
+            <div className='form-group pi-collect'>
+              <label>How will you reduce the risk of unintentionally collecting personal information?</label>
+              <span>
+                Some initiatives that do not require personal information are at risk of collecting personal 
+                information inadvertently, which could result in an information incident or privacy breach. 
+              </span>
+              <div>
+                <MDEditor
+                  preview="edit"
+                  value={initiativePICollectReduce}
+                  onChange={handleSetInitiativePICollectReduce}
+                />
+              </div>
+            </div>
+            <div className="form-group">
               <h2>5. Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
-                  <span>
+                  <label className='h2-label'>
                     Do you have a proposed go-live or start date for the
                     initiative?
-                  </span>
+                  </label>
                   <div>
                     {startDateOptions.map((option, index) => {
                       return startDateOptions[0] === option ? (
