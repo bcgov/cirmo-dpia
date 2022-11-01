@@ -3,8 +3,8 @@ import {
   Controller,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
+  NotFoundException,
   Post,
   Redirect,
   Req,
@@ -66,7 +66,7 @@ export class AuthController {
       await this.authService.logout(token.refresh_token);
     } catch {
       // TODO define a correct status code
-      throw new throw NotFoundException('Logout failed');
+      throw new NotFoundException('Logout failed');
     }
     return;
   }

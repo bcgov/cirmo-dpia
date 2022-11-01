@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import * as queryString from 'querystring';
 import { catchError, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { configService } from 'src/config/config.service';
+import { configService } from '../../config/config.service';
 import { KeycloakToken } from './keycloack-token.model';
 import { KeycloakUser } from './keycloak-user.model';
 
