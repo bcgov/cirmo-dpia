@@ -16,6 +16,7 @@ import {
   PIOptions,
   startDateOptions,
 } from '../../constant/constant';
+import Messages from './messages';
 
 import { StageProps } from '../../components/common/ProgressBar/interfaces';
 import Checkbox from '../../components/common/Checkbox';
@@ -294,11 +295,10 @@ const PPQFormPage = () => {
               <h2>3. Personal information</h2>
               <label className='h2-label'>Is personal information involved in your initiative?</label>
               <span>
-                Personal information is any recorded information about an
-                identifiable individual, other than business contact
-                information. Personal information includes information that can
-                be used to identify an individual through association or
-                reference.
+                <MDEditor.Markdown
+                  source={Messages.PersonalInformationDescriptionText.en}
+                  linkTarget="_blank"
+                />
               </span>
               <div>
                 {PIOptions.map((option, index) => {
