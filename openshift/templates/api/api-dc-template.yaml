@@ -143,7 +143,7 @@ objects:
                 valueFrom:
                   secretKeyRef:
                     name: keycloak-api-values
-                    key: KEYCLOAK_TOKEN_URI
+                    key: KEYCLOAK_CLIENT_SECRET
               - name: KEYCLOAK_TOKEN_URI
                 valueFrom:
                   secretKeyRef:
@@ -154,6 +154,11 @@ objects:
                   secretKeyRef:
                     name: keycloak-api-values
                     key: KEYCLOAK_LOGOUT_URI
+              - name: KEYCLOAK_USER_INFO_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-api-values
+                    key: KEYCLOAK_USER_INFO_URI
             resources:
               limits:
                 cpu: 150m
