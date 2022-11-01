@@ -22,7 +22,7 @@ import { StageProps } from '../../components/common/ProgressBar/interfaces';
 import Checkbox from '../../components/common/Checkbox';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { IPPQFrom } from '../../ts/interfaces/ppq-form.interface';
+import { IPPQForm } from '../../ts/interfaces/ppq-form.interface';
 import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 
@@ -113,7 +113,7 @@ const PPQFormPage = () => {
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const requestBody: IPPQFrom = {
+    const requestBody: IPPQForm = {
       name: name,
       email: workEmail,
       ministry: ministry,

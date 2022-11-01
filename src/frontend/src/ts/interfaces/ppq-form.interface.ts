@@ -1,7 +1,7 @@
 import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../enums/pia-types.enum';
 
-export interface IPPQFrom {
+export interface IPPQForm {
   name: string;
   email: string;
   ministry: GovMinistriesEnum | string;
