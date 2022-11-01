@@ -3,9 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-export const CustomInputDate = React.forwardRef((props: any, ref: any) => {
-  const a = 'border: 1px solid red';
-
+const CustomInputDate = React.forwardRef((props: any, ref: any) => {
   return (
     <div className="custom-input-date-wrapper" onClick={props.onClick}>
       <label ref={ref}>
@@ -18,3 +16,6 @@ export const CustomInputDate = React.forwardRef((props: any, ref: any) => {
     </div>
   );
 });
+CustomInputDate.displayName = 'CustomInputDate';
+
+export default CustomInputDate;
