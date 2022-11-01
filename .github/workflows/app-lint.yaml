@@ -7,18 +7,15 @@ on:
   workflow_dispatch:
 
 jobs: 
-  APP-lint:
+  API-lint:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Install Project Dependencies
+        
+      - name: Install project dependencies, run lint
         run: |
           cd src/frontend
           npm ci
-
-      - name: Run lint
-        run: | 
           npm run lint

@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         
-      - name: Install Project Dependencies
+      - name: Install project dependencies, run lint
         run: |
           cd src/backend
           npm ci
