@@ -157,6 +157,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required={true}
               />
               <InputText
                 label="Work Email"
@@ -164,6 +165,7 @@ const PPQFormPage = () => {
                 type="email"
                 value={workEmail}
                 onChange={(e) => setWorkEmail(e.target.value)}
+                required={true}
               />
             </div>
             <div className="row">
@@ -191,6 +193,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
+                required={true}
               />
             </div>
             <div className="form-group">
@@ -200,6 +203,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={initiativeName}
                 onChange={(e) => setInitiativeName(e.target.value)}
+                required={true}
               />
               <div className="form-group col-md-6">
                 <label>What type of PIA do you need to complete?</label>
