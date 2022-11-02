@@ -27,6 +27,7 @@ import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
+import Alert from '../../components/common/Alert';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -129,7 +130,7 @@ const PPQFormPage = () => {
         state: { result: res },
       });
     } catch (err) {
-      setMessage('Some error occured');
+      setMessage('Something went wrong. Please try again.');
       console.log(err);
     }
   };
@@ -398,7 +399,14 @@ const PPQFormPage = () => {
                 Submit
               </button>
             </div>
-            <div className="message">{message ? <p>{message}</p> : null}</div>
+            {message && (
+              <Alert
+                type="danger"
+                message={message}
+                className="mt-4"
+                onClose={() => setMessage('')}
+              />
+            )}
           </form>
         </div>
       </section>
