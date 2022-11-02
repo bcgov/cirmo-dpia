@@ -61,22 +61,7 @@ export const OtherFactor = [
     value: 'hasPartnershipNonMinistry',
   },
 ];
-export const ContactUserName = [
-  'David Malcolm',
-  'Luke Dupuis',
-  'Melissa Sexsmith',
-  "Jennifer O'Neil",
-  'Chris Mutadi',
-  'Shawna Lynch',
-  'Jeannie Longacre',
-  'Michelle Gilbertson',
-  'David Johnson',
-  'Quinn Fletcher',
-  'Elena Bersenev',
-  'Tara Ralph',
-  'Chris Mutadi',
-  'Brent Grover',
-];
+
 export const MinistryList = [
   {
     label: 'Advanced Education and Skills Training',
@@ -198,5 +183,7 @@ export const PIATypes = [
     value: 'null',
   },
 ];
+
 export const PIOptions = ['Yes', 'No', "I'm not sure"];
+
 export const startDateOptions = ['Yes', 'No'];

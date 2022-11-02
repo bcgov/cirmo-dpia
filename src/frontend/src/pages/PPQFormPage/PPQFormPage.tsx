@@ -11,12 +11,12 @@ import {
 import StagesArray from '../../components/common/ProgressBar/StagesArray';
 import {
   OtherFactor,
-  ContactUserName,
   MinistryList,
   PIATypes,
   PIOptions,
   startDateOptions,
 } from '../../constant/constant';
+import Messages from './messages';
 
 import { StageProps } from '../../components/common/ProgressBar/interfaces';
 import Checkbox from '../../components/common/Checkbox';
@@ -25,6 +25,8 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { IPPQForm } from '../../ts/interfaces/ppq-form.interface';
 import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
+import InputText from '../../components/common/InputText/InputText';
+import CustomInputDate from '../../components/common/CustomInputDate';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -55,9 +57,7 @@ const PPQFormPage = () => {
   const [workEmail, setWorkEmail] = useState('');
   const [initiativeName, setInitiativeName] = useState('');
   const [initiativeDesc, setInitiativeDesc] = useState('');
-  const [initiativeScope, setInitiativeScope] = useState('');
   const [initiativeDataElements, setInitiativeDataElements] = useState('');
-  const [initiativePICollectReduce, setInitiativePICollectReduce] = useState('');
   const [piaType, setPiaType] = useState('');
   const [containsPI, setContainsPI] = useState('Yes');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
@@ -93,16 +93,8 @@ const PPQFormPage = () => {
     setInitiativeDesc(newMessage);
   };
 
-  const handleSetInitiativeScope = (newMessage: any) => {
-    setInitiativeScope(newMessage);
-  };
-
   const setInitiativeDataElementsInput = (newMessage: any) => {
     setInitiativeDataElements(newMessage);
-  };
-
-  const handleSetInitiativePICollectReduce = (newMessage: any) => {
-    setInitiativePICollectReduce(newMessage);
   };
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +114,8 @@ const PPQFormPage = () => {
       initiativeDescription: initiativeDesc,
       dataElements: initiativeDataElements,
       piaType: piaType === 'null' ? null : piaType,
-      containsPersonalInformation: containsPI === 'Yes' ? true : false,
+      containsPersonalInformation:
+        containsPI === 'Yes' ? true : containsPI === 'No' ? false : undefined,
       proposedStartDate: startDate,
       ...checkedPIItems,
     };
@@ -150,42 +143,28 @@ const PPQFormPage = () => {
             <div className="form-header">
               <h1> Fill out the PPQ</h1>
               <p>
-                By answering these <strong>first 4 questions</strong> from the PIA template you
-                can give the information to your MPO and find out whether you have
-                to do a full PIA.
+                <MDEditor.Markdown
+                  source={Messages.FillPpqDescriptionText.en}
+                  linkTarget="_blank"
+                />
               </p>
             </div>
-
             <div className="row">
               <h2>1. Contact information</h2>
-              <div className="form-group col-md-6">
-                <label>Name</label>
-                <select
-                  className="form-control"
-                  key="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                >
-                  <option key="selectName" disabled={true} value="">
-                    Select one
-                  </option>
-                  {ContactUserName.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group col-md-6">
-                <label>Work Email</label>
-                <input
-                  className="form-control"
-                  type="email"
-                  key="email"
-                  value={workEmail}
-                  onChange={(e) => setWorkEmail(e.target.value)}
-                />
-              </div>
+
+              <InputText
+                label="Name"
+                className="col-md-6"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <InputText
+                label="Work Email"
+                className="col-md-6"
+                type="email"
+                value={workEmail}
+                onChange={(e) => setWorkEmail(e.target.value)}
+              />
             </div>
             <div className="row">
               <div className="form-group col-md-6">
@@ -206,29 +185,21 @@ const PPQFormPage = () => {
                   ))}
                 </select>
               </div>
-              <div className="form-group col-md-6">
-                <label>Branch</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  key="branch"
-                  value={branch}
-                  onChange={(e) => setBranch(e.target.value)}
-                />
-              </div>
+              <InputText
+                label="Branch"
+                className="col-md-6"
+                value={branch}
+                onChange={(e) => setBranch(e.target.value)}
+              />
             </div>
-
             <div className="form-group">
               <h2>2. Your initiative</h2>
-              <div className="form-group col-md-12">
-                <label>Name of initiative</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  key="initiativeName"
-                  onChange={(e) => setInitiativeName(e.target.value)}
-                />
-              </div>
+              <InputText
+                label="Name of initiative"
+                className="col-md-6"
+                value={initiativeName}
+                onChange={(e) => setInitiativeName(e.target.value)}
+              />
               <div className="form-group col-md-6">
                 <label>What type of PIA do you need to complete?</label>
                 <select
@@ -247,13 +218,13 @@ const PPQFormPage = () => {
                   ))}
                 </select>
               </div>
-              <div className='form-group'>
+              <div className="form-group">
                 <label>About your initiative</label>
                 <span>
-                  Describe your initiative in enough detail that a reader who
-                  knows nothing about your work will understand the purpose of
-                  your initiative and who your partners and other interested
-                  parties are.
+                  <MDEditor.Markdown
+                    source={Messages.AboutInitiativeDescriptionText.en}
+                    linkTarget="_blank"
+                  />
                 </span>
                 <div>
                   <MDEditor
@@ -263,30 +234,17 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              <div className='form-group'>
-                <label>What is the scope of the PIA?</label>
-                <span>
-                Your initiative might be part of a larger one or might be rolled 
-                out in phases. What part of the initiative is covered by this 
-                PIA? What is out of scope of this PIA?
-                </span>
-                <div>
-                  <MDEditor
-                    preview="edit"
-                    value={initiativeScope}
-                    onChange={handleSetInitiativeScope}
-                  />
-                </div>
-              </div>
-              <div className='form-group'>
+
+              <div className="form-group">
                 <label>
                   What are the data or information elements involved in your
                   initiative?
                 </label>
                 <span>
-                  Please list all the elements of information or data that you
-                  might collect, use, store, disclose, or access as part of your
-                  initiative.
+                  <MDEditor.Markdown
+                    source={Messages.DataElementsDescriptionText.en}
+                    linkTarget="_blank"
+                  />
                 </span>
 
                 <div>
@@ -297,123 +255,112 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              
             </div>
 
             <div className="form-group">
               <h2>3. Personal information</h2>
-              <label className='h2-label'>Is personal information involved in your initiative?</label>
+              <label className="h2-label">
+                Is personal information involved in your initiative?
+              </label>
               <span>
-                Personal information is any recorded information about an
-                identifiable individual, other than business contact
-                information. Personal information includes information that can
-                be used to identify an individual through association or
-                reference.
+                <MDEditor.Markdown
+                  source={Messages.PersonalInformationDescriptionText.en}
+                  linkTarget="_blank"
+                />
               </span>
               <div>
                 {PIOptions.map((option, index) => {
                   return PIOptions[0] === option ? (
-                  <div key={index} onChange={choosePIOption}>
-                    <label className='input-label'>
-                      <input
-                      name="pi-radio"
-                      key={index}
-                      type="radio"
-                      value={option}
-                      defaultChecked
-                    />
-                    {option}
-                    </label>
-                  </div>
+                    <div key={index} onChange={choosePIOption}>
+                      <label className="input-label">
+                        <input
+                          name="pi-radio"
+                          key={index}
+                          type="radio"
+                          value={option}
+                          defaultChecked
+                        />
+                        {option}
+                      </label>
+                    </div>
                   ) : (
-                  <div key={index} onChange={choosePIOption}>
-                    <label className='input-label'>
-                      <input
-                      name="pi-radio"
-                      key={index}
-                      type="radio"
-                      value={option}
-                    />
-                    {option}
-                    </label>
-                  </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <h2>4. Other factors</h2>
-              <label className='h2-label'>
-                Does your initiative involve any of the following? Check all
-                that apply.
-              </label>
-              <div>
-                {OtherFactor.map((factor, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      checked={false}
-                      value={factor.value}
-                      label={factor.label}
-                      tooltip={factor.tooltip}
-                      tooltipText={factor.tooltipText}
-                      onChange={handleCheckboxChange}
-                    />
+                    <div key={index} onChange={choosePIOption}>
+                      <label className="input-label">
+                        <input
+                          name="pi-radio"
+                          key={index}
+                          type="radio"
+                          value={option}
+                        />
+                        {option}
+                      </label>
+                    </div>
                   );
                 })}
               </div>
             </div>
-            <div className='form-group pi-collect'>
-              <label>How will you reduce the risk of unintentionally collecting personal information?</label>
-              <span>
-                Some initiatives that do not require personal information are at risk of collecting personal 
-                information inadvertently, which could result in an information incident or privacy breach. 
-              </span>
-              <div>
-                <MDEditor
-                  preview="edit"
-                  value={initiativePICollectReduce}
-                  onChange={handleSetInitiativePICollectReduce}
-                />
+
+            {containsPI !== 'No' && (
+              <div className="form-group">
+                <h2>4. Other factors</h2>
+                <label className="h2-label">
+                  Does your initiative involve any of the following? Check all
+                  that apply.
+                </label>
+                <div>
+                  {OtherFactor.map((factor, index) => {
+                    return (
+                      <Checkbox
+                        key={index}
+                        checked={false}
+                        value={factor.value}
+                        label={factor.label}
+                        tooltip={factor.tooltip}
+                        tooltipText={factor.tooltipText}
+                        onChange={handleCheckboxChange}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
+
             <div className="form-group">
-              <h2>5. Start date </h2>
+              <h2>{containsPI !== 'No' ? '5.' : '4.'} Start date </h2>
               <div className="row">
                 <div className="form-group col-md-6">
-                  <label className='h2-label'>
+                  <label className="h2-label">
                     Do you have a proposed go-live or start date for the
                     initiative?
                   </label>
                   <div>
                     {startDateOptions.map((option, index) => {
                       return startDateOptions[0] === option ? (
-                      <div key={index} onChange={chooseStartDate}>
-                        <label className='input-label'>
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          defaultChecked
-                        />
-                        {option}
-                        </label>
-                      </div>
+                        <div key={index} onChange={chooseStartDate}>
+                          <label className="input-label">
+                            <input
+                              key={index}
+                              type="radio"
+                              name="start-initiative-radio"
+                              value={option}
+                              defaultChecked
+                            />
+                            {option}
+                          </label>
+                        </div>
                       ) : (
-                      <div key={index} onChange={chooseStartDate}>
-                        <label className='input-label'>
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                        />
-                        {option}
-                        </label>
-                      </div>
-                      )
+                        <div key={index} onChange={chooseStartDate}>
+                          <label className="input-label">
+                            <input
+                              key={index}
+                              type="radio"
+                              name="start-initiative-radio"
+                              value={option}
+                            />
+                            {option}
+                          </label>
+                        </div>
+                      );
                     })}
                   </div>
                 </div>
@@ -422,10 +369,11 @@ const PPQFormPage = () => {
                     <label>Proposed go-live or start date</label>
                     <DatePicker
                       key="startDate"
-                      placeholderText={'yyyy-MM-dd'}
+                      placeholderText={'yyyy-mm-dd'}
                       dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
+                      customInput={<CustomInputDate />}
                     />
                   </div>
                 )}
