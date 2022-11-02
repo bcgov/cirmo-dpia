@@ -7,10 +7,14 @@ import { NavPages as pages } from './components/common/Navbar/navPages';
 import Router from './routes/router';
 
 function App() {
+  const win: Window = window;
   return (
     <div className="App">
       <Header user="" />
-      <NavBar pages={pages} />
+      {win.localStorage.getItem('userName') !== null &&
+        win.localStorage.getItem('userName') !== 'undefined' && (
+          <NavBar pages={pages} />
+        )}
       <Router />
       <Footer />
     </div>

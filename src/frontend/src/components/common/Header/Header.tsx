@@ -104,13 +104,17 @@ function Header({ user }: Props) {
           </button>
         )}
         <Modal
-          confirmLabel="Logout"
+          confirmLabel="Yes,sign out"
           cancelLabel="Cancel"
+          titleText="Sign out confirmation"
           show={showModal}
           handleClose={hideModalDialog}
           handleCancel={cancelModalDialog}
         >
-          <p>Are you sure you want to logout curren session?</p>
+          <p className="modal-text">
+            Are you sure you would like to sign out of the platform?You will be
+            taken out to the landing page.
+          </p>
         </Modal>
         {win.localStorage.getItem('userName') !== null &&
           win.localStorage.getItem('userName') !== 'undefined' && (
