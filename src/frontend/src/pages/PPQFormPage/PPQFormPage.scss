@@ -1,12 +1,22 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 150px;
+.background {
+  width: 100vw;
+  margin-inline: 0;
+  background-color: $ntrl-lightgray;
+
+  &.results-wrapper {
+    margin-top: 0;
+    overflow-x: hidden;
+  }
 }
 
 .ppq-form-section {
   display: flex;
   padding: 150px;
+  background-color: white;
+
+  &.results-wrapper {
+    margin-inline: 0;
+  }
 }
 
 .row > h2 {

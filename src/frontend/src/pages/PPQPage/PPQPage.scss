@@ -2,33 +2,33 @@
   display: flex;
   width: 100vw;
   justify-content: center;
-  padding: 0;
+  padding-block: 10rem;
   height: 100vh;
 }
 
-.ppq-section {
+.ppq-section.results-wrapper {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  height: 1024px;
-  width: 100%;
+  height: 824px;
+  width: 80%;
+  background-color: white;
+  padding: 0;
+  padding-left: 10rem;
+}
+
+.col-md-6 {
+  align-self: flex-start;
+}
+
+.what-is-a-ppq {
+  display: flex;
+  align-items: end;
 }
 
 .list {
-  padding-bottom: 85px;
-}
-
-.ppq-content {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  max-width: 80ch;
-  font-weight: 400;
-}
-
-.ppq-svg {
-  display: flex;
-  align-items: center;
+  padding-bottom: 15rem;
+  padding-left: 0.9rem;
 }
 
 .ppq-svg > img {
