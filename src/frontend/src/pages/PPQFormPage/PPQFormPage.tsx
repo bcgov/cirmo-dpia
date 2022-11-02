@@ -136,9 +136,9 @@ const PPQFormPage = () => {
   };
 
   return (
-    <>
+    <div className="background results-wrapper">
       <StagesArray stages={stages} />
-      <section className="ppq-form-section">
+      <section className="ppq-form-section results-wrapper">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
@@ -410,7 +410,7 @@ const PPQFormPage = () => {
           </form>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

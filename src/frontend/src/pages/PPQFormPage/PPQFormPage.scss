@@ -1,12 +1,19 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 150px;
+.background {
+
+  &.results-wrapper {
+    margin-left: 0;
+    margin-top: 0;
+  }
 }
 
 .ppq-form-section {
   display: flex;
   padding: 150px;
+  background-color: white;
+
+  &.results-wrapper {
+    margin-left: 0;
+  }
 }
 
 .row > h2 {
@@ -72,6 +79,4 @@ span {
 
 .background {
   background-color: $ntrl-lightgray;
-  display: flex;
-  justify-content: center;
 }
