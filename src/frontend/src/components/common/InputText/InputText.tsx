@@ -10,6 +10,7 @@ interface InputTextProps {
   className?: string;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  required?: boolean;
 }
 
 const InputText = ({
@@ -19,6 +20,7 @@ const InputText = ({
   className = '',
   value = '',
   onChange = () => {},
+  required = false,
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -32,6 +34,7 @@ const InputText = ({
         value={value}
         onChange={onChange}
         className="form-control"
+        required={required}
       />
     </div>
   );

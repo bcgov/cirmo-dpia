@@ -158,6 +158,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required={true}
               />
               <InputText
                 label="Work Email"
@@ -165,6 +166,7 @@ const PPQFormPage = () => {
                 type="email"
                 value={workEmail}
                 onChange={(e) => setWorkEmail(e.target.value)}
+                required={true}
               />
             </div>
             <div className="row">
@@ -175,6 +177,7 @@ const PPQFormPage = () => {
                   className="form-control"
                   value={ministry}
                   onChange={(e) => setMinistry(e.target.value)}
+                  required
                 >
                   <option key="selectMinistry" disabled={true} value="">
                     Select one
@@ -191,6 +194,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
+                required={true}
               />
             </div>
             <div className="form-group">
@@ -200,6 +204,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={initiativeName}
                 onChange={(e) => setInitiativeName(e.target.value)}
+                required={true}
               />
               <div className="form-group col-md-6">
                 <label>What type of PIA do you need to complete?</label>
@@ -208,6 +213,7 @@ const PPQFormPage = () => {
                   className="form-control"
                   value={piaType}
                   onChange={(e) => setPiaType(e.target.value)}
+                  required
                 >
                   <option key="selectPiaType" disabled={true} value="">
                     Select one
@@ -375,6 +381,7 @@ const PPQFormPage = () => {
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
                       customInput={<CustomInputDate />}
+                      required
                     />
                   </div>
                 )}
