@@ -256,27 +256,6 @@ const PPQFormPage = () => {
                   />
                 </div>
               </div>
-              <div>
-                <div className="form-group col-md-6">
-                  <label>What type of PIA do you need to complete?</label>
-                  <select
-                    key="pia"
-                    className="form-control"
-                    value={piaType}
-                    onChange={(e) => setPiaType(e.target.value)}
-                    required
-                  >
-                    <option key="selectPiaType" disabled={true} value="">
-                      Select one
-                    </option>
-                    {PIATypes.map((option, index) => (
-                      <option key={index} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
             </div>
 
             <div className="form-group">
