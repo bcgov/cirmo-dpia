@@ -44,7 +44,7 @@ function Header({ user }: Props) {
       setAccessToken(keycloakToken.access_token);
       navigate(routes.PPQ_LANDING_PAGE);
     } else return;
-  }, [code, keycloakToken, authCodeError, win.localStorage, navigate]);
+  }, [code, keycloakToken, authCodeError]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -52,7 +52,7 @@ function Header({ user }: Props) {
       setUserInfo(keycloakUserDetail);
       win.localStorage.setItem('userName', keycloakUserDetail.name);
     }
-  }, [accessToken, keycloakUserDetail, userInfoError, win.localStorage]);
+  }, [accessToken, keycloakUserDetail, userInfoError]);
 
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
