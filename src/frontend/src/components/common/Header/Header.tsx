@@ -120,7 +120,6 @@ function Header({ user }: Props) {
           win.localStorage.getItem('userName') !== 'undefined' && (
             <button className="btn-logout" onClick={() => showModalDialog()}>
               Sign Out
-              <FontAwesomeIcon className="icon" icon={faChevronDown} />
             </button>
           )}
       </div>

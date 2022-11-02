@@ -1,5 +1,5 @@
 .modal {
-  position: flex;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -9,6 +9,7 @@
 
   .modal-title {
     display: block;
+    font-weight: bold;
     position: relative;
     text-align: center;
     padding-top: 1em;
@@ -22,12 +23,16 @@
     margin-block: 18px 16px;
   }
 
+   .btn-secondary {
+    margin-top: 0.2em;
+    border: 0;
+   }
+
   .modal-text {
     display: block;
     position: relative;
     text-align: center;
-    padding-top: 0.1em;
-    padding-bottom: 0;
+    padding: 0 20px;
     color: black;
   }
   
