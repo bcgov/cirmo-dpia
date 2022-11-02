@@ -8,11 +8,13 @@
 @import '../components/common/Navbar/navbar';
 @import 'login';
 @import 'buttons';
+@import '../components//common//Alert/alert';
 @import '../components/common/Checkbox/checkbox';
 @import '../components/common/Card/card';
 @import '../components/common/Callout/callout';
-@import '../components/common/Modal/modal';
 @import '../components//common/CustomInputDate/custom_input_date';
+@import '../components/common/Modal/modal';
+@import '../components/common/Spinner/Spinner';
 @import 'App';
 @import '../pages/LandingPage/LandingPage';
 @import '../pages/PPQPage/PPQPage';

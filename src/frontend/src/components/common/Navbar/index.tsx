@@ -4,8 +4,8 @@ import { INavbarPages } from './interfaces';
 
 function NavBar({ pages }: INavbarPages): ReactElement {
   return (
-    <nav className="navbar-container">
-      <ul className="navbar">
+    <nav className="navbar-container ">
+      <ul className="navbar ms-auto">
         {pages.map((page) => {
           return page.link === '/' ? (
             <li key={page.id}>

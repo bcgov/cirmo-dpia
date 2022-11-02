@@ -27,6 +27,7 @@ import { routes } from '../../constant/routes';
 import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
+import Alert from '../../components/common/Alert';
 
 const PPQFormPage = () => {
   const stages: StageProps[] = [
@@ -129,7 +130,7 @@ const PPQFormPage = () => {
         state: { result: res },
       });
     } catch (err) {
-      setMessage('Some error occured');
+      setMessage('Something went wrong. Please try again.');
       console.log(err);
     }
   };
@@ -157,6 +158,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required={true}
               />
               <InputText
                 label="Work Email"
@@ -164,6 +166,7 @@ const PPQFormPage = () => {
                 type="email"
                 value={workEmail}
                 onChange={(e) => setWorkEmail(e.target.value)}
+                required={true}
               />
             </div>
             <div className="row">
@@ -174,6 +177,7 @@ const PPQFormPage = () => {
                   className="form-control"
                   value={ministry}
                   onChange={(e) => setMinistry(e.target.value)}
+                  required
                 >
                   <option key="selectMinistry" disabled={true} value="">
                     Select one
@@ -190,6 +194,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
+                required={true}
               />
             </div>
             <div className="form-group">
@@ -199,6 +204,7 @@ const PPQFormPage = () => {
                 className="col-md-6"
                 value={initiativeName}
                 onChange={(e) => setInitiativeName(e.target.value)}
+                required={true}
               />
               <div className="form-group col-md-6">
                 <label>What type of PIA do you need to complete?</label>
@@ -207,6 +213,7 @@ const PPQFormPage = () => {
                   className="form-control"
                   value={piaType}
                   onChange={(e) => setPiaType(e.target.value)}
+                  required
                 >
                   <option key="selectPiaType" disabled={true} value="">
                     Select one
@@ -374,6 +381,7 @@ const PPQFormPage = () => {
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
                       customInput={<CustomInputDate />}
+                      required
                     />
                   </div>
                 )}
@@ -391,7 +399,14 @@ const PPQFormPage = () => {
                 Submit
               </button>
             </div>
-            <div className="message">{message ? <p>{message}</p> : null}</div>
+            {message && (
+              <Alert
+                type="danger"
+                message={message}
+                className="mt-4"
+                onClose={() => setMessage('')}
+              />
+            )}
           </form>
         </div>
       </section>

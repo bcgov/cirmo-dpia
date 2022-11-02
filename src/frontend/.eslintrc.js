@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
     'airbnb-typescript',
     'airbnb/hooks',
     'plugin:import/recommended',
@@ -25,7 +26,7 @@ module.exports = {
     project: './tsconfig.eslint.json',
     extraFileExtensions: ['.scss'],
   },
-  plugins: ['@typescript-eslint', 'jest'],
+  plugins: ['@typescript-eslint', 'jest', 'eslint-plugin-react'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

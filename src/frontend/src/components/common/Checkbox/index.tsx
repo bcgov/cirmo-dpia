@@ -17,7 +17,7 @@ const Checkbox = ({
   const [isChecked, setIsChecked] = useState(defaultChecked);
   return (
     <div className="checkbox-wrapper">
-      <label className='input-label'>
+      <label className="input-label">
         <input
           type="checkbox"
           value={value}
