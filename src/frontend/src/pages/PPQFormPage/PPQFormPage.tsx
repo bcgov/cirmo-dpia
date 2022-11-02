@@ -212,6 +212,7 @@ const PPQFormPage = () => {
                   className="form-control"
                   value={piaType}
                   onChange={(e) => setPiaType(e.target.value)}
+                  required
                 >
                   <option key="selectPiaType" disabled={true} value="">
                     Select one
