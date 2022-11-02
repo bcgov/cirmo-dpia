@@ -5,12 +5,15 @@ import './sass/common.scss';
 import NavBar from './components/common/Navbar';
 import { NavPages as pages } from './components/common/Navbar/navPages';
 import Router from './routes/router';
+import { useLocation } from 'react-router-dom';
 
 function App() {
+  const { pathname } = useLocation();
+
   return (
     <div className="App">
       <Header user="" />
-      <NavBar pages={pages} />
+      {pathname === '/' ? null : <NavBar pages={pages} />}
       <Router />
       <Footer />
     </div>

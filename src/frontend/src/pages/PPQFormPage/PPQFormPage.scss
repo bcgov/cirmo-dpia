@@ -69,3 +69,9 @@ span {
   gap: .5em;
   user-select: none;
 }
+
+.background {
+  background-color: $ntrl-lightgray;
+  display: flex;
+  justify-content: center;
+}
