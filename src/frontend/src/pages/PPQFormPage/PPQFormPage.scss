@@ -1,8 +1,11 @@
 .background {
+  width: 100vw;
+  margin-inline: 0;
+  background-color: $ntrl-lightgray;
 
   &.results-wrapper {
-    margin-left: 0;
     margin-top: 0;
+    overflow-x: hidden;
   }
 }
 
@@ -12,7 +15,7 @@
   background-color: white;
 
   &.results-wrapper {
-    margin-left: 0;
+    margin-inline: 0;
   }
 }
 
@@ -75,8 +78,4 @@ span {
   display: flex;
   gap: .5em;
   user-select: none;
-}
-
-.background {
-  background-color: $ntrl-lightgray;
 }

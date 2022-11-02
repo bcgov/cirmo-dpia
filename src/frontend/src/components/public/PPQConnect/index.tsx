@@ -49,7 +49,7 @@ const PPQConnect = (props: IComponentProps) => {
   };
 
   return (
-    <div className="results-wrapper ppq-connect">
+    <div className="results results-wrapper ppq-connect">
       <h1 className="results-header">Connect with your MPO</h1>
       <section className="find-your-mpo">
         <h2>1. Find your MPO</h2>
