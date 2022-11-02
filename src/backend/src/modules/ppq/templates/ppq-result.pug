@@ -8,7 +8,12 @@ head
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   title Document
-div(style='margin: 50px; padding-left: 5px; color: #444444')
+  style(type="text/css").
+    @page { 
+      size: A4 portrait;
+      margin: 50px; 
+    }
+div(style='padding-left: 5px; color: #444444')
   div(style='display: flex; flex-direction: row; justify-content: space-between')
     div
       img(src='https://moa.ubc.ca/wp-content/uploads/2021/02/BCID_H_rgb_pos.png' height='65px')
@@ -38,7 +43,7 @@ div(style='margin: 50px; padding-left: 5px; color: #444444')
       div(style='margin-top: 30px')
         div(style=`${key_style}`) Contains Personal Info
         div #{containsPersonalInformation}
-    div(style='width: 70%')
+    div(style='width: 70%; padding-left: 10px')
       div
         div(style=`${key_style}`) About your initiative
         div !{initiativeDescription}
@@ -47,6 +52,9 @@ div(style='margin: 50px; padding-left: 5px; color: #444444')
         div !{dataElements}
       div(style='margin-top: 30px')
         div(style=`${key_style}`) Involves
-        ul
-          each factor in otherFactors
-            li #{factor}
+        if otherFactors.length === 0
+          div N/A
+        else 
+          ul
+            each factor in otherFactors
+              li #{factor}
