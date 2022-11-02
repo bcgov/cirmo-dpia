@@ -39,10 +39,10 @@ const PPQConnectPage = () => {
   ];
 
   return (
-    <>
+    <div className="background">
       <StagesArray stages={stages} />
       <PPQConnect result={result} />
-    </>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ interface IComponentProps {
 
 const PPQResults = (props: IComponentProps) => {
   return (
-    <div className="results-wrapper">
+    <div className="results results-wrapper">
       <h1 className="results-header">Review Results</h1>
       <section className="callout-section results-callout-section">
         <div className="callout results-callout">
