@@ -7,6 +7,9 @@ import {
   FileDownload,
   FileDownloadTypeEnum,
 } from '../../../utils/file-download.util';
+import Spinner from '../../common/Spinner';
+import { useState } from 'react';
+import Alert from '../../common/Alert';
 
 interface IComponentProps {
   result: IPPQResult;
@@ -14,18 +17,35 @@ interface IComponentProps {
 
 const PPQConnect = (props: IComponentProps) => {
   const { result } = props;
-  const handleDownload = () => {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
+
+  const handleDownload = async () => {
+    setDownloadError('');
+
     if (!result?.id) {
       console.error(
         'Something went wrong. Result Id not available for download',
       );
-      throw new Error('Something went wrong.');
+      setDownloadError('Something went wrong. Please try again.');
+      return;
     }
 
-    return FileDownload.download(
-      API_ROUTES.PPQ_RESULT_DOWNLOAD.replace(':id', `${result.id}`),
-      FileDownloadTypeEnum.PDF,
-    );
+    setIsDownloading(true);
+    try {
+      await FileDownload.download(
+        API_ROUTES.PPQ_RESULT_DOWNLOAD.replace(':id', `${result.id}`),
+        FileDownloadTypeEnum.PDF,
+      );
+    } catch (e) {
+      setDownloadError('Something went wrong. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleAlertClose = () => {
+    setDownloadError('');
   };
 
   return (
@@ -56,10 +76,24 @@ const PPQConnect = (props: IComponentProps) => {
       </section>
       <section className="download-results">
         <h2>2. Download your results</h2>
-        <button className="btn-secondary" onClick={handleDownload}>
+        <button
+          className={`btn-secondary ${
+            isDownloading ? 'opacity-50 pe-none' : ''
+          }`}
+          onClick={handleDownload}
+        >
           Download PPQ Results
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
+          {isDownloading && <Spinner />}
         </button>
+        {downloadError && (
+          <Alert
+            type="danger"
+            message="Something went wrong. Please try again."
+            onClose={handleAlertClose}
+            className="mt-2"
+          />
+        )}
       </section>
       <section className="email-results">
         <h2>3. Email your results to your MPO</h2>
