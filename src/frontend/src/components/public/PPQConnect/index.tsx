@@ -35,7 +35,7 @@ const PPQConnect = (props: IComponentProps) => {
         <h2>1. Find your MPO</h2>
         <p className="mpo-find-contact">
           Every ministry has a Ministry Privacy Officer (MPO).
-          <a href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers" target='_blank'>
+          <a href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers" rel="external noreferrer" target='_blank'>
             Identify your MPO and their contact information.
           </a>
         </p>
