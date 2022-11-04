@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: APP-Dev
-      url: https://dpia-webapp-b996e6-dev.apps.silver.devops.gov.bc.ca
+      url: https://dev.pia.gov.bc.ca
     needs: [DEV-deploy]
     steps:
     
@@ -303,7 +303,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: APP-Test
-      url: https://dpia-webapp-b996e6-test.apps.silver.devops.gov.bc.ca
+      url: https://test.pia.gov.bc.ca
     needs: [TEST-deploy]
     steps:
     
@@ -529,7 +529,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: APP-Prod
-      url: https://dpia-webapp-b996e6-prod.apps.silver.devops.gov.bc.ca/
+      url: https://pia.gov.bc.ca
     needs: [PROD-deploy]
     steps:
     

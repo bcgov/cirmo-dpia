@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: API-Dev
-      url: https://dpia-api-b996e6-dev.apps.silver.devops.gov.bc.ca
+      url: https://dev.pia.gov.bc.ca/api/api-docs
     needs: [DEV-deploy]
     steps:
     
@@ -310,7 +310,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: API-Test
-      url: https://dpia-api-b996e6-test.apps.silver.devops.gov.bc.ca
+      url: https://test.pia.gov.bc.ca/api/api-docs
     needs: [TEST-deploy]
     steps:
     
@@ -537,7 +537,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: API-Prod
-      url: https://dpia-api-prod.apps.silver.devops.gov.bc.ca/api/v1/api-docs
+      url: https://pia.gov.bc.ca/api/api-docs
     needs: [PROD-deploy]
     steps:
     
