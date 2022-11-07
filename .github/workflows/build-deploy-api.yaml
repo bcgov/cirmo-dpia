@@ -133,6 +133,8 @@ jobs:
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
           IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
         run: |
           ./.github/helpers/deploy.sh 
     
@@ -303,6 +305,8 @@ jobs:
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
           IMAGE_TAG: "${{ env.pull_request_hash }}-test"
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
         run: |
           ./.github/helpers/deploy.sh 
           
@@ -530,6 +534,8 @@ jobs:
           ROUTE_TEMPLATE: "api-route-template.yaml"
           DIR: "api"
           IMAGE_TAG: ${{ env.image_tag }}
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
         run: |
           ./.github/helpers/deploy.sh 
   
