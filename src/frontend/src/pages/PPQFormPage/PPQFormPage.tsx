@@ -131,7 +131,6 @@ const PPQFormPage = () => {
       });
     } catch (err) {
       setMessage('Something went wrong. Please try again.');
-      console.log(err);
     }
   };
 
