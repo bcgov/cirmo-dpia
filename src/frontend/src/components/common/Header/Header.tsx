@@ -116,7 +116,7 @@ function Header({ user }: Props) {
           handleCancel={cancelModalDialog}
         >
           <p className="modal-text">
-            Are you sure you would like to sign out of the platform?You will be
+            Are you sure you would like to sign out of the platform? You will be
             taken out to the landing page.
           </p>
         </Modal>
