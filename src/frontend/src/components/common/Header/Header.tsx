@@ -108,7 +108,7 @@ function Header({ user }: Props) {
           </button>
         )}
         <Modal
-          confirmLabel="Yes,sign out"
+          confirmLabel="Yes, sign out"
           cancelLabel="Cancel"
           titleText="Sign out confirmation"
           show={showModal}
