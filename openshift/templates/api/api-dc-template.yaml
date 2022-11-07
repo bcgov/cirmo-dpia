@@ -56,6 +56,20 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
+          vault.hashicorp.com/agent-inject: 'true'
+          vault.hashicorp.com/agent-inject-token: 'true'
+          vault.hashicorp.com/agent-pre-populate-only: 'true'
+          vault.hashicorp.com/auth-path: auth/k8s-silver
+          vault.hashicorp.com/namespace: platform-services
+          vault.hashicorp.com/role: ${VAULT_ROLE}
+          vault.hashicorp.com/agent-inject-${VAULT_POSTGRES_SECRET_NAME}: |
+            {{- with secret "${VAULT_ROLE}/${VAULT_POSTGRES_SECRET_NAME}" }}
+            export POSTGRES_USER="{{ .Data.data.POSTGRES_USER }}"
+            export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
+            export POSTGRES_HOST="{{ .Data.data.POSTGRES_HOST }}"
+            export POSTGRES_PORT="{{ .Data.data.POSTGRES_PORT }}"
+            export POSTGRES_DB="{{ .Data.data.POSTGRES_DB }}"
+            {{- end `}} }}
       spec:
         containers:
           - name: ${APPLICATION_NAME}
@@ -69,31 +83,6 @@ objects:
                 value: '3000'
               - name: API_ENV
                 value: ${ENVIRONMENT}
-              - name: POSTGRES_USER
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-connection-secret
-                    key: POSTGRES_USER
-              - name: POSTGRES_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-connection-secret
-                    key: POSTGRES_PASSWORD
-              - name: POSTGRES_HOST
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-connection-secret
-                    key: POSTGRES_HOST
-              - name: POSTGRES_PORT
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-connection-secret
-                    key: POSTGRES_PORT
-              - name: POSTGRES_DB
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-connection-secret
-                    key: POSTGRES_DB
               - name: KEYCLOAK_AUTH_SERVER_URI
                 valueFrom:
                   secretKeyRef:
@@ -216,3 +205,12 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
+  - description: Vault Role
+    displayName: Vault Role
+    required: true
+    name: VAULT_ROLE
+  - description: Vault Postgres Secret Name
+    displayName: Vault Postgres Secret Name
+    required: true
+    name: VAULT_POSTGRES_SECRET_NAME
+  
