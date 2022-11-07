@@ -89,8 +89,7 @@ a:hover {
   }
 }
 
-.btn-login,
-%btn-login {
+.btn-login {
   background: none;
   color: white;
   font-weight: 700;
@@ -129,7 +128,7 @@ a:hover {
 }
 
 .btn-logout {
-  @extend %btn-login;
+  @extend .btn-login;
 
   border: 0;
 }
