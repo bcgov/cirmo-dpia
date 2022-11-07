@@ -4,9 +4,11 @@ import App from './App';
 import './sass/index.scss';
 import './sass/common.scss';
 import { BrowserRouter } from 'react-router-dom';
+import ScrollToTop from './components/common/ScrollToTop';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
+    <ScrollToTop />
     <App />
   </BrowserRouter>,
 );
