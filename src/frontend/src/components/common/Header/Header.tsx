@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,12 +10,15 @@ import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { useFetchAuthCode } from '../../../hooks/useFtechAuthCode';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
+import { AuthContext } from '../../../hooks/useAuth';
+import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 
 type Props = {
   user: string | null;
 };
 function Header({ user }: Props) {
   const navigate = useNavigate();
+  const { setAuthenticated } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem('access_token'),
@@ -33,24 +36,24 @@ function Header({ user }: Props) {
   // workaround
   const win: Window = window;
   useEffect(() => {
-    if (keycloakToken !== undefined) {
-      win.localStorage.setItem('access_token', keycloakToken.access_token);
-      win.localStorage.setItem('refresh_token', keycloakToken.refresh_token);
-      win.localStorage.setItem('expires_in', keycloakToken.expires_in);
-      win.localStorage.setItem(
-        'refresh_expires_in',
-        keycloakToken.refresh_expires_in,
-      );
+    if (keycloakToken !== undefined && keycloakToken !== null) {
+      storeTokens(keycloakToken);
+      setAuthenticated(true);
+
       setAccessToken(keycloakToken.access_token);
       navigate(routes.PPQ_LANDING_PAGE);
     } else return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, keycloakToken, authCodeError]);
 
   useEffect(() => {
     if (!accessToken) return;
-    if (keycloakUserDetail !== undefined) {
+    if (
+      keycloakUserDetail !== undefined &&
+      keycloakUserDetail !== null &&
+      userInfoError === null
+    ) {
       setUserInfo(keycloakUserDetail);
-      win.localStorage.setItem('userName', keycloakUserDetail.name);
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
@@ -59,16 +62,17 @@ function Header({ user }: Props) {
   };
 
   const logout = async () => {
+    setAuthenticated(false);
     const keycloakTokenObj = {
       access_token: win.localStorage.getItem('access_token'),
       refresh_token: win.localStorage.getItem('refresh_token'),
       expires_in: win.localStorage.getItem('expires_in'),
       refresh_expires_in: win.localStorage.getItem('refresh_expires_in'),
     };
+
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
-    win.localStorage.removeItem('access_token');
-    win.localStorage.removeItem('refresh_token');
-    win.localStorage.removeItem('userName');
+    clearTokens();
+    setAccessToken(null);
     setUserInfo({ name: '' });
     navigate('/');
   };
@@ -98,7 +102,7 @@ function Header({ user }: Props) {
       </div>
       <div className="message">{message ? <p>{message}</p> : null}</div>
       <div data-cy="login" className="other">
-        {userInfo.name === '' && (
+        {!isAuthenticated() && (
           <button className="btn-login" onClick={() => login()}>
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
@@ -116,12 +120,11 @@ function Header({ user }: Props) {
             taken out to the landing page.
           </p>
         </Modal>
-        {win.localStorage.getItem('userName') !== null &&
-          win.localStorage.getItem('userName') !== 'undefined' && (
-            <button className="btn-logout" onClick={() => showModalDialog()}>
-              Sign Out
-            </button>
-          )}
+        {isAuthenticated() && (
+          <button className="btn-logout" onClick={() => showModalDialog()}>
+            Sign Out
+          </button>
+        )}
       </div>
     </header>
   );

@@ -19,7 +19,11 @@ export const useFetchKeycloakUserInfo = (accessToken: string | null) => {
     fetch(`/${API_ROUTES.KEYCLOAK_USER}`, options)
       .then((response) => response.json())
       .then((data) => {
-        setKeycloakUserDetail(data);
+        if (data.error != null) {
+          setError(data);
+        } else {
+          setKeycloakUserDetail(data);
+        }
       })
       .catch((err) => setError(err));
   }, [accessToken]);

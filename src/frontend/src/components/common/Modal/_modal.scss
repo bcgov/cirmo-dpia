@@ -10,35 +10,28 @@
   .modal-title {
     display: block;
     font-weight: bold;
-    position: relative;
     text-align: center;
     padding-top: 1em;
     color: black;
   }
 
-  .horizontal-divider {
+  .modal-horizontal-divider {
     width: 100%;
     height: 0;
-    border: 2px solid #E2A014;
+    border: 2px solid #e2a014;
     margin-block: 18px 16px;
   }
 
-   .btn-secondary {
-    margin-top: 0.2em;
-    border: 0;
-   }
-
   .modal-text {
     display: block;
-    position: relative;
     text-align: center;
     padding: 0 20px;
     color: black;
   }
-  
+
   .modal-main {
     position: relative;
-    background-color: #FFF;
+    background-color: #fff;
     width: 35%;
     height: auto;
     top: 50%;

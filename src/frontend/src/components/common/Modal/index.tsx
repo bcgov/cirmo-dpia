@@ -16,7 +16,7 @@ const Modal = ({
     <div className={showHideClassName}>
       <section className="modal-main  ">
         <span className="modal-title"> {titleText}</span>
-        <div className="horizontal-divider"></div>
+        <div className="modal-horizontal-divider"></div>
         {children}
         <div className="d-flex align-items-center justify-content-center">
           <button className="btn-primary " type="button" onClick={handleClose}>
@@ -26,7 +26,7 @@ const Modal = ({
         <div className="d-flex align-items-center justify-content-center">
           <button
             type="button"
-            className="btn-secondary "
+            className="btn-secondary-modal"
             onClick={handleCancel}
           >
             {cancelLabel}
