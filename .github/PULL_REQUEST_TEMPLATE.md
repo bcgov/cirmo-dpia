@@ -38,4 +38,4 @@ Please describe the tests that you ran to verify your changes.
 
 ## Definition of Done
 
-![Definition of Done](assets/DoD.jpg)
+![Definition of Done](https://raw.githubusercontent.com/bcgov/cirmo-dpia/main/.github/assets/DoD.jpg)
