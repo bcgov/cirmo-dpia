@@ -1,0 +1,9 @@
+version: "2"
+checks:
+  similar-code:
+    enabled: false
+  file-lines:
+    config:
+      threshold: 250
+exclude_patterns:
+  # blank for now

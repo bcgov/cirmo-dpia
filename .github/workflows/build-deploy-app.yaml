@@ -128,6 +128,8 @@ jobs:
           ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
           IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
         run: |
           ./.github/helpers/deploy.sh 
 
@@ -296,6 +298,8 @@ jobs:
           ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
           IMAGE_TAG: "${{ env.pull_request_hash }}-test"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
         run: |
           ./.github/helpers/deploy.sh 
           
@@ -517,11 +521,13 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: app-dc-template.yaml
+          DC_TEMPLATE: "app-dc-template.yaml"
           SERVICE_TEMPLATE: "app-service-template.yaml"
           ROUTE_TEMPLATE: "app-route-template.yaml"
           DIR: "app"
-          IMAGE_TAG: ${{ env.image_tag }}
+          IMAGE_TAG: "${{ env.image_tag }}"
+          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
+          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
         run: |
           ./.github/helpers/deploy.sh 
   
