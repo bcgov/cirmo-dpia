@@ -82,6 +82,11 @@ a:hover {
   &:active {
     opacity: 1;
   }
+
+  &.btn-secondary-modal {
+    margin-top: 0.2em;
+    border: 0;
+  }
 }
 
 .btn-login {
@@ -120,4 +125,10 @@ a:hover {
   &:active {
     opacity: 1;
   }
+}
+
+.btn-logout {
+  @extend .btn-login;
+
+  border: 0;
 }

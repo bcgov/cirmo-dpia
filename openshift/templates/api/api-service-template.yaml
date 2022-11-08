@@ -48,3 +48,11 @@ parameters:
     required: true
     name: IMAGE_TAG
     value: latest
+  - description: Vault Role
+    displayName: Vault Role
+    required: false
+    name: VAULT_ROLE
+  - description: Vault Postgres Secret Name
+    displayName: Vault Postgres Secret Name
+    required: false
+    name: VAULT_POSTGRES_SECRET_NAME

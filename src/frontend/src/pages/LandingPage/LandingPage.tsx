@@ -7,6 +7,7 @@ import sharedGoals from '../../assets/undraw_shared_goals.svg';
 import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
 import { API_ROUTES } from '../../constant/apiRoutes';
+import { isAuthenticated } from '../../utils/auth';
 
 function LandingPage() {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -28,10 +29,17 @@ function LandingPage() {
             improved user experience.
           </p>
           <div data-cy="contact-btn" className="ctas">
-            <button className="btn-primary" onClick={() => login()}>
-              Log in with IDIR{' '}
-              <FontAwesomeIcon className="icon" icon={faUser} />
-            </button>
+            {!isAuthenticated() && (
+              <button className="btn-primary" onClick={() => login()}>
+                Log in with IDIR
+                <FontAwesomeIcon className="icon" icon={faUser} />
+              </button>
+            )}
+            {isAuthenticated() && (
+              <Link className="btn-primary" to="/ppq">
+                Access App
+              </Link>
+            )}
             <a
               href="mailto:pia.intake@gov.bc.ca"
               data-cy="email"
