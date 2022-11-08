@@ -126,7 +126,7 @@ const PPQFormPage = () => {
         requestBody,
       );
 
-      navigate(routes.PPQ_FORM_CONNECT, {
+      navigate(routes.PPQ_CONNECT_WITH_MPO, {
         state: { result: res },
       });
     } catch (err) {

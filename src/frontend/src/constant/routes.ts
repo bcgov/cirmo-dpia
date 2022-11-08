@@ -1,4 +1,4 @@
 export const routes = {
   PPQ_LANDING_PAGE: '/ppq',
-  PPQ_FORM_CONNECT: '/ppq-connect',
+  PPQ_CONNECT_WITH_MPO: '/ppq-connect',
 };
