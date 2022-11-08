@@ -55,14 +55,14 @@ const PPQConnect = (props: IComponentProps) => {
       <h1 className="results-header">{Messages.Headings.Title.en}</h1>
       <sub>{Messages.Headings.Subtitle.en}</sub>
       <section className="find-your-mpo">
-        <h2>{Messages.Headings.One.en}</h2>
+        <h2>{Messages.Headings.StepOne.en}</h2>
         <button
           className={`btn-secondary ${
             isDownloading ? 'opacity-50 pe-none' : ''
           }`}
           onClick={handleDownload}
         >
-          PPQ Results
+          {Messages.DownloadButtonText.en}
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
           {isDownloading && <Spinner />}
         </button>
@@ -76,14 +76,14 @@ const PPQConnect = (props: IComponentProps) => {
         )}
       </section>
       <section className="download-results">
-        <h2>{Messages.Headings.Two.en}</h2>
+        <h2>{Messages.Headings.StepTwo.en}</h2>
         <p>
-          <MDEditor.Markdown source={Messages.Text.Two.en} />
+          <MDEditor.Markdown source={Messages.StepDetails.StepTwo.en} />
         </p>
       </section>
       <section className="email-results">
-        <h2>{Messages.Headings.Three.en}</h2>
-        <p>{Messages.Text.Three.en}</p>
+        <h2>{Messages.Headings.StepThree.en}</h2>
+        <p>{Messages.StepDetails.StepThree.en}</p>
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
