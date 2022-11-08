@@ -10,7 +10,7 @@ import {
 } from '@nestjs/class-validator';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
-import { DelegatedReviewTypesEnum } from 'src/common/enums/delegated-review-types.enum';
+import { DelegatedReviewTypesEnum } from '../../../common/enums/delegated-review-types.enum';
 
 export class PpqPostDTO {
   @IsString()

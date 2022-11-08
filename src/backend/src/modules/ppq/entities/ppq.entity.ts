@@ -2,7 +2,7 @@ import { BaseEntity } from '../../../common/entities/base.entity';
 import { Column, Entity } from 'typeorm';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
-import { DelegatedReviewTypesEnum } from 'src/common/enums/delegated-review-types.enum';
+import { DelegatedReviewTypesEnum } from '../../../common/enums/delegated-review-types.enum';
 
 @Entity('ppq')
 export class PpqEntity extends BaseEntity {
