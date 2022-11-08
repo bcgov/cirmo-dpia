@@ -62,7 +62,12 @@
 
 .form-buttons {
   display: flex;
+  width: 100%;
   justify-content: space-between;
+
+  & :first-child {
+    visibility: hidden;
+  }
 }
 
 label:not(.input-label) {

@@ -10,6 +10,8 @@ import {
 import Spinner from '../../common/Spinner';
 import { useState } from 'react';
 import Alert from '../../common/Alert';
+import Messages from './messages';
+import MDEditor from '@uiw/react-md-editor';
 
 interface IComponentProps {
   result: IPPQResult;
@@ -50,39 +52,17 @@ const PPQConnect = (props: IComponentProps) => {
 
   return (
     <div className="results results-wrapper ppq-connect">
-      <h1 className="results-header">Connect with your MPO</h1>
+      <h1 className="results-header">{Messages.Headings.Title.en}</h1>
+      <sub>{Messages.Headings.Subtitle.en}</sub>
       <section className="find-your-mpo">
-        <h2>1. Find your MPO</h2>
-        <p className="mpo-find-contact">
-          Every ministry has a Ministry Privacy Officer (MPO).
-          <a
-            href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers"
-            rel="external noreferrer"
-            target="_blank"
-          >
-            Identify your MPO and their contact information.
-          </a>
-        </p>
-        <p className="privacy-helpline-contact">
-          Can&lsquo;t find what you&lsquo;re looking for? Contact the Privacy
-          Helpline.
-          <br />
-          <a href="tel:250-356-1851">250 356-1851</a>
-          <br />
-          <a href="mailto:privacy.helpline@gov.bc.ca">
-            Privacy.Helpline@gov.bc.ca
-          </a>
-        </p>
-      </section>
-      <section className="download-results">
-        <h2>2. Download your results</h2>
+        <h2>{Messages.Headings.StepOne.en}</h2>
         <button
           className={`btn-secondary ${
             isDownloading ? 'opacity-50 pe-none' : ''
           }`}
           onClick={handleDownload}
         >
-          Download PPQ Results
+          {Messages.DownloadButtonText.en}
           <FontAwesomeIcon className="icon" icon={faFileDownload} />
           {isDownloading && <Spinner />}
         </button>
@@ -95,14 +75,15 @@ const PPQConnect = (props: IComponentProps) => {
           />
         )}
       </section>
-      <section className="email-results">
-        <h2>3. Email your results to your MPO</h2>
+      <section className="download-results">
+        <h2>{Messages.Headings.StepTwo.en}</h2>
         <p>
-          MPOs are instrumental in writing and submitting good PIAs. Get the
-          conversation started between your team and your MPO by emailing them
-          your PPQ results. They will be able to help you through your PIA
-          writing process once you begin.
+          <MDEditor.Markdown source={Messages.StepDetails.StepTwo.en} />
         </p>
+      </section>
+      <section className="email-results">
+        <h2>{Messages.Headings.StepThree.en}</h2>
+        <p>{Messages.StepDetails.StepThree.en}</p>
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons">
