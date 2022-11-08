@@ -1,10 +1,18 @@
+.ppq-connect {
+  background-color: white;
+
+  & > h1 {
+    line-height: 1.4;
+  }
+}
+
 .ppq-connect section {
   display: flex;
   flex-direction: column;
   margin-block: 2rem;
 
-  & > h1 {
-    margin-bottom: 0;
+  &:is(.find-your-mpo) {
+    margin-top: 6em;
   }
 
   & > *:not(h2) {
