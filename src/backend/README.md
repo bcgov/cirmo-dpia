@@ -44,7 +44,7 @@ $ npm run migration:run
 $ npm run migration:revert
 
 # create an empty migration
-$ npm run migration:create
+$ npm run migration:create src/migrations/<your-migration-name>
 ```
 
 ## Test

@@ -2,14 +2,12 @@ import { BaseEntity } from '../../../common/entities/base.entity';
 import { Column, Entity } from 'typeorm';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from 'src/common/enums/delegated-review-types.enum';
 
 @Entity('ppq')
 export class PpqEntity extends BaseEntity {
-  @Column()
-  name: string;
-
-  @Column()
-  email: string;
+  @Column({ name: 'title' })
+  title: string;
 
   @Column({
     type: 'character varying',
@@ -17,31 +15,32 @@ export class PpqEntity extends BaseEntity {
   })
   ministry: GovMinistriesEnum;
 
-  @Column()
-  branch: string;
-
-  @Column({ name: 'initiative_name' })
-  initiativeName: string;
-
-  @Column({ name: 'initiative_description' })
-  initiativeDescription: string;
-
-  @Column({ name: 'data_elements' })
-  dataElements: string;
+  @Column({
+    name: 'description',
+    nullable: false,
+  })
+  description: string;
 
   @Column({
     name: 'pia_type',
     type: 'character varying',
-    nullable: true,
+    nullable: false,
   })
   piaType: PiaTypesEnum;
 
   @Column({
-    name: 'contains_personal_information',
-    type: 'boolean',
+    name: 'delegated_review_type',
+    type: 'character varying',
     nullable: true,
   })
-  containsPersonalInformation: boolean;
+  delegatedReviewType: DelegatedReviewTypesEnum;
+
+  @Column({
+    name: 'proposed_start_date',
+    type: 'timestamptz',
+    nullable: true,
+  })
+  proposedStartDate: Date;
 
   @Column({
     name: 'has_sensitive_personal_information',
@@ -49,13 +48,6 @@ export class PpqEntity extends BaseEntity {
     nullable: true,
   })
   hasSensitivePersonalInformation: boolean;
-
-  @Column({
-    name: 'has_sharing_of_personal_information',
-    type: 'boolean',
-    nullable: true,
-  })
-  hasSharingOfPersonalInformation: boolean;
 
   @Column({
     name: 'has_program_agreement',
@@ -93,6 +85,13 @@ export class PpqEntity extends BaseEntity {
   hasDisclosureOutsideOfCanada: boolean;
 
   @Column({
+    name: 'has_data_linking',
+    type: 'boolean',
+    nullable: true,
+  })
+  hasDataLinking: boolean;
+
+  @Column({
     name: 'has_bc_services_card_onboarding',
     type: 'boolean',
     nullable: true,
@@ -112,11 +111,4 @@ export class PpqEntity extends BaseEntity {
     nullable: true,
   })
   hasPartnershipNonMinistry: boolean;
-
-  @Column({
-    name: 'proposed_start_date',
-    type: 'timestamptz',
-    nullable: true,
-  })
-  proposedStartDate: Date;
 }

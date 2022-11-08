@@ -3,37 +3,24 @@ import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
-  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  MaxLength,
 } from '@nestjs/class-validator';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from 'src/common/enums/delegated-review-types.enum';
 
 export class PpqPostDTO {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
   @ApiProperty({
     type: String,
     required: true,
-    example: 'Marvin McKinney',
+    example: 'Add Figma to my BC Gov Project',
   })
-  name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsEmail()
-  @MaxLength(50)
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: 'name@bc.gov.in',
-  })
-  email: string;
+  title: string;
 
   @IsEnum(GovMinistriesEnum)
   @IsNotEmpty()
@@ -46,47 +33,32 @@ export class PpqPostDTO {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
-  @ApiProperty({ type: String, required: true })
-  branch: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: 'Add Figma to my BC Gov Project',
-  })
-  initiativeName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ type: String, required: true })
-  initiativeDescription: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ type: String, required: true })
-  dataElements: string;
+  @ApiProperty({ type: String, required: false })
+  description: string;
 
   @IsEnum(PiaTypesEnum)
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({
     enum: PiaTypesEnum,
-    required: false,
-    example: PiaTypesEnum.CORPORATE_CHECKLIST,
+    required: true,
+    example: PiaTypesEnum.STANDARD,
   })
   piaType: PiaTypesEnum;
 
-  @IsBoolean()
+  @IsEnum(DelegatedReviewTypesEnum)
   @IsOptional()
   @ApiProperty({
-    type: Boolean,
+    enum: DelegatedReviewTypesEnum,
     required: false,
-    example: false,
+    example: DelegatedReviewTypesEnum.CHECKLIST,
   })
-  containsPersonalInformation: boolean;
+  delegatedReviewType: DelegatedReviewTypesEnum;
+
+  @IsDate()
+  @IsOptional()
+  @Type(() => Date)
+  @ApiProperty({ type: Date, required: false })
+  proposedStartDate?: Date;
 
   @IsBoolean()
   @IsOptional()
@@ -96,15 +68,6 @@ export class PpqPostDTO {
     example: false,
   })
   hasSensitivePersonalInformation: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  @ApiProperty({
-    type: Boolean,
-    required: false,
-    example: false,
-  })
-  hasSharingOfPersonalInformation: boolean;
 
   @IsBoolean()
   @IsOptional()
@@ -158,6 +121,15 @@ export class PpqPostDTO {
     required: false,
     example: false,
   })
+  hasDataLinking: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: false,
+  })
   hasBcServicesCardOnboarding: boolean;
 
   @IsBoolean()
@@ -177,10 +149,4 @@ export class PpqPostDTO {
     example: false,
   })
   hasPartnershipNonMinistry: boolean;
-
-  @IsDate()
-  @IsOptional()
-  @Type(() => Date)
-  @ApiProperty({ type: Date, required: false })
-  proposedStartDate?: Date;
 }

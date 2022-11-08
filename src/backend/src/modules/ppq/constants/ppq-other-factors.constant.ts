@@ -4,10 +4,6 @@ export const PpqOtherFactors = [
     value: 'hasSensitivePersonalInformation',
   },
   {
-    label: 'Regular or systematic sharing of personal information',
-    value: 'hasSharingOfPersonalInformation',
-  },
-  {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
   },
@@ -26,6 +22,10 @@ export const PpqOtherFactors = [
   {
     label: 'Disclosure of personal information outside of Canada',
     value: 'hasDisclosureOutsideOfCanada',
+  },
+  {
+    label: 'Data-linking',
+    value: 'hasDataLinking',
   },
   {
     label: 'BC Services Card Onboarding',
