@@ -86,7 +86,6 @@ function Header({ user }: Props) {
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
     clearTokens();
     setAccessToken(null);
-    setUserInfo({ name: '' });
     navigate('/');
   };
   const hideModalDialog = async () => {
