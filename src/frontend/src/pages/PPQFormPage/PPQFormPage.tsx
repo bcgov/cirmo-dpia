@@ -29,11 +29,16 @@ const PPQFormPage = () => {
   const [name, setName] = useState('');
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
-  const [initiativeName, setInitiativeName] = useState('');
-  const [initiativeDesc, setInitiativeDesc] = useState('');
-  const [initiativeDataElements, setInitiativeDataElements] = useState('');
-  const [piaType, setPiaType] = useState('');
-  const [containsPI, setContainsPI] = useState('Yes');
+  const [piaTypes, setPiaTypes] = useState({
+    isStandardPia: false,
+    isInitiativeUpdate: false,
+    isDelegateReview: false,
+    isOther: false,
+  });
+  const [reviewTypes, setReviewTypes] = useState({
+    isNonPI: false,
+    isChecklist: false,
+  });
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState('');
@@ -50,9 +55,6 @@ const PPQFormPage = () => {
     hasPartnershipNonMinistry: false,
   });
 
-  const choosePIOption = (event: any) => {
-    setContainsPI(event.target.value);
-  };
   const chooseStartDate = (event: any) => {
     setContainsStartDate(event.target.value);
   };
@@ -61,17 +63,23 @@ const PPQFormPage = () => {
     navigate(routes.PPQ_LANDING_PAGE, { replace: true });
   };
 
-  const setInitiativeDescription = (newMessage: any) => {
-    setInitiativeDesc(newMessage);
-  };
-
-  const setInitiativeDataElementsInput = (newMessage: any) => {
-    setInitiativeDataElements(newMessage);
-  };
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePIItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
+      [event.target.value]: event.target.checked,
+    });
+  };
+
+  const handlePiaTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPiaTypes({
+      ...piaTypes,
+      [event.target.value]: event.target.checked,
+    });
+  };
+
+  const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setReviewTypes({
+      ...reviewTypes,
       [event.target.value]: event.target.checked,
     });
   };
@@ -85,13 +93,9 @@ const PPQFormPage = () => {
     const requestBody: IPPQForm = {
       name: name,
       ministry: ministry,
-      initiativeName: initiativeName,
-      initiativeDescription: initiativeDesc,
-      dataElements: initiativeDataElements,
-      piaType: piaType === 'null' ? null : piaType,
-      containsPersonalInformation:
-        containsPI === 'Yes' ? true : containsPI === 'No' ? false : undefined,
       proposedStartDate: startDate,
+      ...piaTypes,
+      ...reviewTypes,
       ...checkedPIItems,
     };
     try {
@@ -115,12 +119,7 @@ const PPQFormPage = () => {
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
               <h1>PIA Pathways Questionnaire</h1>
-              <p>
-                <MDEditor.Markdown
-                  source={Messages.FillPpqDescriptionText.en}
-                  linkTarget="_blank"
-                />
-              </p>
+              <p>{Messages.FillPpqDescriptionText.en}</p>
             </div>
             <div className="row">
               <InputText
@@ -171,7 +170,7 @@ const PPQFormPage = () => {
                       label={factor.label}
                       tooltip={factor.tooltip}
                       tooltipText={factor.tooltipText}
-                      onChange={handleCheckboxChange}
+                      onChange={handlePIItemsChange}
                     />
                   );
                 })}
@@ -186,6 +185,7 @@ const PPQFormPage = () => {
                     label={option.label}
                     value={option.value}
                     checked={option.checked}
+                    onChange={handlePiaTypeChange}
                   />
                 ))}
               </div>
@@ -199,6 +199,7 @@ const PPQFormPage = () => {
                     label={option.label}
                     value={option.value}
                     checked={option.checked}
+                    onChange={handleReviewTypeChange}
                   />
                 ))}
               </div>

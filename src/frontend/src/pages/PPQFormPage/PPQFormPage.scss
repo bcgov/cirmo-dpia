@@ -1,6 +1,6 @@
 .background {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   margin-inline: 0;
   background-color: $ntrl-lightgray;
 
@@ -11,7 +11,6 @@
 
 .ppq-form-section {
   display: flex;
-  padding: 150px;
   background-color: white;
 
   &.results-wrapper {
