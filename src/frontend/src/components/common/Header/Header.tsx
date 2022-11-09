@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +12,9 @@ import { useFetchAuthCode } from '../../../hooks/useFtechAuthCode';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
+import { getAccessToken } from '../../../utils/getAccessToken';
+import { getKeycloakUserInfo } from '../../../utils/getKeycloakUserInfo';
+import { setItemInStorage } from '../../../utils/helper.util';
 
 type Props = {
   user: string | null;
@@ -24,11 +27,9 @@ function Header({ user }: Props) {
     localStorage.getItem('access_token'),
   );
   const [showModal, setShowModal] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: '' });
   const [message, setMessage] = useState('');
   const code = searchParams.get('code');
-
-  const { keycloakToken, error: authCodeError } = useFetchAuthCode(code);
+  const didAuthRef = useRef(false);
   const { keycloakUserDetail, error: userInfoError } =
     useFetchKeycloakUserInfo(accessToken);
 
@@ -36,15 +37,26 @@ function Header({ user }: Props) {
   // workaround
   const win: Window = window;
   useEffect(() => {
-    if (keycloakToken !== undefined && keycloakToken !== null) {
-      storeTokens(keycloakToken);
-      setAuthenticated(true);
-
-      setAccessToken(keycloakToken.access_token);
-      navigate(routes.PPQ_LANDING_PAGE);
-    } else return;
+    async function startFetching() {
+      if (didAuthRef.current === false) {
+        try {
+          didAuthRef.current = true;
+          const res = await getAccessToken(code);
+          const keycloakToken = await res?.json();
+          if (keycloakToken !== undefined) {
+            storeTokens(keycloakToken);
+            setAuthenticated(true);
+            setAccessToken(keycloakToken.access_token);
+            navigate(routes.PPQ_LANDING_PAGE);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+    startFetching();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, keycloakToken, authCodeError]);
+  }, []);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -53,9 +65,10 @@ function Header({ user }: Props) {
       keycloakUserDetail !== null &&
       userInfoError === null
     ) {
-      setUserInfo(keycloakUserDetail);
+      setItemInStorage('userName', keycloakUserDetail.name);
     }
-  }, [accessToken, keycloakUserDetail, userInfoError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
