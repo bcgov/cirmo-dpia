@@ -2,18 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { routes } from '../../../constant/routes';
 import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
-import { useFetchAuthCode } from '../../../hooks/useFtechAuthCode';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
-import { getKeycloakUserInfo } from '../../../utils/getKeycloakUserInfo';
 import { setItemInStorage } from '../../../utils/helper.util';
 
 type Props = {
