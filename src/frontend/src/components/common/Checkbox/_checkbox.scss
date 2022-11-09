@@ -2,9 +2,9 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-  margin-left: 1.5em;
+  margin-bottom: 1em;
 
-  & > .cbInfoIcon {
+  & > .cb-info-icon {
     color: $link-blue;
   }
 
@@ -15,5 +15,9 @@
     align-items: start;
     background-color: $link-blue;
     font-weight: 700;
+  }
+
+  &:nth-child(5n) {
+    margin-bottom: 0;
   }
 }

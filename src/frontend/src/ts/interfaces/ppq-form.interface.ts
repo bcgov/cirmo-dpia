@@ -3,9 +3,7 @@ import { PiaTypesEnum } from '../enums/pia-types.enum';
 
 export interface IPPQForm {
   name: string;
-  email: string;
   ministry: GovMinistriesEnum | string;
-  branch: string;
   initiativeName: string;
   initiativeDescription: string;
   dataElements: string;
@@ -22,4 +20,5 @@ export interface IPPQForm {
   hasAiOrMl?: boolean;
   hasPartnershipNonMinistry?: boolean;
   proposedStartDate?: Date | null;
+  hasAdditionalInfo?: string;
 }

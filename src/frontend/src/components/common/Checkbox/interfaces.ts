@@ -6,5 +6,5 @@ export interface ICheckbox {
   value: string;
   tooltip?: boolean;
   tooltipText?: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }

@@ -128,7 +128,7 @@ a:hover {
 }
 
 .btn-logout {
-  @extend .btn-login;
+  @extend %btn-login;
 
   border: 0;
 }

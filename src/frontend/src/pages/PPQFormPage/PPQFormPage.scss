@@ -1,10 +1,10 @@
 .background {
   width: 100vw;
+  height: 100vh;
   margin-inline: 0;
   background-color: $ntrl-lightgray;
 
   &.results-wrapper {
-    margin-top: 0;
     overflow-x: hidden;
   }
 }
@@ -27,16 +27,29 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: .35em;
+  gap: 0.35em;
 
   & > h2 {
     margin: 0;
     margin-top: 3em;
     margin-bottom: 0.8em;
+    font-weight: bold;
   }
 
   & > label:not(.input-label) {
     margin-top: 1em;
+    color: $ntrl-darkgray;
+    font-weight: 700;
+
+    & > p {
+      color: $ntrl-darkgray;
+    }
+
+    & > .dropdown {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
   }
 
   & > label:is(.h2-label) {
@@ -47,6 +60,28 @@
   &.pi-collect {
     margin-top: 1em;
   }
+}
+
+.other-factors-container {
+  columns: 2 auto;
+}
+
+.pia-type {
+  columns: 4 auto;
+}
+
+.review-type {
+  columns: 2 auto;
+}
+
+.start-date-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#start-date-label {
+  margin-top: 0;
 }
 
 .btn-submit {
@@ -70,9 +105,13 @@
   }
 }
 
-label:not(.input-label) {
-  color: $ntrl-darkgray;
-  font-weight: 700;
+.dropdown-icon {
+  position: absolute;
+  left: calc(100% - 2em);
+}
+
+.select-label {
+  margin-bottom: 0.3em;
 }
 
 span {
@@ -81,6 +120,7 @@ span {
 
 .input-label {
   display: flex;
-  gap: .5em;
+  gap: 0.5em;
   user-select: none;
+  margin-top: 0.5em;
 }

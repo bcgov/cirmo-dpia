@@ -2,25 +2,25 @@ export const OtherFactor = [
   {
     label: 'Sensitive personal information',
     value: 'hasSensitivePersonalInformation',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `There is no complete definition for sensitive personal information. That’s because 
     sensitivity depends on context and the type of personal information involved. Any type of personal 
     information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
     and learn more about sensitive personal information. Ask your MPO for help to identify whether 
     personal information in your initiative is sensitive.`,
   },
-  {
-    label: 'Information Sharing Agreement',
-    value: 'hasSharingOfPersonalInformation',
-    tooltip: true,
-    tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
-    to share personal information with another government or government agency on a regular basis. ISAs are 
-    not necessary when one B.C. government ministry shares personal information with another.`,
-  },
+  /*{
+    //label: 'Information Sharing Agreement',
+    //value: 'hasSharingOfPersonalInformation',
+    //tooltip: false,
+    //tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
+    //to share personal information with another government or government agency on a regular basis. ISAs are 
+    //not necessary when one B.C. government ministry shares personal information with another.`,
+  },*/
   {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
     for the purpose of providing a service.`,
   },
@@ -31,7 +31,7 @@ export const OtherFactor = [
   {
     label: 'Cloud technology',
     value: 'hasCloudTechnology',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
     service through a web browser, that’s a good indication that you’re using a cloud service. If you’re 
     working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using 
@@ -46,9 +46,13 @@ export const OtherFactor = [
     value: 'hasDisclosureOutsideOfCanada',
   },
   {
+    label: 'Data-linking',
+    value: 'hasDataLinking',
+  },
+  {
     label: 'BC Services Card Onboarding',
     value: 'hasBcServicesCardOnboarding',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate 
     a user’s identity when the user accesses a service.`,
   },
@@ -167,20 +171,37 @@ export const MinistryList = [
 
 export const PIATypes = [
   {
-    label: 'New initiative',
-    value: 'NEW_INITIATIVE',
+    label: 'Standard PIA',
+    value: 'STANDARD_PIA',
+    checked: false,
   },
   {
-    label: 'Initiative update',
+    label: 'Initiative Update',
     value: 'INITIATIVE_UPDATE',
+    checked: false,
   },
   {
-    label: 'Corporate Checklist',
-    value: 'CORPORATE_CHECKLIST',
+    label: 'Delegate Review',
+    value: 'DELEGATE_REVIEW',
+    checked: false,
   },
   {
-    label: 'I’m not sure',
+    label: 'Other',
     value: 'null',
+    checked: false,
+  },
+];
+
+export const ReviewTypes = [
+  {
+    label: 'Non-PI',
+    value: 'NON_PI',
+    checked: false,
+  },
+  {
+    label: 'Checklist',
+    value: 'CHECKLIST',
+    checked: false,
   },
 ];
 
