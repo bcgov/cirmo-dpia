@@ -1,42 +1,32 @@
-export const PpqOtherFactors = [
-  {
+export const PpqOtherFactors = {
+  hasSensitivePersonalInformation: {
     label: 'Sensitive personal information',
-    value: 'hasSensitivePersonalInformation',
   },
-  {
+  hasProgramAgreement: {
     label: 'Common or integrated program agreement',
-    value: 'hasProgramAgreement',
   },
-  {
+  hasOthersAccessToPersonalInformation: {
     label: 'Vendor or third-party access to personal information',
-    value: 'hasOthersAccessToPersonalInformation',
   },
-  {
+  hasCloudTechnology: {
     label: 'Cloud technology',
-    value: 'hasCloudTechnology',
   },
-  {
+  hasPotentialPublicInterest: {
     label: 'Potential public interest in the initiative',
-    value: 'hasPotentialPublicInterest',
   },
-  {
+  hasDisclosureOutsideOfCanada: {
     label: 'Disclosure of personal information outside of Canada',
-    value: 'hasDisclosureOutsideOfCanada',
   },
-  {
+  hasDataLinking: {
     label: 'Data-linking',
-    value: 'hasDataLinking',
   },
-  {
+  hasBcServicesCardOnboarding: {
     label: 'BC Services Card Onboarding',
-    value: 'hasBcServicesCardOnboarding',
   },
-  {
+  hasAiOrMl: {
     label: 'Artificial intelligence (AI) or machine learning',
-    value: 'hasAiOrMl',
   },
-  {
+  hasPartnershipNonMinistry: {
     label: 'Partnership with non-ministry public bodies or other organizations',
-    value: 'hasPartnershipNonMinistry',
   },
-];
+};

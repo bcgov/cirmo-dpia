@@ -44,17 +44,13 @@ export class PpqService {
     );
 
     // Format values to feed into the pdf
-    const ministry = GovMinistries.find(
-      (m) => m.value === ppqForm.ministry,
-    )?.label;
+    const ministry = GovMinistries?.[ppqForm.ministry]?.label;
 
-    const piaType = PiaTypes.find(
-      (type) => type.value === ppqForm.piaType,
-    )?.label;
+    const piaType = PiaTypes?.[ppqForm.piaType]?.label;
 
-    const otherFactors = PpqOtherFactors.filter(
-      (factor) => ppqForm[factor.value] === true,
-    ).map((factor) => factor.label);
+    const otherFactors = Object.keys(PpqOtherFactors)
+      .filter((factor) => ppqForm[factor] === true)
+      .map((factor) => PpqOtherFactors?.[factor]?.label);
 
     // Compile the pug template with the custom values
     const html = compiledResultTemplateFunction({
