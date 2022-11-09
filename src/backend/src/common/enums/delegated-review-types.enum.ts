@@ -1,4 +1,4 @@
 export enum DelegatedReviewTypesEnum {
-  NON_PIA = 'NON-PIA',
+  NON_PI = 'NON-PI',
   CHECKLIST = 'CHECKLIST',
 }
