@@ -52,7 +52,7 @@ jobs:
         run : |
           docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           
-      # Setup environment variables variables
+      # Setup environment variables
       - name: Setup environment
         run: |
           make api-setup-env
