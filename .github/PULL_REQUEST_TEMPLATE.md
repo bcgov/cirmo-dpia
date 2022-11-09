@@ -35,3 +35,7 @@ Please describe the tests that you ran to verify your changes.
 - [ ] My code follows standards and practices outlined in the BC Government API Development Guidelines
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] My changes includes Swagger documentation updates that reflect the changes I am introducing
+
+## Definition of Done
+
+![Definition of Done](https://raw.githubusercontent.com/bcgov/cirmo-dpia/main/.github/assets/DoD.jpg)
