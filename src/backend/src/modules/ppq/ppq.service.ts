@@ -6,7 +6,6 @@ import * as pug from 'pug';
 import * as Puppeteer from 'puppeteer';
 
 import { GovMinistries } from '../../common/constants/gov-ministries.constant';
-import { PiaComplexity } from '../../common/enums/pia-complexity.enum';
 import { PiaTypes } from '../../common/constants/pia-types.constant';
 import { PpqEntity } from './entities/ppq.entity';
 import { PpqOtherFactors } from './constants/ppq-other-factors.constant';
@@ -29,39 +28,7 @@ export class PpqService {
   async createPpq(body: PpqPostDTO): Promise<PpqResultRO> {
     const ppqForm: PpqEntity = await this.ppqRepository.save({ ...body });
 
-    const result: PpqResultRO = await this.getPpqResult(ppqForm);
-
-    return result;
-  }
-
-  async getPpqResult(ppqForm): Promise<PpqResultRO> {
-    let complexity = PiaComplexity.LOW;
-
-    // if user is sure of having personal information, it is at-least Standard
-    if (ppqForm.containsPersonalInformation === true) {
-      complexity = PiaComplexity.STANDARD;
-    }
-
-    // if user is unsure, PIA is high complexity
-    if (ppqForm.containsPersonalInformation === null) {
-      complexity = PiaComplexity.HIGH;
-    }
-
-    // if any of the below factors is true, PIA is high complexity
-    const otherFactorsValue = PpqOtherFactors.map(
-      (factor) => ppqForm[factor.value],
-    );
-
-    if (otherFactorsValue.some((factor) => factor === true)) {
-      complexity = PiaComplexity.HIGH;
-    }
-
-    const resultRO: PpqResultRO = {
-      id: ppqForm.id,
-      complexity,
-    };
-
-    return resultRO;
+    return { id: ppqForm.id };
   }
 
   async downloadPpqResultPdf(id: number) {
@@ -77,23 +44,13 @@ export class PpqService {
     );
 
     // Format values to feed into the pdf
-    const ministry = GovMinistries.find(
-      (m) => m.value === ppqForm.ministry,
-    )?.label;
+    const ministry = GovMinistries?.[ppqForm.ministry]?.label;
 
-    const piaType = PiaTypes.find(
-      (type) => type.value === ppqForm.piaType,
-    )?.label;
+    const piaType = PiaTypes?.[ppqForm.piaType]?.label;
 
-    const containsPersonalInformation = ppqForm.containsPersonalInformation
-      ? 'Yes'
-      : ppqForm.containsPersonalInformation === false
-      ? 'No'
-      : 'Not Sure';
-
-    const otherFactors = PpqOtherFactors.filter(
-      (factor) => ppqForm[factor.value] === true,
-    ).map((factor) => factor.label);
+    const otherFactors = Object.keys(PpqOtherFactors)
+      .filter((factor) => ppqForm[factor] === true)
+      .map((factor) => PpqOtherFactors?.[factor]?.label);
 
     // Compile the pug template with the custom values
     const html = compiledResultTemplateFunction({
@@ -101,14 +58,11 @@ export class PpqService {
       ...{
         updatedAt: shortDate(ppqForm.updatedAt),
         ministry: ministry || 'NA',
-        branch: ppqForm.branch || 'N/A',
         piaType: piaType || 'N/A',
         proposedStartDate: ppqForm.proposedStartDate
           ? shortDate(ppqForm.proposedStartDate)
           : 'N/A',
-        containsPersonalInformation,
-        initiativeDescription: marked.parse(ppqForm.initiativeDescription),
-        dataElements: marked.parse(ppqForm.dataElements),
+        initiativeDescription: marked.parse(ppqForm.description),
         otherFactors,
       },
     });

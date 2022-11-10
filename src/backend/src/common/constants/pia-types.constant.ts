@@ -1,20 +1,13 @@
 import { PiaTypesEnum } from '../enums/pia-types.enum';
 
-export const PiaTypes = [
-  {
-    label: 'New initiative',
-    value: PiaTypesEnum.NEW_INITIATIVE,
+export const PiaTypes = {
+  [PiaTypesEnum.STANDARD]: {
+    label: 'Standard PIA',
   },
-  {
-    label: 'Initiative update',
-    value: PiaTypesEnum.INITIATIVE_UPDATE,
+  [PiaTypesEnum.INITIATIVE_UPDATE]: {
+    label: 'Initiative Update',
   },
-  {
-    label: 'Corporate Checklist',
-    value: PiaTypesEnum.CORPORATE_CHECKLIST,
+  [PiaTypesEnum.DELEGATE_REVIEW]: {
+    label: 'Delegated Review',
   },
-  {
-    label: 'Not sure',
-    value: null,
-  },
-];
+};

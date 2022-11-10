@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
           
       - name: Navigate to Backend, run npm tests
         run: | 
