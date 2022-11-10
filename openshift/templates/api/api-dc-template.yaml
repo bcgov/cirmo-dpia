@@ -148,6 +148,31 @@ objects:
                   secretKeyRef:
                     name: keycloak-api-values
                     key: KEYCLOAK_USER_INFO_URI
+              - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-connection-secret
+                  key: POSTGRES_USER
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PASSWORD
+              - name: POSTGRES_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PORT
+              - name: POSTGRES_DB
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_DB
+              - name: POSTGRES_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_HOST
             resources:
               limits:
                 cpu: 150m
