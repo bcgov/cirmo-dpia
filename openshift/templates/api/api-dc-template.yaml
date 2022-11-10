@@ -56,20 +56,20 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
-          vault.hashicorp.com/agent-inject: 'true'
-          vault.hashicorp.com/agent-inject-token: 'true'
-          vault.hashicorp.com/agent-pre-populate-only: 'true'
-          vault.hashicorp.com/auth-path: auth/k8s-silver
-          vault.hashicorp.com/namespace: platform-services
-          vault.hashicorp.com/role: ${VAULT_ROLE}
-          vault.hashicorp.com/agent-inject-${VAULT_POSTGRES_SECRET_NAME}: |
-            {{- with secret "${VAULT_ROLE}/${VAULT_POSTGRES_SECRET_NAME}" }}
-            export POSTGRES_USER="{{ .Data.data.POSTGRES_USER }}"
-            export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
-            export POSTGRES_HOST="{{ .Data.data.POSTGRES_HOST }}"
-            export POSTGRES_PORT="{{ .Data.data.POSTGRES_PORT }}"
-            export POSTGRES_DB="{{ .Data.data.POSTGRES_DB }}"
-            {{- end `}} }}
+          #vault.hashicorp.com/agent-inject: 'true'
+          #vault.hashicorp.com/agent-inject-token: 'true'
+          #vault.hashicorp.com/agent-pre-populate-only: 'true'
+          #vault.hashicorp.com/auth-path: auth/k8s-silver
+          #vault.hashicorp.com/namespace: platform-services
+          #vault.hashicorp.com/role: ${VAULT_ROLE}
+          #vault.hashicorp.com/agent-inject-${VAULT_POSTGRES_SECRET_NAME}: |
+          #  {{- with secret "${VAULT_ROLE}/${VAULT_POSTGRES_SECRET_NAME}" }}
+          #  export POSTGRES_USER="{{ .Data.data.POSTGRES_USER }}"
+          #  export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
+          #  export POSTGRES_HOST="{{ .Data.data.POSTGRES_HOST }}"
+          #  export POSTGRES_PORT="{{ .Data.data.POSTGRES_PORT }}"
+          #  export POSTGRES_DB="{{ .Data.data.POSTGRES_DB }}"
+          #  {{- end `}} }}
       spec:
         containers:
           - name: ${APPLICATION_NAME}
