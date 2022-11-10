@@ -29,16 +29,8 @@ const PPQFormPage = () => {
   const [name, setName] = useState('');
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
-  const [piaTypes, setPiaTypes] = useState({
-    isStandardPia: false,
-    isInitiativeUpdate: false,
-    isDelegateReview: false,
-    isOther: false,
-  });
-  const [reviewTypes, setReviewTypes] = useState({
-    isNonPI: false,
-    isChecklist: false,
-  });
+  const [piaType, setPiaType] = useState('');
+  const [reviewType, setReviewType] = useState('');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState('');
@@ -71,17 +63,11 @@ const PPQFormPage = () => {
   };
 
   const handlePiaTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPiaTypes({
-      ...piaTypes,
-      [event.target.value]: event.target.checked,
-    });
+    setPiaType(event.target.value);
   };
 
   const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setReviewTypes({
-      ...reviewTypes,
-      [event.target.value]: event.target.checked,
-    });
+    setReviewType(event.target.value);
   };
 
   const handleAdditionalInfoChange = (newMessage: any) => {
@@ -94,8 +80,8 @@ const PPQFormPage = () => {
       name: name,
       ministry: ministry,
       proposedStartDate: startDate,
-      ...piaTypes,
-      ...reviewTypes,
+      piaType,
+      reviewType,
       ...checkedPIItems,
     };
     try {

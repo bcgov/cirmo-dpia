@@ -99,7 +99,7 @@
   width: 100%;
   justify-content: space-between;
 
-  & :first-child {
+  &.connect-buttons:first-child {
     visibility: hidden;
   }
 }
