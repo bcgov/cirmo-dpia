@@ -1,3 +1,6 @@
+import { PiaReviewTypesEnum } from '../ts/enums/pia-review-types.enum';
+import { PiaTypesEnum } from '../ts/enums/pia-types.enum';
+
 export const OtherFactor = [
   {
     label: 'Sensitive personal information',
@@ -172,36 +175,36 @@ export const MinistryList = [
 export const PIATypes = [
   {
     label: 'Standard PIA',
-    value: 'STANDARD_PIA',
-    checked: false,
+    value: PiaTypesEnum.STANDARD_PIA,
+    name: 'pia-types',
   },
   {
     label: 'Initiative Update',
-    value: 'INITIATIVE_UPDATE',
-    checked: false,
+    value: PiaTypesEnum.INITIATIVE_UPDATE,
+    name: 'pia-types',
   },
   {
     label: 'Delegate Review',
-    value: 'DELEGATE_REVIEW',
-    checked: false,
+    value: PiaTypesEnum.DELEGATE_REVIEW,
+    name: 'pia-types',
   },
   {
     label: 'Other',
-    value: 'null',
-    checked: false,
+    value: '',
+    name: 'pia-types',
   },
 ];
 
 export const ReviewTypes = [
   {
     label: 'Non-PI',
-    value: 'NON_PI',
-    checked: false,
+    value: PiaReviewTypesEnum.NON_PI,
+    name: 'review-types',
   },
   {
     label: 'Checklist',
-    value: 'CHECKLIST',
-    checked: false,
+    value: PiaReviewTypesEnum.CHECKLIST,
+    name: 'review-types',
   },
 ];
 

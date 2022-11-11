@@ -9,6 +9,10 @@
   }
 }
 
+form {
+  padding-inline: 5em;
+}
+
 .ppq-form-section {
   display: flex;
   background-color: white;
@@ -122,4 +126,8 @@ span {
   gap: 0.5em;
   user-select: none;
   margin-top: 0.5em;
+
+  &.input-label-row {
+    margin-top: 0;
+  }
 }

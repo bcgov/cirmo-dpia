@@ -26,7 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
   const [piaType, setPiaType] = useState('');
@@ -77,7 +77,7 @@ const PPQFormPage = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const requestBody: IPPQForm = {
-      name: name,
+      title: title,
       ministry: ministry,
       proposedStartDate: startDate,
       piaType,
@@ -110,8 +110,8 @@ const PPQFormPage = () => {
             <div className="row">
               <InputText
                 label="Title"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required={true}
               />
             </div>
@@ -165,29 +165,63 @@ const PPQFormPage = () => {
             <div className="form-group">
               <h2>{Messages.PiaTypeHeading.en}</h2>
               <div className="pia-type">
-                {PIATypes.map((option, index) => (
-                  <Checkbox
-                    key={index}
-                    label={option.label}
-                    value={option.value}
-                    checked={option.checked}
-                    onChange={handlePiaTypeChange}
-                  />
-                ))}
+                {PIATypes.map((option, index) => {
+                  return PIATypes[0] === option ? (
+                    <label className="input-label input-label-row">
+                      <input
+                        key={index}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handlePiaTypeChange}
+                        defaultChecked
+                      />
+                      {option.label}
+                    </label>
+                  ) : (
+                    <label className="input-label input-label-row">
+                      <input
+                        key={index}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handlePiaTypeChange}
+                      />
+                      {option.label}
+                    </label>
+                  );
+                })}
               </div>
             </div>
             <div className="form-group">
               <h2>{Messages.DelegatedTypeHeading.en}</h2>
               <div className="review-type">
-                {ReviewTypes.map((option, index) => (
-                  <Checkbox
-                    key={index}
-                    label={option.label}
-                    value={option.value}
-                    checked={option.checked}
-                    onChange={handleReviewTypeChange}
-                  />
-                ))}
+                {ReviewTypes.map((option, index) => {
+                  return ReviewTypes[0] === option ? (
+                    <label className="input-label input-label-row">
+                      <input
+                        key={index}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handleReviewTypeChange}
+                        defaultChecked
+                      />
+                      {option.label}
+                    </label>
+                  ) : (
+                    <label className="input-label input-label-row">
+                      <input
+                        key={index}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handleReviewTypeChange}
+                      />
+                      {option.label}
+                    </label>
+                  );
+                })}
               </div>
             </div>
             <div className="form-group">

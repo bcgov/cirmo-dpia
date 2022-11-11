@@ -3,10 +3,10 @@ import { PiaReviewTypesEnum } from '../enums/pia-review-types.enum';
 import { PiaTypesEnum } from '../enums/pia-types.enum';
 
 export interface IPPQForm {
-  name: string;
+  title: string;
   ministry: GovMinistriesEnum | string;
-  piaType: PiaTypesEnum;
-  reviewType?: PiaReviewTypesEnum;
+  piaType: PiaTypesEnum | string;
+  reviewType?: PiaReviewTypesEnum | string;
   hasSensitivePersonalInformation?: boolean;
   hasSharingOfPersonalInformation?: boolean;
   hasProgramAgreement?: boolean;
