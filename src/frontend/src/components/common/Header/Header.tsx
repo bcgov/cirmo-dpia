@@ -30,17 +30,25 @@ function Header({ user }: Props) {
   const didAuthRef = useRef(false);
   const { keycloakUserDetail, error: userInfoError } =
     useFetchKeycloakUserInfo(accessToken);
-
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
   const win: Window = window;
+  /**
+   * Notes:
+   * this uesEffect hook use a special trick to bypass react feature that will
+   * render component twice in development environment
+   * however we are use keycloak authorization flow to do authentication, and per keycloak,
+   * Each authorization code can be used only once, to generate single new access token.
+   * therefor we can not trigger another call using the same authorization code.
+   * which means we can not apply solution mentioned in https://beta.reactjs.org/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+   * we must stop the second api call to keycloak, that's why we are using ref here to stop second call
+   */
   useEffect(() => {
     async function startFetching() {
       if (didAuthRef.current === false) {
         try {
           didAuthRef.current = true;
-          const res = await getAccessToken(code);
-          const keycloakToken = await res?.json();
+          const keycloakToken = await getAccessToken(code);
           if (keycloakToken !== undefined) {
             storeTokens(keycloakToken);
             setAuthenticated(true);
@@ -48,13 +56,14 @@ function Header({ user }: Props) {
             navigate(routes.PPQ_LANDING_PAGE);
           }
         } catch (e) {
+          setMessage('login failed');
           console.log(e);
         }
       }
     }
     startFetching();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [code]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -65,8 +74,7 @@ function Header({ user }: Props) {
     ) {
       setItemInStorage('userName', keycloakUserDetail.name);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessToken, keycloakUserDetail, userInfoError]);
 
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
