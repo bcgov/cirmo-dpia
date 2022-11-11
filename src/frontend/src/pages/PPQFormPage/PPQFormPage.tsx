@@ -54,6 +54,9 @@ const PPQFormPage = () => {
   };
 
   const handleBackClick = () => {
+    // 👇️ replace set to true
+
+    // TODO replace hardcode value to const value in a central file
     navigate(routes.PPQ_LANDING_PAGE, { replace: true });
   };
 
