@@ -23,6 +23,7 @@ import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
 import Alert from '../../components/common/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PiaTypesEnum } from '../../ts/enums/pia-types.enum';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const PPQFormPage = () => {
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
   const [piaType, setPiaType] = useState('');
+  const [isDelegatedReview, setIsDelegatedReview] = useState(false);
   const [delegatedReviewType, setDelegatedReviewType] = useState('');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
@@ -64,6 +66,12 @@ const PPQFormPage = () => {
 
   const handlePiaTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPiaType(event.target.value);
+
+    if (event.target.value === PiaTypesEnum.DELEGATE_REVIEW) {
+      setIsDelegatedReview(true);
+    } else {
+      setIsDelegatedReview(false);
+    }
   };
 
   const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -194,39 +202,45 @@ const PPQFormPage = () => {
                 })}
               </div>
             </div>
-            <div className="form-group">
-              <h2>{Messages.DelegatedTypeHeading.en}</h2>
-              <div className="review-type">
-                {ReviewTypes.map((option, index) => {
-                  return ReviewTypes[0] === option ? (
-                    <label className="input-label input-label-row">
-                      <input
-                        key={index}
-                        type="radio"
-                        name={option.name}
-                        value={option.value}
-                        onChange={handleReviewTypeChange}
-                        defaultChecked
-                      />
-                      {option.label}
-                    </label>
-                  ) : (
-                    <label className="input-label input-label-row">
-                      <input
-                        key={index}
-                        type="radio"
-                        name={option.name}
-                        value={option.value}
-                        onChange={handleReviewTypeChange}
-                      />
-                      {option.label}
-                    </label>
-                  );
-                })}
+            {isDelegatedReview && (
+              <div className="form-group">
+                <h2>{Messages.DelegatedTypeHeading.en}</h2>
+                <div className="review-type">
+                  {ReviewTypes.map((option, index) => {
+                    return ReviewTypes[0] === option ? (
+                      <label className="input-label input-label-row">
+                        <input
+                          key={index}
+                          type="radio"
+                          name={option.name}
+                          value={option.value}
+                          onChange={handleReviewTypeChange}
+                          defaultChecked
+                        />
+                        {option.label}
+                      </label>
+                    ) : (
+                      <label className="input-label input-label-row">
+                        <input
+                          key={index}
+                          type="radio"
+                          name={option.name}
+                          value={option.value}
+                          onChange={handleReviewTypeChange}
+                        />
+                        {option.label}
+                      </label>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
             <div className="form-group">
-              <h2>{Messages.StartDateHeading.en}</h2>
+              <h2>
+                {!isDelegatedReview
+                  ? Messages.StartDateHeading.en2
+                  : Messages.StartDateHeading.en}
+              </h2>
               <div className="start-date-container">
                 <div className="form-group col-md-6">
                   <div>
@@ -279,7 +293,11 @@ const PPQFormPage = () => {
               </div>
             </div>
             <div className="form-group">
-              <h2>{Messages.AdditionalInfoHeading.en}</h2>
+              <h2>
+                {!isDelegatedReview
+                  ? Messages.AdditionalInfoHeading.en2
+                  : Messages.AdditionalInfoHeading.en}
+              </h2>
               <MDEditor
                 preview="edit"
                 value={description}
