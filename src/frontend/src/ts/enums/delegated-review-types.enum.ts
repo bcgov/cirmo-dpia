@@ -1,4 +1,4 @@
-export enum PiaReviewTypesEnum {
+export enum DelegatedReviewTypesEnum {
   NON_PI = 'NON_PI',
   CHECKLIST = 'CHECKLIST',
 }

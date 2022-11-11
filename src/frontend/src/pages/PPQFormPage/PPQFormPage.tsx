@@ -30,10 +30,10 @@ const PPQFormPage = () => {
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
   const [piaType, setPiaType] = useState('');
-  const [reviewType, setReviewType] = useState('');
+  const [delegatedReviewType, setDelegatedReviewType] = useState('');
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
-  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [description, setDescription] = useState('');
   const [checkedPIItems, setCheckedPIItems] = useState({
     hasSensitivePersonalInformation: false,
     hasSharingOfPersonalInformation: false,
@@ -67,11 +67,11 @@ const PPQFormPage = () => {
   };
 
   const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setReviewType(event.target.value);
+    setDelegatedReviewType(event.target.value);
   };
 
-  const handleAdditionalInfoChange = (newMessage: any) => {
-    setAdditionalInfo(newMessage);
+  const handleDescriptionChange = (newMessage: any) => {
+    setDescription(newMessage);
   };
 
   const handleSubmit = async (event: any) => {
@@ -81,7 +81,8 @@ const PPQFormPage = () => {
       ministry: ministry,
       proposedStartDate: startDate,
       piaType,
-      reviewType,
+      delegatedReviewType,
+      description,
       ...checkedPIItems,
     };
     try {
@@ -281,8 +282,8 @@ const PPQFormPage = () => {
               <h2>{Messages.AdditionalInfoHeading.en}</h2>
               <MDEditor
                 preview="edit"
-                value={additionalInfo}
-                onChange={handleAdditionalInfoChange}
+                value={description}
+                onChange={handleDescriptionChange}
               />
             </div>
             <div className="horizontal-divider"></div>

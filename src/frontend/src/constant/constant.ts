@@ -1,4 +1,4 @@
-import { PiaReviewTypesEnum } from '../ts/enums/pia-review-types.enum';
+import { DelegatedReviewTypesEnum } from '../ts/enums/delegated-review-types.enum';
 import { PiaTypesEnum } from '../ts/enums/pia-types.enum';
 
 export const OtherFactor = [
@@ -198,12 +198,12 @@ export const PIATypes = [
 export const ReviewTypes = [
   {
     label: 'Non-PI',
-    value: PiaReviewTypesEnum.NON_PI,
+    value: DelegatedReviewTypesEnum.NON_PI,
     name: 'review-types',
   },
   {
     label: 'Checklist',
-    value: PiaReviewTypesEnum.CHECKLIST,
+    value: DelegatedReviewTypesEnum.CHECKLIST,
     name: 'review-types',
   },
 ];
