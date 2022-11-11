@@ -37,13 +37,14 @@ function Header({ user }: Props) {
    * Notes:
    * this uesEffect hook use a special trick to bypass react feature that will
    * render component twice in development environment
-   * however we are use keycloak authorization flow to do authentication, and per keycloak,
+   * because we are use keycloak authorization flow to do authentication, and per keycloak,
    * Each authorization code can be used only once, to generate single new access token.
    * therefor we can not trigger another call using the same authorization code.
    * which means we can not apply solution mentioned in https://beta.reactjs.org/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
    * we must stop the second api call to keycloak, that's why we are using ref here to stop second call
    */
   useEffect(() => {
+    if (!code) return;
     async function startFetching() {
       if (didAuthRef.current === false) {
         try {
@@ -62,8 +63,7 @@ function Header({ user }: Props) {
       }
     }
     startFetching();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code]);
+  }, [code, navigate, setAuthenticated]);
 
   useEffect(() => {
     if (!accessToken) return;
