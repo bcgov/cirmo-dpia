@@ -21,6 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import { TokenDecorator } from 'src/common/decorators/token.decorator';
 import { AuthService } from '../auth/auth.service';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqService } from './ppq.service';
@@ -43,9 +44,8 @@ export class PpqController {
   async postForm(
     @Body() body: PpqPostDTO,
     @Req() req: Request,
+    @TokenDecorator() accessToken: string,
   ): Promise<PpqResultRO> {
-    const accessToken = req?.headers?.authorization?.split('Bearer ')?.[1];
-
     if (!accessToken) {
       throw new UnauthorizedException();
     }
@@ -64,9 +64,8 @@ export class PpqController {
     @Param('id') id,
     @Req() req: Request,
     @Res() res: Response,
+    @TokenDecorator() accessToken: string,
   ) {
-    const accessToken = req?.headers?.authorization?.split('Bearer ')?.[1];
-
     if (!accessToken) {
       throw new UnauthorizedException();
     }
