@@ -7,32 +7,51 @@ import {
   NotFoundException,
   Param,
   Post,
+  Req,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+import { AuthService } from '../auth/auth.service';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqService } from './ppq.service';
 import { PpqResultRO } from './ro/ppq-result.ro';
 
 @Controller('ppq')
 @ApiTags('PPQ')
+@ApiBearerAuth()
 export class PpqController {
-  constructor(private readonly ppqService: PpqService) {}
+  constructor(
+    private readonly ppqService: PpqService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
   @ApiOperation({ description: 'Submit the ppq form' })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Successfully submitted the PPQ form',
   })
-  async postForm(@Body() body: PpqPostDTO): Promise<PpqResultRO> {
-    return this.ppqService.createPpq(body);
+  async postForm(
+    @Body() body: PpqPostDTO,
+    @Req() req: Request,
+  ): Promise<PpqResultRO> {
+    const accessToken = req?.headers?.authorization?.split('Bearer ')?.[1];
+
+    if (!accessToken) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.authService.getUserInfo(accessToken);
+    return this.ppqService.createPpq(body, user);
   }
 
   @Get('/download/:id')
@@ -41,7 +60,17 @@ export class PpqController {
   @ApiOkResponse({ description: 'Successfully downloaded the PPQ result form' })
   @ApiNotFoundResponse({ description: 'PPQ Id not found' })
   @HttpCode(HttpStatus.OK)
-  async downloadResult(@Param('id') id, @Res() res: Response) {
+  async downloadResult(
+    @Param('id') id,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const accessToken = req?.headers?.authorization?.split('Bearer ')?.[1];
+
+    if (!accessToken) {
+      throw new UnauthorizedException();
+    }
+
     const pdfBuffer = await this.ppqService.downloadPpqResultPdf(id);
     if (!pdfBuffer) {
       throw new NotFoundException();
