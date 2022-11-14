@@ -12,14 +12,6 @@ export const OtherFactor = [
     and learn more about sensitive personal information. Ask your MPO for help to identify whether 
     personal information in your initiative is sensitive.`,
   },
-  /*{
-    //label: 'Information Sharing Agreement',
-    //value: 'hasSharingOfPersonalInformation',
-    //tooltip: false,
-    //tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
-    //to share personal information with another government or government agency on a regular basis. ISAs are 
-    //not necessary when one B.C. government ministry shares personal information with another.`,
-  },*/
   {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
