@@ -6,7 +6,7 @@ export interface IPPQForm {
   title: string;
   ministry: GovMinistriesEnum | string;
   piaType: PiaTypesEnum | string;
-  delegatedReviewType?: DelegatedReviewTypesEnum | string;
+  delegatedReviewType?: DelegatedReviewTypesEnum | string | null;
   hasSensitivePersonalInformation?: boolean;
   hasSharingOfPersonalInformation?: boolean;
   hasProgramAgreement?: boolean;
