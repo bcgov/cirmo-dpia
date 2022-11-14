@@ -19,6 +19,7 @@ export const SwaggerDocs = (app: INestApplication) => {
         \n - authentication methods to utilize this API
         \n - contact information, license, terms of use and other information regarding the consumption of this API`,
     )
+    .addBearerAuth()
     .build();
 
   const baseDocument = SwaggerModule.createDocument(app, options, {

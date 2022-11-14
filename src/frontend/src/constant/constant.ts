@@ -1,8 +1,11 @@
+import { DelegatedReviewTypesEnum } from '../ts/enums/delegated-review-types.enum';
+import { PiaTypesEnum } from '../ts/enums/pia-types.enum';
+
 export const OtherFactor = [
   {
     label: 'Sensitive personal information',
     value: 'hasSensitivePersonalInformation',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `There is no complete definition for sensitive personal information. That’s because 
     sensitivity depends on context and the type of personal information involved. Any type of personal 
     information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
@@ -10,17 +13,9 @@ export const OtherFactor = [
     personal information in your initiative is sensitive.`,
   },
   {
-    label: 'Information Sharing Agreement',
-    value: 'hasSharingOfPersonalInformation',
-    tooltip: true,
-    tooltipText: `An information sharing agreement allows a public sector organization, such as a ministry, 
-    to share personal information with another government or government agency on a regular basis. ISAs are 
-    not necessary when one B.C. government ministry shares personal information with another.`,
-  },
-  {
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
     for the purpose of providing a service.`,
   },
@@ -31,7 +26,7 @@ export const OtherFactor = [
   {
     label: 'Cloud technology',
     value: 'hasCloudTechnology',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
     service through a web browser, that’s a good indication that you’re using a cloud service. If you’re 
     working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using 
@@ -42,13 +37,21 @@ export const OtherFactor = [
     value: 'hasPotentialPublicInterest',
   },
   {
+    label: 'Other (Please provide additional details below)',
+    value: '',
+  },
+  {
     label: 'Disclosure of personal information outside of Canada',
     value: 'hasDisclosureOutsideOfCanada',
   },
   {
+    label: 'Data-linking',
+    value: 'hasDataLinking',
+  },
+  {
     label: 'BC Services Card Onboarding',
     value: 'hasBcServicesCardOnboarding',
-    tooltip: true,
+    tooltip: false,
     tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate 
     a user’s identity when the user accesses a service.`,
   },
@@ -167,20 +170,32 @@ export const MinistryList = [
 
 export const PIATypes = [
   {
-    label: 'New initiative',
-    value: 'NEW_INITIATIVE',
+    label: 'Standard PIA',
+    value: PiaTypesEnum.STANDARD,
+    name: 'pia-types',
   },
   {
-    label: 'Initiative update',
-    value: 'INITIATIVE_UPDATE',
+    label: 'Initiative Update',
+    value: PiaTypesEnum.INITIATIVE_UPDATE,
+    name: 'pia-types',
   },
   {
-    label: 'Corporate Checklist',
-    value: 'CORPORATE_CHECKLIST',
+    label: 'Delegate Review',
+    value: PiaTypesEnum.DELEGATE_REVIEW,
+    name: 'pia-types',
+  },
+];
+
+export const ReviewTypes = [
+  {
+    label: 'Non-PI',
+    value: DelegatedReviewTypesEnum.NON_PI,
+    name: 'review-types',
   },
   {
-    label: 'I’m not sure',
-    value: 'null',
+    label: 'Checklist',
+    value: DelegatedReviewTypesEnum.CHECKLIST,
+    name: 'review-types',
   },
 ];
 

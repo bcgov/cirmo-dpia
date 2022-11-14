@@ -36,7 +36,7 @@ const Checkbox = ({
           <FontAwesomeIcon
             data-tip={tooltipText}
             data-for={value}
-            className="cbInfoIcon"
+            className="cb-info-icon"
             icon={faInfoCircle}
           />
           <Tooltip

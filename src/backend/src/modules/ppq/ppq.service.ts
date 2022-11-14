@@ -12,6 +12,8 @@ import { PpqOtherFactors } from './constants/ppq-other-factors.constant';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqResultRO } from './ro/ppq-result.ro';
 import { shortDate } from '../../common/helpers/date-helper';
+import { DelegatedReviewTypes } from '../../common/constants/delegated-review-types.constant';
+import { KeycloakUser } from '../auth/keycloak-user.model';
 
 @Injectable()
 export class PpqService {
@@ -25,8 +27,15 @@ export class PpqService {
     return ppqForm;
   }
 
-  async createPpq(body: PpqPostDTO): Promise<PpqResultRO> {
-    const ppqForm: PpqEntity = await this.ppqRepository.save({ ...body });
+  async createPpq(body: PpqPostDTO, user: KeycloakUser): Promise<PpqResultRO> {
+    console.log(user);
+    const ppqForm: PpqEntity = await this.ppqRepository.save({
+      ...body,
+      createdByGuid: user.idir_user_guid,
+      createdByDisplayName: user.display_name,
+      createdByUsername: user.idir_username,
+      createdByEmail: user.email,
+    });
 
     return { id: ppqForm.id };
   }
@@ -48,6 +57,9 @@ export class PpqService {
 
     const piaType = PiaTypes?.[ppqForm.piaType]?.label;
 
+    const delegatedReviewType =
+      DelegatedReviewTypes?.[ppqForm?.delegatedReviewType]?.label;
+
     const otherFactors = Object.keys(PpqOtherFactors)
       .filter((factor) => ppqForm[factor] === true)
       .map((factor) => PpqOtherFactors?.[factor]?.label);
@@ -59,10 +71,11 @@ export class PpqService {
         updatedAt: shortDate(ppqForm.updatedAt),
         ministry: ministry || 'NA',
         piaType: piaType || 'N/A',
+        delegatedReviewType: delegatedReviewType,
         proposedStartDate: ppqForm.proposedStartDate
           ? shortDate(ppqForm.proposedStartDate)
           : 'N/A',
-        initiativeDescription: marked.parse(ppqForm.description),
+        description: marked.parse(ppqForm.description),
         otherFactors,
       },
     });

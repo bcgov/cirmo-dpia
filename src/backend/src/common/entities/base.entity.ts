@@ -12,14 +12,6 @@ export class BaseEntity {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  // TODO - To be added once authentication is enabled
-
-  // @Column({ name: 'created_by' })
-  // createdBy: string;
-
-  // @Column({ name: 'updated_by' })
-  // updatedBy: string;
-
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
