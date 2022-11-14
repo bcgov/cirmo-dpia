@@ -45,6 +45,10 @@ export const OtherFactor = [
     value: 'hasPotentialPublicInterest',
   },
   {
+    label: 'Other (Please provide additional details below)',
+    value: '',
+  },
+  {
     label: 'Disclosure of personal information outside of Canada',
     value: 'hasDisclosureOutsideOfCanada',
   },
@@ -175,7 +179,7 @@ export const MinistryList = [
 export const PIATypes = [
   {
     label: 'Standard PIA',
-    value: PiaTypesEnum.STANDARD_PIA,
+    value: PiaTypesEnum.STANDARD,
     name: 'pia-types',
   },
   {
@@ -186,11 +190,6 @@ export const PIATypes = [
   {
     label: 'Delegate Review',
     value: PiaTypesEnum.DELEGATE_REVIEW,
-    name: 'pia-types',
-  },
-  {
-    label: 'Other',
-    value: '',
     name: 'pia-types',
   },
 ];

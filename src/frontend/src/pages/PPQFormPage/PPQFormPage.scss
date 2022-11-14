@@ -10,12 +10,13 @@
 }
 
 form {
-  padding-inline: 5em;
+  padding-inline: 7em;
 }
 
 .ppq-form-section {
   display: flex;
   background-color: white;
+  padding-block: 5em;
 
   &.results-wrapper {
     margin-inline: 0;

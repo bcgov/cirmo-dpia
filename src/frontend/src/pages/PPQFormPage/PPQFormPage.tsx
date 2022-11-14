@@ -30,9 +30,9 @@ const PPQFormPage = () => {
   const [title, setTitle] = useState('');
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
-  const [piaType, setPiaType] = useState('');
+  const [piaType, setPiaType] = useState(PIATypes[0].value);
   const [isDelegatedReview, setIsDelegatedReview] = useState(false);
-  const [delegatedReviewType, setDelegatedReviewType] = useState('');
+  const [delegatedReviewType, setDelegatedReviewType] = useState();
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
   const [description, setDescription] = useState('');
@@ -90,10 +90,10 @@ const PPQFormPage = () => {
     const requestBody: IPPQForm = {
       title: title,
       ministry: ministry,
+      description,
       proposedStartDate: startDate,
       piaType,
       delegatedReviewType,
-      description,
       ...checkedPIItems,
     };
     try {
@@ -112,7 +112,7 @@ const PPQFormPage = () => {
 
   return (
     <div className="background results-wrapper">
-      <section className="ppq-form-section results-wrapper">
+      <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
