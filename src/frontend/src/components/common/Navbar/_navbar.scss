@@ -1,11 +1,11 @@
 .navbar-container {
   display: flex;
   align-items: center;
-  position: fixed;
+  position: sticky;
+  top: 65px;
   height: 56px;
   width: 100%;
   background-color: $bg-blue;
-  margin-top: 4rem;
   padding-inline: 200px;
   z-index: 100;
 }
