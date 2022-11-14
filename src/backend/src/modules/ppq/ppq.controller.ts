@@ -21,7 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { TokenDecorator } from 'src/common/decorators/token.decorator';
+import { TokenDecorator } from '../../common/decorators/token.decorator';
 import { AuthService } from '../auth/auth.service';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqService } from './ppq.service';
