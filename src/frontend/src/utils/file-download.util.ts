@@ -14,6 +14,7 @@ export class FileDownload {
       endpoint,
       { 'Content-Type': `application/${contentType}` },
       additionalConfig,
+      true,
     );
     const blob: Blob = await response.blob();
 
