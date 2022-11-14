@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { routes } from '../../../constant/routes';
 import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
-import { useFetchAuthCode } from '../../../hooks/useFtechAuthCode';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
+import { getAccessToken } from '../../../utils/getAccessToken';
+import { setItemInStorage } from '../../../utils/helper.util';
 
 type Props = {
   user: string | null;
@@ -24,27 +25,45 @@ function Header({ user }: Props) {
     localStorage.getItem('access_token'),
   );
   const [showModal, setShowModal] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: '' });
   const [message, setMessage] = useState('');
   const code = searchParams.get('code');
-
-  const { keycloakToken, error: authCodeError } = useFetchAuthCode(code);
+  const didAuthRef = useRef(false);
   const { keycloakUserDetail, error: userInfoError } =
     useFetchKeycloakUserInfo(accessToken);
-
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
   const win: Window = window;
+  /**
+   * Notes:
+   * this uesEffect hook use a special trick to bypass react feature that will
+   * render component twice in development environment
+   * because we are use keycloak authorization flow to do authentication, and per keycloak,
+   * Each authorization code can be used only once, to generate single new access token.
+   * therefor we can not trigger another call using the same authorization code.
+   * which means we can not apply solution mentioned in https://beta.reactjs.org/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+   * we must stop the second api call to keycloak, that's why we are using ref here to stop second call
+   */
   useEffect(() => {
-    if (keycloakToken !== undefined && keycloakToken !== null) {
-      storeTokens(keycloakToken);
-      setAuthenticated(true);
-
-      setAccessToken(keycloakToken.access_token);
-      navigate(routes.PPQ_LANDING_PAGE);
-    } else return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, keycloakToken, authCodeError]);
+    if (!code) return;
+    async function startFetching() {
+      if (didAuthRef.current === false) {
+        try {
+          didAuthRef.current = true;
+          const keycloakToken = await getAccessToken(code);
+          if (keycloakToken !== undefined) {
+            storeTokens(keycloakToken);
+            setAuthenticated(true);
+            setAccessToken(keycloakToken.access_token);
+            navigate(routes.PPQ_LANDING_PAGE);
+          }
+        } catch (e) {
+          setMessage('login failed');
+          console.log(e);
+        }
+      }
+    }
+    startFetching();
+  }, [code, navigate, setAuthenticated]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -53,7 +72,7 @@ function Header({ user }: Props) {
       keycloakUserDetail !== null &&
       userInfoError === null
     ) {
-      setUserInfo(keycloakUserDetail);
+      setItemInStorage('userName', keycloakUserDetail.name);
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
@@ -73,7 +92,6 @@ function Header({ user }: Props) {
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
     clearTokens();
     setAccessToken(null);
-    setUserInfo({ name: '' });
     navigate('/');
   };
   const hideModalDialog = async () => {
