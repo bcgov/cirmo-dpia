@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 
-// Decorator to get the access token from the
+// Decorator to extract the access token from the HTTP request
 export const TokenDecorator = createParamDecorator(
   (data, ctx: ExecutionContext) => {
     const request: Request = ctx.switchToHttp().getRequest();
