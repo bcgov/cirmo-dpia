@@ -13,15 +13,17 @@ function NavBar({ pages }: INavbarPages): ReactElement {
                 {page.label}
               </NavLink>
             </li>
-          ) : (
+          </ul>
+        ) : (
+          <ul className={page.id % 2 === 0 ? ' navbar ms-auto' : 'navbar'}>
             <li key={page.id}>
               <NavLink className="bcgovbtn bcgovbtn__secondary nav-link-button" to={page.link}>
                 {page.label}
               </NavLink>
             </li>
-          );
-        })}
-      </ul>
+          </ul>
+        );
+      })}
     </nav>
   );
 }
