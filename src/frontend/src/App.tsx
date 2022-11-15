@@ -20,7 +20,9 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <Header user="" />
-        {pathname === '/' ? null : <NavBar pages={pages} />}
+        {pathname === '/' && !isAuthenticated() ? null : (
+          <NavBar pages={pages} />
+        )}
         <Router />
       </AuthContext.Provider>
       <Footer />

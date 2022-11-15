@@ -113,13 +113,13 @@ const PPQFormPage = () => {
       navigate(routes.PPQ_CONNECT_WITH_MPO, {
         state: { result: res },
       });
-    } catch (err) {
-      setMessage('Something went wrong. Please try again.');
+    } catch (err: any) {
+      setMessage(err.message || 'Something went wrong. Please try again.');
     }
   };
 
   return (
-    <div className="background results-wrapper">
+    <div className="background background__form results-wrapper">
       <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
