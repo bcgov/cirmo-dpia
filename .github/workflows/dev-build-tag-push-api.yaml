@@ -119,7 +119,7 @@ jobs:
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.TEST_APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: "api-test-dc-template.yaml"
@@ -155,7 +155,7 @@ jobs:
       - name: Health Check DEV deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.TEST_APPLICATION_NAME }}"
         run: |
           ./.github/helpers/application-health.sh
           
