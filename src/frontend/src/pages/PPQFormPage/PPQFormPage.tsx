@@ -109,7 +109,7 @@ const PPQFormPage = () => {
         state: { result: res },
       });
     } catch (err: any) {
-      setMessage(err.message);
+      setMessage(err.message || 'Something went wrong. Please try again.');
     }
   };
 
