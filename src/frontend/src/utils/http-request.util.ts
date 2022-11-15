@@ -4,13 +4,31 @@ interface IHttpRequestOptions {
   headers: Record<string, string>;
   body?: Record<string, any>;
   additionalConfig?: Record<string, any>;
+  addLocalAuth?: boolean;
 }
 
 export class HttpRequest {
   private static async request<T>(options: IHttpRequestOptions): Promise<T> {
+    const requestHeaders: typeof options.headers = {
+      'Content-Type': 'application/json',
+    };
+
+    if (options.addLocalAuth) {
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        console.error('Auth Error: Missing Access Token');
+        throw new Error('Authentication Error: Something went wrong.');
+      }
+
+      requestHeaders.Authorization = accessToken;
+    }
+
     const config = {
       method: options.method,
-      headers: { 'Content-Type': 'application/json', ...options.headers }, // by default setting the content-type to be json type
+      headers: {
+        ...requestHeaders,
+        ...options.headers,
+      },
       body: options.body ? JSON.stringify(options.body) : null,
       ...options?.additionalConfig,
     };
@@ -34,12 +52,14 @@ export class HttpRequest {
     endpoint: string,
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
+    addLocalAuth = false,
   ) {
     return this.request<T>({
       method: 'GET',
       endpoint,
       headers,
       additionalConfig,
+      addLocalAuth,
     });
   }
 
@@ -48,6 +68,7 @@ export class HttpRequest {
     body: Record<string, any>,
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
+    addLocalAuth = false,
   ) {
     return this.request<T>({
       method: 'POST',
@@ -55,6 +76,7 @@ export class HttpRequest {
       body,
       headers,
       additionalConfig,
+      addLocalAuth,
     });
   }
 }
