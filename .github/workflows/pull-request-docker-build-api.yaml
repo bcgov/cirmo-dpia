@@ -2,7 +2,11 @@ name: Pull Request - API Docker Build
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
+    paths:
+      - "src/backend/**"
+  push:
+    branches: [ main ]
     paths:
       - "src/backend/**"
   

@@ -2,7 +2,11 @@ name: Pull Request - WebApp Docker Build
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
+    paths:
+      - "src/frontend/**"
+  push:
+    branches: [ main ]
     paths:
       - "src/frontend/**"
 
