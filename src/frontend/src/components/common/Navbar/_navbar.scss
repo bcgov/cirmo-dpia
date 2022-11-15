@@ -3,7 +3,7 @@
   align-items: center;
   position: sticky;
   top: 65px;
-  height: 56px;
+  height: 4em;
   width: 100%;
   background-color: $bg-blue;
   padding-inline: 200px;
@@ -18,11 +18,13 @@
   list-style: none;
   margin-bottom: 0;
 
-  & > li > a {
-    color: $bg-white;
+  & > li {
+    & > a {
+      color: $bg-white;
 
-    &.active {
-      color: $secondary-yellow;
+      &.active {
+        color: $secondary-yellow;
+      }
     }
   }
 }

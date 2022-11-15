@@ -52,11 +52,10 @@ a:hover {
   border: 2px solid $primary-blue;
   border-radius: 4px;
   text-align: center;
-  padding-block: 12px;
-  padding-inline: 25px;
+  padding-block: 0.5em;
+  padding-inline: 1.5em;
   text-decoration: none;
   display: flex;
-  max-width: fit-content;
   white-space: nowrap;
   gap: 0.7em;
   align-items: center;
@@ -86,6 +85,13 @@ a:hover {
   &.btn-secondary-modal {
     margin-top: 0.2em;
     border: 0;
+  }
+
+  &.nav-link-button {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+    padding-inline: 1.5em;
   }
 }
 
