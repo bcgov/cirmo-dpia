@@ -1,0 +1,32 @@
+name: Pull Request - API Docker Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
+  
+jobs:
+  DPIA-API-Does-It-Build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+ 
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
+      
+      # Build the DPIA API Application Image via docker-compose
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-api
+      
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
