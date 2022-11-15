@@ -1,10 +1,6 @@
 name: Github Environment - Test Deployment - DPIA API
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/backend/**"
   workflow_dispatch:
   
 jobs:
