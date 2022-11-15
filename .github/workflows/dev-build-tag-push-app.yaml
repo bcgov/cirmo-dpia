@@ -1,14 +1,10 @@
 name: Github Environment - DPIA Web App
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/frontend/**"
   workflow_dispatch:
   
 jobs:
-  DPIA-App-Build-Tag-Push:
+  Test-DPIA-App-Build-Tag-Push:
     runs-on: ubuntu-latest
     environment: APP-Dev
     steps:
@@ -76,10 +72,11 @@ jobs:
       - name: Docker Push Version
         run: |
           docker push ${{ secrets.OPENSHIFT4_APP_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
-  DEV-deploy:
+          
+  Test-DEV-deploy:
     runs-on: ubuntu-latest
     environment: APP-Dev
-    needs: [DPIA-App-Build-Tag-Push]
+    needs: [ Test-DPIA-App-Build-Tag-Push ]
     steps:
     
       # Checkout Repository
@@ -122,21 +119,22 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "app-dc-template.yaml"
-          SERVICE_TEMPLATE: "app-service-template.yaml"
-          ROUTE_TEMPLATE: "app-route-template.yaml"
+          DC_TEMPLATE: "app-test-dc-template.yaml"
+          SERVICE_TEMPLATE: "app-test-service-template.yaml"
+          ROUTE_TEMPLATE: "app-test-route-template.yaml"
           DIR: "app"
           IMAGE_TAG: "${{ env.pull_request_hash }}-dev"
           VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
           VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
         run: |
           ./.github/helpers/deploy.sh 
-  DEV-health-check:
+          
+  Test-DEV-health-check:
     runs-on: ubuntu-latest
     environment:
       name: APP-Dev
       url: https://dev.pia.gov.bc.ca
-    needs: [DEV-deploy]
+    needs: [ Test-DEV-deploy ]
     steps:
     
       # Checkout Repository
@@ -158,10 +156,10 @@ jobs:
         run: |
           ./.github/helpers/application-health.sh
   
-  DEV-cleanup:
+  Test-DEV-cleanup:
     runs-on: ubuntu-latest
     environment: APP-Dev
-    needs: [DEV-health-check]
+    needs: [ Test-DEV-health-check ]
     steps:
 
       # Checkout Repository
