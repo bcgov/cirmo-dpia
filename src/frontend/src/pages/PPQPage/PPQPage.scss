@@ -18,6 +18,8 @@
 }
 
 .ppq-content {
+  padding: 25px;
+  box-sizing: border-box;
   margin-right: 4em;
   background: rgba(59, 153, 252, 0.05);
 }
@@ -33,11 +35,6 @@
 .what-is-a-ppq {
   display: flex;
   align-items: end;
-}
-
-.list {
-  padding-bottom: 15rem;
-  padding-left: 0.9rem;
 }
 
 .ppq-svg > img {
