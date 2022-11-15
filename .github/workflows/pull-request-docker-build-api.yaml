@@ -1,11 +1,10 @@
 name: Pull Request - API Docker Build
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
       - "src/backend/**"
-  workflow_dispatch:
   
 jobs:
   DPIA-API-Does-It-Build:
