@@ -28,7 +28,6 @@ export class PpqService {
   }
 
   async createPpq(body: PpqPostDTO, user: KeycloakUser): Promise<PpqResultRO> {
-    console.log(user);
     const ppqForm: PpqEntity = await this.ppqRepository.save({
       ...body,
       createdByGuid: user.idir_user_guid,
