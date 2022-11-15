@@ -32,9 +32,9 @@
   "dependencies": {
     "@nestjs/axios": "0.1.0",
     "@nestjs/class-validator": "0.13.4",
-    "@nestjs/common": "9.0.0",
-    "@nestjs/core": "9.0.0",
-    "@nestjs/platform-express": "9.0.0",
+    "@nestjs/common": "9.1.6",
+    "@nestjs/core": "9.1.6",
+    "@nestjs/platform-express": "9.1.6",
     "@nestjs/swagger": "6.1.2",
     "@nestjs/typeorm": "9.0.1",
     "class-transformer": "0.5.1",
