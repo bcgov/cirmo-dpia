@@ -11,7 +11,7 @@ const PPQConnectPage = () => {
   const { result } = location.state as IPagePropState;
 
   return (
-    <div className="background">
+    <div className="background-connect">
       <PPQConnect result={result} />
     </div>
   );
