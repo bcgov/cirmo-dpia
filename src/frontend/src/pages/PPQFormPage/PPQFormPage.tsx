@@ -108,8 +108,8 @@ const PPQFormPage = () => {
       navigate(routes.PPQ_CONNECT_WITH_MPO, {
         state: { result: res },
       });
-    } catch (err) {
-      setMessage('Something went wrong. Please try again.');
+    } catch (err: any) {
+      setMessage(err.message);
     }
   };
 
