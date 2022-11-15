@@ -21,11 +21,11 @@
   padding: 25px;
   box-sizing: border-box;
   margin-right: 4em;
-  background: rgba(59, 153, 252, 0.05);
+  background: rgba($dodger-blue, 0.05);
 }
 
 .ppq-home-warning-icon {
-  color: #fcba19;
+  color: $secondary-yellow;
 }
 
 .col-md-6 {
