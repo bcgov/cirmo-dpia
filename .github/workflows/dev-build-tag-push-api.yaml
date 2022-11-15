@@ -72,6 +72,7 @@ jobs:
       - name: Docker List Images
         run: |
           docker image ls 
+          
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
