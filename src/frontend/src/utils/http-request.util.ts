@@ -20,7 +20,7 @@ export class HttpRequest {
         throw new Error('Authentication Error: Something went wrong.');
       }
 
-      requestHeaders.Authorization = accessToken;
+      requestHeaders.Authorization = `Bearer ${accessToken}`;
     }
 
     const config = {
