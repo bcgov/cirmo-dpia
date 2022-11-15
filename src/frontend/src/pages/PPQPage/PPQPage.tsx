@@ -53,7 +53,10 @@ function PPQLandingPage() {
                 about the initiative you&lsquo;re assessing in the PIA
               </p>
               <div data-cy="ppq-btn">
-                <Link to="/ppq-form" className="btn-secondary">
+                <Link
+                  to="/ppq-form"
+                  className="btn-secondary btn-secondary-transparent"
+                >
                   Get started
                   <FontAwesomeIcon className="icon" icon={faChevronRight} />
                 </Link>
