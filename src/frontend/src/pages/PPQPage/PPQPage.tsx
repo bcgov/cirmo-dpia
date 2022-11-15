@@ -19,7 +19,7 @@ function PPQLandingPage(props: IComponentProps) {
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
-            <h2>PIA Intake</h2>
+            <h1>PIA Intake</h1>
             <br />
             <p>
               The PIA Intake questions ask for some basic information about the
