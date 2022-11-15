@@ -1,0 +1,26 @@
+name: Pull Request - WebApp Docker Build
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/frontend/**"
+
+jobs:
+  DPIA-APP-Does-It-Build:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      # Build the DPIA API Application Image via docker-compose
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-webapp
+      
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
