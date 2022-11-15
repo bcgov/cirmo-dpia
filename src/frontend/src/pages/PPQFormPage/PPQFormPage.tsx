@@ -3,22 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
 import 'react-datepicker/dist/react-datepicker.css';
-import {
-  faFileLines,
-  faFileCircleCheck,
-  faHandshake,
-} from '@fortawesome/free-solid-svg-icons';
-import StagesArray from '../../components/common/ProgressBar/StagesArray';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {
   OtherFactor,
   MinistryList,
   PIATypes,
-  PIOptions,
+  ReviewTypes,
   startDateOptions,
 } from '../../constant/constant';
 import Messages from './messages';
 
-import { StageProps } from '../../components/common/ProgressBar/interfaces';
 import Checkbox from '../../components/common/Checkbox';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -28,41 +22,25 @@ import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
 import Alert from '../../components/common/Alert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PiaTypesEnum } from '../../ts/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from '../../ts/enums/delegated-review-types.enum';
 
 const PPQFormPage = () => {
-  const stages: StageProps[] = [
-    {
-      id: 1,
-      label: 'Fill out the PPQ',
-      icon: faFileLines,
-      active: true,
-    },
-    {
-      id: 2,
-      label: 'Review results',
-      icon: faFileCircleCheck,
-      active: false,
-    },
-    {
-      id: 3,
-      label: 'Connect with your MPO',
-      icon: faHandshake,
-      active: false,
-    },
-  ];
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [ministry, setMinistry] = useState('');
-  const [branch, setBranch] = useState('');
   const [message, setMessage] = useState('');
-  const [workEmail, setWorkEmail] = useState('');
-  const [initiativeName, setInitiativeName] = useState('');
-  const [initiativeDesc, setInitiativeDesc] = useState('');
-  const [initiativeDataElements, setInitiativeDataElements] = useState('');
-  const [piaType, setPiaType] = useState('');
-  const [containsPI, setContainsPI] = useState('Yes');
+  const [piaType, setPiaType] = useState<PiaTypesEnum | string>(
+    PIATypes[0].value,
+  );
+  const [isDelegatedReview, setIsDelegatedReview] = useState(false);
+  const [delegatedReviewType, setDelegatedReviewType] = useState<
+    DelegatedReviewTypesEnum | string | null
+  >();
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
+  const [description, setDescription] = useState('');
   const [checkedPIItems, setCheckedPIItems] = useState({
     hasSensitivePersonalInformation: false,
     hasSharingOfPersonalInformation: false,
@@ -76,9 +54,6 @@ const PPQFormPage = () => {
     hasPartnershipNonMinistry: false,
   });
 
-  const choosePIOption = (event: any) => {
-    setContainsPI(event.target.value);
-  };
   const chooseStartDate = (event: any) => {
     setContainsStartDate(event.target.value);
   };
@@ -90,40 +65,49 @@ const PPQFormPage = () => {
     navigate(routes.PPQ_LANDING_PAGE, { replace: true });
   };
 
-  const setInitiativeDescription = (newMessage: any) => {
-    setInitiativeDesc(newMessage);
-  };
-
-  const setInitiativeDataElementsInput = (newMessage: any) => {
-    setInitiativeDataElements(newMessage);
-  };
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePIItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedPIItems({
       ...checkedPIItems,
       [event.target.value]: event.target.checked,
     });
   };
+
+  const handlePiaTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPiaType(event.target.value);
+
+    if (event.target.value === PiaTypesEnum.DELEGATE_REVIEW) {
+      setIsDelegatedReview(true);
+    } else {
+      setIsDelegatedReview(false);
+    }
+  };
+
+  const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDelegatedReviewType(event.target.value);
+  };
+
+  const handleDescriptionChange = (newMessage: any) => {
+    setDescription(newMessage);
+  };
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const requestBody: IPPQForm = {
-      name: name,
-      email: workEmail,
+      title: title,
       ministry: ministry,
-      branch: branch,
-      initiativeName: initiativeName,
-      initiativeDescription: initiativeDesc,
-      dataElements: initiativeDataElements,
-      piaType: piaType === 'null' ? null : piaType,
-      containsPersonalInformation:
-        containsPI === 'Yes' ? true : containsPI === 'No' ? false : undefined,
+      description: description,
       proposedStartDate: startDate,
+      piaType: piaType,
+      delegatedReviewType: delegatedReviewType,
       ...checkedPIItems,
     };
     try {
       const res = await HttpRequest.post<IPPQResult>(
         API_ROUTES.PPQ_FORM_SUBMISSION,
         requestBody,
+        {},
+        {},
+        true,
       );
 
       navigate(routes.PPQ_CONNECT_WITH_MPO, {
@@ -136,209 +120,140 @@ const PPQFormPage = () => {
 
   return (
     <div className="background results-wrapper">
-      <StagesArray stages={stages} />
-      <section className="ppq-form-section results-wrapper">
+      <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="form-header">
-              <h1> Fill out the PPQ</h1>
-              <p>
-                <MDEditor.Markdown
-                  source={Messages.FillPpqDescriptionText.en}
-                  linkTarget="_blank"
-                />
-              </p>
+              <h1>PIA Pathways Questionnaire</h1>
+              <p>{Messages.FillPpqDescriptionText.en}</p>
             </div>
             <div className="row">
-              <h2>1. Contact information</h2>
-
               <InputText
-                label="Name"
-                className="col-md-6"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required={true}
-              />
-              <InputText
-                label="Work Email"
-                className="col-md-6"
-                type="email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
+                label="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required={true}
               />
             </div>
             <div className="row">
               <div className="form-group col-md-6">
-                <label>Ministry</label>
-                <select
-                  key="ministry"
-                  className="form-control"
-                  value={ministry}
-                  onChange={(e) => setMinistry(e.target.value)}
-                  required
-                >
-                  <option key="selectMinistry" disabled={true} value="">
-                    Select one
-                  </option>
-                  {MinistryList.map((option, index) => (
-                    <option key={index} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <InputText
-                label="Branch"
-                className="col-md-6"
-                value={branch}
-                onChange={(e) => setBranch(e.target.value)}
-                required={true}
-              />
-            </div>
-            <div className="form-group">
-              <h2>2. Your initiative</h2>
-              <InputText
-                label="Name of initiative"
-                className="col-md-6"
-                value={initiativeName}
-                onChange={(e) => setInitiativeName(e.target.value)}
-                required={true}
-              />
-              <div className="form-group col-md-6">
-                <label>What type of PIA do you need to complete?</label>
-                <select
-                  key="pia"
-                  className="form-control"
-                  value={piaType}
-                  onChange={(e) => setPiaType(e.target.value)}
-                  required
-                >
-                  <option key="selectPiaType" disabled={true} value="">
-                    Select one
-                  </option>
-                  {PIATypes.map((option, index) => (
-                    <option key={index} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>About your initiative</label>
-                <span>
-                  <MDEditor.Markdown
-                    source={Messages.AboutInitiativeDescriptionText.en}
-                    linkTarget="_blank"
-                  />
-                </span>
-                <div>
-                  <MDEditor
-                    preview="edit"
-                    value={initiativeDesc}
-                    onChange={setInitiativeDescription}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
                 <label>
-                  What are the data or information elements involved in your
-                  initiative?
+                  <p className="select-label">Ministry</p>
+                  <div className="dropdown">
+                    <select
+                      key="ministry"
+                      className="form-control"
+                      value={ministry}
+                      onChange={(e) => setMinistry(e.target.value)}
+                      required
+                    >
+                      <option key="selectMinistry" disabled={true} value="">
+                        Select one
+                      </option>
+                      {MinistryList.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <FontAwesomeIcon
+                      className="dropdown-icon"
+                      icon={faChevronDown}
+                    />
+                  </div>
                 </label>
-                <span>
-                  <MDEditor.Markdown
-                    source={Messages.DataElementsDescriptionText.en}
-                    linkTarget="_blank"
-                  />
-                </span>
-
-                <div>
-                  <MDEditor
-                    preview="edit"
-                    value={initiativeDataElements}
-                    onChange={setInitiativeDataElementsInput}
-                  />
-                </div>
               </div>
             </div>
-
             <div className="form-group">
-              <h2>3. Personal information</h2>
-              <label className="h2-label">
-                Is personal information involved in your initiative?
-              </label>
-              <span>
-                <MDEditor.Markdown
-                  source={Messages.PersonalInformationDescriptionText.en}
-                  linkTarget="_blank"
-                />
-              </span>
-              <div>
-                {PIOptions.map((option, index) => {
-                  return PIOptions[0] === option ? (
-                    <div key={index} onChange={choosePIOption}>
-                      <label className="input-label">
-                        <input
-                          name="pi-radio"
-                          key={index}
-                          type="radio"
-                          value={option}
-                          defaultChecked
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  ) : (
-                    <div key={index} onChange={choosePIOption}>
-                      <label className="input-label">
-                        <input
-                          name="pi-radio"
-                          key={index}
-                          type="radio"
-                          value={option}
-                        />
-                        {option}
-                      </label>
-                    </div>
+              <h2>{Messages.InitiativeFactorsHeading.en}</h2>
+              <div className="other-factors-container">
+                {OtherFactor.map((factor, index) => {
+                  return (
+                    <Checkbox
+                      key={index}
+                      checked={false}
+                      value={factor.value}
+                      label={factor.label}
+                      tooltip={factor.tooltip}
+                      tooltipText={factor.tooltipText}
+                      onChange={handlePIItemsChange}
+                    />
                   );
                 })}
               </div>
             </div>
-
-            {containsPI !== 'No' && (
-              <div className="form-group">
-                <h2>4. Other factors</h2>
-                <label className="h2-label">
-                  Does your initiative involve any of the following? Check all
-                  that apply.
-                </label>
-                <div>
-                  {OtherFactor.map((factor, index) => {
-                    return (
-                      <Checkbox
+            <div className="form-group">
+              <h2>{Messages.PiaTypeHeading.en}</h2>
+              <div className="pia-type">
+                {PIATypes.map((option, index) => {
+                  return PIATypes[0] === option ? (
+                    <label className="input-label input-label-row">
+                      <input
                         key={index}
-                        checked={false}
-                        value={factor.value}
-                        label={factor.label}
-                        tooltip={factor.tooltip}
-                        tooltipText={factor.tooltipText}
-                        onChange={handleCheckboxChange}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handlePiaTypeChange}
+                        defaultChecked
                       />
+                      {option.label}
+                    </label>
+                  ) : (
+                    <label className="input-label input-label-row">
+                      <input
+                        key={index}
+                        type="radio"
+                        name={option.name}
+                        value={option.value}
+                        onChange={handlePiaTypeChange}
+                      />
+                      {option.label}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+            {isDelegatedReview && (
+              <div className="form-group">
+                <h2>{Messages.DelegatedTypeHeading.en}</h2>
+                <div className="review-type">
+                  {ReviewTypes.map((option, index) => {
+                    return ReviewTypes[0] === option ? (
+                      <label className="input-label input-label-row">
+                        <input
+                          key={index}
+                          type="radio"
+                          name={option.name}
+                          value={option.value}
+                          onChange={handleReviewTypeChange}
+                          defaultChecked
+                        />
+                        {option.label}
+                      </label>
+                    ) : (
+                      <label className="input-label input-label-row">
+                        <input
+                          key={index}
+                          type="radio"
+                          name={option.name}
+                          value={option.value}
+                          onChange={handleReviewTypeChange}
+                        />
+                        {option.label}
+                      </label>
                     );
                   })}
                 </div>
               </div>
             )}
-
             <div className="form-group">
-              <h2>{containsPI !== 'No' ? '5.' : '4.'} Start date </h2>
-              <div className="row">
+              <h2>
+                {!isDelegatedReview
+                  ? Messages.StartDateHeading.en2
+                  : Messages.StartDateHeading.en}
+              </h2>
+              <div className="start-date-container">
                 <div className="form-group col-md-6">
-                  <label className="h2-label">
-                    Do you have a proposed go-live or start date for the
-                    initiative?
-                  </label>
                   <div>
                     {startDateOptions.map((option, index) => {
                       return startDateOptions[0] === option ? (
@@ -371,8 +286,10 @@ const PPQFormPage = () => {
                   </div>
                 </div>
                 {containsStartDate === 'Yes' && (
-                  <div className="form-group col-md-6">
-                    <label>Proposed go-live or start date</label>
+                  <div className="form-group">
+                    <label id="start-date-label">
+                      Proposed go-live or start date
+                    </label>
                     <DatePicker
                       key="startDate"
                       placeholderText={'yyyy-mm-dd'}
@@ -385,6 +302,18 @@ const PPQFormPage = () => {
                   </div>
                 )}
               </div>
+            </div>
+            <div className="form-group">
+              <h2>
+                {!isDelegatedReview
+                  ? Messages.AdditionalInfoHeading.en2
+                  : Messages.AdditionalInfoHeading.en}
+              </h2>
+              <MDEditor
+                preview="edit"
+                value={description}
+                onChange={handleDescriptionChange}
+              />
             </div>
             <div className="horizontal-divider"></div>
             <div className="form-buttons">

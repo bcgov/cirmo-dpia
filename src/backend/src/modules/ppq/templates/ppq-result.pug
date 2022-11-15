@@ -26,30 +26,14 @@ div(style='padding-left: 5px; color: #444444')
     div(style='width: 30%')
       div
         div(style=`${key_style}`) Filled By
-        div #{name}
-        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{email}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Ministry
-        div #{ministry}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Branch
-        div #{branch}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Type
-        div #{piaType}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Proposed Go-live in
-        div #{proposedStartDate}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Contains Personal Info
-        div #{containsPersonalInformation}
+        div #{createdByDisplayName}
+        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{createdByEmail}
+
     div(style='width: 70%; padding-left: 10px')
       div
-        div(style=`${key_style}`) About your initiative
-        div !{initiativeDescription}
-      div(style='margin-top: 30px')
-        div(style=`${key_style}`) Data or information involved
-        div !{dataElements}
+        div(style=`${key_style}`) Ministry
+        div #{ministry}
+
       div(style='margin-top: 30px')
         div(style=`${key_style}`) Involves
         if otherFactors.length === 0
@@ -58,3 +42,20 @@ div(style='padding-left: 5px; color: #444444')
           ul
             each factor in otherFactors
               li #{factor}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) PIA Kind
+        div #{piaType}
+
+      if !!delegatedReviewType
+        div(style='margin-top: 30px')
+          div(style=`${key_style}`) Delegated Review Kind
+          div #{delegatedReviewType}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Proposed Go-live in
+        div #{proposedStartDate}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) PCT Considerations
+        div !{description}

@@ -98,7 +98,7 @@ export class AuthService {
     };
     const data = await firstValueFrom(
       this.httpService.get(this.keycloakUserInfoUri, params).pipe(
-        map((res: any) => new KeycloakUser(res.data.name)),
+        map((res: any) => res.data as KeycloakUser),
         catchError((e) => {
           throw new HttpException(e.response.data, e.response.status);
         }),

@@ -1,3 +1,5 @@
+import { check } from 'prettier';
+
 // a util to return a random number of 'n' digits
 export const random = (n = 7) => Math.round(Math.random() * Math.pow(10, n));
 

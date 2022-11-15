@@ -86,7 +86,7 @@ const PPQConnect = (props: IComponentProps) => {
         <p>{Messages.StepDetails.StepThree.en}</p>
       </section>
       <div className="horizontal-divider"></div>
-      <div className="form-buttons">
+      <div className="form-buttons connect-buttons">
         <Link to="/ppq-form" className="btn-secondary btn-back">
           Back
         </Link>

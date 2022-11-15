@@ -1,16 +1,12 @@
 import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
+import { DelegatedReviewTypesEnum } from '../enums/delegated-review-types.enum';
 import { PiaTypesEnum } from '../enums/pia-types.enum';
 
 export interface IPPQForm {
-  name: string;
-  email: string;
+  title: string;
   ministry: GovMinistriesEnum | string;
-  branch: string;
-  initiativeName: string;
-  initiativeDescription: string;
-  dataElements: string;
-  piaType: PiaTypesEnum | null | string;
-  containsPersonalInformation?: boolean;
+  piaType: PiaTypesEnum | string;
+  delegatedReviewType?: DelegatedReviewTypesEnum | string | null;
   hasSensitivePersonalInformation?: boolean;
   hasSharingOfPersonalInformation?: boolean;
   hasProgramAgreement?: boolean;
@@ -22,4 +18,5 @@ export interface IPPQForm {
   hasAiOrMl?: boolean;
   hasPartnershipNonMinistry?: boolean;
   proposedStartDate?: Date | null;
+  description?: string;
 }
