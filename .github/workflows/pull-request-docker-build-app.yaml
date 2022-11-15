@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - "src/frontend/**"
+  push:
+    branches: [main]
+    paths:
+      - "src/frontend/**"
 
 jobs:
   DPIA-APP-Does-It-Build:
