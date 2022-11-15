@@ -100,6 +100,9 @@ const PPQFormPage = () => {
       const res = await HttpRequest.post<IPPQResult>(
         API_ROUTES.PPQ_FORM_SUBMISSION,
         requestBody,
+        {},
+        {},
+        true,
       );
 
       navigate(routes.PPQ_CONNECT_WITH_MPO, {
