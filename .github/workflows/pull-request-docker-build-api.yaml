@@ -8,7 +8,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "src/frontend/**"
+      - "src/backend/**"
   
 jobs:
   DPIA-API-Does-It-Build:
