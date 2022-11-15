@@ -5,33 +5,34 @@ metadata:
 labels:
   template: ${APPLICATION_NAME}-template
 objects:
-- kind: Service
-  apiVersion: v1
+- kind: Route
+  apiVersion: route.openshift.io/v1
   metadata:
-    name: ${APPLICATION_NAME}
+    name: dpia-${ENVIRONMENT}-route-api
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       hash: ${IMAGE_TAG}
+      template: dpia-api-template
   spec:
-    ipFamilies:
-      - IPv4
-    ports:
-      - protocol: TCP
-        port: 8080
-        targetPort: 8080
-    internalTrafficPolicy: Cluster
-    type: ClusterIP
-    ipFamilyPolicy: SingleStack
-    sessionAffinity: None
-    selector:
-      app: ${APPLICATION_NAME}
+    host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    path: /api
+    to:
+      kind: Service
+      name: dpia-api
+      weight: 100
+    port:
+      targetPort: 3000-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: None
+    wildcardPolicy: None
 
 parameters:
   - description: Application Name
     displayName: AppName
     name: APPLICATION_NAME
     required: true
-    value: dpia-webapp
+    value: dpia-api
   - description: Environment
     displayName: Environment
     name: ENVIRONMENT
