@@ -1,11 +1,10 @@
 name: Pull Request - WebApp Docker Build
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
       - "src/frontend/**"
-  workflow_dispatch:
 
 jobs:
   DPIA-APP-Does-It-Build:
