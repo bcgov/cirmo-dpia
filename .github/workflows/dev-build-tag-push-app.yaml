@@ -1,4 +1,4 @@
-name: Github Environment - DPIA Web App
+name: Github Environment - Test Deployment - DPIA WebApp
 
 on:
   workflow_dispatch:
