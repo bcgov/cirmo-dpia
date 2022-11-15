@@ -24,15 +24,20 @@ import CustomInputDate from '../../components/common/CustomInputDate';
 import Alert from '../../components/common/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PiaTypesEnum } from '../../ts/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from '../../ts/enums/delegated-review-types.enum';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [ministry, setMinistry] = useState('');
   const [message, setMessage] = useState('');
-  const [piaType, setPiaType] = useState(PIATypes[0].value);
+  const [piaType, setPiaType] = useState<PiaTypesEnum | string>(
+    PIATypes[0].value,
+  );
   const [isDelegatedReview, setIsDelegatedReview] = useState(false);
-  const [delegatedReviewType, setDelegatedReviewType] = useState();
+  const [delegatedReviewType, setDelegatedReviewType] = useState<
+    DelegatedReviewTypesEnum | string | null
+  >();
   const [containsStartDate, setContainsStartDate] = useState('Yes');
   const [startDate, setStartDate] = useState(null);
   const [description, setDescription] = useState('');
@@ -90,10 +95,10 @@ const PPQFormPage = () => {
     const requestBody: IPPQForm = {
       title: title,
       ministry: ministry,
-      description,
+      description: description,
       proposedStartDate: startDate,
-      piaType,
-      delegatedReviewType,
+      piaType: piaType,
+      delegatedReviewType: delegatedReviewType,
       ...checkedPIItems,
     };
     try {
