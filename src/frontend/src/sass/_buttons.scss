@@ -63,6 +63,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
+  max-width: fit-content;
 
   & > .icon {
     font-size: x-large;
