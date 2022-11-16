@@ -1,12 +1,12 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ConfigController } from './configuration.controller';
-import { AuthService } from './configuration.service';
+import { ConfigurationController } from './configuration.controller';
+import { ConfigurationService } from './configuration.service';
 
 @Module({
   imports: [HttpModule],
-  controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService],
+  controllers: [ConfigurationController],
+  providers: [ConfigurationService],
+  exports: [ConfigurationService],
 })
-export class ConfigModule {}
+export class ConfigurationModule {}

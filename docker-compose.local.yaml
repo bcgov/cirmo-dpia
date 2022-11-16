@@ -12,6 +12,7 @@ services:
       dpia-db:
         condition: service_healthy
     volumes:
+      - ./src/backend/.config/flag.json:/usr/src/app/flag.json
       # Binds the application folder from the host inside the container enabling hot reloading
       - ./src/backend:/usr/src/app
       # Ignores the node_modules of the host and uses it's own instead

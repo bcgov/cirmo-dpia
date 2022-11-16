@@ -9,10 +9,12 @@ import { HealthModule } from './health/health.module';
 import { PpqModule } from './modules/ppq/ppq.module';
 import { HttpModule } from '@nestjs/axios';
 import { AuthModule } from './modules/auth/auth.module';
+import { ConfigurationModule } from './modules/configuration/configuration.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    ConfigurationModule,
     HealthModule,
     AuthModule,
     PpqModule,
