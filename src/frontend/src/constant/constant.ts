@@ -11,6 +11,8 @@ export const OtherFactor = [
     information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
     and learn more about sensitive personal information. Ask your MPO for help to identify whether 
     personal information in your initiative is sensitive.`,
+    isLink: true,
+    linkURL: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments/guidance-on-disclosures-outside-of-canada#sensitive`,
   },
   {
     label: 'Common or integrated program agreement',
@@ -47,6 +49,9 @@ export const OtherFactor = [
   {
     label: 'Data-linking',
     value: 'hasDataLinking',
+    tooltip: true,
+    tooltipText:
+      'While we wait for more information about data-linking, check the box if you think this would be considered a data-linking initiative or program.',
   },
   {
     label: 'BC Services Card Onboarding',
@@ -180,7 +185,7 @@ export const PIATypes = [
     name: 'pia-types',
   },
   {
-    label: 'Delegate Review',
+    label: 'Delegated Review',
     value: PiaTypesEnum.DELEGATE_REVIEW,
     name: 'pia-types',
   },
