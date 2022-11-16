@@ -10,6 +10,8 @@ const Checkbox = ({
   value,
   tooltip,
   tooltipText,
+  isLink,
+  linkURL,
   onChange,
   ...props
 }: ICheckbox) => {
@@ -29,7 +31,13 @@ const Checkbox = ({
           aria-label={label}
           {...props}
         />
-        {label}
+        {isLink === false ? (
+          label
+        ) : (
+          <a href={linkURL} target="_blank" rel="noreferrer">
+            {label}
+          </a>
+        )}
       </label>
       {!tooltip ? null : (
         <>
