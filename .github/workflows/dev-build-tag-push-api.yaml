@@ -66,7 +66,7 @@ jobs:
       # Tag Docker Image built with latest commit hash (ex// $HASH-dev)
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
+          docker tag cirmo-dpia_dpia-api ${{ secrets.TEST_OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
           
       # TROUBLESHOOTING - view images present in github action run
       - name: Docker List Images
@@ -76,7 +76,7 @@ jobs:
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
+          docker push ${{ secrets.TEST_OPENSHIFT4_API_PUBLIC_IMAGE_REPOSITORY }}:${{ env.pull_request_hash }}-${{ secrets.ENVIRONMENT }}
           
   Test-DEV-deploy:
     runs-on: ubuntu-latest
