@@ -176,6 +176,8 @@ const PPQFormPage = () => {
                       label={factor.label}
                       tooltip={factor.tooltip}
                       tooltipText={factor.tooltipText}
+                      isLink={factor.isLink}
+                      linkURL={factor.linkURL}
                       onChange={handlePIItemsChange}
                     />
                   );
