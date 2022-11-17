@@ -139,6 +139,8 @@ objects:
                   secretKeyRef:
                     name: keycloak-api-values
                     key: KEYCLOAK_USER_INFO_URI
+              - name: CONFIG_FILE_PATH
+                value: /usr/src/app/config.json
 #               - name: POSTGRES_USER
 #                 valueFrom:
 #                   secretKeyRef:
