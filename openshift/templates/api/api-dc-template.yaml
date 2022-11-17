@@ -57,6 +57,11 @@ objects:
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
       spec:
+        volumes:
+        - name: feature-flag-config-volume
+          configMap:
+            name: feauture-flag-config.json
+            defaultMode: 420
         containers:
           - name: ${APPLICATION_NAME}
             image: >-
@@ -189,6 +194,10 @@ objects:
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - name: feature-flag-config-volume
+                mountPath: /usr/src/app/feauture-flag-config.json
+                subPath: feauture-flag-config.json
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         dnsPolicy: ClusterFirst
