@@ -9,10 +9,7 @@ export class ConfigurationService {
       return JSON.parse(configContents);
     } catch (error) {
       console.log(`Read Feature Flag File ERROR: ${error}`);
-      throw new HttpException(
-        'Can not find config file',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Something went wrong parsing the config')
     }
   }
 }
