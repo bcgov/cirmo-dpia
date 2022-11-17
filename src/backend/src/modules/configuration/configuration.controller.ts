@@ -11,7 +11,7 @@ export class ConfigurationController {
   @ApiOkResponse({
     description: 'Get feature flag configuration json file',
   })
-  featureFlags() {
+  getConfig() {
     return this.configurationService.getFeatures();
   }
 }
