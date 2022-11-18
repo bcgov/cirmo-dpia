@@ -12,6 +12,6 @@ export class ConfigurationController {
     description: 'Get feature flag configuration json file',
   })
   getConfig() {
-    return this.configurationService.getFeatures();
+    return this.configurationService.getConfig();
   }
 }
