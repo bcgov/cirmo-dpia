@@ -76,6 +76,11 @@ function Header({ user }: Props) {
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
+  useEffect(() => {
+    const res = HttpRequest.get<any>(API_ROUTES.CONFIG_FILE, {}, {}, false);
+    console.log('res', res);
+  }, []);
+
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
   };

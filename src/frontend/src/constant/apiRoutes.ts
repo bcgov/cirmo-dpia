@@ -6,4 +6,5 @@ export const API_ROUTES = {
   KEYCLOAK_LOGIN: 'api/auth/keycloakLogin',
   KEYCLOAK_REFRESH_TOKEN: 'api/auth/refreshToken',
   PPQ_RESULT_DOWNLOAD: '/api/ppq/download/:id',
+  CONFIG_FILE: '/api/configuration',
 };
