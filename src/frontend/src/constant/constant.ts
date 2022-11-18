@@ -1,5 +1,5 @@
-import { DelegatedReviewTypesEnum } from '../ts/enums/delegated-review-types.enum';
-import { PiaTypesEnum } from '../ts/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from '../types/enums/delegated-review-types.enum';
+import { PiaTypesEnum } from '../types/enums/pia-types.enum';
 
 export const OtherFactor = [
   {

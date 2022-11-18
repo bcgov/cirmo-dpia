@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { API_ROUTES } from '../constant/apiRoutes';
-import { IKeycloakUserInfo } from '../ts/interfaces/keycloakUserInfo.interface';
+import { IKeycloakUserInfo } from '../types/interfaces/keycloakUserInfo.interface';
 
 export const useFetchKeycloakUserInfo = (accessToken: string | null) => {
   const [keycloakUserDetail, setKeycloakUserDetail] =
