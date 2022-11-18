@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from 'src/app.module';
 import { HealthModule } from 'src/health/health.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
+import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 import { PpqModule } from 'src/modules/ppq/ppq.module';
 
 export const SwaggerDocs = (app: INestApplication) => {
@@ -23,7 +24,13 @@ export const SwaggerDocs = (app: INestApplication) => {
     .build();
 
   const baseDocument = SwaggerModule.createDocument(app, options, {
-    include: [AppModule, HealthModule, PpqModule, AuthModule],
+    include: [
+      AppModule,
+      HealthModule,
+      PpqModule,
+      AuthModule,
+      ConfigurationModule,
+    ],
   });
 
   const uiOptions = {
