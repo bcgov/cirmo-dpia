@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 @Injectable()
 export class ConfigurationService {
@@ -6,19 +6,15 @@ export class ConfigurationService {
 
   private configContents: string;
 
+  private configuration: JSON;
+
   constructor() {
     this.filePath = process.env.CONFIG_FILE_PATH;
     this.configContents = fs.readFileSync(this.filePath, 'utf8');
+    this.configuration = JSON.parse(this.configContents);
   }
 
   getConfig() {
-    try {
-      return JSON.parse(this.configContents);
-    } catch (error) {
-      console.log(`Read Feature Flag File ERROR: ${error}`);
-      throw new InternalServerErrorException(
-        'Something went wrong parsing the config',
-      );
-    }
+    return this.configuration;
   }
 }
