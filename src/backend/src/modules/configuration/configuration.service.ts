@@ -6,7 +6,7 @@ export class ConfigurationService {
 
   private configContents: string;
 
-  private configuration: JSON;
+  private configuration: Record<string, any>;
 
   constructor() {
     this.filePath = process.env.CONFIG_FILE_PATH;
