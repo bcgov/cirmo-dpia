@@ -12,7 +12,6 @@ src/backend/node_modules
 src/backend/.nyc_output
 src/backend/.env
 src/backend/dist
-src/backend/config.local.json
 
 ###############################################################################
 ##                                  Node Modules                             ##
