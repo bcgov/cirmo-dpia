@@ -9,7 +9,7 @@ do
     oc process -f /home/runner/work/cirmo-dpia/cirmo-dpia/openshift/templates/$DIR/"$i" --namespace=$NAMESPACE \
         -p APPLICATION_NAME=$APPLICATION_NAME \
         -p LICENSE_PLATE=$LICENSE_PLATE \
-        -p IMAGESTREAM=$IMAGESTREAM
+        -p IMAGESTREAM=$IMAGESTREAM \
         -p ENVIRONMENT=$ENVIRONMENT | \
         oc apply -f -
 done
