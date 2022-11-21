@@ -22,7 +22,19 @@ export const authHeader = () => {
 
 export const getItemFromStorage = (key: string) => {
   const item = window.localStorage.getItem(key);
-  return item ? JSON.parse(item) : null;
+  return item ? item : null;
+};
+
+export const getPIAIntakeFormFlagFromStorage = () => {
+  const item = window.localStorage.getItem('config');
+  const configContent = item ? JSON.parse(item) : null;
+  console.log(
+    'test pia intake flag',
+    configContent.feature_flags.PIA_INTAKE_FORM_FLAG,
+  );
+  return configContent
+    ? configContent.feature_flags.PIA_INTAKE_FORM_FLAG
+    : false;
 };
 
 export const setItemInStorage = (name: string, data: any) => {

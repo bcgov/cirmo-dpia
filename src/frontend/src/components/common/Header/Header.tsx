@@ -12,7 +12,10 @@ import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserIn
 import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
-import { setItemInStorage } from '../../../utils/helper.util';
+import {
+  getItemFromStorage,
+  setItemInStorage,
+} from '../../../utils/helper.util';
 
 type Props = {
   user: string | null;
@@ -54,6 +57,14 @@ function Header({ user }: Props) {
             storeTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
+            const res = await HttpRequest.get<any>(
+              API_ROUTES.CONFIG_FILE,
+              {},
+              {},
+              true,
+            );
+            console.log('test', res);
+            setItemInStorage('config', res);
             navigate(routes.PPQ_LANDING_PAGE);
           }
         } catch (e) {
@@ -75,11 +86,6 @@ function Header({ user }: Props) {
       setItemInStorage('userName', keycloakUserDetail.name);
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
-
-  useEffect(() => {
-    const res = HttpRequest.get<any>(API_ROUTES.CONFIG_FILE, {}, {}, false);
-    console.log('res', res);
-  }, []);
 
   const login = () => {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
