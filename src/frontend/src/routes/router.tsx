@@ -12,18 +12,18 @@ import {
 const Router = () => {
   return (
     <Routes>
-      <Route path="/ppq" element={<PPQLandingPage />} />
       <Route
-        path="/ppq-form"
+        path="/ppq"
         element={
           getItemFromStorage('config') &&
           getPIAIntakeFormFlagFromStorage() === true ? (
-            <PPQFormPage />
+            <PPQLandingPage pia={true} />
           ) : (
-            <PPQFormPage />
+            <PPQLandingPage pia={false} />
           )
         }
       />
+      <Route path="/ppq-form" element={<PPQFormPage />} />
       <Route path="/ppq-connect" element={<PPQConnectPage />} />
       <Route path="/" element={<LandingPage />} />
     </Routes>

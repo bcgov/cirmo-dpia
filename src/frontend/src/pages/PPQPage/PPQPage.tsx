@@ -5,7 +5,12 @@ import ppqImg from '../../assets/ppq_homepage.svg';
 
 import { Link } from 'react-router-dom';
 
-function PPQLandingPage() {
+interface IComponentProps {
+  pia: boolean;
+}
+function PPQLandingPage(props: IComponentProps) {
+  // TODO use pia value to decide render pia intake or not
+  const { pia } = props;
   return (
     <div className="ppq-container background">
       <div className="ppq-section results-wrapper">
@@ -34,6 +39,7 @@ function PPQLandingPage() {
               <b>Estimated time:</b> 20 minutes
             </span>
           </div>
+
           <div data-cy="ppq-img" className="col-md-6 ppq-svg">
             <img src={ppqImg} alt="Fill form image" />
           </div>
