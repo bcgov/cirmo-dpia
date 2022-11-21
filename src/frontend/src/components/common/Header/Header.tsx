@@ -63,7 +63,6 @@ function Header({ user }: Props) {
               {},
               true,
             );
-            console.log('test', res);
             setItemInStorage('config', res);
             navigate(routes.PPQ_LANDING_PAGE);
           }

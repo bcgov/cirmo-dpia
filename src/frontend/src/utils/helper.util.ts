@@ -28,10 +28,6 @@ export const getItemFromStorage = (key: string) => {
 export const getPIAIntakeFormFlagFromStorage = () => {
   const item = window.localStorage.getItem('config');
   const configContent = item ? JSON.parse(item) : null;
-  console.log(
-    'test pia intake flag',
-    configContent.feature_flags.PIA_INTAKE_FORM_FLAG,
-  );
   return configContent
     ? configContent.feature_flags.PIA_INTAKE_FORM_FLAG
     : false;
