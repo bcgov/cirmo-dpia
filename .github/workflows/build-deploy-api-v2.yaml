@@ -49,12 +49,12 @@ jobs:
       # Tag Docker Image built with latest
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPO_DEV }}:latest
+          docker tag cirmo-dpia_dpia-api image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/api-dev:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.OPENSHIFT4_API_PUBLIC_IMAGE_REPO_DEV }}:latest
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/api-dev:latest
           
   DEV-deploy:
     runs-on: ubuntu-latest
