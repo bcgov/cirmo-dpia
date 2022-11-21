@@ -10,8 +10,6 @@ objects:
   metadata:
     name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-    labels:
-      hash: latest
   spec:
     ipFamilies:
       - IPv4
