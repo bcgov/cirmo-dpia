@@ -41,3 +41,7 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
+  - description: Imagestream
+    displayName: Imagestream
+    name: IMAGESTREAM
+    required: false
