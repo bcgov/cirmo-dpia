@@ -86,7 +86,7 @@ jobs:
           SERVICE_TEMPLATE: "app-service-template-v2.yaml"
           ROUTE_TEMPLATE: "app-route-template-v2.yaml"
           DIR: "app"
-          IMAGESTREAM: "api-dev"
+          IMAGESTREAM: "app-dev"
         run: |
           ./.github/helpers/deploy.sh 
 
