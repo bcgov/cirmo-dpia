@@ -9,9 +9,7 @@ import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 const Router = () => {
   // will give default value to false if we do not get from the config file due to any technical issue
   // or network issue
-  const PIAIntakeFlag = getConfigFlagFromStorageByName('PIA_INTAKE_FORM_FLAG')
-    ? true
-    : false;
+  const PIAIntakeFlag = !!getConfigFlagFromStorageByName('PIA_INTAKE_FORM_FLAG');
   return (
     <Routes>
       <Route
