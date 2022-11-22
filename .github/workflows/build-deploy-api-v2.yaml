@@ -79,7 +79,7 @@ jobs:
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"-v2
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
           DC_TEMPLATE: "api-dc-template-v2.yaml"
