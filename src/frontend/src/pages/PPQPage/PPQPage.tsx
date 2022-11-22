@@ -9,7 +9,7 @@ interface IComponentProps {
   enablePiaIntakeForm: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {
-  // TODO use pia value to decide render pia intake or not
+  // TODO For ticket 402 use pia value to decide render pia intake or not
   const { enablePiaIntakeForm } = props;
   return (
     <div className="ppq-container background">

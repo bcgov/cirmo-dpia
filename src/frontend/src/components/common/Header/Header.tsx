@@ -16,6 +16,7 @@ import {
   getItemFromStorage,
   setItemInStorage,
 } from '../../../utils/helper.util';
+import { IConfig } from '../../../types/interfaces/config.interface';
 
 type Props = {
   user: string | null;
@@ -57,7 +58,7 @@ function Header({ user }: Props) {
             storeTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
-            const res = await HttpRequest.get<any>(
+            const res = await HttpRequest.get<IConfig>(
               API_ROUTES.CONFIG_FILE,
               {},
               {},
