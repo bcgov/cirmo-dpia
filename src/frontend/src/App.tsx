@@ -17,7 +17,7 @@ function App() {
   );
   // periodicRefreshTokenCheck(60);
   return (
-    <div className="App">
+    <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <Header user="" />
         {pathname === '/' && !isAuthenticated() ? null : (
