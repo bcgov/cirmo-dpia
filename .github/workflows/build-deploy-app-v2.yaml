@@ -114,7 +114,7 @@ jobs:
       - name: Health Check DEV deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
         run: |
           ./.github/helpers/application-health.sh
   
