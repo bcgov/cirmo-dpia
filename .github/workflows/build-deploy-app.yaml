@@ -1,10 +1,6 @@
 name: Github Environment - DPIA Web App
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/frontend/**"
   workflow_dispatch:
   
 jobs:
