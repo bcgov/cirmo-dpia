@@ -19,7 +19,7 @@ const Modal = ({
         <div className="modal-horizontal-divider"></div>
         {children}
         <div className="d-flex align-items-center justify-content-center">
-          <button className="bcgovbtn bcgovbtn--primary " type="button" onClick={handleClose}>
+          <button className="bcgovbtn bcgovbtn__primary " type="button" onClick={handleClose}>
             {confirmLabel}
           </button>
         </div>

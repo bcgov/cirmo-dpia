@@ -17,6 +17,7 @@ a:hover {
   text-decoration: none;
   display: flex;
   gap: 0.7em;
+  color: var(--text-color);
   align-items: center;
   justify-content: space-evenly;
   max-width: fit-content;
@@ -48,14 +49,14 @@ a:hover {
 
 }
 
-bcgovbtn:focus,
-bcgovbtn:focus-visible {
+.bcgovbtn:focus,
+.bcgovbtn:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.bcgovbtn--primary {
+.bcgovbtn__primary {
   background-color: $primary-colour;
-  color: $text-light;
+  --text-color: #{$text-light};
   border: 2px solid $primary-colour;
 
 
@@ -65,9 +66,9 @@ bcgovbtn:focus-visible {
   }
 }
 
-.bcgovbtn--secondary {
+.bcgovbtn__secondary {
   background-color: $bg-white;
-  color: $primary-colour;
+  --text-color: #{$primary-colour};
   border: 2px solid $primary-colour;
 
   &:focus {
@@ -82,21 +83,21 @@ bcgovbtn:focus-visible {
 
   &.nav-link-button {
     background-color: transparent;
-    color: white;
+    --text-color: white;
     border-color: white;
     padding-inline: 1.5em;
   }
 }
 
 /* Secnodary Dark styling */
-.bcgovbtn--secondary__dark {
+.bcgovbtn__secondary--dark {
   background-color: transparent;
-  color: $text-light;
+  --text-color: #{$text-light};
   border-color: $text-light;
   
   &:hover {
     background-color:white;
-    color: $text-dark;
+    --text-color: #{$text-dark};
     opacity:1;
   }
 }
