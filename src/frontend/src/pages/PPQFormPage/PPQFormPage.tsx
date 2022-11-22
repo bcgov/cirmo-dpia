@@ -1,8 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
-import 'react-datepicker/dist/react-datepicker.css';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {
   OtherFactor,
@@ -292,13 +290,12 @@ const PPQFormPage = () => {
                     <label id="start-date-label">
                       Proposed go-live or start date
                     </label>
-                    <DatePicker
+                    <CustomInputDate
                       key="startDate"
                       placeholderText={'yyyy-mm-dd'}
                       dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
-                      customInput={<CustomInputDate />}
                       required
                     />
                   </div>
