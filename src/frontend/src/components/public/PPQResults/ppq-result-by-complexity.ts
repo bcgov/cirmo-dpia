@@ -6,7 +6,7 @@ import {
   // eslint-disable-next-line import/named
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { PiaComplexity } from '../../../ts/enums/pia-complexity.enum';
+import { PiaComplexity } from '../../../types/enums/pia-complexity.enum';
 import PpqResultText from './messages';
 
 interface PpqResultPage {

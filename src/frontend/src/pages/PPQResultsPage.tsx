@@ -1,6 +1,6 @@
 import PPQResults from '../components/public/PPQResults';
 import { useLocation } from 'react-router-dom';
-import { IPPQResult } from '../ts/interfaces/ppq-result.interface';
+import { IPPQResult } from '../types/interfaces/ppq-result.interface';
 
 interface IPagePropState {
   result: IPPQResult;
