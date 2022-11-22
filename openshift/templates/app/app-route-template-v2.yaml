@@ -16,7 +16,7 @@ objects:
     host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:
       kind: Service
-      name: dpia-webapp
+      name: dpia-webapp-v2
       weight: 100
     port:
       targetPort: 8080
