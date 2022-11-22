@@ -320,12 +320,12 @@ const PPQFormPage = () => {
             <div className="horizontal-divider"></div>
             <div className="form-buttons">
               <button
-                className="btn-secondary btn-back"
+                className="bcgovbtn bcgovbtn--secondary btn-back"
                 onClick={handleBackClick}
               >
                 Back
               </button>
-              <button type="submit" className="btn-primary btn-next">
+              <button type="submit" className="bcgovbtn bcgovbtn--primary btn-next">
                 Submit
               </button>
             </div>

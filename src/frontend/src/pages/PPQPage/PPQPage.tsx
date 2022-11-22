@@ -24,7 +24,7 @@ function PPQLandingPage() {
               <li>Where to go for help with your PIA</li>
             </ul>
             <div data-cy="ppq-btn">
-              <Link to="/ppq-form" className="btn-primary ppq-btn">
+              <Link to="/ppq-form" className="bcgovbtn bcgovbtn--primary ppq-btn">
                 Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>

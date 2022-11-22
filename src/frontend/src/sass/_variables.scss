@@ -5,14 +5,35 @@
  */
 
 $font-family: 'BCSans', sans-serif;
-$bg-white: white;
-$bg-blue: #38598a;
 $line-height: 1.5;
-$primary-blue: #036;
-$link-blue: #1a5a96;
-$secondary-yellow: #fcba19;
-$ntrl-lightgray: #f2f2f2;
-$ntrl-darkgray: #313132;
+$secondary-yellow: #fcba19; /* !TODO: should be deleted once implementation changed to primary yellow */
+$ntrl-lightgray: #f2f2f2; /* !TODO: should be deleted once implementation changed to bg-lightgrey */
+$ntrl-darkgray: #313132; /* !TODO: should be deleted once implementation changed to dark text */
 $text-gray: #606060;
 $accent-lightblue: #169bd5;
 $tablet: 660px;
+
+/*  Based on Branding guidelines */
+$primary-colour: #036; /* Note this is a blue color */
+$accent-colour: #fcba19; /* Note this is a yellow color */
+
+/* Text Colours */
+$text-dark: #313132;
+$text-light: #ffffff;
+$text-lightgray: #f2f2f2;
+$link-blue: #1a5a96;
+
+/* Background Colours */
+$bg-white: #ffffff;
+$bg-blue: #38598a;
+$bg-lightgray: #f2f2f2;
+
+/* Semantic colours */
+$error:#d8292f;
+$success:#2E8540;
+$warning: #EED202;
+$info: #1A5A96;
+$focus:#3B99FC;
+
+/* FORM Elements */
+$form-input-border-colour: #606060;

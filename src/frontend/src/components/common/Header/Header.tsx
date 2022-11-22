@@ -121,7 +121,7 @@ function Header({ user }: Props) {
       <div className="message">{message ? <p>{message}</p> : null}</div>
       <div data-cy="login" className="other">
         {!isAuthenticated() && (
-          <button className="btn-login" onClick={() => login()}>
+          <button className="bcgovbtn bcgovbtn--secondary__dark" onClick={() => login()}>
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
         )}
@@ -139,7 +139,7 @@ function Header({ user }: Props) {
           </p>
         </Modal>
         {isAuthenticated() && (
-          <button className="btn-logout" onClick={() => showModalDialog()}>
+          <button className="bcgovbtn bcgovbtn--secondary__dark" onClick={() => showModalDialog()}>
             Sign Out
           </button>
         )}

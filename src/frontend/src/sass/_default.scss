@@ -35,6 +35,14 @@ sub {
   height: 105px;
 }
 
+#root {
+  width:100%;
+  .App {
+    position:relative;
+    width:100%;
+  }
+}
+
 .wrapper {
   padding: 0 5px 0 5px;
   position: relative;
@@ -49,7 +57,7 @@ sub {
 }
 
 .color-blue {
-  color: $primary-blue;
+  color: $primary-colour;
 }
 
 .display-flex {

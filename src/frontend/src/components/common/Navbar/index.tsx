@@ -15,7 +15,7 @@ function NavBar({ pages }: INavbarPages): ReactElement {
             </li>
           ) : (
             <li key={page.id}>
-              <NavLink className="btn-secondary nav-link-button" to={page.link}>
+              <NavLink className="bcgovbtn bcgovbtn--secondary nav-link-button" to={page.link}>
                 {page.label}
               </NavLink>
             </li>
