@@ -15,7 +15,7 @@ objects:
     path: /api
     to:
       kind: Service
-      name: dpia-api
+      name: dpia-api-v2
       weight: 100
     port:
       targetPort: 3000-tcp
