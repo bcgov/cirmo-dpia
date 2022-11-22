@@ -8,18 +8,17 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: dpia-${ENVIRONMENT}-route
+    name: dpia-${ENVIRONMENT}-route-api
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-    labels:
-      hash: ${IMAGE_TAG}
   spec:
     host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    path: /api
     to:
       kind: Service
-      name: dpia-webapp
+      name: dpia-api
       weight: 100
     port:
-      targetPort: 8080
+      targetPort: 3000-tcp
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: None
@@ -30,7 +29,7 @@ parameters:
     displayName: AppName
     name: APPLICATION_NAME
     required: true
-    value: dpia-webapp
+    value: dpia-api
   - description: Environment
     displayName: Environment
     name: ENVIRONMENT
@@ -41,16 +40,3 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
-  - description: Image Tag
-    displayName: Image Tag
-    required: true
-    name: IMAGE_TAG
-    value: latest
-  - description: Vault Role
-    displayName: Vault Role
-    required: false
-    name: VAULT_ROLE
-  - description: Vault Postgres Secret Name
-    displayName: Vault Postgres Secret Name
-    required: false
-    name: VAULT_POSTGRES_SECRET_NAME
