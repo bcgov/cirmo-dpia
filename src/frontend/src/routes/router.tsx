@@ -4,24 +4,19 @@ import LandingPage from '../pages/LandingPage/LandingPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
-import {
-  getItemFromStorage,
-  getPIAIntakeFormFlagFromStorage,
-} from '../utils/helper.util';
+import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 
 const Router = () => {
+  // will give default value to false if we do not get from the config file due to any technical issue
+  // or network issue
+  const PIAIntakeFlag = getConfigFlagFromStorageByName('PIA_INTAKE_FORM_FLAG')
+    ? true
+    : false;
   return (
     <Routes>
       <Route
         path="/ppq"
-        element={
-          getItemFromStorage('config') &&
-          getPIAIntakeFormFlagFromStorage() === true ? (
-            <PPQLandingPage pia={true} />
-          ) : (
-            <PPQLandingPage pia={false} />
-          )
-        }
+        element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
       />
       <Route path="/ppq-form" element={<PPQFormPage />} />
       <Route path="/ppq-connect" element={<PPQConnectPage />} />

@@ -6,11 +6,11 @@ import ppqImg from '../../assets/ppq_homepage.svg';
 import { Link } from 'react-router-dom';
 
 interface IComponentProps {
-  pia: boolean;
+  enablePiaIntakeForm: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {
   // TODO use pia value to decide render pia intake or not
-  const { pia } = props;
+  const { enablePiaIntakeForm } = props;
   return (
     <div className="ppq-container background">
       <div className="ppq-section results-wrapper">

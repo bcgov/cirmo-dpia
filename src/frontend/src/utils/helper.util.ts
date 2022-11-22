@@ -25,10 +25,10 @@ export const getItemFromStorage = (key: string) => {
   return item ? item : null;
 };
 
-export const getPIAIntakeFormFlagFromStorage = () => {
+export const getConfigFlagFromStorageByName = (flagName: string) => {
   const item = window.localStorage.getItem('config');
   const configContent = item ? JSON.parse(item) : null;
-  return configContent?.feature_flags?.[<flag name>]
+  return configContent?.feature_flags?.[flagName];
 };
 
 export const setItemInStorage = (name: string, data: any) => {
