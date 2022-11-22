@@ -24,7 +24,7 @@ objects:
     ipFamilyPolicy: SingleStack
     sessionAffinity: None
     selector:
-      app: ${APPLICATION_NAME}-v2
+      app: ${APPLICATION_NAME}
 
 parameters:
   - description: Application Name
