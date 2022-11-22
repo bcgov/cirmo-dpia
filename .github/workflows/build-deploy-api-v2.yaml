@@ -114,6 +114,38 @@ jobs:
       - name: Health Check DEV deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
         run: |
           ./.github/helpers/application-health.sh
+
+  DEV-cleanup:
+    runs-on: ubuntu-latest
+    environment: API-Dev
+    needs: [ DEV-health-check ]
+    steps:
+
+      # Checkout Repository
+      - uses: actions/checkout@v2
+
+      # Login to BC Gov Openshift (DPIA DEV Namespace)
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous deployment pod objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-pods.sh
+
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous replication controller objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-rc.sh
