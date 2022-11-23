@@ -56,7 +56,7 @@ jobs:
             'version'
 
       # Use deploy helper script to process and apply DPIA APP Application template into PROD namespace
-      - name: Process and Apply API DeploymentConfig, Service, Route templates
+      - name: Process and Apply APP DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
