@@ -1,0 +1,14 @@
+.dropdown {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.dropdown-icon {
+  position: absolute;
+  left: calc(100% - 2em);
+}
+
+.select-label {
+  margin-bottom: 0.3em;
+}

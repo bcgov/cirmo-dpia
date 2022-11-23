@@ -49,12 +49,6 @@ form {
     & > p {
       color: $ntrl-darkgray;
     }
-
-    & > .dropdown {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
   }
 
   & > label:is(.h2-label) {
@@ -108,15 +102,6 @@ form {
   &.connect-buttons:first-child {
     visibility: hidden;
   }
-}
-
-.dropdown-icon {
-  position: absolute;
-  left: calc(100% - 2em);
-}
-
-.select-label {
-  margin-bottom: 0.3em;
 }
 
 span {
