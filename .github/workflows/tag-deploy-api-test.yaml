@@ -119,13 +119,13 @@ jobs:
       # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
       - name: Cleanup previous deployment pod objects
         env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
         run: |
           ./.github/helpers/cleanup-pods.sh
 
       # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
       - name: Cleanup previous replication controller objects
         env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
         run: |
           ./.github/helpers/cleanup-rc.sh
