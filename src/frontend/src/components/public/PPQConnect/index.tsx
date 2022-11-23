@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { IPPQResult } from '../../../ts/interfaces/ppq-result.interface';
+import { IPPQResult } from '../../../types/interfaces/ppq-result.interface';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import {
   FileDownload,

@@ -12,7 +12,11 @@ import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserIn
 import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
-import { setItemInStorage } from '../../../utils/helper.util';
+import {
+  getItemFromStorage,
+  setItemInStorage,
+} from '../../../utils/helper.util';
+import { IConfig } from '../../../types/interfaces/config.interface';
 
 type Props = {
   user: string | null;
@@ -54,6 +58,13 @@ function Header({ user }: Props) {
             storeTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
+            const res = await HttpRequest.get<IConfig>(
+              API_ROUTES.CONFIG_FILE,
+              {},
+              {},
+              true,
+            );
+            setItemInStorage('config', res);
             navigate(routes.PPQ_LANDING_PAGE);
           }
         } catch (e) {

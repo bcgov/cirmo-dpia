@@ -1,10 +1,6 @@
 name: Github Environment - DPIA Web App
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/frontend/**"
   workflow_dispatch:
   
 jobs:
@@ -363,198 +359,198 @@ jobs:
         run: |
           ./.github/helpers/cleanup-rc.sh
     
-  PROD-tag-dpia-app-image:
-    runs-on: ubuntu-latest
-    environment: APP-Prod
-    needs: [TEST-cleanup]
-    steps:
+#   PROD-tag-dpia-app-image:
+#     runs-on: ubuntu-latest
+#     environment: APP-Prod
+#     needs: [TEST-cleanup]
+#     steps:
 
-      # Check out repository with a fetch depth of 0 to allow the retrieval of the latest tag
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
+#       # Check out repository with a fetch depth of 0 to allow the retrieval of the latest tag
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
+#         with: 
+#           fetch-depth: 0
 
-      # Find the latest Semantic Version release tag available on the repository
-      - name: Find Tag
-        id: tagger
-        run: |
-          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
-          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          tag=$(git describe --tags --abbrev=0)
-          echo "latest_tag=$tag" >> $GITHUB_ENV
+#       # Find the latest Semantic Version release tag available on the repository
+#       - name: Find Tag
+#         id: tagger
+#         run: |
+#           git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+#           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+#           tag=$(git describe --tags --abbrev=0)
+#           echo "latest_tag=$tag" >> $GITHUB_ENV
 
-      # Login to the BC Gov Openshift cluster (DPIA TOOLS Namespace)
-      - name: Cluster Login -> TOOLS Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+#       # Login to the BC Gov Openshift cluster (DPIA TOOLS Namespace)
+#       - name: Cluster Login -> TOOLS Namespace
+#         uses: redhat-developer/openshift-actions@v1.1
+#         with:
+#           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+#           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+#           cmd: |
+#             'version'
 
-      # Login to BC Gov Docker Image Repository
-      - name: Login to Openshift Docker
-        run : |
-          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+#       # Login to BC Gov Docker Image Repository
+#       - name: Login to Openshift Docker
+#         run : |
+#           docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
 
-      # Download JSON artifact with pull request hash
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: hash.json
+#       # Download JSON artifact with pull request hash
+#       - name: Download JSON artifact
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: hash.json
 
-      # Read hash value from JSON artifact
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'hash.json'
-          prop_path: 'hash'
+#       # Read hash value from JSON artifact
+#       - name: Read JSON File
+#         id: json-file
+#         uses: notiz-dev/github-action-json-property@release
+#         with:
+#           path: 'hash.json'
+#           prop_path: 'hash'
 
-      # Set pull request hash value as environment variable
-      - name: Set Commit Hash Value to Environment
-        run: |
-          commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
+#       # Set pull request hash value as environment variable
+#       - name: Set Commit Hash Value to Environment
+#         run: |
+#           commit_hash=$(echo ${{ steps.json-file.outputs.prop }})
+#           echo "pull_request_hash=$commit_hash" >> $GITHUB_ENV
  
-      # Set pull request hash value as environment variable
-      - name: Promote Test tag to Prod
-        env:
-          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-webapp"
-          HASH_SRC: "${{ env.pull_request_hash }}-test"
-          HASH_DEST: "${{ env.pull_request_hash }}-prod"
-        run: |
-          ./.github/helpers/tag-imagestream.sh
+#       # Set pull request hash value as environment variable
+#       - name: Promote Test tag to Prod
+#         env:
+#           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+#           DPIA_COMPONENT: "dpia-webapp"
+#           HASH_SRC: "${{ env.pull_request_hash }}-test"
+#           HASH_DEST: "${{ env.pull_request_hash }}-prod"
+#         run: |
+#           ./.github/helpers/tag-imagestream.sh
 
-      # ####################################################################
-      # IMPORTANT! - Read increment-tag helper script to understand how to 
-      # control which version you're incrementing +1
-      # ####################################################################
-      #
-      # Use increment-tag helper script to increment a given patch, minor or major value
-      - name: Increment Git Repo Tag Patch +1
-        env:
-          TAG: ${{ env.latest_tag }}
-          EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
-          NAME: ${{ secrets.GLOBAL_USER_NAME }}
-        run: |
-          ./.github/helpers/increment-tag.sh -p
+#       # ####################################################################
+#       # IMPORTANT! - Read increment-tag helper script to understand how to 
+#       # control which version you're incrementing +1
+#       # ####################################################################
+#       #
+#       # Use increment-tag helper script to increment a given patch, minor or major value
+#       - name: Increment Git Repo Tag Patch +1
+#         env:
+#           TAG: ${{ env.latest_tag }}
+#           EMAIL: ${{ secrets.GLOBAL_USER_EMAIL }}
+#           NAME: ${{ secrets.GLOBAL_USER_NAME }}
+#         run: |
+#           ./.github/helpers/increment-tag.sh -p
 
-      # Find the latest incremented tag created in previous step, set as environment variable
-      - name: Find New Tag
-        run: |
-          git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
-          git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
-          tag_two=$(git describe --tags --abbrev=0)
-          echo "new_tag=$tag_two" >> $GITHUB_ENV
+#       # Find the latest incremented tag created in previous step, set as environment variable
+#       - name: Find New Tag
+#         run: |
+#           git config --global user.email ${{ secrets.GLOBAL_USER_EMAIL }}
+#           git config --global user.name ${{ secrets.GLOBAL_USER_NAME }}
+#           tag_two=$(git describe --tags --abbrev=0)
+#           echo "new_tag=$tag_two" >> $GITHUB_ENV
 
-      # Promote the Prod tag to the new Semantic Version tag
-      - name: Promote Prod tag to version 
-        env:
-          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
-          DPIA_COMPONENT: "dpia-webapp"
-          HASH_SRC: "${{ env.pull_request_hash }}-prod"
-          HASH_DEST: "${{ env.new_tag}}"
-        run: |
-          ./.github/helpers/tag-imagestream.sh
+#       # Promote the Prod tag to the new Semantic Version tag
+#       - name: Promote Prod tag to version 
+#         env:
+#           TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+#           DPIA_COMPONENT: "dpia-webapp"
+#           HASH_SRC: "${{ env.pull_request_hash }}-prod"
+#           HASH_DEST: "${{ env.new_tag}}"
+#         run: |
+#           ./.github/helpers/tag-imagestream.sh
 
-      # Create new JSON artifact containing the latest tagged version
-      - name: Create new JSON file Prod Deploy Version
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: 'prod-version.json'
-          json: '{ "version-tag":"${{ env.new_tag }}"}'
+#       # Create new JSON artifact containing the latest tagged version
+#       - name: Create new JSON file Prod Deploy Version
+#         id: create-json
+#         uses: jsdaniell/create-json@1.1.2
+#         with:
+#           name: 'prod-version.json'
+#           json: '{ "version-tag":"${{ env.new_tag }}"}'
 
-      # Upload JSON file as github action artifact
-      - name: Upload JSON file
-        uses: actions/upload-artifact@v3
-        with: 
-          name: prod-version.json
-          path: prod-version.json
+#       # Upload JSON file as github action artifact
+#       - name: Upload JSON file
+#         uses: actions/upload-artifact@v3
+#         with: 
+#           name: prod-version.json
+#           path: prod-version.json
   
-  PROD-deploy:
-    runs-on: ubuntu-latest
-    environment: APP-Prod
-    needs: [PROD-tag-dpia-app-image]
-    steps:
+#   PROD-deploy:
+#     runs-on: ubuntu-latest
+#     environment: APP-Prod
+#     needs: [PROD-tag-dpia-app-image]
+#     steps:
 
-      # Checkout Repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2 
+#       # Checkout Repository
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2 
 
-      # Login to the BC Gov Openshift cluster (DPIA PROD Namespace)
-      - name: Cluster Login -> PROD Namespace
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+#       # Login to the BC Gov Openshift cluster (DPIA PROD Namespace)
+#       - name: Cluster Login -> PROD Namespace
+#         uses: redhat-developer/openshift-actions@v1.1
+#         with:
+#           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+#           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+#           cmd: |
+#             'version'
 
-      # Download JSON Artifact with newest semantic version
-      - name: Download JSON artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: prod-version.json
+#       # Download JSON Artifact with newest semantic version
+#       - name: Download JSON artifact
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: prod-version.json
 
-      # Read semantic version as step output
-      - name: Read JSON File
-        id: json-file
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'prod-version.json'
-          prop_path: 'version-tag'
+#       # Read semantic version as step output
+#       - name: Read JSON File
+#         id: json-file
+#         uses: notiz-dev/github-action-json-property@release
+#         with:
+#           path: 'prod-version.json'
+#           prop_path: 'version-tag'
 
-      # Set semantic version tag as environment variable
-      - name: Set Commit Hash Value to Environment
-        run: |
-          version_tag=$(echo ${{ steps.json-file.outputs.prop }})
-          echo "image_tag=$version_tag" >> $GITHUB_ENV
+#       # Set semantic version tag as environment variable
+#       - name: Set Commit Hash Value to Environment
+#         run: |
+#           version_tag=$(echo ${{ steps.json-file.outputs.prop }})
+#           echo "image_tag=$version_tag" >> $GITHUB_ENV
 
-      # Use deploy helper script to process and apply DPIA Frontend Application template into PROD namespace
-      - name: Deploy to PROD
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "app-dc-template.yaml"
-          SERVICE_TEMPLATE: "app-service-template.yaml"
-          ROUTE_TEMPLATE: "app-route-template.yaml"
-          DIR: "app"
-          IMAGE_TAG: "${{ env.image_tag }}"
-          VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
-          VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
-        run: |
-          ./.github/helpers/deploy.sh 
+#       # Use deploy helper script to process and apply DPIA Frontend Application template into PROD namespace
+#       - name: Deploy to PROD
+#         env:
+#           NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+#           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+#           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+#           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+#           DC_TEMPLATE: "app-dc-template.yaml"
+#           SERVICE_TEMPLATE: "app-service-template.yaml"
+#           ROUTE_TEMPLATE: "app-route-template.yaml"
+#           DIR: "app"
+#           IMAGE_TAG: "${{ env.image_tag }}"
+#           VAULT_ROLE: "${{ secrets.VAULT_ROLE }}"
+#           VAULT_POSTGRES_SECRET_NAME: "${{ secrets.VAULT_POSTGRES_SECRET_NAME }}"
+#         run: |
+#           ./.github/helpers/deploy.sh 
   
-  PROD-health-check:
-    runs-on: ubuntu-latest
-    environment:
-      name: APP-Prod
-      url: https://pia.gov.bc.ca
-    needs: [PROD-deploy]
-    steps:
+#   PROD-health-check:
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: APP-Prod
+#       url: https://pia.gov.bc.ca
+#     needs: [PROD-deploy]
+#     steps:
     
-      # Checkout Repository
-      - uses: actions/checkout@v2
+#       # Checkout Repository
+#       - uses: actions/checkout@v2
     
-      # Login to BC Gov Openshift (DPIA PROD Namespace)
-      - name: Cluster Login
-        uses: redhat-developer/openshift-actions@v1.1
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
-          cmd: |
-            'version'
+#       # Login to BC Gov Openshift (DPIA PROD Namespace)
+#       - name: Cluster Login
+#         uses: redhat-developer/openshift-actions@v1.1
+#         with:
+#           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+#           parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+#           cmd: |
+#             'version'
             
-      # Use application health helper script to monitor readiness/liveness probe response post deployment
-      - name: Health Check PROD deployment
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
-        run: |
-          ./.github/helpers/application-health.sh
+#       # Use application health helper script to monitor readiness/liveness probe response post deployment
+#       - name: Health Check PROD deployment
+#         env:
+#           NAMESPACE: "${{ secrets.OPENSHIFT_PROD_NAMESPACE }}"
+#           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}"
+#         run: |
+#           ./.github/helpers/application-health.sh

@@ -1,8 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import MDEditor from '@uiw/react-md-editor';
-import 'react-datepicker/dist/react-datepicker.css';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {
   OtherFactor,
@@ -16,15 +14,15 @@ import Messages from './messages';
 import Checkbox from '../../components/common/Checkbox';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { IPPQForm } from '../../ts/interfaces/ppq-form.interface';
+import { IPPQForm } from '../../types/interfaces/ppq-form.interface';
 import { routes } from '../../constant/routes';
-import { IPPQResult } from '../../ts/interfaces/ppq-result.interface';
+import { IPPQResult } from '../../types/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
 import Alert from '../../components/common/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PiaTypesEnum } from '../../ts/enums/pia-types.enum';
-import { DelegatedReviewTypesEnum } from '../../ts/enums/delegated-review-types.enum';
+import { PiaTypesEnum } from '../../types/enums/pia-types.enum';
+import { DelegatedReviewTypesEnum } from '../../types/enums/delegated-review-types.enum';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
@@ -292,13 +290,12 @@ const PPQFormPage = () => {
                     <label id="start-date-label">
                       Proposed go-live or start date
                     </label>
-                    <DatePicker
+                    <CustomInputDate
                       key="startDate"
                       placeholderText={'yyyy-mm-dd'}
                       dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
-                      customInput={<CustomInputDate />}
                       required
                     />
                   </div>

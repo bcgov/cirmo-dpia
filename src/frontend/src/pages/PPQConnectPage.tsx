@@ -1,5 +1,5 @@
 import PPQConnect from '../components/public/PPQConnect';
-import { IPPQResult } from '../ts/interfaces/ppq-result.interface';
+import { IPPQResult } from '../types/interfaces/ppq-result.interface';
 import { useLocation } from 'react-router-dom';
 
 interface IPagePropState {

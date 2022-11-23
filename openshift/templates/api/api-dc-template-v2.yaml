@@ -14,7 +14,7 @@ objects:
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       app: ${APPLICATION_NAME}
-      hash: ${IMAGE_TAG}
+      hash: latest
       app.kubernetes.io/part-of: dpia-application
       app.openshift.io/runtime: nodejs
       app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
@@ -38,7 +38,7 @@ objects:
           from:
             kind: ImageStreamTag
             namespace: ${LICENSE_PLATE}-tools
-            name: '${APPLICATION_NAME}:${IMAGE_TAG}'
+            name: '${IMAGESTREAM}:latest'
           lastTriggeredImage: >-
             image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-api@sha256:c6912fa14495b62ec86b9e1eeb567cb7d95a6523c7e235f38497a9efcb89ebed
       - type: ConfigChange
@@ -56,21 +56,12 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
-          vault.hashicorp.com/agent-inject: 'true'
-          vault.hashicorp.com/agent-inject-token: 'true'
-          vault.hashicorp.com/agent-pre-populate-only: 'true'
-          vault.hashicorp.com/auth-path: auth/k8s-silver
-          vault.hashicorp.com/namespace: platform-services
-          vault.hashicorp.com/role: ${VAULT_ROLE}
-          vault.hashicorp.com/agent-inject-${VAULT_POSTGRES_SECRET_NAME}: |
-           {{- with secret "${VAULT_ROLE}/${VAULT_POSTGRES_SECRET_NAME}" }}
-           export POSTGRES_USER="{{ .Data.data.POSTGRES_USER }}"
-           export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
-           export POSTGRES_HOST="{{ .Data.data.POSTGRES_HOST }}"
-           export POSTGRES_PORT="{{ .Data.data.POSTGRES_PORT }}"
-           export POSTGRES_DB="{{ .Data.data.POSTGRES_DB }}"
-           {{- end `}} }}
       spec:
+        volumes:
+        - name: config-volume
+          configMap:
+            name: config.json
+            defaultMode: 420
         containers:
           - name: ${APPLICATION_NAME}
             image: >-
@@ -148,31 +139,33 @@ objects:
                   secretKeyRef:
                     name: keycloak-api-values
                     key: KEYCLOAK_USER_INFO_URI
+              - name: CONFIG_FILE_PATH
+                value: /usr/src/app/config.json
               - name: POSTGRES_USER
                 valueFrom:
                   secretKeyRef:
                     name: postgres-connection-secret
                     key: POSTGRES_USER
-                - name: POSTGRES_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: postgres-connection-secret
-                      key: POSTGRES_PASSWORD
-                - name: POSTGRES_PORT
-                  valueFrom:
-                    secretKeyRef:
-                      name: postgres-connection-secret
-                      key: POSTGRES_PORT
-                - name: POSTGRES_DB
-                  valueFrom:
-                    secretKeyRef:
-                      name: postgres-connection-secret
-                      key: POSTGRES_DB
-                - name: POSTGRES_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: postgres-connection-secret
-                      key: POSTGRES_HOST
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PASSWORD
+              - name: POSTGRES_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_PORT
+              - name: POSTGRES_DB
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_DB
+              - name: POSTGRES_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connection-secret
+                    key: POSTGRES_HOST
             resources:
               limits:
                 cpu: 150m
@@ -203,6 +196,10 @@ objects:
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - name: config-volume
+                mountPath: /usr/src/app/config.json
+                subPath: config.json
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         dnsPolicy: ClusterFirst
@@ -225,16 +222,8 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
-  - description: Image Tag
-    displayName: Image Tag
+  - description: Imagestream
+    displayName: Imagestream
+    name: IMAGESTREAM
     required: true
-    name: IMAGE_TAG
-    value: latest
-  - description: Vault Role
-    displayName: Vault Role
-    required: true
-    name: VAULT_ROLE
-  - description: Vault Postgres Secret Name
-    displayName: Vault Postgres Secret Name
-    required: true
-    name: VAULT_POSTGRES_SECRET_NAME
+    value: 'api-dev'

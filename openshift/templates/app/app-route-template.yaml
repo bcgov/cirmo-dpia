@@ -10,8 +10,6 @@ objects:
   metadata:
     name: dpia-${ENVIRONMENT}-route
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-    labels:
-      hash: ${IMAGE_TAG}
   spec:
     host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:

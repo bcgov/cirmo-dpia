@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { getItemFromStorage } from '../utils/helper.util';
+import React from 'react';
 
 export const AuthContext = React.createContext({
   authenticated: false,

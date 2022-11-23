@@ -1,0 +1,131 @@
+name: Github Environment - API TEST Promotion
+
+on:
+  workflow_dispatch:
+
+jobs:
+  TEST-tag-dpia-api-image:
+    environment: API-Test
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Login to BC Gov Openshift (DPIA TOOLS Namespace)
+      - name: Cluster Login -> TOOLS Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+            
+      # Login to BC Gov Docker Image Repository
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+
+      # Tag dev image with test to promote deployment
+      - name: Update tag for Imagestream
+        env:
+          TOOLS_NAMESPACE: "${{ secrets.TOOLS_NAMESPACE }}"
+          IMAGESTREAM_SOURCE: "api-dev"
+          IMAGESTREAM_DESTINATION: "api-test"
+        run: |
+          ./.github/helpers/tag-imagestream.sh
+  
+  TEST-deploy:
+    runs-on: ubuntu-latest
+    environment: API-Test
+    needs: [ TEST-tag-dpia-api-image ]
+    steps:
+    
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login -> TEST Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      # Use deploy helper script to process and apply DPIA API Application template into TEST namespace
+      - name: Process and Apply API DeploymentConfig, Service, Route templates
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DC_TEMPLATE: "api-dc-template-v2.yaml"
+          SERVICE_TEMPLATE: "api-service-template-v2.yaml"
+          ROUTE_TEMPLATE: "api-route-template-v2.yaml"
+          DIR: "api"
+          IMAGESTREAM: "api-test"
+        run: |
+          ./.github/helpers/deploy.sh
+  
+  TEST-health-check:
+    runs-on: ubuntu-latest
+    environment:
+      name: API-Test
+      url: https://test.pia.gov.bc.ca/api/api-docs
+    needs: [ TEST-deploy ]
+    steps:
+    
+      # Checkout Repository
+      - uses: actions/checkout@v2
+    
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login -> TEST Namespace
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+            
+      # Use application health helper script to monitor readiness/liveness probe response post deployment  
+      - name: Health Check TEST deployment
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
+        run: |
+          ./.github/helpers/application-health.sh
+
+  TEST-cleanup:
+    runs-on: ubuntu-latest
+    environment: API-Test
+    needs: [ TEST-health-check ]
+    steps:
+
+      # Checkout Repository
+      - uses: actions/checkout@v2
+
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous deployment pod objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-pods.sh
+
+      # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
+      - name: Cleanup previous replication controller objects
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
+        run: |
+          ./.github/helpers/cleanup-rc.sh

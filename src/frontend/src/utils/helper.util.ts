@@ -22,7 +22,13 @@ export const authHeader = () => {
 
 export const getItemFromStorage = (key: string) => {
   const item = window.localStorage.getItem(key);
-  return item ? JSON.parse(item) : null;
+  return item ? item : null;
+};
+
+export const getConfigFlagFromStorageByName = (flagName: string) => {
+  const item = window.localStorage.getItem('config');
+  const configContent = item ? JSON.parse(item) : null;
+  return configContent?.feature_flags?.[flagName];
 };
 
 export const setItemInStorage = (name: string, data: any) => {

@@ -2,7 +2,7 @@ import Card from '../../common/Card';
 import { CardProps } from '../../common/Card/interfaces';
 import ppqResultByComplexity from './ppq-result-by-complexity';
 import { Link } from 'react-router-dom';
-import { IPPQResult } from '../../../ts/interfaces/ppq-result.interface';
+import { IPPQResult } from '../../../types/interfaces/ppq-result.interface';
 
 interface IComponentProps {
   result: IPPQResult;

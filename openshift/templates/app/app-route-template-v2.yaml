@@ -11,12 +11,12 @@ objects:
     name: dpia-${ENVIRONMENT}-route
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
-      hash: ${IMAGE_TAG}
+      hash: latest
   spec:
     host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
     to:
       kind: Service
-      name: dpia-webapp
+      name: dpia-webapp-v2
       weight: 100
     port:
       targetPort: 8080
@@ -41,16 +41,7 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
-  - description: Image Tag
-    displayName: Image Tag
-    required: true
-    name: IMAGE_TAG
-    value: latest
-  - description: Vault Role
-    displayName: Vault Role
+  - description: Imagestream
+    displayName: Imagestream
+    name: IMAGESTREAM
     required: false
-    name: VAULT_ROLE
-  - description: Vault Postgres Secret Name
-    displayName: Vault Postgres Secret Name
-    required: false
-    name: VAULT_POSTGRES_SECRET_NAME

@@ -10,8 +10,6 @@ objects:
   metadata:
     name: ${APPLICATION_NAME}
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
-    labels:
-      hash: ${IMAGE_TAG}
   spec:
     ipFamilies:
       - IPv4
@@ -43,16 +41,7 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
-  - description: Image Tag
-    displayName: Image Tag
-    required: true
-    name: IMAGE_TAG
-    value: latest
-  - description: Vault Role
-    displayName: Vault Role
+  - description: Imagestream
+    displayName: Imagestream
+    name: IMAGESTREAM
     required: false
-    name: VAULT_ROLE
-  - description: Vault Postgres Secret Name
-    displayName: Vault Postgres Secret Name
-    required: false
-    name: VAULT_POSTGRES_SECRET_NAME

@@ -16,7 +16,6 @@ objects:
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       app: ${APPLICATION_NAME}
-      hash: ${IMAGE_TAG}
       app.kubernetes.io/part-of: dpia-application
       app.openshift.io/runtime: js
       app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
@@ -40,7 +39,7 @@ objects:
           from:
             kind: ImageStreamTag
             namespace: ${LICENSE_PLATE}-tools
-            name: '${APPLICATION_NAME}:${IMAGE_TAG}'
+            name: '${IMAGESTREAM}:latest'
           lastTriggeredImage: >-
             image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
       - type: ConfigChange
@@ -92,21 +91,8 @@ parameters:
     name: LICENSE_PLATE
     required: true
     value: b996e6
-  - description: Image Tag
-    displayName: Image Tag
+  - description: Imagestream
+    displayName: Imagestream
+    name: IMAGESTREAM
     required: true
-    name: IMAGE_TAG
-    value: latest
-  - description: Database Service
-    displayName: Database Service
-    required: true
-    name: DATABASE_SERVICE
-    value: postgresql
-  - description: Vault Role
-    displayName: Vault Role
-    required: false
-    name: VAULT_ROLE
-  - description: Vault Postgres Secret Name
-    displayName: Vault Postgres Secret Name
-    required: false
-    name: VAULT_POSTGRES_SECRET_NAME
+    value: 'api-dev'
