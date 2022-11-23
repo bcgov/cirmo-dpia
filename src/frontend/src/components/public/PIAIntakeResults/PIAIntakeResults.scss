@@ -1,0 +1,47 @@
+.background-connect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin-inline: 0;
+  background-color: $ntrl-lightgray;
+
+  &.results-wrapper {
+    overflow-x: hidden;
+  }
+}
+
+.pia-result {
+  background-color: white;
+
+  & > h1 {
+    line-height: 1.4;
+  }
+}
+
+.pia-result section {
+  margin-block: 2rem;
+
+  &:is(.find-your-mpo) {
+    margin-top: 6em;
+  }
+
+  & > *:not(h2) {
+    margin-left: 2rem;
+  }
+
+  & > button {
+    margin-top: 1rem;
+  }
+}
+
+.privacy-helpline-contact {
+  margin-bottom: 0;
+}
+
+.mpo-find-contact {
+  & > a {
+    margin-left: 0.3em;
+  }
+}
