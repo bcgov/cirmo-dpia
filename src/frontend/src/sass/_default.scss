@@ -7,7 +7,17 @@ body {
   position: relative;
   font-family: $font-family;
   font-size: 16px;
-  min-width: 100vw;
+  min-width: 100%;
+  #root {
+    width:100%;
+    min-height:100vh;
+    .App {
+      position:relative;
+      min-height:100vh;
+      width:100%;
+      overflow:auto;
+    }
+  }
 }
 
 h1 {
@@ -35,13 +45,6 @@ sub {
   height: 105px;
 }
 
-#root {
-  width:100%;
-  .App {
-    position:relative;
-    width:100%;
-  }
-}
 
 .wrapper {
   padding: 0 5px 0 5px;
@@ -62,4 +65,14 @@ sub {
 
 .display-flex {
   display: flex;
+}
+
+.bcgovPageContainer {
+  margin-top: calc($header-height + $navbar-height);
+  min-height: calc(100vh - $header-height - $navbar-height);
+  background-color: #f2f2f2;
+  padding-top:$padding-block;
+  padding-bottom: calc($padding-block + $footer-height);
+  display: flex;
+  justify-content:center;
 }

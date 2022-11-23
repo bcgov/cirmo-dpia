@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 function PPQLandingPage() {
   return (
-    <div className="ppq-container background">
+    <div className="bcgovPageContainer background">
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">

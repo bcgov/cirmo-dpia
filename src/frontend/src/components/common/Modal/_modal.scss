@@ -41,6 +41,16 @@
     box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
   }
+
+  .modalbtn__container {
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    button {
+      margin-right:4px;
+      margin-left:4px;
+    }
+  }
 }
 
 .display-block {
