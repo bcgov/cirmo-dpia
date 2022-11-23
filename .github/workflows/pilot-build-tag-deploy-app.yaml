@@ -78,10 +78,10 @@ jobs:
           APPLICATION_NAME: "${{ secrets.TEST_APPLICATION_NAME }}-pilot"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "app-test-dc-template.yaml"
-          SERVICE_TEMPLATE: "app-test-service-template.yaml"
-          ROUTE_TEMPLATE: "app-test-route-template.yaml"
-          DIR: "app"
+          DC_TEMPLATE: "app-dc-template.yaml"
+          SERVICE_TEMPLATE: "app-service-template.yaml"
+          ROUTE_TEMPLATE: "app-route-template.yaml"
+          DIR: "app/pilot"
           IMAGESTREAM: "pilot-app-dev"
         run: |
           ./.github/helpers/deploy.sh 
