@@ -46,8 +46,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       
-      # Login to BC Gov Openshift (DPIA DEV Namespace)
-      - name: Cluster Login -> DEV Namespace
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login -> TEST Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
@@ -55,7 +55,7 @@ jobs:
           cmd: |
             'version'
 
-      # Use deploy helper script to process and apply DPIA API Application template into DEV namespace
+      # Use deploy helper script to process and apply DPIA API Application template into TEST namespace
       - name: Process and Apply API DeploymentConfig, Service, Route templates
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
@@ -81,8 +81,8 @@ jobs:
       # Checkout Repository
       - uses: actions/checkout@v2
     
-      # Login to BC Gov Openshift (DPIA DEV Namespace)
-      - name: Cluster Login -> DEV Namespace
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
+      - name: Cluster Login -> TEST Namespace
         uses: redhat-developer/openshift-actions@v1.1
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
@@ -91,9 +91,9 @@ jobs:
             'version'
             
       # Use application health helper script to monitor readiness/liveness probe response post deployment  
-      - name: Health Check DEV deployment
+      - name: Health Check TEST deployment
         env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
         run: |
           ./.github/helpers/application-health.sh
@@ -107,7 +107,7 @@ jobs:
       # Checkout Repository
       - uses: actions/checkout@v2
 
-      # Login to BC Gov Openshift (DPIA DEV Namespace)
+      # Login to BC Gov Openshift (DPIA TEST Namespace)
       - name: Cluster Login
         uses: redhat-developer/openshift-actions@v1.1
         with:
