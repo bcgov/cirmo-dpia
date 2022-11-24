@@ -16,7 +16,7 @@ function PPQLandingPage(props: IComponentProps) {
   const { enablePiaIntakeForm } = props;
   return enablePiaIntakeForm ? (
     <div className="bcgovPageContainer background">
-      <div className="ppq-section results-wrapper">
+      <div className="get-started-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
             <h2 className="form-heading">{messages.PIAIntakeHeading.en}</h2>
@@ -39,7 +39,7 @@ function PPQLandingPage(props: IComponentProps) {
             </span>
           </div>
           <div data-cy="ppq-img" className="col-md-6 ppq-svg ">
-            <div className="ppq-content">
+            <div className="get-started-content">
               <FontAwesomeIcon
                 className="icon ppq-home-warning-icon"
                 icon={faExclamationTriangle}
@@ -70,8 +70,8 @@ function PPQLandingPage(props: IComponentProps) {
       </div>
     </div>
   ) : (
-    <div className="ppq-container background">
-      <div className="ppq-section results-wrapper">
+    <div className="get-started-container background">
+      <div className="get-started-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
             <h2>{messages.PPQHeading.en}</h2>
