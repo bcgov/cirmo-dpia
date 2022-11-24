@@ -25,4 +25,10 @@ export class BaseEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @Column({ name: 'created_by_guid' })
+  createdByGuid: string;
+
+  @Column({ name: 'created_by_username' })
+  createdByUsername: string;
 }

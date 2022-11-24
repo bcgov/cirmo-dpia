@@ -112,12 +112,6 @@ export class PpqEntity extends BaseEntity {
   })
   hasPartnershipNonMinistry: boolean;
 
-  @Column({ name: 'created_by_guid' })
-  createdByGuid: string;
-
-  @Column({ name: 'created_by_username' })
-  createdByUsername: string;
-
   @Column({ name: 'created_by_display_name' })
   createdByDisplayName: string;
 
