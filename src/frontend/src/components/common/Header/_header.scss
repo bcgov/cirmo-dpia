@@ -1,10 +1,10 @@
 header {
-  background-color: $primary-blue;
-  border-bottom: 2px solid $secondary-yellow;
+  background-color: $primary-colour;
+  border-bottom: 2px solid $accent-colour;
   padding-inline: 185px;
   color: #fff;
   display: flex;
-  height: 65px;
+  height: $header-height;
   top: 0;
   left: 0;
   position: fixed;

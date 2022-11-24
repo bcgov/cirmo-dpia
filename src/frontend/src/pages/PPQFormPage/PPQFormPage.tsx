@@ -117,7 +117,7 @@ const PPQFormPage = () => {
   };
 
   return (
-    <div className="background background__form results-wrapper">
+    <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section">
         <div>
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -317,12 +317,12 @@ const PPQFormPage = () => {
             <div className="horizontal-divider"></div>
             <div className="form-buttons">
               <button
-                className="btn-secondary btn-back"
+                className="bcgovbtn bcgovbtn__secondary btn-back"
                 onClick={handleBackClick}
               >
                 Back
               </button>
-              <button type="submit" className="btn-primary btn-next">
+              <button type="submit" className="bcgovbtn bcgovbtn__primary btn-next">
                 Submit
               </button>
             </div>

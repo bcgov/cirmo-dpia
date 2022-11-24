@@ -30,20 +30,20 @@ function LandingPage() {
           </p>
           <div data-cy="contact-btn" className="ctas">
             {!isAuthenticated() && (
-              <button className="btn-primary" onClick={() => login()}>
+              <button className="bcgovbtn bcgovbtn__primary" onClick={() => login()}>
                 Log in with IDIR
                 <FontAwesomeIcon className="icon" icon={faUser} />
               </button>
             )}
             {isAuthenticated() && (
-              <Link className="btn-primary" to="/ppq">
+              <Link className="bcgovbtn bcgovbtn__primary" to="/ppq">
                 Access App
               </Link>
             )}
             <a
               href="mailto:pia.intake@gov.bc.ca"
               data-cy="email"
-              className="btn-secondary"
+              className="bcgovbtn bcgovbtn__secondary"
             >
               Contact <FontAwesomeIcon className="icon" icon={faEnvelope} />
             </a>

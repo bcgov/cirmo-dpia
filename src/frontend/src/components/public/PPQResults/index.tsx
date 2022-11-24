@@ -10,7 +10,7 @@ interface IComponentProps {
 
 const PPQResults = (props: IComponentProps) => {
   return (
-    <div className="results results-wrapper">
+    <div className="results results-wrapper ppq-connect">
       <h1 className="results-header">Review Results</h1>
       <section className="callout-section results-callout-section">
         <div className="callout results-callout">
@@ -39,7 +39,7 @@ const PPQResults = (props: IComponentProps) => {
         </Link>
         <Link
           to="/ppq-connect"
-          className="btn-primary btn-next"
+          className="bcgovbtn bcgovbtn--primary btn-next"
           state={{ result: props.result }}
         >
           Next

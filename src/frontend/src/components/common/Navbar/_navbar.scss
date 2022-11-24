@@ -1,9 +1,9 @@
 .navbar-container {
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 65px;
-  height: 4em;
+  position: fixed;
+  top: $header-height;
+  height: $navbar-height;
   width: 100%;
   background-color: $bg-blue;
   padding-inline: 200px;
