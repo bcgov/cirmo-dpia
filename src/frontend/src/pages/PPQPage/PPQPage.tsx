@@ -19,7 +19,7 @@ function PPQLandingPage(props: IComponentProps) {
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
-            <h2 className="intake-heading">{messages.PIAIntakeHeading.en}</h2>
+            <h2 className="form-heading">{messages.PIAIntakeHeading.en}</h2>
             <br />
             <p>{messages.PIAIntakeDescriptionText.en}</p>
             <p>{messages.PIAIntakeHelpDescriptionText.en}</p>
