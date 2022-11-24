@@ -55,7 +55,7 @@ jobs:
   PILOT-API-Deploy:
     runs-on: ubuntu-latest
     environment: API-Dev
-    needs: [ PIA-API-Build-Tag-Push ]
+    needs: [ PILOT-API-Build-Tag-Push ]
     steps:
     
       # Checkout Repository
