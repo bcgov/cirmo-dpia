@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
+import BCGovLogo from '../../../assets/BCGovLogo_negative.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -116,7 +116,7 @@ function Header({ user }: Props) {
     setShowModal(false);
   };
   return (
-    <header>
+    <header class="header wrapper">
       <div className="banner">
         <a href="https://gov.bc.ca">
           <img

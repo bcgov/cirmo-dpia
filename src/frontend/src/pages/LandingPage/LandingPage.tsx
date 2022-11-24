@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
-import heroImg from '../../assets/hero-img.svg';
+import heroImg from '../../assets/public_homepage/hero.svg';
+import hypothesis from '../../assets/public_homepage/hypothesis.svg';
+import vision from '../../assets/public_homepage/vision.svg';
+import problem from '../../assets/public_homepage/problem.svg';
 import newIdeas from '../../assets/undraw_new_ideas.svg';
 import webSearch from '../../assets/undraw_web_search.svg';
 import sharedGoals from '../../assets/undraw_shared_goals.svg';
@@ -17,8 +20,8 @@ function LandingPage() {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
   };
   return (
-    <div>
-      <section className="hero-section">
+    <div class="">
+      <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
           <h1>Digital Privacy Impact Assessment (DPIA)</h1>
           <p>
@@ -49,9 +52,6 @@ function LandingPage() {
             </a>
           </div>
         </div>
-        <div data-cy="landing-img" className="hero-svg">
-          <img src={heroImg} alt="Fill form image" />
-        </div>
       </section>
       <section className="what-is-a-pia">
         <h2>What is a Privacy Impact Assessment</h2>
@@ -67,9 +67,9 @@ function LandingPage() {
         </a>
       </section>
       <Callout text="These are draft statements and may change and evolve with feedback from interested parties." />
-      <section className="info-section">
+      <section className="info-section wrapper">
         <div className="problem-subsec">
-          <img src={webSearch} alt="Web Search" />
+          <img src={problem} alt="Web Search" />
           <div className="info-subsec-text">
             <h2>Problem</h2>
             <p>
@@ -84,7 +84,7 @@ function LandingPage() {
           </div>
         </div>
         <div className="hypothesis-subsec">
-          <img src={newIdeas} alt="New Ideas" />
+          <img src={hypothesis} alt="New Ideas" />
           <div className="info-subsec-text">
             <h2>Hypothesis</h2>
             <p>
@@ -96,7 +96,7 @@ function LandingPage() {
           </div>
         </div>
         <div className="vision-subsec">
-          <img src={sharedGoals} alt="Shared Goals" />
+          <img src={vision} alt="Shared Goals" />
           <div className="info-subsec-text">
             <h2>Vision</h2>
             <p>

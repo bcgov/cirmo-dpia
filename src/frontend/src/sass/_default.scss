@@ -47,12 +47,14 @@ sub {
 
 
 .wrapper {
-  padding: 0 5px 0 5px;
   position: relative;
   max-width: 1286;
   margin-left: auto;
   margin-right: auto;
-  // height:100%;
+  padding-inline: $wrapper-padding-inline;
+  @include breakpoint(0 map-get($grid-breakpoints, "sm")) {
+    padding-inline: 5px;
+  }
 }
 
 .main-content {
