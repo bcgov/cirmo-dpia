@@ -24,29 +24,33 @@ a:hover {
   white-space: nowrap;
   font-weight: 700;
   letter-spacing: 1px;
-  border-width:1px;
-  border-style:solid;
-  outline:none;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  border-width: 1px;
+  border-style: solid;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   cursor: pointer;
   transition: border-color 0.25s;
- 
-  :focus {outline:none;}
-  ::-moz-focus-inner {border:0;}
-  
+
+  :focus {
+    outline: none;
+  }
+
+  ::-moz-focus-inner {
+    border: 0;
+  }
+
   .icon {
     font-size: large;
   }
-  
+
   &:active {
     opacity: 1;
   }
-  
+
   &:hover {
     text-decoration: underline;
     opacity: 0.8;
   }
-
 }
 
 .bcgovbtn:focus,
@@ -56,9 +60,10 @@ a:hover {
 
 .bcgovbtn__primary {
   background-color: $primary-colour;
-  --text-color: #{$text-light};
-  border: 2px solid $primary-colour;
 
+  --text-color: #{$text-light};
+
+  border: 2px solid $primary-colour;
 
   &:focus {
     outline: 4px solid $accent-lightblue;
@@ -68,7 +73,9 @@ a:hover {
 
 .bcgovbtn__secondary {
   background-color: $bg-white;
+
   --text-color: #{$primary-colour};
+
   border: 2px solid $primary-colour;
 
   &:focus {
@@ -84,7 +91,9 @@ a:hover {
 
   &.nav-link-button {
     background-color: transparent;
+
     --text-color: white;
+
     border-color: white;
     padding-inline: 1.5em;
   }
@@ -93,16 +102,20 @@ a:hover {
 /* Secnodary Dark styling */
 .bcgovbtn__secondary--dark {
   background-color: transparent;
+
   --text-color: #{$text-light};
+
   border-color: $text-light;
-  
+
   &:hover {
-    background-color:white;
+    background-color: white;
+
     --text-color: #{$text-dark};
-    opacity:1;
+
+    opacity: 1;
   }
 }
-  
+
 /* TODO! This class needs to be removed as there is no login button as such */
 .btn-login,
 %btn-login {

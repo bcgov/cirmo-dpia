@@ -7,31 +7,28 @@ import {
 import ppqImg from '../../assets/ppq_homepage.svg';
 
 import { Link } from 'react-router-dom';
+import messages from './messages';
 
 interface IComponentProps {
   enablePiaIntakeForm: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {
   const { enablePiaIntakeForm } = props;
-  return (
+  return enablePiaIntakeForm ? (
     <div className="bcgovPageContainer background">
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
-            <h2 className="intake-heading">PIA Intake</h2>
+            <h2 className="intake-heading">{messages.PIAIntakeHeading.en}</h2>
             <br />
-            <p>
-              The PIA Intake questions ask for some basic information about the
-              initiative you&lsquo;re assessing in the PIA. If you get stuck on
-              any of the questions, ask your MPO for help.{' '}
-            </p>
-            <p>
-              If you&lsquo;re a ministry privacy officer, you can start a PIA
-              intake or go to the PIA Pathways Questionnaire.
-            </p>
+            <p>{messages.PIAIntakeDescriptionText.en}</p>
+            <p>{messages.PIAIntakeHelpDescriptionText.en}</p>
 
             <div data-cy="ppq-btn">
-              <Link to="/ppq-form" className="bcgovbtn bcgovbtn__primary ppq-btn">
+              <Link
+                to="/ppq-form"
+                className="bcgovbtn bcgovbtn__primary ppq-btn"
+              >
                 Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>
@@ -46,16 +43,13 @@ function PPQLandingPage(props: IComponentProps) {
               <FontAwesomeIcon
                 className="icon ppq-home-warning-icon"
                 icon={faExclamationTriangle}
-              />{' '}
-              For MPO Usage Only
+              />
+              {messages.PPQHeadingWarning.en}
               <h3>
-                <b>PIA Pathway Questionnaire</b>
+                <b>{messages.PPQHeading.en}</b>
               </h3>
               <br />
-              <p>
-                The PIA Pathways Questionnaire asks for some basic information
-                about the initiative you&lsquo;re assessing in the PIA
-              </p>
+              <p>{messages.PPQDescriptionTextInPIAIntake.en}</p>
               <div data-cy="ppq-btn">
                 <Link
                   to="/ppq-form"
@@ -80,20 +74,19 @@ function PPQLandingPage(props: IComponentProps) {
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
-            <h2>PIA Pathway Questionnaire</h2>
+            <h2>{messages.PPQHeading.en}</h2>
             <br />
-            <p>
-              The PIA Pathways Questionnaire asks for some basic information
-              about the initiative you&lsquo; re assessing in the PIA. Your
-              answers will help us estimate
-            </p>
+            <p>{messages.PPQDescriptionText.en}</p>
             <ul className="list">
-              <li>The relative complexity of your PIA </li>
-              <li>Which PIA template you should fill out</li>
-              <li>Where to go for help with your PIA</li>
+              <li>{messages.PPQDescriptionTextOne.en}</li>
+              <li>{messages.PPQDescriptionTextTwo.en}</li>
+              <li>{messages.PPQDescriptionTextThree.en}</li>
             </ul>
             <div data-cy="ppq-btn">
-              <Link to="/ppq-form" className="btn-primary ppq-btn">
+              <Link
+                to="/ppq-form"
+                className="bcgovbtn bcgovbtn__primary ppq-btn"
+              >
                 Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>
