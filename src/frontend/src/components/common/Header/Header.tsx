@@ -116,7 +116,7 @@ function Header({ user }: Props) {
     setShowModal(false);
   };
   return (
-    <header class="header wrapper">
+    <header className="header wrapper">
       <div className="banner">
         <a href="https://gov.bc.ca">
           <img

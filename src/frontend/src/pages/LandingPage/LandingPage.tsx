@@ -20,7 +20,7 @@ function LandingPage() {
     win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
   };
   return (
-    <div class="">
+    <div>
       <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
           <h1>Digital Privacy Impact Assessment (DPIA)</h1>
