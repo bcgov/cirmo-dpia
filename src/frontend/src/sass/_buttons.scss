@@ -1,104 +1,111 @@
 a {
   font-size: 14px;
-  color: $accent-lightblue;
+  color: $link-blue;
   text-decoration: none;
 }
 
 a:hover {
-  color: $primary-blue;
+  color: $primary-colour;
 }
 
-.btn-primary {
-  background-color: $primary-blue;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  text-align: center;
-  padding-block: 12px;
-  padding-inline: 25px;
-  text-decoration: none;
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  justify-content: space-evenly;
-  width: fit-content;
-  white-space: nowrap;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-
-  .icon {
-    font-size: large;
-  }
-
-  &:hover {
-    text-decoration: underline;
-    opacity: 0.8;
-  }
-
-  &:focus {
-    outline: 4px solid $accent-lightblue;
-    outline-offset: 1px;
-  }
-
-  &:active {
-    opacity: 1;
-  }
-}
-
-.btn-secondary {
-  background-color: $bg-white;
-  color: $primary-blue;
-  border: 2px solid $primary-blue;
+/* Every button element must contain this class */
+.bcgovbtn {
   border-radius: 4px;
   text-align: center;
   padding-block: 0.5em;
   padding-inline: 1.5em;
   text-decoration: none;
   display: flex;
-  white-space: nowrap;
   gap: 0.7em;
+  color: var(--text-color);
   align-items: center;
   justify-content: space-evenly;
   width: fit-content;
+  white-space: nowrap;
   font-weight: 700;
   letter-spacing: 1px;
+  border-width:1px;
+  border-style:solid;
+  outline:none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   cursor: pointer;
-
-  & > .icon {
-    font-size: x-large;
+  transition: border-color 0.25s;
+ 
+  :focus {outline:none;}
+  ::-moz-focus-inner {border:0;}
+  
+  .icon {
+    font-size: large;
   }
-
+  
+  &:active {
+    opacity: 1;
+  }
+  
   &:hover {
     text-decoration: underline;
     opacity: 0.8;
   }
+
+}
+
+.bcgovbtn:focus,
+.bcgovbtn:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.bcgovbtn__primary {
+  background-color: $primary-colour;
+  --text-color: #{$text-light};
+  border: 2px solid $primary-colour;
+
+
+  &:focus {
+    outline: 4px solid $accent-lightblue;
+    outline-offset: 1px;
+  }
+}
+
+.bcgovbtn__secondary {
+  background-color: $bg-white;
+  --text-color: #{$primary-colour};
+  border: 2px solid $primary-colour;
 
   &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
   }
 
-  &:active {
-    opacity: 1;
-  }
-
   &.btn-secondary-modal {
     margin-top: 0.2em;
     border: 0;
+    color: $text-dark;
   }
 
   &.nav-link-button {
     background-color: transparent;
-    color: white;
+    --text-color: white;
     border-color: white;
     padding-inline: 1.5em;
   }
 }
 
+/* Secnodary Dark styling */
+.bcgovbtn__secondary--dark {
+  background-color: transparent;
+  --text-color: #{$text-light};
+  border-color: $text-light;
+  
+  &:hover {
+    background-color:white;
+    --text-color: #{$text-dark};
+    opacity:1;
+  }
+}
+  
+/* TODO! This class needs to be removed as there is no login button as such */
 .btn-login,
 %btn-login {
-  background: none;
   color: white;
   font-weight: 700;
   letter-spacing: 1px;

@@ -18,15 +18,13 @@ const Modal = ({
         <span className="modal-title"> {titleText}</span>
         <div className="modal-horizontal-divider"></div>
         {children}
-        <div className="d-flex align-items-center justify-content-center">
-          <button className="btn-primary " type="button" onClick={handleClose}>
+        <div className="modalbtn__container">
+          <button className="bcgovbtn bcgovbtn__primary " type="button" onClick={handleClose}>
             {confirmLabel}
           </button>
-        </div>
-        <div className="d-flex align-items-center justify-content-center">
           <button
             type="button"
-            className="btn-secondary-modal"
+            className="bcgovbtn bcgovbtn__secondary"
             onClick={handleCancel}
           >
             {cancelLabel}
