@@ -57,7 +57,7 @@ const PPQConnect = (props: IComponentProps) => {
       <section className="find-your-mpo">
         <h2>{Messages.Headings.StepOne.en}</h2>
         <button
-          className={`btn-secondary ${
+          className={`bcgovbtn bcgovbtn__secondary ${
             isDownloading ? 'opacity-50 pe-none' : ''
           }`}
           onClick={handleDownload}
@@ -87,10 +87,10 @@ const PPQConnect = (props: IComponentProps) => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons connect-buttons">
-        <Link to="/ppq-form" className="btn-secondary btn-back">
+        <Link to="/ppq-form" className="bcgovbtn bcgovbtn__secondary btn-back">
           Back
         </Link>
-        <Link to="/ppq" className="btn-primary btn-next">
+        <Link to="/ppq" className="bcgovbtn bcgovbtn__primary btn-next">
           Done
         </Link>
       </div>

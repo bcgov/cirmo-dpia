@@ -12,7 +12,7 @@ function PPQLandingPage(props: IComponentProps) {
   // TODO For ticket 402 use pia value to decide render pia intake or not
   const { enablePiaIntakeForm } = props;
   return (
-    <div className="ppq-container background">
+    <div className="bcgovPageContainer background">
       <div className="ppq-section results-wrapper">
         <div className="row what-is-a-ppq">
           <div className="col-md-6">
@@ -29,7 +29,7 @@ function PPQLandingPage(props: IComponentProps) {
               <li>Where to go for help with your PIA</li>
             </ul>
             <div data-cy="ppq-btn">
-              <Link to="/ppq-form" className="btn-primary ppq-btn">
+              <Link to="/ppq-form" className="bcgovbtn bcgovbtn__primary ppq-btn">
                 Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>
