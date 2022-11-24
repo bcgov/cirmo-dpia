@@ -17,7 +17,7 @@ function PPQLandingPage(props: IComponentProps) {
   return enablePiaIntakeForm ? (
     <div className="bcgovPageContainer background">
       <div className="get-started-section results-wrapper">
-        <div className="row what-is-a-ppq">
+        <div className="row">
           <div className="col-md-6">
             <h2 className="form-heading">{messages.PIAIntakeHeading.en}</h2>
             <br />
@@ -72,12 +72,12 @@ function PPQLandingPage(props: IComponentProps) {
   ) : (
     <div className="get-started-container background">
       <div className="get-started-section results-wrapper">
-        <div className="row what-is-a-ppq">
+        <div className="row">
           <div className="col-md-6">
             <h2>{messages.PPQHeading.en}</h2>
             <br />
             <p>{messages.PPQDescriptionText.en}</p>
-            <ul className="list">
+            <ul>
               <li>{messages.PPQDescriptionTextOne.en}</li>
               <li>{messages.PPQDescriptionTextTwo.en}</li>
               <li>{messages.PPQDescriptionTextThree.en}</li>
