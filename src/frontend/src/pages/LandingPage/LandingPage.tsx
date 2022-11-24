@@ -1,12 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
-import heroImg from '../../assets/public_homepage/hero.svg';
 import hypothesis from '../../assets/public_homepage/hypothesis.svg';
 import vision from '../../assets/public_homepage/vision.svg';
 import problem from '../../assets/public_homepage/problem.svg';
-import newIdeas from '../../assets/undraw_new_ideas.svg';
-import webSearch from '../../assets/undraw_web_search.svg';
-import sharedGoals from '../../assets/undraw_shared_goals.svg';
 import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
 import { API_ROUTES } from '../../constant/apiRoutes';

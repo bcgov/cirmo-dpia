@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BCGovLogo_negative.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,6 @@ import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
 import {
-  getItemFromStorage,
   setItemInStorage,
 } from '../../../utils/helper.util';
 import { IConfig } from '../../../types/interfaces/config.interface';
