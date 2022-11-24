@@ -24,10 +24,16 @@ export class PiaIntakeEntity extends BaseEntity {
   branch: string;
 
   @Column({
-    name: 'drafter_info',
+    name: 'drafter_name',
     nullable: false,
   })
-  drafterInfo: string;
+  drafterName: string;
+
+  @Column({
+    name: 'drafter_title',
+    nullable: false,
+  })
+  drafterTitle: string;
 
   @Column({
     name: 'drafter_email',
@@ -36,10 +42,16 @@ export class PiaIntakeEntity extends BaseEntity {
   drafterEmail: string;
 
   @Column({
-    name: 'lead_info',
+    name: 'lead_name',
     nullable: false,
   })
-  leadInfo: string;
+  leadName: string;
+
+  @Column({
+    name: 'lead_title',
+    nullable: false,
+  })
+  leadTitle: string;
 
   @Column({
     name: 'lead_email',
@@ -48,10 +60,10 @@ export class PiaIntakeEntity extends BaseEntity {
   leadEmail: string;
 
   @Column({
-    name: 'mpo_info',
+    name: 'mpo_name',
     nullable: false,
   })
-  mpoInfo: string;
+  mpoName: string;
 
   @Column({
     name: 'mpo_email',
@@ -85,7 +97,7 @@ export class PiaIntakeEntity extends BaseEntity {
 
   @Column({
     name: 'risk_mitigation',
-    nullable: true /* null when user said YES to added_pi_to_data_elements */,
+    nullable: true /* null when user said NO to added_pi_to_data_elements */,
   })
   riskMitigation: string;
 }
