@@ -52,7 +52,7 @@ jobs:
         run: |
           docker push image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/pilot-app-dev:latest
           
-   PILOT-App-Deploy:
+  PILOT-App-Deploy:
     runs-on: ubuntu-latest
     environment: APP-Dev
     needs: [ PILOT-WebApp-Build-Tag-Push ]

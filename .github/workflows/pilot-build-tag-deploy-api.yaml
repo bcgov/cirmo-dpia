@@ -6,7 +6,7 @@ on:
 jobs:
   PILOT-API-Build-Tag-Push:
     runs-on: ubuntu-latest
-    environment: APP-Dev
+    environment: API-Dev
     steps:
 
       # Checkout CIRMO-DPIA Github Repository
