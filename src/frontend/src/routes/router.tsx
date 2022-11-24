@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
+import PIAIntakeFormPage from '../pages/PIAIntakeForm/PIAIntakeFormPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
@@ -20,6 +21,7 @@ const Router = () => {
       />
       <Route path="/ppq-form" element={<PPQFormPage />} />
       <Route path="/ppq-connect" element={<PPQConnectPage />} />
+      <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
       <Route path="/" element={<LandingPage />} />
     </Routes>
   );

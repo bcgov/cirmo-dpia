@@ -6,8 +6,11 @@ interface IDropdownOptions {
 }
 
 export interface IDropdown {
-  key: string;
+  id?: string;
   value: string;
+  label: string;
+  optionalClass?: string;
   options: IDropdownOptions[];
-  changeHandler: ChangeEventHandler<HTMLSelectElement>;
+  changeHandler?: ChangeEventHandler<HTMLSelectElement>;
+  required?: boolean;
 }
