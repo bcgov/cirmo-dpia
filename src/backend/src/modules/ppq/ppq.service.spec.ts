@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { repositoryMock } from '../../test-utils/repository.mock';
+import { repositoryMock } from '../../../test/util/mocks/repository/repository.mock';
 import { AuthModule } from '../auth/auth.module';
 import { PpqEntity } from './entities/ppq.entity';
 import { PpqController } from './ppq.controller';

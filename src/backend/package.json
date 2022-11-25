@@ -5,6 +5,11 @@
   "author": "Kushal Arora",
   "private": true,
   "license": "ISC",
+  "moduleDirectories": [
+    "node_modules",
+    "src",
+    "test"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -82,12 +87,19 @@
     "typescript": "4.7.4"
   },
   "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "src",
+      "test"
+    ],
+    "roots": [
+      "test"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -96,7 +108,11 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "src/(.*)": "<rootDir>/src/$1",
+      "test/(.*)": "<rootDir>/test/$1"
+    }
   },
   "husky": {
     "hooks": {
