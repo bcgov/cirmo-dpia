@@ -26,7 +26,7 @@ function PPQLandingPage(props: IComponentProps) {
 
             <div data-cy="ppq-btn">
               <Link
-                to="/ppq-form"
+                to="/piaintake-form"
                 className="bcgovbtn bcgovbtn__primary ppq-btn"
               >
                 Get started
