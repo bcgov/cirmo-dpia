@@ -5,6 +5,7 @@ import { AppModule } from 'src/app.module';
 import { HealthModule } from 'src/health/health.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
+import { PiaIntakeModule } from 'src/modules/pia-intake/pia-intake.module';
 import { PpqModule } from 'src/modules/ppq/ppq.module';
 
 export const SwaggerDocs = (app: INestApplication) => {
@@ -30,6 +31,7 @@ export const SwaggerDocs = (app: INestApplication) => {
       PpqModule,
       AuthModule,
       ConfigurationModule,
+      PiaIntakeModule,
     ],
   });
 

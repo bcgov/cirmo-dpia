@@ -1,4 +1,4 @@
-import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
+import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 
