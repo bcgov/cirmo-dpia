@@ -51,7 +51,7 @@ const PIAIntakeResults = (props: IComponentProps) => {
   };
 
   return (
-    <div className="results results-wrapper pia-result">
+    <div className="results results-wrapper ppq-connect">
       <h1 className="results-header">{Messages.Headings.Title.en}</h1>
       <section className="find-your-mpo">
         <h2>{Messages.Headings.Subtitle.en}</h2>
