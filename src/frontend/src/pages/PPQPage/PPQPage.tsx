@@ -70,7 +70,7 @@ function PPQLandingPage(props: IComponentProps) {
       </div>
     </div>
   ) : (
-    <div className="get-started-container background">
+    <div className="bcgovPageContainer background">
       <div className="get-started-section results-wrapper">
         <div className="row">
           <div className="col-md-6">
