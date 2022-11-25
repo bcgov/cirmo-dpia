@@ -1,0 +1,66 @@
+- var color_default = '#444444';
+- var color_grey = '#808080'
+- var key_style = `color:${color_grey}; font-size: 0.8rem; margin-bottom: 0.2rem; opacity: 0.6;`
+
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+  style(type="text/css").
+    @page { 
+      size: A4 portrait;
+      margin: 50px; 
+    }
+div(style='padding-left: 5px; color: #444444')
+  div(style='display: flex; flex-direction: row; justify-content: space-between')
+    div
+      img(src='https://moa.ubc.ca/wp-content/uploads/2021/02/BCID_H_rgb_pos.png' height='65px')
+    div(style='margin-top: 10px; font-size: 0.8rem')
+      div COMPLETED
+      div(style='text-align: right') #{updatedAt}
+  div(style='margin-top: 60px')
+    h1 #{title}
+  div(style='margin-top: 50px; display: flex; flex-direction: row')
+    div(style='width: 30%')
+      div
+        div(style=`${key_style}`) Filled By
+        div #{createdByDisplayName}
+        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{createdByEmail}
+
+        div(style=`${key_style}`) Initiative lead
+        div #{InitiativeLeadName}
+        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{InitiativeLeadByEmail}
+
+        div(style=`${key_style}`) MPO
+        div #{MPODisplayName}
+        div(style=`color: ${color_grey}; font-size: 0.8rem`) #{MPOByEmail}
+
+    div(style='width: 70%; padding-left: 10px')
+      div
+        div(style=`${key_style}`) Ministry
+        div #{ministry}
+
+        div(style=`${key_style}`) Branch
+        div #{branch}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) What is the initiative
+        div #{initiativeDescription} 
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) PIA Scope
+        div #{piaType}
+
+        div(style='margin-top: 30px')
+          div(style=`${key_style}`) Data or information elements invovled in the initiative
+          div #{delegatedReviewType}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) Contains personal information?
+        div #{proposedStartDate}
+
+      div(style='margin-top: 30px')
+        div(style=`${key_style}`) How will the risk of unintentionally collecting personal information be reduced
+        div !{description}
