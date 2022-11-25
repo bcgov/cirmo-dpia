@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
-import BCGovLogo from '../../../assets/BC_Logo_Horizontal.svg';
+import BCGovLogo from '../../../assets/BCGovLogo_negative.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { AuthContext } from '../../../hooks/useAuth';
 import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
 import {
-  getItemFromStorage,
   setItemInStorage,
 } from '../../../utils/helper.util';
 import { IConfig } from '../../../types/interfaces/config.interface';
@@ -116,7 +115,7 @@ function Header({ user }: Props) {
     setShowModal(false);
   };
   return (
-    <header>
+    <header className="header wrapper">
       <div className="banner">
         <a href="https://gov.bc.ca">
           <img

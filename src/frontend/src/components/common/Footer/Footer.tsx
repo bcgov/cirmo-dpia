@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer data-cy="footer">
+    <footer data-cy="footer" className="footer wrapper">
       <ul>
         <li>
           <a>Home</a>

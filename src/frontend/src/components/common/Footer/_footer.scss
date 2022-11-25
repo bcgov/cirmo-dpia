@@ -1,20 +1,21 @@
-footer {
+.footer {
   background-color: $primary-colour;
   border-top: 2px solid $accent-colour;
   color: #fff;
   font-family: $font-family;
-  padding-inline: 200px;
 
   /* need to test */
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: $footer-height;
-  // top: calc(100vh - 72px);;
+  min-height: $footer-height;
+  display: flex;
+  align-items: center;
+  overflow:hidden;
 }
 
-footer .container {
+.footer .container {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -22,7 +23,7 @@ footer .container {
   height: 46px;
 }
 
-footer > ul {
+.footer > ul {
   display: flex;
   flex-flow: row wrap;
   margin: 0;
@@ -33,7 +34,7 @@ footer > ul {
   height: 100%;
 }
 
-footer > ul > li {
+.footer > ul > li {
   display: inherit;
   align-items: center;
   border-right: 1px solid white;
@@ -48,7 +49,7 @@ footer > ul > li {
   }
 }
 
-footer > ul > li > a {
+.footer > ul > li > a {
   font-size: 0.813em;
   font-weight: normal; /* 400 */
   color: #fff;

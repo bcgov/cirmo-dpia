@@ -1,14 +1,24 @@
 .hero-section {
   display: flex;
-  justify-content: space-around;
-  height: 952px;
-}
+  margin-top: calc($header-height);
+  min-height: calc(100vh - $header-height);
+
+  @include breakpoint(map-get($grid-breakpoints, 'xl')) {
+    background-repeat: no-repeat;
+    background-image: url(/src/assets/public_homepage/hero.svg);
+    background-position: 90% 100%;
+  }
+} 
 
 .hero-content {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  max-width: 80ch;
+  max-width:45ch;
+  
+  @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
+    max-width: 80ch;
+  }
 }
 
 .ctas {
@@ -46,10 +56,17 @@
 }
 
 .info-section {
+  
+  @include breakpoint(0 map-get($grid-breakpoints, 'xl')) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: space-evenly;
-  height: 710px;
+  padding-bottom: calc($padding-block + $footer-height);
 }
 
 .info-section > div {
