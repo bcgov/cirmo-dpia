@@ -52,6 +52,7 @@ sub {
   margin-left: auto;
   margin-right: auto;
   padding-inline: $wrapper-padding-inline;
+  
   @include breakpoint(0 map-get($grid-breakpoints, "sm")) {
     padding-inline: 5px;
   }

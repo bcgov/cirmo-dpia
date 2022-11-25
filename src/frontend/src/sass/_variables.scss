@@ -38,21 +38,18 @@ $focus: #3B99FC;
 /* FORM Elements */
 $form-input-border-colour: #606060;
 
-
 /* header variables */
 $header-height: 65px;
 $navbar-height: 4rem;
 $padding-block: 7rem;
 $footer-height: 46px;
 
-
 /* Taken from bootstrap */
-// Grid breakpoints
-//
-// Define the minimum dimensions at which your layout will change,
-// adapting to different screen sizes, for use in media queries.
-
-// scss-docs-start grid-breakpoints
+/* Grid breakpoints
+   Define the minimum dimensions at which your layout will change,
+   adapting to different screen sizes, for use in media queries.
+   scss-docs-start grid-breakpoints
+*/
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
