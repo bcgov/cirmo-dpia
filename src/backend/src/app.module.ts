@@ -10,6 +10,7 @@ import { PpqModule } from './modules/ppq/ppq.module';
 import { HttpModule } from '@nestjs/axios';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
+import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ConfigurationModule } from './modules/configuration/configuration.modul
       maxRedirects: 5,
     }),
     KeycloakConnectModule.register(configService.getKeycloakConfig()),
+    PiaIntakeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
