@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { IPPQResult } from '../../../types/interfaces/ppq-result.interface';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import {
   FileDownload,
@@ -12,9 +11,10 @@ import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
+import { IPIAIntakeResult } from '../../../types/interfaces/pia-intake-result.interface';
 
 interface IComponentProps {
-  result: IPPQResult;
+  result: IPIAIntakeResult;
 }
 
 const PIAIntakeResults = (props: IComponentProps) => {
@@ -36,7 +36,7 @@ const PIAIntakeResults = (props: IComponentProps) => {
     setIsDownloading(true);
     try {
       await FileDownload.download(
-        API_ROUTES.PPQ_RESULT_DOWNLOAD.replace(':id', `${result.id}`),
+        API_ROUTES.PIA_INTAKE_RESULT_DOWNLOAD.replace(':id', `${result.id}`),
         FileDownloadTypeEnum.PDF,
       );
     } catch (e) {
@@ -91,7 +91,10 @@ const PIAIntakeResults = (props: IComponentProps) => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons connect-buttons">
-        <Link to="/ppq-form" className="bcgovbtn bcgovbtn__secondary btn-back">
+        <Link
+          to="/pia-intake-form"
+          className="bcgovbtn bcgovbtn__secondary btn-back"
+        >
           Back
         </Link>
         <Link to="/ppq" className="bcgovbtn bcgovbtn--primary btn-next">

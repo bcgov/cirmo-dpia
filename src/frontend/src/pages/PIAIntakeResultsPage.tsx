@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import PIAIntakeResults from '../components/public/PIAIntakeResults';
-import { IPPQResult } from '../types/interfaces/ppq-result.interface';
+import { IPIAIntakeResult } from '../types/interfaces/pia-intake-result.interface';
 
 interface IPagePropState {
-  result: IPPQResult;
+  result: IPIAIntakeResult;
 }
 
 const PIAIntakeResultsPage = () => {
@@ -11,9 +11,9 @@ const PIAIntakeResultsPage = () => {
   const { result } = location.state as IPagePropState;
 
   return (
-    <>
+    <div className="bcgovPageContainer background-connect">
       <PIAIntakeResults result={result} />
-    </>
+    </div>
   );
 };
 
