@@ -324,32 +324,18 @@ const PIAIntakeFormPage = () => {
               </a>
               {Messages.InitiativePISection.HelperText.en}
             </p>
-            {PIOptions.map((option, index) => {
-              return PIOptions[1] === option ? (
-                <label className="form__input-label input-label-row">
-                  <input
-                    key={index}
-                    type="radio"
-                    name="pi-options-radio"
-                    value={option}
-                    onChange={handlePIOptionChange}
-                    defaultChecked
-                  />
-                  {option}
-                </label>
-              ) : (
-                <label className="form__input-label input-label-row">
-                  <input
-                    key={index}
-                    type="radio"
-                    name="pi-options-radio"
-                    value={option}
-                    onChange={handlePIOptionChange}
-                  />
-                  {option}
-                </label>
-              );
-            })}
+            {PIOptions.map((option, index) => (
+              <label key={index} className="form__input-label input-label-row">
+                <input
+                  type="radio"
+                  name="pi-options-radio"
+                  value={option}
+                  onChange={handlePIOptionChange}
+                  defaultChecked={PIOptions[1] === option }
+                />
+                {option}
+              </label>
+            ))}
           </section>
           {hasAddedPiToDataElements === false && (
             <section className="form__section">

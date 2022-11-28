@@ -25,7 +25,7 @@ const InputText = ({
   helperText = '',
   linkText = '',
   linkHref = '',
-  icon = false,
+  hasIcon = false,
   type = 'text',
   className = '',
   value = '',
@@ -43,7 +43,7 @@ const InputText = ({
           {helperText}
           <a href={linkHref} rel="noreferrer external" target="_blank">
             {linkText}
-            {icon === true && <FontAwesomeIcon className="helper-text__link-icon" icon={faUpRightFromSquare} />}
+            {!!hasIcon && <FontAwesomeIcon className="helper-text__link-icon" icon={faUpRightFromSquare} />}
           </a>
         </p>
       )}

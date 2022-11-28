@@ -1,6 +1,8 @@
 .navbar-container {
   display: flex;
   align-items: center;
+  justify-content: end;
+  gap: 1em;
   position: fixed;
   top: $header-height;
   height: $navbar-height;
@@ -13,7 +15,6 @@
   display: flex;
   align-items: center;
   max-width: 80%;
-  gap: 3em;
   list-style: none;
   margin-bottom: 0;
 
