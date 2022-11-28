@@ -1,35 +1,92 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronRight,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 
 import ppqImg from '../../assets/ppq_homepage.svg';
 
 import { Link } from 'react-router-dom';
+import messages from './messages';
 
 interface IComponentProps {
   enablePiaIntakeForm: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {
-  // TODO For ticket 402 use pia value to decide render pia intake or not
   const { enablePiaIntakeForm } = props;
-  return (
+  return enablePiaIntakeForm ? (
     <div className="bcgovPageContainer background">
-      <div className="ppq-section results-wrapper">
-        <div className="row what-is-a-ppq">
+      <div className="get-started-section results-wrapper">
+        <div className="row">
           <div className="col-md-6">
-            <h2>PIA Pathway Questionnaire</h2>
+            <h1>{messages.PIAIntakeHeading.en}</h1>
             <br />
-            <p>
-              The PIA Pathways Questionnaire asks for some basic information
-              about the initiative you&lsquo; re assessing in the PIA. Your
-              answers will help us estimate
-            </p>
-            <ul className="list">
-              <li>The relative complexity of your PIA </li>
-              <li>Which PIA template you should fill out</li>
-              <li>Where to go for help with your PIA</li>
+            <p>{messages.PIAIntakeDescriptionText.en}</p>
+            <p>{messages.PIAIntakeHelpDescriptionText.en}</p>
+
+            <div data-cy="ppq-btn">
+              <Link
+                to="/piaintake-form"
+                className="bcgovbtn bcgovbtn__primary ppq-btn"
+              >
+                Get started
+                <FontAwesomeIcon className="icon" icon={faChevronRight} />
+              </Link>
+            </div>
+            <br />
+            <span>
+              <b>Estimated time:</b> 20 minutes
+            </span>
+          </div>
+          <div data-cy="ppq-img" className="col-md-6 ppq-svg ">
+            <div className="get-started-content">
+              <FontAwesomeIcon
+                className="icon ppq-home-warning-icon"
+                icon={faExclamationTriangle}
+              />
+              {messages.PPQHeadingWarning.en}
+              <h2>
+                <b>{messages.PPQHeading.en}</b>
+              </h2>
+              <br />
+              <p>{messages.PPQDescriptionTextInPIAIntake.en}</p>
+              <div data-cy="ppq-btn">
+                <Link
+                  to="/ppq-form"
+                  className="btn-secondary btn-secondary-transparent"
+                >
+                  Get started
+                  <FontAwesomeIcon className="icon" icon={faChevronRight} />
+                </Link>
+              </div>
+              <br />
+              <span>
+                <b>Estimated time:</b> 5 minutes
+              </span>
+            </div>
+            <img src={ppqImg} alt="Fill form image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="bcgovPageContainer background">
+      <div className="get-started-section results-wrapper">
+        <div className="row">
+          <div className="col-md-6">
+            <h2>{messages.PPQHeading.en}</h2>
+            <br />
+            <p>{messages.PPQDescriptionText.en}</p>
+            <ul>
+              <li>{messages.PPQDescriptionTextOne.en}</li>
+              <li>{messages.PPQDescriptionTextTwo.en}</li>
+              <li>{messages.PPQDescriptionTextThree.en}</li>
             </ul>
             <div data-cy="ppq-btn">
-              <Link to="/ppq-form" className="bcgovbtn bcgovbtn__primary ppq-btn">
+              <Link
+                to="/ppq-form"
+                className="bcgovbtn bcgovbtn__primary ppq-btn"
+              >
                 Get started
                 <FontAwesomeIcon className="icon" icon={faChevronRight} />
               </Link>

@@ -5,23 +5,28 @@ import { INavbarPages } from './interfaces';
 function NavBar({ pages }: INavbarPages): ReactElement {
   return (
     <nav className="navbar-container wrapper">
-      <ul className="navbar ms-auto">
-        {pages.map((page) => {
-          return page.link === '/' ? (
+      {pages.map((page) => {
+        return page.link === '/' ? (
+          <ul className="navbar">
             <li key={page.id}>
               <NavLink to={page.link} end>
                 {page.label}
               </NavLink>
             </li>
-          ) : (
+          </ul>
+        ) : (
+          <ul className="navbar ms-auto">
             <li key={page.id}>
-              <NavLink className="bcgovbtn bcgovbtn__secondary nav-link-button" to={page.link}>
+              <NavLink
+                className="bcgovbtn bcgovbtn__secondary nav-link-button"
+                to={page.link}
+              >
                 {page.label}
               </NavLink>
             </li>
-          );
-        })}
-      </ul>
+          </ul>
+        );
+      })}
     </nav>
   );
 }
