@@ -80,7 +80,7 @@ export class PiaIntakeService {
         dataElementsInvolved: marked.parse(piaIntakeForm.dataElementsInvolved),
         riskMitigation: piaIntakeForm.riskMitigation
           ? marked.parse(piaIntakeForm.riskMitigation)
-          : 'N/A',
+          : null,
       },
     };
 

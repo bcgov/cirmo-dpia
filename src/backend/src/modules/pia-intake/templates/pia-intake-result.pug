@@ -71,6 +71,7 @@ div(style='padding-left: 5px; color: #444444')
         if hasAddedPiToDataElements == null 
           div I'm not sure
         
-      div(style=`${field_gap_style}`)
-        div(style=`${key_style}`) How will the risk of unintentionally collecting personal information be reduced
-        div !{riskMitigation}
+      if !!riskMitigation
+        div(style=`${field_gap_style}`)
+          div(style=`${key_style}`) How will the risk of unintentionally collecting personal information be reduced
+          div !{riskMitigation}
