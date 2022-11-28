@@ -34,7 +34,7 @@ const PIAIntakeFormPage = () => {
   const [mpoEmail, setMpoEmail] = useState<string>('');
   const [initiativeScope, setInitiativeScope] = useState<string>('');
   const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
-  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<boolean>(false);
+  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<boolean | null>(false);
   const [riskMitigation, setRiskMitigation] = useState<string | null>();
 
   // 
@@ -101,8 +101,10 @@ const PIAIntakeFormPage = () => {
   };
 
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.value === "Yes" || event.target.value === "I'm not sure"
+    event.target.value === "Yes" 
     ? setHasAddedPiToDataElements(true)
+    : event.target.value === "I'm not sure"
+    ? setHasAddedPiToDataElements(null)
     : setHasAddedPiToDataElements(false);
   };
 
