@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { KeycloakUser } from '../auth/keycloak-user.model';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from './entities/pia-intake.entity';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
+import { GovMinistries } from 'src/common/constants/gov-ministries.constant';
+import { shortDate } from 'src/common/helpers/date-helper';
+import { marked } from 'marked';
+import { pugToPdfBuffer } from '../../common/helpers/pdf-helper';
 
 @Injectable()
 export class PiaIntakeService {
@@ -45,5 +50,43 @@ export class PiaIntakeService {
 
   remove(id: number) {
     return `This action removes a #${id} piaIntake`;
+  }
+
+  async getPiaIntakeById(id: number): Promise<PiaIntakeEntity> {
+    const piaIntakeForm: PiaIntakeEntity =
+      await this.piaIntakeRepository.findOneBy({ id });
+
+    return piaIntakeForm;
+  }
+
+  async downloadPiaIntakeResultPdf(id: number) {
+    const piaIntakeForm = await this.getPiaIntakeById(id);
+
+    if (!piaIntakeForm) {
+      return null;
+    }
+
+    const ministry = GovMinistries?.[piaIntakeForm.ministry]?.label;
+
+    const pdfParsedData = {
+      ...piaIntakeForm,
+      ...{
+        updatedAt: shortDate(piaIntakeForm.createdAt),
+        ministry: ministry || 'N/A',
+        initiativeDescription: marked.parse(
+          piaIntakeForm.initiativeDescription,
+        ),
+        initiativeScope: marked.parse(piaIntakeForm.initiativeScope),
+        dataElementsInvolved: marked.parse(piaIntakeForm.dataElementsInvolved),
+        riskMitigation: piaIntakeForm.riskMitigation
+          ? marked.parse(piaIntakeForm.riskMitigation)
+          : 'N/A',
+      },
+    };
+
+    return pugToPdfBuffer(
+      'src/modules/pia-intake/templates/pia-intake-result.pug',
+      pdfParsedData,
+    );
   }
 }
