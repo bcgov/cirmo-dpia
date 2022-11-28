@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -151,6 +152,7 @@ export class CreatePiaIntakeDto {
   dataElementsInvolved: string;
 
   @IsBoolean()
+  @IsOptional()
   @ApiProperty({
     type: Boolean,
     required: false,
@@ -159,7 +161,7 @@ export class CreatePiaIntakeDto {
   hasAddedPiToDataElements: boolean;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
     required: false,

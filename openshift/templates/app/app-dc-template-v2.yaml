@@ -65,7 +65,13 @@ objects:
             ports:
               - containerPort: 80
                 protocol: TCP
-            resources: {}
+            resources:
+              limits:
+                cpu: 150m
+                memory: 500Mi
+              requests:
+                cpu: 50m
+                memory: 250Mi
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             imagePullPolicy: IfNotPresent
