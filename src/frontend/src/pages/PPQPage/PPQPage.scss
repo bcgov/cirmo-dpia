@@ -1,11 +1,4 @@
-.ppq-container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  padding-block: 10rem;
-}
-
-.ppq-section.results-wrapper {
+.get-started-section.results-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,21 +6,22 @@
   width: 80%;
   background-color: white;
   padding: 0;
-  padding-left: 10rem;
+  padding-left: 5rem;
+}
+
+.get-started-content {
+  padding: 25px;
+  box-sizing: border-box;
+  margin-right: 4em;
+  background: rgba($focus, 0.05);
+}
+
+.ppq-home-warning-icon {
+  color: $secondary-yellow;
 }
 
 .col-md-6 {
   align-self: flex-start;
-}
-
-.what-is-a-ppq {
-  display: flex;
-  align-items: end;
-}
-
-.list {
-  padding-bottom: 15rem;
-  padding-left: 0.9rem;
 }
 
 .ppq-svg > img {
@@ -37,3 +31,4 @@
 .col-md-6 img {
   width: 100%;
 }
+
