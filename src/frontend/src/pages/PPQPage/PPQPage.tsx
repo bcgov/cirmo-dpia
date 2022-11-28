@@ -19,7 +19,7 @@ function PPQLandingPage(props: IComponentProps) {
       <div className="get-started-section results-wrapper">
         <div className="row">
           <div className="col-md-6">
-            <h2 className="form-heading">{messages.PIAIntakeHeading.en}</h2>
+            <h1>{messages.PIAIntakeHeading.en}</h1>
             <br />
             <p>{messages.PIAIntakeDescriptionText.en}</p>
             <p>{messages.PIAIntakeHelpDescriptionText.en}</p>
@@ -45,9 +45,9 @@ function PPQLandingPage(props: IComponentProps) {
                 icon={faExclamationTriangle}
               />
               {messages.PPQHeadingWarning.en}
-              <h3>
+              <h2>
                 <b>{messages.PPQHeading.en}</b>
-              </h3>
+              </h2>
               <br />
               <p>{messages.PPQDescriptionTextInPIAIntake.en}</p>
               <div data-cy="ppq-btn">
