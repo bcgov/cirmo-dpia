@@ -3,15 +3,42 @@
   max-width: 80%;
 }
 
+.form__header {
+  margin-bottom: 4em;
+}
+
 .form__section {
   margin-top: 4rem;
 }
 
 .form__h2 {
-  margin-bottom: 0.7em;
+  line-height: 1.5em;
 }
 
 .form__helper-text {
   color: $text-gray;
+}
+
+.form__input-label {
+  accent-color: $primary-colour;
+  display: flex;
+  gap: 0.5em;
+}
+
+.form__row--flex-end {
+  align-items: end;
+}
+
+.form__button-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.helper-text__link-icon {
+  margin-left: 0.3em; 
+}
+
+.form-group__p--margin-zero {
+  margin: 0;
 }
 
