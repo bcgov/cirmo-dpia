@@ -87,7 +87,7 @@ const PPQConnect = (props: IComponentProps) => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons connect-buttons">
-        <Link to="/ppq" className="bcgovbtn bcgovbtn__primary btn-next">
+        <Link to="/ppq" className="bcgovbtn bcgovbtn__primary btn-next ms-auto">
           Done
         </Link>
       </div>
