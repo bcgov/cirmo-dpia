@@ -8,53 +8,133 @@ import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { useNavigate } from 'react-router-dom';
+import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
+import { IPIAResult } from '../../types/interfaces/pia-result.interface';
+import { routes } from '../../constant/routes';
 
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
 
+  // 
+  // Local State
+  // 
+  const [message, setMessage] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [initiativeDescription, setInitiativeDescription] =
     useState<string>('');
-  const [ministry, setMinistry] = useState('');
-  const [initiativeDataElements, setInitiativeDataElements] = useState('');
-  const [piOption, setPiOption] = useState('Yes');
-  const [initiativeRiskReduction, setInitiativeRiskReduction] =
-    useState<string>('');
+  const [ministry, setMinistry] = useState<string>('');
+  const [branch, setBranch] = useState<string>('');
+  const [drafterName, setDrafterName] = useState<string>('');
+  const [drafterEmail, setDrafterEmail] = useState<string>('');
+  const [drafterTitle, setDrafterTitle] = useState<string>('');
+  const [leadName, setLeadName] = useState<string>('');
+  const [leadEmail, setLeadEmail] = useState<string>('');
+  const [leadTitle, setLeadTitle] = useState<string>('');
+  const [mpoName, setMpoName] = useState<string>('');
+  const [mpoEmail, setMpoEmail] = useState<string>('');
+  const [initiativeScope, setInitiativeScope] = useState<string>('');
+  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
+  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<boolean>(false);
+  const [riskMitigation, setRiskMitigation] = useState<string | null>();
 
+  // 
+  // Event Handlers
+  // 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const handleInitiativeDescriptionChange = (newMessage: any) => {
-    setInitiativeDescription(newMessage);
+  const handleTitleChange = (newTitle: any) => {
+    setTitle(newTitle.target.value);
   };
   
-  const handleInitiativeDataElementsChange = (newMessage: any) => {
-    setInitiativeDataElements(newMessage);
+  const handleInitiativeDescriptionChange = (newDescription: any) => {
+    setInitiativeDescription(newDescription);
   };
 
   const handleMinistryChange = (newMinistry: any) => {
-    setMinistry(newMinistry);
+    setMinistry(newMinistry.target.value);
+  };
+
+  const handleBranchChange = (newBranch: any) => {
+    setBranch(newBranch.target.value);
+  };
+
+  const handleDrafterNameChange = (newDrafterName: any) => {
+    setDrafterName(newDrafterName.target.value);
+  };
+
+  const handleDrafterEmailChange = (newDrafterEmail: any) => {
+    setDrafterEmail(newDrafterEmail.target.value);
+  };
+
+  const handleDrafterTitleChange = (newDrafterTitle: any) => {
+    setDrafterTitle(newDrafterTitle.target.value);
+  };
+
+  const handleLeadNameChange = (newLeadName: any) => {
+    setLeadName(newLeadName.target.value);
+  };
+
+  const handleLeadEmailChange = (newLeadEmail: any) => {
+    setLeadEmail(newLeadEmail.target.value);
+  };
+
+  const handleLeadTitleChange = (newLeadTitle: any) => {
+    setLeadTitle(newLeadTitle.target.value);
+  };
+
+  const handleMpoNameChange = (newMpoName: any) => {
+    setMpoName(newMpoName.target.value);
+  };
+
+  const handleMpoEmailChange = (newMpoEmail: any) => {
+    setMpoEmail(newMpoEmail.target.value);
+  };
+
+  const handleInitiativeScopeChange = (newScope: any) => {
+    setInitiativeScope(newScope);
+  };
+
+  const handleDataElementsInvolvedChange = (newDataElements: any) => {
+    setDataElementsInvolved(newDataElements);
   };
 
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPiOption(event.target.value);
+    event.target.value === "Yes" || event.target.value === "I'm not sure"
+    ? setHasAddedPiToDataElements(true)
+    : setHasAddedPiToDataElements(false);
+  };
+
+  const handleRiskMitigationChange = (newRiskMitigation: any) => {
+    setRiskMitigation(newRiskMitigation);
   };
   
-  const handleInitiativeRiskReductionChange = (newMessage: any) => {
-    setInitiativeRiskReduction(newMessage);
-  };
-  
+  // 
+  // Form Submission Handler
+  // 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const requestBody: IPIAIntake = {
-      initiativeDescription: initiativeDescription,
+      title: title,
       ministry: ministry,
-      initiativeDataElements: initiativeDataElements,
-      piOption: piOption,
-      initiativeRiskReduction: initiativeRiskReduction,
+      branch: branch,
+      drafterName: drafterName,
+      drafterEmail: drafterEmail,
+      drafterTitle: drafterTitle,
+      leadName: leadName,
+      leadEmail: leadEmail,
+      leadTitle: leadTitle,
+      mpoName: mpoName,
+      mpoEmail: mpoEmail,
+      initiativeDescription: initiativeDescription,
+      initiativeScope: initiativeScope,
+      dataElementsInvolved: dataElementsInvolved,
+      hasAddedPiToDataElements: hasAddedPiToDataElements,
+      riskMitigation: riskMitigation,
     };
     try {
-      const res = await HttpRequest.post<IPPQResult>(
+      const res = await HttpRequest.post<IPIAResult>(
         API_ROUTES.PIA_INTAKE_FORM_SUBMISSION,
         requestBody,
         {},
@@ -62,7 +142,7 @@ const PIAIntakeFormPage = () => {
         true,
       );
 
-      navigate(routes.PIA_RESULTS, {
+      navigate(routes.PIA_INTAKE_RESULT, {
         state: { result: res },
       });
     } catch (err: any) {
@@ -73,7 +153,7 @@ const PIAIntakeFormPage = () => {
   return (
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section form__container">
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className="form__header">
             <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
             <p>{Messages.PiaIntakeHeader.Subheading.en}</p>
@@ -81,7 +161,12 @@ const PIAIntakeFormPage = () => {
           <section className="form__section">
             <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
             <div className="row">
-              <InputText label="Title" />
+              <InputText 
+                label="Title" 
+                value={title}
+                onChange={handleTitleChange}
+                required={true}
+              />
             </div>
             <div className="row">
               <Dropdown
@@ -94,33 +179,70 @@ const PIAIntakeFormPage = () => {
                 required={true}
               />
               <div className="col">
-                <InputText label="Branch" />
+                <InputText 
+                  label="Branch"
+                  value={branch}
+                  onChange={handleBranchChange}
+                  required={true}
+                />
               </div>
             </div>
             <div className="row">
               <div className="col">
-                <InputText label="Your name" />
+                <InputText 
+                  label="Your name" 
+                  value={drafterName}
+                  onChange={handleDrafterNameChange}
+                  required={true}
+                />
               </div>
               <div className="col">
-                <InputText label="Your email" type="email" />
+                <InputText 
+                  label="Your email" 
+                  value={drafterEmail}
+                  onChange={handleDrafterEmailChange}
+                  required={true}
+                  type="email" 
+                />
               </div>
             </div>
             <div className="row">
               <div className="col-md-6">
-                <InputText label="Your title" />
+                <InputText 
+                  label="Your title" 
+                  value={drafterTitle}
+                  onChange={handleDrafterTitleChange}
+                  required={true}
+                />
               </div>
             </div>
             <div className="row">
               <div className="col">
-                <InputText label="Initiative lead name" />
+                <InputText 
+                  label="Initiative lead name" 
+                  value={leadName}
+                  onChange={handleLeadNameChange}
+                  required={true}
+                />
               </div>
               <div className="col">
-                <InputText label="Initiative lead email" type="email" />
+                <InputText 
+                  label="Initiative lead email" 
+                  value={leadEmail}
+                  onChange={handleLeadEmailChange}
+                  required={true}
+                  type="email" 
+                />
               </div>
             </div>
             <div className="row">
               <div className="col-md-6">
-                <InputText label="Initiative lead title" />
+                <InputText 
+                  label="Initiative lead title" 
+                  value={leadTitle}
+                  onChange={handleLeadTitleChange}
+                  required={true}
+                />
               </div>
             </div>
             <div className="row form__row--flex-end">
@@ -131,10 +253,19 @@ const PIAIntakeFormPage = () => {
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
                   linkHref={Messages.GeneralInfoSection.MPOLinkHref}
                   icon={true}
+                  value={mpoName}
+                  onChange={handleMpoNameChange}
+                  required={true}
                 />
               </div>
               <div className="col">
-                <InputText label="MPO email" type="email" />
+                <InputText 
+                  label="MPO email" 
+                  value={mpoEmail}
+                  onChange={handleMpoEmailChange}
+                  required={true}
+                  type="email" 
+                />
               </div>
             </div>
           </section>
@@ -160,8 +291,8 @@ const PIAIntakeFormPage = () => {
             </p>
             <MDEditor
               preview="edit"
-              value={initiativeDescription}
-              onChange={handleInitiativeDescriptionChange}
+              value={initiativeScope}
+              onChange={handleInitiativeScopeChange}
             />
           </section>
           <section className="form__section">
@@ -173,8 +304,8 @@ const PIAIntakeFormPage = () => {
             </p>
             <MDEditor
               preview="edit"
-              value={initiativeDataElements}
-              onChange={handleInitiativeDataElementsChange}
+              value={dataElementsInvolved}
+              onChange={handleDataElementsInvolvedChange}
             />
           </section>
           <section className="form__section">
@@ -192,7 +323,7 @@ const PIAIntakeFormPage = () => {
               {Messages.InitiativePISection.HelperText.en}
             </p>
             {PIOptions.map((option, index) => {
-              return PIOptions[0] === option ? (
+              return PIOptions[1] === option ? (
                 <label className="form__input-label input-label-row">
                   <input
                     key={index}
@@ -218,7 +349,7 @@ const PIAIntakeFormPage = () => {
               );
             })}
           </section>
-          {piOption === 'No' && (
+          {hasAddedPiToDataElements === false && (
             <section className="form__section">
               <h2 className="form__h2">
                 {Messages.InitiativeRiskReductionSection.H2Text.en}
@@ -228,8 +359,8 @@ const PIAIntakeFormPage = () => {
               </p>
               <MDEditor
                 preview="edit"
-                value={initiativeRiskReduction}
-                onChange={handleInitiativeRiskReductionChange}
+                value={riskMitigation}
+                onChange={handleRiskMitigationChange}
               />
             </section>
           )}
