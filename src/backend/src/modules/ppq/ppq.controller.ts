@@ -56,7 +56,7 @@ export class PpqController {
 
   @Get('/download/:id')
   @ApiParam({ name: 'id', type: Number, required: true })
-  @ApiOperation({ description: 'download PPQ result by id' })
+  @ApiOperation({ description: 'Download PPQ result pdf by id' })
   @ApiOkResponse({ description: 'Successfully downloaded the PPQ result form' })
   @ApiNotFoundResponse({ description: 'PPQ Id not found' })
   @HttpCode(HttpStatus.OK)
