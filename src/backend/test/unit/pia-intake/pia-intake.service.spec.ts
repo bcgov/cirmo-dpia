@@ -16,6 +16,10 @@ import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { delay } from 'test/util/testUtils';
 
+/**
+ * @Description
+ * This file tests the contents of pia-intake.service.ts
+ */
 describe('PiaIntakeService', () => {
   let service: PiaIntakeService;
   let piaIntakeRepository;
@@ -37,11 +41,33 @@ describe('PiaIntakeService', () => {
     piaIntakeRepository = module.get(getRepositoryToken(PiaIntakeEntity));
   });
 
+  /**
+   * @Description
+   * Dummy test to check if the service is defined
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * @Description
+   * This test suite validates that the method passes the correct values to the repository,
+   * mocking the database save operation.
+   *
+   * @method create
+   */
   describe('`create` method', () => {
+    /**
+     * This test validates that the it passes the correct data to the repository, saving the pia-intake form.
+     * It also validates that the result received is actually coming from the repository.
+     *
+     * @Input
+     *   - API data mock for pia-intake create form submission
+     *   - User info mock
+     *
+     * @Output
+     *   - an object containing id of the newly created database row
+     */
     it('succeeds calling the database repository with correct data', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = { ...createPiaIntakeMock };
       const piaIntakeEntity = { ...piaIntakeEntityMock };
