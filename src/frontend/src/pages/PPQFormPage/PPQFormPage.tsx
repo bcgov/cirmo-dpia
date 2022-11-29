@@ -322,7 +322,10 @@ const PPQFormPage = () => {
               >
                 Back
               </button>
-              <button type="submit" className="bcgovbtn bcgovbtn__primary btn-next">
+              <button
+                type="submit"
+                className="bcgovbtn bcgovbtn__primary btn-next"
+              >
                 Submit
               </button>
             </div>
