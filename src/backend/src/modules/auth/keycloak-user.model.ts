@@ -14,6 +14,8 @@ export interface KeycloakUser {
 
   name: string;
 
+  client_roles?: string[];
+
   preferred_username: string;
 
   display_name: string;
