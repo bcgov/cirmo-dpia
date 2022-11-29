@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import PIAIntakeResults from '../components/public/PIAIntakeResults';
-import { IPIAIntakeResult } from '../types/interfaces/pia-intake-result.interface';
+import { IPIAResult } from '../types/interfaces/pia-result.interface';
 
 interface IPagePropState {
-  result: IPIAIntakeResult;
+  result: IPIAResult;
 }
 
 const PIAIntakeResultsPage = () => {

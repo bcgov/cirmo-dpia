@@ -11,10 +11,10 @@ import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { IPIAIntakeResult } from '../../../types/interfaces/pia-intake-result.interface';
+import { IPIAResult } from '../../../types/interfaces/pia-result.interface';
 
 interface IComponentProps {
-  result: IPIAIntakeResult;
+  result: IPIAResult;
 }
 
 const PIAIntakeResults = (props: IComponentProps) => {
@@ -91,13 +91,7 @@ const PIAIntakeResults = (props: IComponentProps) => {
       </section>
       <div className="horizontal-divider"></div>
       <div className="form-buttons connect-buttons">
-        <Link
-          to="/pia-intake-form"
-          className="bcgovbtn bcgovbtn__secondary btn-back"
-        >
-          Back
-        </Link>
-        <Link to="/ppq" className="bcgovbtn bcgovbtn--primary btn-next">
+        <Link to="/ppq" className="bcgovbtn bcgovbtn--primary btn-next ms-auto">
           Done
         </Link>
       </div>
