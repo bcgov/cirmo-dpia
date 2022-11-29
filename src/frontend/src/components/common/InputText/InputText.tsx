@@ -11,7 +11,7 @@ interface InputTextProps {
   helperText?: string;
   linkText?: string;
   linkHref?: string;
-  icon?: boolean;
+  hasIcon?: boolean;
   type?: SupportedInputTypes;
   className?: string;
   value?: string;

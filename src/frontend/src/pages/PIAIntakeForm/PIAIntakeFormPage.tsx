@@ -35,7 +35,7 @@ const PIAIntakeFormPage = () => {
   const [initiativeScope, setInitiativeScope] = useState<string>('');
   const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
   const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<boolean | null>(false);
-  const [riskMitigation, setRiskMitigation] = useState<string | null>();
+  const [riskMitigation, setRiskMitigation] = useState<string>();
 
   // 
   // Event Handlers
@@ -254,7 +254,7 @@ const PIAIntakeFormPage = () => {
                   helperText={Messages.GeneralInfoSection.MPOHelperText.en}
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
                   linkHref={Messages.GeneralInfoSection.MPOLinkHref}
-                  icon={true}
+                  hasIcon={true}
                   value={mpoName}
                   onChange={handleMpoNameChange}
                   required={true}

@@ -13,7 +13,8 @@ export interface IPIAIntake {
       mpoName: string,
       mpoEmail: string,
       initiativeDescription: string,
+      initiativeScope: string,
       dataElementsInvolved: string,
-      hasAddedPiDataElements: boolean | null,
-      riskMitigation: string | null,
+      hasAddedPiToDataElements: boolean | null,
+      riskMitigation: string | undefined,
 }
