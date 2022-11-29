@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { marked } from 'marked';
-import * as pug from 'pug';
-import * as Puppeteer from 'puppeteer';
 
 import { GovMinistries } from '../../common/constants/gov-ministries.constant';
 import { PiaTypes } from '../../common/constants/pia-types.constant';
@@ -14,6 +12,7 @@ import { PpqResultRO } from './ro/ppq-result.ro';
 import { shortDate } from '../../common/helpers/date-helper';
 import { DelegatedReviewTypes } from '../../common/constants/delegated-review-types.constant';
 import { KeycloakUser } from '../auth/keycloak-user.model';
+import { pugToPdfBuffer } from '../../common/helpers/pdf-helper';
 
 @Injectable()
 export class PpqService {
@@ -46,12 +45,7 @@ export class PpqService {
       return null;
     }
 
-    // Get base result pug template
-    const compiledResultTemplateFunction = pug.compileFile(
-      'src/modules/ppq/templates/ppq-result.pug',
-    );
-
-    // Format values to feed into the pdf
+    // Format and parse values to feed into the pdf
     const ministry = GovMinistries?.[ppqForm.ministry]?.label;
 
     const piaType = PiaTypes?.[ppqForm.piaType]?.label;
@@ -63,12 +57,11 @@ export class PpqService {
       .filter((factor) => ppqForm[factor] === true)
       .map((factor) => PpqOtherFactors?.[factor]?.label);
 
-    // Compile the pug template with the custom values
-    const html = compiledResultTemplateFunction({
+    const pdfParsedData = {
       ...ppqForm,
       ...{
-        updatedAt: shortDate(ppqForm.updatedAt),
-        ministry: ministry || 'NA',
+        updatedAt: shortDate(ppqForm.createdAt),
+        ministry: ministry || 'N/A',
         piaType: piaType || 'N/A',
         delegatedReviewType: delegatedReviewType,
         proposedStartDate: ppqForm.proposedStartDate
@@ -77,26 +70,11 @@ export class PpqService {
         description: marked.parse(ppqForm.description),
         otherFactors,
       },
-    });
+    };
 
-    // open headless browser and create page
-    const browser = await Puppeteer.launch({
-      headless: true,
-      args: ['--disable-dev-shm-usage', '--no-sandbox'],
-    });
-    const page = await browser.newPage();
-
-    // Update content to custom content
-    await page.setContent(html);
-
-    // convert page to pdf buffer
-    const pdfBuffer: Buffer = await page.pdf();
-
-    // cleanups
-    await page.close();
-    await browser.close();
-
-    // return the pdf buffer
-    return pdfBuffer;
+    return pugToPdfBuffer(
+      'src/modules/ppq/templates/ppq-result.pug',
+      pdfParsedData,
+    );
   }
 }

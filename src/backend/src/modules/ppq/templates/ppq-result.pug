@@ -1,6 +1,7 @@
 - var color_default = '#444444';
-- var color_grey = '#808080'
-- var key_style = `color:${color_grey}; font-size: 0.8rem; margin-bottom: 0.2rem; opacity: 0.6;`
+- var color_grey = '#808080';
+- var key_style = `color: ${color_grey}; font-size: 0.8rem; margin-bottom: 0.2rem; opacity: 0.6;`;
+- var field_gap_style = `margin-top: 30px`;
 
 doctype html
 head
@@ -34,7 +35,7 @@ div(style='padding-left: 5px; color: #444444')
         div(style=`${key_style}`) Ministry
         div #{ministry}
 
-      div(style='margin-top: 30px')
+      div(style=`${field_gap_style}`)
         div(style=`${key_style}`) Involves
         if otherFactors.length === 0
           div N/A
@@ -43,19 +44,19 @@ div(style='padding-left: 5px; color: #444444')
             each factor in otherFactors
               li #{factor}
 
-      div(style='margin-top: 30px')
+      div(style=`${field_gap_style}`)
         div(style=`${key_style}`) PIA Kind
         div #{piaType}
 
       if !!delegatedReviewType
-        div(style='margin-top: 30px')
+        div(style=`${field_gap_style}`)
           div(style=`${key_style}`) Delegated Review Kind
           div #{delegatedReviewType}
 
-      div(style='margin-top: 30px')
+      div(style=`${field_gap_style}`)
         div(style=`${key_style}`) Proposed Go-live in
         div #{proposedStartDate}
 
-      div(style='margin-top: 30px')
+      div(style=`${field_gap_style}`)
         div(style=`${key_style}`) PCT Considerations
         div !{description}
