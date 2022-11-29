@@ -15,9 +15,9 @@ import { routes } from '../../constant/routes';
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
 
-  // 
+  //
   // Local State
-  // 
+  //
   const [message, setMessage] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [initiativeDescription, setInitiativeDescription] =
@@ -34,12 +34,14 @@ const PIAIntakeFormPage = () => {
   const [mpoEmail, setMpoEmail] = useState<string>('');
   const [initiativeScope, setInitiativeScope] = useState<string>('');
   const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
-  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<boolean | null>(false);
+  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<
+    boolean | null
+  >(false);
   const [riskMitigation, setRiskMitigation] = useState<string>();
 
-  // 
+  //
   // Event Handlers
-  // 
+  //
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -47,7 +49,7 @@ const PIAIntakeFormPage = () => {
   const handleTitleChange = (newTitle: any) => {
     setTitle(newTitle.target.value);
   };
-  
+
   const handleInitiativeDescriptionChange = (newDescription: any) => {
     setInitiativeDescription(newDescription);
   };
@@ -101,20 +103,21 @@ const PIAIntakeFormPage = () => {
   };
 
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.value === "Yes" 
-    ? setHasAddedPiToDataElements(true)
-    : event.target.value === "I'm not sure"
-    ? setHasAddedPiToDataElements(null)
-    : setHasAddedPiToDataElements(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    event.target.value === 'Yes'
+      ? setHasAddedPiToDataElements(true)
+      : event.target.value === "I'm not sure"
+      ? setHasAddedPiToDataElements(null)
+      : setHasAddedPiToDataElements(false);
   };
 
   const handleRiskMitigationChange = (newRiskMitigation: any) => {
     setRiskMitigation(newRiskMitigation);
   };
-  
-  // 
+
+  //
   // Form Submission Handler
-  // 
+  //
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const requestBody: IPIAIntake = {
@@ -163,8 +166,8 @@ const PIAIntakeFormPage = () => {
           <section className="form__section">
             <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
             <div className="row">
-              <InputText 
-                label="Title" 
+              <InputText
+                label="Title"
                 value={title}
                 onChange={handleTitleChange}
                 required={true}
@@ -181,7 +184,7 @@ const PIAIntakeFormPage = () => {
                 required={true}
               />
               <div className="col">
-                <InputText 
+                <InputText
                   label="Branch"
                   value={branch}
                   onChange={handleBranchChange}
@@ -191,27 +194,27 @@ const PIAIntakeFormPage = () => {
             </div>
             <div className="row">
               <div className="col">
-                <InputText 
-                  label="Your name" 
+                <InputText
+                  label="Your name"
                   value={drafterName}
                   onChange={handleDrafterNameChange}
                   required={true}
                 />
               </div>
               <div className="col">
-                <InputText 
-                  label="Your email" 
+                <InputText
+                  label="Your email"
                   value={drafterEmail}
                   onChange={handleDrafterEmailChange}
                   required={true}
-                  type="email" 
+                  type="email"
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-md-6">
-                <InputText 
-                  label="Your title" 
+                <InputText
+                  label="Your title"
                   value={drafterTitle}
                   onChange={handleDrafterTitleChange}
                   required={true}
@@ -220,27 +223,27 @@ const PIAIntakeFormPage = () => {
             </div>
             <div className="row">
               <div className="col">
-                <InputText 
-                  label="Initiative lead name" 
+                <InputText
+                  label="Initiative lead name"
                   value={leadName}
                   onChange={handleLeadNameChange}
                   required={true}
                 />
               </div>
               <div className="col">
-                <InputText 
-                  label="Initiative lead email" 
+                <InputText
+                  label="Initiative lead email"
                   value={leadEmail}
                   onChange={handleLeadEmailChange}
                   required={true}
-                  type="email" 
+                  type="email"
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-md-6">
-                <InputText 
-                  label="Initiative lead title" 
+                <InputText
+                  label="Initiative lead title"
                   value={leadTitle}
                   onChange={handleLeadTitleChange}
                   required={true}
@@ -249,7 +252,7 @@ const PIAIntakeFormPage = () => {
             </div>
             <div className="row form__row--flex-end">
               <div className="col">
-                <InputText 
+                <InputText
                   label="Ministry Privacy Officer"
                   helperText={Messages.GeneralInfoSection.MPOHelperText.en}
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
@@ -261,12 +264,12 @@ const PIAIntakeFormPage = () => {
                 />
               </div>
               <div className="col">
-                <InputText 
-                  label="MPO email" 
+                <InputText
+                  label="MPO email"
                   value={mpoEmail}
                   onChange={handleMpoEmailChange}
                   required={true}
-                  type="email" 
+                  type="email"
                 />
               </div>
             </div>
@@ -331,7 +334,7 @@ const PIAIntakeFormPage = () => {
                   name="pi-options-radio"
                   value={option}
                   onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[1] === option }
+                  defaultChecked={PIOptions[1] === option}
                 />
                 {option}
               </label>
@@ -382,4 +385,3 @@ const PIAIntakeFormPage = () => {
 };
 
 export default PIAIntakeFormPage;
-
