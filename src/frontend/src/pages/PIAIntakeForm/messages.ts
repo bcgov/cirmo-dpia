@@ -3,10 +3,6 @@ export default {
     H1Text: {
       en: `Fill out the PIA`,
     },
-    Subheading: {
-      en: `By answering this first 5 questions from the PIA template you can 
-      give the information to your MPO and find out whether I have to do a full PIA.`,
-    },
   },
   GeneralInfoSection: {
     H2Text: {
