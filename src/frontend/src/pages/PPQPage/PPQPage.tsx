@@ -40,11 +40,13 @@ function PPQLandingPage(props: IComponentProps) {
           </div>
           <div data-cy="ppq-img" className="col-md-6 ppq-svg ">
             <div className="get-started-content">
-              <FontAwesomeIcon
-                className="icon ppq-home-warning-icon"
-                icon={faExclamationTriangle}
-              />
-              {messages.PPQHeadingWarning.en}
+              <p>
+                <FontAwesomeIcon
+                  className="icon ppq-home-warning-icon"
+                  icon={faExclamationTriangle}
+                />
+                {messages.PPQHeadingWarning.en}
+              </p>
               <h2>
                 <b>{messages.PPQHeading.en}</b>
               </h2>
@@ -53,7 +55,7 @@ function PPQLandingPage(props: IComponentProps) {
               <div data-cy="ppq-btn">
                 <Link
                   to="/ppq-form"
-                  className="btn-secondary btn-secondary-transparent"
+                  className=" bcgovbtn bcgovbtn__secondary btn-secondary-transparent"
                 >
                   Get started
                   <FontAwesomeIcon className="icon" icon={faChevronRight} />
