@@ -8,17 +8,10 @@ import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import { isAuthenticated } from '../utils/auth';
 import { getConfigFlagFromStorageByName } from '../utils/helper.util';
-interface IComponentProps {
-  isLoggedIn: boolean;
-  redirectPath: string;
-}
 
-const ProtectedRoute = (props: IComponentProps) => {
-  if (!props.isLoggedIn) {
-    return <Navigate to={props.redirectPath} replace />;
-  }
-
-  return <Outlet />;
+const ProtectedRoute = () => {
+  const isLoggedIn = isAuthenticated();
+  return isLoggedIn ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 const Router = () => {
@@ -29,11 +22,7 @@ const Router = () => {
   );
   return (
     <Routes>
-      <Route
-        element={
-          <ProtectedRoute isLoggedIn={isAuthenticated()} redirectPath={'/'} />
-        }
-      >
+      <Route element={<ProtectedRoute />}>
         <Route
           path="/ppq"
           element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
