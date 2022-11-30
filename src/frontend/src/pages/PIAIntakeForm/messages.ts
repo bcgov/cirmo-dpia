@@ -9,10 +9,10 @@ export default {
       en: `General Information`,
     },
     MPOHelperText: {
-      en: `View the `
+      en: `View the `,
     },
     MPOLinkText: {
-      en: `Ministry Privacy Officer (MPO) Directory`
+      en: `Ministry Privacy Officer (MPO) Directory`,
     },
     MPOLinkHref: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers`,
   },
