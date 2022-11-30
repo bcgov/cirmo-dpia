@@ -33,7 +33,7 @@ oc -n b996e6-dev label configmap [CONFIG_MAP_NAME] app=dpia-postgres-backup
 
 | Replace Value             | Description                                                     | Current Value        |
 |---------------------------|-----------------------------------------------------------------|----------------------|
-| [CONFIG_MAP_NAME]         | Replace with the name of the configmap object                   | dpia-backup-config   |
+| [CONFIG_MAP_NAME]         | Replace with the name of the configmap object                   | backup-config   |
 
 ## Creating Backup Container with PVCs
 
