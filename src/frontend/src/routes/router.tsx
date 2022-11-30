@@ -9,6 +9,11 @@ import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 
+const ProtectedRoute = () => {
+  const isLoggedIn = isAuthenticated();
+  return isLoggedIn ? <Outlet /> : <Navigate to="/" replace />;
+};
+
 const Router = () => {
   // will give default value to false if we do not get from the config file due to any technical issue
   // or network issue
@@ -17,15 +22,17 @@ const Router = () => {
   );
   return (
     <Routes>
-      <Route
-        path="/ppq"
-        element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
-      />
-      <Route path="/ppq-form" element={<PPQFormPage />} />
-      <Route path="/ppq-connect" element={<PPQConnectPage />} />
-      <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
-      <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
-      <Route path="/pia-list" element={<PIAList />} />
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/ppq"
+          element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
+        />
+        <Route path="/ppq-form" element={<PPQFormPage />} />
+        <Route path="/ppq-connect" element={<PPQConnectPage />} />
+        <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
+        <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
+        <Route path="/pia-list" element={<PIAList />} />
+      </Route>
       <Route path="/" element={<LandingPage />} />
     </Routes>
   );
