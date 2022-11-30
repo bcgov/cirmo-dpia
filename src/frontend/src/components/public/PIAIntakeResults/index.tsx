@@ -63,7 +63,7 @@ const PIAIntakeResults = (props: IComponentProps) => {
       <section className="download-results">
         <h2>{Messages.Headings.StepTwo.en}</h2>
         <button
-          className={`btn-secondary ${
+          className={`bcgovbtn bcgovbtn__secondary ${
             isDownloading ? 'opacity-50 pe-none' : ''
           }`}
           onClick={handleDownload}
