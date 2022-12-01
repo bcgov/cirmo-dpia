@@ -3,20 +3,16 @@ export default {
     H1Text: {
       en: `Fill out the PIA`,
     },
-    Subheading: {
-      en: `By answering this first 5 questions from the PIA template you can 
-      give the information to your MPO and find out whether I have to do a full PIA.`,
-    },
   },
   GeneralInfoSection: {
     H2Text: {
       en: `General Information`,
     },
     MPOHelperText: {
-      en: `View the `
+      en: `View the `,
     },
     MPOLinkText: {
-      en: `Ministry Privacy Officer (MPO) Directory`
+      en: `Ministry Privacy Officer (MPO) Directory`,
     },
     MPOLinkHref: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers`,
   },

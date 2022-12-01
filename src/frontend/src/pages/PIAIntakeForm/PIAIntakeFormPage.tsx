@@ -161,7 +161,6 @@ const PIAIntakeFormPage = () => {
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="form__header">
             <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
-            <p>{Messages.PiaIntakeHeader.Subheading.en}</p>
           </div>
           <section className="form__section">
             <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
@@ -334,7 +333,7 @@ const PIAIntakeFormPage = () => {
                   name="pi-options-radio"
                   value={option}
                   onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[1] === option}
+                  defaultChecked={PIOptions[0] === option}
                 />
                 {option}
               </label>

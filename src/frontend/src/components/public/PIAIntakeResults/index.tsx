@@ -52,18 +52,19 @@ const PIAIntakeResults = (props: IComponentProps) => {
 
   return (
     <div className="results results-wrapper ppq-connect">
-      <h1 className="results-header">{Messages.Headings.Title.en}</h1>
-      <section className="find-your-mpo">
-        <h2>{Messages.Headings.Subtitle.en}</h2>
-        <h2>{Messages.Headings.StepOne.en}</h2>
+      <div className="form__header">
+        <h1 className="">{Messages.Headings.Title.en}</h1>
+      </div>
+      <section className="form__section">
+        <h2 className="form__h2">{Messages.Headings.StepOne.en}</h2>
         <p>
           <MDEditor.Markdown source={Messages.StepDetails.StepOne.en} />
         </p>
       </section>
-      <section className="download-results">
-        <h2>{Messages.Headings.StepTwo.en}</h2>
+      <section className="form__section download-results">
+        <h2 className="form__h2">{Messages.Headings.StepTwo.en}</h2>
         <button
-          className={`btn-secondary ${
+          className={`bcgovbtn bcgovbtn__secondary ${
             isDownloading ? 'opacity-50 pe-none' : ''
           }`}
           onClick={handleDownload}
@@ -81,11 +82,11 @@ const PIAIntakeResults = (props: IComponentProps) => {
           />
         )}
       </section>
-      <section className="email-results">
+      <section className="form__section email-results">
         <h2>{Messages.Headings.StepThree.en}</h2>
         <p>{Messages.StepDetails.StepThree.en}</p>
       </section>
-      <section className="find-your-mpo">
+      <section className="form__section">
         <h2>{Messages.Headings.StepFour.en}</h2>
         <p>{Messages.StepDetails.StepFour.en}</p>
       </section>

@@ -9,17 +9,15 @@ export default {
     en: `For MPO Usage Only`,
   },
   PIAIntakeDescriptionText: {
-    en: `Your answers will help PCT determine the most efficient review pathway for your PIA. The PIA Intake questions ask for some basic information about the
-    initiative you're assessing in the PIA. If you get stuck on
-    any of the questions, ask your MPO for help.`,
+    en: `The PIA Intake questions ask for some basic information about the initiative you’re assessing in the PIA. If you get stuck on any of the questions, 
+    ask your MPO for help.`,
   },
   PIAIntakeHelpDescriptionText: {
     en: ` If you're a ministry privacy officer, you can start a PIA
     intake or go to the PIA Pathways Questionnaire.`,
   },
   PPQDescriptionTextInPIAIntake: {
-    en: `The PIA Pathways Questionnaire asks for some basic information
-    about the initiative you're assessing in the PIA`,
+    en: `Your answers will help PCT determine the most efficient review pathway for your PIA.`,
   },
   PPQDescriptionText: {
     en: `The PIA Pathways Questionnaire asks for some basic information about the initiative you‘ re assessing in the PIA. Your answers will help us estimate`,

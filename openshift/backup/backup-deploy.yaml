@@ -139,10 +139,10 @@ objects:
                 claimName: ${VERIFICATION_VOLUME_NAME}
             - name: ${NAME}-config-volume
               configMap:
-                name: ${CONFIG_MAP_NAME}
+                name: backup-config
                 items:
-                  - key: ${CONFIG_FILE_NAME}
-                    path: ${CONFIG_FILE_NAME}
+                  - key: backup.conf
+                    path: backup.conf
           containers:
             - name: ${NAME}
               image: ""
