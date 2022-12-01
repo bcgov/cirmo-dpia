@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 824px;
   width: 80%;
   background-color: white;
   padding: 0;
   padding-left: 5rem;
   padding-top: 5em;
+  padding-bottom: 0.5em;
 }
 
 .get-started-content {
@@ -23,6 +23,10 @@
 
 .col-md-6 {
   align-self: flex-start;
+}
+
+.ppq-svg {
+  display: fixed;
 }
 
 .ppq-svg > img {
