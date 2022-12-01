@@ -20,7 +20,11 @@
 }
 
 .ppq-connect section {
-  margin-block: 2rem;
+  margin-top: 2rem;
+
+  &:not(:last-child) {
+    margin-bottom: 4.5rem;
+  }
 
   &:is(.find-your-mpo) {
     margin-top: 6em;

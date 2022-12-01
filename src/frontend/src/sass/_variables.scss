@@ -45,6 +45,7 @@ $padding-block: 7rem;
 $footer-height: 46px;
 
 /* Taken from bootstrap */
+
 /* Grid breakpoints
    Define the minimum dimensions at which your layout will change,
    adapting to different screen sizes, for use in media queries.
@@ -60,4 +61,4 @@ $grid-breakpoints: (
 ) !default;
 // scss-docs-end grid-breakpoints
 
-$wrapper-padding-inline:12em;
+$wrapper-padding-inline: 12em;
