@@ -1,0 +1,49 @@
+.formattingBar {
+    display: flex;
+    position:absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+}
+
+.icon__container {
+    height:40px;
+    min-width:40px;
+    text-align:center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid $form-input-border-colour;
+    padding:5px;
+    cursor:pointer;
+}
+.icon__container:last-child {
+    border-right:0px;
+}
+
+.icon__container--text {
+    height: 20px;
+    display: flex;
+    align-content: center;
+    line-height: 20px;
+}
+
+.formattingBar__section {
+    border-radius: 10px;
+    display:inline-flex;
+    border: 1px solid $form-input-border-colour;
+    color: $text-dark; 
+    margin-right:0.75rem;
+}
+
+.richTextFrame {
+    width:100%;
+    height:100%;
+    padding-top:4rem;
+    min-height:15rem;
+    max-height:35rem;
+    overflow:auto;
+}
+
+.richTextContainer {
+    position:relative;
+}

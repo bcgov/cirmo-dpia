@@ -12,6 +12,7 @@ import {
 import Messages from './messages';
 
 import Checkbox from '../../components/common/Checkbox';
+import RichText from '../../components/common/RichText';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { IPPQForm } from '../../types/interfaces/ppq-form.interface';
@@ -308,11 +309,12 @@ const PPQFormPage = () => {
                   ? Messages.AdditionalInfoHeading.en2
                   : Messages.AdditionalInfoHeading.en}
               </h2>
-              <MDEditor
-                preview="edit"
-                value={description}
-                onChange={handleDescriptionChange}
-              />
+              <RichText
+                name="richText" /* this should be a unique name for each richtext instance */
+                key="Description"
+                 value={description}
+                 onChange={handleDescriptionChange}
+               />
             </div>
             <div className="horizontal-divider"></div>
             <div className="form-buttons">
