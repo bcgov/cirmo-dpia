@@ -333,7 +333,7 @@ const PIAIntakeFormPage = () => {
                   name="pi-options-radio"
                   value={option}
                   onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[1] === option}
+                  defaultChecked={PIOptions[0] === option}
                 />
                 {option}
               </label>
