@@ -23,7 +23,7 @@ function App() {
         {pathname === '/' && !isAuthenticated() ? null : (
           <NavBar pages={pages} />
         )}
-        <Router />
+        <Router isLoggedIn={isAuthenticated()} />
       </AuthContext.Provider>
       <Footer />
     </div>

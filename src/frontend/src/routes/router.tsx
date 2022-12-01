@@ -1,4 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { AuthContext } from '../hooks/useAuth';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAIntakeFormPage from '../pages/PIAIntakeForm';
@@ -9,20 +11,34 @@ import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 
-const ProtectedRoute = () => {
-  const isLoggedIn = isAuthenticated();
-  return isLoggedIn ? <Outlet /> : <Navigate to="/" replace />;
+
+interface IComponentProps {
+  isLoggedIn: boolean;
+}
+const ProtectedRoute = (props: IComponentProps) => {
+  const location = useLocation();
+  const auth = getItemFromStorage('access_token');
+  console.log('test protected route here ', auth);
+  return props.isLoggedIn ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" replace state={{ from: location }} />
+  );
 };
 
-const Router = () => {
+
+const Router = (props: IComponentProps) => {
   // will give default value to false if we do not get from the config file due to any technical issue
   // or network issue
   const PIAIntakeFlag = !!getConfigFlagFromStorageByName(
     'PIA_INTAKE_FORM_FLAG',
   );
+  console.log('render router', props.isLoggedIn);
   return (
     <Routes>
+
       <Route element={<ProtectedRoute />}>
+
         <Route
           path="/ppq"
           element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
@@ -34,6 +50,7 @@ const Router = () => {
         <Route path="/pia-list" element={<PIAList />} />
       </Route>
       <Route path="/" element={<LandingPage />} />
+      <Route path="*" element={<div>Page Not found</div>} />
     </Routes>
   );
 };
