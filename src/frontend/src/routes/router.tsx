@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { Children, useContext, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
+import Layout from '../components/common/Layout/Layout';
 import { AuthContext } from '../hooks/useAuth';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
@@ -15,15 +16,26 @@ import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 interface IComponentProps {
   isLoggedIn: boolean;
 }
-const ProtectedRoute = (props: IComponentProps) => {
+export const ProtectedRoute = () => {
   const location = useLocation();
   const auth = getItemFromStorage('access_token');
   console.log('test protected route here ', auth);
-  return props.isLoggedIn ? (
+  return auth ? (
     <Outlet />
   ) : (
     <Navigate to="/" replace state={{ from: location }} />
   );
+};
+export const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  const auth = getItemFromStorage('access_token');
+  console.log('test router', auth);
+  const location = useLocation();
+
+  if (!auth) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
+  return children;
 };
 
 
