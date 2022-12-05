@@ -100,12 +100,12 @@ jobs:
       - name: Login to Openshift Silver Cluster
         uses: redhat-actions/oc-login@v1
         env:
-          OPENSHIFT_USER: github-actions
-          OPENSHIFT_NAMESPACE: b996e6-tools
+          OPENSHIFT_USER: deployer
+          OPENSHIFT_NAMESPACE: b996e6-dev
         with: 
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
-          namespace: b996e6-tools
+          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+          namespace: b996e6-dev
 
       # Use deploy helper script to process and apply DPIA API Application template into DEV namespace
       - name: Process and Apply API DeploymentConfig, Service, Route templates
@@ -152,11 +152,11 @@ jobs:
         uses: redhat-actions/oc-login@v1
         env:
           OPENSHIFT_USER: github-actions
-          OPENSHIFT_NAMESPACE: b996e6-tools
+          OPENSHIFT_NAMESPACE: b996e6-dev
         with: 
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
-          namespace: b996e6-tools
+          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+          namespace: b996e6-dev
             
       # Use application health helper script to monitor readiness/liveness probe response post deployment  
       - name: Health Check DEV deployment
@@ -194,11 +194,11 @@ jobs:
         uses: redhat-actions/oc-login@v1
         env:
           OPENSHIFT_USER: github-actions
-          OPENSHIFT_NAMESPACE: b996e6-tools
+          OPENSHIFT_NAMESPACE: b996e6-dev
         with: 
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
-          namespace: b996e6-tools
+          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+          namespace: b996e6-dev
 
       # Use cleanup helper script to remove any leftover deployment pod objects from previous deployment
       - name: Cleanup previous deployment pod objects
