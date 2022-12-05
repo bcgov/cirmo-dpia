@@ -4,4 +4,9 @@ export const NavPages = [
     label: 'PIA Pathway Questionnaire',
     link: '/ppq',
   },
+  {
+    id: 2,
+    label: 'PIA List',
+    link: '/pia-list',
+  },
 ];
