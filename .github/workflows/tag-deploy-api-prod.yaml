@@ -11,7 +11,9 @@ jobs:
     
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # Login to BC Gov Openshift (DPIA TOOLS Namespace)
       - name: Cluster Login -> TOOLS Namespace
@@ -44,7 +46,9 @@ jobs:
     
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       
       # Login to BC Gov Openshift (DPIA PROD Namespace)
       - name: Cluster Login -> PROD Namespace
@@ -79,7 +83,10 @@ jobs:
     steps:
     
       # Checkout Repository
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
     
       # Login to BC Gov Openshift (DPIA PROD Namespace)
       - name: Cluster Login -> PROD Namespace
@@ -105,7 +112,10 @@ jobs:
     steps:
 
       # Checkout Repository
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # Login to BC Gov Openshift (DPIA PROD Namespace)
       - name: Cluster Login
