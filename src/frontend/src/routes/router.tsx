@@ -19,23 +19,11 @@ interface IComponentProps {
 export const ProtectedRoute = () => {
   const location = useLocation();
   const auth = getItemFromStorage('access_token');
-  console.log('test protected route here ', auth);
   return auth ? (
     <Outlet />
   ) : (
     <Navigate to="/" replace state={{ from: location }} />
   );
-};
-export const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const auth = getItemFromStorage('access_token');
-  console.log('test router', auth);
-  const location = useLocation();
-
-  if (!auth) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
-
-  return children;
 };
 
 
@@ -63,6 +51,7 @@ const Router = (props: IComponentProps) => {
       </Route>
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<div>Page Not found</div>} />
+
     </Routes>
   );
 };
