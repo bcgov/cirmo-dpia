@@ -100,7 +100,7 @@ jobs:
       - name: Login to Openshift Silver Cluster
         uses: redhat-actions/oc-login@v1
         env:
-          OPENSHIFT_USER: deployer
+          OPENSHIFT_USER: github-actions
           OPENSHIFT_NAMESPACE: b996e6-dev
         with: 
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
