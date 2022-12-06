@@ -10,15 +10,12 @@ import PIAList from '../pages/PIAListPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
+import { isAuthenticated } from '../utils/auth';
 import { getConfigFlagFromStorageByName } from '../utils/helper.util';
 
-
-interface IComponentProps {
-  isLoggedIn: boolean;
-}
 export const ProtectedRoute = () => {
   const location = useLocation();
-  const auth = getItemFromStorage('access_token');
+  const auth = isAuthenticated();
   return auth ? (
     <Outlet />
   ) : (
@@ -26,14 +23,12 @@ export const ProtectedRoute = () => {
   );
 };
 
-
-const Router = (props: IComponentProps) => {
+const Router = () => {
   // will give default value to false if we do not get from the config file due to any technical issue
   // or network issue
   const PIAIntakeFlag = !!getConfigFlagFromStorageByName(
     'PIA_INTAKE_FORM_FLAG',
   );
-  console.log('render router', props.isLoggedIn);
   return (
     <Routes>
 
