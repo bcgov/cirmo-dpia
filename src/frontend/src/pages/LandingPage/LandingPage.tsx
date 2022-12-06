@@ -52,7 +52,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="what-is-a-pia">
+      <section className="what-is-a-pia" data-cy="piaProcessLink">
         <h2>What is a Privacy Impact Assessment</h2>
         <p>
           A PIA is a step-by-step review process to make sure you protect the
