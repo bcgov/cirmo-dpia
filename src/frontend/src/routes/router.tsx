@@ -1,7 +1,6 @@
 import { Children, useContext, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
-import Layout from '../components/common/Layout/Layout';
-import { AuthContext } from '../hooks/useAuth';
+import NotFound from '../components/common/NotFound';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAIntakeFormPage from '../pages/PIAIntakeForm';
@@ -31,7 +30,7 @@ const Router = () => {
   );
   return (
     <Routes>
-
+      <Route path="*" element={<NotFound />} />
       <Route element={<ProtectedRoute />}>
 
         <Route
