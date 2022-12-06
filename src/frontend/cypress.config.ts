@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'https://dev.pia.gov.bc.ca',
+    baseUrl: 'http://localhost:8080',
   },
   video: false,
   defaultCommandTimeout: 5000,

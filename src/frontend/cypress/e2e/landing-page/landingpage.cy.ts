@@ -17,7 +17,7 @@ describe('Test DPIA Landing Page', () => {
 
   it('display main content of landing page', () => {
     const piaProcessURL =
-      'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments';
+      'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessmentS';
     cy.get('.hero-content').contains(
       'Digital Privacy Impact Assessment (DPIA)',
     );
@@ -27,10 +27,9 @@ describe('Test DPIA Landing Page', () => {
       .and('contains', 'mailto:pia.intake@gov.bc.ca');
     cy.get('.what-is-a-pia').contains('What is a Privacy Impact Assessment');
     cy.get('.what-is-a-pia').contains('Learn about the current PIA process');
-    cy.get('[data-cy=piaProcessLink]').within(() => {
+    cy.get('.what-is-a-pia').within(() => {
       cy.get('a').should('have.length', 1);
-      // TODO fix this test case
-      // cy.get('a').should('have.attr', 'href').and('contains', piaProcessURL)
+      cy.get('a').should('have.attr', 'href', piaProcessURL);
     });
   });
 
