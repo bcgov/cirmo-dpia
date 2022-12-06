@@ -14,6 +14,8 @@
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\" --fix",
     "cy:ut": "cypress run --component --browser chrome",
     "cy:e2e": "cypress run --e2e --browser chrome",
+    "cy:e2e-dev": "cypress run --e2e --browser chrome --config baseUrl=\"https://dev.pia.gov.bc.ca\" ",
+    "cy:e2e-test": "cypress run --e2e --browser chrome --config baseUrl=\"https://test.pia.gov.bc.ca\" ",
     "cy:open": "cypress open",
     "cy:run-headless": "cypress run",
     "lint:styles": "stylelint src/**/*.{css,scss}",
