@@ -4,10 +4,8 @@ describe('Test DPIA Landing Page', () => {
     // so we must tell it to visit our website with the `cy.visit()` command.
     // Since we want to visit the same URL at the start of all our tests,
     // we include qit in our beforeEach function so that it runs before each test
-    let url = Cypress.config().baseUrl; //accessing baseUrl
-    // this line is by pass a ts compile error for visit function
-    // TS2769: No overload matches this call
-    if (!url) url = 'http://localhost:8080';
+    const url = Cypress.config().baseUrl; //accessing baseUrl
+    if (!url) throw Error('can not find base URL, test stop');
     cy.visit(url);
   });
 
@@ -43,3 +41,5 @@ describe('Test DPIA Landing Page', () => {
     cy.get('[data-cy=footer] li').last().should('have.text', 'Contact us');
   });
 });
+
+export {};
