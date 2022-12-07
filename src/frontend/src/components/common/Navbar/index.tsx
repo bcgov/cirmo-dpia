@@ -5,17 +5,19 @@ import { INavbarPages } from './interfaces';
 function NavBar({ pages }: INavbarPages): ReactElement {
   return (
     <nav className="navbar-container wrapper">
-      {pages.map((page) => {
-        return page.link === '/' ? (
-          <ul className="navbar">
+      <ul className="navbar">
+        {pages.map((page) => {
+          return page.link === '/pia-list' ? (
             <li key={page.id}>
-              <NavLink to={page.link} end>
+              <NavLink
+                className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark"
+                to={page.link}
+                end
+              >
                 {page.label}
               </NavLink>
             </li>
-          </ul>
-        ) : (
-          <ul className="navbar">
+          ) : (
             <li key={page.id}>
               <NavLink
                 className="bcgovbtn bcgovbtn__secondary nav-link-button"
@@ -24,9 +26,9 @@ function NavBar({ pages }: INavbarPages): ReactElement {
                 {page.label}
               </NavLink>
             </li>
-          </ul>
-        );
-      })}
+          );
+        })}
+      </ul>
     </nav>
   );
 }

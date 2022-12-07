@@ -1,6 +1,15 @@
-/* This section describes the default fonts we use in B.C gov
- */
-@font-face {
-  font-family: myFirstFont;
-  src: url('sansation_light.woff');
+.text__font-weight--700 {
+  font-weight: 700;
+}
+
+.text__align-center {
+  text-align: center;
+}
+
+.text__max-width--75ch {
+  max-width: 75ch;
+}
+
+.text__line-height--2 {
+  line-height: 2;
 }
