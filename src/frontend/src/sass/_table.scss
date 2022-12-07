@@ -1,0 +1,44 @@
+.data-table__container {
+  padding: 0;
+
+  & > .data-table {
+    margin-bottom: 0;
+
+    & > * > tr > * {
+      padding-block: 1.2em;
+      padding-inline: 1.5em;
+    }
+
+    & > thead > tr {
+      border-bottom: 2px solid $accent-colour;
+    }
+
+    & > tbody > tr > td:nth-child(4) {
+      color: green;
+      font-weight: 700;
+      display: flex;
+      gap: 0.5em;
+      padding-right: 0;
+
+      &::before {
+        content: '\A';
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 50%;
+        background-color: green;
+        align-self: center;
+        display: inline-block;
+        margin-top: 0.17em;
+      }
+    }
+
+    & > tbody > tr > td:nth-child(5) {
+      padding: 0;
+
+      & > button {
+        margin-inline: auto 0;
+        margin-top: 0.6em;
+      }
+    }
+  }
+}

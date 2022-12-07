@@ -21,6 +21,7 @@ a:hover {
   align-items: center;
   justify-content: space-evenly;
   width: fit-content;
+  max-height: 3em;
   white-space: nowrap;
   font-weight: 700;
   letter-spacing: 1px;
@@ -128,6 +129,18 @@ a:hover {
     background-color: white;
     border: 2px solid white;
   }
+}
+
+.bcgovbtn__tertiary {
+  --text-color: #{$primary-colour};
+
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+}
+
+.bcgovbtn__tertiary--dark {
+  --text-color: #{$text-light};
 }
 
 /* TODO! This class needs to be removed as there is no login button as such */

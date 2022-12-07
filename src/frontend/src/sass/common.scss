@@ -3,6 +3,7 @@
 @import 'root';
 @import 'variables';
 @import 'default';
+@import 'font';
 @import '../components/common/Header/header';
 @import '../components/common/Footer/footer';
 @import '../components/common/Navbar/navbar';
@@ -23,3 +24,4 @@
 @import '../components/public/PPQResults/PPQResults';
 @import '../components/public/PPQConnect/PPQConnect';
 @import './form';
+@import './table';

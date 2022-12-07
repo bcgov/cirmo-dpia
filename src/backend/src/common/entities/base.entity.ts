@@ -9,7 +9,11 @@ export class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'is_active', default: true })
+  @Column({
+    name: 'is_active',
+    default: true,
+    select: false,
+  })
   isActive: boolean;
 
   @CreateDateColumn({
@@ -26,9 +30,15 @@ export class BaseEntity {
   })
   updatedAt: Date;
 
-  @Column({ name: 'created_by_guid' })
+  @Column({
+    name: 'created_by_guid',
+    select: false,
+  })
   createdByGuid: string;
 
-  @Column({ name: 'created_by_username' })
+  @Column({
+    name: 'created_by_username',
+    select: false,
+  })
   createdByUsername: string;
 }
