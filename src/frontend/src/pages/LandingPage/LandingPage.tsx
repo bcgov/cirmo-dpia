@@ -29,7 +29,10 @@ function LandingPage() {
           </p>
           <div data-cy="contact-btn" className="ctas">
             {!isAuthenticated() && (
-              <button className="bcgovbtn bcgovbtn__primary" onClick={() => login()}>
+              <button
+                className="bcgovbtn bcgovbtn__primary"
+                onClick={() => login()}
+              >
                 Log in with IDIR
                 <FontAwesomeIcon className="icon" icon={faUser} />
               </button>
