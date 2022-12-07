@@ -12,7 +12,7 @@ body {
   & > #root {
     width: 100%;
     min-height: 100vh;
-    
+
     & > .App {
       position: relative;
       min-height: 100vh;
@@ -49,7 +49,7 @@ h4 {
   margin-left: auto;
   margin-right: auto;
   padding-inline: $wrapper-padding-inline;
-  
+
   @include breakpoint(0 map-get($grid-breakpoints, 'sm')) {
     padding-inline: 5px;
   }
