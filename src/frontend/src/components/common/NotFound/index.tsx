@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import NotFoundImg from '../../../assets/404.png';
 
 const NotFound = () => (
-  <div className="bcgovPageContainer background align-items-center">
-    <div className="container  ">
+  <div className="bcgovPageContainer notfound-container">
+    <div className="container">
       <img
-        className="rounded mx-auto d-block"
+        className="rounded mx-auto d-block "
         src={NotFoundImg}
         alt="Not Found"
       />

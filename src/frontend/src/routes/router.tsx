@@ -30,7 +30,6 @@ const Router = () => {
   );
   return (
     <Routes>
-      <Route path="*" element={<NotFound />} />
       <Route element={<ProtectedRoute />}>
 
         <Route
@@ -44,8 +43,7 @@ const Router = () => {
         <Route path="/pia-list" element={<PIAList />} />
       </Route>
       <Route path="/" element={<LandingPage />} />
-      <Route path="*" element={<div>Page Not found</div>} />
-
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
