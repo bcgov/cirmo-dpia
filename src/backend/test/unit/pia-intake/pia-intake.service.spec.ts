@@ -45,6 +45,10 @@ describe('PiaIntakeService', () => {
     piaIntakeRepository = module.get(getRepositoryToken(PiaIntakeEntity));
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   /**
    * @Description
    * Dummy test to check if the service is defined
@@ -93,6 +97,36 @@ describe('PiaIntakeService', () => {
       });
 
       expect(result).toEqual({ id: piaIntakeEntity.id });
+    });
+  });
+
+  /**
+   * @Description
+   * These set of tests validates that findAll method returns the restricted data based on user's permissions.
+   *
+   * @method findAll
+   */
+  describe('`findAll` method', () => {
+    /**
+     * This test validates that the it passes the correct data to the repository
+     *
+     * @Input
+     *   - User info mock
+     */
+    it('succeeds calling the database repository with correct data', async () => {
+      const user1: KeycloakUser = { ...keycloakUserMock };
+
+      await service.findAll(user1);
+
+      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+        where: {
+          isActive: true,
+          createdByGuid: user1.idir_user_guid,
+        },
+        order: {
+          updatedAt: -1,
+        },
+      });
     });
   });
 
