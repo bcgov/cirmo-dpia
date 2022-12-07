@@ -50,7 +50,6 @@ a:hover {
 
   &:hover {
     text-decoration: underline;
-    
     color: var(--text-color);
   }
 }
@@ -64,7 +63,7 @@ a:hover {
   background-color: $primary-colour;
 
   --text-color: #{$text-light};
-  
+
   border: 2px solid $primary-colour;
 
   &:focus {
@@ -73,9 +72,8 @@ a:hover {
   }
 
   &:hover {
-
     --text-color: white;
-    
+
     background-color: $bg-blue;
     border: 2px solid $bg-blue;
   }
@@ -103,13 +101,14 @@ a:hover {
     background-color: transparent;
 
     --text-color: white;
-    
+
     border-color: white;
     padding-inline: 1.5em;
   }
-  
+
   &:hover {
     --text-color: white;
+
     background-color: $bg-blue;
     border: 2px solid $bg-blue;
   }
@@ -120,11 +119,10 @@ a:hover {
   background-color: transparent;
 
   --text-color: #{$text-light};
-  
+
   border-color: $text-light;
 
   &:hover {
-    background-color: $text-dark;
     color: #{$text-dark};
     background-color: white;
     border: 2px solid white;
