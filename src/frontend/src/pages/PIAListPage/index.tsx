@@ -30,6 +30,7 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </button>
       </div>
+      <EmptyPIAList />
     </div>
   );
 };
