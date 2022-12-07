@@ -31,7 +31,6 @@ const Router = () => {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
-
         <Route
           path="/ppq"
           element={<PPQLandingPage enablePiaIntakeForm={PIAIntakeFlag} />}
