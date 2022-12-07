@@ -50,7 +50,8 @@ a:hover {
 
   &:hover {
     text-decoration: underline;
-    opacity: 0.8;
+    
+    color: var(--text-color);
   }
 }
 
@@ -63,12 +64,20 @@ a:hover {
   background-color: $primary-colour;
 
   --text-color: #{$text-light};
-
+  
   border: 2px solid $primary-colour;
 
   &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
+  }
+
+  &:hover {
+
+    --text-color: white;
+    
+    background-color: $bg-blue;
+    border: 2px solid $bg-blue;
   }
 }
 
@@ -94,9 +103,15 @@ a:hover {
     background-color: transparent;
 
     --text-color: white;
-
+    
     border-color: white;
     padding-inline: 1.5em;
+  }
+  
+  &:hover {
+    --text-color: white;
+    background-color: $bg-blue;
+    border: 2px solid $bg-blue;
   }
 }
 
@@ -105,15 +120,14 @@ a:hover {
   background-color: transparent;
 
   --text-color: #{$text-light};
-
+  
   border-color: $text-light;
 
   &:hover {
+    background-color: $text-dark;
+    color: #{$text-dark};
     background-color: white;
-
-    --text-color: #{$text-dark};
-
-    opacity: 1;
+    border: 2px solid white;
   }
 }
 

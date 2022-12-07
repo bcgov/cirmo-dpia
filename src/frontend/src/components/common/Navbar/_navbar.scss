@@ -15,16 +15,7 @@
   max-width: 80%;
   list-style: none;
   margin-bottom: 0;
-
   & :first-child {
     padding-left: 0;
-  }
-
-  & > li > a {
-    color: $bg-white;
-
-    &.active {
-      color: white;
-    }
   }
 }

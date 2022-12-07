@@ -20,7 +20,7 @@ function NavBar({ pages }: INavbarPages): ReactElement {
           ) : (
             <li key={page.id}>
               <NavLink
-                className="bcgovbtn bcgovbtn__secondary nav-link-button"
+                className="bcgovbtn bcgovbtn__secondary--dark"
                 to={page.link}
               >
                 {page.label}
