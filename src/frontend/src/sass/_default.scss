@@ -107,23 +107,6 @@ h4 {
   }
 }
 
-.component__wrapper {
-  display: flex;
-  background-color: $bg-white;
-  flex-direction: column;
-  align-items: center;
-  min-width: 60%;
-  box-shadow: 0 17px 29px rgba(220, 226, 238, 0.6);
-  border-radius: 4px;
-  padding-block: 5em;
-  padding-inline: 7em;
-  margin: 2em 12em;
-
-  & > .img__empty-pia-list {
-    margin-bottom: 3em;
-  }
-}
-
 .margin-bottom--2em {
   margin-bottom: 2em;
 }
