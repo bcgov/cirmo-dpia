@@ -125,6 +125,10 @@ a:hover {
   font-weight: 700;
 }
 
+.bcgovbtn__tertiary--dark {
+  --text-color: #{$text-light};
+}
+
 /* TODO! This class needs to be removed as there is no login button as such */
 .btn-login,
 %btn-login {

@@ -1,8 +1,5 @@
 .navbar-container {
   display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 1em;
   position: fixed;
   top: $header-height;
   height: $navbar-height;
@@ -13,18 +10,21 @@
 
 .navbar {
   display: flex;
+  gap: 1em;
   align-items: center;
   max-width: 80%;
   list-style: none;
   margin-bottom: 0;
 
-  & > li {
-    & > a {
-      color: $bg-white;
+  & :first-child {
+    padding-left: 0;
+  }
 
-      &.active {
-        color: white;
-      }
+  & > li > a {
+    color: $bg-white;
+
+    &.active {
+      color: white;
     }
   }
 }
