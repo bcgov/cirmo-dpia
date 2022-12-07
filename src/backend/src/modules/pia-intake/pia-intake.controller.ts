@@ -11,8 +11,6 @@ import {
   HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { PiaIntakeService } from './pia-intake.service';
-import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -23,9 +21,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { TokenDecorator } from '../../common/decorators/token.decorator';
-import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
+
 import { AuthService } from '../auth/auth.service';
+import { PiaIntakeService } from './pia-intake.service';
+import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
+import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
+import { TokenDecorator } from '../../common/decorators/token.decorator';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -51,6 +52,30 @@ export class PiaIntakeController {
 
     const user = await this.authService.getUserInfo(accessToken);
     return this.piaIntakeService.create(createPiaIntakeDto, user);
+  }
+
+  /**
+   * @method findAll
+   *
+   * @description
+   * This method will return all the pia-intakes matching the following criteria by default
+   * - user's self submitted pia-intakes
+   * - [#TODO UTOPIA-482] if mpo, all pia-intakes submitted in the user's ministry
+   */
+  @Get()
+  @ApiOperation({ description: 'Fetches the list of PIA intakes' })
+  @ApiOkResponse({
+    description: 'Successfully fetched the PIA intake records',
+  })
+  async findAll(@TokenDecorator() accessToken: string) {
+    if (!accessToken) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.authService.getUserInfo(accessToken);
+    const data = await this.piaIntakeService.findAll(user);
+
+    return { data };
   }
 
   @Get('/download/:id')

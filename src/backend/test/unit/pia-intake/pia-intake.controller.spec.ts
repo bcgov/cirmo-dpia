@@ -55,6 +55,10 @@ describe('PiaIntakeController', () => {
     piaIntakeService = module.get<PiaIntakeService>(PiaIntakeService);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   /**
    * @Description
    * Dummy test to check if the controller is defined
@@ -124,6 +128,73 @@ describe('PiaIntakeController', () => {
         createPiaIntakeDto,
         user,
       );
+    });
+  });
+
+  /**
+   * @Description
+   * This test suite validates that the method passes the correct passed values to the service,
+   * mock the service result and return correct result to the user
+   *
+   * @method findAll
+   */
+  describe('`findAll` method', () => {
+    /**
+     * @Description
+     * This test validates that the user is shown Unauthorized exception (401)
+     * when the access token is not passed by the application.
+     *
+     * As an added check, it also validates that the following methods
+     * authService.getUserInfo, piaIntakeService.findAll are not being called
+     *
+     * @Input
+     *   - No access token is provided
+     *
+     * @Output 401
+     * Unauthorized exception is shown to the user
+     *
+     */
+    it('fails when access token is not passed', async () => {
+      await expect(controller.findAll(null)).rejects.toThrow(
+        new UnauthorizedException(),
+      );
+
+      expect(authService.getUserInfo).not.toHaveBeenCalled();
+      expect(piaIntakeService.findAll).not.toHaveBeenCalled();
+    });
+
+    /**
+     * @Description
+     * This test validates the happy flow
+     *  - The test calls the following methods if the access token is provided
+     *  - authService.getUserInfo returns the correct user info [mocked]
+     *  - piaIntakeService.findAll is called with correct mock data
+     *
+     * @Input
+     *   - User access token
+     *
+     * @Output 200
+     * Test pass and all methods called with correct data
+     */
+    it('succeeds with correct data : Happy flow', async () => {
+      const accessToken = accessTokenMock;
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+
+      piaIntakeService.findAll = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      const result = await controller.findAll(accessToken);
+
+      expect(authService.getUserInfo).toHaveBeenCalledWith(accessToken);
+      expect(authService.getUserInfo).toReturnWith(user);
+
+      expect(piaIntakeService.findAll).toHaveBeenCalledWith(user);
+      expect(result).toStrictEqual({
+        data: [piaIntakeEntity],
+      });
     });
   });
 

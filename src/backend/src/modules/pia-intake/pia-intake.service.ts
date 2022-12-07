@@ -36,14 +36,6 @@ export class PiaIntakeService {
   /**
    * Boilerplate methods: Update appropriately when needed
    */
-  findAll() {
-    return `This action returns all piaIntake`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} piaIntake`;
-  }
-
   update(id: number, updatePiaIntakeDto: UpdatePiaIntakeDto) {
     return `This action updates a #${id} piaIntake by ${updatePiaIntakeDto.drafterEmail}`;
   }
@@ -52,15 +44,29 @@ export class PiaIntakeService {
     return `This action removes a #${id} piaIntake`;
   }
 
-  async getPiaIntakeById(id: number): Promise<PiaIntakeEntity> {
+  async findOne(id: number): Promise<PiaIntakeEntity> {
     const piaIntakeForm: PiaIntakeEntity =
       await this.piaIntakeRepository.findOneBy({ id });
 
     return piaIntakeForm;
   }
 
+  async findAll(user: KeycloakUser): Promise<PiaIntakeEntity[]> {
+    const data: PiaIntakeEntity[] = await this.piaIntakeRepository.find({
+      where: {
+        isActive: true,
+        createdByGuid: user.idir_user_guid,
+      },
+      order: {
+        updatedAt: -1, // default order set to last updated time
+      },
+    });
+
+    return data;
+  }
+
   async downloadPiaIntakeResultPdf(id: number) {
-    const piaIntakeForm = await this.getPiaIntakeById(id);
+    const piaIntakeForm = await this.findOne(id);
 
     if (!piaIntakeForm) {
       return null;
