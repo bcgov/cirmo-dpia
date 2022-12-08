@@ -17,4 +17,8 @@ export interface IPIAIntake {
   dataElementsInvolved: string;
   hasAddedPiToDataElements: boolean | null;
   riskMitigation: string | undefined;
+  id?: number;
+  createdAt?: Date;
+  updatedAt?: string;
+  status?: string;
 }
