@@ -19,6 +19,6 @@ export interface IPIAIntake {
   riskMitigation: string | undefined;
   id?: number;
   createdAt?: Date;
-  updatedAt?: string;
+  updatedAt?: Date;
   status?: string;
 }

@@ -2,6 +2,7 @@ import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { API_ROUTES } from '../../../constant/apiRoutes';
+import { dateToString } from '../../../utils/date';
 import {
   FileDownload,
   FileDownloadTypeEnum,
@@ -49,7 +50,7 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
           {pias.map((pia, index) => (
             <tr key={index}>
               <td>{pia.title}</td>
-              <td>{pia.updatedAt}</td>
+              <td>{dateToString(pia.updatedAt)}</td>
               <td>{pia.drafterName}</td>
               <td>{pia.status}</td>
               <td>
