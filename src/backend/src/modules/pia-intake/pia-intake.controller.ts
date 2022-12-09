@@ -23,7 +23,6 @@ import {
 import { IRequest } from '../../common/interfaces/request.interface';
 import { IResponse } from '../../common/interfaces/response.interface';
 
-import { AuthService } from '../auth/auth.service';
 import { PiaIntakeService } from './pia-intake.service';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
@@ -32,10 +31,7 @@ import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 @ApiTags('pia-intake')
 @ApiBearerAuth()
 export class PiaIntakeController {
-  constructor(
-    private readonly piaIntakeService: PiaIntakeService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly piaIntakeService: PiaIntakeService) {}
 
   @Post()
   @ApiOperation({ description: 'Submit a PIA-intake form' })
