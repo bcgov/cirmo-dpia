@@ -1,9 +1,6 @@
+import { IPIAIntake } from '../../../types/interfaces/pia-intake.interface';
+
 export interface IDataTable {
   headings: string[];
-  pias: {
-    title: string;
-    updatedAt: string;
-    drafter: string;
-    status: string;
-  }[];
+  pias: IPIAIntake[];
 }

@@ -2,25 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
-
+import { usePIALookup } from '../../hooks/usePIALookup';
+import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
+import { IDataTable } from '../../components/public/PIAListTable/interface';
 const PIAList = () => {
   const tableHeadings = ['Title', 'Last modified', 'Drafter', 'PIA status'];
-
-  const dummyData = [
-    {
-      title: 'test1',
-      updatedAt: '2023/01/01',
-      drafter: 'testUser1',
-      status: 'Submitted',
-    },
-    {
-      title: 'test2',
-      updatedAt: '2023/01/02',
-      drafter: 'testUser2',
-      status: 'Submitted',
-    },
-  ];
-
+  const { tableData } = usePIALookup();
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls">
       <div className="page__controls">
@@ -30,7 +17,7 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </button>
       </div>
-      <EmptyPIAList />
+      <PIAListTable headings={tableHeadings} pias={tableData} />
     </div>
   );
 };

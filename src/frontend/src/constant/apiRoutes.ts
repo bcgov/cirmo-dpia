@@ -1,6 +1,6 @@
 export const API_ROUTES = {
   PPQ_FORM_SUBMISSION: 'api/ppq',
-  PIA_INTAKE_FORM_SUBMISSION: 'api/pia-intake',
+  PIA_INTAKE: 'api/pia-intake',
   KEYCLOAK_CALLBACK: 'api/auth/callback',
   KEYCLOAK_USER: 'api/auth/user',
   KEYCLOAK_LOGOUT: 'api/auth/logout',
