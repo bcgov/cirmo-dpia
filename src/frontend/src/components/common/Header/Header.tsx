@@ -115,7 +115,7 @@ function Header({ user }: Props) {
   return (
     <header className="header wrapper">
       <div className="banner">
-        <a href="https://gov.bc.ca">
+        <a href="/">
           <img
             className="logo"
             src={BCGovLogo}
