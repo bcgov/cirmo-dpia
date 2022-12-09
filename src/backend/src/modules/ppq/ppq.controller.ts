@@ -9,7 +9,6 @@ import {
   Post,
   Req,
   Res,
-  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -20,9 +19,8 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { TokenDecorator } from '../../common/decorators/token.decorator';
-import { AuthService } from '../auth/auth.service';
+import { IRequest } from 'src/common/interfaces/request.interface';
+import { IResponse } from 'src/common/interfaces/response.interface';
 import { PpqPostDTO } from './dto/ppq-post.dto';
 import { PpqService } from './ppq.service';
 import { PpqResultRO } from './ro/ppq-result.ro';
@@ -31,10 +29,7 @@ import { PpqResultRO } from './ro/ppq-result.ro';
 @ApiTags('PPQ')
 @ApiBearerAuth()
 export class PpqController {
-  constructor(
-    private readonly ppqService: PpqService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly ppqService: PpqService) {}
 
   @Post()
   @ApiOperation({ description: 'Submit the ppq form' })
@@ -43,15 +38,9 @@ export class PpqController {
   })
   async postForm(
     @Body() body: PpqPostDTO,
-    @Req() req: Request,
-    @TokenDecorator() accessToken: string,
+    @Req() req: IRequest,
   ): Promise<PpqResultRO> {
-    if (!accessToken) {
-      throw new UnauthorizedException();
-    }
-
-    const user = await this.authService.getUserInfo(accessToken);
-    return this.ppqService.createPpq(body, user);
+    return this.ppqService.createPpq(body, req.user);
   }
 
   @Get('/download/:id')
@@ -62,14 +51,9 @@ export class PpqController {
   @HttpCode(HttpStatus.OK)
   async downloadResult(
     @Param('id') id,
-    @Req() req: Request,
-    @Res() res: Response,
-    @TokenDecorator() accessToken: string,
+    @Req() req: IRequest,
+    @Res() res: IResponse,
   ) {
-    if (!accessToken) {
-      throw new UnauthorizedException();
-    }
-
     const pdfBuffer = await this.ppqService.downloadPpqResultPdf(id);
     if (!pdfBuffer) {
       throw new NotFoundException();
