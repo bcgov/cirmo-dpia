@@ -52,7 +52,7 @@ export class HttpRequest {
     endpoint: string,
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
-    addLocalAuth = false,
+    addLocalAuth = true,
   ) {
     return this.request<T>({
       method: 'GET',
@@ -68,7 +68,7 @@ export class HttpRequest {
     body: Record<string, any>,
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
-    addLocalAuth = false,
+    addLocalAuth = true,
   ) {
     return this.request<T>({
       method: 'POST',
