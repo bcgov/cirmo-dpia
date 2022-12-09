@@ -22,7 +22,7 @@ import { IRequest } from '../../../common/interfaces/request.interface';
  * In practice, @Roles decorator should only be used on a resource with restrictions
  * By default the resource stay is permissive
  *
- * This method, if authorized, also appends roles to the HTTP request. `request.roles`
+ * This method, if authorized, also appends roles to the HTTP request. `request.userRoles`
  */
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -61,7 +61,7 @@ export class RolesGuard implements CanActivate {
     }
 
     // save request metadata with the user roles
-    request.roles = payload.client_roles;
+    request.userRoles = payload.client_roles;
 
     // [Matching Strategy - ANY] if any of the provided role matches, the user is allowed
     const isAuthorized = roles.some((r) => payload.client_roles.includes(r));
