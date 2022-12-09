@@ -36,7 +36,7 @@ const PIAIntakeFormPage = () => {
   const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
   const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<
     boolean | null
-  >(false);
+  >(true);
   const [riskMitigation, setRiskMitigation] = useState<string>();
 
   //
