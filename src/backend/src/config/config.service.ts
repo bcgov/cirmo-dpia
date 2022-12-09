@@ -1,7 +1,7 @@
 // import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 import 'dotenv/config';
-import { KeycloakConnectOptions } from 'nest-keycloak-connect';
+import { KeycloakConnectConfig } from 'nest-keycloak-connect';
 class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
 
@@ -37,7 +37,7 @@ class ConfigService {
     };
   }
 
-  public getKeycloakConfig(): KeycloakConnectOptions {
+  public getKeycloakConfig(): KeycloakConnectConfig {
     return {
       authServerUrl: this.getValue('KEYCLOAK_AUTH_SERVER_URI'),
       secret: this.getValue('KEYCLOAK_CLIENT_SECRET'),
