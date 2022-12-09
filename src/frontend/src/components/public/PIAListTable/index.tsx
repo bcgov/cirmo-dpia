@@ -52,7 +52,7 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>{pia.title}</td>
               <td>{dateToString(pia.updatedAt)}</td>
               <td>{pia.drafterName}</td>
-              <td>{pia.status}</td>
+              <td>Submitted</td>
               <td>
                 <button
                   className="bcgovbtn bcgovbtn__tertiary"
