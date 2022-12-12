@@ -12,12 +12,7 @@ export const usePIALookup = () => {
       try {
         // Actually perform fetch
         const results = (
-          await HttpRequest.get<IPIAResults>(
-            API_ROUTES.PIA_INTAKE,
-            {},
-            {},
-            true,
-          )
+          await HttpRequest.get<IPIAResults>(API_ROUTES.PIA_INTAKE)
         ).data;
         setTableData(results);
       } catch (e) {

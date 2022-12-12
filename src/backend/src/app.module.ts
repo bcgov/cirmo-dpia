@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { KeycloakConnectModule } from 'nest-keycloak-connect';
+import { KeycloakConnectModule, AuthGuard } from 'nest-keycloak-connect';
+import { RolesGuard } from './modules/auth/guards/roles.guard';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configService } from './config/config.service';
 import { HealthModule } from './health/health.module';
 import { PpqModule } from './modules/ppq/ppq.module';
-import { HttpModule } from '@nestjs/axios';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
 import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
@@ -27,6 +30,16 @@ import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
     PiaIntakeModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

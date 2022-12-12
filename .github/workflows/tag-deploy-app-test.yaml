@@ -143,3 +143,22 @@ jobs:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
         run: |
           ./.github/helpers/cleanup-rc.sh
+
+  TEST-e2e:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    needs: [ TEST-cleanup ]
+    steps:
+
+    # Checkout Repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Navigate to frontend dir, install dependencies, execute cypress command
+    - name: Setup and Execute Cypress e2e test suite
+      run: |
+        cd ./src/frontend
+        npm install
+        npm run cy:e2e-test

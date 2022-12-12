@@ -55,12 +55,7 @@ function Header({ user }: Props) {
             storeTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
-            const res = await HttpRequest.get<IConfig>(
-              API_ROUTES.CONFIG_FILE,
-              {},
-              {},
-              true,
-            );
+            const res = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
             setItemInStorage('config', res);
             navigate(routes.PPQ_LANDING_PAGE);
           }
@@ -98,6 +93,7 @@ function Header({ user }: Props) {
     };
 
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
+
     clearTokens();
     setAccessToken(null);
     navigate('/');
