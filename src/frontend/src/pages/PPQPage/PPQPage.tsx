@@ -9,12 +9,11 @@ import ppqImg from '../../assets/ppq_homepage.svg';
 import { Link } from 'react-router-dom';
 import messages from './messages';
 
-interface IComponentProps {
-  enablePiaIntakeForm: boolean;
-}
-function PPQLandingPage(props: IComponentProps) {
-  const { enablePiaIntakeForm } = props;
-  return enablePiaIntakeForm ? (
+function PPQLandingPage() {
+  // TODO: replace with actual role check
+  const isMPO = true;
+
+  return isMPO ? (
     <div className="bcgovPageContainer background">
       <div className="get-started-section results-wrapper">
         <div className="row">
