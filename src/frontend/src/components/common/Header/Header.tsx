@@ -57,7 +57,9 @@ function Header({ user }: Props) {
             setAccessToken(keycloakToken.access_token);
             const res = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
             setItemInStorage('config', res);
-            navigate(routes.PPQ_LANDING_PAGE);
+            // TODO: Refactor protected routing to allow for keycloak
+            // to use redirect URI instead of this value
+            navigate(routes.PIA_LIST);
           }
         } catch (e) {
           setMessage('login failed');

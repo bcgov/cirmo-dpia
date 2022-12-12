@@ -38,7 +38,7 @@ function LandingPage() {
               </button>
             )}
             {isAuthenticated() && (
-              <Link className="bcgovbtn bcgovbtn__primary" to="/ppq">
+              <Link className="bcgovbtn bcgovbtn__primary" to="/pia-list">
                 Access App
               </Link>
             )}
@@ -102,7 +102,7 @@ function LandingPage() {
               The DPIA will be an integrated, guided, online tool for the for
               anyone working in a BC ministry that needs to complete a PIA.
               Digitizing the PIA will create a streamlined experience that
-              enables a culture of privacy and innovation.{' '}
+              enables a culture of privacy and innovation.
             </p>
           </div>
         </div>
