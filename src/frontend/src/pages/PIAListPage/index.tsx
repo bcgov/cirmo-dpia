@@ -16,7 +16,11 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </a>
       </div>
-      <PIAListTable headings={tableHeadings} pias={tableData} />
+      {tableData.length === 0 ? (
+        <EmptyPIAList />
+      ) : (
+        <PIAListTable headings={tableHeadings} pias={tableData} />
+      )}
     </div>
   );
 };
