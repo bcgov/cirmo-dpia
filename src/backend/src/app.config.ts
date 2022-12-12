@@ -25,7 +25,7 @@ export async function createNestApp(): Promise<{
       new ExpressAdapter(expressApp),
       {
         logger:
-          process.env.NODE_ENV === 'development'
+          process.env.API_ENV === 'local'
             ? ['error', 'warn', 'log', 'verbose', 'debug']
             : ['log', 'warn', 'error'],
       },
