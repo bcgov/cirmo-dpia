@@ -131,7 +131,7 @@ jobs:
   DEV-cleanup:
     runs-on: ubuntu-latest
     environment: APP-Dev
-    needs: [DEV-health-check]
+    needs: [ DEV-health-check ]
     steps:
 
       # Checkout Repository
@@ -163,3 +163,22 @@ jobs:
           NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
         run: |
           ./.github/helpers/cleanup-rc.sh
+
+  DEV-e2e:
+    runs-on: ubuntu-latest
+    environment: APP-Dev
+    needs: [ DEV-cleanup ]
+    steps:
+
+    # Checkout Repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Navigate to frontend dir, install dependencies, execute cypress command
+    - name: Setup and Execute Cypress e2e test suite
+      run: |
+        cd ./src/frontend
+        npm install
+        npm run cy:e2e-dev
