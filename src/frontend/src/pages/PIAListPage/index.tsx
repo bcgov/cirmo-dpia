@@ -11,7 +11,7 @@ const PIAList = () => {
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls">
       <div className="page__controls">
         <h1>List of PIAs</h1>
-        <a href="/pia-intake" className="bcgovbtn bcgovbtn__primary">
+        <a href="/ppq" className="bcgovbtn bcgovbtn__primary">
           Create New
           <FontAwesomeIcon icon={faPlus} />
         </a>
