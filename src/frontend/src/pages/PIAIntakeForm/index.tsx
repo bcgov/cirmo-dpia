@@ -142,9 +142,6 @@ const PIAIntakeFormPage = () => {
       const res = await HttpRequest.post<IPIAResult>(
         API_ROUTES.PIA_INTAKE,
         requestBody,
-        {},
-        {},
-        true,
       );
 
       navigate(routes.PIA_INTAKE_RESULT, {

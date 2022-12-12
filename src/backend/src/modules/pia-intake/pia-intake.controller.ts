@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  UnauthorizedException,
   Get,
   HttpCode,
   Param,
@@ -20,22 +19,19 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request, Response } from 'express';
 
-import { AuthService } from '../auth/auth.service';
+import { IRequest } from '../../common/interfaces/request.interface';
+import { IResponse } from '../../common/interfaces/response.interface';
+
 import { PiaIntakeService } from './pia-intake.service';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
-import { TokenDecorator } from '../../common/decorators/token.decorator';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
 @ApiBearerAuth()
 export class PiaIntakeController {
-  constructor(
-    private readonly piaIntakeService: PiaIntakeService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly piaIntakeService: PiaIntakeService) {}
 
   @Post()
   @ApiOperation({ description: 'Submit a PIA-intake form' })
@@ -44,14 +40,9 @@ export class PiaIntakeController {
   })
   async create(
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
-    @TokenDecorator() accessToken: string,
+    @Req() req: IRequest,
   ): Promise<CreatePiaIntakeRO> {
-    if (!accessToken) {
-      throw new UnauthorizedException();
-    }
-
-    const user = await this.authService.getUserInfo(accessToken);
-    return this.piaIntakeService.create(createPiaIntakeDto, user);
+    return this.piaIntakeService.create(createPiaIntakeDto, req.user);
   }
 
   /**
@@ -67,13 +58,8 @@ export class PiaIntakeController {
   @ApiOkResponse({
     description: 'Successfully fetched the PIA intake records',
   })
-  async findAll(@TokenDecorator() accessToken: string) {
-    if (!accessToken) {
-      throw new UnauthorizedException();
-    }
-
-    const user = await this.authService.getUserInfo(accessToken);
-    const data = await this.piaIntakeService.findAll(user);
+  async findAll(@Req() req: IRequest) {
+    const data = await this.piaIntakeService.findAll(req.user);
 
     return { data };
   }
@@ -88,14 +74,9 @@ export class PiaIntakeController {
   @HttpCode(HttpStatus.OK)
   async downloadResult(
     @Param('id') id,
-    @Req() req: Request,
-    @Res() res: Response,
-    @TokenDecorator() accessToken: string,
+    @Req() req: IRequest,
+    @Res() res: IResponse,
   ) {
-    if (!accessToken) {
-      throw new UnauthorizedException();
-    }
-
     const pdfBuffer = await this.piaIntakeService.downloadPiaIntakeResultPdf(
       id,
     );

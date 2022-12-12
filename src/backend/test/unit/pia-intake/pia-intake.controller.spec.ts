@@ -1,19 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 
-import { AuthService } from 'src/modules/auth/auth.service';
 import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake.dto';
-import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { PiaIntakeController } from 'src/modules/pia-intake/pia-intake.controller';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeService } from 'src/modules/pia-intake/pia-intake.service';
 
-import { authServiceMock } from 'test/util/mocks/services/auth.service.mock';
-import {
-  accessTokenMock,
-  keycloakUserMock,
-} from 'test/util/mocks/data/auth.mock';
+import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import {
   createPiaIntakeMock,
   piaIntakeEntityMock,
@@ -28,17 +22,12 @@ import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
  */
 describe('PiaIntakeController', () => {
   let controller: PiaIntakeController;
-  let authService: AuthService;
   let piaIntakeService: PiaIntakeService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PiaIntakeController],
       providers: [
-        {
-          provide: AuthService,
-          useValue: authServiceMock,
-        },
         {
           provide: PiaIntakeService,
           useValue: piaIntakeServiceMock,
@@ -51,7 +40,6 @@ describe('PiaIntakeController', () => {
     }).compile();
 
     controller = module.get<PiaIntakeController>(PiaIntakeController);
-    authService = module.get<AuthService>(AuthService);
     piaIntakeService = module.get<PiaIntakeService>(PiaIntakeService);
   });
 
@@ -77,63 +65,31 @@ describe('PiaIntakeController', () => {
   describe('`create` method', () => {
     /**
      * @Description
-     * This test validates that the user is shown Unauthorized exception (401)
-     * when the access token is not passed by the application.
-     *
-     * As an added check, it also validates that the following methods
-     * authService.getUserInfo, piaIntakeService.create are not being called
+     * This test validates the happy flow if the method `piaIntakeService.create` is called with correct mock data
      *
      * @Input
      *   - API data mock for pia-intake create form submission
-     *   - No access token is provided
-     *
-     * @Output 401
-     * Unauthorized exception is shown to the user
-     *
-     */
-    it('fails when access token is not passed', async () => {
-      await expect(
-        controller.create(createPiaIntakeMock, null),
-      ).rejects.toThrow(new UnauthorizedException());
-
-      expect(authService.getUserInfo).not.toHaveBeenCalled();
-      expect(piaIntakeService.create).not.toHaveBeenCalled();
-    });
-
-    /**
-     * @Description
-     * This test validates the happy flow
-     *  - The test calls the following methods if the access token is provided
-     *  - authService.getUserInfo returns the correct user info [mocked]
-     *  - piaIntakeService.create is called with correct mock data
-     *
-     * @Input
-     *   - API data mock for pia-intake create form submission
-     *   - User access token
+     *   - Mock user req
      *
      * @Output 201
      * Test pass and all methods called with correct data
      */
     it('succeeds with correct data : Happy flow', async () => {
-      const accessToken = accessTokenMock;
       const createPiaIntakeDto: CreatePiaIntakeDto = { ...createPiaIntakeMock };
-      const user: KeycloakUser = { ...keycloakUserMock };
+      const mockReq: any = { user: { ...keycloakUserMock } };
 
-      await controller.create(createPiaIntakeDto, accessToken);
-
-      expect(authService.getUserInfo).toHaveBeenCalledWith(accessToken);
-      expect(authService.getUserInfo).toReturnWith(user);
+      await controller.create(createPiaIntakeDto, mockReq);
 
       expect(piaIntakeService.create).toHaveBeenCalledWith(
         createPiaIntakeDto,
-        user,
+        mockReq.user,
       );
     });
   });
 
   /**
    * @Description
-   * This test suite validates that the method passes the correct passed values to the service,
+   * This test suite validates that the method passes the correct values to the service,
    * mock the service result and return correct result to the user
    *
    * @method findAll
@@ -141,57 +97,26 @@ describe('PiaIntakeController', () => {
   describe('`findAll` method', () => {
     /**
      * @Description
-     * This test validates that the user is shown Unauthorized exception (401)
-     * when the access token is not passed by the application.
-     *
-     * As an added check, it also validates that the following methods
-     * authService.getUserInfo, piaIntakeService.findAll are not being called
+     * This test validates the happy flow if the method `piaIntakeService.findAll` is called with correct mock data
      *
      * @Input
-     *   - No access token is provided
-     *
-     * @Output 401
-     * Unauthorized exception is shown to the user
-     *
-     */
-    it('fails when access token is not passed', async () => {
-      await expect(controller.findAll(null)).rejects.toThrow(
-        new UnauthorizedException(),
-      );
-
-      expect(authService.getUserInfo).not.toHaveBeenCalled();
-      expect(piaIntakeService.findAll).not.toHaveBeenCalled();
-    });
-
-    /**
-     * @Description
-     * This test validates the happy flow
-     *  - The test calls the following methods if the access token is provided
-     *  - authService.getUserInfo returns the correct user info [mocked]
-     *  - piaIntakeService.findAll is called with correct mock data
-     *
-     * @Input
-     *   - User access token
+     *   - Mock user req
      *
      * @Output 200
      * Test pass and all methods called with correct data
      */
     it('succeeds with correct data : Happy flow', async () => {
-      const accessToken = accessTokenMock;
-      const user: KeycloakUser = { ...keycloakUserMock };
       const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const mockReq: any = { user: { ...keycloakUserMock } };
 
       piaIntakeService.findAll = jest.fn(async () => {
         delay(10);
         return [piaIntakeEntity];
       });
 
-      const result = await controller.findAll(accessToken);
+      const result = await controller.findAll(mockReq);
 
-      expect(authService.getUserInfo).toHaveBeenCalledWith(accessToken);
-      expect(authService.getUserInfo).toReturnWith(user);
-
-      expect(piaIntakeService.findAll).toHaveBeenCalledWith(user);
+      expect(piaIntakeService.findAll).toHaveBeenCalledWith(mockReq.user);
       expect(result).toStrictEqual({
         data: [piaIntakeEntity],
       });
@@ -201,32 +126,6 @@ describe('PiaIntakeController', () => {
   describe('`downloadResult` method', () => {
     /**
      * @Description
-     * This test validates that the user is shown Unauthorized exception (401)
-     * when the access token is not passed by the application.
-     *
-     * As an added check, it also validates that the following methods
-     * piaIntakeService.downloadPiaIntakeResultPdf are not being called
-     *
-     * @Input
-     *   - pia-intake id
-     *   - No access token is provided
-     *
-     * @Output 401
-     * Unauthorized exception is shown to the user
-     *
-     */
-    it('fails when access token is not passed', async () => {
-      expect(controller.downloadResult(1, null, null, null)).rejects.toThrow(
-        new UnauthorizedException(),
-      );
-
-      expect(
-        piaIntakeService.downloadPiaIntakeResultPdf,
-      ).not.toHaveBeenCalled();
-    });
-
-    /**
-     * @Description
      * This test validates the authenticated user getting 404 when
      * no pia-intake result for the provided id is available in the database
      *
@@ -234,19 +133,17 @@ describe('PiaIntakeController', () => {
      *  - pia-intake id
      *  - Request
      *  - Response
-     *  - Access Token
      *
      * @Output 404
      * Not Found exception is shown to the user
      *
      */
     it('fails and throws 404 when the service did not return any buffer', async () => {
-      const accessToken = accessTokenMock;
       const piaIntakeId = piaIntakeEntityMock.id;
       const mockRes: any = { set: jest.fn(), send: jest.fn() };
 
       await expect(
-        controller.downloadResult(piaIntakeId, null, mockRes, accessToken),
+        controller.downloadResult(piaIntakeId, null, mockRes),
       ).rejects.toThrow(new NotFoundException());
 
       expect(piaIntakeService.downloadPiaIntakeResultPdf).toHaveBeenCalledWith(
@@ -259,9 +156,8 @@ describe('PiaIntakeController', () => {
     /**
      * @Description
      * This test demonstrates the happy flow. It validates that
-     *  - the user is authenticated to download the pdf
-     *  - the service did not errored out and returned a buffer
-     *  - the user is send the received buffer
+     *  - the service did not errored out, and returned the correct buffer
+     *  - the user is sent the received buffer
      *
      * @Input
      *  - pia-intake id
@@ -273,7 +169,6 @@ describe('PiaIntakeController', () => {
      *  - pdf buffer
      */
     it('succeeds with correct data : Happy flow', async () => {
-      const accessToken = accessTokenMock;
       const piaIntakeId = piaIntakeEntityMock.id;
       const mockRes: any = { set: jest.fn(), send: jest.fn() };
       const mockPdfBuffer: Buffer = Buffer.from('Test Buffer');
@@ -283,7 +178,7 @@ describe('PiaIntakeController', () => {
         return mockPdfBuffer;
       });
 
-      await controller.downloadResult(piaIntakeId, null, mockRes, accessToken);
+      await controller.downloadResult(piaIntakeId, null, mockRes);
 
       expect(piaIntakeService.downloadPiaIntakeResultPdf).toHaveBeenCalledWith(
         piaIntakeId,
