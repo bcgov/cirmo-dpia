@@ -8,6 +8,9 @@ export const getAccessToken = async (code: string | null) => {
   const res = await HttpRequest.post<IKeycloakToken>(
     `/${API_ROUTES.KEYCLOAK_CALLBACK}`,
     { code: code },
+    {},
+    {},
+    false,
   );
   return res;
 };
