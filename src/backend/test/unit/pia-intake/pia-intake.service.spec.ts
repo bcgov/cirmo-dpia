@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { marked } from 'marked';
 
+import * as typeormIn from 'typeorm/find-options/operator/In';
+
 import * as pdfHelper from 'src/common/helpers/pdf-helper';
 import * as dateHelper from 'src/common/helpers/date-helper';
 
@@ -11,6 +13,8 @@ import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { PiaIntakeController } from 'src/modules/pia-intake/pia-intake.controller';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeService } from 'src/modules/pia-intake/pia-intake.service';
+import { Roles } from 'src/common/constants/roles.constants';
+import { RolesEnum } from 'src/common/enums/roles.enum';
 
 import {
   createPiaIntakeMock,
@@ -107,24 +111,60 @@ describe('PiaIntakeService', () => {
    * @method findAll
    */
   describe('`findAll` method', () => {
+    const typeormInSpy = jest.spyOn(typeormIn, 'In').mockReturnValue(null);
+
     /**
      * This test validates that the it passes the correct data to the repository
      *
      * @Input
      *   - User info mock
+     *   - User roles
      */
-    it('succeeds calling the database repository with correct data', async () => {
-      const user1: KeycloakUser = { ...keycloakUserMock };
 
-      await service.findAll(user1);
+    // Scenario 1: when the user is an MPO
+    it('succeeds calling the database repository with correct data for MPO role', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+
+      await service.findAll(user, [RolesEnum.MPO_CITZ]);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
 
       expect(piaIntakeRepository.find).toHaveBeenCalledWith({
-        where: {
-          isActive: true,
-          createdByGuid: user1.idir_user_guid,
-        },
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            ministry: null,
+          },
+        ],
         order: {
-          updatedAt: -1,
+          createdAt: -1,
+        },
+      });
+    });
+
+    // Scenario 2: when the user is a just a drafter (not MPO)
+    it('succeeds calling the database repository with correct data for a drafter (non-MPO) role', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+
+      await service.findAll(user, []);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+          },
+        ],
+        order: {
+          createdAt: -1,
         },
       });
     });

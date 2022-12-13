@@ -6,6 +6,7 @@ import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake
 import { PiaIntakeController } from 'src/modules/pia-intake/pia-intake.controller';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeService } from 'src/modules/pia-intake/pia-intake.service';
+import { RolesEnum } from 'src/common/enums/roles.enum';
 
 import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import {
@@ -107,7 +108,10 @@ describe('PiaIntakeController', () => {
      */
     it('succeeds with correct data : Happy flow', async () => {
       const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const mockReq: any = { user: { ...keycloakUserMock } };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
 
       piaIntakeService.findAll = jest.fn(async () => {
         delay(10);
@@ -116,7 +120,10 @@ describe('PiaIntakeController', () => {
 
       const result = await controller.findAll(mockReq);
 
-      expect(piaIntakeService.findAll).toHaveBeenCalledWith(mockReq.user);
+      expect(piaIntakeService.findAll).toHaveBeenCalledWith(
+        mockReq.user,
+        mockReq.userRoles,
+      );
       expect(result).toStrictEqual({
         data: [piaIntakeEntity],
       });
