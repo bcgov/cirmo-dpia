@@ -9,6 +9,7 @@ import piaImg from '../../assets/pia_intake.svg';
 
 import { Link } from 'react-router-dom';
 import messages from './messages';
+import Breadcrumb from '../../components/common/Breadcrumb';
 
 interface IComponentProps {
   showMPOContents: boolean;
@@ -18,12 +19,8 @@ function PPQLandingPage(props: IComponentProps) {
   return showMPOContents ? (
     <div className="bcgovPageContainer background">
       <div>
-        <div className="mt-0">
-          <p>
-            <a href="/pia-list"> List of PIAs </a>
-            <FontAwesomeIcon className="icon" icon={faAngleRight} /> Create New
-          </p>
-        </div>
+        <Breadcrumb />
+
         <div>
           <h1 className="mb-4">Create New </h1>
         </div>
@@ -83,13 +80,7 @@ function PPQLandingPage(props: IComponentProps) {
   ) : (
     <div className="bcgovPageContainer background">
       <div>
-        <div className="mt-0">
-          <p>
-            <a href="/pia-list"> List of PIAs </a>
-            <FontAwesomeIcon className="icon" icon={faAngleRight} />
-            Create New
-          </p>
-        </div>
+        <Breadcrumb />
         <div>
           <h1 className="mb-4">Create New </h1>
         </div>
