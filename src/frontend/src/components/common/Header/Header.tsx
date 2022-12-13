@@ -78,6 +78,7 @@ function Header({ user }: Props) {
       userInfoError === null
     ) {
       setItemInStorage('userName', keycloakUserDetail.name);
+      setItemInStorage('roles', keycloakUserDetail.client_roles);
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 

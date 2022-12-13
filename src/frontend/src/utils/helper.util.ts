@@ -38,3 +38,10 @@ export const setItemInStorage = (name: string, data: any) => {
 export const removeItemFromStorage = (name: string) => {
   window.localStorage.removeItem(name);
 };
+
+export const isMPORole = (itemName: string) => {
+  const item = window.localStorage.getItem(itemName);
+  if (item === 'undefined' || item === null) return false;
+  const content = JSON.parse(item);
+  return content.filter((x: string) => x.includes('MPO'));
+};

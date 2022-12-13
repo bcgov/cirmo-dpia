@@ -1,24 +1,5 @@
-.get-started-section.results-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  background-color: white;
-  padding: 0;
-  padding-left: 5rem;
-  padding-top: 5em;
-  padding-bottom: 0.5em;
-}
-
-.get-started-content {
-  padding: 25px;
-  box-sizing: border-box;
-  margin-right: 4em;
-  background: rgba($focus, 0.05);
-}
-
 .ppq-home-warning-icon {
-  color: $accent-colour; 
+  color: $accent-colour;
 }
 
 .col-md-6 {
@@ -36,4 +17,3 @@
 .col-md-6 img {
   width: 100%;
 }
-

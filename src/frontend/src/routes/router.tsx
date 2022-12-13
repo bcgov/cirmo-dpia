@@ -10,6 +10,7 @@ import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import { isAuthenticated } from '../utils/auth';
+import { isMPORole } from '../utils/helper.util';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -22,10 +23,15 @@ export const ProtectedRoute = () => {
 };
 
 const Router = () => {
+  const isMPO = !!isMPORole('roles');
+
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
-        <Route path="/ppq" element={<PPQLandingPage />} />
+        <Route
+          path="/ppq"
+          element={<PPQLandingPage showMPOContents={isMPO} />}
+        />
         <Route path="/ppq-form" element={<PPQFormPage />} />
         <Route path="/ppq-connect" element={<PPQConnectPage />} />
         <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
