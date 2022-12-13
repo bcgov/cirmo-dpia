@@ -80,7 +80,7 @@ export class RolesGuard implements CanActivate {
     if (!roles) return true;
 
     // [Matching Strategy - ANY] if any of the provided role matches, the user is allowed
-    const isAuthorized = roles.some((r) => payload.client_roles.includes(r));
+    const isAuthorized = roles.some((r) => payload.client_roles?.includes(r));
 
     return isAuthorized;
   }
