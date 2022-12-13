@@ -23,8 +23,6 @@ export const ProtectedRoute = () => {
 };
 
 const Router = () => {
-  // will give default value to false if we do not get from the config file due to any technical issue
-  // or network issue
   const isMPO = !!isMPORole('roles');
 
   return (
