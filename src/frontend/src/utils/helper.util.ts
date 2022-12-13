@@ -41,8 +41,7 @@ export const removeItemFromStorage = (name: string) => {
 
 export const isMPORole = (itemName: string) => {
   const item = window.localStorage.getItem(itemName);
-  if (item === 'undefined') return false;
-  const content = item ? JSON.parse(item) : null;
-  if (content === null) return false;
-  else return content.filter((x: string) => x.includes('MPO'));
+  if (item === 'undefined' || item === null) return false;
+  const content = JSON.parse(item);
+  return content.filter((x: string) => x.includes('MPO'));
 };
