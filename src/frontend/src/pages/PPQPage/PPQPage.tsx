@@ -55,7 +55,7 @@ function PPQLandingPage(props: IComponentProps) {
             </div>
           </div>
 
-          <div data-cy="ppq-img" className="row mt=2 mb-5 get-start-container ">
+          <div data-cy="ppq-img" className="row mt-2 mb-5 get-start-container ">
             <div className="col">
               <h2>
                 <b>{messages.PPQHeading.en}</b>
