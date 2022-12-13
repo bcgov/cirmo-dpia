@@ -51,15 +51,17 @@ export class PiaIntakeController {
    * @description
    * This method will return all the pia-intakes matching the following criteria by default
    * - user's self submitted pia-intakes
-   * - [#TODO UTOPIA-482] if mpo, all pia-intakes submitted in the user's ministry
+   * - if mpo, all pia-intakes submitted in the user's ministry
    */
   @Get()
-  @ApiOperation({ description: 'Fetches the list of PIA intakes' })
+  @ApiOperation({
+    description: 'Fetches the list of PIA intakes I am authorized',
+  })
   @ApiOkResponse({
-    description: 'Successfully fetched the PIA intake records',
+    description: 'Successfully fetched authorized PIA intake records',
   })
   async findAll(@Req() req: IRequest) {
-    const data = await this.piaIntakeService.findAll(req.user);
+    const data = await this.piaIntakeService.findAll(req.user, req.userRoles);
 
     return { data };
   }
