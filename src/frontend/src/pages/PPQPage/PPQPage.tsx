@@ -1,62 +1,70 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronRight,
-  faExclamationTriangle,
+  faAngleRight,
 } from '@fortawesome/free-solid-svg-icons';
 
 import ppqImg from '../../assets/ppq_homepage.svg';
+import piaImg from '../../assets/pia_intake.svg';
 
 import { Link } from 'react-router-dom';
 import messages from './messages';
 
-function PPQLandingPage() {
-  // TODO: replace with actual role check
-  const isMPO = true;
-
-  return isMPO ? (
+interface IComponentProps {
+  showMPOContents: boolean;
+}
+function PPQLandingPage(props: IComponentProps) {
+  const { showMPOContents } = props;
+  return showMPOContents ? (
     <div className="bcgovPageContainer background">
-      <div className="get-started-section results-wrapper">
-        <div className="row">
-          <div className="col-md-6">
-            <h1>{messages.PIAIntakeHeading.en}</h1>
-            <br />
-            <p>{messages.PIAIntakeDescriptionText.en}</p>
-            <p>{messages.PIAIntakeHelpDescriptionText.en}</p>
+      <div>
+        <div className="mt-0">
+          <p>
+            <a href="/pia-list"> List of PIAs </a>
+            <FontAwesomeIcon className="icon" icon={faAngleRight} /> Create New
+          </p>
+        </div>
+        <div>
+          <h1 className="mb-4">Create New </h1>
+        </div>
+        <div className="container ">
+          <div className="row mt=2 mb-5 get-start-container">
+            <div className="col ">
+              <h2>
+                <b>{messages.PIAIntakeHeading.en}</b>
+              </h2>
+              <br />
+              <p>{messages.PIAIntakeDescriptionText.en}</p>
 
-            <div data-cy="ppq-btn">
-              <Link
-                to="/pia-intake"
-                className="bcgovbtn bcgovbtn__primary ppq-btn"
-              >
-                Get started
-                <FontAwesomeIcon className="icon" icon={faChevronRight} />
-              </Link>
+              <div data-cy="ppq-btn">
+                <Link
+                  to="/pia-intake"
+                  className="bcgovbtn bcgovbtn__primary ppq-btn"
+                >
+                  Start PIA Intake
+                  <FontAwesomeIcon className="icon" icon={faChevronRight} />
+                </Link>
+              </div>
+              <br />
+              <span>
+                <b>Estimated time:</b> 20 minutes
+              </span>
             </div>
-            <br />
-            <span>
-              <b>Estimated time:</b> 20 minutes
-            </span>
+            <div className="col col-sm-4 rounded float-end">
+              <img src={piaImg} alt="Fill form image" />
+            </div>
           </div>
-          <div data-cy="ppq-img" className="col-md-6 ppq-svg ">
-            <div className="get-started-content">
-              <p>
-                <FontAwesomeIcon
-                  className="icon ppq-home-warning-icon"
-                  icon={faExclamationTriangle}
-                />
-                {messages.PPQHeadingWarning.en}
-              </p>
+
+          <div data-cy="ppq-img" className="row mt=2 mb-5 get-start-container ">
+            <div className="col">
               <h2>
                 <b>{messages.PPQHeading.en}</b>
               </h2>
               <br />
               <p>{messages.PPQDescriptionTextInPIAIntake.en}</p>
               <div data-cy="ppq-btn">
-                <Link
-                  to="/ppq-form"
-                  className=" bcgovbtn bcgovbtn__secondary btn-secondary-transparent"
-                >
-                  Get started
+                <Link to="/ppq-form" className=" bcgovbtn bcgovbtn__primary">
+                  Start PPQ
                   <FontAwesomeIcon className="icon" icon={faChevronRight} />
                 </Link>
               </div>
@@ -65,41 +73,52 @@ function PPQLandingPage() {
                 <b>Estimated time:</b> 5 minutes
               </span>
             </div>
-            <img src={ppqImg} alt="Fill form image" />
+            <div className="col col-sm-4 rounded float-end">
+              <img src={ppqImg} alt="Fill form image" />
+            </div>
           </div>
         </div>
       </div>
     </div>
   ) : (
     <div className="bcgovPageContainer background">
-      <div className="get-started-section results-wrapper">
-        <div className="row">
-          <div className="col-md-6">
-            <h2>{messages.PPQHeading.en}</h2>
-            <br />
-            <p>{messages.PPQDescriptionText.en}</p>
-            <ul>
-              <li>{messages.PPQDescriptionTextOne.en}</li>
-              <li>{messages.PPQDescriptionTextTwo.en}</li>
-              <li>{messages.PPQDescriptionTextThree.en}</li>
-            </ul>
-            <div data-cy="ppq-btn">
-              <Link
-                to="/ppq-form"
-                className="bcgovbtn bcgovbtn__primary ppq-btn"
-              >
-                Get started
-                <FontAwesomeIcon className="icon" icon={faChevronRight} />
-              </Link>
-            </div>
-            <br />
-            <span>
-              <b>Estimated time:</b> 20 minutes
-            </span>
-          </div>
+      <div>
+        <div className="mt-0">
+          <p>
+            <a href="/pia-list"> List of PIAs </a>
+            <FontAwesomeIcon className="icon" icon={faAngleRight} />
+            Create New
+          </p>
+        </div>
+        <div>
+          <h1 className="mb-4">Create New </h1>
+        </div>
+        <div className="container ">
+          <div className="row mt=2 mb-5 get-start-container">
+            <div className="col ">
+              <h2>
+                <b>{messages.PIAIntakeHeading.en}</b>
+              </h2>
+              <br />
+              <p>{messages.PIAIntakeDescriptionText.en}</p>
 
-          <div data-cy="ppq-img" className="col-md-6 ppq-svg">
-            <img src={ppqImg} alt="Fill form image" />
+              <div data-cy="ppq-btn">
+                <Link
+                  to="/pia-intake"
+                  className="bcgovbtn bcgovbtn__primary ppq-btn"
+                >
+                  Start PIA Intake
+                  <FontAwesomeIcon className="icon" icon={faChevronRight} />
+                </Link>
+              </div>
+              <br />
+              <span>
+                <b>Estimated time:</b> 20 minutes
+              </span>
+            </div>
+            <div className="col col-sm-4 rounded float-end">
+              <img src={piaImg} alt="Fill form image" />
+            </div>
           </div>
         </div>
       </div>

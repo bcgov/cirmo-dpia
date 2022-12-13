@@ -1,13 +1,9 @@
-.get-started-section.results-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  background-color: white;
+.get-start-container {
   padding: 0;
   padding-left: 5rem;
-  padding-top: 5em;
-  padding-bottom: 0.5em;
+  padding-top: 3em;
+  padding-bottom: 2em;
+  background-color: white;
 }
 
 .get-started-content {
@@ -18,7 +14,7 @@
 }
 
 .ppq-home-warning-icon {
-  color: $accent-colour; 
+  color: $accent-colour;
 }
 
 .col-md-6 {
@@ -36,4 +32,3 @@
 .col-md-6 img {
   width: 100%;
 }
-
