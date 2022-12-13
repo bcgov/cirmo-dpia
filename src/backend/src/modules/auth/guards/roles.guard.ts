@@ -71,9 +71,10 @@ export class RolesGuard implements CanActivate {
     }
 
     // save request metadata with the user roles
-    request.userRoles = payload.client_roles
-      .map((role) => role as RolesEnum)
-      .filter((role) => role);
+    request.userRoles =
+      payload.client_roles
+        ?.map((role) => role as RolesEnum)
+        .filter((role) => role) || [];
 
     // Let the request through if no roles provided in the @Roles decorator
     if (!roles) return true;
