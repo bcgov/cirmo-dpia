@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -11,6 +11,9 @@ import { PiaIntakeEntity } from './entities/pia-intake.entity';
 import { pugToPdfBuffer } from '../../common/helpers/pdf-helper';
 import { shortDate } from '../../common/helpers/date-helper';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
+import { RolesEnum } from 'src/common/enums/roles.enum';
+import { filterMpoRoles } from 'src/common/helpers/roles.helper';
+import { IRoleInfo } from 'src/common/constants/roles.constants';
 
 @Injectable()
 export class PiaIntakeService {
@@ -51,14 +54,53 @@ export class PiaIntakeService {
     return piaIntakeForm;
   }
 
-  async findAll(user: KeycloakUser): Promise<PiaIntakeEntity[]> {
+  /**
+   *@method findAll
+   *
+   * @param
+   * - user KeycloakUser
+   * - userRoles Keycloak user roles
+   *
+   * @returns
+   * As a user, retrieve all PIA-intakes I submitted
+   * As an MPO, retrieve all pia-intakes submitted to my ministry for review
+   */
+  async findAll(
+    user: KeycloakUser,
+    userRoles: RolesEnum[],
+  ): Promise<PiaIntakeEntity[]> {
+    // filter MPO related roles and corresponding ministries from existing role set
+    const userMpoRoles: IRoleInfo[] = filterMpoRoles(userRoles);
+    const userMpoRolesMinistries = userMpoRoles.map(
+      (userMpoRole) => userMpoRole.ministry,
+    );
+
+    // common ministry clause for all possible OR conditions
+    const commonWhereClause: FindOptionsWhere<PiaIntakeEntity> = {
+      isActive: true,
+    };
+
+    // where-clause query
+    const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
+
+    // Scenario 1: As a user, retrieve all PIA-intakes I submitted
+    whereClause.push({
+      ...commonWhereClause,
+      createdByGuid: user.idir_user_guid,
+    });
+
+    // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    if (userMpoRoles?.length) {
+      whereClause.push({
+        ...commonWhereClause,
+        ministry: In(userMpoRolesMinistries),
+      });
+    }
+
     const data: PiaIntakeEntity[] = await this.piaIntakeRepository.find({
-      where: {
-        isActive: true,
-        createdByGuid: user.idir_user_guid,
-      },
+      where: whereClause,
       order: {
-        updatedAt: -1, // default order set to last updated time
+        createdAt: -1, // default order set to latest submission time
       },
     });
 
