@@ -94,7 +94,7 @@ function PPQLandingPage(props: IComponentProps) {
           <h1 className="mb-4">Create New </h1>
         </div>
         <div className="container ">
-          <div className="row mt=2 mb-5 get-start-container">
+          <div className="row mt-2 mb-5 get-start-container">
             <div className="col ">
               <h2>
                 <b>{messages.PIAIntakeHeading.en}</b>
