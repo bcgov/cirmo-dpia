@@ -1,0 +1,13 @@
+.breadcrumb-not-active {
+  // TODO need to discuss with design about what color we should use for inactive
+  color: #ccc;
+}
+
+.breadcrumb-active {
+  color: $link-blue;
+}
+
+.breadcrumb-arrow {
+  margin-left: 10px;
+  margin-right: 10px;
+}

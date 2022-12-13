@@ -9,7 +9,7 @@ import piaImg from '../../assets/pia_intake.svg';
 
 import { Link } from 'react-router-dom';
 import messages from './messages';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
 
 interface IComponentProps {
   showMPOContents: boolean;
@@ -19,13 +19,13 @@ function PPQLandingPage(props: IComponentProps) {
   return showMPOContents ? (
     <div className="bcgovPageContainer background">
       <div>
-        <Breadcrumb />
+        <Breadcrumbs />
 
         <div>
           <h1 className="mb-4">Create New </h1>
         </div>
         <div className="container ">
-          <div className="row mt=2 mb-5 get-start-container">
+          <div className="row mt-2 mb-5 component__row--create-new-form">
             <div className="col ">
               <h2>
                 <b>{messages.PIAIntakeHeading.en}</b>
@@ -52,7 +52,10 @@ function PPQLandingPage(props: IComponentProps) {
             </div>
           </div>
 
-          <div data-cy="ppq-img" className="row mt-2 mb-5 get-start-container ">
+          <div
+            data-cy="ppq-img"
+            className="row mt-2 mb-5 component__row--create-new-form "
+          >
             <div className="col">
               <h2>
                 <b>{messages.PPQHeading.en}</b>
@@ -80,12 +83,12 @@ function PPQLandingPage(props: IComponentProps) {
   ) : (
     <div className="bcgovPageContainer background">
       <div>
-        <Breadcrumb />
+        <Breadcrumbs />
         <div>
           <h1 className="mb-4">Create New </h1>
         </div>
         <div className="container ">
-          <div className="row mt-2 mb-5 get-start-container">
+          <div className="row mt-2 mb-5 component__row--create-new-form">
             <div className="col ">
               <h2>
                 <b>{messages.PIAIntakeHeading.en}</b>
