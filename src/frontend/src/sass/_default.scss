@@ -74,7 +74,8 @@ h4 {
   padding-top: $padding-block;
   padding-bottom: calc($padding-block + $footer-height);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 12rem;
 
   &.bcgovPageContainer__with-controls {
     flex-direction: column;
