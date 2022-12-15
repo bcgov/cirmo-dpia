@@ -19,7 +19,7 @@ function PPQLandingPage(props: IComponentProps) {
 
   return showMPOContents ? (
     <div>
-      <Breadcrumbs firstItem={'List of PIAs'} secondItem={'Create New'} />
+      <Breadcrumbs items={['List of PIAs', 'Create New']} />
       <div className="bcgovPageContainer">
         <div>
           <div>
@@ -84,7 +84,7 @@ function PPQLandingPage(props: IComponentProps) {
     </div>
   ) : (
     <div>
-      <Breadcrumbs firstItem={'List of PIAs'} secondItem={'Create New'} />
+      <Breadcrumbs items={['List of PIAs', 'Create New']} />
       <div className="bcgovPageContainer ">
         <div>
           <div>

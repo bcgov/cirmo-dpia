@@ -3,13 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
 import { BreadcrumbProps } from './interfaces';
-const Breadcrumbs = ({
-  firstItem,
-  secondItem,
-  thirdItem,
-}: BreadcrumbProps): React.ReactElement => {
+const Breadcrumbs = ({ items }: BreadcrumbProps): React.ReactElement => {
   const location = useLocation();
-
   return (
     <nav className="breadcrumb-wrapper ">
       <p>
@@ -21,13 +16,13 @@ const Breadcrumbs = ({
           }
           to="/pia-list"
         >
-          {firstItem}
+          {items[0]}
         </Link>
         <FontAwesomeIcon
           className="icon breadcrumb-arrow"
           icon={faAngleRight}
         />
-        <b>{secondItem} </b>
+        <b>{items[items.length - 1]} </b>
       </p>
     </nav>
   );
