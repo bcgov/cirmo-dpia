@@ -1,6 +1,7 @@
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { dateToString } from '../../../utils/date';
 import {
@@ -54,13 +55,12 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>{pia.drafterName}</td>
               <td>Submitted</td>
               <td>
-                <button
+                <Link
                   className="bcgovbtn bcgovbtn__tertiary"
-                  onClick={() => handleDownload(pia.id)}
+                  to={`/pia/result/${pia.id}`}
                 >
-                  Download PIA
-                  <FontAwesomeIcon className="icon" icon={faFileDownload} />
-                </button>
+                  View Details
+                </Link>
               </td>
             </tr>
           ))}

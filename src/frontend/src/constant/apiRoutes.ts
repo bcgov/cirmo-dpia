@@ -9,4 +9,5 @@ export const API_ROUTES = {
   PPQ_RESULT_DOWNLOAD: '/api/ppq/download/:id',
   PIA_INTAKE_RESULT_DOWNLOAD: '/api/pia-intake/download/:id',
   CONFIG_FILE: '/api/configuration',
+  GET_PIA_INTAKE: '/api/pia-intake/:id',
 };
