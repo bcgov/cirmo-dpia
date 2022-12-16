@@ -45,6 +45,11 @@ jobs:
           echo "GIT_BRANCH=main" >> $GITHUB_ENV
         if: env.GIT_BRANCH == 'refs/heads/main'
 
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
+
       # Generate Test Report
       - name: Generate APi Test Coverage report
         run: | 
