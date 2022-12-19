@@ -140,6 +140,7 @@ function Header({ user }: Props) {
           cancelLabel="Cancel"
           titleText="Sign out confirmation"
           show={showModal}
+          reversed={true}
           handleClose={hideModalDialog}
           handleCancel={cancelModalDialog}
         >

@@ -43,12 +43,13 @@
   }
 
   .modalbtn__container {
-    display:flex;
-    flex-direction: row;
-    justify-content:center;
-    button {
-      margin-right: 4px;
-      margin-left: 4px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 0.5em;
+
+    &.reversed {
+      flex-direction: row;
     }
   }
 }

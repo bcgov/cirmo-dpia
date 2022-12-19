@@ -7,6 +7,7 @@ const Modal = ({
   handleClose,
   handleCancel,
   show,
+  reversed,
   children,
 }: IModal) => {
   const showHideClassName = show
@@ -18,7 +19,7 @@ const Modal = ({
         <span className="modal-title"> {titleText}</span>
         <div className="modal-horizontal-divider"></div>
         {children}
-        <div className="modalbtn__container">
+        <div className={`modalbtn__container ${reversed ? 'reversed' : ''}`}>
           <button
             className="bcgovbtn bcgovbtn__primary "
             type="button"

@@ -3,7 +3,7 @@ import InputText from '../../components/common/InputText/InputText';
 import { MinistryList, PIOptions } from '../../constant/constant';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -11,12 +11,13 @@ import { useNavigate } from 'react-router-dom';
 import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
 import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 import { routes } from '../../constant/routes';
+import Modal from '../../components/common/Modal';
 
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
 
   //
-  // Local State
+  // Form State
   //
   const [message, setMessage] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -40,9 +41,52 @@ const PIAIntakeFormPage = () => {
   const [riskMitigation, setRiskMitigation] = useState<string>();
 
   //
+  // Modal State
+  //
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+
+  //
   // Event Handlers
   //
+  const handleShowModal = (modalType: string) => {
+    switch (modalType) {
+      case 'cancel':
+        setModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
+        setModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
+        setModalTitleText(Messages.Modal.Cancel.TitleText.en);
+        setModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
+        break;
+      case 'save':
+        setModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
+        setModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
+        setModalTitleText(Messages.Modal.Save.TitleText.en);
+        setModalParagraph(Messages.Modal.Save.ParagraphText.en);
+        break;
+      default:
+        break;
+    }
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate('/pia-list');
+  };
+
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
+
+  const handleSaveChanges = () => {
+    handleShowModal('save');
+  };
+
   const handleBackClick = () => {
+    handleShowModal('cancel');
     navigate(-1);
   };
 
@@ -362,12 +406,21 @@ const PIAIntakeFormPage = () => {
             >
               Back
             </button>
-            <button
-              type="submit"
-              className="bcgovbtn bcgovbtn__primary btn-next"
-            >
-              Submit
-            </button>
+            <div className="form__button-group">
+              <button
+                type="button"
+                className="bcgovbtn bcgovbtn__secondary"
+                onClick={handleSaveChanges}
+              >
+                Save changes
+              </button>
+              <button
+                type="submit"
+                className="bcgovbtn bcgovbtn__primary btn-next"
+              >
+                Submit
+              </button>
+            </div>
           </div>
           {message && (
             <Alert
@@ -379,6 +432,16 @@ const PIAIntakeFormPage = () => {
           )}
         </form>
       </section>
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showModal}
+        handleClose={handleModalClose}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </div>
   );
 };

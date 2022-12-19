@@ -72,4 +72,35 @@ export default {
       incident or privacy breach. `,
     },
   },
+  Modal: {
+    Save: {
+      ConfirmLabel: {
+        en: `Save`,
+      },
+      CancelLabel: {
+        en: `Don't save`,
+      },
+      TitleText: {
+        en: `Do you want to save this PIA?`,
+      },
+      ParagraphText: {
+        en: `Only you will be able to view the saved version and you can return at any 
+        time to make further changes.`,
+      },
+    },
+    Cancel: {
+      ConfirmLabel: {
+        en: `Leave`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Leave without saving?`,
+      },
+      ParagraphText: {
+        en: `Any changes you've made will be lost if you leave this page.`,
+      },
+    },
+  },
 };
