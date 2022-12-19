@@ -57,7 +57,7 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>
                 <Link
                   className="bcgovbtn bcgovbtn__tertiary"
-                  to={`/pia/result/${pia.id}`}
+                  to={`/pia/result/${pia.id}/${pia.title}`}
                 >
                   View Details
                 </Link>
