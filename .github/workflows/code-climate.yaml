@@ -64,10 +64,7 @@ jobs:
 
       - name: Format Coverage report using CC Test Reporter
         run: | 
-          pushd .
-          cd ${{ github.workspace }}/src/backend/coverage
-          ${{ github.workspace }}/cc-test-reporter format-coverage lcov.info -t lcov -o ${{ github.workspace }}/coverage/api-coverage.json
-          popd
+          ./cc-test-reporter format-coverage -t lcov ./src/backend/coverage/lcov.info
 
       # List all formatted files in coverage directory
       - name: WHERE AM I - FORMATTED?
