@@ -62,6 +62,10 @@ jobs:
         run: |
           ls ${{ github.workspace }}/src/backend/coverage
 
+      - name: Format Coverage report using CC Test Reporter
+        run: | 
+          ./cc-test-reporter format-coverage -t lcov -o src/backend/coverage/lcov.info coverage/lcov.info
+
       # Upload total coverage report to Code Climate
       - name: Upload coverage report to Code Climate
-        run: ./cc-test-reporter upload-coverage -d -i "src/backend/coverage/lcov.info"
+        run: ./cc-test-reporter upload-coverage -d -i "coverage/lcov.info"
