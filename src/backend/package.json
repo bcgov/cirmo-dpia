@@ -104,11 +104,7 @@
       "node_modules",
       "src",
       "test"
-    ],
-    "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/src/$1",
-      "^test/(.*)$": "<rootDir>/test/$1"
-    }
+    ]
   },
   "husky": {
     "hooks": {
