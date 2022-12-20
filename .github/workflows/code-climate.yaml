@@ -64,7 +64,7 @@ jobs:
 
       - name: Format Coverage report using CC Test Reporter
         run: | 
-          ./cc-test-reporter format-coverage -d ${{ github.workspace }}/src/backend/coverage/lcov.info -t lcov
+          ./cc-test-reporter format-coverage -d ${{ github.workspace }}/src/backend/coverage/lcov.info -t lcov --output coverage/api-coverage.json
 
       # List all formatted files in coverage directory
       - name: WHERE AM I - FORMATTED?
@@ -73,4 +73,4 @@ jobs:
 
       # Upload total coverage report to Code Climate
       - name: Upload coverage report to Code Climate
-        run: ./cc-test-reporter upload-coverage -d -i "coverage/api-coverage.json"
+        run: ./cc-test-reporter upload-coverage -d -i ${{ github.workspace }}/src/backend/coverage/api-coverage.json
