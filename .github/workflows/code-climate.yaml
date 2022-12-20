@@ -59,19 +59,9 @@ jobs:
           npm install
           npm run test:cov
 
-      # List all formatted files in coverage directory
-      - name: WHERE AM I - FORMATTED?
-        run: |
-          ls ${{ github.workspace }}/src/backend/coverage
-
       - name: Format Coverage report using CC Test Reporter
         run: | 
           ./cc-test-reporter format-coverage -d ${{ github.workspace }}/src/backend/coverage/lcov.info -t lcov --output coverage/api-coverage.json
-
-      # List all formatted files in coverage directory
-      - name: WHERE AM I - FORMATTED?
-        run: |
-          ls ${{ github.workspace }}/coverage
 
       # Upload total coverage report to Code Climate
       - name: Upload coverage report to Code Climate
