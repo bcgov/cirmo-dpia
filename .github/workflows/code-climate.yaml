@@ -1,6 +1,8 @@
 name: Generate, Aggregate and Upload coverage reports to Code Climate
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
