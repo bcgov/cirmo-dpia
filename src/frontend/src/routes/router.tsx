@@ -37,10 +37,7 @@ const Router = () => {
         <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
         <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
         <Route path="/pia-list" element={<PIAList />} />
-        <Route
-          path="/pia/result/:id/:title"
-          element={<div> not implemented yet </div>}
-        />
+        <Route path="/pia/intake/:id/:title" />
       </Route>
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
