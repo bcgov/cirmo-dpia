@@ -3,6 +3,12 @@
   max-width: 80%;
 }
 
+.form__title {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+}
+
 .form__header {
   margin-bottom: 4em;
 }

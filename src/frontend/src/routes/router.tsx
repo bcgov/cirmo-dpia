@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
+import PIADetailPage from '../pages/PIADetailPage';
 import PIAIntakeFormPage from '../pages/PIAIntakeForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAList from '../pages/PIAListPage';
@@ -37,7 +38,7 @@ const Router = () => {
         <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
         <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
         <Route path="/pia-list" element={<PIAList />} />
-        <Route path="/pia/intake/:id/:title" />
+        <Route path="/pia/intake/:id/:title" element={<PIADetailPage />} />
       </Route>
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
