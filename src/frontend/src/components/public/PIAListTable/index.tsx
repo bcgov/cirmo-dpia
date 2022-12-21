@@ -56,7 +56,6 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>Submitted</td>
               <td>
                 <Link
-                  className="bcgovbtn bcgovbtn__tertiary link"
                   target="_blank"
                   rel="noopener noreferrer"
                   to={`/pia/intake/${pia.id}/${pia.title}`}

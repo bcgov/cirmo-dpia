@@ -35,14 +35,10 @@
     & > tbody > tr > td:nth-child(5) {
       padding: 0;
 
-      & > button {
-        margin-inline: auto 0;
-        margin-top: 0.6em;
+      & > a {
+        padding-top: 1.2em;
+        display: block;
       }
     }
-  }
-
-  .link {
-    padding-top: 1.2em;
   }
 }
