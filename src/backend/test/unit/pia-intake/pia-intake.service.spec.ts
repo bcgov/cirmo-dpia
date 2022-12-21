@@ -6,6 +6,7 @@ import * as typeormIn from 'typeorm/find-options/operator/In';
 
 import * as pdfHelper from 'src/common/helpers/pdf-helper';
 import * as dateHelper from 'src/common/helpers/date-helper';
+import * as baseHelper from 'src/common/helpers/base-helper';
 
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake.dto';
@@ -18,11 +19,18 @@ import { RolesEnum } from 'src/common/enums/roles.enum';
 
 import {
   createPiaIntakeMock,
+  getPiaIntakeROMock,
   piaIntakeEntityMock,
 } from 'test/util/mocks/data/pia-intake.mock';
 import { delay } from 'test/util/testUtils';
 import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
+import {
+  ForbiddenException,
+  GoneException,
+  NotFoundException,
+} from '@nestjs/common';
+import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 
 /**
  * @Description
@@ -113,19 +121,29 @@ describe('PiaIntakeService', () => {
   describe('`findAll` method', () => {
     const typeormInSpy = jest.spyOn(typeormIn, 'In').mockReturnValue(null);
 
-    /**
-     * This test validates that the it passes the correct data to the repository
-     *
-     * @Input
-     *   - User info mock
-     *   - User roles
-     */
+    const omitBaseKeysSpy = jest
+      .spyOn(baseHelper, 'omitBaseKeys')
+      .mockImplementation(() => null);
+
+    beforeEach(() => {
+      typeormInSpy.mockClear();
+      omitBaseKeysSpy.mockClear();
+    });
 
     // Scenario 1: when the user is an MPO
     it('succeeds calling the database repository with correct data for MPO role', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
 
-      await service.findAll(user, [RolesEnum.MPO_CITZ]);
+      piaIntakeRepository.find = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles);
 
       expect(typeormInSpy).toHaveBeenCalledWith([
         Roles[RolesEnum.MPO_CITZ].ministry,
@@ -146,13 +164,25 @@ describe('PiaIntakeService', () => {
           createdAt: -1,
         },
       });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+      expect(result).toEqual([getPiaIntakeROMock]);
     });
 
     // Scenario 2: when the user is a just a drafter (not MPO)
     it('succeeds calling the database repository with correct data for a drafter (non-MPO) role', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
 
-      await service.findAll(user, []);
+      piaIntakeRepository.find = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles);
 
       expect(typeormInSpy).not.toHaveBeenCalled();
 
@@ -167,6 +197,103 @@ describe('PiaIntakeService', () => {
           createdAt: -1,
         },
       });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+      expect(result).toEqual([getPiaIntakeROMock]);
+    });
+  });
+
+  /**
+   * @Description
+   * These set of tests validates that findOne method returns the data pertaining to user's permissions.
+   *
+   * @method findOne
+   */
+  describe('`findOne` method', () => {
+    const omitBaseKeysSpy = jest
+      .spyOn(baseHelper, 'omitBaseKeys')
+      .mockImplementation(() => null);
+
+    beforeEach(() => {
+      omitBaseKeysSpy.mockClear();
+    });
+
+    // Scenario 1: Test fails when the record is not found in database
+    it('fails when the record is not found in database', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 0; // non-existent id
+
+      piaIntakeRepository.findOneBy = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      service.validateUserAccess = jest.fn(() => null);
+
+      await expect(service.findOne(id, user, userRoles)).rejects.toThrow(
+        new NotFoundException(),
+      );
+
+      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).not.toHaveBeenCalled();
+      expect(omitBaseKeysSpy).not.toHaveBeenCalled();
+    });
+
+    // Scenario 2: Test fails when service.validateUserAccess throws any exception
+    it('fails when service.validateUserAccess throws any exception', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      piaIntakeRepository.findOneBy = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeEntityMock };
+      });
+
+      service.validateUserAccess = jest.fn(() => {
+        throw new ForbiddenException(); // any exception
+      });
+
+      await expect(service.findOne(id, user, userRoles)).rejects.toThrow(
+        new ForbiddenException(),
+      );
+
+      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeEntityMock,
+      );
+      expect(omitBaseKeysSpy).not.toHaveBeenCalled();
+    });
+
+    // Scenario 3: Test succeeds when the record is found and the user has relevant access
+    it('succeeds when the record is found and the user has relevant access', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      piaIntakeRepository.findOneBy = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeEntityMock };
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      omitBaseKeysSpy.mockImplementation(() => getPiaIntakeROMock);
+
+      const result = await service.findOne(id, user, userRoles);
+
+      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeEntityMock,
+      );
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntityMock);
+      expect(result).toEqual(getPiaIntakeROMock);
     });
   });
 
@@ -197,28 +324,6 @@ describe('PiaIntakeService', () => {
     });
 
     /**
-     * This test validates that the implementation does not go beyond and return null
-     * if the provided pia-intake id is invalid or is not included in the database
-     *
-     * @Input
-     *   - pia-intake id
-     *
-     * @Output
-     *   null
-     */
-    it('returns null when provide pia-intake id is not found', async () => {
-      const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const result = await service.downloadPiaIntakeResultPdf(
-        piaIntakeEntity.id,
-      );
-
-      expect(result).toBe(null);
-      expect(shortDateSpy).not.toHaveBeenCalled();
-      expect(markedParseSpy).not.toHaveBeenCalled();
-      expect(pugToPdfBufferSpy).not.toHaveBeenCalled();
-    });
-
-    /**
      * This test validates that the method returns the pdf buffer of the provided pia-intake id
      *
      * @Input
@@ -228,22 +333,26 @@ describe('PiaIntakeService', () => {
      *   - pdf buffer content
      */
     it('returns pdf buffer when provided correct data', async () => {
-      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const getPiaIntakeRO = { ...getPiaIntakeROMock };
       const mockPdfBuffer: Buffer = Buffer.from('Test Buffer');
 
       pugToPdfBufferSpy.mockImplementation(async () => mockPdfBuffer);
 
-      piaIntakeRepository.findOneBy = jest.fn(async () => {
+      service.findOne = jest.fn(async () => {
         delay(10);
-        return piaIntakeEntity;
+        return getPiaIntakeRO;
       });
 
       const result = await service.downloadPiaIntakeResultPdf(
-        piaIntakeEntity.id,
+        getPiaIntakeRO.id,
+        user,
+        userRoles,
       );
 
       const pdfParsedData = {
-        ...piaIntakeEntity,
+        ...getPiaIntakeRO,
         ...{
           updatedAt: null,
           ministry: 'Tourism, Arts, Culture and Sport',
@@ -255,7 +364,7 @@ describe('PiaIntakeService', () => {
       };
 
       expect(shortDateSpy).toHaveBeenCalledTimes(1);
-      expect(shortDateSpy).toHaveBeenCalledWith(piaIntakeEntity.createdAt);
+      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.createdAt);
 
       expect(markedParseSpy).toHaveBeenCalledTimes(4);
 
@@ -266,6 +375,109 @@ describe('PiaIntakeService', () => {
       );
 
       expect(result).toBe(mockPdfBuffer);
+    });
+  });
+
+  /**
+   * @method validateUserAccess
+   *
+   * @description
+   * These set of tests validates that pia-intake form is only shown to the user if they have the required permissions
+   * - if the form is self-submitted by the user
+   * - if the form is submitted to the ministry the user is an MPO of
+   *
+   * Everyone else should be forbidden
+   */
+  describe('`validateUserAccess` method', () => {
+    // Scenario 1: Test fails when the record is not active in database
+    it('fails when the record is not active in database', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        isActive: false,
+      };
+
+      try {
+        service.validateUserAccess(user, userRoles, piaIntake);
+      } catch (e) {
+        expect(e).toEqual(new GoneException());
+      }
+    });
+
+    // Scenario 2: Test succeeds when the record is self submitted irrespective of user role or ministry they belong
+    it('succeeds when the record is self submitted irrespective of user role or ministry they belong', () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'TEST_USER',
+      };
+      const userRoles = [];
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'TEST_USER',
+      };
+
+      const result = service.validateUserAccess(user, userRoles, piaIntake);
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 3: Test succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
+    it('succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2',
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      const result = service.validateUserAccess(user, userRoles, piaIntake);
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 4: Test fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of
+    it('fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of', () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = [];
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2',
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      try {
+        service.validateUserAccess(user, userRoles, piaIntake);
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
+    });
+
+    // Scenario 5: Test fails when the record is neither self-submitted not submitted to the ministry I am MPO of
+    it('fails when the record is neither self-submitted not submitted to the ministry I am MPO of', () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = [RolesEnum.MPO_AGRI];
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2',
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      try {
+        service.validateUserAccess(user, userRoles, piaIntake);
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
     });
   });
 });

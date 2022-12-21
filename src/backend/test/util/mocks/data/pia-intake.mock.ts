@@ -1,6 +1,7 @@
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake.dto';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
+import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { baseEntityMock } from 'test/util/mocks/data/base.mock';
 
 const piaIntakeDataMock = {
@@ -38,4 +39,13 @@ export const piaIntakeEntityMock: PiaIntakeEntity = {
 
 export const createPiaIntakeMock: CreatePiaIntakeDto = {
   ...piaIntakeDataMock,
+};
+
+export const getPiaIntakeROMock: GetPiaIntakeRO = {
+  ...piaIntakeDataMock,
+  ...{
+    id: baseEntityMock.id,
+    createdAt: baseEntityMock.createdAt,
+    updatedAt: baseEntityMock.updatedAt,
+  },
 };
