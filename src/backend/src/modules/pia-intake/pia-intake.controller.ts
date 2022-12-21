@@ -71,7 +71,7 @@ export class PiaIntakeController {
   }
 
   /**
-   * @method findOne
+   * @method findOneById
    *
    * @description
    * This method will return the requested pia-intake by id, pertaining the role access
@@ -98,11 +98,11 @@ export class PiaIntakeController {
     description:
       'Failed to fetch the PIA: The record is marked inactive in our system',
   })
-  async findOne(
+  async findOneById(
     @Param('id') id: number,
     @Req() req: IRequest,
   ): Promise<{ data: GetPiaIntakeRO }> {
-    const data = await this.piaIntakeService.findOne(
+    const data = await this.piaIntakeService.findOneById(
       id,
       req.user,
       req.userRoles,

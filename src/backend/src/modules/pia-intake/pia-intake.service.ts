@@ -57,7 +57,7 @@ export class PiaIntakeService {
   */
 
   /**
-   * @method findOne
+   * @method findOneById
    *
    * @description
    * This method retrieves PIA Intake form record by id
@@ -69,7 +69,7 @@ export class PiaIntakeService {
    *
    * @returns a formatted return object with keys suitable for user
    */
-  async findOne(
+  async findOneById(
     id: number,
     user: KeycloakUser,
     userRoles: RolesEnum[],
@@ -112,7 +112,7 @@ export class PiaIntakeService {
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
 
     /* ********** CONDITIONAL WHERE CLAUSE BEGINS ********** */
-    // common ministry clause for all possible OR conditions
+    // common clause for all possible OR conditions
     const commonWhereClause: FindOptionsWhere<PiaIntakeEntity> = {
       isActive: true,
     };
@@ -137,12 +137,12 @@ export class PiaIntakeService {
 
     // Retrieve PIA Intake Entity Records
     const entityRecords: PiaIntakeEntity[] =
-      (await this.piaIntakeRepository.find({
+      await this.piaIntakeRepository.find({
         where: whereClause,
         order: {
           createdAt: -1, // default order set to latest submission time
         },
-      })) || [];
+      });
 
     // Remove keys from the user's view that are not required
     const formattedRecords: GetPiaIntakeRO[] = entityRecords.map((record) =>
@@ -158,7 +158,7 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
   ) {
-    const piaIntakeForm = await this.findOne(id, user, userRoles);
+    const piaIntakeForm = await this.findOneById(id, user, userRoles);
 
     const ministry = GovMinistries?.[piaIntakeForm.ministry]?.label;
 

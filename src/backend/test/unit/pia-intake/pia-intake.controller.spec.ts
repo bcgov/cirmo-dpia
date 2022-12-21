@@ -132,16 +132,16 @@ describe('PiaIntakeController', () => {
   });
 
   /**
-   * @method findOne
+   * @method findOneById
    *
    * @description
    * This test suite validates that the method passes the correct values to the service,
    * mock the service result and return correct result to the user
    */
-  describe('`findOne` method', () => {
+  describe('`findOneById` method', () => {
     /**
      * @Description
-     * This test validates if the method `piaIntakeService.findOne` is called with correct mock data
+     * This test validates if the method `piaIntakeService.findOneById` is called with correct mock data
      *
      * @Input
      *  - pia-intake id
@@ -157,14 +157,14 @@ describe('PiaIntakeController', () => {
         userRoles: [RolesEnum.MPO_CITZ],
       };
 
-      piaIntakeService.findOne = jest.fn(async () => {
+      piaIntakeService.findOneById = jest.fn(async () => {
         delay(10);
         return getPiaIntakeRO;
       });
 
-      const result = await controller.findOne(getPiaIntakeRO.id, mockReq);
+      const result = await controller.findOneById(getPiaIntakeRO.id, mockReq);
 
-      expect(piaIntakeService.findOne).toHaveBeenCalledWith(
+      expect(piaIntakeService.findOneById).toHaveBeenCalledWith(
         getPiaIntakeRO.id,
         mockReq.user,
         mockReq.userRoles,

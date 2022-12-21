@@ -205,11 +205,11 @@ describe('PiaIntakeService', () => {
 
   /**
    * @Description
-   * These set of tests validates that findOne method returns the data pertaining to user's permissions.
+   * These set of tests validates that findOneById method returns the data pertaining to user's permissions.
    *
-   * @method findOne
+   * @method findOneById
    */
-  describe('`findOne` method', () => {
+  describe('`findOneById` method', () => {
     const omitBaseKeysSpy = jest
       .spyOn(baseHelper, 'omitBaseKeys')
       .mockImplementation(() => null);
@@ -231,7 +231,7 @@ describe('PiaIntakeService', () => {
 
       service.validateUserAccess = jest.fn(() => null);
 
-      await expect(service.findOne(id, user, userRoles)).rejects.toThrow(
+      await expect(service.findOneById(id, user, userRoles)).rejects.toThrow(
         new NotFoundException(),
       );
 
@@ -255,7 +255,7 @@ describe('PiaIntakeService', () => {
         throw new ForbiddenException(); // any exception
       });
 
-      await expect(service.findOne(id, user, userRoles)).rejects.toThrow(
+      await expect(service.findOneById(id, user, userRoles)).rejects.toThrow(
         new ForbiddenException(),
       );
 
@@ -283,7 +283,7 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockImplementation(() => getPiaIntakeROMock);
 
-      const result = await service.findOne(id, user, userRoles);
+      const result = await service.findOneById(id, user, userRoles);
 
       expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
@@ -340,7 +340,7 @@ describe('PiaIntakeService', () => {
 
       pugToPdfBufferSpy.mockImplementation(async () => mockPdfBuffer);
 
-      service.findOne = jest.fn(async () => {
+      service.findOneById = jest.fn(async () => {
         delay(10);
         return getPiaIntakeRO;
       });
