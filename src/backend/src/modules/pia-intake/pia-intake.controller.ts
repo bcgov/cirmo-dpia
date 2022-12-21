@@ -8,11 +8,14 @@ import {
   Req,
   Res,
   HttpStatus,
-  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiGoneResponse,
+  ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -26,6 +29,7 @@ import { IResponse } from '../../common/interfaces/response.interface';
 import { PiaIntakeService } from './pia-intake.service';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
+import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -66,13 +70,68 @@ export class PiaIntakeController {
     return { data };
   }
 
+  /**
+   * @method findOne
+   *
+   * @description
+   * This method will return the requested pia-intake by id, pertaining the role access
+   *
+   * @param pia_intake_id
+   *
+   * @returns pia-intake object
+   */
+  @Get(':id')
+  @ApiOperation({
+    description: 'Fetches the PIA Intake entity based on the provided ID',
+  })
+  @ApiOkResponse({
+    description: 'Successfully fetched the PIA intake',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to fetch the PIA: The record not found',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to fetch the PIA: User does not have sufficient role access to view this record',
+  })
+  @ApiGoneResponse({
+    description:
+      'Failed to fetch the PIA: The record is marked inactive in our system',
+  })
+  async findOne(
+    @Param('id') id: number,
+    @Req() req: IRequest,
+  ): Promise<{ data: GetPiaIntakeRO }> {
+    const data = await this.piaIntakeService.findOne(
+      id,
+      req.user,
+      req.userRoles,
+    );
+
+    return { data };
+  }
+
   @Get('/download/:id')
   @ApiParam({ name: 'id', type: Number, required: true })
   @ApiOperation({ description: 'Download PIA intake result pdf by id' })
   @ApiOkResponse({
     description: 'Successfully downloaded the PIA intake result form',
   })
-  @ApiNotFoundResponse({ description: 'PIA intake form Id not found' })
+  @ApiNotFoundResponse({
+    description: 'Failed to download the PIA: Form Id not found',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to download the PIA: User does not have sufficient role access',
+  })
+  @ApiGoneResponse({
+    description:
+      'Failed to download the PIA: The record is marked inactive in our system',
+  })
+  @ApiInternalServerErrorResponse({
+    description:
+      'Failed to download the PIA: The record was found, however the server could not create a pdf buffer',
+  })
   @HttpCode(HttpStatus.OK)
   async downloadResult(
     @Param('id') id,
@@ -81,10 +140,12 @@ export class PiaIntakeController {
   ) {
     const pdfBuffer = await this.piaIntakeService.downloadPiaIntakeResultPdf(
       id,
+      req.user,
+      req.userRoles,
     );
 
     if (!pdfBuffer) {
-      throw new NotFoundException();
+      throw new InternalServerErrorException();
     }
 
     res.set('Content-Type', 'application/pdf');
