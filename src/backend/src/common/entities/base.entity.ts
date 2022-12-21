@@ -12,7 +12,6 @@ export class BaseEntity {
   @Column({
     name: 'is_active',
     default: true,
-    select: false,
   })
   isActive: boolean;
 
@@ -32,13 +31,11 @@ export class BaseEntity {
 
   @Column({
     name: 'created_by_guid',
-    select: false,
   })
   createdByGuid: string;
 
   @Column({
     name: 'created_by_username',
-    select: false,
   })
   createdByUsername: string;
 }

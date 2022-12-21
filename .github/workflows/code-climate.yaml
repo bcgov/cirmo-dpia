@@ -1,0 +1,68 @@
+name: Generate, Aggregate and Upload coverage reports to Code Climate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  api:
+    env:
+      CC_TEST_REPORTER_ID: 861e868a6d2776ca55c53ef1ee5042f1de0db45137b89eeeda67e15549bfcdbf
+
+    name: Create, format and upload Unit Test Coverage
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Get Code Climate binary
+      - name: Download Code Climate Binary
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+
+      # Permissions applied to the Code Climate Executable
+      - name: Apply executable perms to Code Climate Binary
+        run: |
+          chmod +x ./cc-test-reporter
+      
+      # Before build prep
+      - name: Before build
+        run: ./cc-test-reporter before-build
+
+      # Set required Git env vars for either pull request
+      - name: Set ENV for codeclimate
+        run: |
+          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+      # Trimming the ref to main in order to publish correct report (paambaati)
+      - name: Set ref/head/main to main
+        run: |
+          echo "GIT_BRANCH=main" >> $GITHUB_ENV
+        if: env.GIT_BRANCH == 'refs/heads/main'
+
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
+
+      # Generate Test Report
+      - name: Generate APi Test Coverage report
+        run: | 
+          cd ./src/backend
+          npm install
+          npm run test:cov
+
+      - name: Format Coverage report using CC Test Reporter
+        run: | 
+          ./cc-test-reporter format-coverage -d ${{ github.workspace }}/src/backend/coverage/lcov.info -t lcov --output coverage/api-coverage.json
+
+      # Upload total coverage report to Code Climate
+      - name: Upload coverage report to Code Climate
+        run: ./cc-test-reporter upload-coverage -d -i ${{ github.workspace }}/coverage/api-coverage.json
