@@ -36,6 +36,8 @@ const PIADetailPage = () => {
           win.location = routes.NOT_FOUND;
         } else if (errorCode.includes('401') || errorCode.includes('403')) {
           win.location = routes.NOT_AUTHORIZED;
+        } else {
+          throw new Error('Fetch pia failed');
         }
       }
     })();
