@@ -1,6 +1,7 @@
 import { Children, useContext, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
+import Unauthorized from '../components/common/Unauthorized';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -40,6 +41,7 @@ const Router = () => {
         <Route path="/pia-list" element={<PIAList />} />
         <Route path="/pia/intake/:id/:title" element={<PIADetailPage />} />
       </Route>
+      <Route path="/not-authorized" element={<Unauthorized />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

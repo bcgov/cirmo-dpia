@@ -1,11 +1,46 @@
-import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
+import {
+  IPIAIntake,
+  IPIAIntakeResponse,
+} from '../../types/interfaces/pia-intake.interface';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { dateToString } from '../../utils/date';
 import messages from './messages';
-import fakeData from './fakeData';
+
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { HttpRequest } from '../../utils/http-request.util';
+import { API_ROUTES } from '../../constant/apiRoutes';
+import { routes } from '../../constant/routes';
+
 const PIADetailPage = () => {
-  const pia: IPIAIntake = fakeData;
+  // https://github.com/microsoft/TypeScript/issues/48949
+  // workaround
+  const win: Window = window;
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [pia, setPia] = useState<any>({});
+  useEffect(() => {
+    (async () => {
+      try {
+        // Actually perform fetch
+        const result = (
+          await HttpRequest.get<IPIAIntakeResponse>(
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
+          )
+        ).data;
+        setPia(result);
+      } catch (e: any) {
+        const errorCode: string = e.message.split(':')[1];
+        if (errorCode.includes('404')) {
+          win.location = routes.NOT_FOUND;
+        } else if (errorCode.includes('401') || errorCode.includes('403')) {
+          win.location = routes.NOT_AUTHORIZED;
+        }
+      }
+    })();
+  }, [id, navigate, win]);
+
   return (
     <div className="bcgovPageContainer results results-wrapper ppq-connect">
       <div className="form__title">
@@ -21,7 +56,9 @@ const PIADetailPage = () => {
           <div className="col col-md-4">Last modified</div>
         </div>
         <div className="row">
-          <div className="col col-md-4">{pia.status}</div>
+          <div className="col col-md-4">
+            {pia.status ? pia.status : 'Submitted'}
+          </div>
           <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
           <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
         </div>

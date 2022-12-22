@@ -22,3 +22,6 @@ export interface IPIAIntake {
   updatedAt?: Date;
   status?: string;
 }
+export interface IPIAIntakeResponse {
+  data: IPIAIntake;
+}
