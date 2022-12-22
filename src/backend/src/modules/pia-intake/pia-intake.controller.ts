@@ -9,6 +9,7 @@ import {
   Res,
   HttpStatus,
   InternalServerErrorException,
+  Patch,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -30,6 +31,7 @@ import { PiaIntakeService } from './pia-intake.service';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
+import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -152,5 +154,47 @@ export class PiaIntakeController {
     res.set('Content-Disposition', 'attachment; filename=result.pdf');
 
     res.send(pdfBuffer);
+  }
+
+  /**
+   * @method update
+   *
+   * @description
+   * This method will update the portions of requested pia-intake by id, pertaining the role access
+   *
+   * @param pia_intake_id
+   *
+   * @returns 200
+   */
+  @Patch(':id')
+  @ApiOperation({
+    description: 'Updates the PIA Intake entity based on the provided ID',
+  })
+  @ApiOkResponse({
+    description: 'Successfully updated the PIA intake',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to update the PIA: The record not found',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to update the PIA: User does not have sufficient role access to view this record',
+  })
+  @ApiGoneResponse({
+    description:
+      'Failed to update the PIA: The record is marked inactive in our system',
+  })
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: number,
+    @Body() updatePiaIntakeDto: UpdatePiaIntakeDto,
+    @Req() req: IRequest,
+  ) {
+    await this.piaIntakeService.update(
+      id,
+      updatePiaIntakeDto,
+      req.user,
+      req.userRoles,
+    );
   }
 }

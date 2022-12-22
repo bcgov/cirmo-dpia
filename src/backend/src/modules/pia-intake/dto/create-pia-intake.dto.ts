@@ -2,12 +2,15 @@ import {
   IsBoolean,
   IsEmail,
   IsEnum,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { getLabels } from 'src/common/helpers/constant-helper';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
+import { PiaIntakeStatus } from '../constants/pia-intake-status.constant';
 
 const piaIntakeEntityMock = {
   title: 'Test PIA for screening King Richard',
@@ -184,4 +187,13 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.riskMitigation,
   })
   riskMitigation: string;
+
+  @IsIn(getLabels(PiaIntakeStatus))
+  @IsNotEmpty()
+  @ApiProperty({
+    enum: getLabels(PiaIntakeStatus),
+    required: true,
+    example: PiaIntakeStatus.MPO_REVIEW.label,
+  })
+  status: string;
 }

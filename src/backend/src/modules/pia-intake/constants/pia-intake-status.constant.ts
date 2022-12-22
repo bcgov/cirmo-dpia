@@ -1,7 +1,7 @@
 import { IConstant } from '../../../common/interfaces/constants.inteface';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
-export const PiaIntakeStatus: IConstant = {
+export const PiaIntakeStatus: IConstant<PiaIntakeStatusEnum> = {
   INCOMPLETE: {
     code: PiaIntakeStatusEnum.INCOMPLETE,
     label: 'Incomplete',
