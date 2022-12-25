@@ -31,6 +31,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
+import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 
 /**
  * @Description
@@ -218,15 +219,15 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockClear();
     });
 
-    // Scenario 1: Test fails when the record is not found in database
-    it('fails when the record is not found in database', async () => {
+    // Scenario 1: Test fails when the service.findOneBy throws Not Found exception
+    it('fails when the service.findOneBy throws Not Found exception', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 0; // non-existent id
 
-      piaIntakeRepository.findOneBy = jest.fn(async () => {
+      service.findOneBy = jest.fn(async () => {
         delay(10);
-        return null;
+        throw new NotFoundException();
       });
 
       service.validateUserAccess = jest.fn(() => null);
@@ -235,7 +236,7 @@ describe('PiaIntakeService', () => {
         new NotFoundException(),
       );
 
-      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).not.toHaveBeenCalled();
       expect(omitBaseKeysSpy).not.toHaveBeenCalled();
     });
@@ -246,7 +247,7 @@ describe('PiaIntakeService', () => {
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 1;
 
-      piaIntakeRepository.findOneBy = jest.fn(async () => {
+      service.findOneBy = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeEntityMock };
       });
@@ -259,7 +260,7 @@ describe('PiaIntakeService', () => {
         new ForbiddenException(),
       );
 
-      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
         user,
         userRoles,
@@ -274,7 +275,7 @@ describe('PiaIntakeService', () => {
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 1;
 
-      piaIntakeRepository.findOneBy = jest.fn(async () => {
+      service.findOneBy = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeEntityMock };
       });
@@ -285,7 +286,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findOneById(id, user, userRoles);
 
-      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
         user,
         userRoles,
@@ -294,6 +295,84 @@ describe('PiaIntakeService', () => {
 
       expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntityMock);
       expect(result).toEqual(getPiaIntakeROMock);
+    });
+  });
+
+  /**
+   * @Description
+   * These set of tests validates that update method updates the data (part or complete) pertaining to user's permissions.
+   *
+   * @method update
+   */
+  describe('`update` method', () => {
+    // Scenario 1: Test fails when there's an exception
+    it('fails when the function throws an exception', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock };
+      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 0; // non-existent id
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      piaIntakeRepository.update = jest.fn(async () => {
+        delay(10);
+        throw new ForbiddenException();
+      });
+
+      await expect(
+        service.update(id, updatePiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(new ForbiddenException());
+
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeEntityMock,
+      );
+      expect(piaIntakeRepository.update).toHaveBeenCalledWith(
+        { id },
+        updatePiaIntakeDto,
+      );
+    });
+
+    // Scenario 2: Test succeeds when repository.update does not throw error
+    it('succeeds when repository.update does not throw error', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock };
+      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 0; // non-existent id
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      piaIntakeRepository.update = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeMock, ...updatePiaIntakeDto };
+      });
+
+      await service.update(id, updatePiaIntakeDto, user, userRoles);
+
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeEntityMock,
+      );
+      expect(piaIntakeRepository.update).toHaveBeenCalledWith(
+        { id },
+        updatePiaIntakeDto,
+      );
     });
   });
 
@@ -478,6 +557,45 @@ describe('PiaIntakeService', () => {
       } catch (e) {
         expect(e).toEqual(new ForbiddenException());
       }
+    });
+  });
+
+  /**
+   * @method findOneBy
+   *
+   * @description
+   * These set of tests validates that pia-intake form is only returned to the user when available
+   */
+  describe('`findOneBy` method', () => {
+    // Scenario 1: Test fails when the record is not found in database
+    it('fails when the record is not found in database', async () => {
+      const id = 0; // assuming id does NOT exist in database
+
+      piaIntakeRepository.findOneBy = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      await expect(service.findOneBy({ id })).rejects.toThrow(
+        new NotFoundException(),
+      );
+
+      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+    });
+
+    // Scenario 2: Test succeeds when the record is found in database
+    it('succeeds when the record is found in database', async () => {
+      const id = 1; // assuming id exists in database
+
+      piaIntakeRepository.findOneBy = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeEntityMock };
+      });
+
+      const result = await service.findOneBy({ id });
+
+      expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(result).toEqual(piaIntakeEntityMock);
     });
   });
 });
