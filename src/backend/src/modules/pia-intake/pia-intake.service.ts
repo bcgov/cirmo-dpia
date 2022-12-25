@@ -22,8 +22,6 @@ import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { omitBaseKeys } from '../../common/helpers/base-helper';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
-import { PiaIntakeStatus } from './constants/pia-intake-status.constant';
-import { getCodeForLabel } from '../../common/helpers/constant-helper';
 
 @Injectable()
 export class PiaIntakeService {
@@ -36,11 +34,8 @@ export class PiaIntakeService {
     createPiaIntakeDto: CreatePiaIntakeDto,
     user: KeycloakUser,
   ): Promise<CreatePiaIntakeRO> {
-    const status = getCodeForLabel(PiaIntakeStatus, createPiaIntakeDto.status);
-
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
-      status: status,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
       drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
@@ -58,13 +53,8 @@ export class PiaIntakeService {
     // fetch the existing also checks if the user has access or not
     await this.findOneById(id, user, userRoles);
 
-    const status = getCodeForLabel(PiaIntakeStatus, updatePiaIntakeDto.status);
-
     // update the partial record
-    await this.piaIntakeRepository.update(
-      { id },
-      { ...updatePiaIntakeDto, status },
-    );
+    await this.piaIntakeRepository.update({ id }, { ...updatePiaIntakeDto });
   }
 
   /**
