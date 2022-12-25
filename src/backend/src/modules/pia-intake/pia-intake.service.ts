@@ -50,22 +50,15 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
   ) {
-    // fetch the existing also checks if the user has access or not
-    await this.findOneById(id, user, userRoles);
+    // Fetch the existing record by ID
+    const existingRecord = await this.findOneBy({ id });
 
-    // update the partial record
+    // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
+    this.validateUserAccess(user, userRoles, existingRecord);
+
+    // update the record with the provided keys
     await this.piaIntakeRepository.update({ id }, { ...updatePiaIntakeDto });
   }
-
-  /**
-   * Boilerplate methods: Update appropriately when needed
-   */
-
-  /*
-  remove(id: number) {
-    return `This action removes a #${id} piaIntake`;
-  }
-  */
 
   /**
    * @method findOneById
@@ -85,13 +78,8 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
   ): Promise<GetPiaIntakeRO> {
-    const piaIntakeForm: PiaIntakeEntity =
-      await this.piaIntakeRepository.findOneBy({ id });
-
-    // If the record is not found, throw an exception
-    if (!piaIntakeForm) {
-      throw new NotFoundException();
-    }
+    // Fetch the record by ID
+    const piaIntakeForm = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form
     this.validateUserAccess(user, userRoles, piaIntakeForm);
@@ -193,6 +181,24 @@ export class PiaIntakeService {
       'src/modules/pia-intake/templates/pia-intake-result.pug',
       pdfParsedData,
     );
+  }
+
+  /**
+   * ==== HELPER METHODS ====
+   */
+
+  async findOneBy(
+    where: FindOptionsWhere<PiaIntakeEntity>,
+  ): Promise<PiaIntakeEntity> {
+    const piaIntakeForm: PiaIntakeEntity =
+      await this.piaIntakeRepository.findOneBy(where);
+
+    // If the record is not found, throw an exception
+    if (!piaIntakeForm) {
+      throw new NotFoundException();
+    }
+
+    return piaIntakeForm;
   }
 
   getMpoMinistriesByRoles(roles: RolesEnum[]) {
