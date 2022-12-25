@@ -1,9 +1,8 @@
-export interface IConstant<T = any> {
-  // TODO: remove any from above lines: Added because GovMinistries.code does not adhere with GovMinistriesEnum:
-  // ACTION: Refactor GovMinistriesEnum and values stored in the database
+export interface IConstant {
+  // TODO: Refactor to include Generics
+  // ACTION: Update GovMinistriesEnum and values stored in the database to match with GovMinistriesEnum.code
   [key: string]: {
-    // TODO: Update type of "key" to be derived from keys of T
-    code?: T;
+    code?: string;
     label: string;
   };
 }
