@@ -8,6 +8,7 @@ import {
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
+import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
 const piaIntakeEntityMock = {
   title: 'Test PIA for screening King Richard',
@@ -184,4 +185,13 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.riskMitigation,
   })
   riskMitigation: string;
+
+  @IsEnum(PiaIntakeStatusEnum)
+  @IsNotEmpty()
+  @ApiProperty({
+    enum: PiaIntakeStatusEnum,
+    required: true,
+    example: PiaIntakeStatusEnum.MPO_REVIEW,
+  })
+  status: PiaIntakeStatusEnum;
 }

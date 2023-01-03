@@ -17,6 +17,7 @@ import {
 import { delay } from 'test/util/testUtils';
 import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
+import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 
 /**
  * @Description
@@ -173,6 +174,59 @@ describe('PiaIntakeController', () => {
       expect(result).toStrictEqual({
         data: getPiaIntakeRO,
       });
+    });
+  });
+
+  /**
+   * @method update
+   *
+   * @description
+   * This test suite validates that the method passes the correct values to the service,
+   * mock the service result and return correct result to the user
+   */
+  describe('`update` method', () => {
+    /**
+     * @Description
+     * This test validates if the method `piaIntakeService.update` is called with correct mock data
+     *
+     * @Input
+     *  - pia-intake id
+     *  - pia-intake updatePiaIntakeDto : fields to be updated
+     *  - mock user req
+     *
+     * @Output 200
+     * Test pass and all methods called with correct data
+     */
+
+    it('succeeds with correct data', async () => {
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const updatePiaIntakeDtoMock = {
+        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+      };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
+
+      piaIntakeService.update = jest.fn(async () => {
+        delay(10);
+      });
+
+      const result = await controller.update(
+        piaIntakeEntity.id,
+        updatePiaIntakeDtoMock,
+        mockReq,
+      );
+
+      expect(piaIntakeService.update).toHaveBeenCalledWith(
+        piaIntakeEntity.id,
+        updatePiaIntakeDtoMock,
+        mockReq.user,
+        mockReq.userRoles,
+      );
+
+      // If undefined, the method did not throw any error
+      expect(result).toBe(undefined);
     });
   });
 
