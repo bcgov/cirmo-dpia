@@ -11,7 +11,6 @@ const Unauthorized = () => (
       />
       <div className="row ">
         <h1 className="d-flex justify-content-center">
-          {' '}
           401: Authorization required
         </h1>
       </div>

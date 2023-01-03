@@ -36,7 +36,7 @@ export class HttpRequest {
     const response = await fetch(options.endpoint, config);
 
     if (!response.ok) {
-      throw new Error(`Something went wrong : ${response.status}`);
+      throw new Error('Something went wrong', { cause: `${response.status}` });
     }
 
     if (config.headers?.['Content-Type'] === 'application/json') {
