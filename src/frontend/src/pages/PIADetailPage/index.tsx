@@ -26,13 +26,13 @@ const PIADetailPage = () => {
         // Actually perform fetch
         const result = (
           await HttpRequest.get<IPIAIntakeResponse>(
-            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `54`),
           )
         ).data;
         setPia(result);
       } catch (e) {
-        if (e instanceof Error) {
-          const errorCode: string = e.cause as string;
+        if (e instanceof Error && e.cause instanceof Error) {
+          const errorCode = e.cause.message as string;
           if (errorCode.includes('404')) {
             win.location = routes.NOT_FOUND;
           } else if (
