@@ -1,6 +1,7 @@
 import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
+import { IConstant } from '../interfaces/constants.inteface';
 
-export const GovMinistries = {
+export const GovMinistries: IConstant = {
   [GovMinistriesEnum.ADVANCED_EDUCATION_AND_SKILLS_TRAINING]: {
     label: 'Advanced Education and Skills Training',
     code: 'AEST',

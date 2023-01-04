@@ -1,6 +1,7 @@
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
+import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -100,4 +101,11 @@ export class PiaIntakeEntity extends BaseEntity {
     nullable: true /* null when user said NO to added_pi_to_data_elements */,
   })
   riskMitigation: string;
+
+  @Column({
+    name: 'status',
+    nullable: false,
+    type: 'character varying',
+  })
+  status: PiaIntakeStatusEnum;
 }

@@ -1,0 +1,6 @@
+export enum PiaIntakeStatusEnum {
+  INCOMPLETE = 'INCOMPLETE',
+  EDIT_IN_PROGRESS = 'EDIT_IN_PROGRESS',
+  MPO_REVIEW = 'MPO_REVIEW',
+  PCT_REVIEW = 'PCT_REVIEW',
+}

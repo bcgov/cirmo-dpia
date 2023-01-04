@@ -21,6 +21,7 @@ import { IRoleInfo } from 'src/common/constants/roles.constants';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { omitBaseKeys } from '../../common/helpers/base-helper';
+import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 
 @Injectable()
 export class PiaIntakeService {
@@ -43,18 +44,21 @@ export class PiaIntakeService {
     return { id: piaInfoForm.id };
   }
 
-  /**
-   * Boilerplate methods: Update appropriately when needed
-   */
-  /*
-  update(id: number, updatePiaIntakeDto: UpdatePiaIntakeDto) {
-    return `This action updates a #${id} piaIntake by ${updatePiaIntakeDto.drafterEmail}`;
-  }
+  async update(
+    id: number,
+    updatePiaIntakeDto: UpdatePiaIntakeDto,
+    user: KeycloakUser,
+    userRoles: RolesEnum[],
+  ) {
+    // Fetch the existing record by ID
+    const existingRecord = await this.findOneBy({ id });
 
-  remove(id: number) {
-    return `This action removes a #${id} piaIntake`;
+    // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
+    this.validateUserAccess(user, userRoles, existingRecord);
+
+    // update the record with the provided keys
+    await this.piaIntakeRepository.update({ id }, { ...updatePiaIntakeDto });
   }
-  */
 
   /**
    * @method findOneById
@@ -74,13 +78,8 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
   ): Promise<GetPiaIntakeRO> {
-    const piaIntakeForm: PiaIntakeEntity =
-      await this.piaIntakeRepository.findOneBy({ id });
-
-    // If the record is not found, throw an exception
-    if (!piaIntakeForm) {
-      throw new NotFoundException();
-    }
+    // Fetch the record by ID
+    const piaIntakeForm = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form
     this.validateUserAccess(user, userRoles, piaIntakeForm);
@@ -182,6 +181,24 @@ export class PiaIntakeService {
       'src/modules/pia-intake/templates/pia-intake-result.pug',
       pdfParsedData,
     );
+  }
+
+  /**
+   * ==== HELPER METHODS ====
+   */
+
+  async findOneBy(
+    where: FindOptionsWhere<PiaIntakeEntity>,
+  ): Promise<PiaIntakeEntity> {
+    const piaIntakeForm: PiaIntakeEntity =
+      await this.piaIntakeRepository.findOneBy(where);
+
+    // If the record is not found, throw an exception
+    if (!piaIntakeForm) {
+      throw new NotFoundException();
+    }
+
+    return piaIntakeForm;
   }
 
   getMpoMinistriesByRoles(roles: RolesEnum[]) {

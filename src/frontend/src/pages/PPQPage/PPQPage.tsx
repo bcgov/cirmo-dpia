@@ -18,9 +18,8 @@ function PPQLandingPage(props: IComponentProps) {
   const { showMPOContents } = props;
   return showMPOContents ? (
     <div className="bcgovPageContainer background">
+      <Breadcrumbs />
       <div>
-        <Breadcrumbs />
-
         <div>
           <h1 className="mb-4">Create New </h1>
         </div>
