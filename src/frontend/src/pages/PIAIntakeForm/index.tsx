@@ -3,7 +3,7 @@ import InputText from '../../components/common/InputText/InputText';
 import { MinistryList, PIOptions } from '../../constant/constant';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -39,6 +39,7 @@ const PIAIntakeFormPage = () => {
     boolean | null
   >(true);
   const [riskMitigation, setRiskMitigation] = useState<string>();
+  const [status, setStatus] = useState<string>('');
 
   //
   // Modal State
@@ -83,6 +84,11 @@ const PIAIntakeFormPage = () => {
 
   const handleSaveChanges = () => {
     handleShowModal('save');
+  };
+
+  const alertUserLeave = (e: any) => {
+    e.preventDefault();
+    e.returnValue = true;
   };
 
   const handleBackClick = () => {
@@ -159,6 +165,25 @@ const PIAIntakeFormPage = () => {
     setRiskMitigation(newRiskMitigation);
   };
 
+  const handleStatusChange = (piaStatus: any) => {
+    switch (piaStatus) {
+      case 'incomplete':
+        setStatus('INCOMPLETE');
+        break;
+      case 'edit-in-progress':
+        setStatus('EDIT_IN_PROGRESS');
+        break;
+      case 'mpo-review':
+        setStatus('MPO_REVIEW');
+        break;
+      case 'pct-review':
+        setStatus('PCT_REVIEW');
+        break;
+      default:
+        break;
+    }
+  };
+
   //
   // Form Submission Handler
   //
@@ -181,6 +206,7 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
+      status: status,
     };
     try {
       const res = await HttpRequest.post<IPIAResult>(
@@ -196,12 +222,23 @@ const PIAIntakeFormPage = () => {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener('beforeunload', alertUserLeave);
+    return () => {
+      window.removeEventListener('beforeunload', alertUserLeave);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section form__container">
         <form
           className="container__padding-inline"
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={(e) => {
+            handleStatusChange('mpo-review');
+            handleSubmit(e);
+          }}
         >
           <div className="form__header">
             <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
