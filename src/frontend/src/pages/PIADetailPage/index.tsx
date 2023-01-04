@@ -142,27 +142,21 @@ const PIADetailPage = () => {
             <p className="pb-1">{messages.InitiativeDescriptionSection.en}</p>
 
             <div>
-              <p>
-                <MDEditor preview="preview" value={pia.initiativeDescription} />
-              </p>
+              <MDEditor preview="preview" value={pia.initiativeDescription} />
             </div>
           </div>
           <div>
             <p>{messages.InitiativeScopeSection.en}</p>
 
             <div>
-              <p>
-                <MDEditor preview="preview" value={pia.initiativeScope} />
-              </p>
+              <MDEditor preview="preview" value={pia.initiativeScope} />
             </div>
           </div>
           <div>
             <p>{messages.InitiativeDataElementsSection.en}</p>
 
             <div>
-              <p>
-                <MDEditor preview="preview" value={pia.dataElementsInvolved} />
-              </p>
+              <MDEditor preview="preview" value={pia.dataElementsInvolved} />
             </div>
           </div>
         </div>
@@ -181,9 +175,7 @@ const PIADetailPage = () => {
             <p>{messages.InitiativeRiskReductionSection.en}</p>
 
             <div>
-              <p>
-                <MDEditor preview="preview" value={pia.riskMitigation} />
-              </p>
+              <MDEditor preview="preview" value={pia.riskMitigation} />
             </div>
           </div>
         </div>
