@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
+import Alert from '../../components/common/Alert';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -20,28 +21,30 @@ const PIADetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [pia, setPia] = useState<any>({});
+  const [fetchPiaError, setFetchPiaError] = useState('');
   useEffect(() => {
     (async () => {
       try {
         // Actually perform fetch
         const result = (
           await HttpRequest.get<IPIAIntakeResponse>(
-            API_ROUTES.GET_PIA_INTAKE.replace(':id', `54`),
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
           )
         ).data;
         setPia(result);
       } catch (e) {
         if (e instanceof Error && e.cause instanceof Error) {
-          const errorCode = e.cause.message as string;
-          if (errorCode.includes('404')) {
+          const errorCode = e.cause.message as unknown as string;
+          if (errorCode === '404') {
             win.location = routes.NOT_FOUND;
           } else if (
-            errorCode.includes('401') ||
-            errorCode.includes('403') ||
-            errorCode.includes('410')
+            errorCode === '401' ||
+            errorCode === '403' ||
+            errorCode === '410'
           ) {
             win.location = routes.NOT_AUTHORIZED;
           } else {
+            setFetchPiaError('Something went wrong. Please try again.');
             throw new Error('Fetch pia failed');
           }
         }
@@ -49,9 +52,20 @@ const PIADetailPage = () => {
     })();
   }, [id, navigate, win]);
 
+  const handleAlertClose = () => {
+    setFetchPiaError('');
+  };
   return (
     <div className="bcgovPageContainer background ">
       <section className="row ppq-form-section form__container">
+        {fetchPiaError && (
+          <Alert
+            type="danger"
+            message="Something went wrong. Please try again."
+            onClose={handleAlertClose}
+            className="mt-2"
+          />
+        )}
         <div className="form__title">
           <h1>{pia.title}</h1>
           <a href="/pia-edit" className="bcgovbtn bcgovbtn__primary">
