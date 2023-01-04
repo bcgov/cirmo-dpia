@@ -14,6 +14,7 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
 import Alert from '../../components/common/Alert';
 import MDEditor from '@uiw/react-md-editor';
+import { MinistryList, PIOptions } from '../../constant/constant';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -23,6 +24,8 @@ const PIADetailPage = () => {
   const navigate = useNavigate();
   const [pia, setPia] = useState<any>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
+  const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
+  const [piOption, setPIOption] = useState('');
   useEffect(() => {
     (async () => {
       try {
@@ -33,6 +36,16 @@ const PIADetailPage = () => {
           )
         ).data;
         setPia(result);
+        setPiaMinistryFullName(
+          MinistryList.filter((item) => item.value === pia.ministry)[0].label,
+        );
+        setPIOption(
+          pia.hasAddedPiToDataElements === true
+            ? PIOptions[0]
+            : pia.hasAddedPiToDataElements === false
+            ? PIOptions[1]
+            : PIOptions[2],
+        );
       } catch (e) {
         if (e instanceof Error && e.cause instanceof Error) {
           const errorCode = e.cause.message as unknown as string;
@@ -51,7 +64,7 @@ const PIADetailPage = () => {
         }
       }
     })();
-  }, [id, navigate, win]);
+  }, [id, navigate, pia.hasAddedPiToDataElements, pia.ministry, win]);
 
   const handleAlertClose = () => {
     setFetchPiaError('');
@@ -129,7 +142,7 @@ const PIADetailPage = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col col-md-4">{pia.ministry}</div>
+              <div className="col col-md-4">{piaMinistryFullName}</div>
               <div className="col col-md-4">{pia.branch}</div>
             </div>
           </div>
@@ -139,21 +152,23 @@ const PIADetailPage = () => {
             <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
           </h2>
           <div>
-            <h2 className="pb-1">{messages.InitiativeDescriptionSection.en}</h2>
+            <h2 className="pb-2">{messages.InitiativeDescriptionSection.en}</h2>
 
             <div>
               <MDEditor preview="preview" value={pia.initiativeDescription} />
             </div>
           </div>
           <div>
-            <p>{messages.InitiativeScopeSection.en}</p>
+            <h2 className="pb-2">{messages.InitiativeScopeSection.en}</h2>
 
             <div>
               <MDEditor preview="preview" value={pia.initiativeScope} />
             </div>
           </div>
           <div>
-            <p>{messages.InitiativeDataElementsSection.en}</p>
+            <h2 className="pb-2 pt-3">
+              {messages.InitiativeDataElementsSection.en}
+            </h2>
 
             <div>
               <MDEditor preview="preview" value={pia.dataElementsInvolved} />
@@ -161,18 +176,20 @@ const PIADetailPage = () => {
           </div>
         </div>
         <div className="container pt-5 form__section">
-          <h2 className="pb-3">
+          <h2>
             <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
           </h2>
           <div>
-            <p>{messages.InitiativePISection.en}</p>
+            <h2 className="pt-3">{messages.InitiativePISection.en}</h2>
 
             <div>
-              <p>{pia.hasAddedPiToDataElements}</p>
+              <p>{piOption}</p>
             </div>
           </div>
           <div>
-            <p>{messages.InitiativeRiskReductionSection.en}</p>
+            <h2 className="pb-2">
+              {messages.InitiativeRiskReductionSection.en}
+            </h2>
 
             <div>
               <MDEditor preview="preview" value={pia.riskMitigation} />
