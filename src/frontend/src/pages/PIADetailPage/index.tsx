@@ -2,7 +2,7 @@ import {
   IPIAIntake,
   IPIAIntakeResponse,
 } from '../../types/interfaces/pia-intake.interface';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { dateToString } from '../../utils/date';
 import messages from './messages';
@@ -58,7 +58,7 @@ const PIADetailPage = () => {
   };
   return (
     <div className="bcgovPageContainer background ">
-      <section className="row ppq-form-section form__container">
+      <div className="container__padding-inline ppq-form-section form__container row">
         {fetchPiaError && (
           <Alert
             type="danger"
@@ -70,7 +70,7 @@ const PIADetailPage = () => {
         <div className="form__title">
           <h1>{pia.title}</h1>
           <a href="/pia-edit" className="bcgovbtn bcgovbtn__primary">
-            <FontAwesomeIcon icon={faArrowDown} />
+            <FontAwesomeIcon icon={faFileArrowDown} />
           </a>
         </div>
         <div>
@@ -134,12 +134,12 @@ const PIADetailPage = () => {
             </div>
           </div>
         </div>
-        <div className="container pt-5">
+        <div className="container pt-5 form__section">
           <h2 className="pb-3">
             <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
           </h2>
           <div>
-            <p className="pb-1">{messages.InitiativeDescriptionSection.en}</p>
+            <h2 className="pb-1">{messages.InitiativeDescriptionSection.en}</h2>
 
             <div>
               <MDEditor preview="preview" value={pia.initiativeDescription} />
@@ -160,7 +160,7 @@ const PIADetailPage = () => {
             </div>
           </div>
         </div>
-        <div className="container pt-5">
+        <div className="container pt-5 form__section">
           <h2 className="pb-3">
             <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
           </h2>
@@ -179,7 +179,7 @@ const PIADetailPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
