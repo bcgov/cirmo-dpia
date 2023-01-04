@@ -37,7 +37,7 @@ export class HttpRequest {
 
     if (!response.ok) {
       throw new Error('Something went wrong', {
-        cause: new Error(`${response.status}`),
+        cause: response.status,
       });
     }
 
