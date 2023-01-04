@@ -13,6 +13,7 @@ import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
 import Alert from '../../components/common/Alert';
+import MDEditor from '@uiw/react-md-editor';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -141,21 +142,27 @@ const PIADetailPage = () => {
             <p className="pb-1">{messages.InitiativeDescriptionSection.en}</p>
 
             <div>
-              <p>{pia.initiativeDescription}</p>
+              <p>
+                <MDEditor preview="preview" value={pia.initiativeDescription} />
+              </p>
             </div>
           </div>
           <div>
             <p>{messages.InitiativeScopeSection.en}</p>
 
             <div>
-              <p>{pia.initiativeScope}</p>
+              <p>
+                <MDEditor preview="preview" value={pia.initiativeScope} />
+              </p>
             </div>
           </div>
           <div>
             <p>{messages.InitiativeDataElementsSection.en}</p>
 
             <div>
-              <p>{pia.dataElementsInvolved}</p>
+              <p>
+                <MDEditor preview="preview" value={pia.dataElementsInvolved} />
+              </p>
             </div>
           </div>
         </div>
@@ -174,7 +181,9 @@ const PIADetailPage = () => {
             <p>{messages.InitiativeRiskReductionSection.en}</p>
 
             <div>
-              <p>{pia.riskMitigation}</p>
+              <p>
+                <MDEditor preview="preview" value={pia.riskMitigation} />
+              </p>
             </div>
           </div>
         </div>
