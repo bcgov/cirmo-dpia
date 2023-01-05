@@ -88,7 +88,7 @@ const PIAIntakeFormPage = () => {
 
   const alertUserLeave = (e: any) => {
     e.preventDefault();
-    e.returnValue = true;
+    e.defaultPrevented = true;
   };
 
   const handleBackClick = () => {
