@@ -39,7 +39,7 @@ const PIAIntakeFormPage = () => {
     boolean | null
   >(true);
   const [riskMitigation, setRiskMitigation] = useState<string>();
-  const [status, setStatus] = useState<string>('');
+  const [status, setStatus] = useState<string>('INCOMPLETE');
 
   //
   // Modal State
