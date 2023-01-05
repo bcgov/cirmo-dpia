@@ -44,11 +44,11 @@ const PIAIntakeFormPage = () => {
   //
   // Modal State
   //
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
-  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
-  const [modalTitleText, setModalTitleText] = useState<string>('');
-  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [showPiaModal, setShowPiaModal] = useState<boolean>(false);
+  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState<string>('');
+  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState<string>('');
+  const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
+  const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
 
   //
   // Event Handlers
@@ -56,30 +56,30 @@ const PIAIntakeFormPage = () => {
   const handleShowModal = (modalType: string) => {
     switch (modalType) {
       case 'cancel':
-        setModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
-        setModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
-        setModalTitleText(Messages.Modal.Cancel.TitleText.en);
-        setModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
+        setPiaModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Cancel.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
         break;
       case 'save':
-        setModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
-        setModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
-        setModalTitleText(Messages.Modal.Save.TitleText.en);
-        setModalParagraph(Messages.Modal.Save.ParagraphText.en);
+        setPiaModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
         break;
       default:
         break;
     }
-    setShowModal(true);
+    setShowPiaModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false);
+    setShowPiaModal(false);
     navigate('/pia-list');
   };
 
   const handleModalCancel = () => {
-    setShowModal(false);
+    setShowPiaModal(false);
   };
 
   const handleSaveChanges = () => {
@@ -470,14 +470,14 @@ const PIAIntakeFormPage = () => {
         </form>
       </section>
       <Modal
-        confirmLabel={modalConfirmLabel}
-        cancelLabel={modalCancelLabel}
-        titleText={modalTitleText}
-        show={showModal}
+        confirmLabel={piaModalConfirmLabel}
+        cancelLabel={piaModalCancelLabel}
+        titleText={piaModalTitleText}
+        show={showPiaModal}
         handleClose={handleModalClose}
         handleCancel={handleModalCancel}
       >
-        <p className="modal-text">{modalParagraph}</p>
+        <p className="modal-text">{piaModalParagraph}</p>
       </Modal>
     </div>
   );
