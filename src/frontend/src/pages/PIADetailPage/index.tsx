@@ -15,6 +15,11 @@ import { routes } from '../../constant/routes';
 import Alert from '../../components/common/Alert';
 import MDEditor from '@uiw/react-md-editor';
 import { MinistryList, PIOptions } from '../../constant/constant';
+import {
+  FileDownload,
+  FileDownloadTypeEnum,
+} from '../../utils/file-download.util';
+import Spinner from '../../components/common/Spinner';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -25,6 +30,8 @@ const PIADetailPage = () => {
   const [pia, setPia] = useState<any>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
   const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
   const [piOption, setPIOption] = useState('');
   useEffect(() => {
     (async () => {
@@ -68,6 +75,31 @@ const PIADetailPage = () => {
 
   const handleAlertClose = () => {
     setFetchPiaError('');
+    setDownloadError('');
+  };
+
+  const handleDownload = async () => {
+    setDownloadError('');
+
+    if (!id) {
+      console.error(
+        'Something went wrong. Result Id not available for download',
+      );
+      setDownloadError('Something went wrong. Please try again.');
+      return;
+    }
+
+    setIsDownloading(true);
+    try {
+      await FileDownload.download(
+        API_ROUTES.PIA_INTAKE_RESULT_DOWNLOAD.replace(':id', `${id}`),
+        FileDownloadTypeEnum.PDF,
+      );
+    } catch (e) {
+      setDownloadError('Something went wrong. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
   return (
     <div className="bcgovPageContainer background ">
@@ -80,11 +112,25 @@ const PIADetailPage = () => {
             className="mt-2"
           />
         )}
+        {downloadError && (
+          <Alert
+            type="danger"
+            message="Something went wrong. Please try again."
+            onClose={handleAlertClose}
+            className="mt-2"
+          />
+        )}
         <div className="form__title">
           <h1>{pia.title}</h1>
-          <a href="/pia-edit" className="bcgovbtn bcgovbtn__primary">
+          <button
+            className={`bcgovbtn bcgovbtn__primary ${
+              isDownloading ? 'opacity-50 pe-none' : ''
+            }`}
+            onClick={() => handleDownload()}
+          >
             <FontAwesomeIcon icon={faFileArrowDown} />
-          </a>
+            {isDownloading && <Spinner />}
+          </button>
         </div>
         <div>
           <div className="row">
