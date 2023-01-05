@@ -2,7 +2,10 @@ import {
   IPIAIntake,
   IPIAIntakeResponse,
 } from '../../types/interfaces/pia-intake.interface';
-import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFileArrowDown,
+  faPenToSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { dateToString } from '../../utils/date';
 import messages from './messages';
@@ -20,6 +23,7 @@ import {
   FileDownloadTypeEnum,
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
+import { isMPORole } from '../../utils/helper.util';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -33,6 +37,8 @@ const PIADetailPage = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
   const [piOption, setPIOption] = useState('');
+  const [piaStatus, setPiaStatus] = useState('');
+  const isMPO = !!isMPORole('roles');
   useEffect(() => {
     (async () => {
       try {
@@ -78,6 +84,13 @@ const PIADetailPage = () => {
     setDownloadError('');
   };
 
+  const handleEdit = () => {
+    console.log('will do');
+  };
+  const handleSubmit = () => {
+    console.log('will do');
+  };
+
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -120,17 +133,33 @@ const PIADetailPage = () => {
             className="mt-2"
           />
         )}
-        <div className="form__title">
-          <h1>{pia.title}</h1>
-          <button
-            className={`bcgovbtn bcgovbtn__primary ${
-              isDownloading ? 'opacity-50 pe-none' : ''
-            }`}
-            onClick={() => handleDownload()}
-          >
-            <FontAwesomeIcon icon={faFileArrowDown} />
-            {isDownloading && <Spinner />}
-          </button>
+        <div className="container form__title">
+          <div className="col col-md-8">
+            <h1>{pia.title}</h1>
+          </div>
+          <div className="row">
+            <button
+              className={`bcgovbtn bcgovbtn__secondary mx-2 ${
+                isDownloading ? 'opacity-50 pe-none' : ''
+              }`}
+              onClick={() => handleDownload()}
+            >
+              <FontAwesomeIcon icon={faFileArrowDown} />
+              {isDownloading && <Spinner />}
+            </button>
+            <button
+              className="bcgovbtn bcgovbtn__secondary mx-2"
+              onClick={() => handleEdit()}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </button>
+            <button
+              className="bcgovbtn bcgovbtn__primary mx-2"
+              onClick={() => handleSubmit()}
+            >
+              {isMPO ? 'start PPQ' : 'Submit'}
+            </button>
+          </div>
         </div>
         <div>
           <div className="row">
