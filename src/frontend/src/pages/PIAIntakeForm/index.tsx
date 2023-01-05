@@ -1,6 +1,6 @@
 import Dropdown from '../../components/common/Dropdown';
 import InputText from '../../components/common/InputText/InputText';
-import { MinistryList, PIOptions } from '../../constant/constant';
+import { MinistryList, PIOptions, PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -39,7 +39,7 @@ const PIAIntakeFormPage = () => {
     boolean | null
   >(true);
   const [riskMitigation, setRiskMitigation] = useState<string>();
-  const [status, setStatus] = useState<string>('INCOMPLETE');
+  const [status, setStatus] = useState<string>(PiaStatuses.INCOMPLETE);
 
   //
   // Modal State
@@ -236,7 +236,7 @@ const PIAIntakeFormPage = () => {
         <form
           className="container__padding-inline"
           onSubmit={(e) => {
-            handleStatusChange('mpo-review');
+            handleStatusChange(PiaStatuses.MPO_REVIEW);
             handleSubmit(e);
           }}
         >
