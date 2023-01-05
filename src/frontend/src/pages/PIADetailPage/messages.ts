@@ -11,19 +11,29 @@ export default {
     },
   },
   InitiativeDescriptionSection: {
-    en: `What is the initiative?`,
+    H2Text: {
+      en: `What is the initiative?`,
+    },
   },
   InitiativeScopeSection: {
-    en: `What is the scope of the PIA?`,
+    H2Text: {
+      en: `What is the scope of the PIA?`,
+    },
   },
   InitiativeDataElementsSection: {
-    en: `What are the data or information elements involved in your initiative?`,
+    H2Text: {
+      en: `What are the data or information elements involved in your initiative?`,
+    },
   },
   InitiativePISection: {
-    en: `Did you list personal information in question 3?`,
+    H2Text: {
+      en: `Did you list personal information in question 3?`,
+    },
   },
   InitiativeRiskReductionSection: {
-    en: `How will you reduce the risk of unintentionally collecting personal 
+    H2Text: {
+      en: `How will you reduce the risk of unintentionally collecting personal 
         information?`,
+    },
   },
 };

@@ -40,6 +40,11 @@
   justify-content: space-between;
 }
 
+.form__button-group {
+  display: flex;
+  gap: 0.5em;
+}
+
 .helper-text__link-icon {
   margin-left: 0.3em;
 }
