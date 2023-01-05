@@ -155,7 +155,10 @@ const PIAIntakeFormPage = () => {
   return (
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section form__container">
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form
+          className="container__padding-inline"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <div className="form__header">
             <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
           </div>

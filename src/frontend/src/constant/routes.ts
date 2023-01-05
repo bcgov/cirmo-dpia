@@ -4,4 +4,6 @@ export const routes = {
   PIA_INTAKE: '/pia-intake',
   PIA_INTAKE_RESULT: '/pia-result',
   PIA_LIST: '/pia-list',
+  NOT_FOUND: '/not-found',
+  NOT_AUTHORIZED: '/not-authorized',
 };

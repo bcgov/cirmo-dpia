@@ -117,7 +117,10 @@ const PPQFormPage = () => {
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section">
         <div>
-          <form onSubmit={(e) => handleSubmit(e)}>
+          <form
+            className="container__padding-inline"
+            onSubmit={(e) => handleSubmit(e)}
+          >
             <div className="form-header">
               <h1>PIA Pathways Questionnaire</h1>
               <p>{Messages.FillPpqDescriptionText.en}</p>
