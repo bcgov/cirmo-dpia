@@ -11,10 +11,6 @@ const Unauthorized = () => (
       />
       <div className="row ">
         <h1 className="d-flex justify-content-center">
-<<<<<<< HEAD
-=======
-          {' '}
->>>>>>> 0f620e3 (Implements PIA intake save modal with different text content and CTAs based on which button is pressed. Had to mess with the existing modal component to allow for the 'Sign out' modal to look the same while the new modals reflect iteration 4 designs)
           401: Authorization required
         </h1>
       </div>
