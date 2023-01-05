@@ -8,8 +8,11 @@ describe('DateHelper', () => {
   /**
    * @method shortDate
    *
+   * @input - @optional Date object [current date is taken by @default if no input is provided]
+   * @output - date returned in mm/dd/yy format for the pacific timezone
+   *
    * @description
-   * This test suite validates that the method returns expected formatted data
+   * This test suite validates that the method returns the formatted date
    */
   describe('`shortDate` method', () => {
     it('succeeds when correct input is provided', () => {

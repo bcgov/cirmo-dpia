@@ -12,8 +12,11 @@ describe('BaseHelper', () => {
   /**
    * @method omitBaseKeys
    *
+   * @input Database Entity record
+   * @output partial input omitting the unrequited keys to be passed along
+   *
    * @description
-   * This test suite validates that the method works as expected
+   * This test suite validates that the method omits the needed keys from the passed entity record json
    */
   describe('`omitBaseKeys` method', () => {
     it('succeeds omitting the excluded keys', () => {

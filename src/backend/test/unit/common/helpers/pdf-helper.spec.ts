@@ -6,12 +6,6 @@ import { pugToPdfBuffer } from 'src/common/helpers/pdf-helper';
  * This file tests the contents of common/helpers/pdf-helper.ts
  */
 describe('PdfHelper', () => {
-  /**
-   * @method pugToPdfBuffer
-   *
-   * @description
-   * This test suite validates that the method does not throw error and returns the expected data
-   */
   const pugCompileFileSpy = jest
     .spyOn(pug, 'compileFile')
     .mockImplementation(() => jest.fn());
@@ -31,6 +25,16 @@ describe('PdfHelper', () => {
     pugCompileFileSpy.mockClear();
     puppeteerLaunchSpy.mockClear();
   });
+
+  /**
+   * @method pugToPdfBuffer
+   *
+   * @input test values to the method
+   * @output test buffer returned from the jest spy
+   *
+   * @description
+   * This test suite validates that the method does not throw error and returns the expected buffer from the mock implementation
+   */
   describe('`pugToPdfBuffer` method', () => {
     it('succeeds with correct mocks', async () => {
       const mockPdfBuffer: Buffer = Buffer.from('Test Buffer');

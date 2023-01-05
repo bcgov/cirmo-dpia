@@ -66,8 +66,8 @@ describe('ConfigServiceClass', () => {
       expect(result).toBe(configServiceMock);
     });
 
-    // Scenario 2: Test fails if any ket is missing
-    it('fails if any ket is missing', () => {
+    // Scenario 2: Test fails if any key is missing
+    it('fails if any key is missing', () => {
       try {
         configServiceMock.ensureValues([
           'test_key_1',
