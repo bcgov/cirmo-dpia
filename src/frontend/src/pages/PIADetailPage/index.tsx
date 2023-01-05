@@ -199,7 +199,7 @@ const PIADetailPage = () => {
           </h2>
           <div>
             <h2 className="form__h2">
-              {messages.InitiativeDescriptionSection.en}
+              {messages.InitiativeDescriptionSection.H2Text.en}
             </h2>
 
             <div>
@@ -207,7 +207,9 @@ const PIADetailPage = () => {
             </div>
           </div>
           <div className="form__section">
-            <h2 className="form__h2">{messages.InitiativeScopeSection.en}</h2>
+            <h2 className="form__h2">
+              {messages.InitiativeScopeSection.H2Text.en}
+            </h2>
 
             <div>
               <MDEditor preview="preview" value={pia.initiativeScope} />
@@ -215,7 +217,7 @@ const PIADetailPage = () => {
           </div>
           <div className="form__section">
             <h2 className="pb-2 pt-3">
-              {messages.InitiativeDataElementsSection.en}
+              {messages.InitiativeDataElementsSection.H2Text.en}
             </h2>
 
             <div>
@@ -228,7 +230,9 @@ const PIADetailPage = () => {
             <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
           </h2>
           <div>
-            <h2 className="form__h2">{messages.InitiativePISection.en}</h2>
+            <h2 className="form__h2">
+              {messages.InitiativePISection.H2Text.en}
+            </h2>
 
             <div>
               <p>{piOption}</p>
@@ -236,7 +240,7 @@ const PIADetailPage = () => {
           </div>
           <div className="form__section">
             <h2 className="form__h2">
-              {messages.InitiativeRiskReductionSection.en}
+              {messages.InitiativeRiskReductionSection.H2Text.en}
             </h2>
             <div>
               <MDEditor preview="preview" value={pia.riskMitigation} />
