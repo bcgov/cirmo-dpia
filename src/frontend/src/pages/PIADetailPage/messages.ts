@@ -36,4 +36,20 @@ export default {
         information?`,
     },
   },
+
+  Modal: {
+    ConfirmLabel: {
+      en: `Yes, continue`,
+    },
+    CancelLabel: {
+      en: `Cancel`,
+    },
+    TitleText: {
+      en: `Change status to "Edit in progress"?`,
+    },
+
+    ParagraphText: {
+      en: `Make changes yourself or work with your MPO to edit your PIA until it is ready fro another review`,
+    },
+  },
 };

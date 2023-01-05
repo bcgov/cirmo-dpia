@@ -24,6 +24,7 @@ import {
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
 import { isMPORole } from '../../utils/helper.util';
+import Modal from '../../components/common/Modal';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -37,7 +38,18 @@ const PIADetailPage = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
   const [piOption, setPIOption] = useState('');
+
   const [piaStatus, setPiaStatus] = useState('');
+
+  //
+  // Modal State
+  //
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+
   const isMPO = !!isMPORole('roles');
   useEffect(() => {
     (async () => {
@@ -52,6 +64,7 @@ const PIADetailPage = () => {
         setPiaMinistryFullName(
           MinistryList.filter((item) => item.value === pia.ministry)[0].label,
         );
+        setPiaStatus(pia.status);
         setPIOption(
           pia.hasAddedPiToDataElements === true
             ? PIOptions[0]
@@ -77,7 +90,14 @@ const PIADetailPage = () => {
         }
       }
     })();
-  }, [id, navigate, pia.hasAddedPiToDataElements, pia.ministry, win]);
+  }, [
+    id,
+    navigate,
+    pia.hasAddedPiToDataElements,
+    pia.ministry,
+    pia.status,
+    win,
+  ]);
 
   const handleAlertClose = () => {
     setFetchPiaError('');
@@ -85,7 +105,27 @@ const PIADetailPage = () => {
   };
 
   const handleEdit = () => {
-    console.log('will do');
+    if (isMPO) {
+      setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
+      setModalCancelLabel(messages.Modal.CancelLabel.en);
+      setModalTitleText(messages.Modal.TitleText.en);
+      setModalParagraph(messages.Modal.ParagraphText.en);
+      setShowModal(true);
+    } else {
+      navigate(routes.PIA_INTAKE, {
+        state: pia,
+      });
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate(routes.PIA_INTAKE, {
+      state: pia,
+    });
+  };
+  const handleModalCancel = () => {
+    setShowModal(false);
   };
   const handleSubmit = () => {
     console.log('will do');
@@ -117,6 +157,15 @@ const PIADetailPage = () => {
   return (
     <div className="bcgovPageContainer background ">
       <div className="container__padding-inline ppq-form-section form__container row">
+        <div className="mb-5">
+          {piaStatus === 'INCOMPLETE' && (
+            <Alert
+              type="banner-warning"
+              message="Warning: Your MPO cannot see or help you with this PIA until you click “Submit to MPO”. "
+              className="mt-2"
+            />
+          )}
+        </div>
         {fetchPiaError && (
           <Alert
             type="danger"
@@ -157,7 +206,7 @@ const PIADetailPage = () => {
               className="bcgovbtn bcgovbtn__primary mx-2"
               onClick={() => handleSubmit()}
             >
-              {isMPO ? 'start PPQ' : 'Submit'}
+              Submit
             </button>
           </div>
         </div>
@@ -169,7 +218,7 @@ const PIADetailPage = () => {
           </div>
           <div className="row">
             <div className="col col-md-4">
-              {pia.status ? pia.status : 'Submitted'}
+              {pia.status ? pia.status : 'Incomplete'}
             </div>
             <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
             <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
@@ -277,6 +326,16 @@ const PIADetailPage = () => {
           </div>
         </div>
       </div>
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showModal}
+        handleClose={handleModalClose}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </div>
   );
 };

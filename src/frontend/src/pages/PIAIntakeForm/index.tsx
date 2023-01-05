@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
 import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 import { routes } from '../../constant/routes';
@@ -15,31 +15,48 @@ import Modal from '../../components/common/Modal';
 
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const pia = location.state as IPIAIntake;
   //
   // Form State
   //
   const [message, setMessage] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [initiativeDescription, setInitiativeDescription] =
-    useState<string>('');
-  const [ministry, setMinistry] = useState<string>('');
-  const [branch, setBranch] = useState<string>('');
-  const [drafterName, setDrafterName] = useState<string>('');
-  const [drafterEmail, setDrafterEmail] = useState<string>('');
-  const [drafterTitle, setDrafterTitle] = useState<string>('');
-  const [leadName, setLeadName] = useState<string>('');
-  const [leadEmail, setLeadEmail] = useState<string>('');
-  const [leadTitle, setLeadTitle] = useState<string>('');
-  const [mpoName, setMpoName] = useState<string>('');
-  const [mpoEmail, setMpoEmail] = useState<string>('');
-  const [initiativeScope, setInitiativeScope] = useState<string>('');
-  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
+  const [title, setTitle] = useState<string>(pia?.title || '');
+  const [initiativeDescription, setInitiativeDescription] = useState<string>(
+    pia?.initiativeDescription || '',
+  );
+  const [ministry, setMinistry] = useState<string>(pia?.ministry || '');
+  const [branch, setBranch] = useState<string>(pia?.branch || '');
+  const [drafterName, setDrafterName] = useState<string>(
+    pia?.drafterName || '',
+  );
+  const [drafterEmail, setDrafterEmail] = useState<string>(
+    pia?.drafterEmail || '',
+  );
+  const [drafterTitle, setDrafterTitle] = useState<string>(
+    pia?.drafterTitle || '',
+  );
+  const [leadName, setLeadName] = useState<string>(pia?.leadName || '');
+  const [leadEmail, setLeadEmail] = useState<string>(pia?.leadEmail || '');
+  const [leadTitle, setLeadTitle] = useState<string>(pia?.leadTitle || '');
+  const [mpoName, setMpoName] = useState<string>(pia?.mpoName || '');
+  const [mpoEmail, setMpoEmail] = useState<string>(pia?.mpoEmail || '');
+  const [initiativeScope, setInitiativeScope] = useState<string>(
+    pia?.initiativeScope || '',
+  );
+  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>(
+    pia?.dataElementsInvolved || '',
+  );
   const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<
     boolean | null
-  >(true);
-  const [riskMitigation, setRiskMitigation] = useState<string>();
-  const [status, setStatus] = useState<string>(PiaStatuses.INCOMPLETE);
+  >(pia?.hasAddedPiToDataElements || true);
+  const [status, setStatus] = useState<string>(
+    pia?.status || PiaStatuses.INCOMPLETE,
+  );
+
+  const [riskMitigation, setRiskMitigation] = useState<string>(
+    pia?.riskMitigation || '',
+  );
 
   //
   // Modal State
