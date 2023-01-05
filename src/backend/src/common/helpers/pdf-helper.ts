@@ -1,6 +1,16 @@
 import * as pug from 'pug';
 import * as Puppeteer from 'puppeteer';
 
+/**
+ * @ethod pugToPdfBuffer
+ *
+ * @param templatePath | @type string | @required | path of the pug template file
+ * @param data | @type json | @required | key-value pair to be fed into the pug template
+ * @returns pdf buffer data
+ *
+ * @description
+ * This method takes the pug template and the associated data and converts it to the pdf buffer
+ */
 export const pugToPdfBuffer = async (
   templatePath: string,
   data: Record<string, any>,

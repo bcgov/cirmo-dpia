@@ -2,7 +2,7 @@
 import { DataSourceOptions } from 'typeorm';
 import 'dotenv/config';
 import { KeycloakConnectConfig } from 'nest-keycloak-connect';
-class ConfigService {
+export class ConfigServiceClass {
   constructor(private env: { [k: string]: string | undefined }) {}
 
   getValue(key: string, throwOnMissing = true): string {
@@ -50,7 +50,7 @@ class ConfigService {
   }
 }
 
-const configService = new ConfigService(process.env).ensureValues([
+const configService = new ConfigServiceClass(process.env).ensureValues([
   'POSTGRES_HOST',
   'POSTGRES_PORT',
   'POSTGRES_USER',
