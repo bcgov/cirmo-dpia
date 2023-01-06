@@ -85,10 +85,10 @@ const PIAIntakeFormPage = () => {
         setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
         break;
       case 'edit':
-        setModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
-        setModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
-        setModalTitleText(Messages.Modal.Edit.TitleText.en);
-        setModalParagraph(Messages.Modal.Edit.ParagraphText.en);
+        setPiaModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Edit.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
         break;
       default:
         break;
