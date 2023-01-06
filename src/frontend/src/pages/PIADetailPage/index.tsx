@@ -17,7 +17,7 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
 import Alert from '../../components/common/Alert';
 import MDEditor from '@uiw/react-md-editor';
-import { MinistryList, PIOptions } from '../../constant/constant';
+import { MinistryList, PiaStatuses, PIOptions } from '../../constant/constant';
 import {
   FileDownload,
   FileDownloadTypeEnum,
@@ -110,8 +110,8 @@ const PIADetailPage = () => {
     // the status will change to enum when Brandon pr merged
     if (
       isMPO &&
-      piaStatus !== 'INCOMPLETE' &&
-      piaStatus !== 'EDIT_IN_PROGRESS'
+      piaStatus !== PiaStatuses.INCOMPLETE &&
+      piaStatus !== PiaStatuses.EDIT_IN_PROGRESS
     ) {
       setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
       setModalCancelLabel(messages.Modal.CancelLabel.en);
@@ -119,7 +119,7 @@ const PIADetailPage = () => {
       setModalParagraph(messages.Modal.ParagraphText.en);
       setShowModal(true);
     } else {
-      navigate(`${routes.PIA_INTAKE}/${id}`, {
+      navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
         state: pia,
       });
     }
@@ -132,14 +132,14 @@ const PIADetailPage = () => {
     // call backend patch endpoint to update the pia status
     event.preventDefault();
     const requestBody: Partial<IPIAIntake> = {
-      status: 'EDIT_IN_PROGRESS',
+      status: PiaStatuses.EDIT_IN_PROGRESS,
     };
     try {
       await HttpRequest.patch<IPIAResult>(
-        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${pia.id}`),
+        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
         requestBody,
       );
-      navigate(`${routes.PIA_INTAKE}/${id}`, {
+      navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
         state: pia,
       });
     } catch (err: any) {
@@ -149,10 +149,11 @@ const PIADetailPage = () => {
   const handleModalCancel = () => {
     setShowModal(false);
   };
+  /*
   const handleSubmit = () => {
     console.log('will do');
   };
-
+ */
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -232,12 +233,14 @@ const PIADetailPage = () => {
             >
               <FontAwesomeIcon icon={faPenToSquare} />
             </button>
+            {/* comment out this code now
             <button
               className="bcgovbtn bcgovbtn__primary mx-2"
               onClick={() => handleSubmit()}
             >
               Submit
             </button>
+            */}
           </div>
         </div>
         <div>
@@ -346,14 +349,16 @@ const PIADetailPage = () => {
               <p>{piOption}</p>
             </div>
           </div>
-          <div className="form__section">
-            <h2 className="form__h2">
-              {messages.InitiativeRiskReductionSection.H2Text.en}
-            </h2>
-            <div>
-              <MDEditor preview="preview" value={pia.riskMitigation} />
+          {piOption === 'NO' && (
+            <div className="form__section">
+              <h2 className="form__h2">
+                {messages.InitiativeRiskReductionSection.H2Text.en}
+              </h2>
+              <div>
+                <MDEditor preview="preview" value={pia.riskMitigation} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <Modal

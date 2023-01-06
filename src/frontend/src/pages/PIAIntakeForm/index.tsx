@@ -97,7 +97,7 @@ const PIAIntakeFormPage = () => {
   };
 
   const handleModalClose = async (event: any) => {
-    setShowModal(false);
+    setShowPiaModal(false);
     // call backend patch endpoint to save the change
     event.preventDefault();
     const requestBody: IPIAIntake = {
@@ -135,8 +135,9 @@ const PIAIntakeFormPage = () => {
 
   const handleSaveChanges = () => {
     // By default set the status to Incomplete
-    const piaStatus = pia?.status ? pia.status : 'INCOMPLETE';
-    const modalType = piaStatus === 'EDIT_IN_PROGRESS' ? 'edit' : 'save';
+    const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
+    const modalType =
+      piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
     handleShowModal(modalType);
   };
 

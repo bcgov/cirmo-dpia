@@ -10,4 +10,5 @@ export const API_ROUTES = {
   PIA_INTAKE_RESULT_DOWNLOAD: '/api/pia-intake/download/:id',
   CONFIG_FILE: '/api/configuration',
   GET_PIA_INTAKE: '/api/pia-intake/:id',
+  PATCH_PIA_INTAKE: '/api/pia-intake/:id',
 };
