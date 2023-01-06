@@ -96,8 +96,36 @@ const PIAIntakeFormPage = () => {
     setShowPiaModal(true);
   };
 
-  const handleModalClose = () => {
-    setShowPiaModal(false);
+  const handleModalClose = async (event: any) => {
+    setShowModal(false);
+    // call backend patch endpoint to save the change
+    event.preventDefault();
+    const requestBody: IPIAIntake = {
+      title: title,
+      ministry: ministry,
+      branch: branch,
+      drafterName: drafterName,
+      drafterEmail: drafterEmail,
+      drafterTitle: drafterTitle,
+      leadName: leadName,
+      leadEmail: leadEmail,
+      leadTitle: leadTitle,
+      mpoName: mpoName,
+      mpoEmail: mpoEmail,
+      initiativeDescription: initiativeDescription,
+      initiativeScope: initiativeScope,
+      dataElementsInvolved: dataElementsInvolved,
+      hasAddedPiToDataElements: hasAddedPiToDataElements,
+      riskMitigation: riskMitigation,
+    };
+    try {
+      await HttpRequest.patch<IPIAResult>(
+        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${pia.id}`),
+        requestBody,
+      );
+    } catch (err: any) {
+      setMessage(err.message || 'Something went wrong. Please try again.');
+    }
     navigate('/pia-list');
   };
 
@@ -515,7 +543,7 @@ const PIAIntakeFormPage = () => {
         cancelLabel={piaModalCancelLabel}
         titleText={piaModalTitleText}
         show={showPiaModal}
-        handleClose={handleModalClose}
+        handleClose={(e) => handleModalClose(e)}
         handleCancel={handleModalCancel}
       >
         <p className="modal-text">{piaModalParagraph}</p>

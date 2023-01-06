@@ -105,14 +105,14 @@ const PIADetailPage = () => {
   };
 
   const handleEdit = () => {
-    if (isMPO) {
+    if (isMPO && piaStatus !== 'INCOMPLETE') {
       setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
       setModalCancelLabel(messages.Modal.CancelLabel.en);
       setModalTitleText(messages.Modal.TitleText.en);
       setModalParagraph(messages.Modal.ParagraphText.en);
       setShowModal(true);
     } else {
-      navigate(routes.PIA_INTAKE, {
+      navigate(`${routes.PIA_INTAKE}/${id}`, {
         state: pia,
       });
     }
@@ -120,7 +120,7 @@ const PIADetailPage = () => {
 
   const handleModalClose = () => {
     setShowModal(false);
-    navigate(routes.PIA_INTAKE, {
+    navigate(`${routes.PIA_INTAKE}/${id}`, {
       state: pia,
     });
   };

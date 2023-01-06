@@ -36,6 +36,7 @@ const Router = () => {
         />
         <Route path="/ppq-form" element={<PPQFormPage />} />
         <Route path="/ppq-connect" element={<PPQConnectPage />} />
+        <Route path="/pia-intake/:id" element={<PIAIntakeFormPage />} />
         <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
         <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
         <Route path="/pia-list" element={<PIAList />} />
