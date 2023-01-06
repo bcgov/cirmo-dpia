@@ -11,7 +11,7 @@ import { dateToString } from '../../utils/date';
 import messages from './messages';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
@@ -23,7 +23,6 @@ import {
   FileDownloadTypeEnum,
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
-import { isMPORole } from '../../utils/helper.util';
 import Modal from '../../components/common/Modal';
 import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 
