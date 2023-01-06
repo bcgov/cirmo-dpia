@@ -125,7 +125,9 @@ const PIADetailPage = () => {
     }
   };
 
-  const handleModalClose = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleModalClose = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     setShowModal(false);
     // call backend patch endpoint to update the pia status
     event.preventDefault();
