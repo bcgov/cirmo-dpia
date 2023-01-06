@@ -96,7 +96,7 @@ const PIAIntakeFormPage = () => {
     setShowPiaModal(true);
   };
 
-  const handleModalClose = async (event: any) => {
+  const handleModalClose = async (event: ChangeEvent<HTMLInputElement>) => {
     setShowModal(false);
     // call backend patch endpoint to save the change
     event.preventDefault();

@@ -11,7 +11,7 @@ import { dateToString } from '../../utils/date';
 import messages from './messages';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
@@ -107,7 +107,12 @@ const PIADetailPage = () => {
   };
 
   const handleEdit = () => {
-    if (isMPO && piaStatus !== 'INCOMPLETE') {
+    // the status will change to enum when Brandon pr merged
+    if (
+      isMPO &&
+      piaStatus !== 'INCOMPLETE' &&
+      piaStatus !== 'EDIT_IN_PROGRESS'
+    ) {
       setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
       setModalCancelLabel(messages.Modal.CancelLabel.en);
       setModalTitleText(messages.Modal.TitleText.en);
@@ -120,7 +125,7 @@ const PIADetailPage = () => {
     }
   };
 
-  const handleModalClose = async (event: any) => {
+  const handleModalClose = async (event: ChangeEvent<HTMLInputElement>) => {
     setShowModal(false);
     // call backend patch endpoint to update the pia status
     event.preventDefault();
