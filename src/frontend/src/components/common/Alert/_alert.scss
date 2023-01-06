@@ -19,8 +19,8 @@
   }
 
   &.alert-banner-warning {
-    color: #856404;
-    background-color: $banner-warning;
+    color: $banner-warning;
+    background-color: $banner-warning-bg;
     border-color: #ffeeba;
   }
 
