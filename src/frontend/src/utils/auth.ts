@@ -1,26 +1,35 @@
 import { API_ROUTES } from '../constant/apiRoutes';
+import { AppStorage } from './storage';
 // https://github.com/microsoft/TypeScript/issues/48949
 // workaround
 const win: Window = window;
+
+export enum TokenStorageKeys {
+  ACCESS_TOKEN = 'accessToken',
+  ACCESS_TOKEN_EXPIRY = 'accessTokenExpiry',
+  REFRESH_TOKEN = 'refreshToken',
+  REFRESH_TOKEN_EXPIRY = 'refreshTokenExpiry',
+}
+
 export const isAuthenticated = () => {
-  return (
-    win.localStorage.getItem('access_token') !== null &&
-    win.localStorage.getItem('access_token') !== undefined
+  return !!AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN);
+};
+
+export const storeAuthTokens = (data: any) => {
+  AppStorage.setItem(TokenStorageKeys.ACCESS_TOKEN, data.access_token);
+  AppStorage.setItem(
+    TokenStorageKeys.ACCESS_TOKEN_EXPIRY,
+    (Date.now() + data.expires_in * 1000).toString(),
+  );
+  AppStorage.setItem(TokenStorageKeys.REFRESH_TOKEN, data.refresh_token);
+  AppStorage.setItem(
+    TokenStorageKeys.REFRESH_TOKEN_EXPIRY,
+    (Date.now() + data.refresh_expires_in * 1000).toString(),
   );
 };
 
-export const storeTokens = (data: any) => {
-  win.localStorage.setItem('access_token', data.access_token);
-  win.localStorage.setItem('expires_in', Date.now() / 1000 + data.expires_in);
-  win.localStorage.setItem('refresh_token', data.refresh_token);
-  win.localStorage.setItem(
-    'refresh_expires_in',
-    Date.now() / 1000 + data.refresh_expires_in,
-  );
-};
-
-export const clearTokens = () => {
-  win.localStorage.clear();
+export const clearAuthTokens = () => {
+  Object.keys(TokenStorageKeys).forEach((key) => AppStorage.removeItem(key));
 };
 
 export const checkRefreshToken = async () => {
@@ -30,7 +39,7 @@ export const checkRefreshToken = async () => {
 
   if (refreshToken && refreshExpires) {
     if (now > parseFloat(refreshExpires) - 180) {
-      clearTokens();
+      clearAuthTokens();
       try {
         const response = await fetch('/api/auth/refresh', {
           method: 'POST',
@@ -44,7 +53,7 @@ export const checkRefreshToken = async () => {
           throw error.detail;
         }
         const data = await response.json();
-        storeTokens(data);
+        storeAuthTokens(data);
       } catch (error) {
         console.error(error);
       }
@@ -60,7 +69,7 @@ export const checkAccessToken = async () => {
 
   if (accessToken && accessExpires) {
     if (now > parseFloat(accessExpires) - 180) {
-      clearTokens();
+      clearAuthTokens();
       try {
         const response = await fetch(`/${API_ROUTES.KEYCLOAK_REFRESH_TOKEN}`, {
           method: 'POST',
@@ -74,7 +83,7 @@ export const checkAccessToken = async () => {
           throw error.detail;
         }
         const data = await response.json();
-        storeTokens(data);
+        storeAuthTokens(data);
       } catch (error) {
         console.error(error);
       }
@@ -101,7 +110,7 @@ export const getTokens = async (code: string) => {
     throw error.detail;
   }
   const data = await response.json();
-  storeTokens(data);
+  storeAuthTokens(data);
 };
 
 const checkStatus = async (response: Response) => {
