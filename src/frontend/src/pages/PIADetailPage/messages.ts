@@ -49,7 +49,7 @@ export default {
     },
 
     ParagraphText: {
-      en: `Make changes yourself or work with your MPO to edit your PIA until it is ready fro another review`,
+      en: `Make changes yourself or work with your MPO to edit your PIA until it is ready for another review.`,
     },
   },
 };
