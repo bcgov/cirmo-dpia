@@ -245,7 +245,7 @@ const PIADetailPage = () => {
           </div>
           <div className="row">
             <div className="col col-md-4">
-              {pia.status ? pia.status : 'Incomplete'}
+              {pia.status ? pia.status : PiaStatuses.INCOMPLETE}
             </div>
             <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
             <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
@@ -343,7 +343,7 @@ const PIADetailPage = () => {
               <p>{piOption}</p>
             </div>
           </div>
-          {piOption === 'NO' && (
+          {piOption === 'No' && (
             <div className="form__section">
               <h2 className="form__h2">
                 {messages.InitiativeRiskReductionSection.H2Text.en}
