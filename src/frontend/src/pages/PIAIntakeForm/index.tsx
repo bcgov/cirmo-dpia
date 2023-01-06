@@ -1,9 +1,9 @@
 import Dropdown from '../../components/common/Dropdown';
 import InputText from '../../components/common/InputText/InputText';
-import { MinistryList, PIOptions } from '../../constant/constant';
+import { MinistryList, PIOptions, PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -39,15 +39,16 @@ const PIAIntakeFormPage = () => {
     boolean | null
   >(true);
   const [riskMitigation, setRiskMitigation] = useState<string>();
+  const [status, setStatus] = useState<string>(PiaStatuses.INCOMPLETE);
 
   //
   // Modal State
   //
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
-  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
-  const [modalTitleText, setModalTitleText] = useState<string>('');
-  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [showPiaModal, setShowPiaModal] = useState<boolean>(false);
+  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState<string>('');
+  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState<string>('');
+  const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
+  const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
 
   //
   // Event Handlers
@@ -55,34 +56,54 @@ const PIAIntakeFormPage = () => {
   const handleShowModal = (modalType: string) => {
     switch (modalType) {
       case 'cancel':
-        setModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
-        setModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
-        setModalTitleText(Messages.Modal.Cancel.TitleText.en);
-        setModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
+        setPiaModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Cancel.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
         break;
       case 'save':
-        setModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
-        setModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
-        setModalTitleText(Messages.Modal.Save.TitleText.en);
-        setModalParagraph(Messages.Modal.Save.ParagraphText.en);
+        setPiaModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
         break;
       default:
         break;
     }
-    setShowModal(true);
+    setShowPiaModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false);
+    setShowPiaModal(false);
     navigate('/pia-list');
   };
 
   const handleModalCancel = () => {
-    setShowModal(false);
+    setShowPiaModal(false);
   };
 
   const handleSaveChanges = () => {
     handleShowModal('save');
+  };
+
+  const alertUserLeave = (e: any) => {
+    e.preventDefault();
+
+    /* 
+      For cross-browser support
+      
+      This function uses e.returnValue, which has been deprecated for 9+ years.
+      The reason for this usage is to support Chrome which only behaves as expected when using this value.
+
+      Below are a couple of references on this topic.
+
+      References:
+      - https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
+      - https://contest-server.cs.uchicago.edu/ref/JavaScript/developer.mozilla.org/en-US/docs/Web/API/Event/returnValue.html
+    */
+    e.returnValue = true;
+
+    e.defaultPrevented = true;
   };
 
   const handleBackClick = () => {
@@ -159,6 +180,25 @@ const PIAIntakeFormPage = () => {
     setRiskMitigation(newRiskMitigation);
   };
 
+  const handleStatusChange = (piaStatus: any) => {
+    switch (piaStatus) {
+      case 'incomplete':
+        setStatus('INCOMPLETE');
+        break;
+      case 'edit-in-progress':
+        setStatus('EDIT_IN_PROGRESS');
+        break;
+      case 'mpo-review':
+        setStatus('MPO_REVIEW');
+        break;
+      case 'pct-review':
+        setStatus('PCT_REVIEW');
+        break;
+      default:
+        break;
+    }
+  };
+
   //
   // Form Submission Handler
   //
@@ -181,6 +221,7 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
+      status: status,
     };
     try {
       const res = await HttpRequest.post<IPIAResult>(
@@ -196,12 +237,23 @@ const PIAIntakeFormPage = () => {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener('beforeunload', alertUserLeave);
+    return () => {
+      window.removeEventListener('beforeunload', alertUserLeave);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section form__container">
         <form
           className="container__padding-inline"
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={(e) => {
+            handleStatusChange(PiaStatuses.MPO_REVIEW);
+            handleSubmit(e);
+          }}
         >
           <div className="form__header">
             <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
@@ -433,14 +485,14 @@ const PIAIntakeFormPage = () => {
         </form>
       </section>
       <Modal
-        confirmLabel={modalConfirmLabel}
-        cancelLabel={modalCancelLabel}
-        titleText={modalTitleText}
-        show={showModal}
+        confirmLabel={piaModalConfirmLabel}
+        cancelLabel={piaModalCancelLabel}
+        titleText={piaModalTitleText}
+        show={showPiaModal}
         handleClose={handleModalClose}
         handleCancel={handleModalCancel}
       >
-        <p className="modal-text">{modalParagraph}</p>
+        <p className="modal-text">{piaModalParagraph}</p>
       </Modal>
     </div>
   );

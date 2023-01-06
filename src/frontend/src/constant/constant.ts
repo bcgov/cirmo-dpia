@@ -207,3 +207,10 @@ export const ReviewTypes = [
 export const PIOptions = ['Yes', 'No', "I'm not sure"];
 
 export const startDateOptions = ['Yes', 'No'];
+
+export enum PiaStatuses {
+  INCOMPLETE = 'INCOMPLETE',
+  EDIT_IN_PROGRESS = 'EDIT_IN_PROGRESS',
+  MPO_REVIEW = 'MPO_REVIEW',
+  PCT_REVIEW = 'PCT_REVIEW',
+}
