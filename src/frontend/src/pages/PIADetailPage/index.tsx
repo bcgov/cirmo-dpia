@@ -25,6 +25,7 @@ import {
 import Spinner from '../../components/common/Spinner';
 import { isMPORole } from '../../utils/helper.util';
 import Modal from '../../components/common/Modal';
+import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -32,6 +33,7 @@ const PIADetailPage = () => {
   const win: Window = window;
   const { id } = useParams();
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string>('');
   const [pia, setPia] = useState<any>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
   const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
@@ -118,11 +120,24 @@ const PIADetailPage = () => {
     }
   };
 
-  const handleModalClose = () => {
+  const handleModalClose = async (event: any) => {
     setShowModal(false);
-    navigate(`${routes.PIA_INTAKE}/${id}`, {
-      state: pia,
-    });
+    // call backend patch endpoint to update the pia status
+    event.preventDefault();
+    const requestBody: Partial<IPIAIntake> = {
+      status: 'EDIT_IN_PROGRESS',
+    };
+    try {
+      await HttpRequest.patch<IPIAResult>(
+        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${pia.id}`),
+        requestBody,
+      );
+      navigate(`${routes.PIA_INTAKE}/${id}`, {
+        state: pia,
+      });
+    } catch (err: any) {
+      setMessage(err.message || 'Something went wrong. Please try again.');
+    }
   };
   const handleModalCancel = () => {
     setShowModal(false);
@@ -180,6 +195,14 @@ const PIADetailPage = () => {
             message="Something went wrong. Please try again."
             onClose={handleAlertClose}
             className="mt-2"
+          />
+        )}
+        {message && (
+          <Alert
+            type="danger"
+            message={message}
+            className="mb-4"
+            onClose={() => setMessage('')}
           />
         )}
         <div className="container form__title">
@@ -331,7 +354,7 @@ const PIADetailPage = () => {
         cancelLabel={modalCancelLabel}
         titleText={modalTitleText}
         show={showModal}
-        handleClose={handleModalClose}
+        handleClose={(e) => handleModalClose(e)}
         handleCancel={handleModalCancel}
       >
         <p className="modal-text">{modalParagraph}</p>

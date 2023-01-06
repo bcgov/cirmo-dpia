@@ -184,7 +184,7 @@ export class PiaIntakeController {
     description:
       'Failed to update the PIA: The record is marked inactive in our system',
   })
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @Param('id') id: number,
     @Body() updatePiaIntakeDto: UpdatePiaIntakeDto,
