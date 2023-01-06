@@ -102,5 +102,19 @@ export default {
         en: `Any changes you've made will be lost if you leave this page.`,
       },
     },
+    Edit: {
+      ConfirmLabel: {
+        en: `Save`,
+      },
+      CancelLabel: {
+        en: `Don't save`,
+      },
+      TitleText: {
+        en: `Do you want to save changes?`,
+      },
+      ParagraphText: {
+        en: `Your changes will be lost if you don't save them`,
+      },
+    },
   },
 };

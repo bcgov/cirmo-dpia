@@ -84,6 +84,12 @@ const PIAIntakeFormPage = () => {
         setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
         break;
+      case 'edit':
+        setModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
+        setModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
+        setModalTitleText(Messages.Modal.Edit.TitleText.en);
+        setModalParagraph(Messages.Modal.Edit.ParagraphText.en);
+        break;
       default:
         break;
     }
@@ -100,7 +106,10 @@ const PIAIntakeFormPage = () => {
   };
 
   const handleSaveChanges = () => {
-    handleShowModal('save');
+    // By default set the status to Incomplete
+    const piaStatus = pia?.status ? pia.status : 'INCOMPLETE';
+    const modalType = piaStatus === 'EDIT_IN_PROGRESS' ? 'edit' : 'save';
+    handleShowModal(modalType);
   };
 
   const alertUserLeave = (e: any) => {
