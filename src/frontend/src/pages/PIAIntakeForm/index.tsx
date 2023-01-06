@@ -120,7 +120,7 @@ const PIAIntakeFormPage = () => {
     };
     try {
       await HttpRequest.patch<IPIAResult>(
-        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${pia.id}`),
+        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
         requestBody,
       );
     } catch (err: any) {
