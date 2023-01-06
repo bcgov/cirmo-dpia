@@ -52,7 +52,6 @@ const PIADetailPage = () => {
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
 
-  const isMPO = !!isMPORole('roles');
   useEffect(() => {
     (async () => {
       try {
@@ -108,11 +107,7 @@ const PIADetailPage = () => {
 
   const handleEdit = () => {
     // the status will change to enum when Brandon pr merged
-    if (
-      isMPO &&
-      piaStatus !== PiaStatuses.INCOMPLETE &&
-      piaStatus !== PiaStatuses.EDIT_IN_PROGRESS
-    ) {
+    if (piaStatus === PiaStatuses.MPO_REVIEW) {
       setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
       setModalCancelLabel(messages.Modal.CancelLabel.en);
       setModalTitleText(messages.Modal.TitleText.en);
