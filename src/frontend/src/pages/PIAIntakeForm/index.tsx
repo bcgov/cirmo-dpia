@@ -117,16 +117,21 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
+      status: status,
     };
     try {
-      await HttpRequest.patch<IPIAResult>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-        requestBody,
-      );
+      if (pia?.id) {
+        await HttpRequest.patch<IPIAResult>(
+          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+          requestBody,
+        );
+      } else {
+        await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, requestBody);
+      }
+      navigate('/pia-list');
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
-    navigate('/pia-list');
   };
 
   const handleModalCancel = () => {
