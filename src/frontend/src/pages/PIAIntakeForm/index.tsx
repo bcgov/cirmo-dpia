@@ -17,7 +17,6 @@ const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const pia = location.state as IPIAIntake;
-  console.log('test', pia);
   //
   // Form State
   //
@@ -171,7 +170,11 @@ const PIAIntakeFormPage = () => {
 
   const handleBackClick = () => {
     handleShowModal('cancel');
-    navigate(-1);
+    if (pia?.id) {
+      navigate(`/pia/intake/${pia.id}/${pia.title}`);
+    } else {
+      navigate(-1);
+    }
   };
 
   const handleTitleChange = (newTitle: any) => {
