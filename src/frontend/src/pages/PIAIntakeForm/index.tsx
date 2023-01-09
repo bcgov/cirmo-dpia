@@ -117,7 +117,6 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
-      status: status,
     };
     try {
       if (pia?.id) {
