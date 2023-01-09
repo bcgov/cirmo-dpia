@@ -1,6 +1,11 @@
 import React from 'react';
 
-type SupportedAlertTypes = 'danger' | 'warning' | 'info' | 'success';
+type SupportedAlertTypes =
+  | 'danger'
+  | 'warning'
+  | 'banner-warning'
+  | 'info'
+  | 'success';
 
 export interface AlertProps {
   children?: React.ReactElement;

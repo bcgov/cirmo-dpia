@@ -1,3 +1,5 @@
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { AlertProps } from './interfaces';
 
@@ -25,6 +27,10 @@ const Alert = ({
         'alert-wrapper' + ` alert-${type}` + (className ? ` ${className}` : '')
       }
     >
+      {type === 'banner-warning' && (
+        <FontAwesomeIcon icon={faExclamationTriangle} />
+      )}
+
       {children ? renderElAlert() : message}
       <span
         className="alert-close"
@@ -32,7 +38,9 @@ const Alert = ({
         aria-label="Close"
         onClick={handleClose}
       >
-        <span aria-hidden="true">&times;</span>
+        {type === 'banner-warning' ? null : (
+          <span aria-hidden="true">&times;</span>
+        )}
       </span>
     </div>
   );

@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
 import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 import { routes } from '../../constant/routes';
@@ -15,31 +15,48 @@ import Modal from '../../components/common/Modal';
 
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const pia = location.state as IPIAIntake;
   //
   // Form State
   //
   const [message, setMessage] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [initiativeDescription, setInitiativeDescription] =
-    useState<string>('');
-  const [ministry, setMinistry] = useState<string>('');
-  const [branch, setBranch] = useState<string>('');
-  const [drafterName, setDrafterName] = useState<string>('');
-  const [drafterEmail, setDrafterEmail] = useState<string>('');
-  const [drafterTitle, setDrafterTitle] = useState<string>('');
-  const [leadName, setLeadName] = useState<string>('');
-  const [leadEmail, setLeadEmail] = useState<string>('');
-  const [leadTitle, setLeadTitle] = useState<string>('');
-  const [mpoName, setMpoName] = useState<string>('');
-  const [mpoEmail, setMpoEmail] = useState<string>('');
-  const [initiativeScope, setInitiativeScope] = useState<string>('');
-  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>('');
+  const [title, setTitle] = useState<string>(pia?.title || '');
+  const [initiativeDescription, setInitiativeDescription] = useState<string>(
+    pia?.initiativeDescription || '',
+  );
+  const [ministry, setMinistry] = useState<string>(pia?.ministry || '');
+  const [branch, setBranch] = useState<string>(pia?.branch || '');
+  const [drafterName, setDrafterName] = useState<string>(
+    pia?.drafterName || '',
+  );
+  const [drafterEmail, setDrafterEmail] = useState<string>(
+    pia?.drafterEmail || '',
+  );
+  const [drafterTitle, setDrafterTitle] = useState<string>(
+    pia?.drafterTitle || '',
+  );
+  const [leadName, setLeadName] = useState<string>(pia?.leadName || '');
+  const [leadEmail, setLeadEmail] = useState<string>(pia?.leadEmail || '');
+  const [leadTitle, setLeadTitle] = useState<string>(pia?.leadTitle || '');
+  const [mpoName, setMpoName] = useState<string>(pia?.mpoName || '');
+  const [mpoEmail, setMpoEmail] = useState<string>(pia?.mpoEmail || '');
+  const [initiativeScope, setInitiativeScope] = useState<string>(
+    pia?.initiativeScope || '',
+  );
+  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>(
+    pia?.dataElementsInvolved || '',
+  );
   const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<
     boolean | null
-  >(true);
-  const [riskMitigation, setRiskMitigation] = useState<string>();
-  const [status, setStatus] = useState<string>(PiaStatuses.INCOMPLETE);
+  >(pia?.hasAddedPiToDataElements || true);
+  const [status, setStatus] = useState<string>(
+    pia?.status || PiaStatuses.INCOMPLETE,
+  );
+
+  const [riskMitigation, setRiskMitigation] = useState<string>(
+    pia?.riskMitigation || '',
+  );
 
   //
   // Modal State
@@ -67,15 +84,56 @@ const PIAIntakeFormPage = () => {
         setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
         break;
+      case 'edit':
+        setPiaModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Edit.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
+        break;
       default:
         break;
     }
     setShowPiaModal(true);
   };
 
-  const handleModalClose = () => {
+  const handleModalClose = async (event: any) => {
     setShowPiaModal(false);
-    navigate('/pia-list');
+    // call backend patch endpoint to save the change
+    event.preventDefault();
+    const requestBody: IPIAIntake = {
+      title: title,
+      ministry: ministry,
+      branch: branch,
+      drafterName: drafterName,
+      drafterEmail: drafterEmail,
+      drafterTitle: drafterTitle,
+      leadName: leadName,
+      leadEmail: leadEmail,
+      leadTitle: leadTitle,
+      mpoName: mpoName,
+      mpoEmail: mpoEmail,
+      initiativeDescription: initiativeDescription,
+      initiativeScope: initiativeScope,
+      dataElementsInvolved: dataElementsInvolved,
+      hasAddedPiToDataElements: hasAddedPiToDataElements,
+      riskMitigation: riskMitigation,
+    };
+    try {
+      if (pia?.id) {
+        await HttpRequest.patch<IPIAResult>(
+          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+          requestBody,
+        );
+      } else {
+        await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
+          status: status,
+          ...requestBody,
+        });
+      }
+      navigate('/pia-list');
+    } catch (err: any) {
+      setMessage(err.message || 'Something went wrong. Please try again.');
+    }
   };
 
   const handleModalCancel = () => {
@@ -83,7 +141,11 @@ const PIAIntakeFormPage = () => {
   };
 
   const handleSaveChanges = () => {
-    handleShowModal('save');
+    // By default set the status to Incomplete
+    const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
+    const modalType =
+      piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
+    handleShowModal(modalType);
   };
 
   const alertUserLeave = (e: any) => {
@@ -108,7 +170,11 @@ const PIAIntakeFormPage = () => {
 
   const handleBackClick = () => {
     handleShowModal('cancel');
-    navigate(-1);
+    if (pia?.id) {
+      navigate(`/pia/intake/${pia.id}/${pia.title}`);
+    } else {
+      navigate(-1);
+    }
   };
 
   const handleTitleChange = (newTitle: any) => {
@@ -221,13 +287,22 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
-      status: status,
+      status: PiaStatuses.MPO_REVIEW,
     };
     try {
-      const res = await HttpRequest.post<IPIAResult>(
-        API_ROUTES.PIA_INTAKE,
-        requestBody,
-      );
+      let res;
+      if (pia?.id) {
+        res = pia?.id;
+        await HttpRequest.patch<IPIAResult>(
+          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+          requestBody,
+        );
+      } else {
+        res = await HttpRequest.post<IPIAResult>(
+          API_ROUTES.PIA_INTAKE,
+          requestBody,
+        );
+      }
 
       navigate(routes.PIA_INTAKE_RESULT, {
         state: { result: res },
@@ -489,7 +564,7 @@ const PIAIntakeFormPage = () => {
         cancelLabel={piaModalCancelLabel}
         titleText={piaModalTitleText}
         show={showPiaModal}
-        handleClose={handleModalClose}
+        handleClose={(e) => handleModalClose(e)}
         handleCancel={handleModalCancel}
       >
         <p className="modal-text">{piaModalParagraph}</p>
