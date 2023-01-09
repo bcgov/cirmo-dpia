@@ -17,6 +17,7 @@ const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const pia = location.state as IPIAIntake;
+  console.log('test', pia);
   //
   // Form State
   //
@@ -125,7 +126,10 @@ const PIAIntakeFormPage = () => {
           requestBody,
         );
       } else {
-        await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, requestBody);
+        await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
+          status: status,
+          ...requestBody,
+        });
       }
       navigate('/pia-list');
     } catch (err: any) {
