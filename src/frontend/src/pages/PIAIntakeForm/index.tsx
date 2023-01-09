@@ -281,13 +281,22 @@ const PIAIntakeFormPage = () => {
       dataElementsInvolved: dataElementsInvolved,
       hasAddedPiToDataElements: hasAddedPiToDataElements,
       riskMitigation: riskMitigation,
-      status: status,
+      status: PiaStatuses.MPO_REVIEW,
     };
     try {
-      const res = await HttpRequest.post<IPIAResult>(
-        API_ROUTES.PIA_INTAKE,
-        requestBody,
-      );
+      let res;
+      if (pia?.id) {
+        res = pia?.id;
+        await HttpRequest.patch<IPIAResult>(
+          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+          requestBody,
+        );
+      } else {
+        res = await HttpRequest.post<IPIAResult>(
+          API_ROUTES.PIA_INTAKE,
+          requestBody,
+        );
+      }
 
       navigate(routes.PIA_INTAKE_RESULT, {
         state: { result: res },
