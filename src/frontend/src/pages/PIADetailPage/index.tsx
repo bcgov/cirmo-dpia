@@ -7,7 +7,9 @@ import {
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { dateToString } from '../../utils/date';
+import { statusList } from '../../utils/status';
 import messages from './messages';
 
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,13 +19,21 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { routes } from '../../constant/routes';
 import Alert from '../../components/common/Alert';
 import MDEditor from '@uiw/react-md-editor';
+<<<<<<< HEAD
 import { MinistryList, PiaStatuses, PIOptions } from '../../constant/constant';
+=======
+import { MinistryList, PIOptions } from '../../constant/constant';
+import { isMPORole } from '../../utils/helper.util';
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
 import {
   FileDownload,
   FileDownloadTypeEnum,
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
+<<<<<<< HEAD
 import Modal from '../../components/common/Modal';
+=======
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
 import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 
 const PIADetailPage = () => {
@@ -88,7 +98,7 @@ const PIADetailPage = () => {
             throw new Error('Fetch pia failed');
           }
         }
-      }
+      };
     })();
   }, [
     id,
@@ -104,6 +114,7 @@ const PIADetailPage = () => {
     setDownloadError('');
   };
 
+<<<<<<< HEAD
   const handleEdit = () => {
     // the status will change to enum when Brandon pr merged
     if (piaStatus === PiaStatuses.MPO_REVIEW) {
@@ -148,6 +159,37 @@ const PIADetailPage = () => {
     console.log('will do');
   };
  */
+=======
+  const isMPO = () => {
+    return isMPORole('roles');
+  };
+
+
+
+    const changeStatefn = (status:string) => {
+      console.log(status);
+      //setPia({...pia,  status:status}, () => { handleSubmit();});
+      //pia.status = status;
+      handleSubmit(status);
+    }
+
+    const handleSubmit = async (status:string) => {
+      const requestBody: Partial<IPIAIntake> = {
+        status:status,
+      }; 
+      try {
+        const res = await HttpRequest.patch<IPIAResult>(
+          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
+          requestBody,
+        );
+         /* PIA will be set after data is updated in backend */
+         setPia(res);
+      } catch (err: any) {
+        setMessage(err.message || 'Something went wrong. Please try again.');
+      }
+    };
+
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -172,6 +214,7 @@ const PIADetailPage = () => {
     }
   };
   return (
+<<<<<<< HEAD
     <div className="bcgovPageContainer background ">
       <div className="container__padding-inline ppq-form-section form__container row">
         <div className="mb-5">
@@ -214,6 +257,31 @@ const PIADetailPage = () => {
           <div className="row">
             <button
               className={`bcgovbtn bcgovbtn__secondary mx-2 ${
+=======
+    <div className="bcgovPageContainer wrapper">
+      <div className="component__wrapper">
+        <div className="full__width">
+          {fetchPiaError && (
+            <Alert
+              type="danger"
+              message="Something went wrong. Please try again."
+              onClose={handleAlertClose}
+              className="mt-2"
+            />
+          )}
+          {downloadError && (
+            <Alert
+              type="danger"
+              message="Something went wrong. Please try again."
+              onClose={handleAlertClose}
+              className="mt-2"
+            />
+          )}
+          <div className="form__title">
+            <h1>{pia.title}</h1>
+            <button
+              className={`bcgovbtn bcgovbtn__primary ${
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
                 isDownloading ? 'opacity-50 pe-none' : ''
               }`}
               onClick={() => handleDownload()}
@@ -221,6 +289,7 @@ const PIADetailPage = () => {
               <FontAwesomeIcon icon={faFileArrowDown} />
               {isDownloading && <Spinner />}
             </button>
+<<<<<<< HEAD
             <button
               className="bcgovbtn bcgovbtn__secondary mx-2"
               onClick={() => handleEdit()}
@@ -256,94 +325,152 @@ const PIADetailPage = () => {
           <h2>
             <b>{messages.GeneralInfoSection.H2Text.en}</b>
           </h2>
-          <div>
-            <div className="row ">
-              <div className="col col-md-4">
-                <b>Drafter</b>
-              </div>
-              <div className="col col-md-4">
-                <b>Initiative Lead</b>
-              </div>
-              <div className="col col-md-4">
-                <b>Ministry Privacy Officer </b>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col col-md-4">{pia.drafterName}</div>
-              <div className="col col-md-4">{pia.leadName}</div>
-              <div className="col col-md-4">{pia.mpoName}</div>
-            </div>
-            <div className="row">
-              <div className="col col-md-4">{pia.drafterTitle}</div>
-              <div className="col col-md-4">{pia.leadTitle}</div>
-              <div className="col col-md-4">{pia.mpoEmail}</div>
-            </div>
-            <div className="row">
-              <div className="col col-md-4">{pia.drafterEmail}</div>
-              <div className="col col-md-4">{pia.leadEmail}</div>
-            </div>
+=======
           </div>
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
           <div>
             <div className="row">
-              <div className="col col-md-4">
-                <b>Ministry</b>
-              </div>
-              <div className="col col-md-4">
-                <b>Branch</b>
-              </div>
+              <div className="col col-md-4"><strong>Status</strong></div>
+              <div className="col col-md-4"><strong>Submitted on</strong></div>
+              <div className="col col-md-4"><strong>Last modified</strong></div>
             </div>
             <div className="row">
-              <div className="col col-md-4">{piaMinistryFullName}</div>
-              <div className="col col-md-4">{pia.branch}</div>
+              <div className="col col-md-4">
+                <div className="dropdownSatusContainer">
+                  {isMPO()
+                   ? <div className="dropdown">
+                      <button className="dropdown-toggles form-control" 
+                              type="button" 
+                              id="dropdownMenuButton1" 
+                              data-bs-toggle="dropdown" 
+                              aria-expanded="false">
+                        <div className={`statusBlock ${pia.status ? statusList[pia.status].class : ''}`}>
+                          { pia.status ? statusList[pia.status].title: "" }
+                        </div>
+                      </button>
+                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {Object.keys(statusList).map((statuskey) => (
+                          (pia.status != statuskey) && (statuskey != 'SUCCESS')
+                            ? <li 
+                                onClick={() => {
+                                  changeStatefn(statuskey);
+                                }} 
+                                className="dropdown-item-container">
+                                <div 
+                                className={`dropdown-item statusBlock ${statusList[statuskey].class}`}>
+                                  { statusList[statuskey].title }
+                                </div>
+                            </li>
+                            : <li></li> 
+                        )
+                        )}
+                      </ul>
+                      <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
+                    </div>
+                    : <div className={`statusBlock ${(pia.status == 'MPO_REVIEW') ? 'statusInfo': ''}`}>{pia.status ? pia.status : 'Completed'}</div>
+                  }
+                  </div>
+              </div>
+              <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
+              <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
             </div>
           </div>
-        </div>
-        <div className="container pt-5 form__section">
-          <h2 className="pb-3">
-            <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
-          </h2>
-          <div>
-            <h2 className="form__h2">
-              {messages.InitiativeDescriptionSection.H2Text.en}
+          <div className="horizontal-divider"></div>
+          <div className="container d-grid gap-3">
+            <h2>
+              <b>{messages.GeneralInfoSection.H2Text.en}</b>
             </h2>
-
             <div>
-              <MDEditor preview="preview" value={pia.initiativeDescription} />
+              <div className="row ">
+                <div className="col col-md-4">
+                  <b>Drafter</b>
+                </div>
+                <div className="col col-md-4">
+                  <b>Initiative Lead</b>
+                </div>
+                <div className="col col-md-4">
+                  <b>Ministry Privacy Officer </b>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col col-md-4">{pia.drafterName}</div>
+                <div className="col col-md-4">{pia.leadName}</div>
+                <div className="col col-md-4">{pia.mpoName}</div>
+              </div>
+              <div className="row">
+                <div className="col col-md-4">{pia.drafterTitle}</div>
+                <div className="col col-md-4">{pia.leadTitle}</div>
+                <div className="col col-md-4">{pia.mpoEmail}</div>
+              </div>
+              <div className="row">
+                <div className="col col-md-4">{pia.drafterEmail}</div>
+                <div className="col col-md-4">{pia.leadEmail}</div>
+              </div>
+            </div>
+            <div>
+              <div className="row">
+                <div className="col col-md-4">
+                  <b>Ministry</b>
+                </div>
+                <div className="col col-md-4">
+                  <b>Branch</b>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col col-md-4">{piaMinistryFullName}</div>
+                <div className="col col-md-4">{pia.branch}</div>
+              </div>
             </div>
           </div>
-          <div className="form__section">
-            <h2 className="form__h2">
-              {messages.InitiativeScopeSection.H2Text.en}
+          <div className="container pt-5 form__section">
+            <h2 className="pb-3">
+              <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
             </h2>
-
             <div>
-              <MDEditor preview="preview" value={pia.initiativeScope} />
+              <h2 className="form__h2">
+                {messages.InitiativeDescriptionSection.H2Text.en}
+              </h2>
+
+              <div>
+                <MDEditor preview="preview" value={pia.initiativeDescription} />
+              </div>
+            </div>
+            <div className="form__section">
+              <h2 className="form__h2">
+                {messages.InitiativeScopeSection.H2Text.en}
+              </h2>
+
+              <div>
+                <MDEditor preview="preview" value={pia.initiativeScope} />
+              </div>
+            </div>
+            <div className="form__section">
+              <h2 className="pb-2 pt-3">
+                {messages.InitiativeDataElementsSection.H2Text.en}
+              </h2>
+
+              <div>
+                <MDEditor preview="preview" value={pia.dataElementsInvolved} />
+              </div>
             </div>
           </div>
-          <div className="form__section">
-            <h2 className="pb-2 pt-3">
-              {messages.InitiativeDataElementsSection.H2Text.en}
-            </h2>
-
-            <div>
-              <MDEditor preview="preview" value={pia.dataElementsInvolved} />
-            </div>
-          </div>
-        </div>
-        <div className="container pt-5">
-          <h2>
-            <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
-          </h2>
-          <div>
-            <h2 className="form__h2">
-              {messages.InitiativePISection.H2Text.en}
-            </h2>
-
-            <div>
-              <p>{piOption}</p>
-            </div>
-          </div>
+<<<<<<< HEAD
           {piOption === 'No' && (
+=======
+          <div className="container pt-5">
+            <h2>
+              <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
+            </h2>
+            <div>
+              <h2 className="form__h2">
+                {messages.InitiativePISection.H2Text.en}
+              </h2>
+
+              <div>
+                <p>{piOption}</p>
+              </div>
+            </div>
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
             <div className="form__section">
               <h2 className="form__h2">
                 {messages.InitiativeRiskReductionSection.H2Text.en}
@@ -352,8 +479,13 @@ const PIADetailPage = () => {
                 <MDEditor preview="preview" value={pia.riskMitigation} />
               </div>
             </div>
+<<<<<<< HEAD
           )}
         </div>
+=======
+          </div>
+      </div>
+>>>>>>> f50a5d6 ([Utopia - 363] - Changing a PIA status manually)
       </div>
       <Modal
         confirmLabel={modalConfirmLabel}

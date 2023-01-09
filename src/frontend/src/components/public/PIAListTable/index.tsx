@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { dateToString } from '../../../utils/date';
+import { statusList } from '../../../utils/status';
 
 import { IDataTable } from './interface';
 
@@ -20,7 +21,12 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>{pia.title}</td>
               <td>{dateToString(pia.updatedAt)}</td>
               <td>{pia.drafterName}</td>
-              <td>{pia.status}</td>
+              <td>
+                <div className={`statusBlock ${pia.status ? statusList[pia.status].class : ''}`}>
+                  { pia.status ? statusList[pia.status].title: "" }
+                </div>
+              
+              </td>
               <td>
                 <Link
                   className="bcgovbtn bcgovbtn__tertiary"
