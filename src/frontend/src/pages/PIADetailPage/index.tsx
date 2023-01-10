@@ -140,7 +140,7 @@ const PIADetailPage = () => {
     }
     setShowModal(true);
   };
-  
+
   const handleEdit = () => {
     // the status will change to enum when Brandon pr merged
     if (piaStatus === PiaStatuses.MPO_REVIEW) {
@@ -224,7 +224,7 @@ const PIADetailPage = () => {
   const handleModalCancel = () => {
     setShowModal(false);
   };
-  
+
   const handleDownload = async () => {
     setDownloadError('');
 
