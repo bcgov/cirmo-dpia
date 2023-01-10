@@ -53,7 +53,7 @@ const PIADetailPage = () => {
   const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
-  const [handleEditing, sethandleEditing] = useState<boolean>(false);
+  const [handleEditing, sethandleEditing] = useState<boolean>(true);
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
@@ -111,6 +111,7 @@ const PIADetailPage = () => {
   
   const changeStatefn = (status:string) => {
     setStatusLocal(status);
+    sethandleEditing(false);
     setModalConfirmLabel(statusList[status].modal.confirmLabel);
     setModalCancelLabel(statusList[status].modal.cancelLabel);
     setModalTitleText(statusList[status].modal.title);
@@ -118,7 +119,44 @@ const PIADetailPage = () => {
     setShowModal(true);
   }
 
-  const handleSubmit = async () => {
+  const handleShowModal = (modalType: string) => {
+    switch (modalType) {
+      case 'submit':
+        setModalConfirmLabel(messages.Modal.Submit.ConfirmLabel.en);
+        setModalCancelLabel(messages.Modal.Submit.CancelLabel.en);
+        setModalTitleText(messages.Modal.Submit.TitleText.en);
+        setModalParagraph(messages.Modal.Submit.ParagraphText.en);
+        setModalButtonValue('submit');
+        break;
+      case 'edit':
+        setModalConfirmLabel(messages.Modal.Edit.ConfirmLabel.en);
+        setModalCancelLabel(messages.Modal.Edit.CancelLabel.en);
+        setModalTitleText(messages.Modal.Edit.TitleText.en);
+        setModalParagraph(messages.Modal.Edit.ParagraphText.en);
+        setModalButtonValue('edit');
+        break;
+      default:
+        break;
+    }
+    setShowModal(true);
+  };
+  
+  const handleEdit = () => {
+    // the status will change to enum when Brandon pr merged
+    if (piaStatus === PiaStatuses.MPO_REVIEW) {
+      handleShowModal('edit');
+    } else {
+      navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
+        state: pia,
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    handleShowModal('submit');
+  };
+
+  const handleStatusSubmit = async () => {
     const requestBody: Partial<IPIAIntake> = {
       status:statusLocal,
     }; 
@@ -130,6 +168,7 @@ const PIADetailPage = () => {
         /* PIA will be set after data is updated in backend */
         pia.status = statusLocal;
         setPia({...pia, status:statusLocal});
+        sethandleEditing(true);
       } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
@@ -140,34 +179,23 @@ const PIADetailPage = () => {
     setDownloadError('');
   };
 
-  const handleEdit = () => {
-    // the status will change to enum when Brandon pr merged
-    if (piaStatus === PiaStatuses.MPO_REVIEW) {
-      sethandleEditing(true);
-      setModalConfirmLabel(messages.Modal.ConfirmLabel.en);
-      setModalCancelLabel(messages.Modal.CancelLabel.en);
-      setModalTitleText(messages.Modal.TitleText.en);
-      setModalParagraph(messages.Modal.ParagraphText.en);
-      setShowModal(true);
-    } else {
-      navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
-        state: pia,
-      });
-    }
-  };
-
-  const handleModalClose = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleModalClose = async (event: any) => {
     if (!handleEditing) {
-      handleSubmit();
+      handleStatusSubmit();
       setShowModal(false);
       return;
     }
     setShowModal(false);
     // call backend patch endpoint to update the pia status
     event.preventDefault();
-    const requestBody: Partial<IPIAIntake> = {
+    const buttonValue = event.target.value;
+
+    const requestBody: Partial<IPIAIntake> =
+      buttonValue === 'submit'
+        ? {
+            status: PiaStatuses.MPO_REVIEW,
+          }
+        : {
             status: PiaStatuses.EDIT_IN_PROGRESS,
           };
     try {
@@ -192,14 +220,11 @@ const PIADetailPage = () => {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
   };
+
   const handleModalCancel = () => {
     setShowModal(false);
   };
-  /*
-  const handleSubmit = () => {
-    console.log('will do');
-  };
- */
+  
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -224,12 +249,6 @@ const PIADetailPage = () => {
     }
   };
 
-  const printlog = () => {
-    console.log(statusList[pia.status].Priviliges.MPO.changeStatus);
-    statusList[pia.status].Priviliges.MPO.changeStatus.map((value, key) => {
-      console.log(value);
-    });
-  }
   return (
     <div className="bcgovPageContainer wrapper">
       <div className="component__wrapper">
@@ -287,14 +306,15 @@ const PIADetailPage = () => {
             >
               <FontAwesomeIcon icon={faPenToSquare} />
             </button>
-              {/* comment out this code now
+            {(piaStatus === PiaStatuses.EDIT_IN_PROGRESS ||
+              piaStatus === PiaStatuses.INCOMPLETE) && (
               <button
                 className="bcgovbtn bcgovbtn__primary mx-2"
                 onClick={() => handleSubmit()}
               >
                 Submit
               </button>
-              */}
+            )}
           </div>
         </div>
         <div>
@@ -324,7 +344,6 @@ const PIADetailPage = () => {
                               ?<li key={index} 
                                 onClick={() => {
                                   changeStatefn(statuskey);
-                                  printlog();
                                 }} 
                                 className="dropdown-item-container">
                                 <div 

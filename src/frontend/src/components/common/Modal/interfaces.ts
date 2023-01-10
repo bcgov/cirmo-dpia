@@ -7,6 +7,7 @@ export interface IModal {
   show: boolean;
   children: any;
   reversed?: boolean;
+  value?:string;
   handleClose: MouseEventHandler<HTMLButtonElement>;
   handleCancel: MouseEventHandler<HTMLButtonElement>;
 }
