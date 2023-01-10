@@ -119,6 +119,7 @@ const PIADetailPage = () => {
         setModalCancelLabel(messages.Modal.Edit.CancelLabel.en);
         setModalTitleText(messages.Modal.Edit.TitleText.en);
         setModalParagraph(messages.Modal.Edit.ParagraphText.en);
+        setModalButtonValue('edit');
         break;
       default:
         break;
