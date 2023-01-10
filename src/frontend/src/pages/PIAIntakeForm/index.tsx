@@ -156,7 +156,7 @@ const PIAIntakeFormPage = () => {
             ...requestBody,
           });
         }
-        navigate('/pia-list');
+        navigate(`/pia/intake/${pia.id}/${pia.title}`);
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
