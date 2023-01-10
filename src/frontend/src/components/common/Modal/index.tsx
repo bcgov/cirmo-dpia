@@ -8,6 +8,7 @@ const Modal = ({
   handleCancel,
   show,
   reversed,
+  value,
   children,
 }: IModal) => {
   const showHideClassName = show
@@ -23,6 +24,7 @@ const Modal = ({
           <button
             className="bcgovbtn bcgovbtn__primary "
             type="button"
+            value={value}
             onClick={handleClose}
           >
             {confirmLabel}

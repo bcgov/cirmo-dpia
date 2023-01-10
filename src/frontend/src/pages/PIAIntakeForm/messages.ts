@@ -116,5 +116,20 @@ export default {
         en: `Your changes will be lost if you don't save them`,
       },
     },
+    Submit: {
+      ConfirmLabel: {
+        en: `Yes, submit`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Submit for MPO review?`,
+      },
+
+      ParagraphText: {
+        en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
+      },
+    },
   },
 };
