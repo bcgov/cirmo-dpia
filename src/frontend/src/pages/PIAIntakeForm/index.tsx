@@ -77,6 +77,7 @@ const PIAIntakeFormPage = () => {
         setPiaModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
         setPiaModalTitleText(Messages.Modal.Cancel.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
+        setPiaModalButtonValue('cancel');
         break;
       case 'save':
         setPiaModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
@@ -144,6 +145,12 @@ const PIAIntakeFormPage = () => {
         navigate(routes.PIA_INTAKE_RESULT, {
           state: { result: res },
         });
+      } else if (buttonValue === 'cancel') {
+        if (pia?.id) {
+          navigate(`/pia/intake/${pia.id}/${pia.title}`);
+        } else {
+          navigate(-1);
+        }
       } else {
         if (pia?.id) {
           await HttpRequest.patch<IPIAResult>(
@@ -197,11 +204,6 @@ const PIAIntakeFormPage = () => {
 
   const handleBackClick = () => {
     handleShowModal('cancel');
-    if (pia?.id) {
-      navigate(`/pia/intake/${pia.id}/${pia.title}`);
-    } else {
-      navigate(-1);
-    }
   };
 
   const handleTitleChange = (newTitle: any) => {
@@ -305,7 +307,6 @@ const PIAIntakeFormPage = () => {
     return () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
