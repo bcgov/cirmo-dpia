@@ -157,7 +157,9 @@ const PIADetailPage = () => {
           API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
           requestBody,
         );
-        navigate(`/pia-list`);
+        navigate(routes.PIA_INTAKE_RESULT, {
+          state: { result: pia.id },
+        });
       } else {
         await HttpRequest.patch<IPIAResult>(
           API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
