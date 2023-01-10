@@ -20,7 +20,7 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>{pia.title}</td>
               <td>{dateToString(pia.updatedAt)}</td>
               <td>{pia.drafterName}</td>
-              <td>Submitted</td>
+              <td>{pia.status}</td>
               <td>
                 <Link
                   className="bcgovbtn bcgovbtn__tertiary"

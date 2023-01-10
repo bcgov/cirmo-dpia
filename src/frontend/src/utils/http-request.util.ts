@@ -81,4 +81,21 @@ export class HttpRequest {
       addLocalAuth,
     });
   }
+
+  public static async patch<T>(
+    endpoint: string,
+    body: Record<string, any>,
+    headers: Record<string, string> = {},
+    additionalConfig: Record<string, any> = {},
+    addLocalAuth = true,
+  ) {
+    return this.request<T>({
+      method: 'PATCH',
+      endpoint,
+      body,
+      headers,
+      additionalConfig,
+      addLocalAuth,
+    });
+  }
 }
