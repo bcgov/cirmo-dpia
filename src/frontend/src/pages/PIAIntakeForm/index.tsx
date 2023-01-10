@@ -66,7 +66,7 @@ const PIAIntakeFormPage = () => {
   const [piaModalCancelLabel, setPiaModalCancelLabel] = useState<string>('');
   const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
   const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
-
+  const [piaModalButtonValue, setPiaModalButtonValue] = useState<string>('');
   //
   // Event Handlers
   //
@@ -90,6 +90,13 @@ const PIAIntakeFormPage = () => {
         setPiaModalTitleText(Messages.Modal.Edit.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
         break;
+      case 'submit':
+        setPiaModalConfirmLabel(Messages.Modal.Submit.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.Submit.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.Submit.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.Submit.ParagraphText.en);
+        setPiaModalButtonValue('submit');
+        break;
       default:
         break;
     }
@@ -100,6 +107,7 @@ const PIAIntakeFormPage = () => {
     setShowPiaModal(false);
     // call backend patch endpoint to save the change
     event.preventDefault();
+    const buttonValue = event.target.value;
     const requestBody: IPIAIntake = {
       title: title,
       ministry: ministry,
@@ -119,18 +127,37 @@ const PIAIntakeFormPage = () => {
       riskMitigation: riskMitigation,
     };
     try {
-      if (pia?.id) {
-        await HttpRequest.patch<IPIAResult>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
-      } else {
-        await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
-          status: status,
-          ...requestBody,
+      if (buttonValue === 'submit') {
+        let res;
+        if (pia?.id) {
+          res = pia?.id;
+          await HttpRequest.patch<IPIAResult>(
+            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+            { status: PiaStatuses.MPO_REVIEW, ...requestBody },
+          );
+        } else {
+          res = await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
+            status: PiaStatuses.MPO_REVIEW,
+            ...requestBody,
+          });
+        }
+        navigate(routes.PIA_INTAKE_RESULT, {
+          state: { result: res },
         });
+      } else {
+        if (pia?.id) {
+          await HttpRequest.patch<IPIAResult>(
+            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+            requestBody,
+          );
+        } else {
+          await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
+            status: status,
+            ...requestBody,
+          });
+        }
+        navigate('/pia-list');
       }
-      navigate('/pia-list');
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
@@ -268,48 +295,9 @@ const PIAIntakeFormPage = () => {
   //
   // Form Submission Handler
   //
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
-    const requestBody: IPIAIntake = {
-      title: title,
-      ministry: ministry,
-      branch: branch,
-      drafterName: drafterName,
-      drafterEmail: drafterEmail,
-      drafterTitle: drafterTitle,
-      leadName: leadName,
-      leadEmail: leadEmail,
-      leadTitle: leadTitle,
-      mpoName: mpoName,
-      mpoEmail: mpoEmail,
-      initiativeDescription: initiativeDescription,
-      initiativeScope: initiativeScope,
-      dataElementsInvolved: dataElementsInvolved,
-      hasAddedPiToDataElements: hasAddedPiToDataElements,
-      riskMitigation: riskMitigation,
-      status: PiaStatuses.MPO_REVIEW,
-    };
-    try {
-      let res;
-      if (pia?.id) {
-        res = pia?.id;
-        await HttpRequest.patch<IPIAResult>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
-      } else {
-        res = await HttpRequest.post<IPIAResult>(
-          API_ROUTES.PIA_INTAKE,
-          requestBody,
-        );
-      }
-
-      navigate(routes.PIA_INTAKE_RESULT, {
-        state: { result: res },
-      });
-    } catch (err: any) {
-      setMessage(err.message || 'Something went wrong. Please try again.');
-    }
+    handleShowModal('submit');
   };
 
   useEffect(() => {
@@ -564,6 +552,7 @@ const PIAIntakeFormPage = () => {
         cancelLabel={piaModalCancelLabel}
         titleText={piaModalTitleText}
         show={showPiaModal}
+        value={piaModalButtonValue}
         handleClose={(e) => handleModalClose(e)}
         handleCancel={handleModalCancel}
       >

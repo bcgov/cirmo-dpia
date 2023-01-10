@@ -38,18 +38,35 @@ export default {
   },
 
   Modal: {
-    ConfirmLabel: {
-      en: `Yes, continue`,
-    },
-    CancelLabel: {
-      en: `Cancel`,
-    },
-    TitleText: {
-      en: `Change status to "Edit in progress"?`,
-    },
+    Edit: {
+      ConfirmLabel: {
+        en: `Yes, continue`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Change status to "Edit in progress"?`,
+      },
 
-    ParagraphText: {
-      en: `Make changes yourself or work with your MPO to edit your PIA until it is ready for another review.`,
+      ParagraphText: {
+        en: `Make changes yourself or work with your MPO to edit your PIA until it is ready for another review.`,
+      },
+    },
+    Submit: {
+      ConfirmLabel: {
+        en: `Yes, submit`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Submit for MPO review?`,
+      },
+
+      ParagraphText: {
+        en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
+      },
     },
   },
 };
