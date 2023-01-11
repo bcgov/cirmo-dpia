@@ -5,97 +5,73 @@
 
 ## Project Structure
 
+This structure diagram show all directories and specific files of interest. It does not capture ALL files present in the architecture of this project.
+
     .
-    ├── .github                                 # Contains GitHub Related sources
+    ├── .github                                 # Contains GitHub Actions Related sources
     |   ├── ISSUE_TEMPLATE                      # Github Templates for bug reports and feature requests
     |   ├── helpers                             # Re-usable shell scripts used in deployment pipelines
-    |   └── workflows                           # Contains Github Actions for CI/CD tasks
-    ├── docs                                    # Project specific documentation ex// lo/hi fidelity wireframes etc.
+    |   ├── workflows                           # Contains Github Actions for CI/CD tasks
+    |   |   ├── build-deploy-api-v2.yaml        # Github Action run on merge to main that builds, tags, pushes and deploys the API image to the DEV openshift namespace
+    |   |   ├── build-deploy-app-v2.yaml        # Github Action run on merge to main that builds, tags, pushes and deploys the React App image to the DEV openshift namespace
+    |   |   ├── tag-deploy-*-test.yaml          # Github Action to tag and deploy the latest API/React App images to the TEST openshift namespace
+    |   |   ├── tag-deploy-*-prod.yaml          # Github Action to tag and deploy the latest API/React App images to the PROD openshift namespace
+    |   |   ├── pilot-build-tag-deploy-*.yaml   # Github Action to build, tag, push and deploy API/React App images to separate deployment configs in DEV (pipeline changes action)
+    |   |   ├── *-lint.yaml                     # Github Actions run on pull request open to run linting against either the API or React App source code
+    |   |   ├── code-climate.yaml               # Github Action that creates, formats and uploads API test coverage score to code climate for reporting
+    |   |   └── zap-*-scan.yaml                 # Github Actions for the API and React App to run zap scans against 
+    |   ├── PULL_REQUEST_TEMPLATE.md            # Template to be filled out each time a branch is compared to main in a pull request
+    |   ├── auto-action-config.yaml             # yaml file that will tag reviewers and assignees of pull requests opened against main branch
+    |   ├── dependabot.yaml                     # file that controls dependabot coverage scans
+    |   ├── labeler.yaml                        # yaml file that controls tags applied to pull requests based on where code diff lives  
+    |   └── README.md                           # Github Actions and Environments specific Documentation 
+    ├── .husky                                  #
+    |    └── pre-commit                         # shell script run before a branch can be pushed up to remote repository for pre-linting  
     ├── openshift                               # Openshift Object Repository
-    |   └── templates                           # Openshift Object Templates sub directory
-    |       ├── api                             # API specific templates
-    |       ├── app                             # Web App specific templates
-    |       ├── network-policies                # network policies applied to all Openshift namespaces
-    |       └── rolebindings                    # Rolebindings applied to all Openshift namespaces
-    ├── src/                                    # Directory Containing all Project Components source code
-    │   ├── backend                             # API source code, Dockerfiles
-    |   |   ├── swagger                         # API Swagger Config
-    |   |   ├── versions                        # version specific Express components
-    |   |   |   └── v1                          # v1 specific components
-    |   |   |       └── routes                  # v1 routes
-    │   │   └── test                            # API unit test directory  
-    │   └── frontend                            # WebApp source code
-    |       ├── .vscode                         # vscode config
-    |       ├── cypress                         # cyrpress testing code, config
-    |       ├── public                          # Assests copied into dist upon build
-    |       └── src                             # Vue project source code
-    |           ├── assets                      # Store for project images, videos, fonts
-    |           └── components                  # Store for project specific Vue components
-    ├── .env-template                           # Template file to base local workstation .env file off of
-    ├── .gitattributes                          # Simple text file that gives attributes to pathnames inside git repository
-    ├── .gitignore                              # Specifies intentionally untracked files to ignore
-    ├── COMPLIANCE.yaml                         # Tracks PIA and STRA status of project
-    ├── CONTRIBUTING.md                         # Readme explaining how to contribute to this project
-    ├── LICENSE                                 # Apache License
-    ├── README.md                               # This file.    
-    └── docker-compose.yaml                     # Project Specific Docker Compose file
-
-## Project Setup -> Quick Start
-
-### Environment Variables -> The .env File
-
-Before getting building or starting any project components on your local development machine, create a ```.env``` file at the root level of this project.
-This file should contain the contents of the .env-template also found at the root level of this project. Please take the time to read the following table
-and assign values to the environment variables listed in order to configure and run the project components on your local development machine.
-
-| Environment Variable      | Description                                   | Value                                                 |
-|---------------------------|-----------------------------------------------|-------------------------------------------------------|
-| API_PORT                  | Local port that serves API requests           | 3000 or 300X                                          |
-| API_VERSION               | Version of the API being served               | v1                                                    |
-| API_IP_ADDRESS            | Configurable value to host API                | localhost or 127.0.0.X                                |
-
-### Environment Variables -> Additions or Changes
-
-If you're contributing to this project via Pull Request (PR), and your code contains additions or changes to environment variables that are required to
-run this project on other local machines or in the project Openshift Environment, please make sure that your changes are captured in the ```.env-template```
-file as well as the table found above in the project README.md.
-
-### Docker and Docker Compose
-
-To setup project specific docker containers, first make sure you have Docker Desktop installed on your machine. Next, run the following command.
-
-```bash
-docker compose up -d dpia-api dpia-app
-```
-This command will build the project API and Web App containers in headless mode. If you need to only run one container remove "dpia-api dpia-webapp" and replace with
-the name of the container you'd like to build and run. The name of all containers used within the DPIA project can be found in the docker-compose file found at the
-root level of this repository.
-
-### Project Dependencies
-
-To be filled out at a later date once the Project Stack starts to take shape. 
-
-## NPM Scripts
-
-| Component                 | Script                                        | Use case description                                  |
-|---------------------------|-----------------------------------------------|-------------------------------------------------------|
-| API                       | start                                         |                                                       |
-| API                       | dev                                           |                                                       |
-| API                       | test                                          |                                                       |
-| API                       | test-with-coverage                            |                                                       |
-| Web App                   | dev                                           |                                                       |
-| Web App                   | build                                         |                                                       |
-| Web App                   | preview                                       |                                                       |
-| Web App                   | test:e2e                                      |                                                       |
-| Web App                   | test:e2e:ci                                   |                                                       |
-| Web App                   | test:unit                                     |                                                       |
-| Web App                   | test:unit:ci                                  |                                                       |
-| Web App                   | lint                                          |                                                       |
-
-## Prerequisites
-
-- Docker
-- Docker compose
+    |   ├── backup                              # Directory containing k8s artifacts and documentation related to deploying postgres backup containers to DEV/TEST/PROD
+    |   |   ├── README.md                       #
+    |   |   ├── backup-build.yaml               #
+    |   |   ├── backup-deploy.yaml              #
+    |   |   └── backup.conf                     #
+    |   └── templates                           # Directory container k8s artifacts related to CD process into openshift namespaces
+    |       ├── api                             # 
+    |       ├── app                             # 
+    |       ├── network-policies                # 
+    |       └── rolebindings                    # 
+    ├── src                                     # Project Source Code Components
+    │   ├── backend                             # All API related source code
+    |   |   ├── .config                         #
+    |   |   ├── .docker                         #
+    |   |   ├── src                             #
+    |   |   |   ├── assets                      #
+    |   |   |   ├── common                      #
+    |   |   |   ├── config                      #
+    |   |   |   ├── health                      #
+    |   |   |   ├── migrations                  #
+    |   |   |   └── modules                     #
+    │   └── frontend                            # All React App related source code
+    |       ├── .config                         #
+    |       ├── .docker                         #
+    |       ├── cypress                         #
+    |       ├── public                          #
+    |       └── src                             #
+    |           ├── assets                      #
+    |           ├── components                  #
+    |           ├── constant                    #
+    |           ├── hooks                       #
+    |           ├── pages                       #
+    |           ├── routes                      #
+    |           ├── sass                        #
+    |           ├── types                       #
+    |           └── utils                       #
+    ├── .codeclimate.yaml                       # yaml file that controls thresholds for project specific reporting criteria
+    ├── .gitattributes                          # file that controls attributes given to specific pathnames
+    ├── .gitignore                              # list of files that are omitted from commits to this repository
+    ├── MAKEFILE                                # Project specific tasks run to simplify running/accessing project resources
+    ├── README.md                               # You're reading me right now!
+    ├── docker-compose.local.yaml               # docker-compose file used specifically for local workstation development
+    ├── docker-compose.yaml                     # docker-compose file used specifically for CI/CD purposes
+    └── docker-entrypoint.sh                    # shell script run to make changes to docker containers on startup
 
 ## Locally running the development app
 ```bash
@@ -103,12 +79,35 @@ $ make api-setup-env
 $ make app-run
 ```
 
-## Deployment
+### Docker and Docker Compose
+
+To setup project specific docker containers, first make sure you have Docker Desktop installed on your machine. Next, run the following command.
+
+```bash
+docker compose up -d [SPACE SEPARATED LIST OF CONTAINERS]
+```
+This command will build the project API and Web App containers in headless mode. If you need to only run one container remove "dpia-api dpia-webapp" and replace with
+the name of the container you'd like to build and run. The name of all containers used within the DPIA project can be found in the docker-compose file found at the
+root level of this repository.
 
 ### Environments
-- local
-- development
-- staging
-- production
+- local (developers local workstation of choice)
+- Development (DEV)
+    ├── [API](https://dev.pia.gov.bc.ca/api/api-docs)
+    └── [Frontend](https://dev.pia.gov.bc.ca/)
+- Test (TEST)
+    ├── [API](https://test.pia.gov.bc.ca/api/api-docs)
+    └── [Frontend](https://test.pia.gov.bc.ca/)
+- Production (PROD)
+    ├── [API](https://pia.gov.bc.ca/api/api-docs)
+    └── [Frontend](https://pia.gov.bc.ca/)
 
-### Github Environments
+### Provisioning Requests
+
+If you'd like to be provisioned access to one of the following resources:
+
+- DPIA Openshift Namespaces
+- Github Collaborators Write or Admin Groups
+- DPIA SSO Portal
+
+Please email your request to adam.kroon@gov.bc.ca
