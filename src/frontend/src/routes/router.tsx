@@ -25,7 +25,7 @@ export const ProtectedRoute = () => {
 };
 
 const Router = () => {
-  const isMPO = !!isMPORole('roles');
+  const isMPO = !!isMPORole();
 
   return (
     <Routes>
