@@ -53,7 +53,7 @@ const PIADetailPage = () => {
   const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
-  const [handleEditing, sethandleEditing] = useState<boolean>(true);
+  const [handleEditing, setHandleEditing] = useState<boolean>(true);
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
@@ -111,7 +111,7 @@ const PIADetailPage = () => {
   
   const changeStatefn = (status:string) => {
     setStatusLocal(status);
-    sethandleEditing(false);
+    setHandleEditing(false);
     setModalConfirmLabel(statusList[status].modal.confirmLabel);
     setModalCancelLabel(statusList[status].modal.cancelLabel);
     setModalTitleText(statusList[status].modal.title);
@@ -168,7 +168,7 @@ const PIADetailPage = () => {
         /* PIA will be set after data is updated in backend */
         pia.status = statusLocal;
         setPia({...pia, status:statusLocal});
-        sethandleEditing(true);
+        setHandleEditing(true);
       } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
