@@ -1,3 +1,5 @@
+import { clearStorage } from './auth';
+
 export class AppStorage {
   static setItem(key: string, value: any) {
     if (!key || !value) return;
@@ -14,7 +16,20 @@ export class AppStorage {
 
     if (!value) return;
 
-    return JSON.parse(value);
+    try {
+      const parsedValue = JSON.parse(value);
+      return parsedValue;
+    } catch (e) {
+      // if the storage is compromised, log the user out
+      // This change is temporary and is due to the recent migration from storing localStorage directly vs using the newly created Storage class
+      // This can be reverted in the future as it can only happen for roles, and username keys [other field keys are changed]
+      console.error(
+        'Something went wrong. Redirecting user to the landing screen',
+        e,
+      );
+      clearStorage();
+      (window as Window).location = '/';
+    }
   }
 
   static removeItem(key: string) {
