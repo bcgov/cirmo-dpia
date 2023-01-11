@@ -10,10 +10,16 @@ import Modal from '../Modal';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
-import { clearTokens, isAuthenticated, storeTokens } from '../../../utils/auth';
+import {
+  authLogoutHandler,
+  ConfigStorageKeys,
+  isAuthenticated,
+  storeAuthTokens,
+  TokenStorageKeys,
+} from '../../../utils/auth';
 import { getAccessToken } from '../../../utils/getAccessToken';
-import { setItemInStorage } from '../../../utils/helper.util';
 import { IConfig } from '../../../types/interfaces/config.interface';
+import { AppStorage } from '../../../utils/storage';
 
 type Props = {
   user: string | null;
@@ -23,7 +29,7 @@ function Header({ user }: Props) {
   const { setAuthenticated } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [accessToken, setAccessToken] = useState(
-    localStorage.getItem('access_token'),
+    AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN),
   );
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
@@ -52,14 +58,18 @@ function Header({ user }: Props) {
           didAuthRef.current = true;
           const keycloakToken = await getAccessToken(code);
           if (keycloakToken !== undefined) {
-            storeTokens(keycloakToken);
+            storeAuthTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
-            const res = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
-            setItemInStorage('config', res);
+            const config = await HttpRequest.get<IConfig>(
+              API_ROUTES.CONFIG_FILE,
+            );
+            AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
             // TODO: Refactor protected routing to allow for keycloak
             // to use redirect URI instead of this value
             navigate(routes.PIA_LIST);
+          } else {
+            throw new Error('Invalid Token Information found');
           }
         } catch (e) {
           setMessage('login failed');
@@ -77,30 +87,27 @@ function Header({ user }: Props) {
       keycloakUserDetail !== null &&
       userInfoError === null
     ) {
-      setItemInStorage('userName', keycloakUserDetail.name);
-      setItemInStorage('roles', keycloakUserDetail.client_roles);
+      AppStorage.setItem(ConfigStorageKeys.USERNAME, keycloakUserDetail.name);
+      AppStorage.setItem(
+        ConfigStorageKeys.ROLES,
+        keycloakUserDetail.client_roles,
+      );
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
   const login = () => {
-    win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
+    win.location = API_ROUTES.KEYCLOAK_LOGIN;
   };
 
   const logout = async () => {
     setAuthenticated(false);
-    const keycloakTokenObj = {
-      access_token: win.localStorage.getItem('access_token'),
-      refresh_token: win.localStorage.getItem('refresh_token'),
-      expires_in: win.localStorage.getItem('expires_in'),
-      refresh_expires_in: win.localStorage.getItem('refresh_expires_in'),
-    };
 
-    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
-
-    clearTokens();
-    setAccessToken(null);
-    navigate('/');
+    authLogoutHandler((pathUrl) => {
+      setAccessToken(null);
+      navigate(pathUrl);
+    });
   };
+
   const hideModalDialog = async () => {
     await logout();
     setShowModal(false);

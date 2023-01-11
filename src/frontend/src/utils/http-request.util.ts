@@ -1,3 +1,6 @@
+import { TokenStorageKeys } from './auth';
+import { AppStorage } from './storage';
+
 interface IHttpRequestOptions {
   endpoint: string;
   method: string;
@@ -14,7 +17,7 @@ export class HttpRequest {
     };
 
     if (options.addLocalAuth) {
-      const accessToken = localStorage.getItem('access_token');
+      const accessToken = AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN);
       if (!accessToken) {
         console.error('Auth Error: Missing Access Token');
         throw new Error('Authentication Error: Something went wrong.');

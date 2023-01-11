@@ -13,7 +13,7 @@ function LandingPage() {
   // workaround
   const win: Window = window;
   const login = () => {
-    win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
+    win.location = API_ROUTES.KEYCLOAK_LOGIN;
   };
   return (
     <div>
