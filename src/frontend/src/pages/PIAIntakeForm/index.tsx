@@ -152,18 +152,25 @@ const PIAIntakeFormPage = () => {
           navigate(-1);
         }
       } else {
-        if (pia?.id) {
+        let id = pia?.id;
+
+        if (id) {
           await HttpRequest.patch<IPIAResult>(
-            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
             requestBody,
           );
         } else {
-          await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
-            status: status,
-            ...requestBody,
-          });
+          const res = await HttpRequest.post<IPIAResult>(
+            API_ROUTES.PIA_INTAKE,
+            {
+              status: status,
+              ...requestBody,
+            },
+          );
+
+          id = res.id;
         }
-        navigate(`/pia/intake/${pia.id}/${pia.title}`);
+        navigate(`/pia/intake/${id}/${pia?.title || requestBody.title}`);
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
