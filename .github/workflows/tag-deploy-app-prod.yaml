@@ -1,4 +1,4 @@
-name: Github Environment - APP PROD Promotion
+name: DPIA Frontend - PROD Promotion
 
 on:
   workflow_dispatch:

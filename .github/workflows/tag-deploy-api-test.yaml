@@ -1,4 +1,4 @@
-name: Github Environment - API TEST Promotion
+name: DPIA API - TEST Promotion
 
 on:
   workflow_dispatch:
