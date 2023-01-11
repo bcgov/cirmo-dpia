@@ -106,7 +106,7 @@ const PIADetailPage = () => {
   ]);
 
   const isMPO = () => {
-    return isMPORole('roles');
+    return isMPORole();
   };
 
   const changeStatefn = (status: string) => {
