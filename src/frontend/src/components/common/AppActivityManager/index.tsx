@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authLogoutHandler, refreshAuthTokens } from '../../../utils/auth';
+import {
+  authLogoutHandler,
+  isAuthenticated,
+  refreshAuthTokens,
+  TokenStorageKeys,
+} from '../../../utils/auth';
+import { AppStorage } from '../../../utils/storage';
 import Modal from '../Modal';
 import { addEventListeners, removeEventListeners } from './events';
 
@@ -22,10 +28,21 @@ const AppActivityManager = (): React.ReactElement => {
      * Refresh the authentication tokens every "refreshInterval" seconds [initial value - every one minute]
      * Continue refreshing until user is logged out
      *
+     * If any of the opened application tabs has refreshed the token in last one minute [or "refreshInterval" time ago ]
+     * then skip the refresh from the tab to avoid duplicate callings of refresh token
+     *
      * This interval is stopped when the user logs out of the application
      */
     const interval = setInterval(() => {
-      refreshAuthTokens();
+      const tokensLastRefreshedAt = AppStorage.getItem(
+        TokenStorageKeys.TOKENS_LAST_REFRESHED_AT,
+      );
+      const now = +new Date();
+      const refreshIntervalAgo = now - config.refreshInterval * 1000;
+
+      if (isAuthenticated() && tokensLastRefreshedAt < refreshIntervalAgo) {
+        refreshAuthTokens();
+      }
     }, config.refreshInterval * 1000);
 
     /**

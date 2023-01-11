@@ -8,6 +8,7 @@ export enum TokenStorageKeys {
   ACCESS_TOKEN_EXPIRY = 'accessTokenExpiry',
   REFRESH_TOKEN = 'refreshToken',
   REFRESH_TOKEN_EXPIRY = 'refreshTokenExpiry',
+  TOKENS_LAST_REFRESHED_AT = 'tokensLastRefreshedAt',
 }
 
 export enum ConfigStorageKeys {
@@ -32,16 +33,19 @@ export const isAuthenticated = () => {
 };
 
 export const storeAuthTokens = (data: IKeycloakToken) => {
+  const now = Date.now();
+
   AppStorage.setItem(TokenStorageKeys.ACCESS_TOKEN, data.access_token);
   AppStorage.setItem(
     TokenStorageKeys.ACCESS_TOKEN_EXPIRY,
-    (Date.now() + +data.expires_in * 1000).toString(),
+    now + +data.expires_in * 1000,
   );
   AppStorage.setItem(TokenStorageKeys.REFRESH_TOKEN, data.refresh_token);
   AppStorage.setItem(
     TokenStorageKeys.REFRESH_TOKEN_EXPIRY,
-    (Date.now() + +data.refresh_expires_in * 1000).toString(),
+    now + +data.refresh_expires_in * 1000,
   );
+  AppStorage.setItem(TokenStorageKeys.TOKENS_LAST_REFRESHED_AT, +now);
 };
 
 export const clearAuthTokens = () => {
@@ -66,7 +70,10 @@ export const getAuthTokens = () => {
 export const authLogoutHandler = async (
   navigateCallback: (pathUrl: string) => void,
 ) => {
-  await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, getAuthTokens());
+  // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
+  if (isAuthenticated()) {
+    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, getAuthTokens());
+  }
 
   clearStorage();
   navigateCallback('/');

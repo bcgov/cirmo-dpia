@@ -96,7 +96,7 @@ function Header({ user }: Props) {
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
   const login = () => {
-    win.location = `/${API_ROUTES.KEYCLOAK_LOGIN}`;
+    win.location = API_ROUTES.KEYCLOAK_LOGIN;
   };
 
   const logout = async () => {
