@@ -16,7 +16,7 @@ export const useFetchKeycloakUserInfo = (accessToken: string | null) => {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    fetch(`/${API_ROUTES.KEYCLOAK_USER}`, options)
+    fetch(API_ROUTES.KEYCLOAK_USER, options)
       .then((response) => response.json())
       .then((data) => {
         if (data.error != null) {

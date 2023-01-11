@@ -11,7 +11,8 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
 import {
-  clearAuthTokens,
+  authLogoutHandler,
+  ConfigStorageKeys,
   isAuthenticated,
   storeAuthTokens,
   TokenStorageKeys,
@@ -60,8 +61,10 @@ function Header({ user }: Props) {
             storeAuthTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
-            const res = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
-            AppStorage.setItem('config', res);
+            const config = await HttpRequest.get<IConfig>(
+              API_ROUTES.CONFIG_FILE,
+            );
+            AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
             // TODO: Refactor protected routing to allow for keycloak
             // to use redirect URI instead of this value
             navigate(routes.PIA_LIST);
@@ -84,8 +87,11 @@ function Header({ user }: Props) {
       keycloakUserDetail !== null &&
       userInfoError === null
     ) {
-      AppStorage.setItem('userName', keycloakUserDetail.name);
-      AppStorage.setItem('roles', keycloakUserDetail.client_roles);
+      AppStorage.setItem(ConfigStorageKeys.USERNAME, keycloakUserDetail.name);
+      AppStorage.setItem(
+        ConfigStorageKeys.ROLES,
+        keycloakUserDetail.client_roles,
+      );
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 
@@ -95,17 +101,13 @@ function Header({ user }: Props) {
 
   const logout = async () => {
     setAuthenticated(false);
-    const keycloakTokenObj = {
-      access_token: AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN),
-      refresh_token: AppStorage.getItem(TokenStorageKeys.REFRESH_TOKEN),
-    };
 
-    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, keycloakTokenObj);
-
-    clearAuthTokens();
-    setAccessToken(null);
-    navigate('/');
+    authLogoutHandler((pathUrl) => {
+      setAccessToken(null);
+      navigate(pathUrl);
+    });
   };
+
   const hideModalDialog = async () => {
     await logout();
     setShowModal(false);

@@ -22,8 +22,6 @@ export class AppStorage {
 
     localStorage.removeItem(key);
 
-    localStorage.getItem('1');
-
     return true;
   }
 
