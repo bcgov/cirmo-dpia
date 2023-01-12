@@ -1,0 +1,56 @@
+name: Testing Push to Artifactory
+
+on: 
+  workflow_dispatch:
+  
+jobs:
+  DPIA-API-Build-Tag-Push:
+    environment: API-Dev
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Login to Openshift Silver Cluster
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: github-actions
+          OPENSHIFT_NAMESPACE: b996e6-tools
+        with: 
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+          namespace: b996e6-tools
+            
+      # Login to BC Gov Docker Image Repository
+      - name: Login to Openshift Docker
+        run : |
+          docker login -u ${{ secrets.ARTPROJ_SA_USERNAME }} -p ${{ secrets.ARTPROJ_SA_PASSWORD }} ${{ secrets.ARPROJ_PROJECT_URL }}
+          
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
+      
+      # Build the DPIA API Application Image via docker-compose
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-api
+      
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
+      
+      # Tag Docker Image built with latest
+      - name: Docker Tag Version
+        run: |
+          docker tag cirmo-dpia_dpia-api ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
+
+      # Push docker image to BC Gov Repository  
+      - name: Docker Push Version
+        run: |
+          docker push ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
