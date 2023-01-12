@@ -28,7 +28,7 @@ jobs:
       # Login to BC Gov Docker Image Repository
       - name: Login to Openshift Docker
         run : |
-          docker login -u ${{ secrets.ARTPROJ_SA_USERNAME }} -p ${{ secrets.ARTPROJ_SA_PASSWORD }} ${{ secrets.ARPROJ_PROJECT_URL }}
+          docker login ${{ secrets.ARPROJ_PROJECT_URL }} -u ${{ secrets.ARTPROJ_SA_USERNAME }} -p ${{ secrets.ARTPROJ_SA_PASSWORD }}
           
       # Setup environment variables
       - name: Setup environment
