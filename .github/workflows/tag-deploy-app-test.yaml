@@ -1,4 +1,4 @@
-name: Github Environment - APP TEST Promotion
+name: DPIA Frontend - TEST Promotion
 
 on:
   workflow_dispatch:

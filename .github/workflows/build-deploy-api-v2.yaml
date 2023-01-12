@@ -1,4 +1,4 @@
-name: Github Environment - DPIA API v2
+name: DPIA API - Deploy DEV
 
 on:
   push:
