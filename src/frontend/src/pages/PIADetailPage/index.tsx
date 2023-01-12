@@ -351,34 +351,38 @@ const PIADetailPage = () => {
                         </div>
                       </button>
                       {pia.status ? (
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton1"
-                        >
-                          {statusList[
-                            pia.status
-                          ].Priviliges.MPO.changeStatus.map(
-                            (statuskey, index) =>
-                              pia.status !== statuskey &&
-                              statuskey !== PiaStatuses.COMPLETED ? (
-                                <li
-                                  key={index}
-                                  onClick={() => {
-                                    changeStatefn(statuskey);
-                                  }}
-                                  className="dropdown-item-container"
-                                >
-                                  <div
-                                    className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
+                        pia.status in statusList ? (
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            {statusList[
+                              pia.status
+                            ].Priviliges.MPO.changeStatus.map(
+                              (statuskey, index) =>
+                                pia.status !== statuskey &&
+                                statuskey !== PiaStatuses.COMPLETED ? (
+                                  <li
+                                    key={index}
+                                    onClick={() => {
+                                      changeStatefn(statuskey);
+                                    }}
+                                    className="dropdown-item-container"
                                   >
-                                    {statusList[statuskey].title}
-                                  </div>
-                                </li>
-                              ) : (
-                                ''
-                              ),
-                          )}
-                        </ul>
+                                    <div
+                                      className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
+                                    >
+                                      {statusList[statuskey].title}
+                                    </div>
+                                  </li>
+                                ) : (
+                                  ''
+                                ),
+                            )}
+                          </ul>
+                        ) : (
+                          ''
+                        )
                       ) : (
                         ''
                       )}

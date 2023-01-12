@@ -22,13 +22,21 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
               <td>{dateToString(pia.updatedAt)}</td>
               <td>{pia.drafterName}</td>
               <td>
-                <div
-                  className={`statusBlock ${
-                    pia.status ? statusList[pia.status].class : ''
-                  }`}
-                >
-                  {pia.status ? statusList[pia.status].title : ''}
-                </div>
+                {pia.status ? (
+                  pia.status in statusList ? (
+                    <div
+                      className={`statusBlock ${
+                        pia.status ? statusList[pia.status].class : ''
+                      }`}
+                    >
+                      {pia.status ? statusList[pia.status].title : ''}
+                    </div>
+                  ) : (
+                    ''
+                  )
+                ) : (
+                  ''
+                )}
               </td>
               <td>
                 <Link
