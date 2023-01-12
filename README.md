@@ -93,14 +93,14 @@ root level of this repository.
 ### Environments
 - local (developers local workstation of choice)
 - Development (DEV)
-    ├── [API](https://dev.pia.gov.bc.ca/api/api-docs)
-    └── [Frontend](https://dev.pia.gov.bc.ca/)
+    [API](https://dev.pia.gov.bc.ca/api/api-docs)
+    [Frontend](https://dev.pia.gov.bc.ca/)
 - Test (TEST)
-    ├── [API](https://test.pia.gov.bc.ca/api/api-docs)
-    └── [Frontend](https://test.pia.gov.bc.ca/)
+    [API](https://test.pia.gov.bc.ca/api/api-docs)
+    [Frontend](https://test.pia.gov.bc.ca/)
 - Production (PROD)
-    ├── [API](https://pia.gov.bc.ca/api/api-docs)
-    └── [Frontend](https://pia.gov.bc.ca/)
+    [API](https://pia.gov.bc.ca/api/api-docs)
+    [Frontend](https://pia.gov.bc.ca/)
 
 ### Provisioning Requests
 

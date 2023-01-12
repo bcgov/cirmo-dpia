@@ -1,4 +1,4 @@
-name: Github Environment - API PROD Promotion
+name: DPIA API - PROD Promotion
 
 on:
   workflow_dispatch:
