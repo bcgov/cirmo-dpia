@@ -104,7 +104,7 @@ h4 {
   padding-block: 5em;
   padding-inline: 7em;
   margin-block: 2em;
-  margin-inline: 2em;
+  width:100%;
 
   & > .img__empty-pia-list {
     margin-bottom: 3em;
@@ -121,4 +121,8 @@ h4 {
 
 .margin-bottom--2em {
   margin-bottom: 2em;
+}
+
+.full__width {
+  width:100%;
 }

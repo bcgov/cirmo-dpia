@@ -23,10 +23,22 @@ $text-light: #fff;
 $text-lightgray: #f2f2f2;
 $link-blue: #1a5a96;
 
+/* Banner Status text colours */
+$text-errorBanner: #A12622; 
+$text-successBanner: #2D4821; 
+$text-warningBanner: #6C4A00; 
+$text-infoBanner: #1A5A96; 
+
 /* Background Colours */
 $bg-white: #fff;
 $bg-blue: #38598a;
 $bg-lightgray: #f2f2f2;
+
+/* Banner Status Background colours */
+$bg-successBanner:#Dff0D8;
+$bg-infoBanner:#D9EAF7;
+$bg-warningBanner:#F9F1C6;
+$bg-errorBanner:#F2DEDE;
 
 /* Semantic colours */
 $error: #d8292f;

@@ -3,6 +3,10 @@
   max-width: 80%;
 }
 
+.form-control {
+  border-color: $form-input-border-colour;
+}
+
 .form__title {
   display: flex;
   justify-content: space-between;
@@ -52,3 +56,4 @@
 .form-group__p--margin-zero {
   margin: 0;
 }
+
