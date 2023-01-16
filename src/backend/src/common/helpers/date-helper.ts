@@ -12,5 +12,15 @@ export const toPacific = (date = new Date(), options = {}) => {
  * @returns mm/dd/yyyy date string
  */
 export const shortDate = (date = new Date(), options = {}) => {
-  return toPacific(date, { dateStyle: 'short', ...options });
+  const year = toPacific(date, { year: 'numeric', ...options });
+
+  const month = toPacific(date, {
+    month: '2-digit',
+    ...options,
+  });
+  const day = toPacific(date, {
+    day: '2-digit',
+    ...options,
+  });
+  return year + '/' + month + '/' + day;
 };

@@ -20,7 +20,7 @@ describe('DateHelper', () => {
         'Wed Dec 21 2022 15:16:42 GMT-0800 (Pacific Standard Time)',
       );
 
-      expect(shortDate(date)).toBe('12/21/22');
+      expect(shortDate(date)).toBe('2022/12/21');
     });
   });
 });
