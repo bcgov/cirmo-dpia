@@ -8,8 +8,8 @@ const PIAList = () => {
   const tableHeadings = ['Title', 'Last modified', 'Drafter', 'PIA status'];
   const { tableData } = usePIALookup();
   return (
-    <div className="bcgovPageContainer background bcgovPageContainer__with-controls">
-      <div className="page__controls">
+    <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
+      <div className="page__controls full__width">
         <h1>List of PIAs</h1>
         <a href="/ppq" className="bcgovbtn bcgovbtn__primary">
           Create New
