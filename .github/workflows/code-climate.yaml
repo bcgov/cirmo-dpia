@@ -1,4 +1,4 @@
-name: Generate, Aggregate and Upload coverage reports to Code Climate
+name: Code Climate - API Test Coverage - Generate, Format and Upload
 
 on:
   push:
