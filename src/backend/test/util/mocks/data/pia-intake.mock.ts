@@ -47,6 +47,7 @@ export const getPiaIntakeROMock: GetPiaIntakeRO = {
   ...piaIntakeDataMock,
   ...{
     id: baseEntityMock.id,
+    saveId: baseEntityMock.saveId,
     createdAt: baseEntityMock.createdAt,
     updatedAt: baseEntityMock.updatedAt,
   },

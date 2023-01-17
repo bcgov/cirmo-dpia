@@ -48,4 +48,9 @@ export class BaseEntity {
     name: 'updated_by_username',
   })
   updatedByUsername: string;
+
+  @Column({
+    name: 'save_id',
+  })
+  saveId: string;
 }
