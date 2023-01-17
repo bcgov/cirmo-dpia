@@ -1,6 +1,6 @@
 import { IsString, IsOptional, Length } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { piaIntakeEntityMock } from 'test/util/mocks/data/pia-intake.mock';
+import { piaIntakeEntityMock } from './create-pia-intake.dto';
 
 export class PiaFormQuery {
   @ApiProperty({

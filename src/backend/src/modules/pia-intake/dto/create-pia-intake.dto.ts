@@ -10,7 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
-const piaIntakeEntityMock = {
+export const piaIntakeEntityMock = {
   title: 'Test PIA for screening King Richard',
   ministry: GovMinistriesEnum.TOURISM_ARTS_CULTURE_AND_SPORT,
   branch: 'Entertainment',
