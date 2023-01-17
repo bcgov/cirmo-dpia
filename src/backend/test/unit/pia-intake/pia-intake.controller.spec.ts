@@ -12,6 +12,9 @@ import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import {
   createPiaIntakeMock,
   getPiaIntakeROMock,
+  piaFromQueryDrafterNameMock,
+  piaFromQueryEmptyMock,
+  piaFromQueryTitleMock,
   piaIntakeEntityMock,
 } from 'test/util/mocks/data/pia-intake.mock';
 import { delay } from 'test/util/testUtils';
@@ -90,6 +93,97 @@ describe('PiaIntakeController', () => {
     });
   });
 
+  /**
+   * @Description
+   * This test suite validates that the method passes the correct values to the service,
+   * mock the service result and return correct result to the user
+   *
+   * @method findAll
+   */
+  describe('`search` method', () => {
+    /**
+     * @Description
+     * This test validates the happy flow if the method `piaIntakeService.search` is called with correct mock data
+     *
+     * @Input
+     *   - Mock user req
+     *
+     * @Output 200
+     * Test pass and all methods called with correct data
+     */
+    it('succeeds with search by title name : Happy flow', async () => {
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const mockQuery = { ...piaFromQueryTitleMock };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
+
+      piaIntakeService.search = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      const result = await controller.search(mockReq, mockQuery);
+
+      expect(piaIntakeService.search).toHaveBeenCalledWith(
+        mockReq.user,
+        mockReq.userRoles,
+        mockQuery,
+      );
+      expect(result).toStrictEqual({
+        data: [piaIntakeEntity],
+      });
+    });
+    it('succeeds return with search by drafter name : Happy flow', async () => {
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+
+      const mockQuery = { ...piaFromQueryDrafterNameMock };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
+
+      piaIntakeService.search = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      const result = await controller.search(mockReq, mockQuery);
+
+      expect(piaIntakeService.search).toHaveBeenCalledWith(
+        mockReq.user,
+        mockReq.userRoles,
+        mockQuery,
+      );
+      expect(result).toStrictEqual({
+        data: [piaIntakeEntity],
+      });
+    });
+    it('succeeds return empty array if no record return from search : Happy flow', async () => {
+      const mockQuery = { ...piaFromQueryEmptyMock };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
+
+      piaIntakeService.search = jest.fn(async () => {
+        delay(10);
+        return [];
+      });
+
+      const result = await controller.search(mockReq, mockQuery);
+
+      expect(piaIntakeService.search).toHaveBeenCalledWith(
+        mockReq.user,
+        mockReq.userRoles,
+        mockQuery,
+      );
+      expect(result).toStrictEqual({
+        data: [],
+      });
+    });
+  });
   /**
    * @Description
    * This test suite validates that the method passes the correct values to the service,
