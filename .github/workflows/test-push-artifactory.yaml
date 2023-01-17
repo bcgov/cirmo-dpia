@@ -25,10 +25,12 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           namespace: b996e6-tools
             
-      # Login to BC Gov Docker Image Repository
-      - name: Login to Openshift Docker
-        run : |
-          docker login ${{ secrets.ARPROJ_PROJECT_URL }} -u ${{ secrets.ARTPROJ_SA_USERNAME }} -p ${{ secrets.ARTPROJ_SA_PASSWORD }}
+      - name: Login to Artifactory to Pull Images in S2I Build
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
           
       # Setup environment variables
       - name: Setup environment
