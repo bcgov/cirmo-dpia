@@ -50,7 +50,7 @@ jobs:
       # Tag Docker Image built with latest
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
+          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/api-dev:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
