@@ -84,6 +84,7 @@ const PIAIntakeFormPage = () => {
         setPiaModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
         setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
+        setPiaModalButtonValue('save');
         break;
       case 'edit':
         setPiaModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
