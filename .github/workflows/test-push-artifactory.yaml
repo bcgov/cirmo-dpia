@@ -55,4 +55,4 @@ jobs:
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/api-dev:latest
