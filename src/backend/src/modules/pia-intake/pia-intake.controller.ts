@@ -10,6 +10,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Patch,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -32,6 +33,7 @@ import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
+import { PiaFormQuery } from './dto/pia-form-query.dto';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -49,6 +51,28 @@ export class PiaIntakeController {
     @Req() req: IRequest,
   ): Promise<CreatePiaIntakeRO> {
     return this.piaIntakeService.create(createPiaIntakeDto, req.user);
+  }
+
+  /**
+   * Search for pia intake records by title and drafter
+   */
+
+  @ApiOperation({
+    description: `Returns all the pia intake forms from Search`,
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description:
+      'Successfully return all PIA intake form that satisfies search query, return empty if no result find in database',
+  })
+  @Get('/search')
+  async search(@Req() req: IRequest, @Query() query: PiaFormQuery) {
+    const data = await this.piaIntakeService.search(
+      req.user,
+      req.userRoles,
+      query,
+    );
+    return { data };
   }
 
   /**
