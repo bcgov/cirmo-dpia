@@ -25,10 +25,12 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           namespace: b996e6-tools
             
-      # Login to BC Gov Docker Image Repository
-      - name: Login to Openshift Docker
-        run : |
-          docker login ${{ secrets.ARPROJ_PROJECT_URL }} -u ${{ secrets.ARTPROJ_SA_USERNAME }} -p ${{ secrets.ARTPROJ_SA_PASSWORD }}
+      - name: Login to Artifactory to Pull Images in S2I Build
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
           
       # Setup environment variables
       - name: Setup environment
@@ -48,9 +50,9 @@ jobs:
       # Tag Docker Image built with latest
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
+          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/artifactory/tb99-dpia-api-docker-local:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.ARPROJ_PROJECT_URL }}/api-dev:latest
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/artifactory/tb99-dpia-api-docker-local:latest

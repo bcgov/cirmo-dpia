@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, Repository } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -22,6 +22,7 @@ import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { omitBaseKeys } from '../../common/helpers/base-helper';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
+import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 
 @Injectable()
 export class PiaIntakeService {
@@ -98,14 +99,19 @@ export class PiaIntakeService {
    * @param
    * - user KeycloakUser
    * - userRoles Keycloak user roles
+   * - find query
+   *
+   * Supported filters:
+   *   - searchText: string [on drafterName and title]
    *
    * @returns
-   * As a user, retrieve all PIA-intakes I submitted
-   * As an MPO, retrieve all pia-intakes submitted to my ministry for review
+   * As a user, retrieve all (filtered) PIA-intakes I submitted
+   * As an MPO, retrieve all (filtered) pia-intakes submitted to my ministry for review
    */
   async findAll(
     user: KeycloakUser,
     userRoles: RolesEnum[],
+    query: PiaIntakeFindQuery,
   ): Promise<GetPiaIntakeRO[]> {
     // Get the ministries for which the user is an MPO based on their roles
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
@@ -119,18 +125,48 @@ export class PiaIntakeService {
     // where-clause query
     const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
 
-    // Scenario 1: As a user, retrieve all PIA-intakes I submitted
-    whereClause.push({
+    // Scenario 1: myPiaClause: As a user, retrieve all PIA-intakes I submitted
+    const myPiaClause = {
       ...commonWhereClause,
       createdByGuid: user.idir_user_guid,
-    });
+    };
 
-    // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
-    if (mpoMinistries?.length) {
+    // if there is a search text, find the matching titles OR drafter names
+    if (query.searchText) {
       whereClause.push({
+        ...myPiaClause,
+        title: ILike(`%${query.searchText}%`),
+      });
+
+      whereClause.push({
+        ...myPiaClause,
+        drafterName: ILike(`%${query.searchText}%`),
+      });
+    } else {
+      whereClause.push(myPiaClause);
+    }
+
+    // Scenario 2: mpoClause: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    if (mpoMinistries?.length) {
+      const mpoClause = {
         ...commonWhereClause,
         ministry: In(mpoMinistries),
-      });
+      };
+
+      // if there is a search text, find the matching titles OR drafter names
+      if (query.searchText) {
+        whereClause.push({
+          ...mpoClause,
+          title: ILike(`%${query.searchText}%`),
+        });
+
+        whereClause.push({
+          ...mpoClause,
+          drafterName: ILike(`%${query.searchText}%`),
+        });
+      } else {
+        whereClause.push(mpoClause);
+      }
     }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 

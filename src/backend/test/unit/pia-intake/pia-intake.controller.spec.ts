@@ -18,6 +18,7 @@ import { delay } from 'test/util/testUtils';
 import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
+import { PiaIntakeFindQuery } from 'src/modules/pia-intake/dto/pia-intake-find-query.dto';
 
 /**
  * @Description
@@ -93,7 +94,10 @@ describe('PiaIntakeController', () => {
   /**
    * @Description
    * This test suite validates that the method passes the correct values to the service,
-   * mock the service result and return correct result to the user
+   * mock the service result and return correct (filtered) result to the user
+   *
+   * Supported filters:
+   *   - searchText: string [on drafterName and title]
    *
    * @method findAll
    */
@@ -104,6 +108,7 @@ describe('PiaIntakeController', () => {
      *
      * @Input
      *   - Mock user req
+     *   - query
      *
      * @Output 200
      * Test pass and all methods called with correct data
@@ -114,17 +119,19 @@ describe('PiaIntakeController', () => {
         user: { ...keycloakUserMock },
         userRoles: [RolesEnum.MPO_CITZ],
       };
+      const query: PiaIntakeFindQuery = {};
 
       piaIntakeService.findAll = jest.fn(async () => {
         delay(10);
         return [piaIntakeEntity];
       });
 
-      const result = await controller.findAll(mockReq);
+      const result = await controller.findAll(mockReq, query);
 
       expect(piaIntakeService.findAll).toHaveBeenCalledWith(
         mockReq.user,
         mockReq.userRoles,
+        query,
       );
       expect(result).toStrictEqual({
         data: [piaIntakeEntity],

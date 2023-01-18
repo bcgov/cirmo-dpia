@@ -10,6 +10,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Patch,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -32,6 +33,7 @@ import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
+import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -58,6 +60,8 @@ export class PiaIntakeController {
    * This method will return all the pia-intakes matching the following criteria by default
    * - user's self submitted pia-intakes
    * - if mpo, all pia-intakes submitted in the user's ministry
+   * - filters:
+   *   - searchText: string [on drafterName and title]
    */
   @Get()
   @ApiOperation({
@@ -66,8 +70,12 @@ export class PiaIntakeController {
   @ApiOkResponse({
     description: 'Successfully fetched authorized PIA intake records',
   })
-  async findAll(@Req() req: IRequest) {
-    const data = await this.piaIntakeService.findAll(req.user, req.userRoles);
+  async findAll(@Req() req: IRequest, @Query() query: PiaIntakeFindQuery) {
+    const data = await this.piaIntakeService.findAll(
+      req.user,
+      req.userRoles,
+      query,
+    );
 
     return { data };
   }

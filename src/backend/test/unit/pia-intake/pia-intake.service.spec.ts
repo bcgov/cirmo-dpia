@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { marked } from 'marked';
 
 import * as typeormIn from 'typeorm/find-options/operator/In';
+import * as typeormILike from 'typeorm/find-options/operator/ILike';
 
 import * as pdfHelper from 'src/common/helpers/pdf-helper';
 import * as dateHelper from 'src/common/helpers/date-helper';
@@ -32,6 +33,7 @@ import {
 } from '@nestjs/common';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
+import { PiaIntakeFindQuery } from 'src/modules/pia-intake/dto/pia-intake-find-query.dto';
 
 /**
  * @Description
@@ -115,12 +117,19 @@ describe('PiaIntakeService', () => {
 
   /**
    * @Description
-   * These set of tests validates that findAll method returns the restricted data based on user's permissions.
+   * These set of tests validates that findAll method returns the restricted and filtered data based on user's permissions.
+   *
+   * Supported filters:
+   *   - searchText: string [on drafterName and title]
    *
    * @method findAll
    */
   describe('`findAll` method', () => {
     const typeormInSpy = jest.spyOn(typeormIn, 'In').mockReturnValue(null);
+
+    const typeormILikeSpy = jest
+      .spyOn(typeormILike, 'ILike')
+      .mockReturnValue(null);
 
     const omitBaseKeysSpy = jest
       .spyOn(baseHelper, 'omitBaseKeys')
@@ -128,14 +137,16 @@ describe('PiaIntakeService', () => {
 
     beforeEach(() => {
       typeormInSpy.mockClear();
+      typeormILikeSpy.mockClear();
       omitBaseKeysSpy.mockClear();
     });
 
-    // Scenario 1: when the user is an MPO
-    it('succeeds calling the database repository with correct data for MPO role', async () => {
+    // Scenario 1: when the user is an MPO [no searchText provided]
+    it('succeeds calling the database repository with correct data for MPO role [no searchText provided]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {};
 
       piaIntakeRepository.find = jest.fn(async () => {
         delay(10);
@@ -144,11 +155,13 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
-      const result = await service.findAll(user, userRoles);
+      const result = await service.findAll(user, userRoles, query);
 
       expect(typeormInSpy).toHaveBeenCalledWith([
         Roles[RolesEnum.MPO_CITZ].ministry,
       ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.find).toHaveBeenCalledWith({
         where: [
@@ -170,11 +183,12 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual([getPiaIntakeROMock]);
     });
 
-    // Scenario 2: when the user is a just a drafter (not MPO)
-    it('succeeds calling the database repository with correct data for a drafter (non-MPO) role', async () => {
+    // Scenario 2: when the user is a just a drafter (not MPO) [no searchText provided]
+    it('succeeds calling the database repository with correct data for a drafter (non-MPO) role [no searchText provided]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {};
 
       piaIntakeRepository.find = jest.fn(async () => {
         delay(10);
@@ -183,15 +197,114 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
-      const result = await service.findAll(user, userRoles);
+      const result = await service.findAll(user, userRoles, query);
 
       expect(typeormInSpy).not.toHaveBeenCalled();
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.find).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+      expect(result).toEqual([getPiaIntakeROMock]);
+    });
+
+    // scenario 3: user is MPO; searchText is provided
+    it('succeeds when user is an MPO and searchText is provided', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        searchText: 'King Richard',
+      };
+
+      piaIntakeRepository.find = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).toHaveBeenCalledTimes(4);
+
+      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            title: null,
+          },
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            drafterName: null,
+          },
+          {
+            isActive: true,
+            ministry: null,
+            title: null,
+          },
+          {
+            isActive: true,
+            ministry: null,
+            drafterName: null,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+      expect(result).toEqual([getPiaIntakeROMock]);
+    });
+
+    it('succeeds when user is only a drafter (not MPO) [searchText provided', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        searchText: 'Will Smith',
+      };
+
+      piaIntakeRepository.find = jest.fn(async () => {
+        delay(10);
+        return [piaIntakeEntity];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+      expect(typeormILikeSpy).toHaveBeenCalledTimes(2);
+
+      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            title: null,
+          },
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            drafterName: null,
           },
         ],
         order: {
