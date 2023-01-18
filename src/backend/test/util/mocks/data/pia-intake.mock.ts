@@ -1,6 +1,5 @@
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake.dto';
-import { PiaFormQuery } from 'src/modules/pia-intake/dto/pia-form-query.dto';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
@@ -42,20 +41,6 @@ export const piaIntakeEntityMock: PiaIntakeEntity = {
 
 export const createPiaIntakeMock: CreatePiaIntakeDto = {
   ...piaIntakeDataMock,
-};
-
-export const piaFromQueryTitleMock: PiaFormQuery = {
-  title: 'Test PIA',
-  drafter: '',
-};
-
-export const piaFromQueryDrafterNameMock: PiaFormQuery = {
-  drafter: 'Will',
-  title: '',
-};
-export const piaFromQueryEmptyMock: PiaFormQuery = {
-  drafter: 'yyyyyy',
-  title: 'xxxxxx',
 };
 
 export const getPiaIntakeROMock: GetPiaIntakeRO = {

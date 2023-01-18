@@ -1,8 +1,9 @@
 import { IsString, IsOptional, Length } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { piaIntakeEntityMock } from './create-pia-intake.dto';
 
-export class PiaFormQuery {
+export class PiaIntakeFindQuery {
   @ApiProperty({
     required: false,
     type: String,
@@ -11,15 +12,6 @@ export class PiaFormQuery {
   @IsString()
   @IsOptional()
   @Length(0, 100)
-  readonly title: string;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-    example: piaIntakeEntityMock.drafterName,
-  })
-  @IsString()
-  @IsOptional()
-  @Length(0, 25)
-  readonly drafter: string;
+  @Transform(({ value }) => (value ? value.trim() : ''))
+  readonly searchText?: string = '';
 }

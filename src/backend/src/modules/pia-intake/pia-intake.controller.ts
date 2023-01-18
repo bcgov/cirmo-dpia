@@ -33,7 +33,7 @@ import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
 import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
-import { PiaFormQuery } from './dto/pia-form-query.dto';
+import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 
 @Controller('pia-intake')
 @ApiTags('pia-intake')
@@ -54,34 +54,14 @@ export class PiaIntakeController {
   }
 
   /**
-   * Search for pia intake records by title and drafter
-   */
-
-  @ApiOperation({
-    description: `Returns all the pia intake forms from Search`,
-  })
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({
-    description:
-      'Successfully return all PIA intake form that satisfies search query, return empty if no result find in database',
-  })
-  @Get('/search')
-  async search(@Req() req: IRequest, @Query() query: PiaFormQuery) {
-    const data = await this.piaIntakeService.search(
-      req.user,
-      req.userRoles,
-      query,
-    );
-    return { data };
-  }
-
-  /**
    * @method findAll
    *
    * @description
    * This method will return all the pia-intakes matching the following criteria by default
    * - user's self submitted pia-intakes
    * - if mpo, all pia-intakes submitted in the user's ministry
+   * - filters:
+   *   - searchText: string [on drafterName and title]
    */
   @Get()
   @ApiOperation({
@@ -90,8 +70,12 @@ export class PiaIntakeController {
   @ApiOkResponse({
     description: 'Successfully fetched authorized PIA intake records',
   })
-  async findAll(@Req() req: IRequest) {
-    const data = await this.piaIntakeService.findAll(req.user, req.userRoles);
+  async findAll(@Req() req: IRequest, @Query() query: PiaIntakeFindQuery) {
+    const data = await this.piaIntakeService.findAll(
+      req.user,
+      req.userRoles,
+      query,
+    );
 
     return { data };
   }
