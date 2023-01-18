@@ -9,30 +9,27 @@ import { PiaSorting } from '../../../constant/constant';
 const PIAListTable = ({ headings, pias }: IDataTable) => {
   const [LastModifiedOrder, setLastModifiedOrder] = useState(0);
   const [DrafterOrder, setDrafterOrder] = useState(0);
-  useEffect(() => {
-    (async () => {})();
-  }, [LastModifiedOrder, DrafterOrder]);
+  useEffect(() => {}, [LastModifiedOrder, DrafterOrder]);
 
-  //toggle button states
-  function startSorting(Sortheading: string): number {
-    console.log('startSorting');
-    switch (headings[Sortheading].title) {
-      case 'Last modified':
+  //Switch ordering states
+  function startSorting(Sortheading: string) {
+    switch (Sortheading) {
+      case 'Last_modified':
         headings[Sortheading].sortValue =
           LastModifiedOrder >= PiaSorting.DESCENDING
             ? PiaSorting.INACTIVE
             : LastModifiedOrder + 1;
         setLastModifiedOrder(headings[Sortheading].sortValue);
-        return LastModifiedOrder;
+        return;
       case 'Drafter':
         headings[Sortheading].sortValue =
           DrafterOrder >= PiaSorting.DESCENDING
             ? PiaSorting.INACTIVE
             : DrafterOrder + 1;
         setDrafterOrder(headings[Sortheading].sortValue);
-        return DrafterOrder;
+        return;
       default:
-        return 0;
+        return;
     }
   }
 
