@@ -216,3 +216,9 @@ export enum PiaStatuses {
   COMPLETED = 'COMPLETED',
   WITHDRAWN = 'WITHDRAWN',
 }
+
+export enum PiaSorting {
+  INACTIVE,
+  ASCENDING,
+  DESCENDING,
+}

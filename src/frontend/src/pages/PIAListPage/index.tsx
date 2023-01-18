@@ -3,9 +3,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
+import { tableHeadingProperties } from './tableProperties';
 
 const PIAList = () => {
-  const tableHeadings = ['Title', 'Last modified', 'Drafter', 'PIA status'];
   const { tableData } = usePIALookup();
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
@@ -19,7 +19,7 @@ const PIAList = () => {
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (
-        <PIAListTable headings={tableHeadings} pias={tableData} />
+        <PIAListTable headings={tableHeadingProperties} pias={tableData} />
       )}
     </div>
   );
