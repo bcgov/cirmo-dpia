@@ -146,7 +146,7 @@ export class PiaIntakeService {
       whereClause.push(myPiaClause);
     }
 
-    // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    // Scenario 2: mpoClause: As an MPO, retrieve all pia-intakes submitted to my ministry for review
     if (mpoMinistries?.length) {
       const mpoClause = {
         ...commonWhereClause,
