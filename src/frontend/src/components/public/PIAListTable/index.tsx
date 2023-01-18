@@ -68,11 +68,9 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
                 {pia.status ? (
                   pia.status in statusList ? (
                     <div
-                      className={`statusBlock ${
-                        pia.status ? statusList[pia.status].class : ''
-                      }`}
+                      className={`statusBlock ${statusList[pia.status].class}`}
                     >
-                      {pia.status ? statusList[pia.status].title : ''}
+                      {statusList[pia.status].title}
                     </div>
                   ) : (
                     ''
