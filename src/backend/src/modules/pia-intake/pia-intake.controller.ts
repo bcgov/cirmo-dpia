@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiGoneResponse,
@@ -46,9 +45,6 @@ export class PiaIntakeController {
   @ApiOperation({ description: 'Submit a PIA-intake form' })
   @ApiCreatedResponse({
     description: 'Successfully submitted a PIA-intake form',
-  })
-  @ApiConflictResponse({
-    description: 'Failed to submit the PIA: There is a conflict',
   })
   async create(
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
@@ -195,9 +191,6 @@ export class PiaIntakeController {
   @ApiGoneResponse({
     description:
       'Failed to update the PIA: The record is marked inactive in our system',
-  })
-  @ApiConflictResponse({
-    description: 'Failed to update the PIA: There is a conflict',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   async update(
