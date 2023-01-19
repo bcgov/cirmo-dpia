@@ -18,6 +18,15 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState('Search by title or drafter');
   const handleClearSearchText = () => {
     setSearchText('');
+    history('');
+  };
+
+  const updateSearchUrl = () => {
+    history(`pia-list?searchText=${searchText}`);
+  };
+
+  const handleSearchTextChange = (newSearchText: any) => {
+    setSearchText(newSearchText.target.value);
   };
   const handleSearch = async () => {};
   //Switch ordering states
@@ -49,11 +58,17 @@ const PIAList = () => {
 
       <div className="d-flex pt-3 ms-auto">
         <div className=" col col-md-6 p-0">
-          <InputText value={searchText} />
+          <InputText
+            value={searchText}
+            required={false}
+            onChange={handleSearchTextChange}
+          />
         </div>
         <div className=" mt-4">
           <button
-            onClick={() => handleSearch()}
+            onClick={() => {
+              updateSearchUrl();
+            }}
             className="bcgovbtn bcgovbtn__primary"
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />

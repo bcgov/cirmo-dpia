@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../constant/apiRoutes';
 
 import { IPIAIntake } from '../types/interfaces/pia-intake.interface';
@@ -7,6 +8,9 @@ import { HttpRequest } from '../utils/http-request.util';
 
 export const usePIALookup = (sortBy: string, sortOrder: number) => {
   const [tableData, setTableData] = useState<IPIAIntake[]>([]);
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchText = searchParams.get('searchText');
   useEffect(() => {
     (async () => {
       let params = {};
