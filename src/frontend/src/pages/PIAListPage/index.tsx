@@ -18,11 +18,11 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState('Search by title or drafter');
   const handleClearSearchText = () => {
     setSearchText('');
-    history('');
+    navigate('');
   };
 
   const updateSearchUrl = () => {
-    history(`pia-list?searchText=${searchText}`);
+    navigate(`?searchText=${searchText}`);
   };
 
   const handleSearchTextChange = (newSearchText: any) => {
@@ -55,35 +55,13 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </a>
       </div>
+      <SearchBox
+        searchText={searchText}
+        onChange={handleSearchTextChange}
+        onSearchClick={updateSearchUrl}
+        onClearSearchClick={handleClearSearchText}
+      />
 
-      <div className="d-flex pt-3 ms-auto">
-        <div className="col col-md-6 p-0">
-          <InputText
-            placeholder="Search by title or drafter"
-            value={searchText}
-            required={false}
-            onChange={handleSearchTextChange}
-          />
-        </div>
-        <div className="fa-sm mt-4">
-          <button
-            onClick={() => {
-              updateSearchUrl();
-            }}
-            className="bcgovbtn bcgovbtn__primary"
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </div>
-        <div className="mt-3">
-          <button
-            onClick={handleClearSearchText}
-            className="bcgovbtn bcgovbtn__tertiary "
-          >
-            Clear search
-          </button>
-        </div>
-      </div>
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (
