@@ -19,6 +19,8 @@ import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.servic
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 import { PiaIntakeFindQuery } from 'src/modules/pia-intake/dto/pia-intake-find-query.dto';
+import { PaginatedRO } from 'src/common/paginated.ro';
+import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 
 /**
  * @Description
@@ -114,16 +116,22 @@ describe('PiaIntakeController', () => {
      * Test pass and all methods called with correct data
      */
     it('succeeds with correct data : Happy flow', async () => {
-      const piaIntakeEntity = { ...piaIntakeEntityMock };
       const mockReq: any = {
         user: { ...keycloakUserMock },
         userRoles: [RolesEnum.MPO_CITZ],
       };
       const query: PiaIntakeFindQuery = {};
 
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 10,
+        total: 100,
+      };
+
       piaIntakeService.findAll = jest.fn(async () => {
         delay(10);
-        return [piaIntakeEntity];
+        return expectedResult;
       });
 
       const result = await controller.findAll(mockReq, query);
@@ -133,9 +141,8 @@ describe('PiaIntakeController', () => {
         mockReq.userRoles,
         query,
       );
-      expect(result).toStrictEqual({
-        data: [piaIntakeEntity],
-      });
+
+      expect(result).toStrictEqual(expectedResult);
     });
   });
 

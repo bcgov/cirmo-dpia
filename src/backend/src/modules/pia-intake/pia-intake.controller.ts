@@ -71,13 +71,13 @@ export class PiaIntakeController {
     description: 'Successfully fetched authorized PIA intake records',
   })
   async findAll(@Req() req: IRequest, @Query() query: PiaIntakeFindQuery) {
-    const data = await this.piaIntakeService.findAll(
+    const paginatedData = await this.piaIntakeService.findAll(
       req.user,
       req.userRoles,
       query,
     );
 
-    return { data };
+    return paginatedData;
   }
 
   /**

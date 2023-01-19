@@ -34,6 +34,8 @@ import {
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 import { PiaIntakeFindQuery } from 'src/modules/pia-intake/dto/pia-intake-find-query.dto';
+import { PaginatedRO } from 'src/common/paginated.ro';
+import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 
 /**
  * @Description
@@ -146,11 +148,14 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const query: PiaIntakeFindQuery = {};
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+      };
 
-      piaIntakeRepository.find = jest.fn(async () => {
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
         delay(10);
-        return [piaIntakeEntity];
+        return [[piaIntakeEntity], 100];
       });
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
@@ -163,7 +168,7 @@ describe('PiaIntakeService', () => {
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
-      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
@@ -177,10 +182,19 @@ describe('PiaIntakeService', () => {
         order: {
           createdAt: -1,
         },
+        skip: 48,
+        take: 12,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
-      expect(result).toEqual([getPiaIntakeROMock]);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 5,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
     });
 
     // Scenario 2: when the user is a just a drafter (not MPO) [no searchText provided]
@@ -188,11 +202,14 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const query: PiaIntakeFindQuery = {};
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+      };
 
-      piaIntakeRepository.find = jest.fn(async () => {
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
         delay(10);
-        return [piaIntakeEntity];
+        return [[piaIntakeEntity], 100];
       });
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
@@ -202,7 +219,7 @@ describe('PiaIntakeService', () => {
       expect(typeormInSpy).not.toHaveBeenCalled();
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
-      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
@@ -212,10 +229,19 @@ describe('PiaIntakeService', () => {
         order: {
           createdAt: -1,
         },
+        skip: 0,
+        take: 12,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
-      expect(result).toEqual([getPiaIntakeROMock]);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
     });
 
     // scenario 3: user is MPO; searchText is provided
@@ -225,11 +251,13 @@ describe('PiaIntakeService', () => {
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const query: PiaIntakeFindQuery = {
         searchText: 'King Richard',
+        page: 1,
+        pageSize: 12,
       };
 
-      piaIntakeRepository.find = jest.fn(async () => {
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
         delay(10);
-        return [piaIntakeEntity];
+        return [[piaIntakeEntity], 100];
       });
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
@@ -242,7 +270,7 @@ describe('PiaIntakeService', () => {
 
       expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
 
-      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
@@ -268,23 +296,35 @@ describe('PiaIntakeService', () => {
         order: {
           createdAt: -1,
         },
+        skip: 0,
+        take: 12,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
-      expect(result).toEqual([getPiaIntakeROMock]);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
     });
 
+    // scenario 4: user is not MPO; searchText is provided
     it('succeeds when user is only a drafter (not MPO) [searchText provided', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const query: PiaIntakeFindQuery = {
         searchText: 'Will Smith',
+        page: 1,
+        pageSize: 12,
       };
 
-      piaIntakeRepository.find = jest.fn(async () => {
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
         delay(10);
-        return [piaIntakeEntity];
+        return [[piaIntakeEntity], 100];
       });
 
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
@@ -294,7 +334,7 @@ describe('PiaIntakeService', () => {
       expect(typeormInSpy).not.toHaveBeenCalled();
       expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
 
-      expect(piaIntakeRepository.find).toHaveBeenCalledWith({
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
@@ -310,10 +350,19 @@ describe('PiaIntakeService', () => {
         order: {
           createdAt: -1,
         },
+        skip: 0,
+        take: 12,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
-      expect(result).toEqual([getPiaIntakeROMock]);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
     });
   });
 
