@@ -17,7 +17,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsOptional()
   @Length(0, 100)
-  @Transform(({ value }) => (value ? value.trim() : ''))
+  @Transform(({ value }) => value.trim())
   readonly searchText?: string = '';
 
   @ApiProperty({
@@ -27,7 +27,7 @@ export class PiaIntakeFindQuery {
   })
   @IsNumber()
   @IsOptional()
-  @Transform(({ value }) => (value ? Math.max(Number(value), 1) : 1))
+  @Transform(({ value }) => Math.floor(Math.max(Number(value), 1)))
   readonly page?: number = 1;
 
   @ApiProperty({
@@ -37,6 +37,6 @@ export class PiaIntakeFindQuery {
   })
   @IsNumber()
   @IsOptional()
-  @Transform(({ value }) => (value ? Math.max(Number(value), 1) : 12))
+  @Transform(({ value }) => Math.floor(Math.max(Number(value), 1)))
   readonly pageSize?: number = 12;
 }
