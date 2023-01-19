@@ -47,7 +47,7 @@ jobs:
         run: |
           docker image ls 
       
-      # Tag Docker Image built with latest
+      # Tag Docker Image built with prod
       - name: Docker Tag Version
         run: |
           docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/artifactory/tb99-dpia-api-docker-local/dpia-api:prod
