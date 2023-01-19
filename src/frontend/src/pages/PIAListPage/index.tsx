@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
@@ -13,7 +13,13 @@ const PIAList = () => {
   const [headings, setHeading] = useState(tableHeadingProperties);
 
   const { tableData } = usePIALookup(SortBy, SortOrder);
-
+  const [searchTableData, setSearchTableData] =
+    useState<IPIAIntake[]>(tableData);
+  const [searchText, setSearchText] = useState('Search by title or drafter');
+  const handleClearSearchText = () => {
+    setSearchText('');
+  };
+  const handleSearch = async () => {};
   //Switch ordering states
   function startSorting(Sortheading: string) {
     Object.keys(headings).forEach((key) => {
@@ -39,6 +45,28 @@ const PIAList = () => {
           Create New
           <FontAwesomeIcon icon={faPlus} />
         </a>
+      </div>
+
+      <div className="d-flex pt-3 ms-auto">
+        <div className=" col col-md-6 p-0">
+          <InputText value={searchText} />
+        </div>
+        <div className=" mt-4">
+          <button
+            onClick={() => handleSearch()}
+            className="bcgovbtn bcgovbtn__primary"
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
+        </div>
+        <div className="mt-3">
+          <button
+            onClick={handleClearSearchText}
+            className="bcgovbtn bcgovbtn__tertiary "
+          >
+            Clear search
+          </button>
+        </div>
       </div>
       {tableData.length === 0 ? (
         <EmptyPIAList />
