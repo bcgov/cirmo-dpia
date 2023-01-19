@@ -15,6 +15,7 @@ interface InputTextProps {
   type?: SupportedInputTypes;
   className?: string;
   value?: string;
+  placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   required?: boolean;
 }
@@ -29,6 +30,7 @@ const InputText = ({
   type = 'text',
   className = '',
   value = '',
+  placeholder = '',
   onChange = () => {},
   required = false,
 }: InputTextProps) => {
@@ -56,6 +58,7 @@ const InputText = ({
         id={inputId}
         type={type}
         value={value}
+        placeholder={placeholder}
         onChange={onChange}
         className="form-control"
         required={required}

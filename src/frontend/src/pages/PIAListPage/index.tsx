@@ -57,14 +57,15 @@ const PIAList = () => {
       </div>
 
       <div className="d-flex pt-3 ms-auto">
-        <div className=" col col-md-6 p-0">
+        <div className="col col-md-6 p-0">
           <InputText
+            placeholder="Search by title or drafter"
             value={searchText}
             required={false}
             onChange={handleSearchTextChange}
           />
         </div>
-        <div className=" mt-4">
+        <div className="fa-sm mt-4">
           <button
             onClick={() => {
               updateSearchUrl();
