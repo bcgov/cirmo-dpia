@@ -47,9 +47,6 @@ export class PiaIntakeController {
   @ApiCreatedResponse({
     description: 'Successfully submitted a PIA-intake form',
   })
-  @ApiConflictResponse({
-    description: 'Failed to submit the PIA: There is a conflict',
-  })
   async create(
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
     @Req() req: IRequest,
