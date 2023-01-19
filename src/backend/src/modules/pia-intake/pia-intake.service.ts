@@ -23,6 +23,7 @@ import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { omitBaseKeys } from '../../common/helpers/base-helper';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
+import { PaginatedRO } from 'src/common/paginated.ro';
 
 @Injectable()
 export class PiaIntakeService {
@@ -112,7 +113,7 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
     query: PiaIntakeFindQuery,
-  ): Promise<GetPiaIntakeRO[]> {
+  ): Promise<PaginatedRO<GetPiaIntakeRO>> {
     // Get the ministries for which the user is an MPO based on their roles
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
 
@@ -163,21 +164,29 @@ export class PiaIntakeService {
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     // Retrieve PIA Intake Entity Records
-    const entityRecords: PiaIntakeEntity[] =
-      await this.piaIntakeRepository.find({
-        where: whereClause,
-        order: {
-          createdAt: -1, // default order set to latest submission time
-        },
-      });
+    const [entityRecords, total] = await this.piaIntakeRepository.findAndCount({
+      where: whereClause,
+      order: {
+        createdAt: -1, // default order set to latest submission time
+      },
+      skip: (query.page - 1) * query.pageSize,
+      take: query.pageSize,
+    });
 
     // Remove keys from the user's view that are not required
     const formattedRecords: GetPiaIntakeRO[] = entityRecords.map((record) =>
       omitBaseKeys<PiaIntakeEntity>(record),
     );
 
+    const paginatedResult = new PaginatedRO(
+      formattedRecords,
+      query.page,
+      query.pageSize,
+      total,
+    );
+
     // Return the formatted PIA intake records
-    return formattedRecords;
+    return paginatedResult;
   }
 
   async downloadPiaIntakeResultPdf(
