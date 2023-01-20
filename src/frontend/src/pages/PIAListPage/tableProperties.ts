@@ -7,22 +7,22 @@ export interface TableHeadingPropertiesType {
 }
 
 export const tableHeadingProperties: TableHeadingPropertiesType = {
-  Title: {
+  title: {
     title: 'Title',
     sorting: false,
     sortValue: 0,
   },
-  Last_modified: {
+  updatedAt: {
     title: 'Last modified',
     sorting: true,
     sortValue: 0,
   },
-  Drafter: {
+  drafterName: {
     title: 'Drafter',
     sorting: true,
     sortValue: 0,
   },
-  PIA_status: {
+  status: {
     title: 'PIA status',
     sorting: false,
     sortValue: 0,

@@ -3,36 +3,8 @@ import { dateToString } from '../../../utils/date';
 import { statusList } from '../../../utils/status';
 import TableOrdering from './TableOrdering';
 import { IDataTable } from './interface';
-import { useEffect, useState } from 'react';
-import { PiaSorting } from '../../../constant/constant';
 
-const PIAListTable = ({ headings, pias }: IDataTable) => {
-  const [LastModifiedOrder, setLastModifiedOrder] = useState(0);
-  const [DrafterOrder, setDrafterOrder] = useState(0);
-  useEffect(() => {}, [LastModifiedOrder, DrafterOrder]);
-
-  //Switch ordering states
-  function startSorting(Sortheading: string) {
-    switch (Sortheading) {
-      case 'Last_modified':
-        headings[Sortheading].sortValue =
-          LastModifiedOrder >= PiaSorting.DESCENDING
-            ? PiaSorting.INACTIVE
-            : LastModifiedOrder + 1;
-        setLastModifiedOrder(headings[Sortheading].sortValue);
-        return;
-      case 'Drafter':
-        headings[Sortheading].sortValue =
-          DrafterOrder >= PiaSorting.DESCENDING
-            ? PiaSorting.INACTIVE
-            : DrafterOrder + 1;
-        setDrafterOrder(headings[Sortheading].sortValue);
-        return;
-      default:
-        return;
-    }
-  }
-
+const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
   return (
     <div className="component__wrapper data-table__container">
       <table className="table data-table">
@@ -44,7 +16,7 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
                 className={` ${
                   headings[heading].sorting ? 'enableSorting' : ''
                 }`}
-                onClick={() => startSorting(heading)}
+                onClick={() => sorting(heading)}
               >
                 {headings[heading].title}
                 {headings[heading].sorting ? (

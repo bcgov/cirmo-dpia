@@ -4,4 +4,5 @@ import { TableHeadingPropertiesType } from '../../../pages/PIAListPage/tableProp
 export interface IDataTable {
   headings: TableHeadingPropertiesType;
   pias: IPIAIntake[];
+  sorting: (key: string) => void;
 }
