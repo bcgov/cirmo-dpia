@@ -4,8 +4,10 @@ import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
-import { useEffect, useState } from 'react';
 import { PiaSorting } from '../../constant/constant';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SearchBox from '../../components/common/SearchBox';
 
 const PIAList = () => {
   const [SortBy, setSortBy] = useState('');
@@ -16,13 +18,27 @@ const PIAList = () => {
   const [searchTableData, setSearchTableData] =
     useState<IPIAIntake[]>(tableData);
   const [searchText, setSearchText] = useState('Search by title or drafter');
+  const [searchText, setSearchText] = useState('');
+  const updateSearchUrl = () => {
+    navigate(`?searchText=${searchText}`);
+  };
+
+  useEffect(() => {
+    const listener = (event: any) => {
+      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+        event.preventDefault();
+        navigate(`?searchText=${searchText}`);
+      }
+    };
+    document.addEventListener('keydown', listener);
+    return () => {
+      document.removeEventListener('keydown', listener);
+    };
+  }, [navigate, searchText]);
+
   const handleClearSearchText = () => {
     setSearchText('');
     navigate('');
-  };
-
-  const updateSearchUrl = () => {
-    navigate(`?searchText=${searchText}`);
   };
 
   const handleSearchTextChange = (newSearchText: any) => {

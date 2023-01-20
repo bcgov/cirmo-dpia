@@ -57,3 +57,28 @@
   margin: 0;
 }
 
+.search-container {
+    display: flex;
+    align-items: center;
+   
+    label {
+      display: none;
+    } 
+
+    input {
+      
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      
+    }
+
+}
+
+.search-icon-container {
+
+      height: 38px; 
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px; 
+  
+}
+

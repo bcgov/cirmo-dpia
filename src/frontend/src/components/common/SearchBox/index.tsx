@@ -1,6 +1,7 @@
+import React from 'react';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+
 import InputText from '../InputText/InputText';
 import { SearchBoxProps } from './interfaces';
 
@@ -11,25 +12,27 @@ const SearchBox = ({
   onClearSearchClick = () => {},
 }: SearchBoxProps) => {
   return (
-    <div className="d-flex pt-3 ms-auto ">
-      <div className="col col-md-7 p-0">
-        <InputText
-          placeholder="Search by title or drafter"
-          value={searchText}
-          required={false}
-          onChange={onChange}
-        />
-      </div>
+    <div className="d-flex pt-5 ms-auto ">
+      <div className="search-container">
+        <div>
+          <InputText
+            placeholder="Search by title or drafter"
+            value={searchText}
+            required={false}
+            onChange={onChange}
+          />
+        </div>
 
-      <div className="fa-sm mt-4 search-icon-btn">
-        <button
-          onClick={onSearchClick}
-          className="bcgovbtn bcgovbtn__primary bcgovbtn__primary-search"
-        >
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </button>
+        <div className="search-icon-container">
+          <button
+            onClick={onSearchClick}
+            className="bcgovbtn bcgovbtn__primary bcgovbtn__primary-search search-icon-container"
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
+        </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-1">
         <button
           onClick={onClearSearchClick}
           className="bcgovbtn bcgovbtn__tertiary "
