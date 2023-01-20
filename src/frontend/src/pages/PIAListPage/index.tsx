@@ -24,8 +24,8 @@ const PIAList = () => {
       case 'updatedAt':
         headings.drafterName.sortValue = 0;
         headings[Sortheading].sortValue =
-          UpdatedAt >= PiaSorting.DESCENDING
-            ? PiaSorting.INACTIVE
+          UpdatedAt >= PiaSorting.ASCENDING
+            ? PiaSorting.DESCENDING
             : UpdatedAt + 1;
         setDrafterOrder(headings.drafterName.sortValue);
         setSortBy('updatedAt');
@@ -35,8 +35,8 @@ const PIAList = () => {
       case 'drafterName':
         headings.updatedAt.sortValue = 0;
         headings[Sortheading].sortValue =
-          DrafterOrder >= PiaSorting.DESCENDING
-            ? PiaSorting.INACTIVE
+          DrafterOrder >= PiaSorting.ASCENDING
+            ? PiaSorting.DESCENDING
             : DrafterOrder + 1;
         setUpdatedAt(headings.updatedAt.sortValue);
         setSortBy('drafterName');

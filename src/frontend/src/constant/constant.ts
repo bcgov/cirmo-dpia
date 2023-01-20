@@ -220,5 +220,5 @@ export enum PiaStatuses {
 export enum PiaSorting {
   INACTIVE = 0, // default state 0
   ASCENDING = 1,
-  DESCENDING = 2,
+  DESCENDING = -1,
 }
