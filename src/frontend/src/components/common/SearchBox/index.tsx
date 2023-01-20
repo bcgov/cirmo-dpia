@@ -12,7 +12,7 @@ const SearchBox = ({
 }: SearchBoxProps) => {
   return (
     <div className="d-flex pt-3 ms-auto ">
-      <div className="col col-md-6 p-0">
+      <div className="col col-md-7 p-0">
         <InputText
           placeholder="Search by title or drafter"
           value={searchText}
@@ -21,8 +21,11 @@ const SearchBox = ({
         />
       </div>
 
-      <div className="fa-sm mt-4">
-        <button onClick={onSearchClick} className="bcgovbtn bcgovbtn__primary">
+      <div className="fa-sm mt-4 search-icon-btn">
+        <button
+          onClick={onSearchClick}
+          className="bcgovbtn bcgovbtn__primary bcgovbtn__primary-search"
+        >
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </button>
       </div>
