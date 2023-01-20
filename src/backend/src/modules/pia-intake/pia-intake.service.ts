@@ -172,7 +172,7 @@ export class PiaIntakeService {
     // if no sortBy is provided, default sort applies - by latest createdAt
     if (query.sortBy) {
       // pia-intake-allowed-sort-fields contains the permitted sortBy fields
-      orderBy[`LOWER(${query.sortBy})`] = query.sortOrder;
+      orderBy[query.sortBy] = query.sortOrder;
     } else {
       orderBy.createdAt = SortOrderEnum.DESC;
     }
@@ -181,9 +181,7 @@ export class PiaIntakeService {
     // Retrieve PIA Intake Entity Records
     const [entityRecords, total] = await this.piaIntakeRepository.findAndCount({
       where: whereClause,
-      order: {
-        'LOWER(createdAt)': 1,
-      },
+      order: orderBy,
       skip: (query.page - 1) * query.pageSize,
       take: query.pageSize,
     });
