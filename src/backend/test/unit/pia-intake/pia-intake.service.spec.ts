@@ -240,7 +240,7 @@ describe('PiaIntakeService', () => {
         Roles[RolesEnum.MPO_CITZ].ministry,
       ]);
 
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(4);
+      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
 
       expect(piaIntakeRepository.find).toHaveBeenCalledWith({
         where: [
@@ -251,13 +251,13 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            ministry: null,
+            title: null,
           },
           {
             isActive: true,
-            ministry: null,
-            title: null,
+            createdByGuid: user.idir_user_guid,
+            drafterName: null,
           },
           {
             isActive: true,
@@ -292,7 +292,7 @@ describe('PiaIntakeService', () => {
       const result = await service.findAll(user, userRoles, query);
 
       expect(typeormInSpy).not.toHaveBeenCalled();
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(2);
+      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
 
       expect(piaIntakeRepository.find).toHaveBeenCalledWith({
         where: [

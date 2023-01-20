@@ -125,48 +125,40 @@ export class PiaIntakeService {
     // where-clause query
     const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
 
-    // Scenario 1: myPiaClause: As a user, retrieve all PIA-intakes I submitted
-    const myPiaClause = {
+    // Scenario 1: As a user, retrieve all PIA-intakes I submitted
+    whereClause.push({
       ...commonWhereClause,
       createdByGuid: user.idir_user_guid,
-    };
+    });
 
-    // if there is a search text, find the matching titles OR drafter names
-    if (query.searchText) {
-      whereClause.push({
-        ...myPiaClause,
-        title: ILike(`%${query.searchText}%`),
-      });
-
-      whereClause.push({
-        ...myPiaClause,
-        drafterName: ILike(`%${query.searchText}%`),
-      });
-    } else {
-      whereClause.push(myPiaClause);
-    }
-
-    // Scenario 2: mpoClause: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
     if (mpoMinistries?.length) {
-      const mpoClause = {
+      whereClause.push({
         ...commonWhereClause,
         ministry: In(mpoMinistries),
-      };
+      });
+    }
 
-      // if there is a search text, find the matching titles OR drafter names
-      if (query.searchText) {
-        whereClause.push({
-          ...mpoClause,
-          title: ILike(`%${query.searchText}%`),
+    // searchText logic - if there is a search text, find the matching titles OR drafter names
+    if (query.searchText) {
+      const searchOperator = ILike(`%${query.searchText}%`);
+      const additionalWhereClauses: FindOptionsWhere<PiaIntakeEntity>[] = [];
+
+      // for each where clause, replicate them for each of the search fields, considering all whereClause items goes to an OR find operation
+      // In this case, each where clause to be replicated with two fields - one for titles search and other for drafterName search
+      // updating existing whereClauses with title; and additionalWhereClauses with drafterName. Then, add all additionalWhereClauses to
+      // ex: if whereClause is [{ status: MPO_REVIEW }] then after this loop, whereClause should be [{ status: MPO_REVIEW, title: ... }, { status: MPO_REVIEW, drafterName: ... }]
+      // refer test case for additional understanding
+      whereClause.forEach((clause) => {
+        additionalWhereClauses.push({
+          ...clause,
+          drafterName: searchOperator,
         });
 
-        whereClause.push({
-          ...mpoClause,
-          drafterName: ILike(`%${query.searchText}%`),
-        });
-      } else {
-        whereClause.push(mpoClause);
-      }
+        clause.title = searchOperator;
+      });
+
+      whereClause.push(...additionalWhereClauses);
     }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
