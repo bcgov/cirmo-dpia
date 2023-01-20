@@ -12,9 +12,9 @@ const SearchBox = ({
   onClearSearchClick = () => {},
 }: SearchBoxProps) => {
   return (
-    <div className="d-flex pt-5 ms-auto ">
-      <div className="search-container">
-        <div>
+    <div className="d-flex pt-5 ms-auto search-container">
+      <div className="search-sub-container">
+        <div className="search-input">
           <InputText
             placeholder="Search by title or drafter"
             value={searchText}

@@ -9,7 +9,6 @@ import { HttpRequest } from '../utils/http-request.util';
 export const usePIALookup = (sortBy: string, sortOrder: number) => {
   const [tableData, setTableData] = useState<IPIAIntake[]>([]);
   const location = useLocation();
-  console.log('test', location.search)
   useEffect(() => {
     (async () => {
       let params = {};

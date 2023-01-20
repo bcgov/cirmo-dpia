@@ -58,27 +58,31 @@
 }
 
 .search-container {
+  min-width: 450px;
+  width: 42%; /* based on branding eye-balling */
+  justify-content: end;
+
+  .search-input {
+    width: 100%;
+  }
+  .search-sub-container {
     display: flex;
     align-items: center;
-   
+    width: 100%;
+
     label {
       display: none;
-    } 
-
-    input {
-      
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
-      
     }
 
+    input {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+
+  .search-icon-container {
+    height: 38px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
 }
-
-.search-icon-container {
-
-      height: 38px; 
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px; 
-  
-}
-
