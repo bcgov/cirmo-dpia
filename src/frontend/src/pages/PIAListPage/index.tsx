@@ -8,45 +8,29 @@ import { useEffect, useState } from 'react';
 import { PiaSorting } from '../../constant/constant';
 
 const PIAList = () => {
-  const [UpdatedAt, setUpdatedAt] = useState(0);
-  const [DrafterOrder, setDrafterOrder] = useState(0);
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
+  const [headings, setHeading] = useState(tableHeadingProperties);
 
   const { tableData } = usePIALookup(SortBy, SortOrder);
 
-  useEffect(() => {}, [UpdatedAt, DrafterOrder]);
-  const headings = tableHeadingProperties;
-
   //Switch ordering states
   function startSorting(Sortheading: string) {
-    switch (Sortheading) {
-      case 'updatedAt':
-        headings.drafterName.sortValue = 0;
+    Object.keys(headings).forEach((key) => {
+      if (key === Sortheading) {
         headings[Sortheading].sortValue =
-          UpdatedAt >= PiaSorting.ASCENDING
+          headings[Sortheading].sortValue >= PiaSorting.ASCENDING
             ? PiaSorting.DESCENDING
-            : UpdatedAt + 1;
-        setDrafterOrder(headings.drafterName.sortValue);
-        setSortBy('updatedAt');
+            : headings[Sortheading].sortValue + 1;
+        setSortBy(key);
         setSortOrder(headings[Sortheading].sortValue);
-        setUpdatedAt(headings[Sortheading].sortValue);
-        return;
-      case 'drafterName':
-        headings.updatedAt.sortValue = 0;
-        headings[Sortheading].sortValue =
-          DrafterOrder >= PiaSorting.ASCENDING
-            ? PiaSorting.DESCENDING
-            : DrafterOrder + 1;
-        setUpdatedAt(headings.updatedAt.sortValue);
-        setSortBy('drafterName');
-        setSortOrder(headings[Sortheading].sortValue);
-        setDrafterOrder(headings[Sortheading].sortValue);
-        return;
-      default:
-        return;
-    }
+      } else {
+        headings[key].sortValue = 0;
+      }
+    });
+    setHeading(headings);
   }
+
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
