@@ -24,6 +24,7 @@ import { omitBaseKeys } from '../../common/helpers/base-helper';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
+import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -163,12 +164,24 @@ export class PiaIntakeService {
     }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
+    /* ********** SORT LOGIC BEGINS ********** */
+    const orderBy: Partial<Record<keyof PiaIntakeEntity, SortOrderEnum>> = {};
+
+    // if sortBy is provided, sort the filtered records by the provided field
+    // sortOrder can be as provided or by default descending
+    // if no sortBy is provided, default sort applies - by latest createdAt
+    if (query.sortBy) {
+      // pia-intake-allowed-sort-fields contains the permitted sortBy fields
+      orderBy[query.sortBy] = query.sortOrder;
+    } else {
+      orderBy.createdAt = SortOrderEnum.DESC;
+    }
+    /* ********** SORT LOGIC ENDS ********** */
+
     // Retrieve PIA Intake Entity Records
     const [entityRecords, total] = await this.piaIntakeRepository.findAndCount({
       where: whereClause,
-      order: {
-        createdAt: -1, // default order set to latest submission time
-      },
+      order: orderBy,
       skip: (query.page - 1) * query.pageSize,
       take: query.pageSize,
     });

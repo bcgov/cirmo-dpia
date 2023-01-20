@@ -3,9 +3,14 @@ import {
   IsOptional,
   Length,
   IsNumber,
+  IsIn,
+  IsEnum,
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { PiaIntakeAllowedSortFields } from '../constants/pia-intake-allowed-sort-fields';
+import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { piaIntakeEntityMock } from './create-pia-intake.dto';
 
 export class PiaIntakeFindQuery {
@@ -39,4 +44,24 @@ export class PiaIntakeFindQuery {
   @IsOptional()
   @Transform(({ value }) => Math.floor(Math.max(Number(value), 1)))
   readonly pageSize?: number = 12;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+    example: 'updatedAt',
+  })
+  @IsString()
+  @IsIn(PiaIntakeAllowedSortFields)
+  @IsOptional()
+  readonly sortBy?: keyof PiaIntakeEntity;
+
+  @ApiProperty({
+    required: false,
+    type: SortOrderEnum,
+    example: SortOrderEnum.DESC,
+  })
+  @Transform(({ value }) => Number(value))
+  @IsEnum(SortOrderEnum)
+  @IsOptional()
+  readonly sortOrder?: SortOrderEnum = SortOrderEnum.DESC;
 }
