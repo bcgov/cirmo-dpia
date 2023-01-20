@@ -1,17 +1,32 @@
 import { Link } from 'react-router-dom';
 import { dateToString } from '../../../utils/date';
 import { statusList } from '../../../utils/status';
-
+import TableOrdering from './TableOrdering';
 import { IDataTable } from './interface';
 
-const PIAListTable = ({ headings, pias }: IDataTable) => {
+const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
   return (
     <div className="component__wrapper data-table__container">
       <table className="table data-table">
         <thead>
           <tr>
-            {headings.map((heading) => (
-              <th key={heading}>{heading}</th>
+            {Object.keys(headings).map((heading: string) => (
+              <th
+                key={heading}
+                className={` ${
+                  headings[heading].sorting ? 'enableSorting' : ''
+                }`}
+                onClick={() => sorting(heading)}
+              >
+                {headings[heading].title}
+                {headings[heading].sorting ? (
+                  <TableOrdering
+                    currentState={headings[heading].sortValue}
+                  ></TableOrdering>
+                ) : (
+                  ''
+                )}
+              </th>
             ))}
           </tr>
         </thead>
@@ -25,11 +40,9 @@ const PIAListTable = ({ headings, pias }: IDataTable) => {
                 {pia.status ? (
                   pia.status in statusList ? (
                     <div
-                      className={`statusBlock ${
-                        pia.status ? statusList[pia.status].class : ''
-                      }`}
+                      className={`statusBlock ${statusList[pia.status].class}`}
                     >
-                      {pia.status ? statusList[pia.status].title : ''}
+                      {statusList[pia.status].title}
                     </div>
                   ) : (
                     ''
