@@ -9,9 +9,9 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
   const [tableData, setTableData] = useState<IPIAIntake[]>([]);
   useEffect(() => {
     (async () => {
-      let requestBody = {};
+      let params = {};
       if (sortBy && sortOrder) {
-        requestBody = {
+        params = {
           sortBy: sortBy,
           sortOrder: String(sortOrder),
         };
@@ -19,7 +19,13 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
       try {
         // Actually perform fetch
         const results = (
-          await HttpRequest.get<IPIAResults>(API_ROUTES.PIA_INTAKE, requestBody)
+          await HttpRequest.get<IPIAResults>(
+            API_ROUTES.PIA_INTAKE,
+            {},
+            {},
+            true,
+            params,
+          )
         ).data;
         setTableData(results);
       } catch (e) {

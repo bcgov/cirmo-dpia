@@ -8,7 +8,15 @@ interface IHttpRequestOptions {
   body?: Record<string, any>;
   additionalConfig?: Record<string, any>;
   addLocalAuth?: boolean;
+  query?: Record<string, any>;
 }
+
+// Helper method to convert { sortBy: drafterName } to sortBy=drafterName
+const queryString = (query: Record<string, any> = {}) => {
+  return Object.keys(query).reduce((acc, key) => {
+    return acc + encodeURI(key) + '=' + encodeURI(query[key]) + '&';
+  }, '?');
+};
 
 export class HttpRequest {
   private static async request<T>(options: IHttpRequestOptions): Promise<T> {
@@ -36,7 +44,12 @@ export class HttpRequest {
       ...options?.additionalConfig,
     };
 
-    const response = await fetch(options.endpoint, config);
+    let url = options.endpoint;
+
+    if (options.query) {
+      url = url + queryString(options.query);
+    }
+    const response = await fetch(url, config);
 
     if (!response.ok) {
       throw new Error('Something went wrong', {
@@ -58,6 +71,7 @@ export class HttpRequest {
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
     addLocalAuth = true,
+    query: Record<string, any> = {},
   ) {
     return this.request<T>({
       method: 'GET',
@@ -65,6 +79,7 @@ export class HttpRequest {
       headers,
       additionalConfig,
       addLocalAuth,
+      query,
     });
   }
 
@@ -74,6 +89,7 @@ export class HttpRequest {
     headers: Record<string, string> = {},
     additionalConfig: Record<string, any> = {},
     addLocalAuth = true,
+    query: Record<string, any> = {},
   ) {
     return this.request<T>({
       method: 'POST',
@@ -82,6 +98,7 @@ export class HttpRequest {
       headers,
       additionalConfig,
       addLocalAuth,
+      query,
     });
   }
 
