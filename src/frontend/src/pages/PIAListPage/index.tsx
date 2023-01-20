@@ -6,7 +6,7 @@ import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 
 const PIAList = () => {
@@ -17,8 +17,11 @@ const PIAList = () => {
   const { tableData } = usePIALookup(SortBy, SortOrder);
   const [searchTableData, setSearchTableData] =
     useState<IPIAIntake[]>(tableData);
-  const [searchText, setSearchText] = useState('Search by title or drafter');
-  const [searchText, setSearchText] = useState('');
+    const [searchParams] = useSearchParams();
+
+  const [searchText, setSearchText] = useState(
+    searchParams.get('searchText') || '',
+  );
   const updateSearchUrl = () => {
     navigate(`?searchText=${searchText}`);
   };
