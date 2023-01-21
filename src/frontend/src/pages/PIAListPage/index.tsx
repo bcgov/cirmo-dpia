@@ -9,6 +9,7 @@ import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
+import Filter from '../../components/common/Filter';
 
 const PIAList = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const PIAList = () => {
   const handleSearchTextChange = (newSearchText: any) => {
     setSearchText(newSearchText.target.value);
   };
+  const onClearFilterClick = () => {};
   //Switch ordering states
   function startSorting(Sortheading: string) {
     Object.keys(headings).forEach((key) => {
@@ -104,6 +106,7 @@ const PIAList = () => {
         onClearSearchClick={handleClearSearchText}
       />
 
+      <Filter />
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (
