@@ -17,15 +17,15 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
           sortBy: sortBy,
           sortOrder: String(sortOrder),
         };
-        if (
-          searchParams.get('searchText') !== null &&
-          searchParams.get('searchText') !== undefined
-        ) {
-          params = {
-            ...params,
-            searchText: searchParams.get('searchText'),
-          };
-        }
+      }
+      if (
+        searchParams.get('searchText') !== null &&
+        searchParams.get('searchText') !== undefined
+      ) {
+        params = {
+          ...params,
+          searchText: searchParams.get('searchText'),
+        };
       }
       try {
         // Actually perform fetch
