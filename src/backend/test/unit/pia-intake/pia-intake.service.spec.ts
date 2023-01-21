@@ -110,6 +110,8 @@ describe('PiaIntakeService', () => {
         ...createPiaIntakeDto,
         createdByGuid: user.idir_user_guid,
         createdByUsername: user.idir_username,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
         drafterEmail: user.email,
       });
 
@@ -499,7 +501,11 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
       );
     });
 
@@ -533,7 +539,11 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
       );
     });
   });
