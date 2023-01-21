@@ -11,15 +11,7 @@ import { isMPORole } from '../../../utils/helper.util';
 import Dropdown from '../Dropdown';
 import { IFilter } from './interfaces';
 
-const Filter = ({
-  id,
-  value,
-  label,
-  optionalClass,
-  options,
-  changeHandler,
-  required,
-}: IFilter) => {
+const Filter = ({ id }: IFilter) => {
   const [ministry, setMinistry] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [drafterFilter, setDrafterFilter] = useState<string>('');

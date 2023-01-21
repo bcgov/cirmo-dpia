@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from 'react';
 
-export interface IDropdownOptions {
+interface IDropdownOptions {
   value: string;
   label: string;
 }

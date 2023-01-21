@@ -184,8 +184,8 @@ export const PiaStatusList = [
 export const PiaDrafterFilterList = [
   { label: 'Exclude my PIAs', value: 'not_me' },
   {
-    label: 'Only me PIAs',
-    value: 'me',
+    label: 'Only my PIAs',
+    value: 'only_me',
   },
 ];
 
