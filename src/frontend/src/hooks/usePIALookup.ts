@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../constant/apiRoutes';
 
 import { IPIAIntake } from '../types/interfaces/pia-intake.interface';
@@ -8,7 +8,7 @@ import { HttpRequest } from '../utils/http-request.util';
 
 export const usePIALookup = (sortBy: string, sortOrder: number) => {
   const [tableData, setTableData] = useState<IPIAIntake[]>([]);
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
   useEffect(() => {
     (async () => {
       let params = {};
@@ -17,6 +17,15 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
           sortBy: sortBy,
           sortOrder: String(sortOrder),
         };
+        if (
+          searchParams.get('searchText') !== null &&
+          searchParams.get('searchText') !== undefined
+        ) {
+          params = {
+            ...params,
+            searchText: searchParams.get('searchText'),
+          };
+        }
       }
       try {
         // Actually perform fetch
@@ -34,7 +43,7 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
         throw new Error('Fetch pia failed');
       }
     })();
-  }, [sortBy, sortOrder]);
+  }, [searchParams, sortBy, sortOrder]);
   return {
     tableData,
   };

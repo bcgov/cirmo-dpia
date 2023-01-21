@@ -10,18 +10,16 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 
 const PIAList = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
   const [headings, setHeading] = useState(tableHeadingProperties);
-
-  const { tableData } = usePIALookup(SortBy, SortOrder);
-  const [searchTableData, setSearchTableData] =
-    useState<IPIAIntake[]>(tableData);
-    const [searchParams] = useSearchParams();
-
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
+  const { tableData } = usePIALookup(SortBy, SortOrder);
+
   const updateSearchUrl = () => {
     navigate(`?searchText=${searchText}`);
   };
@@ -47,7 +45,6 @@ const PIAList = () => {
   const handleSearchTextChange = (newSearchText: any) => {
     setSearchText(newSearchText.target.value);
   };
-  const handleSearch = async () => {};
   //Switch ordering states
   function startSorting(Sortheading: string) {
     Object.keys(headings).forEach((key) => {
