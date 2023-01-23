@@ -50,9 +50,9 @@ jobs:
       # Tag Docker Image built with prod
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/artifactory/tb99-dpia-api-docker-local/dpia-api:latest
+          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/tb99-dpia-api-docker-local/dpia-api:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/artifactory/tb99-dpia-api-docker-local/dpia-api
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/tb99-dpia-api-docker-local/dpia-api:latest
