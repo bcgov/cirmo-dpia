@@ -6,4 +6,7 @@ export interface IPIAResult {
 
 export interface IPIAResults {
   data: IPIAIntake[];
+  page: number;
+  pageSize: number;
+  total: number;
 }
