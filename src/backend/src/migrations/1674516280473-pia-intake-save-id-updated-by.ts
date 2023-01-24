@@ -1,31 +1,29 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class SaveIdUpdatedBy1674166654887 implements MigrationInterface {
-  name = 'SaveIdUpdatedBy1674166654887';
+export class PiaIntakeSaveIdUpdatedBy1674516280473
+  implements MigrationInterface
+{
+  name = 'piaIntakeSaveIdUpdatedBy1674516280473';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "pia-intake" ADD "updated_by_guid" character varying NOT NULL`,
+      `ALTER TABLE "pia-intake" ADD "updated_by_guid" character varying`,
     );
     await queryRunner.query(
-      `ALTER TABLE "pia-intake" ADD "updated_by_username" character varying NOT NULL`,
+      `ALTER TABLE "pia-intake" ADD "updated_by_username" character varying`,
     );
     await queryRunner.query(
-      `ALTER TABLE "pia-intake" ADD "save_id" character varying NOT NULL`,
+      `ALTER TABLE "pia-intake" ADD "save_id" integer DEFAULT '1'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ppq" ADD "updated_by_guid" character varying NOT NULL`,
+      `ALTER TABLE "ppq" ADD "updated_by_guid" character varying`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ppq" ADD "updated_by_username" character varying NOT NULL`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "ppq" ADD "save_id" character varying NOT NULL`,
+      `ALTER TABLE "ppq" ADD "updated_by_username" character varying`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "ppq" DROP COLUMN "save_id"`);
     await queryRunner.query(
       `ALTER TABLE "ppq" DROP COLUMN "updated_by_username"`,
     );
