@@ -56,3 +56,40 @@ jobs:
       - name: Docker Push Version
         run: |
           docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/tb99-dpia-api-docker-local/dpia-api:latest
+
+  DEV-deploy:
+    runs-on: ubuntu-latest
+    environment: API-Dev
+    needs: [ DPIA-API-Build-Tag-Push ]
+    steps:
+    
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Login to Openshift Silver Cluster
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: github-actions
+          OPENSHIFT_NAMESPACE: b996e6-dev
+        with: 
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+          namespace: b996e6-dev
+
+      # Use deploy helper script to process and apply DPIA API Application template into DEV namespace
+      - name: Process and Apply API DeploymentConfig, Service, Route templates
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "dpia-api-artifactory"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DC_TEMPLATE: "api-dc-template-artifactory.yaml"
+          SERVICE_TEMPLATE: "api-service-template-artifactory.yaml"
+          ROUTE_TEMPLATE: "api-route-template-artifactory.yaml"
+          DIR: "api"
+          IMAGESTREAM: "api-dev"
+        run: |
+          ./.github/helpers/deploy.sh 
