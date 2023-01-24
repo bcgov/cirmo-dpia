@@ -23,7 +23,7 @@ const Dropdown = ({
         required={required}
       >
         <option key={id} value="">
-          {placeholder ? placeholder : 'Select one'}
+          {placeholder || 'Select one'}
         </option>
         {options.map((option, index) => (
           <option key={index} value={option.value}>
