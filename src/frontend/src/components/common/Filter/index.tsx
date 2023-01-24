@@ -15,9 +15,7 @@ const Filter = ({ id }: IFilter) => {
   const [ministry, setMinistry] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [drafterFilter, setDrafterFilter] = useState<string>('');
-  const isMPO = () => {
-    return isMPORole();
-  };
+
   const handlePiaStatusChange = (newStatus: any) => {
     setStatus(newStatus.target.value);
   };
@@ -44,19 +42,19 @@ const Filter = ({ id }: IFilter) => {
         value={status}
         label=""
         placeholder="Any status"
-        optionalClass="col-md-3 px-2"
+        optionalClass="px-2"
         options={PiaStatusList}
         changeHandler={handlePiaStatusChange}
         required={false}
       />
-      {isMPO() && (
+      {isMPORole() && (
         <>
           <Dropdown
             id="ministry-select"
             value={ministry}
             label=""
             placeholder="Any ministry"
-            optionalClass="col-md-3"
+            optionalClass=""
             options={MinistryList}
             changeHandler={handleMinistryChange}
             required={false}
@@ -67,7 +65,7 @@ const Filter = ({ id }: IFilter) => {
             value={drafterFilter}
             label=""
             placeholder="Any drafter"
-            optionalClass="col-md-3 px-2"
+            optionalClass="px-2"
             options={PiaDrafterFilterList}
             changeHandler={handleDrafterFilterChange}
             required={false}
