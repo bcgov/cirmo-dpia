@@ -5,6 +5,7 @@ import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
+import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
@@ -14,11 +15,20 @@ const PIAList = () => {
   const [searchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
+  const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
+  const [PageSizedefault, setPageSizedefault] = useState(10);
+
+  const { tableData, Page, Total } = usePIALookup(
+    SortBy,
+    SortOrder,
+    currentPage,
+    PageSizedefault,
+  );
+
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
-  const { tableData } = usePIALookup(SortBy, SortOrder);
 
   const updateSearchUrl = () => {
     navigate(`?searchText=${searchText}`);
@@ -62,6 +72,22 @@ const PIAList = () => {
     setHeading(headings);
   }
 
+  function changePage(changeCurrentPage: number) {
+    if (
+      !changeCurrentPage ||
+      changeCurrentPage < 1 ||
+      changeCurrentPage > Math.ceil(Total / PageSizedefault)
+    ) {
+      return;
+    }
+    setcurrentPage(changeCurrentPage);
+  }
+
+  function changePageSize(PageSize: number) {
+    setcurrentPage(1);
+    setPageSizedefault(PageSize);
+  }
+
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
@@ -86,6 +112,17 @@ const PIAList = () => {
           pias={tableData}
           sorting={startSorting}
         />
+      )}
+      {tableData.length ? (
+        <Pagination
+          currentPage={currentPage}
+          totalEntries={Total}
+          pageSize={PageSizedefault}
+          changePage={changePage}
+          changePageSize={changePageSize}
+        />
+      ) : (
+        ''
       )}
     </div>
   );

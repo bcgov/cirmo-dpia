@@ -1,3 +1,4 @@
+import Pagination from '../../components/common/Pagination';
 import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
 
 export interface IPIAIntake {
@@ -22,6 +23,10 @@ export interface IPIAIntake {
   updatedAt?: Date;
   status?: string;
 }
+
 export interface IPIAIntakeResponse {
   data: IPIAIntake;
+  total: number;
+  page: number;
+  pageSize: number;
 }

@@ -1,0 +1,83 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: $text-dark;
+  .pagination__container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .pagination__container__right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .pagination__container__right__buttons {
+    display: flex;
+    gap: 0.5em;
+  }
+  .rows-per-page {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    .dropdown {
+      display: flex;
+      width: 85px; // eyeballed
+      .dropdown-toggles {
+        display: flex;
+      }
+    }
+    .dropdown-menu {
+      width: 75px;
+      min-width: auto;
+    }
+  }
+  .bcgovbtn {
+    position: relative;
+    padding: 0px;
+    width: 38px;
+    height: 38px;
+    .dropdown-icon {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 50%;
+    }
+    .dropdown-icon-disable {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      color: $text-gray;
+      background-color: $bg-lightgray;
+      cursor: auto;
+    }
+    //left:auto;
+  }
+  .page__enumeration__container {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    .page__enumeration {
+      list-style: none;
+      cursor: pointer;
+      width: 30px;
+      text-align: center;
+    }
+    .pageActive {
+      color: $primary-colour;
+      list-style: none;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}

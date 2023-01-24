@@ -89,6 +89,13 @@ a:hover {
   gap: 0.35em;
 }
 
+.bcgovbtn__primary--disabled {
+  background-color: $bg-disabled;
+  --text-color: white;
+  border: 2px solid $bg-disabled;
+  cursor: auto;
+}
+
 .bcgovbtn__secondary {
   background-color: $bg-white;
 

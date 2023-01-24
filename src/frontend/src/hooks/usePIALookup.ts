@@ -6,9 +6,18 @@ import { IPIAIntake } from '../types/interfaces/pia-intake.interface';
 import { IPIAResults } from '../types/interfaces/pia-result.interface';
 import { HttpRequest } from '../utils/http-request.util';
 
-export const usePIALookup = (sortBy: string, sortOrder: number) => {
+export const usePIALookup = (
+  sortBy: string,
+  sortOrder: number,
+  pageNumber: number,
+  pageSize: number,
+) => {
   const [tableData, setTableData] = useState<IPIAIntake[]>([]);
+  const [PageSize, setPageSize] = useState<number>(0);
+  const [Total, setTotal] = useState<number>(0);
+  const [Page, setPage] = useState<number>(0);
   const [searchParams] = useSearchParams();
+
   useEffect(() => {
     (async () => {
       let params = {};
@@ -16,6 +25,19 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
         params = {
           sortBy: sortBy,
           sortOrder: String(sortOrder),
+        };
+      }
+
+      if (pageNumber) {
+        params = {
+          ...params,
+          page: String(pageNumber),
+        };
+      }
+      if (pageSize) {
+        params = {
+          ...params,
+          pageSize: String(pageSize),
         };
       }
       if (
@@ -29,22 +51,26 @@ export const usePIALookup = (sortBy: string, sortOrder: number) => {
       }
       try {
         // Actually perform fetch
-        const results = (
-          await HttpRequest.get<IPIAResults>(
-            API_ROUTES.PIA_INTAKE,
-            {},
-            {},
-            true,
-            params,
-          )
-        ).data;
-        setTableData(results);
+        const results = await HttpRequest.get<IPIAResults>(
+          API_ROUTES.PIA_INTAKE,
+          {},
+          {},
+          true,
+          params,
+        );
+        setTableData(results.data);
+        setPage(results.page);
+        setPageSize(results.pageSize);
+        setTotal(results.total);
       } catch (e) {
         throw new Error('Fetch pia failed');
       }
     })();
-  }, [searchParams, sortBy, sortOrder]);
+  }, [searchParams, sortBy, sortOrder, Page, pageNumber, pageSize]);
   return {
     tableData,
+    PageSize,
+    Total,
+    Page,
   };
 };
