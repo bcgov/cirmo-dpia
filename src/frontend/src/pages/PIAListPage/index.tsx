@@ -100,15 +100,13 @@ const PIAList = () => {
         </a>
       </div>
       <div className="search-container-wrapper">
-      <Filter />
+        <Filter />
         <SearchBox
           searchText={searchText}
           onChange={handleSearchTextChange}
           onSearchClick={updateSearchUrl}
           onClearSearchClick={handleClearSearchText}
         />
-
-       
       </div>
       {tableData.length === 0 ? (
         <EmptyPIAList />
