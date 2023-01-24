@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, Not } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -25,6 +25,7 @@ import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -128,6 +129,7 @@ export class PiaIntakeService {
     const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
 
     // Scenario 1: As a user, retrieve all PIA-intakes I submitted
+
     whereClause.push({
       ...commonWhereClause,
       createdByGuid: user.idir_user_guid,
@@ -140,7 +142,21 @@ export class PiaIntakeService {
         ministry: In(mpoMinistries),
       });
     }
+    // sub scenario 1 check the filter to exclude myPia
+    if (query.filterByDrafter && query.filterByDrafter === 'excludeMyPia') {
+      whereClause.forEach((clause) => {
+        if (clause.createdByGuid)
+          clause.createdByGuid = Not(user.idir_user_guid);
+      });
+    }
+    // sub scenario 2 check the filter to get only myPia
+    if (query.filterByDrafter && query.filterByDrafter === 'onlyMyPia') {
+      whereClause.forEach((clause) => {
+        if (clause.ministry) delete clause.ministry;
+      });
+    }
 
+    console.log('print query', whereClause);
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
       const searchOperator = ILike(`%${query.searchText}%`);
@@ -162,6 +178,39 @@ export class PiaIntakeService {
 
       whereClause.push(...additionalWhereClauses);
     }
+
+    /** filter logic here */
+    if (query.filterByStatus) {
+      const filterOperator = query.filterByStatus;
+      const additionalWhereClauses: FindOptionsWhere<PiaIntakeEntity>[] = [];
+
+      whereClause.forEach((clause) => {
+        additionalWhereClauses.push({
+          ...clause,
+          status: PiaIntakeStatusEnum[filterOperator],
+        });
+
+        clause.title = filterOperator;
+      });
+
+      whereClause.push(...additionalWhereClauses);
+    }
+    if (query.filterByMinistry) {
+      const filterOperator = query.filterByMinistry;
+      const additionalWhereClauses: FindOptionsWhere<PiaIntakeEntity>[] = [];
+
+      whereClause.forEach((clause) => {
+        additionalWhereClauses.push({
+          ...clause,
+          ministry: GovMinistriesEnum[filterOperator],
+        });
+
+        clause.title = filterOperator;
+      });
+
+      whereClause.push(...additionalWhereClauses);
+    }
+
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
