@@ -99,14 +99,17 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </a>
       </div>
-      <SearchBox
-        searchText={searchText}
-        onChange={handleSearchTextChange}
-        onSearchClick={updateSearchUrl}
-        onClearSearchClick={handleClearSearchText}
-      />
-
+      <div className="search-container-wrapper">
       <Filter />
+        <SearchBox
+          searchText={searchText}
+          onChange={handleSearchTextChange}
+          onSearchClick={updateSearchUrl}
+          onClearSearchClick={handleClearSearchText}
+        />
+
+       
+      </div>
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (

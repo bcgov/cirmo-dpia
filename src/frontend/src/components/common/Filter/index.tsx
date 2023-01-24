@@ -37,8 +37,8 @@ const Filter = ({ id }: IFilter) => {
   };
 
   return (
-    <div className="d-flex me-auto pt-5">
-      <div className="mt-4 pr-5"> Filter by</div>
+    <div className="d-flex me-auto">
+      <div className="mt-2"> Filter by</div>
       <Dropdown
         id="pia-status-select"
         value={status}
@@ -75,7 +75,7 @@ const Filter = ({ id }: IFilter) => {
         </>
       )}
 
-      <div className="mt-3">
+      <div>
         <button
           className="bcgovbtn bcgovbtn__tertiary "
           onClick={handleClearFilterClick}
