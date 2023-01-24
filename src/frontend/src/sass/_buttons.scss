@@ -77,6 +77,16 @@ a:hover {
     background-color: $bg-blue;
     border: 2px solid $bg-blue;
   }
+
+}
+
+.bcgovbtn__primary-search {
+  padding-inline: 0.7em;
+}
+
+.search-icon-btn {
+  display: flex;
+  gap: 0.35em;
 }
 
 .bcgovbtn__primary--disabled {
