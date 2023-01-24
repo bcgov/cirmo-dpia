@@ -142,21 +142,6 @@ export class PiaIntakeService {
         ministry: In(mpoMinistries),
       });
     }
-    // sub scenario 1 check the filter to exclude myPia
-    if (query.filterByDrafter && query.filterByDrafter === 'excludeMyPia') {
-      whereClause.forEach((clause) => {
-        if (clause.createdByGuid)
-          clause.createdByGuid = Not(user.idir_user_guid);
-      });
-    }
-    // sub scenario 2 check the filter to get only myPia
-    if (query.filterByDrafter && query.filterByDrafter === 'onlyMyPia') {
-      whereClause.forEach((clause) => {
-        if (clause.ministry) delete clause.ministry;
-      });
-    }
-
-    console.log('print query', whereClause);
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
       const searchOperator = ILike(`%${query.searchText}%`);
@@ -181,36 +166,27 @@ export class PiaIntakeService {
 
     /** filter logic here */
     if (query.filterByStatus) {
-      const filterOperator = query.filterByStatus;
-      const additionalWhereClauses: FindOptionsWhere<PiaIntakeEntity>[] = [];
-
       whereClause.forEach((clause) => {
-        additionalWhereClauses.push({
-          ...clause,
-          status: PiaIntakeStatusEnum[filterOperator],
-        });
-
-        clause.title = filterOperator;
+        clause.status = PiaIntakeStatusEnum[query.filterByStatus];
       });
-
-      whereClause.push(...additionalWhereClauses);
     }
     if (query.filterByMinistry) {
-      const filterOperator = query.filterByMinistry;
-      const additionalWhereClauses: FindOptionsWhere<PiaIntakeEntity>[] = [];
-
       whereClause.forEach((clause) => {
-        additionalWhereClauses.push({
-          ...clause,
-          ministry: GovMinistriesEnum[filterOperator],
-        });
-
-        clause.title = filterOperator;
+        clause.ministry = GovMinistriesEnum[query.filterByMinistry];
       });
-
-      whereClause.push(...additionalWhereClauses);
     }
-
+    // filter by drafter sub scenario 1 check the filter to exclude my Pia
+    if (query.filterByDrafter && query.filterByDrafter === 'excludeMyPia') {
+      whereClause.forEach((clause) => {
+        clause.createdByGuid = Not(user.idir_user_guid);
+      });
+    }
+    // filter by drafter sub scenario 2 check the filter to get only my Pia
+    if (query.filterByDrafter && query.filterByDrafter === 'onlyMyPia') {
+      whereClause.forEach((clause) => {
+        clause.createdByGuid = user.idir_user_guid;
+      });
+    }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
@@ -285,7 +261,6 @@ export class PiaIntakeService {
   /**
    * ==== HELPER METHODS ====
    */
-
   async findOneBy(
     where: FindOptionsWhere<PiaIntakeEntity>,
   ): Promise<PiaIntakeEntity> {
