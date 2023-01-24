@@ -182,10 +182,10 @@ export const PiaStatusList = [
   { label: 'Withdrawn', value: 'WITHDRAWN' },
 ];
 export const PiaDrafterFilterList = [
-  { label: 'Exclude my PIAs', value: 'not_me' },
+  { label: 'Exclude my PIAs', value: 'excludeMyPia' },
   {
     label: 'Only my PIAs',
-    value: 'only_me',
+    value: 'onlyMyPia',
   },
 ];
 
