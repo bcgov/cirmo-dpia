@@ -70,6 +70,8 @@
     .page__enumeration {
       list-style: none;
       cursor: pointer;
+      width: 30px;
+      text-align: center;
     }
     .pageActive {
       color: $primary-colour;

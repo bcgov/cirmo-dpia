@@ -16,7 +16,6 @@ export const usePIALookup = (
   const [PageSize, setPageSize] = useState<number>(0);
   const [Total, setTotal] = useState<number>(0);
   const [Page, setPage] = useState<number>(0);
-  console.log('usePIALookup', sortBy, sortOrder, pageNumber, pageSize);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -39,6 +38,7 @@ export const usePIALookup = (
         params = {
           ...params,
           pageSize: String(pageSize),
+        };
       }
       if (
         searchParams.get('searchText') !== null &&
