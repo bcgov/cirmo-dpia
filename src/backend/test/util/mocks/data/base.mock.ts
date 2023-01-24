@@ -7,7 +7,6 @@ export const baseEntityMock: BaseEntity = {
   createdByUsername: 'IDIRUSER',
   updatedByGuid: 'ABCDGUID',
   updatedByUsername: 'IDIRUSER',
-  saveId: '1',
   createdAt: new Date(),
   updatedAt: new Date(),
 };
