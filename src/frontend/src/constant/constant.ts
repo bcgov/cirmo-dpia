@@ -1,4 +1,5 @@
 import { DelegatedReviewTypesEnum } from '../types/enums/delegated-review-types.enum';
+import { PiaFilterDrafterByCurrentUserEnum } from '../types/enums/pia-filter-drafter-by-current-user.enum';
 import { PiaTypesEnum } from '../types/enums/pia-types.enum';
 
 export const OtherFactor = [
@@ -180,10 +181,13 @@ export const PiaStatusList = [
   { label: 'PCT_Review', value: 'PCT_REVIEW' },
 ];
 export const PiaDrafterFilterList = [
-  { label: 'Exclude my PIAs', value: 'excludeMyPias' },
+  {
+    label: 'Exclude my PIAs',
+    value: PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
+  },
   {
     label: 'Only my PIAs',
-    value: 'onlyMyPias',
+    value: PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
   },
 ];
 

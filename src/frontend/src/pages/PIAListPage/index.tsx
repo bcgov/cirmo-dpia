@@ -9,7 +9,7 @@ import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
-import Filter from '../../components/public/Filter';
+import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ const PIAList = () => {
         </a>
       </div>
       <div className="search-container-wrapper">
-        <Filter />
+        <PIAIntakeFilter />
         <SearchBox
           searchText={searchText}
           onChange={handleSearchTextChange}

@@ -11,7 +11,7 @@ import { isMPORole } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 import { IFilter } from './interfaces';
 
-const Filter = ({ id }: IFilter) => {
+const PIAIntakeFilter = ({ id }: IFilter) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterByMinistry, setFilterByMinistry] = useState<string>('');
@@ -24,37 +24,27 @@ const Filter = ({ id }: IFilter) => {
       filterPiaDrafterByCurrentUser?: string;
       filterByStatus?: string;
       filterByMinistry?: string;
-    } = {
-      filterPiaDrafterByCurrentUser: '',
-      filterByStatus: '',
-      filterByMinistry: '',
-    };
+    } = {};
     switch (field) {
       case 'status':
         params.filterByStatus = newValue.target.value;
         if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
-        else delete params.filterByMinistry;
         if (filterPiaDrafterByCurrentUser !== '')
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
-        else delete params.filterPiaDrafterByCurrentUser;
         setSearchParams(params);
         break;
 
       case 'ministry':
         params.filterByMinistry = newValue.target.value;
         if (filterByStatus !== '') params.filterByStatus = filterByStatus;
-        else delete params.filterByStatus;
         if (filterPiaDrafterByCurrentUser !== '')
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
-        else delete params.filterPiaDrafterByCurrentUser;
         setSearchParams(params);
         break;
       case 'drafter':
         params.filterPiaDrafterByCurrentUser = newValue.target.value;
         if (filterByStatus !== '') params.filterByStatus = filterByStatus;
-        else delete params.filterByStatus;
         if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
-        else delete params.filterByMinistry;
         setSearchParams(params);
         break;
     }
@@ -136,4 +126,4 @@ const Filter = ({ id }: IFilter) => {
   );
 };
 
-export default Filter;
+export default PIAIntakeFilter;
