@@ -56,7 +56,6 @@ const PIAList = () => {
   const handleSearchTextChange = (newSearchText: any) => {
     setSearchText(newSearchText.target.value);
   };
-  const onClearFilterClick = () => {};
   //Switch ordering states
   function startSorting(Sortheading: string) {
     Object.keys(headings).forEach((key) => {
