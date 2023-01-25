@@ -2,7 +2,6 @@ import {
   IsBoolean,
   IsEmail,
   IsEnum,
-  IsNotEmpty,
   IsOptional,
   IsString,
 } from '@nestjs/class-validator';
@@ -40,43 +39,43 @@ export const piaIntakeEntityMock = {
 
 export class CreatePiaIntakeDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.title,
   })
   title: string;
 
   @IsEnum(GovMinistriesEnum)
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     enum: GovMinistriesEnum,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.ministry,
   })
   ministry: GovMinistriesEnum;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.branch,
   })
   branch: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.drafterName,
   })
   drafterName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
     required: true,
@@ -85,64 +84,64 @@ export class CreatePiaIntakeDto {
   drafterTitle: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.drafterEmail,
   })
   drafterEmail: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.leadName,
   })
   leadName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.leadTitle,
   })
   leadTitle: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.leadEmail,
   })
   leadEmail: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.mpoName,
   })
   mpoName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     example: piaIntakeEntityMock.mpoEmail,
   })
   mpoEmail: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
     required: false,
@@ -151,7 +150,7 @@ export class CreatePiaIntakeDto {
   initiativeDescription: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
     required: false,
@@ -160,7 +159,7 @@ export class CreatePiaIntakeDto {
   initiativeScope: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     type: String,
     required: false,
@@ -187,10 +186,10 @@ export class CreatePiaIntakeDto {
   riskMitigation: string;
 
   @IsEnum(PiaIntakeStatusEnum)
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
     enum: PiaIntakeStatusEnum,
-    required: true,
+    required: false,
     example: PiaIntakeStatusEnum.MPO_REVIEW,
   })
   status: PiaIntakeStatusEnum;

@@ -94,16 +94,28 @@ describe('PiaIntakeService', () => {
      * @Output
      *   - an object containing id of the newly created database row
      */
+
+    const omitBaseKeysSpy = jest
+      .spyOn(baseHelper, 'omitBaseKeys')
+      .mockImplementation(() => null);
+
+    beforeEach(() => {
+      omitBaseKeysSpy.mockClear();
+    });
+
     it('succeeds calling the database repository with correct data', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = { ...createPiaIntakeMock };
       const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const getPiaIntakeRO = { ...getPiaIntakeROMock };
 
       const user: KeycloakUser = { ...keycloakUserMock };
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
-        return { id: piaIntakeEntity.id };
+        return piaIntakeEntity;
       });
+
+      omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
 
       const result = await service.create(createPiaIntakeDto, user);
 
@@ -116,7 +128,9 @@ describe('PiaIntakeService', () => {
         drafterEmail: user.email,
       });
 
-      expect(result).toEqual({ id: piaIntakeEntity.id });
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity);
+
+      expect(result).toEqual(getPiaIntakeRO);
     });
   });
 

@@ -11,7 +11,6 @@ import { FindOptionsWhere, In, ILike, Repository } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
-import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GovMinistries } from '../../common/constants/gov-ministries.constant';
 import { KeycloakUser } from '../auth/keycloak-user.model';
 import { PiaIntakeEntity } from './entities/pia-intake.entity';
@@ -38,7 +37,7 @@ export class PiaIntakeService {
   async create(
     createPiaIntakeDto: CreatePiaIntakeDto,
     user: KeycloakUser,
-  ): Promise<CreatePiaIntakeRO> {
+  ): Promise<GetPiaIntakeRO> {
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
       createdByGuid: user.idir_user_guid,
@@ -48,7 +47,10 @@ export class PiaIntakeService {
       drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
     });
 
-    return { id: piaInfoForm.id };
+    const formattedPiaInfoForm: GetPiaIntakeRO =
+      omitBaseKeys<PiaIntakeEntity>(piaInfoForm);
+
+    return formattedPiaInfoForm;
   }
 
   async update(
