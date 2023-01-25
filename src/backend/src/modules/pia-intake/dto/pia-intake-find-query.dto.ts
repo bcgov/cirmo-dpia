@@ -30,7 +30,7 @@ export class PiaIntakeFindQuery {
 
   @ApiProperty({
     required: false,
-    type: PiaIntakeStatusEnum,
+    type: String,
     example: piaIntakeEntityMock.status,
   })
   @IsString()
@@ -40,12 +40,12 @@ export class PiaIntakeFindQuery {
 
   @ApiProperty({
     required: false,
-    type: GovMinistriesEnum,
+    type: String,
     example: piaIntakeEntityMock.ministry,
   })
   @IsString()
   @IsOptional()
-  @IsEnum(PiaIntakeStatusEnum)
+  @IsEnum(GovMinistriesEnum)
   readonly filterByMinistry?: string;
 
   @ApiProperty({
