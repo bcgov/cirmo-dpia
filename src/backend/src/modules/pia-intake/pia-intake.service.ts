@@ -25,7 +25,6 @@ import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
-import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
 
 @Injectable()
@@ -167,12 +166,12 @@ export class PiaIntakeService {
     /** filter logic here */
     if (query.filterByStatus) {
       whereClause.forEach((clause) => {
-        clause.status = PiaIntakeStatusEnum[query.filterByStatus];
+        clause.status = query.filterByStatus;
       });
     }
     if (query.filterByMinistry) {
       whereClause.forEach((clause) => {
-        clause.ministry = GovMinistriesEnum[query.filterByMinistry];
+        clause.ministry = query.filterByMinistry;
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia

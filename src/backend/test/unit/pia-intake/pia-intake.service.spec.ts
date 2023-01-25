@@ -38,6 +38,7 @@ import { PaginatedRO } from 'src/common/paginated.ro';
 import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
+import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 
 /**
  * @Description
@@ -367,7 +368,7 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 5: user is MPO; filter by PIA status
+    // scenario 5: user is MPO; filter by PIA status with Sort
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -376,6 +377,8 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        sortBy: 'updatedAt',
+        sortOrder: SortOrderEnum.ASC,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -407,7 +410,7 @@ describe('PiaIntakeService', () => {
           },
         ],
         order: {
-          createdAt: -1,
+          updatedAt: 1,
         },
         skip: 48,
         take: 12,
