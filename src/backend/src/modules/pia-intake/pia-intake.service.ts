@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, Not } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -25,6 +25,8 @@ import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
+import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -140,7 +142,6 @@ export class PiaIntakeService {
         ministry: In(mpoMinistries),
       });
     }
-
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
       const searchOperator = ILike(`%${query.searchText}%`);
@@ -161,6 +162,38 @@ export class PiaIntakeService {
       });
 
       whereClause.push(...additionalWhereClauses);
+    }
+
+    /** filter logic here */
+    if (query.filterByStatus) {
+      whereClause.forEach((clause) => {
+        clause.status = PiaIntakeStatusEnum[query.filterByStatus];
+      });
+    }
+    if (query.filterByMinistry) {
+      whereClause.forEach((clause) => {
+        clause.ministry = GovMinistriesEnum[query.filterByMinistry];
+      });
+    }
+    // filter by drafter sub scenario 1 check the filter to exclude my Pia
+    if (
+      query.filterPiaDrafterByCurrentUser &&
+      query.filterPiaDrafterByCurrentUser ===
+        PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS
+    ) {
+      whereClause.forEach((clause) => {
+        clause.createdByGuid = Not(user.idir_user_guid);
+      });
+    }
+    // filter by drafter sub scenario 2 check the filter to get only my Pia
+    if (
+      query.filterPiaDrafterByCurrentUser &&
+      query.filterPiaDrafterByCurrentUser ===
+        PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS
+    ) {
+      whereClause.forEach((clause) => {
+        clause.createdByGuid = user.idir_user_guid;
+      });
     }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
@@ -236,7 +269,6 @@ export class PiaIntakeService {
   /**
    * ==== HELPER METHODS ====
    */
-
   async findOneBy(
     where: FindOptionsWhere<PiaIntakeEntity>,
   ): Promise<PiaIntakeEntity> {

@@ -8,9 +8,12 @@ import {
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaIntakeAllowedSortFields } from '../constants/pia-intake-allowed-sort-fields';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
+import { PiaFilterDrafterByCurrentUserEnum } from '../enums/pia-filter-drafter-by-current-user.enum';
+import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { piaIntakeEntityMock } from './create-pia-intake.dto';
 
 export class PiaIntakeFindQuery {
@@ -24,6 +27,36 @@ export class PiaIntakeFindQuery {
   @Length(0, 100)
   @Transform(({ value }) => value.trim())
   readonly searchText?: string = '';
+
+  @ApiProperty({
+    required: false,
+    type: String,
+    example: piaIntakeEntityMock.status,
+  })
+  @IsString()
+  @IsOptional()
+  @IsEnum(PiaIntakeStatusEnum)
+  readonly filterByStatus?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+    example: piaIntakeEntityMock.ministry,
+  })
+  @IsString()
+  @IsOptional()
+  @IsEnum(GovMinistriesEnum)
+  readonly filterByMinistry?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+    example: PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
+  })
+  @IsString()
+  @IsOptional()
+  @IsEnum(PiaFilterDrafterByCurrentUserEnum)
+  readonly filterPiaDrafterByCurrentUser?: string;
 
   @ApiProperty({
     required: false,

@@ -14,6 +14,7 @@ export const piaIntakeEntityMock = {
   title: 'Test PIA for screening King Richard',
   ministry: GovMinistriesEnum.TOURISM_ARTS_CULTURE_AND_SPORT,
   branch: 'Entertainment',
+  status: PiaIntakeStatusEnum.INCOMPLETE,
   drafterName: 'Will Smith',
   drafterTitle: 'Actor',
   drafterEmail: 'will@test.bc.gov.in',
