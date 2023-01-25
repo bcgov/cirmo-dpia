@@ -29,7 +29,7 @@ const PIAIntakeFilter = ({ id }: IFilter) => {
       case 'status':
         params.filterByStatus = newValue.target.value;
         if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
-        if (filterPiaDrafterByCurrentUser !== '')
+        if (filterPiaDrafterByCurrentUser)
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         setSearchParams(params);
         break;
@@ -37,14 +37,14 @@ const PIAIntakeFilter = ({ id }: IFilter) => {
       case 'ministry':
         params.filterByMinistry = newValue.target.value;
         if (filterByStatus !== '') params.filterByStatus = filterByStatus;
-        if (filterPiaDrafterByCurrentUser !== '')
+        if (filterPiaDrafterByCurrentUser)
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         setSearchParams(params);
         break;
       case 'drafter':
         params.filterPiaDrafterByCurrentUser = newValue.target.value;
-        if (filterByStatus !== '') params.filterByStatus = filterByStatus;
-        if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
+        if (filterByStatus) params.filterByStatus = filterByStatus;
+        if (filterByMinistry) params.filterByMinistry = filterByMinistry;
         setSearchParams(params);
         break;
     }

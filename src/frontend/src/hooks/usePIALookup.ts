@@ -40,13 +40,13 @@ export const usePIALookup = (
           pageSize: String(pageSize),
         };
       }
-      if (!searchParams.get('searchText')) {
+      if (searchParams.get('searchText')) {
         params = {
           ...params,
           searchText: searchParams.get('searchText'),
         };
       }
-      if (!searchParams.get('filterPiaDrafterByCurrentUser')) {
+      if (searchParams.get('filterPiaDrafterByCurrentUser')) {
         params = {
           ...params,
           filterPiaDrafterByCurrentUser: searchParams.get(
@@ -54,13 +54,13 @@ export const usePIALookup = (
           ),
         };
       }
-      if (!searchParams.get('filterByStatus')) {
+      if (searchParams.get('filterByStatus')) {
         params = {
           ...params,
           filterByStatus: searchParams.get('filterByStatus'),
         };
       }
-      if (!searchParams.get('filterByMinistry')) {
+      if (searchParams.get('filterByMinistry')) {
         params = {
           ...params,
           filterByMinistry: searchParams.get('filterByMinistry'),
