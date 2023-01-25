@@ -33,15 +33,23 @@
       }
     }
 */
-    & > tbody > tr > td:nth-child(5) {
-      padding: 0;
+    & > tbody {
+      & > tr {
+        & > td:first-child {
+          width: 50ch;
+        }
 
-      & > a {
-        margin-inline: auto 0;
-        margin-top: 0.6em;
+        & > td:nth-child(5) {
+          padding: 0;
+  
+          & > a {
+            margin-inline: auto 0;
+            margin-top: 0.6em;
+          }
+        }
       }
     }
-
+    
     .enableSorting {
       cursor: pointer;
       img {
