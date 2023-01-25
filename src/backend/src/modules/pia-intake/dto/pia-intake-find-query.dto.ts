@@ -36,7 +36,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsOptional()
   @IsEnum(PiaIntakeStatusEnum)
-  readonly filterByStatus?: string;
+  readonly filterByStatus?: PiaIntakeStatusEnum;
 
   @ApiProperty({
     required: false,
@@ -46,7 +46,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsOptional()
   @IsEnum(GovMinistriesEnum)
-  readonly filterByMinistry?: string;
+  readonly filterByMinistry?: GovMinistriesEnum;
 
   @ApiProperty({
     required: false,
@@ -56,7 +56,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsOptional()
   @IsEnum(PiaFilterDrafterByCurrentUserEnum)
-  readonly filterPiaDrafterByCurrentUser?: string;
+  readonly filterPiaDrafterByCurrentUser?: PiaFilterDrafterByCurrentUserEnum;
 
   @ApiProperty({
     required: false,
