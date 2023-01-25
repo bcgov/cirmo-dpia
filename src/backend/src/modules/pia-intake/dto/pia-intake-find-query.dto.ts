@@ -12,6 +12,7 @@ import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaIntakeAllowedSortFields } from '../constants/pia-intake-allowed-sort-fields';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
+import { PiaFilterDrafterByCurrentUserEnum } from '../enums/pia-filter-drafter-by-current-user.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { piaIntakeEntityMock } from './create-pia-intake.dto';
 
@@ -34,9 +35,8 @@ export class PiaIntakeFindQuery {
   })
   @IsString()
   @IsOptional()
-  @Length(0, 20)
-  @Transform(({ value }) => value.trim())
-  readonly filterByStatus?: string = '';
+  @IsEnum(PiaIntakeStatusEnum)
+  readonly filterByStatus?: string;
 
   @ApiProperty({
     required: false,
@@ -45,18 +45,18 @@ export class PiaIntakeFindQuery {
   })
   @IsString()
   @IsOptional()
-  @Length(0, 100)
-  readonly filterByMinistry?: string = '';
+  @IsEnum(PiaIntakeStatusEnum)
+  readonly filterByMinistry?: string;
 
   @ApiProperty({
     required: false,
     type: String,
-    example: 'onlyMyPia',
+    example: PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
   })
   @IsString()
   @IsOptional()
-  @Length(0, 20)
-  readonly filterByDrafter?: string = '';
+  @IsEnum(PiaFilterDrafterByCurrentUserEnum)
+  readonly filterPiaDrafterByCurrentUser?: string;
 
   @ApiProperty({
     required: false,

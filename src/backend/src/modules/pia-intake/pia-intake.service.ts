@@ -26,6 +26,7 @@ import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
+import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -129,7 +130,6 @@ export class PiaIntakeService {
     const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
 
     // Scenario 1: As a user, retrieve all PIA-intakes I submitted
-
     whereClause.push({
       ...commonWhereClause,
       createdByGuid: user.idir_user_guid,
@@ -176,13 +176,21 @@ export class PiaIntakeService {
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia
-    if (query.filterByDrafter && query.filterByDrafter === 'excludeMyPia') {
+    if (
+      query.filterPiaDrafterByCurrentUser &&
+      query.filterPiaDrafterByCurrentUser ===
+        PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS
+    ) {
       whereClause.forEach((clause) => {
         clause.createdByGuid = Not(user.idir_user_guid);
       });
     }
     // filter by drafter sub scenario 2 check the filter to get only my Pia
-    if (query.filterByDrafter && query.filterByDrafter === 'onlyMyPia') {
+    if (
+      query.filterPiaDrafterByCurrentUser &&
+      query.filterPiaDrafterByCurrentUser ===
+        PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS
+    ) {
       whereClause.forEach((clause) => {
         clause.createdByGuid = user.idir_user_guid;
       });
