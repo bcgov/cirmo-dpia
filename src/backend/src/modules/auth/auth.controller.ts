@@ -3,8 +3,9 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
+  InternalServerErrorException,
   Post,
   Redirect,
   Req,
@@ -13,6 +14,7 @@ import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 
 import { Unprotected } from 'nest-keycloak-connect';
 import { AuthService } from './auth.service';
+import { AppTokensDto } from './dto/app-tokens.dto';
 import { KeycloakToken } from './keycloack-token.model';
 
 @Controller('auth')
@@ -54,20 +56,29 @@ export class AuthController {
     description: 'Refresh access token with keycloak sso server ',
   })
   @Unprotected()
-  refreshAccessToken(@Body() token: KeycloakToken) {
-    return this.authService.refreshAccessToken(token.refresh_token);
+  refreshAccessToken(@Body() token: AppTokensDto) {
+    try {
+      this.authService.refreshAccessToken(token.refresh_token);
+    } catch (e) {
+      if (e instanceof HttpException) {
+        throw new HttpException(' Token failed', e.getStatus());
+      }
+      throw new InternalServerErrorException('Refresh Token failed');
+    }
   }
 
   @Post('logout')
   @Unprotected()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOkResponse({ description: 'Logout from keycloak sso server' })
-  async logout(@Body() token: KeycloakToken) {
+  async logout(@Body() token: AppTokensDto) {
     try {
       await this.authService.logout(token.refresh_token);
-    } catch {
-      // TODO define a correct status code
-      throw new NotFoundException('Logout failed');
+    } catch (e) {
+      if (e instanceof HttpException) {
+        throw new HttpException('Logout failed', e.getStatus());
+      }
+      throw new InternalServerErrorException('Logout failed');
     }
     return;
   }
