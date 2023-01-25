@@ -9,6 +9,7 @@ import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
+import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
   const navigate = useNavigate();
@@ -97,13 +98,15 @@ const PIAList = () => {
           <FontAwesomeIcon icon={faPlus} />
         </a>
       </div>
-      <SearchBox
-        searchText={searchText}
-        onChange={handleSearchTextChange}
-        onSearchClick={updateSearchUrl}
-        onClearSearchClick={handleClearSearchText}
-      />
-
+      <div className="search-container-wrapper">
+        <PIAIntakeFilter />
+        <SearchBox
+          searchText={searchText}
+          onChange={handleSearchTextChange}
+          onSearchClick={updateSearchUrl}
+          onClearSearchClick={handleClearSearchText}
+        />
+      </div>
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (

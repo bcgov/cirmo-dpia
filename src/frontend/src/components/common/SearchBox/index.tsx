@@ -12,7 +12,7 @@ const SearchBox = ({
   onClearSearchClick = () => {},
 }: SearchBoxProps) => {
   return (
-    <div className="d-flex pt-5 ms-auto search-container">
+    <div className="d-flex ms-auto search-container">
       <div className="search-sub-container">
         <div className="search-input">
           <InputText

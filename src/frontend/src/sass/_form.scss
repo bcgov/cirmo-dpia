@@ -57,9 +57,22 @@
   margin: 0;
 }
 
+.search-container-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+  width: 100%;
+  
+  & > * > * > .dropdown {
+      width: 11em;
+    }
+  label {
+  display: none;
+  }
+}
+
 .search-container {
   min-width: 450px;
-  width: 42%; /* based on branding eye-balling */
   justify-content: end;
 
   .search-input {

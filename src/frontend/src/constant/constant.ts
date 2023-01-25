@@ -1,4 +1,5 @@
 import { DelegatedReviewTypesEnum } from '../types/enums/delegated-review-types.enum';
+import { PiaFilterDrafterByCurrentUserEnum } from '../types/enums/pia-filter-drafter-by-current-user.enum';
 import { PiaTypesEnum } from '../types/enums/pia-types.enum';
 
 export const OtherFactor = [
@@ -170,6 +171,23 @@ export const MinistryList = [
   {
     label: 'Transportation and Infrastructure',
     value: 'TRANSPORTATION_AND_INFRASTRUCTURE',
+  },
+];
+
+export const PiaStatusList = [
+  { label: 'Incomplete', value: 'INCOMPLETE' },
+  { label: 'Edit_In_Progress', value: 'EDIT_IN_PROGRESS' },
+  { label: 'MPO_Review', value: 'MPO_REVIEW' },
+  { label: 'PCT_Review', value: 'PCT_REVIEW' },
+];
+export const PiaDrafterFilterList = [
+  {
+    label: 'Exclude my PIAs',
+    value: PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
+  },
+  {
+    label: 'Only my PIAs',
+    value: PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
   },
 ];
 

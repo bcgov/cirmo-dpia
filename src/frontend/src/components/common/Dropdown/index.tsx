@@ -8,6 +8,7 @@ const Dropdown = ({
   label,
   optionalClass,
   options,
+  placeholder,
   changeHandler,
   required,
 }: IDropdown) => (
@@ -22,7 +23,7 @@ const Dropdown = ({
         required={required}
       >
         <option key={id} value="">
-          Select one
+          {placeholder || 'Select one'}
         </option>
         {options.map((option, index) => (
           <option key={index} value={option.value}>

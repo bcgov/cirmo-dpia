@@ -40,15 +40,33 @@ export const usePIALookup = (
           pageSize: String(pageSize),
         };
       }
-      if (
-        searchParams.get('searchText') !== null &&
-        searchParams.get('searchText') !== undefined
-      ) {
+      if (searchParams.get('searchText')) {
         params = {
           ...params,
           searchText: searchParams.get('searchText'),
         };
       }
+      if (searchParams.get('filterPiaDrafterByCurrentUser')) {
+        params = {
+          ...params,
+          filterPiaDrafterByCurrentUser: searchParams.get(
+            'filterPiaDrafterByCurrentUser',
+          ),
+        };
+      }
+      if (searchParams.get('filterByStatus')) {
+        params = {
+          ...params,
+          filterByStatus: searchParams.get('filterByStatus'),
+        };
+      }
+      if (searchParams.get('filterByMinistry')) {
+        params = {
+          ...params,
+          filterByMinistry: searchParams.get('filterByMinistry'),
+        };
+      }
+
       try {
         // Actually perform fetch
         const results = await HttpRequest.get<IPIAResults>(
