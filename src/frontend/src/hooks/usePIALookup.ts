@@ -49,6 +49,36 @@ export const usePIALookup = (
           searchText: searchParams.get('searchText'),
         };
       }
+      if (
+        searchParams.get('filterPiaDrafterByCurrentUser') !== null &&
+        searchParams.get('filterPiaDrafterByCurrentUser') !== undefined
+      ) {
+        params = {
+          ...params,
+          filterPiaDrafterByCurrentUser: searchParams.get(
+            'filterPiaDrafterByCurrentUser',
+          ),
+        };
+      }
+      if (
+        searchParams.get('filterByStatus') !== null &&
+        searchParams.get('filterByStatus') !== undefined
+      ) {
+        params = {
+          ...params,
+          filterByStatus: searchParams.get('filterByStatus'),
+        };
+      }
+      if (
+        searchParams.get('filterByMinistry') !== null &&
+        searchParams.get('filterByMinistry') !== undefined
+      ) {
+        params = {
+          ...params,
+          filterByMinistry: searchParams.get('filterByMinistry'),
+        };
+      }
+
       try {
         // Actually perform fetch
         const results = await HttpRequest.get<IPIAResults>(

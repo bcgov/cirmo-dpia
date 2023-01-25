@@ -1,10 +1,10 @@
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   MinistryList,
   PiaDrafterFilterList,
-  PiaStatuses,
   PiaStatusList,
 } from '../../../constant/constant';
 import { isMPORole } from '../../../utils/helper.util';
@@ -12,26 +12,77 @@ import Dropdown from '../../common/Dropdown';
 import { IFilter } from './interfaces';
 
 const Filter = ({ id }: IFilter) => {
-  const [ministry, setMinistry] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [drafterFilter, setDrafterFilter] = useState<string>('');
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterByMinistry, setFilterByMinistry] = useState<string>('');
+  const [filterByStatus, setFilterByStatus] = useState<string>('');
+  const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
+    useState<string>('');
+
+  const setSearchParamsForFilter = (field: string, newValue: any) => {
+    const params: {
+      filterPiaDrafterByCurrentUser?: string;
+      filterByStatus?: string;
+      filterByMinistry?: string;
+    } = {
+      filterPiaDrafterByCurrentUser: '',
+      filterByStatus: '',
+      filterByMinistry: '',
+    };
+    switch (field) {
+      case 'status':
+        params.filterByStatus = newValue.target.value;
+        if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
+        else delete params.filterByMinistry;
+        if (filterPiaDrafterByCurrentUser !== '')
+          params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+        else delete params.filterPiaDrafterByCurrentUser;
+        setSearchParams(params);
+        break;
+
+      case 'ministry':
+        params.filterByMinistry = newValue.target.value;
+        if (filterByStatus !== '') params.filterByStatus = filterByStatus;
+        else delete params.filterByStatus;
+        if (filterPiaDrafterByCurrentUser !== '')
+          params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+        else delete params.filterPiaDrafterByCurrentUser;
+        setSearchParams(params);
+        break;
+      case 'drafter':
+        params.filterPiaDrafterByCurrentUser = newValue.target.value;
+        if (filterByStatus !== '') params.filterByStatus = filterByStatus;
+        else delete params.filterByStatus;
+        if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
+        else delete params.filterByMinistry;
+        setSearchParams(params);
+        break;
+    }
+  };
 
   const handlePiaStatusChange = (newStatus: any) => {
-    setStatus(newStatus.target.value);
+    setFilterByStatus(newStatus.target.value);
+    setSearchParamsForFilter('status', newStatus);
   };
 
   const handleMinistryChange = (newMinistry: any) => {
-    setMinistry(newMinistry.target.value);
+    setFilterByMinistry(newMinistry.target.value);
+    setSearchParamsForFilter('ministry', newMinistry);
   };
 
   const handleDrafterFilterChange = (newDrafterFilter: any) => {
-    setDrafterFilter(newDrafterFilter.target.value);
+    setFilterPiaDrafterByCurrentUser(newDrafterFilter.target.value);
+    setSearchParamsForFilter('drafter', newDrafterFilter);
   };
 
   const handleClearFilterClick = () => {
-    setStatus('');
-    setMinistry('');
-    setDrafterFilter('');
+    setFilterByMinistry('');
+    setFilterByStatus('');
+    setFilterPiaDrafterByCurrentUser('');
+    searchParams.delete('filterPiaDrafterByCurrentUser');
+    searchParams.delete('filterByMinistry');
+    searchParams.delete('filterByStatus');
+    navigate('/pia-list');
   };
 
   return (
@@ -39,7 +90,7 @@ const Filter = ({ id }: IFilter) => {
       <div className="mt-2"> Filter by</div>
       <Dropdown
         id="pia-status-select"
-        value={status}
+        value={filterByStatus}
         label=""
         placeholder="Any status"
         optionalClass="px-2"
@@ -51,7 +102,7 @@ const Filter = ({ id }: IFilter) => {
         <>
           <Dropdown
             id="ministry-select"
-            value={ministry}
+            value={filterByMinistry}
             label=""
             placeholder="Any ministry"
             optionalClass=""
@@ -62,7 +113,7 @@ const Filter = ({ id }: IFilter) => {
 
           <Dropdown
             id="drafter-filter-select"
-            value={drafterFilter}
+            value={filterPiaDrafterByCurrentUser}
             label=""
             placeholder="Any drafter"
             optionalClass="px-2"

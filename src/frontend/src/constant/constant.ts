@@ -178,14 +178,12 @@ export const PiaStatusList = [
   { label: 'Edit_In_Progress', value: 'EDIT_IN_PROGRESS' },
   { label: 'MPO_Review', value: 'MPO_REVIEW' },
   { label: 'PCT_Review', value: 'PCT_REVIEW' },
-  { label: 'Completed', value: 'COMPLETED' },
-  { label: 'Withdrawn', value: 'WITHDRAWN' },
 ];
 export const PiaDrafterFilterList = [
-  { label: 'Exclude my PIAs', value: 'excludeMyPia' },
+  { label: 'Exclude my PIAs', value: 'excludeMyPias' },
   {
     label: 'Only my PIAs',
-    value: 'onlyMyPia',
+    value: 'onlyMyPias',
   },
 ];
 
