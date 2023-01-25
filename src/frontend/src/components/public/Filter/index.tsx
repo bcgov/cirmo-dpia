@@ -8,7 +8,7 @@ import {
   PiaStatusList,
 } from '../../../constant/constant';
 import { isMPORole } from '../../../utils/helper.util';
-import Dropdown from '../Dropdown';
+import Dropdown from '../../common/Dropdown';
 import { IFilter } from './interfaces';
 
 const Filter = ({ id }: IFilter) => {

@@ -9,7 +9,7 @@ import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
-import Filter from '../../components/common/Filter';
+import Filter from '../../components/public/Filter';
 
 const PIAList = () => {
   const navigate = useNavigate();
