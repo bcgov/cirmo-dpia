@@ -51,25 +51,23 @@ const Pagination = ({
                   }
                 >
                   {pageSize}
+                  <FontAwesomeIcon
+                    className="dropdown-icon"
+                    icon={faChevronDown}
+                  />
                 </button>
-                <FontAwesomeIcon
-                  className="dropdown-icon"
-                  icon={faChevronDown}
-                />
                 <ul
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
                 >
                   {PageSizeOptions.map((option) => {
                     return (
-                      <li className="dropdown-item" key={option}>
-                        <div
-                          onClick={() => {
-                            changePageSize(option);
-                          }}
-                        >
-                          {option}
-                        </div>
+                      <li className="dropdown-item" key={option}
+                        onClick={() => {
+                          changePageSize(option);
+                        }}
+                      >
+                        {option}
                       </li>
                     );
                   })}
