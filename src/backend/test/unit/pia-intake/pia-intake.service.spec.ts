@@ -39,6 +39,7 @@ import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { IsNull } from 'typeorm';
 
 /**
  * @Description
@@ -779,6 +780,64 @@ describe('PiaIntakeService', () => {
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
         data: [getPiaIntakeROMock],
         page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 12 MPO user can not filter other ministry pia
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status and not their ministry]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByMinistry: GovMinistriesEnum.FORESTS,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+            ministry: IsNull(),
+          },
+          {
+            isActive: true,
+            ministry: IsNull(),
+            status: 'INCOMPLETE',
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(0);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [],
+        page: 5,
         pageSize: 12,
         total: 100,
       };
