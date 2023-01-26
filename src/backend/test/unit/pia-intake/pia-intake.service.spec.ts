@@ -484,7 +484,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -508,11 +508,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
           },
         ],
@@ -542,7 +542,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
       };
@@ -568,11 +568,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: user.idir_user_guid,
           },
@@ -604,7 +604,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
       };
@@ -630,11 +630,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: Not(user.idir_user_guid),
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: Not(user.idir_user_guid),
           },
@@ -714,7 +714,7 @@ describe('PiaIntakeService', () => {
     });
 
     // scenario 11 MPO user searchText and filter by status
-    it('succeeds when user is an MPO and [searchText is provided]', async () => {
+    it('succeeds when user is an MPO and [searchText is provided and filter by status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
