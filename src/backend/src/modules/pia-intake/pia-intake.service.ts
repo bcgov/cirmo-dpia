@@ -171,7 +171,8 @@ export class PiaIntakeService {
     }
     if (query.filterByMinistry) {
       whereClause.forEach((clause) => {
-        clause.ministry = query.filterByMinistry;
+        if (mpoMinistries.includes(query.filterByMinistry))
+          clause.ministry = query.filterByMinistry;
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia

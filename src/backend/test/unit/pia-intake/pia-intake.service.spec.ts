@@ -484,7 +484,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -508,11 +508,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
           },
         ],
@@ -542,7 +542,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
       };
@@ -568,11 +568,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: user.idir_user_guid,
           },
@@ -604,7 +604,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
       };
@@ -630,11 +630,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: Not(user.idir_user_guid),
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: Not(user.idir_user_guid),
           },
@@ -714,7 +714,7 @@ describe('PiaIntakeService', () => {
     });
 
     // scenario 11 MPO user searchText and filter by status
-    it('succeeds when user is an MPO and [searchText is provided]', async () => {
+    it('succeeds when user is an MPO and [searchText is provided and filter by status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -779,6 +779,63 @@ describe('PiaIntakeService', () => {
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
         data: [getPiaIntakeROMock],
         page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 12 MPO user can not filter other ministry pia
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status and not their ministry]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByMinistry: GovMinistriesEnum.FORESTS,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            ministry: null,
+            status: 'INCOMPLETE',
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(0);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [],
+        page: 5,
         pageSize: 12,
         total: 100,
       };
