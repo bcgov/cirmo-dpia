@@ -79,16 +79,14 @@ export class PiaIntakeService {
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
 
-    // update the record with the provided keys
-    await this.piaIntakeRepository.update(
-      { id },
-      {
-        ...updatePiaIntakeDto,
-        saveId: existingRecord.saveId + 1,
-        updatedByGuid: user.idir_user_guid,
-        updatedByUsername: user.idir_username,
-      },
-    );
+    // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
+    await this.piaIntakeRepository.save({
+      id,
+      ...updatePiaIntakeDto,
+      saveId: existingRecord.saveId + 1,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.idir_username,
+    });
 
     // fetch and return the updated record
     const updatedRecord = await this.findOneById(id, user, userRoles);

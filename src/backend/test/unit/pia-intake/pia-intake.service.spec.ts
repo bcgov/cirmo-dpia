@@ -502,7 +502,7 @@ describe('PiaIntakeService', () => {
 
       service.validateUserAccess = jest.fn(() => true);
 
-      piaIntakeRepository.update = jest.fn(async () => {
+      piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
         throw new ForbiddenException();
       });
@@ -517,15 +517,13 @@ describe('PiaIntakeService', () => {
         userRoles,
         piaIntakeEntityMock,
       );
-      expect(piaIntakeRepository.update).toHaveBeenCalledWith(
-        { id },
-        {
-          ...updatePiaIntakeDto,
-          saveId: 2,
-          updatedByGuid: user.idir_user_guid,
-          updatedByUsername: user.idir_username,
-        },
-      );
+      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
+        id,
+        ...updatePiaIntakeDto,
+        saveId: 2,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
+      });
     });
 
     // Scenario 2: Test succeeds when repository.update does not throw error
@@ -553,7 +551,7 @@ describe('PiaIntakeService', () => {
 
       service.validateUserAccess = jest.fn(() => true);
 
-      piaIntakeRepository.update = jest.fn(async () => {
+      piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeMock, ...updatePiaIntakeDto };
       });
@@ -571,15 +569,13 @@ describe('PiaIntakeService', () => {
         userRoles,
         piaIntakeEntityMock,
       );
-      expect(piaIntakeRepository.update).toHaveBeenCalledWith(
-        { id },
-        {
-          ...updatePiaIntakeDto,
-          saveId: 2,
-          updatedByGuid: user.idir_user_guid,
-          updatedByUsername: user.idir_username,
-        },
-      );
+      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
+        id,
+        ...updatePiaIntakeDto,
+        saveId: 2,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
+      });
       expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
 
       expect(result).toBe(piaIntakeROMock);
