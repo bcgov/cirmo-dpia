@@ -21,9 +21,15 @@ const PIAList = () => {
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
 
-  const [filterByMinistry] = useState<string>(searchParams.get('filterByMinistry') || '');
-  const [filterByStatus] = useState<string>(searchParams.get('filterByStatus') || '');
-  const [filterPiaDrafterByCurrentUser] = useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
+  const [filterByMinistry] = useState<string>(
+    searchParams.get('filterByMinistry') || '',
+  );
+  const [filterByStatus] = useState<string>(
+    searchParams.get('filterByStatus') || '',
+  );
+  const [filterPiaDrafterByCurrentUser] = useState<string>(
+    searchParams.get('filterPiaDrafterByCurrentUser') || '',
+  );
   const { tableData, Page, Total } = usePIALookup(
     SortBy,
     SortOrder,
@@ -37,7 +43,7 @@ const PIAList = () => {
   const setSearchParamsForSearchText = () => {
     const params: any = {};
 
-    params.searchText = searchText;
+    if (searchParams.get('searchText')) params.searchText = searchText;
     if (searchParams.get('filterPiaDrafterByCurrentUser'))
       params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
     if (searchParams.get('filterByStatus'))
