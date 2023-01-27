@@ -5,9 +5,9 @@ import {
 import {
   faFileArrowDown,
   faPenToSquare,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { dateToString } from '../../utils/date';
 import { statusList } from '../../utils/status';
 import messages from './messages';
@@ -204,7 +204,7 @@ const PIADetailPage = () => {
           requestBody,
         );
         navigate(routes.PIA_INTAKE_RESULT, {
-          state: { result: pia.id },
+          state: { result: { id } },
         });
       } else {
         await HttpRequest.patch<IPIAResult>(
