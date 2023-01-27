@@ -48,12 +48,10 @@ const PIAList = () => {
     for (const [key, value] of searchParams.entries()) {
       params[key] = value;
     }
-    console.log('params', params);
     setSearchParams(params);
   };
 
   const updateSearchUrl = () => {
-    // navigate(`?searchText=${searchText}`);
     setSearchParamsForSearchText();
   };
 
@@ -74,7 +72,6 @@ const PIAList = () => {
         for (const [key, value] of searchParams.entries()) {
           params[key] = value;
         }
-        console.log('params', params);
         setSearchParams(params);
       }
     };
