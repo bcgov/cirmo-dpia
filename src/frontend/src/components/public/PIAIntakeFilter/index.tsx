@@ -9,10 +9,8 @@ import {
 } from '../../../constant/constant';
 import { isMPORole } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
-import { IFilter } from './interfaces';
 
-const PIAIntakeFilter = ({ id }: IFilter) => {
-  const navigate = useNavigate();
+const PIAIntakeFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterByMinistry, setFilterByMinistry] = useState<string>('');
   const [filterByStatus, setFilterByStatus] = useState<string>('');
@@ -20,31 +18,36 @@ const PIAIntakeFilter = ({ id }: IFilter) => {
     useState<string>('');
 
   const setSearchParamsForFilter = (field: string, newValue: any) => {
-    const params: {
-      filterPiaDrafterByCurrentUser?: string;
-      filterByStatus?: string;
-      filterByMinistry?: string;
-    } = {};
+    const params: any = {};
     switch (field) {
       case 'status':
-        params.filterByStatus = newValue.target.value;
+        if (newValue.target.value !== '')
+          params.filterByStatus = newValue.target.value;
         if (filterByMinistry !== '') params.filterByMinistry = filterByMinistry;
         if (filterPiaDrafterByCurrentUser)
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+        if (searchParams.get('searchText'))
+          params.searchText = searchParams.get('searchText');
         setSearchParams(params);
         break;
 
       case 'ministry':
-        params.filterByMinistry = newValue.target.value;
+        if (newValue.target.value !== '')
+          params.filterByMinistry = newValue.target.value;
         if (filterByStatus !== '') params.filterByStatus = filterByStatus;
         if (filterPiaDrafterByCurrentUser)
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+        if (searchParams.get('searchText'))
+          params.searchText = searchParams.get('searchText');
         setSearchParams(params);
         break;
       case 'drafter':
-        params.filterPiaDrafterByCurrentUser = newValue.target.value;
+        if (newValue.target.value !== '')
+          params.filterPiaDrafterByCurrentUser = newValue.target.value;
         if (filterByStatus) params.filterByStatus = filterByStatus;
         if (filterByMinistry) params.filterByMinistry = filterByMinistry;
+        if (searchParams.get('searchText'))
+          params.searchText = searchParams.get('searchText');
         setSearchParams(params);
         break;
     }
@@ -72,7 +75,7 @@ const PIAIntakeFilter = ({ id }: IFilter) => {
     searchParams.delete('filterPiaDrafterByCurrentUser');
     searchParams.delete('filterByMinistry');
     searchParams.delete('filterByStatus');
-    navigate('/pia-list');
+    setSearchParams(searchParams);
   };
 
   return (

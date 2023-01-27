@@ -7,19 +7,23 @@ import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
   const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
 
+  const [filterByMinistry] = useState<string>('');
+  const [filterByStatus] = useState<string>('');
+  const [filterPiaDrafterByCurrentUser] = useState<string>('');
   const { tableData, Page, Total } = usePIALookup(
     SortBy,
     SortOrder,
@@ -30,27 +34,68 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
+  const setSearchParamsForSearchText = () => {
+    const params: any = {};
+
+    params.searchText = searchText;
+    if (searchParams.get('filterPiaDrafterByCurrentUser'))
+      params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+    if (searchParams.get('filterByStatus'))
+      params.filterByStatus = filterByStatus;
+    if (searchParams.get('filterByMinistry'))
+      params.filterByMinistry = filterByMinistry;
+
+    for (const [key, value] of searchParams.entries()) {
+      params[key] = value;
+    }
+    console.log('params', params);
+    setSearchParams(params);
+  };
 
   const updateSearchUrl = () => {
-    navigate(`?searchText=${searchText}`);
+    // navigate(`?searchText=${searchText}`);
+    setSearchParamsForSearchText();
   };
 
   useEffect(() => {
     const listener = (event: any) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         event.preventDefault();
-        navigate(`?searchText=${searchText}`);
+        const params: any = {};
+
+        params.searchText = searchText;
+        if (searchParams.get('filterPiaDrafterByCurrentUser'))
+          params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
+        if (searchParams.get('filterByStatus'))
+          params.filterByStatus = filterByStatus;
+        if (searchParams.get('filterByMinistry'))
+          params.filterByMinistry = filterByMinistry;
+
+        for (const [key, value] of searchParams.entries()) {
+          params[key] = value;
+        }
+        console.log('params', params);
+        setSearchParams(params);
       }
     };
     document.addEventListener('keydown', listener);
     return () => {
       document.removeEventListener('keydown', listener);
     };
-  }, [navigate, searchText]);
+  }, [
+    filterByMinistry,
+    filterByStatus,
+    filterPiaDrafterByCurrentUser,
+    navigate,
+    searchParams,
+    searchText,
+    setSearchParams,
+  ]);
 
   const handleClearSearchText = () => {
     setSearchText('');
-    navigate('');
+    searchParams.delete('searchText');
+    setSearchParams(searchParams);
   };
 
   const handleSearchTextChange = (newSearchText: any) => {
