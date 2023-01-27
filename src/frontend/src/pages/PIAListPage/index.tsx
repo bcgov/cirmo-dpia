@@ -21,9 +21,9 @@ const PIAList = () => {
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
 
-  const [filterByMinistry] = useState<string>('');
-  const [filterByStatus] = useState<string>('');
-  const [filterPiaDrafterByCurrentUser] = useState<string>('');
+  const [filterByMinistry] = useState<string>(searchParams.get('filterByMinistry') || '');
+  const [filterByStatus] = useState<string>(searchParams.get('filterByStatus') || '');
+  const [filterPiaDrafterByCurrentUser] = useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
   const { tableData, Page, Total } = usePIALookup(
     SortBy,
     SortOrder,
