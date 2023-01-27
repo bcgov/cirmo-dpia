@@ -7,57 +7,61 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { IPIAIntake } from '../../types/interfaces/pia-intake.interface';
-import { IPIAResult } from '../../types/interfaces/pia-result.interface';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  IPIAIntake,
+  IPIAIntakeResponse,
+} from '../../types/interfaces/pia-intake.interface';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
+import { shallowEqual } from '../../utils/object-comparison.util';
+import { SupportedAlertTypes } from '../../components/common/Alert/interfaces';
+import { getShortTime } from '../../utils/date';
+
+interface ILastSaveAlterInfo {
+  message: string;
+  type: SupportedAlertTypes;
+  show: boolean;
+}
 
 const PIAIntakeFormPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const pia = location.state as IPIAIntake;
-  //
-  // Form State
-  //
+  const { id } = useParams();
+
+  const emptyState: IPIAIntake = {
+    hasAddedPiToDataElements: true,
+    status: PiaStatuses.INCOMPLETE,
+  };
+
+  const [stalePia, setStalePia] = useState<IPIAIntake>(emptyState);
+  const [pia, setPia] = useState<IPIAIntake>(emptyState);
+
+  // if id is provided, fetch initial and updated state from db
+  const [initialPiaStateFetched, setInitialPiaStateFetched] =
+    useState<boolean>(false);
+
+  // if id not provided, keep default empty state; and track first save
+  const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
+
+  const [isConflict, setIsConflict] = useState<boolean>(false);
+
+  const [lastSaveAlertInfo, setLastSaveAlertInfo] =
+    useState<ILastSaveAlterInfo>({
+      message: '',
+      type: 'success',
+      show: false,
+    });
+
+  const piaStateChangeHandler = (value: any, key: keyof IPIAIntake) => {
+    setStalePia(pia);
+
+    setPia((latest) => ({
+      ...latest,
+      [key]: value,
+    }));
+  };
+
   const [message, setMessage] = useState<string>('');
-  const [title, setTitle] = useState<string>(pia?.title || '');
-  const [initiativeDescription, setInitiativeDescription] = useState<string>(
-    pia?.initiativeDescription || '',
-  );
-  const [ministry, setMinistry] = useState<string>(pia?.ministry || '');
-  const [branch, setBranch] = useState<string>(pia?.branch || '');
-  const [drafterName, setDrafterName] = useState<string>(
-    pia?.drafterName || '',
-  );
-  const [drafterEmail, setDrafterEmail] = useState<string>(
-    pia?.drafterEmail || '',
-  );
-  const [drafterTitle, setDrafterTitle] = useState<string>(
-    pia?.drafterTitle || '',
-  );
-  const [leadName, setLeadName] = useState<string>(pia?.leadName || '');
-  const [leadEmail, setLeadEmail] = useState<string>(pia?.leadEmail || '');
-  const [leadTitle, setLeadTitle] = useState<string>(pia?.leadTitle || '');
-  const [mpoName, setMpoName] = useState<string>(pia?.mpoName || '');
-  const [mpoEmail, setMpoEmail] = useState<string>(pia?.mpoEmail || '');
-  const [initiativeScope, setInitiativeScope] = useState<string>(
-    pia?.initiativeScope || '',
-  );
-  const [dataElementsInvolved, setDataElementsInvolved] = useState<string>(
-    pia?.dataElementsInvolved || '',
-  );
-  const [hasAddedPiToDataElements, setHasAddedPiToDataElements] = useState<
-    boolean | null
-  >(pia?.hasAddedPiToDataElements || true);
-  const [status, setStatus] = useState<string>(
-    pia?.status || PiaStatuses.INCOMPLETE,
-  );
-
-  const [riskMitigation, setRiskMitigation] = useState<string>(
-    pia?.riskMitigation || '',
-  );
-
   //
   // Modal State
   //
@@ -99,10 +103,77 @@ const PIAIntakeFormPage = () => {
         setPiaModalParagraph(Messages.Modal.Submit.ParagraphText.en);
         setPiaModalButtonValue('submit');
         break;
+      case 'conflict':
+        setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
+        setPiaModalTitleText(Messages.Modal.Conflict.TitleText.en);
+        setPiaModalParagraph(
+          Messages.Modal.Conflict.ParagraphText.en.replace(
+            '${time}',
+            getShortTime(pia?.updatedAt),
+          ),
+        );
+        setPiaModalButtonValue('conflict');
+        break;
       default:
         break;
     }
     setShowPiaModal(true);
+  };
+
+  const fetchAndUpdatePia = async (piaId: string) => {
+    const updatedPia = (
+      await HttpRequest.get<IPIAIntakeResponse>(
+        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
+      )
+    ).data;
+    setStalePia(pia);
+    setPia(updatedPia);
+
+    return updatedPia;
+  };
+
+  const upsertAndUpdatePia = async (changes: Partial<IPIAIntake> = {}) => {
+    const hasExplicitChanges = Object.keys(changes).length > 0;
+
+    if (
+      !hasExplicitChanges &&
+      shallowEqual(stalePia, pia, ['updatedAt', 'saveId'])
+    ) {
+      // only expected fields have changes; no need call update
+      return pia;
+    }
+
+    let updatedPia: IPIAIntake;
+
+    if (pia?.id) {
+      updatedPia = await HttpRequest.patch<IPIAIntake>(
+        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+        { ...pia, ...changes },
+      );
+    } else {
+      updatedPia = await HttpRequest.post<IPIAIntake>(API_ROUTES.PIA_INTAKE, {
+        ...pia,
+        ...changes,
+      });
+    }
+
+    setLastSaveAlertInfo({
+      type: 'success',
+      message: `Auto-saved at ${getShortTime(updatedPia.updatedAt)}.`,
+      show: true,
+    });
+
+    // if first time save, update stale state to the latest state, else keep the previous state for comparisons
+    if (isFirstSave) {
+      setStalePia(updatedPia);
+      setIsFirstSave(false);
+    } else {
+      setStalePia(pia);
+    }
+
+    setPia(updatedPia);
+
+    return updatedPia;
   };
 
   const handleModalClose = async (event: any) => {
@@ -110,41 +181,13 @@ const PIAIntakeFormPage = () => {
     // call backend patch endpoint to save the change
     event.preventDefault();
     const buttonValue = event.target.value;
-    const requestBody: IPIAIntake = {
-      title: title,
-      ministry: ministry,
-      branch: branch,
-      drafterName: drafterName,
-      drafterEmail: drafterEmail,
-      drafterTitle: drafterTitle,
-      leadName: leadName,
-      leadEmail: leadEmail,
-      leadTitle: leadTitle,
-      mpoName: mpoName,
-      mpoEmail: mpoEmail,
-      initiativeDescription: initiativeDescription,
-      initiativeScope: initiativeScope,
-      dataElementsInvolved: dataElementsInvolved,
-      hasAddedPiToDataElements: hasAddedPiToDataElements,
-      riskMitigation: riskMitigation,
-    };
     try {
       if (buttonValue === 'submit') {
-        let res;
-        if (pia?.id) {
-          res = pia?.id;
-          await HttpRequest.patch<IPIAResult>(
-            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-            { status: PiaStatuses.MPO_REVIEW, ...requestBody },
-          );
-        } else {
-          res = await HttpRequest.post<IPIAResult>(API_ROUTES.PIA_INTAKE, {
-            status: PiaStatuses.MPO_REVIEW,
-            ...requestBody,
-          });
-        }
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.MPO_REVIEW,
+        });
         navigate(routes.PIA_INTAKE_RESULT, {
-          state: { result: res },
+          state: { result: updatedPia },
         });
       } else if (buttonValue === 'cancel') {
         if (pia?.id) {
@@ -152,26 +195,11 @@ const PIAIntakeFormPage = () => {
         } else {
           navigate(-1);
         }
+      } else if (buttonValue === 'conflict') {
+        // noop
       } else {
-        let id = pia?.id;
-
-        if (id) {
-          await HttpRequest.patch<IPIAResult>(
-            API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
-            requestBody,
-          );
-        } else {
-          const res = await HttpRequest.post<IPIAResult>(
-            API_ROUTES.PIA_INTAKE,
-            {
-              status: status,
-              ...requestBody,
-            },
-          );
-
-          id = res.id;
-        }
-        navigate(`/pia/intake/${id}/${pia?.title || requestBody.title}`);
+        const updatedPia = await upsertAndUpdatePia();
+        navigate(`/pia/intake/${updatedPia?.id}/${updatedPia?.title}`);
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
@@ -214,88 +242,28 @@ const PIAIntakeFormPage = () => {
     handleShowModal('cancel');
   };
 
-  const handleTitleChange = (newTitle: any) => {
-    setTitle(newTitle.target.value);
-  };
-
-  const handleInitiativeDescriptionChange = (newDescription: any) => {
-    setInitiativeDescription(newDescription);
-  };
-
-  const handleMinistryChange = (newMinistry: any) => {
-    setMinistry(newMinistry.target.value);
-  };
-
-  const handleBranchChange = (newBranch: any) => {
-    setBranch(newBranch.target.value);
-  };
-
-  const handleDrafterNameChange = (newDrafterName: any) => {
-    setDrafterName(newDrafterName.target.value);
-  };
-
-  const handleDrafterEmailChange = (newDrafterEmail: any) => {
-    setDrafterEmail(newDrafterEmail.target.value);
-  };
-
-  const handleDrafterTitleChange = (newDrafterTitle: any) => {
-    setDrafterTitle(newDrafterTitle.target.value);
-  };
-
-  const handleLeadNameChange = (newLeadName: any) => {
-    setLeadName(newLeadName.target.value);
-  };
-
-  const handleLeadEmailChange = (newLeadEmail: any) => {
-    setLeadEmail(newLeadEmail.target.value);
-  };
-
-  const handleLeadTitleChange = (newLeadTitle: any) => {
-    setLeadTitle(newLeadTitle.target.value);
-  };
-
-  const handleMpoNameChange = (newMpoName: any) => {
-    setMpoName(newMpoName.target.value);
-  };
-
-  const handleMpoEmailChange = (newMpoEmail: any) => {
-    setMpoEmail(newMpoEmail.target.value);
-  };
-
-  const handleInitiativeScopeChange = (newScope: any) => {
-    setInitiativeScope(newScope);
-  };
-
-  const handleDataElementsInvolvedChange = (newDataElements: any) => {
-    setDataElementsInvolved(newDataElements);
-  };
-
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     event.target.value === 'Yes'
-      ? setHasAddedPiToDataElements(true)
+      ? piaStateChangeHandler(true, 'hasAddedPiToDataElements')
       : event.target.value === "I'm not sure"
-      ? setHasAddedPiToDataElements(null)
-      : setHasAddedPiToDataElements(false);
-  };
-
-  const handleRiskMitigationChange = (newRiskMitigation: any) => {
-    setRiskMitigation(newRiskMitigation);
+      ? piaStateChangeHandler(null, 'hasAddedPiToDataElements')
+      : piaStateChangeHandler(false, 'hasAddedPiToDataElements');
   };
 
   const handleStatusChange = (piaStatus: any) => {
     switch (piaStatus) {
       case 'incomplete':
-        setStatus('INCOMPLETE');
+        piaStateChangeHandler('INCOMPLETE', 'status');
         break;
       case 'edit-in-progress':
-        setStatus('EDIT_IN_PROGRESS');
+        piaStateChangeHandler('EDIT_IN_PROGRESS', 'status');
         break;
       case 'mpo-review':
-        setStatus('MPO_REVIEW');
+        piaStateChangeHandler('MPO_REVIEW', 'status');
         break;
       case 'pct-review':
-        setStatus('PCT_REVIEW');
+        piaStateChangeHandler('PCT_REVIEW', 'status');
         break;
       default:
         break;
@@ -311,11 +279,50 @@ const PIAIntakeFormPage = () => {
   };
 
   useEffect(() => {
+    // No initial state to fetch OR already fetched
+    // if not in edit mode (no id available) OR initial state already fetched
+    if (!id || initialPiaStateFetched) return;
+
+    fetchAndUpdatePia(id).then((updatedPia) => {
+      setStalePia(updatedPia);
+      setPia(updatedPia);
+      setInitialPiaStateFetched(true); // no further fetch PIA unless requested
+    });
+  });
+
+  useEffect(() => {
+    const autoSave = async () => {
+      if (isConflict) return; //noop if already a conflict
+
+      try {
+        await upsertAndUpdatePia();
+      } catch (e: any) {
+        setLastSaveAlertInfo({
+          type: 'danger',
+          message: `Unable to auto-save. Last saved at ${getShortTime(
+            pia.updatedAt,
+          )}.`,
+          show: true,
+        });
+        if (e?.cause?.message === '409') {
+          setIsConflict(true);
+          handleShowModal('conflict');
+        }
+      }
+    };
+    const autoSaveTimer = setTimeout(() => {
+      autoSave();
+    }, 3000);
+
+    return () => clearTimeout(autoSaveTimer);
+  });
+
+  useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
     return () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
-  }, []);
+  });
 
   return (
     <div className="bcgovPageContainer background background__form">
@@ -327,35 +334,51 @@ const PIAIntakeFormPage = () => {
             handleSubmit(e);
           }}
         >
-          <div className="form__header">
-            <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
+          <div className="row justify-content-between">
+            <div className="col col-md-6">
+              <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
+            </div>
+            {lastSaveAlertInfo.show && (
+              <div className="col col-md-4">
+                <Alert
+                  type={lastSaveAlertInfo.type}
+                  message={lastSaveAlertInfo.message}
+                  showInitialIcon={true}
+                  showCloseIcon={false}
+                />
+              </div>
+            )}
           </div>
           <section className="form__section">
             <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
             <div className="row">
               <InputText
                 label="Title"
-                value={title}
-                onChange={handleTitleChange}
+                value={pia?.title}
+                onChange={(e) => piaStateChangeHandler(e.target.value, 'title')}
                 required={true}
               />
             </div>
             <div className="row">
               <Dropdown
                 id="ministry-select"
-                value={ministry}
+                value={pia?.ministry || ''}
                 label="Ministry"
                 optionalClass="col-md-6"
                 options={MinistryList}
-                changeHandler={handleMinistryChange}
+                changeHandler={(e) =>
+                  piaStateChangeHandler(e.target.value, 'ministry')
+                }
                 required={true}
               />
               <div className="col">
                 <InputText
                   label="Branch"
-                  value={branch}
-                  onChange={handleBranchChange}
+                  value={pia?.branch}
                   required={true}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'branch')
+                  }
                 />
               </div>
             </div>
@@ -363,16 +386,20 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Your name"
-                  value={drafterName}
-                  onChange={handleDrafterNameChange}
+                  value={pia?.drafterName}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'drafterName')
+                  }
                   required={true}
                 />
               </div>
               <div className="col">
                 <InputText
                   label="Your email"
-                  value={drafterEmail}
-                  onChange={handleDrafterEmailChange}
+                  value={pia?.drafterEmail}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'drafterEmail')
+                  }
                   required={true}
                   type="email"
                 />
@@ -382,8 +409,10 @@ const PIAIntakeFormPage = () => {
               <div className="col-md-6">
                 <InputText
                   label="Your title"
-                  value={drafterTitle}
-                  onChange={handleDrafterTitleChange}
+                  value={pia?.drafterTitle}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'drafterTitle')
+                  }
                   required={true}
                 />
               </div>
@@ -392,16 +421,20 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Initiative lead name"
-                  value={leadName}
-                  onChange={handleLeadNameChange}
+                  value={pia?.leadName}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'leadName')
+                  }
                   required={true}
                 />
               </div>
               <div className="col">
                 <InputText
                   label="Initiative lead email"
-                  value={leadEmail}
-                  onChange={handleLeadEmailChange}
+                  value={pia?.leadEmail}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'leadEmail')
+                  }
                   required={true}
                   type="email"
                 />
@@ -411,8 +444,10 @@ const PIAIntakeFormPage = () => {
               <div className="col-md-6">
                 <InputText
                   label="Initiative lead title"
-                  value={leadTitle}
-                  onChange={handleLeadTitleChange}
+                  value={pia?.leadTitle}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'leadTitle')
+                  }
                   required={true}
                 />
               </div>
@@ -425,16 +460,20 @@ const PIAIntakeFormPage = () => {
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
                   linkHref={Messages.GeneralInfoSection.MPOLinkHref}
                   hasIcon={true}
-                  value={mpoName}
-                  onChange={handleMpoNameChange}
+                  value={pia?.mpoName}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'mpoName')
+                  }
                   required={true}
                 />
               </div>
               <div className="col">
                 <InputText
                   label="MPO email"
-                  value={mpoEmail}
-                  onChange={handleMpoEmailChange}
+                  value={pia?.mpoEmail}
+                  onChange={(e) =>
+                    piaStateChangeHandler(e.target.value, 'mpoEmail')
+                  }
                   required={true}
                   type="email"
                 />
@@ -450,8 +489,10 @@ const PIAIntakeFormPage = () => {
             </p>
             <MDEditor
               preview="edit"
-              value={initiativeDescription}
-              onChange={handleInitiativeDescriptionChange}
+              value={pia?.initiativeDescription}
+              onChange={(value) =>
+                piaStateChangeHandler(value, 'initiativeDescription')
+              }
             />
           </section>
           <section className="form__section">
@@ -463,8 +504,10 @@ const PIAIntakeFormPage = () => {
             </p>
             <MDEditor
               preview="edit"
-              value={initiativeScope}
-              onChange={handleInitiativeScopeChange}
+              value={pia?.initiativeScope}
+              onChange={(value) =>
+                piaStateChangeHandler(value, 'initiativeScope')
+              }
             />
           </section>
           <section className="form__section">
@@ -476,8 +519,10 @@ const PIAIntakeFormPage = () => {
             </p>
             <MDEditor
               preview="edit"
-              value={dataElementsInvolved}
-              onChange={handleDataElementsInvolvedChange}
+              value={pia?.dataElementsInvolved}
+              onChange={(value) =>
+                piaStateChangeHandler(value, 'dataElementsInvolved')
+              }
             />
           </section>
           <section className="form__section">
@@ -507,7 +552,7 @@ const PIAIntakeFormPage = () => {
               </label>
             ))}
           </section>
-          {hasAddedPiToDataElements === false && (
+          {pia?.hasAddedPiToDataElements === false && (
             <section className="form__section">
               <h2 className="form__h2">
                 {Messages.InitiativeRiskReductionSection.H2Text.en}
@@ -517,8 +562,10 @@ const PIAIntakeFormPage = () => {
               </p>
               <MDEditor
                 preview="edit"
-                value={riskMitigation}
-                onChange={handleRiskMitigationChange}
+                value={pia?.riskMitigation}
+                onChange={(value) =>
+                  piaStateChangeHandler(value, 'riskMitigation')
+                }
               />
             </section>
           )}

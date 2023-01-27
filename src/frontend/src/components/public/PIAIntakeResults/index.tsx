@@ -11,10 +11,10 @@ import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { IPIAResult } from '../../../types/interfaces/pia-result.interface';
+import { IPIAIntake } from '../../../types/interfaces/pia-intake.interface';
 
 interface IComponentProps {
-  result: IPIAResult;
+  result: IPIAIntake;
 }
 
 const PIAIntakeResults = (props: IComponentProps) => {

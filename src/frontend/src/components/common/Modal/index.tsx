@@ -29,13 +29,15 @@ const Modal = ({
           >
             {confirmLabel}
           </button>
-          <button
-            type="button"
-            className="bcgovbtn bcgovbtn__secondary"
-            onClick={handleCancel}
-          >
-            {cancelLabel}
-          </button>
+          {cancelLabel && (
+            <button
+              type="button"
+              className="bcgovbtn bcgovbtn__secondary"
+              onClick={handleCancel}
+            >
+              {cancelLabel}
+            </button>
+          )}
         </div>
       </section>
     </div>

@@ -57,7 +57,7 @@ const InputText = ({
       <input
         id={inputId}
         type={type}
-        value={value}
+        value={value || ''}
         placeholder={placeholder}
         onChange={onChange}
         className="form-control"
