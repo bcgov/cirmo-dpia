@@ -38,4 +38,14 @@ export class BaseEntity {
     name: 'created_by_username',
   })
   createdByUsername: string;
+
+  @Column({
+    name: 'updated_by_guid',
+  })
+  updatedByGuid: string;
+
+  @Column({
+    name: 'updated_by_username',
+  })
+  updatedByUsername: string;
 }

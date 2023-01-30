@@ -13,7 +13,9 @@ import {
   Query,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiGoneResponse,
@@ -181,6 +183,9 @@ export class PiaIntakeController {
   @ApiOkResponse({
     description: 'Successfully updated the PIA intake',
   })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Possibly missing/invalid user input',
+  })
   @ApiNotFoundResponse({
     description: 'Failed to update the PIA: The record not found',
   })
@@ -188,17 +193,21 @@ export class PiaIntakeController {
     description:
       'Failed to update the PIA: User does not have sufficient role access to view this record',
   })
+  @ApiConflictResponse({
+    description:
+      'Failed to update the PIA: User may not have an updated version of the document',
+  })
   @ApiGoneResponse({
     description:
       'Failed to update the PIA: The record is marked inactive in our system',
   })
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
     @Body() updatePiaIntakeDto: UpdatePiaIntakeDto,
     @Req() req: IRequest,
-  ) {
-    await this.piaIntakeService.update(
+  ): Promise<GetPiaIntakeRO> {
+    return this.piaIntakeService.update(
       id,
       updatePiaIntakeDto,
       req.user,

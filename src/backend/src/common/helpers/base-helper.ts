@@ -7,11 +7,20 @@ import { omit } from './utils';
  * - isActive
  * - createdByGuid
  * - createdByUsername
+ * - updatedByGuid
+ * - updatedByUsername
  */
 export class ExcludeBaseSelection
   implements
     Partial<
-      Pick<BaseEntity, 'isActive' | 'createdByGuid' | 'createdByUsername'>
+      Pick<
+        BaseEntity,
+        | 'isActive'
+        | 'createdByGuid'
+        | 'createdByUsername'
+        | 'updatedByGuid'
+        | 'updatedByUsername'
+      >
     >
 {
   // It is useful for creating property names explicitly via constructor so that Object.getOwnPropertyNames works correctly
@@ -19,10 +28,14 @@ export class ExcludeBaseSelection
     isActive?: boolean,
     createdByGuid?: string,
     createdByUsername?: string,
+    updatedByGuid?: string,
+    updatedByUsername?: string,
   ) {
     this.isActive = isActive;
     this.createdByGuid = createdByGuid;
     this.createdByUsername = createdByUsername;
+    this.updatedByGuid = updatedByGuid;
+    this.updatedByUsername = updatedByUsername;
   }
 
   isActive: boolean;
@@ -30,6 +43,10 @@ export class ExcludeBaseSelection
   createdByGuid: string;
 
   createdByUsername: string;
+
+  updatedByGuid: string;
+
+  updatedByUsername: string;
 }
 
 /**

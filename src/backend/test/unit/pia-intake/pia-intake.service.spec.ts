@@ -27,6 +27,7 @@ import { delay } from 'test/util/testUtils';
 import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
 import {
+  ConflictException,
   ForbiddenException,
   GoneException,
   NotFoundException,
@@ -113,6 +114,8 @@ describe('PiaIntakeService', () => {
         ...createPiaIntakeDto,
         createdByGuid: user.idir_user_guid,
         createdByUsername: user.idir_username,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
         drafterEmail: user.email,
       });
 
@@ -484,7 +487,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -508,11 +511,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
           },
         ],
@@ -542,7 +545,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
       };
@@ -568,11 +571,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: user.idir_user_guid,
           },
@@ -604,7 +607,7 @@ describe('PiaIntakeService', () => {
         page: 5,
         pageSize: 12,
         filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
-        filterByMinistry: GovMinistriesEnum.FORESTS,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
       };
@@ -630,11 +633,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: Not(user.idir_user_guid),
             status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
           },
           {
             isActive: true,
-            ministry: 'FORESTS',
+            ministry: 'CITIZENS_SERVICES',
             status: 'INCOMPLETE',
             createdByGuid: Not(user.idir_user_guid),
           },
@@ -714,7 +717,7 @@ describe('PiaIntakeService', () => {
     });
 
     // scenario 11 MPO user searchText and filter by status
-    it('succeeds when user is an MPO and [searchText is provided]', async () => {
+    it('succeeds when user is an MPO and [searchText is provided and filter by status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -779,6 +782,63 @@ describe('PiaIntakeService', () => {
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
         data: [getPiaIntakeROMock],
         page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 12 MPO user can not filter other ministry pia
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status and not their ministry]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByMinistry: GovMinistriesEnum.FORESTS,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            ministry: null,
+            status: 'INCOMPLETE',
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(0);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [],
+        page: 5,
         pageSize: 12,
         total: 100,
       };
@@ -890,7 +950,10 @@ describe('PiaIntakeService', () => {
     // Scenario 1: Test fails when there's an exception
     it('fails when the function throws an exception', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
-      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.INCOMPLETE,
+        saveId: 1,
+      };
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 0; // non-existent id
@@ -919,21 +982,36 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          saveId: 2,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
       );
     });
 
     // Scenario 2: Test succeeds when repository.update does not throw error
     it('succeeds when repository.update does not throw error', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
-      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const piaIntakeROMock = { ...getPiaIntakeROMock };
+
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.INCOMPLETE,
+        saveId: 1,
+      };
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 0; // non-existent id
+      const id = 1;
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return piaIntakeMock;
+      });
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return piaIntakeROMock;
       });
 
       service.validateUserAccess = jest.fn(() => true);
@@ -943,7 +1021,12 @@ describe('PiaIntakeService', () => {
         return { ...piaIntakeMock, ...updatePiaIntakeDto };
       });
 
-      await service.update(id, updatePiaIntakeDto, user, userRoles);
+      const result = await service.update(
+        id,
+        updatePiaIntakeDto,
+        user,
+        userRoles,
+      );
 
       expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
@@ -953,7 +1036,51 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          saveId: 2,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
+      );
+      expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
+
+      expect(result).toBe(piaIntakeROMock);
+    });
+
+    // Conflict exception: Fails if the user tries to update a stale version
+    it('Fails if the user tries to update a stale version', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+        saveId: 5, // older than current in db, 10
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      await expect(
+        service.update(id, updatePiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ConflictException(
+          'You may not have an updated version of the document',
+        ),
+      );
+
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeMock,
       );
     });
   });

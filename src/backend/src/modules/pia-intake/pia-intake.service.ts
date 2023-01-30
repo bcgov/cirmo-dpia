@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  ConflictException,
   ForbiddenException,
   GoneException,
   Injectable,
@@ -42,6 +44,8 @@ export class PiaIntakeService {
       ...createPiaIntakeDto,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.idir_username,
       drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
     });
 
@@ -53,15 +57,42 @@ export class PiaIntakeService {
     updatePiaIntakeDto: UpdatePiaIntakeDto,
     user: KeycloakUser,
     userRoles: RolesEnum[],
-  ) {
+  ): Promise<GetPiaIntakeRO> {
+    if (!updatePiaIntakeDto.saveId) {
+      throw new BadRequestException('missing save id');
+    }
+
     // Fetch the existing record by ID
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
     this.validateUserAccess(user, userRoles, existingRecord);
 
+    // check if the user is not acting on / updating a stale version
+    if (existingRecord.saveId !== updatePiaIntakeDto.saveId) {
+      throw new ConflictException(
+        'You may not have an updated version of the document',
+      );
+    }
+
+    // remove the provided saveId
+    delete updatePiaIntakeDto.saveId;
+
     // update the record with the provided keys
-    await this.piaIntakeRepository.update({ id }, { ...updatePiaIntakeDto });
+    await this.piaIntakeRepository.update(
+      { id },
+      {
+        ...updatePiaIntakeDto,
+        saveId: existingRecord.saveId + 1,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
+      },
+    );
+
+    // fetch and return the updated record
+    const updatedRecord = await this.findOneById(id, user, userRoles);
+
+    return updatedRecord;
   }
 
   /**
@@ -171,7 +202,8 @@ export class PiaIntakeService {
     }
     if (query.filterByMinistry) {
       whereClause.forEach((clause) => {
-        clause.ministry = query.filterByMinistry;
+        if (mpoMinistries.includes(query.filterByMinistry))
+          clause.ministry = query.filterByMinistry;
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia

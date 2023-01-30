@@ -33,6 +33,8 @@ export class PpqService {
       createdByDisplayName: user.display_name,
       createdByUsername: user.idir_username,
       createdByEmail: user.email,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.display_name,
     });
 
     return { id: ppqForm.id };
