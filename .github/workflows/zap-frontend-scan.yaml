@@ -2,7 +2,7 @@ name: OWASP Zap Frontend Scan
 on:
   # Fire Github Action every Monday at Noon
   schedule:
-    - cron: '0 12 * * 1'
+    - cron: '0 5 * * TUE'
   workflow_dispatch:
 
 jobs:
@@ -19,5 +19,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
-          target: 'https://dpia-webapp-59b4eb8-b996e6-dev.apps.silver.devops.gov.bc.ca/'
+          target: 'https://pia.gov.bc.ca'
           cmd_options: '-a'
