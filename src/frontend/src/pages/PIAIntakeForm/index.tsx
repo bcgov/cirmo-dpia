@@ -322,7 +322,7 @@ const PIAIntakeFormPage = () => {
     return () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
-  });
+  }, []);
 
   return (
     <div className="bcgovPageContainer background background__form">
