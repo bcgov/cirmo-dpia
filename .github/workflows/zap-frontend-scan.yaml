@@ -1,6 +1,6 @@
 name: OWASP Zap Frontend Scan
 on:
-  # Fire Github Action every Monday at Noon
+  # Fire Github Action every Tuesday morning at 5am
   schedule:
     - cron: '0 5 * * TUE'
   workflow_dispatch:
