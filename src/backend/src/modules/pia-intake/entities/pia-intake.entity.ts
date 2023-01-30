@@ -7,86 +7,86 @@ import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 export class PiaIntakeEntity extends BaseEntity {
   @Column({
     name: 'title',
-    nullable: false,
+    nullable: true,
   })
   title: string;
 
   @Column({
     name: 'ministry',
     type: 'character varying',
-    nullable: false,
+    nullable: true,
   })
   ministry: GovMinistriesEnum;
 
   @Column({
     name: 'branch',
-    nullable: false,
+    nullable: true,
   })
   branch: string;
 
   @Column({
     name: 'drafter_name',
-    nullable: false,
+    nullable: true,
   })
   drafterName: string;
 
   @Column({
     name: 'drafter_title',
-    nullable: false,
+    nullable: true,
   })
   drafterTitle: string;
 
   @Column({
     name: 'drafter_email',
-    nullable: false,
+    nullable: true,
   })
   drafterEmail: string;
 
   @Column({
     name: 'lead_name',
-    nullable: false,
+    nullable: true,
   })
   leadName: string;
 
   @Column({
     name: 'lead_title',
-    nullable: false,
+    nullable: true,
   })
   leadTitle: string;
 
   @Column({
     name: 'lead_email',
-    nullable: false,
+    nullable: true,
   })
   leadEmail: string;
 
   @Column({
     name: 'mpo_name',
-    nullable: false,
+    nullable: true,
   })
   mpoName: string;
 
   @Column({
     name: 'mpo_email',
-    nullable: false,
+    nullable: true,
   })
   mpoEmail: string;
 
   @Column({
     name: 'initiative_description',
-    nullable: false,
+    nullable: true,
   })
   initiativeDescription: string;
 
   @Column({
     name: 'initiative_scope',
-    nullable: false,
+    nullable: true,
   })
   initiativeScope: string;
 
   @Column({
     name: 'data_elements_involved',
-    nullable: false,
+    nullable: true,
   })
   dataElementsInvolved: string;
 
@@ -104,7 +104,7 @@ export class PiaIntakeEntity extends BaseEntity {
 
   @Column({
     name: 'status',
-    nullable: false,
+    nullable: true,
     type: 'character varying',
   })
   status: PiaIntakeStatusEnum;
