@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository, Not } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, Not, IsNull } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -204,6 +204,9 @@ export class PiaIntakeService {
       whereClause.forEach((clause) => {
         if (mpoMinistries.includes(query.filterByMinistry))
           clause.ministry = query.filterByMinistry;
+        else {
+          clause.ministry = IsNull();
+        }
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia
