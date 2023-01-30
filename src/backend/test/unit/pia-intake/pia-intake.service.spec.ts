@@ -40,6 +40,7 @@ import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { IsNull } from 'typeorm';
 
 /**
  * @Description
@@ -834,10 +835,11 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
+            ministry: IsNull(),
           },
           {
             isActive: true,
-            ministry: null,
+            ministry: IsNull(),
             status: 'INCOMPLETE',
           },
         ],
