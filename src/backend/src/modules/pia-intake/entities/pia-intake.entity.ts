@@ -108,4 +108,11 @@ export class PiaIntakeEntity extends BaseEntity {
     type: 'character varying',
   })
   status: PiaIntakeStatusEnum;
+
+  @Column({
+    name: 'save_id',
+    nullable: true,
+    default: 1,
+  })
+  saveId: number;
 }

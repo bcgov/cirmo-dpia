@@ -27,6 +27,7 @@ import { delay } from 'test/util/testUtils';
 import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
 import {
+  ConflictException,
   ForbiddenException,
   GoneException,
   NotFoundException,
@@ -113,6 +114,8 @@ describe('PiaIntakeService', () => {
         ...createPiaIntakeDto,
         createdByGuid: user.idir_user_guid,
         createdByUsername: user.idir_username,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
         drafterEmail: user.email,
       });
 
@@ -947,7 +950,10 @@ describe('PiaIntakeService', () => {
     // Scenario 1: Test fails when there's an exception
     it('fails when the function throws an exception', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
-      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.INCOMPLETE,
+        saveId: 1,
+      };
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 0; // non-existent id
@@ -976,21 +982,36 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          saveId: 2,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
       );
     });
 
     // Scenario 2: Test succeeds when repository.update does not throw error
     it('succeeds when repository.update does not throw error', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
-      const updatePiaIntakeDto = { status: PiaIntakeStatusEnum.INCOMPLETE };
+      const piaIntakeROMock = { ...getPiaIntakeROMock };
+
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.INCOMPLETE,
+        saveId: 1,
+      };
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 0; // non-existent id
+      const id = 1;
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return piaIntakeMock;
+      });
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return piaIntakeROMock;
       });
 
       service.validateUserAccess = jest.fn(() => true);
@@ -1000,7 +1021,12 @@ describe('PiaIntakeService', () => {
         return { ...piaIntakeMock, ...updatePiaIntakeDto };
       });
 
-      await service.update(id, updatePiaIntakeDto, user, userRoles);
+      const result = await service.update(
+        id,
+        updatePiaIntakeDto,
+        user,
+        userRoles,
+      );
 
       expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
@@ -1010,7 +1036,51 @@ describe('PiaIntakeService', () => {
       );
       expect(piaIntakeRepository.update).toHaveBeenCalledWith(
         { id },
-        updatePiaIntakeDto,
+        {
+          ...updatePiaIntakeDto,
+          saveId: 2,
+          updatedByGuid: user.idir_user_guid,
+          updatedByUsername: user.idir_username,
+        },
+      );
+      expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
+
+      expect(result).toBe(piaIntakeROMock);
+    });
+
+    // Conflict exception: Fails if the user tries to update a stale version
+    it('Fails if the user tries to update a stale version', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+
+      const updatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+        saveId: 5, // older than current in db, 10
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      await expect(
+        service.update(id, updatePiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ConflictException(
+          'You may not have an updated version of the document',
+        ),
+      );
+
+      expect(service.findOneBy).toHaveBeenCalledWith({ id });
+      expect(service.validateUserAccess).toHaveBeenCalledWith(
+        user,
+        userRoles,
+        piaIntakeMock,
       );
     });
   });
