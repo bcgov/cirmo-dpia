@@ -56,6 +56,16 @@ const PIADetailPage = () => {
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
+  const updatePiaHttpRequest = (
+    updatedId: string,
+    requestBody: Partial<IPIAIntake>,
+  ) => {
+    return HttpRequest.patch<IPIAIntake>(
+      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${updatedId}`),
+      requestBody,
+    );
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -164,11 +174,10 @@ const PIADetailPage = () => {
       saveId: pia?.saveId,
     };
     try {
-      const res = await HttpRequest.patch<IPIAIntake>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
+      const res = await updatePiaHttpRequest(
+        pia?.id,
         requestBody,
-      );
-      /* PIA will be set after data is updated in backend */
+      ); /* PIA will be set after data is updated in backend */
       setPia(res);
       setHandleEditing(true);
     } catch (err: any) {
@@ -204,19 +213,13 @@ const PIADetailPage = () => {
           };
     try {
       if (buttonValue === 'submit') {
-        const updatedPia = await HttpRequest.patch<IPIAIntake>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
+        const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
         setPia(updatedPia);
         navigate(routes.PIA_INTAKE_RESULT, {
           state: { result: updatedPia },
         });
       } else {
-        const updatedPia = await HttpRequest.patch<IPIAIntake>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
+        const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
         setPia(updatedPia);
         navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
           state: pia,
