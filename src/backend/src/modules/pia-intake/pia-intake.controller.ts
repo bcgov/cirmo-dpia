@@ -32,7 +32,6 @@ import { IResponse } from '../../common/interfaces/response.interface';
 
 import { PiaIntakeService } from './pia-intake.service';
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
-import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
@@ -51,7 +50,7 @@ export class PiaIntakeController {
   async create(
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
     @Req() req: IRequest,
-  ): Promise<CreatePiaIntakeRO> {
+  ): Promise<GetPiaIntakeRO> {
     return this.piaIntakeService.create(createPiaIntakeDto, req.user);
   }
 
