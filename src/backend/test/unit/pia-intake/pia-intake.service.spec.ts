@@ -198,6 +198,7 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             ministry: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
         ],
         order: {
@@ -302,6 +303,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: null,
             title: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
           {
             isActive: true,
@@ -312,6 +314,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: null,
             drafterName: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
         ],
         order: {
