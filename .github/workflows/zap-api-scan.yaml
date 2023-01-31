@@ -1,8 +1,8 @@
 name: OWASP Zap API Scan
 on:
-  # Fire Github Action every Monday at Noon
+  # Fire Github Action every Tuesday morning at 5am
   schedule:
-    - cron: '0 12 * * 1'
+    - cron: '0 5 * * TUE'
   workflow_dispatch:
 
 jobs:
@@ -20,5 +20,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
           format: openapi
-          target: 'https://dpia-api-3b99259-dev.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
+          target: 'https://pia.gov.bc.ca/api/api-docs'
           cmd_options: '-a'
