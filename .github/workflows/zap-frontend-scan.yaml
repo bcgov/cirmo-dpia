@@ -19,5 +19,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
-          target: 'https://pia.gov.bc.ca'
+          target: 'https://dev.pia.gov.bc.ca'
           cmd_options: '-a'
