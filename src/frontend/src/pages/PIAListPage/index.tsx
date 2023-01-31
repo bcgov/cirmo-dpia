@@ -31,7 +31,7 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
-
+  // TODO make a common function to handle search params update both for filter component and search text
   const setSearchParamsForSearchText = useCallback(() => {
     const params: any = {};
     for (const [key, value] of searchParams.entries()) {
