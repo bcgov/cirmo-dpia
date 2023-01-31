@@ -1,6 +1,6 @@
 import React from 'react';
 
-type SupportedAlertTypes =
+export type SupportedAlertTypes =
   | 'danger'
   | 'warning'
   | 'banner-warning'
@@ -12,5 +12,8 @@ export interface AlertProps {
   type: SupportedAlertTypes;
   message?: string;
   className?: string;
+  showInitialIcon?: boolean;
+  showCloseIcon?: boolean;
+
   onClose?: React.MouseEventHandler<HTMLButtonElement>;
 }

@@ -16,3 +16,7 @@ export const dateToString = (date = new Date(), options = {}) => {
   });
   return year + '/' + month + '/' + day;
 };
+
+export const getShortTime = (date = new Date()) => {
+  return new Date(date).toLocaleTimeString('en', { timeStyle: 'short' });
+};

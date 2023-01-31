@@ -62,7 +62,9 @@ const Pagination = ({
                 >
                   {PageSizeOptions.map((option) => {
                     return (
-                      <li className="dropdown-item" key={option}
+                      <li
+                        className="dropdown-item"
+                        key={option}
                         onClick={() => {
                           changePageSize(option);
                         }}
