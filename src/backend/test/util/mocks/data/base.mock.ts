@@ -5,6 +5,8 @@ export const baseEntityMock: BaseEntity = {
   isActive: true,
   createdByGuid: 'ABCDGUID',
   createdByUsername: 'IDIRUSER',
+  updatedByGuid: 'ABCDGUID',
+  updatedByUsername: 'IDIRUSER',
   createdAt: new Date(),
   updatedAt: new Date(),
 };

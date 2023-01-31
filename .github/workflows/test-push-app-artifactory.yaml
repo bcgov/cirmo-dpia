@@ -1,0 +1,90 @@
+name: Testing Push WebApp to Artifactory
+
+on: 
+  workflow_dispatch:
+  
+jobs:
+  DPIA-API-Build-Tag-Push:
+    environment: APP-Dev
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Login to Openshift Silver Cluster
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: github-actions
+          OPENSHIFT_NAMESPACE: b996e6-tools
+        with: 
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+          namespace: b996e6-tools
+            
+      - name: Login to Artifactory to Pull Images in S2I Build
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
+      
+      # Build the DPIA API Application Image via docker-compose
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-webapp
+      
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
+      
+      # Tag Docker Image built with prod
+      - name: Docker Tag Version
+        run: |
+          docker tag cirmo-dpia_dpia-webapp ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/dpia-webapp:latest
+
+      # Push docker image to BC Gov Repository  
+      - name: Docker Push Version
+        run: |
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/dpia-webapp:latest
+
+  # DEV-deploy:
+  #   runs-on: ubuntu-latest
+  #   environment: API-Dev
+  #   needs: [ DPIA-API-Build-Tag-Push ]
+  #   steps:
+    
+  #     # Checkout Repository
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Login to Openshift Silver Cluster
+  #       uses: redhat-actions/oc-login@v1
+  #       env:
+  #         OPENSHIFT_USER: github-actions
+  #         OPENSHIFT_NAMESPACE: b996e6-dev
+  #       with: 
+  #         openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+  #         openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+  #         namespace: b996e6-dev
+
+  #     # Use deploy helper script to process and apply DPIA API Application template into DEV namespace
+  #     - name: Process and Apply API DeploymentConfig, Service, Route templates
+  #       env:
+  #         NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+  #         APPLICATION_NAME: "dpia-webapp-artifactory"
+  #         LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+  #         ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+  #         DC_TEMPLATE: "app-dc-template-artifactory.yaml"
+  #         SERVICE_TEMPLATE: "app-service-template-artifactory.yaml"
+  #         ROUTE_TEMPLATE: "app-route-template-artifactory.yaml"
+  #         DIR: "app"
+  #         IMAGESTREAM: "app-dev"
+  #       run: |
+  #         ./.github/helpers/deploy.sh 
