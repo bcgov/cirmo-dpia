@@ -163,7 +163,7 @@ jobs:
           ./.github/helpers/cleanup-rc.sh
 
   DEV-Success-Notify:
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     environment: API-Dev
     needs: [ DEV-cleanup ]
     steps:
