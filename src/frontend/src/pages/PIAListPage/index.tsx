@@ -6,7 +6,7 @@ import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
