@@ -12,10 +12,14 @@ import Dropdown from '../../common/Dropdown';
 
 const PIAIntakeFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filterByMinistry, setFilterByMinistry] = useState<string>('');
-  const [filterByStatus, setFilterByStatus] = useState<string>('');
+  const [filterByMinistry, setFilterByMinistry] = useState<string>(
+    searchParams.get('filterByMinistry') || '',
+  );
+  const [filterByStatus, setFilterByStatus] = useState<string>(
+    searchParams.get('filterByStatus') || '',
+  );
   const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
-    useState<string>('');
+    useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
 
   const setSearchParamsForFilter = (field: string, newValue: any) => {
     const params: any = {};
