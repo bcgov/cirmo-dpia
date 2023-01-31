@@ -1,19 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
@@ -21,15 +21,6 @@ const PIAList = () => {
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
 
-  const [filterByMinistry] = useState<string>(
-    searchParams.get('filterByMinistry') || '',
-  );
-  const [filterByStatus] = useState<string>(
-    searchParams.get('filterByStatus') || '',
-  );
-  const [filterPiaDrafterByCurrentUser] = useState<string>(
-    searchParams.get('filterPiaDrafterByCurrentUser') || '',
-  );
   const { tableData, Page, Total } = usePIALookup(
     SortBy,
     SortOrder,
@@ -40,22 +31,15 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
-  const setSearchParamsForSearchText = () => {
+
+  const setSearchParamsForSearchText = useCallback(() => {
     const params: any = {};
-
-    if (searchParams.get('searchText')) params.searchText = searchText;
-    if (searchParams.get('filterPiaDrafterByCurrentUser'))
-      params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
-    if (searchParams.get('filterByStatus'))
-      params.filterByStatus = filterByStatus;
-    if (searchParams.get('filterByMinistry'))
-      params.filterByMinistry = filterByMinistry;
-
     for (const [key, value] of searchParams.entries()) {
       params[key] = value;
     }
+    if (searchText) params.searchText = searchText;
     setSearchParams(params);
-  };
+  }, [searchParams, searchText, setSearchParams]);
 
   const updateSearchUrl = () => {
     setSearchParamsForSearchText();
@@ -65,35 +49,14 @@ const PIAList = () => {
     const listener = (event: any) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         event.preventDefault();
-        const params: any = {};
-
-        params.searchText = searchText;
-        if (searchParams.get('filterPiaDrafterByCurrentUser'))
-          params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
-        if (searchParams.get('filterByStatus'))
-          params.filterByStatus = filterByStatus;
-        if (searchParams.get('filterByMinistry'))
-          params.filterByMinistry = filterByMinistry;
-
-        for (const [key, value] of searchParams.entries()) {
-          params[key] = value;
-        }
-        setSearchParams(params);
+        setSearchParamsForSearchText();
       }
     };
     document.addEventListener('keydown', listener);
     return () => {
       document.removeEventListener('keydown', listener);
     };
-  }, [
-    filterByMinistry,
-    filterByStatus,
-    filterPiaDrafterByCurrentUser,
-    navigate,
-    searchParams,
-    searchText,
-    setSearchParams,
-  ]);
+  }, [navigate, setSearchParamsForSearchText]);
 
   const handleClearSearchText = () => {
     setSearchText('');
