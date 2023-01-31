@@ -27,6 +27,7 @@ import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
+import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -166,10 +167,12 @@ export class PiaIntakeService {
     });
 
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    // MPO only can see all the non-incomplete PIAs per requirement
     if (mpoMinistries?.length) {
       whereClause.push({
         ...commonWhereClause,
         ministry: In(mpoMinistries),
+        status: Not(PiaIntakeStatusEnum.INCOMPLETE),
       });
     }
     // searchText logic - if there is a search text, find the matching titles OR drafter names
