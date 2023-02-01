@@ -177,5 +177,5 @@ jobs:
               "@type": "MessageCard",
               "themeColor": "0072C6",
               "title": "SUCCESS! Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished.",
-              "text": "The PIA API has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}]\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca/api/api-docs).",
+              "text": "The PIA API has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca/api/api-docs).",
             }'
