@@ -144,10 +144,10 @@ jobs:
         run: |
           ./.github/helpers/cleanup-rc.sh
 
-  DEV-Success-Notify:
+  TEST-Success-Notify:
     runs-on: ubuntu-latest
     environment: API-Test
-    needs: [ DEV-cleanup ]
+    needs: [ TEST-cleanup ]
     steps:
       - name: Message Teams Channel on Success
         run: |
@@ -161,7 +161,7 @@ jobs:
             "text": "The PIA API has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://test.pia.gov.bc.ca/api/api-docs).",
           }'
 
-  DEV-Failure-Notify:
+  TEST-Failure-Notify:
     runs-on: ubuntu-latest
     environment: API-Test
     if: failure()
