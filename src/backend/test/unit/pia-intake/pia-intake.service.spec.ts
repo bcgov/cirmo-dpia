@@ -424,11 +424,6 @@ describe('PiaIntakeService', () => {
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
           },
-          {
-            isActive: true,
-            ministry: null,
-            status: IsNull(),
-          },
         ],
         order: {
           updatedAt: 1,
@@ -587,11 +582,6 @@ describe('PiaIntakeService', () => {
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
             ministry: 'CITIZENS_SERVICES',
-          },
-          {
-            isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: IsNull(),
           },
         ],
         order: {
@@ -754,29 +744,15 @@ describe('PiaIntakeService', () => {
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
-      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
-        where: [
-          {
-            isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: IsNull(),
-            createdByGuid: Not(user.idir_user_guid),
-          },
-        ],
-        order: {
-          createdAt: -1,
-        },
-        skip: 48,
-        take: 12,
-      });
+      expect(piaIntakeRepository.findAndCount).not.toHaveBeenCalled();
 
-      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+      expect(omitBaseKeysSpy).not.toHaveBeenCalled();
 
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
-        data: [getPiaIntakeROMock],
+        data: [],
         page: 5,
         pageSize: 12,
-        total: 100,
+        total: 0,
       };
       expect(result).toEqual(expectedResult);
     });
@@ -874,21 +850,9 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            ministry: null,
-            title: null,
-            status: IsNull(),
-          },
-          {
-            isActive: true,
             createdByGuid: user.idir_user_guid,
             drafterName: null,
             status: 'INCOMPLETE',
-          },
-          {
-            isActive: true,
-            ministry: null,
-            drafterName: null,
-            status: IsNull(),
           },
         ],
         order: {
@@ -1012,12 +976,6 @@ describe('PiaIntakeService', () => {
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
             ministry: IsNull(),
-          },
-          {
-            isActive: true,
-            ministry: IsNull(),
-            status: IsNull(),
-            createdByGuid: 'AAA00001B22C333DD4EEEEE55F6666G77',
           },
         ],
         order: {

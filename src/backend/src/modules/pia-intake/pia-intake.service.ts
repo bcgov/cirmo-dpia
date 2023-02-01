@@ -199,20 +199,16 @@ export class PiaIntakeService {
 
     /** filter logic here */
     if (query.filterByStatus) {
+      if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) {
+        // remove scenario 2 -- you can only see your own incomplete PIAs
+        whereClause = whereClause.filter(
+          (clause) => clause.createdByGuid === user.idir_user_guid,
+        );
+      }
+
+      // by default, add filter to all where clauses as expected
       whereClause.forEach((clause) => {
-        // if the clause has a status condition, it is scenario 2, we need to make sure this one is not override exclude incomplete pia
-        // which if the filterByStatus value is incomplete, we just set this value to null. which means the user can not see any pia
-        if (clause.status) {
-          if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE)
-            clause.status = IsNull();
-          else {
-            clause.status = query.filterByStatus;
-          }
-        } else {
-          // if the status condition does not exist, we can sure this is the scenario 1 clause,so just setup the query
-          // as the drafter always can see their own pia with any status
-          clause.status = query.filterByStatus;
-        }
+        clause.status = query.filterByStatus;
       });
     }
     if (query.filterByMinistry) {
@@ -264,6 +260,14 @@ export class PiaIntakeService {
         (clause) => clause.createdByGuid === user.idir_user_guid,
       );
     }
+
+    // if whereClauses are empty after all the filtering, that means NO records can be shown
+    // all records should at-least be filtered by role based
+    // possibly some weird combination selected; scenario-9 in pia-intake.service.spec.ts covers this
+    if (whereClause.length === 0) {
+      return new PaginatedRO([], query.page, query.pageSize, 0);
+    }
+
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
