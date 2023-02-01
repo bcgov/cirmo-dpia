@@ -205,10 +205,20 @@ export class PiaIntakeService {
         if (mpoMinistries.includes(query.filterByMinistry))
           clause.ministry = query.filterByMinistry;
         else {
+          // there are two ways a user can reach the else condition:
+          // 1. if user is filtering if they are not an MPO for any ministry [simply a drafter]
+          // 2. if user is filtering for ministry they are not MPO of
+
           // for scenario 2, this query clause will have issue
           // if you are drafter of pia submit to this ministry but you are not
           // the mpo of this ministry, you will not see your draft PIAs
+
+          // adding ministry as null will override ministry set from line #172 [scenario 2] ministry: In(mpoMinistries)
           clause.ministry = IsNull();
+
+          // However, adding ministry - null will also fetch pia which are partially saved and have actually ministry = null
+          // hence adding a check to include self records [#known limitation - similar to scenario 1]
+          // #TODO - come up with better solution
           clause.createdByGuid = user.idir_user_guid;
         }
       });
