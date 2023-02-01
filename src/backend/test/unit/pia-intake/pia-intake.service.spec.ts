@@ -706,12 +706,6 @@ describe('PiaIntakeService', () => {
             status: 'INCOMPLETE',
             ministry: 'CITIZENS_SERVICES',
           },
-          {
-            isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: IsNull(),
-            createdByGuid: user.idir_user_guid,
-          },
         ],
         order: {
           createdAt: -1,
