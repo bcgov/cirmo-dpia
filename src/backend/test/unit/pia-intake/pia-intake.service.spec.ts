@@ -588,12 +588,6 @@ describe('PiaIntakeService', () => {
             status: 'INCOMPLETE',
             ministry: 'CITIZENS_SERVICES',
           },
-          {
-            isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: 'INCOMPLETE',
-            createdByGuid: user.idir_user_guid,
-          },
         ],
         order: {
           createdAt: -1,
@@ -644,12 +638,6 @@ describe('PiaIntakeService', () => {
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
-          {
-            isActive: true,
-            createdByGuid: Not(user.idir_user_guid),
-            status: 'INCOMPLETE',
-            ministry: 'CITIZENS_SERVICES',
-          },
           {
             isActive: true,
             ministry: 'CITIZENS_SERVICES',

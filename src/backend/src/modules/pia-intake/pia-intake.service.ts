@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository, Not, IsNull } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, IsNull, Not } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -157,7 +157,7 @@ export class PiaIntakeService {
     };
 
     // where-clause query
-    const whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
+    let whereClause: FindOptionsWhere<PiaIntakeEntity>[] = [];
 
     // Scenario 1: As a user, retrieve all PIA-intakes I submitted
     whereClause.push({
@@ -229,6 +229,11 @@ export class PiaIntakeService {
       query.filterPiaDrafterByCurrentUser ===
         PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS
     ) {
+      // include where clauses that does NOT include self submitted PIAs
+      whereClause = whereClause.filter(
+        (clause) => clause.createdByGuid !== user.idir_user_guid,
+      );
+
       whereClause.forEach((clause) => {
         clause.createdByGuid = Not(user.idir_user_guid);
       });
@@ -239,9 +244,10 @@ export class PiaIntakeService {
       query.filterPiaDrafterByCurrentUser ===
         PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS
     ) {
-      whereClause.forEach((clause) => {
-        clause.createdByGuid = user.idir_user_guid;
-      });
+      // include where clauses that only includes self submitted PIAs
+      whereClause = whereClause.filter(
+        (clause) => clause.createdByGuid === user.idir_user_guid,
+      );
     }
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
