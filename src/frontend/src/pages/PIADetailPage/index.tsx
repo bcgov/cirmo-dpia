@@ -403,14 +403,22 @@ const PIADetailPage = () => {
                         icon={faChevronDown}
                       />
                     </div>
+                  ) : pia.status ? (
+                    pia.status in statusList ? (
+                      <div
+                        className={`statusBlock ${
+                          statusList[pia.status].class
+                        }`}
+                      >
+                        {pia.status
+                          ? statusList[pia.status].title
+                          : 'Completed'}
+                      </div>
+                    ) : (
+                      ''
+                    )
                   ) : (
-                    <div
-                      className={`statusBlock ${
-                        pia.status == 'MPO_REVIEW' ? 'statusInfo' : ''
-                      }`}
-                    >
-                      {pia.status ? pia.status : 'Completed'}
-                    </div>
+                    ''
                   )}
                 </div>
               </div>

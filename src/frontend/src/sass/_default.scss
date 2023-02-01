@@ -49,7 +49,6 @@ h4 {
   margin-left: auto;
   margin-right: auto;
   padding-inline: $wrapper-padding-inline;
-
   @include breakpoint(0 map-get($grid-breakpoints, 'sm')) {
     padding-inline: 5px;
   }
@@ -74,6 +73,7 @@ h4 {
 .bcgovPageContainer {
   margin-top: calc($header-height + $navbar-height);
   min-height: calc(100vh - $header-height - $navbar-height);
+  flex-direction: column;
   background-color: #f2f2f2;
   padding-top: $padding-block;
   padding-bottom: calc($padding-block + $footer-height);
@@ -125,4 +125,8 @@ h4 {
 
 .full__width {
   width:100%;
+}
+
+.overflow-clip {
+  overflow: clip;
 }
