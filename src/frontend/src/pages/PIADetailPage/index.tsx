@@ -27,7 +27,6 @@ import {
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
 import Modal from '../../components/common/Modal';
-import { IPIAResult } from '../../types/interfaces/pia-result.interface';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -57,6 +56,16 @@ const PIADetailPage = () => {
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
+  const updatePiaHttpRequest = (
+    updatedId: string,
+    requestBody: Partial<IPIAIntake>,
+  ) => {
+    return HttpRequest.patch<IPIAIntake>(
+      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${updatedId}`),
+      requestBody,
+    );
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -68,13 +77,16 @@ const PIADetailPage = () => {
         ).data;
         setPia(result);
         setPiaMinistryFullName(
-          MinistryList.filter((item) => item.value === pia.ministry)[0].label,
+          MinistryList.filter((item) => item.value === result.ministry)[0]
+            .label,
         );
-        setPiaStatus(pia.status);
+        if (result.status) {
+          setPiaStatus(result.status);
+        }
         setPIOption(
-          pia.hasAddedPiToDataElements === true
+          result.hasAddedPiToDataElements === true
             ? PIOptions[0]
-            : pia.hasAddedPiToDataElements === false
+            : result.hasAddedPiToDataElements === false
             ? PIOptions[1]
             : PIOptions[2],
         );
@@ -159,14 +171,14 @@ const PIADetailPage = () => {
   const handleStatusSubmit = async () => {
     const requestBody: Partial<IPIAIntake> = {
       status: statusLocal,
+      saveId: pia?.saveId,
     };
     try {
-      const res = await HttpRequest.patch<IPIAResult>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
+      const res = await updatePiaHttpRequest(
+        pia?.id,
         requestBody,
-      );
-      /* PIA will be set after data is updated in backend */
-      setPia({ ...pia, status: statusLocal });
+      ); /* PIA will be set after data is updated in backend */
+      setPia(res);
       setHandleEditing(true);
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
@@ -193,24 +205,22 @@ const PIADetailPage = () => {
       buttonValue === 'submit'
         ? {
             status: PiaStatuses.MPO_REVIEW,
+            saveId: pia?.saveId,
           }
         : {
             status: PiaStatuses.EDIT_IN_PROGRESS,
+            saveId: pia?.saveId,
           };
     try {
       if (buttonValue === 'submit') {
-        await HttpRequest.patch<IPIAResult>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
+        const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
+        setPia(updatedPia);
         navigate(routes.PIA_INTAKE_RESULT, {
-          state: { result: pia.id },
+          state: { result: updatedPia },
         });
       } else {
-        await HttpRequest.patch<IPIAResult>(
-          API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-          requestBody,
-        );
+        const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
+        setPia(updatedPia);
         navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
           state: pia,
         });
@@ -258,6 +268,8 @@ const PIADetailPage = () => {
                 type="banner-warning"
                 message="Warning: Your MPO cannot see or help you with this PIA until you click “Submit to MPO”. "
                 className="mt-2"
+                showInitialIcon={true}
+                showCloseIcon={false}
               />
             )}
           </div>

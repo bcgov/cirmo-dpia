@@ -1,15 +1,16 @@
 import {
+  BadRequestException,
+  ConflictException,
   ForbiddenException,
   GoneException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository, Not } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, Not, IsNull } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
-import { CreatePiaIntakeRO } from './ro/create-pia-intake.ro';
 import { GovMinistries } from '../../common/constants/gov-ministries.constant';
 import { KeycloakUser } from '../auth/keycloak-user.model';
 import { PiaIntakeEntity } from './entities/pia-intake.entity';
@@ -37,15 +38,20 @@ export class PiaIntakeService {
   async create(
     createPiaIntakeDto: CreatePiaIntakeDto,
     user: KeycloakUser,
-  ): Promise<CreatePiaIntakeRO> {
+  ): Promise<GetPiaIntakeRO> {
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.idir_username,
       drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
     });
 
-    return { id: piaInfoForm.id };
+    const formattedPiaInfoForm: GetPiaIntakeRO =
+      omitBaseKeys<PiaIntakeEntity>(piaInfoForm);
+
+    return formattedPiaInfoForm;
   }
 
   async update(
@@ -53,15 +59,40 @@ export class PiaIntakeService {
     updatePiaIntakeDto: UpdatePiaIntakeDto,
     user: KeycloakUser,
     userRoles: RolesEnum[],
-  ) {
+  ): Promise<GetPiaIntakeRO> {
+    if (!updatePiaIntakeDto.saveId) {
+      throw new BadRequestException('missing save id');
+    }
+
     // Fetch the existing record by ID
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
     this.validateUserAccess(user, userRoles, existingRecord);
 
-    // update the record with the provided keys
-    await this.piaIntakeRepository.update({ id }, { ...updatePiaIntakeDto });
+    // check if the user is not acting on / updating a stale version
+    if (existingRecord.saveId !== updatePiaIntakeDto.saveId) {
+      throw new ConflictException(
+        'You may not have an updated version of the document',
+      );
+    }
+
+    // remove the provided saveId
+    delete updatePiaIntakeDto.saveId;
+
+    // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
+    await this.piaIntakeRepository.save({
+      id,
+      ...updatePiaIntakeDto,
+      saveId: existingRecord.saveId + 1,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.idir_username,
+    });
+
+    // fetch and return the updated record
+    const updatedRecord = await this.findOneById(id, user, userRoles);
+
+    return updatedRecord;
   }
 
   /**
@@ -171,7 +202,25 @@ export class PiaIntakeService {
     }
     if (query.filterByMinistry) {
       whereClause.forEach((clause) => {
-        clause.ministry = query.filterByMinistry;
+        if (mpoMinistries.includes(query.filterByMinistry))
+          clause.ministry = query.filterByMinistry;
+        else {
+          // there are two ways a user can reach the else condition:
+          // 1. if user is filtering if they are not an MPO for any ministry [simply a drafter]
+          // 2. if user is filtering for ministry they are not MPO of
+
+          // for scenario 2, this query clause will have issue
+          // if you are drafter of pia submit to this ministry but you are not
+          // the mpo of this ministry, you will not see your draft PIAs
+
+          // adding ministry as null will override ministry set from line #172 [scenario 2] ministry: In(mpoMinistries)
+          clause.ministry = IsNull();
+
+          // However, adding ministry - null will also fetch pia which are partially saved and have actually ministry = null
+          // hence adding a check to include self records [#known limitation - similar to scenario 1]
+          // #TODO - come up with better solution
+          clause.createdByGuid = user.idir_user_guid;
+        }
       });
     }
     // filter by drafter sub scenario 1 check the filter to exclude my Pia

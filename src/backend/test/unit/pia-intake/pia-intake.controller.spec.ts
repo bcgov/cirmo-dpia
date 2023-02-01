@@ -214,9 +214,17 @@ describe('PiaIntakeController', () => {
 
     it('succeeds with correct data', async () => {
       const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const updatePiaIntakeDtoMock = {
-        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+      const updatedStatus = PiaIntakeStatusEnum.EDIT_IN_PROGRESS;
+
+      const getPiaIntakeRO = {
+        ...getPiaIntakeROMock,
+        status: updatedStatus,
       };
+      const updatePiaIntakeDtoMock = {
+        status: updatedStatus,
+        saveId: 1,
+      };
+
       const mockReq: any = {
         user: { ...keycloakUserMock },
         userRoles: [RolesEnum.MPO_CITZ],
@@ -224,6 +232,7 @@ describe('PiaIntakeController', () => {
 
       piaIntakeService.update = jest.fn(async () => {
         delay(10);
+        return getPiaIntakeRO;
       });
 
       const result = await controller.update(
@@ -239,8 +248,7 @@ describe('PiaIntakeController', () => {
         mockReq.userRoles,
       );
 
-      // If undefined, the method did not throw any error
-      expect(result).toBe(undefined);
+      expect(result).toBe(getPiaIntakeRO);
     });
   });
 

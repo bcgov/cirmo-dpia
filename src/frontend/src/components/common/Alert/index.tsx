@@ -1,4 +1,8 @@
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faExclamationTriangle,
+  faCircleCheck,
+  faCircleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { AlertProps } from './interfaces';
@@ -8,6 +12,8 @@ const Alert = ({
   type,
   message,
   className,
+  showInitialIcon = false,
+  showCloseIcon = true,
   onClose,
 }: AlertProps): React.ReactElement => {
   const renderElAlert = function () {
@@ -27,8 +33,16 @@ const Alert = ({
         'alert-wrapper' + ` alert-${type}` + (className ? ` ${className}` : '')
       }
     >
-      {type === 'banner-warning' && (
+      {showInitialIcon && type === 'banner-warning' && (
         <FontAwesomeIcon icon={faExclamationTriangle} />
+      )}
+
+      {showInitialIcon && type === 'success' && (
+        <FontAwesomeIcon icon={faCircleCheck} />
+      )}
+
+      {showInitialIcon && type === 'danger' && (
+        <FontAwesomeIcon icon={faCircleExclamation} />
       )}
 
       {children ? renderElAlert() : message}
@@ -38,9 +52,7 @@ const Alert = ({
         aria-label="Close"
         onClick={handleClose}
       >
-        {type === 'banner-warning' ? null : (
-          <span aria-hidden="true">&times;</span>
-        )}
+        {showCloseIcon && <span aria-hidden="true">&times;</span>}
       </span>
     </div>
   );
