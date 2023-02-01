@@ -162,3 +162,38 @@ jobs:
         cd ./src/frontend
         npm install
         npm run cy:e2e-test
+
+  TEST-Success-Notify:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    needs: [ TEST-cleanup ]
+    steps:
+      - name: Message Teams Channel on Success
+        run: |
+          curl --location --request POST ${{ secrets.TEAMS_SUCCESS_URL }} \
+          --header 'Content-Type: text/plain' \
+          --data-raw '{
+            "@context": "https://schema.org/extensions",
+            "@type": "MessageCard",
+            "themeColor": "0072C6",
+            "title": "SUCCESS! Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished.",
+            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://test.pia.gov.bc.ca).",
+          }'
+
+  TEST-Failure-Notify:
+    runs-on: ubuntu-latest
+    environment: APP-Test
+    if: failure()
+    steps:
+      - name: Message Teams Channel on Failure
+        run: |
+          curl --location --request POST ${{ secrets.TEAMS_FAILURE_URL }} \
+          --header 'Content-Type: text/plain' \
+          --data-raw '{
+            "@context": "https://schema.org/extensions",
+            "@type": "MessageCard",
+            "themeColor": "0072C6",
+            "title": "FAILURE! Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
+            "text": "The PIA WebApp has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
+          }'
+
