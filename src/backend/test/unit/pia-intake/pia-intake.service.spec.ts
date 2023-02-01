@@ -40,7 +40,6 @@ import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
-import { IsNull } from 'typeorm';
 
 /**
  * @Description
@@ -198,6 +197,7 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             ministry: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
         ],
         order: {
@@ -302,6 +302,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: null,
             title: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
           {
             isActive: true,
@@ -312,6 +313,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: null,
             drafterName: null,
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
         ],
         order: {
@@ -386,8 +388,8 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 5: user is MPO; filter by PIA status with Sort
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status]', async () => {
+    // scenario 5-1 : user is MPO; filter by PIA status(incomplete) with Sort
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(incomplete)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -421,10 +423,63 @@ describe('PiaIntakeService', () => {
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
           },
+        ],
+        order: {
+          updatedAt: 1,
+        },
+        skip: 48,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 5,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+    // scenario 5-2 : user is MPO; filter by PIA status(non-incomplete) with Sort
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete)]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.MPO_REVIEW,
+        sortBy: 'updatedAt',
+        sortOrder: SortOrderEnum.ASC,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: 'MPO_REVIEW',
+          },
           {
             isActive: true,
             ministry: null,
-            status: 'INCOMPLETE',
+            status: 'MPO_REVIEW',
           },
         ],
         order: {
@@ -444,7 +499,6 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
-
     // scenario 6: user is not MPO; filter by PIA status, drafter only can filter by status
     it('succeeds calling the database repository with correct data for non MPO role [filter by pia status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -492,9 +546,9 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
-    // scenario 7: user is MPO ; filter by PIA status and ministry
+    // scenario 7-1: user is MPO ; filter by PIA status (incomplete) and ministry
 
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status and ministry]', async () => {
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(incomplete) and ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -528,10 +582,63 @@ describe('PiaIntakeService', () => {
             status: 'INCOMPLETE',
             ministry: 'CITIZENS_SERVICES',
           },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 5,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+    // scenario 7-2: user is MPO ; filter by PIA status (incomplete) and ministry
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(except incomplete) and ministry]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.MPO_REVIEW,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: 'MPO_REVIEW',
+            ministry: 'CITIZENS_SERVICES',
+          },
           {
             isActive: true,
             ministry: 'CITIZENS_SERVICES',
-            status: 'INCOMPLETE',
+            status: 'MPO_REVIEW',
           },
         ],
         order: {
@@ -636,13 +743,55 @@ describe('PiaIntakeService', () => {
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
+      expect(piaIntakeRepository.findAndCount).not.toHaveBeenCalled();
+
+      expect(omitBaseKeysSpy).not.toHaveBeenCalled();
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [],
+        page: 5,
+        pageSize: 12,
+        total: 0,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 9-1: user is MPO; filter by PIA status - MPO_REVIEW and ministry and not current user's pia
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status - MPO_REVIEW and ministry and exclude current user pia]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.MPO_REVIEW,
+        filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
+        filterPiaDrafterByCurrentUser:
+          PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: 'INCOMPLETE',
             createdByGuid: Not(user.idir_user_guid),
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
         order: {
@@ -662,6 +811,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 10 non MPO searchText and filter by status
     it('succeeds when user is only a drafter (not MPO) [searchText provided and filter by status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -719,8 +869,8 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 11 MPO user searchText and filter by status
-    it('succeeds when user is an MPO and [searchText is provided and filter by status]', async () => {
+    // scenario 11-1 MPO user searchText and filter by status (incomplete)
+    it('succeeds when user is an MPO and [searchText is provided and filter by status(incomplete)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -756,19 +906,7 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            ministry: null,
-            title: null,
-            status: 'INCOMPLETE',
-          },
-          {
-            isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
-            status: 'INCOMPLETE',
-          },
-          {
-            isActive: true,
-            ministry: null,
             drafterName: null,
             status: 'INCOMPLETE',
           },
@@ -790,8 +928,78 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+    // scenario 11-2 MPO user searchText and filter by status (except incomplete)
+    it('succeeds when user is an MPO and [searchText is provided and filter by status(Non-incomplete)]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        searchText: 'King Richard',
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.MPO_REVIEW,
+      };
 
-    // scenario 12 MPO user can not filter other ministry pia
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            title: null,
+            status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
+            ministry: null,
+            title: null,
+            status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            drafterName: null,
+            status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
+            ministry: null,
+            drafterName: null,
+            status: 'MPO_REVIEW',
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+    // scenario 12-1  MPO user can not filter other ministry pia
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status and not their ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -823,12 +1031,57 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             status: 'INCOMPLETE',
-            ministry: IsNull(),
+            ministry: 'FORESTS',
           },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(0);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [],
+        page: 5,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+    // scenario 12 -2 MPO user can not filter other ministry pia but can see their PIA submit to this ministry
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete) and not their ministry]', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const query: PiaIntakeFindQuery = {
+        page: 5,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.MPO_REVIEW,
+        filterByMinistry: GovMinistriesEnum.FORESTS,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        Roles[RolesEnum.MPO_CITZ].ministry,
+      ]);
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
           {
             isActive: true,
-            ministry: IsNull(),
-            status: 'INCOMPLETE',
+            ministry: 'FORESTS',
+            status: 'MPO_REVIEW',
             createdByGuid: 'AAA00001B22C333DD4EEEEE55F6666G77',
           },
         ],

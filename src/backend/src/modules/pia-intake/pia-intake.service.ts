@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, ILike, Repository, Not, IsNull } from 'typeorm';
+import { FindOptionsWhere, In, ILike, Repository, Not } from 'typeorm';
 import { marked } from 'marked';
 
 import { CreatePiaIntakeDto } from './dto/create-pia-intake.dto';
@@ -27,6 +27,7 @@ import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
+import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -166,10 +167,12 @@ export class PiaIntakeService {
     });
 
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
+    // MPO only can see all the non-incomplete PIAs per requirement
     if (mpoMinistries?.length) {
       whereClause.push({
         ...commonWhereClause,
         ministry: In(mpoMinistries),
+        status: Not(PiaIntakeStatusEnum.INCOMPLETE),
       });
     }
     // searchText logic - if there is a search text, find the matching titles OR drafter names
@@ -196,33 +199,34 @@ export class PiaIntakeService {
 
     /** filter logic here */
     if (query.filterByStatus) {
+      if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) {
+        // remove scenario 2 -- you can only see your own incomplete PIAs
+        whereClause = whereClause.filter(
+          (clause) => clause.createdByGuid === user.idir_user_guid,
+        );
+      }
+
+      // by default, add filter to all where clauses as expected
       whereClause.forEach((clause) => {
         clause.status = query.filterByStatus;
       });
     }
+
     if (query.filterByMinistry) {
+      if (!mpoMinistries.includes(query.filterByMinistry)) {
+        // remove scenario 2 - you can only see PIAs of ministries you're MPO of
+        // if not, you only see what you drafted to that ministry
+        whereClause = whereClause.filter(
+          (clause) => clause.createdByGuid === user.idir_user_guid,
+        );
+      }
+
+      // by default, add filter to all where clauses as expected
       whereClause.forEach((clause) => {
-        if (mpoMinistries.includes(query.filterByMinistry))
-          clause.ministry = query.filterByMinistry;
-        else {
-          // there are two ways a user can reach the else condition:
-          // 1. if user is filtering if they are not an MPO for any ministry [simply a drafter]
-          // 2. if user is filtering for ministry they are not MPO of
-
-          // for scenario 2, this query clause will have issue
-          // if you are drafter of pia submit to this ministry but you are not
-          // the mpo of this ministry, you will not see your draft PIAs
-
-          // adding ministry as null will override ministry set from line #172 [scenario 2] ministry: In(mpoMinistries)
-          clause.ministry = IsNull();
-
-          // However, adding ministry - null will also fetch pia which are partially saved and have actually ministry = null
-          // hence adding a check to include self records [#known limitation - similar to scenario 1]
-          // #TODO - come up with better solution
-          clause.createdByGuid = user.idir_user_guid;
-        }
+        clause.ministry = query.filterByMinistry;
       });
     }
+
     // filter by drafter sub scenario 1 check the filter to exclude my Pia
     if (
       query.filterPiaDrafterByCurrentUser &&
@@ -249,6 +253,14 @@ export class PiaIntakeService {
         (clause) => clause.createdByGuid === user.idir_user_guid,
       );
     }
+
+    // if whereClauses are empty after all the filtering, that means NO records can be shown
+    // all records should at-least be filtered by role based
+    // possibly some weird combination selected; scenario-9 in pia-intake.service.spec.ts covers this
+    if (whereClause.length === 0) {
+      return new PaginatedRO([], query.page, query.pageSize, 0);
+    }
+
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
