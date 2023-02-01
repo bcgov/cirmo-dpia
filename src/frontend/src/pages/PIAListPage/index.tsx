@@ -1,19 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
   const [currentPage, setcurrentPage] = useState(1);
@@ -30,27 +31,37 @@ const PIAList = () => {
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
   );
+  // TODO make a common function to handle search params update both for filter component and search text
+  const setSearchParamsForSearchText = useCallback(() => {
+    const params: any = {};
+    for (const [key, value] of searchParams.entries()) {
+      params[key] = value;
+    }
+    if (searchText) params.searchText = searchText;
+    setSearchParams(params);
+  }, [searchParams, searchText, setSearchParams]);
 
   const updateSearchUrl = () => {
-    navigate(`?searchText=${searchText}`);
+    setSearchParamsForSearchText();
   };
 
   useEffect(() => {
     const listener = (event: any) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         event.preventDefault();
-        navigate(`?searchText=${searchText}`);
+        setSearchParamsForSearchText();
       }
     };
     document.addEventListener('keydown', listener);
     return () => {
       document.removeEventListener('keydown', listener);
     };
-  }, [navigate, searchText]);
+  }, [navigate, setSearchParamsForSearchText]);
 
   const handleClearSearchText = () => {
     setSearchText('');
-    navigate('');
+    searchParams.delete('searchText');
+    setSearchParams(searchParams);
   };
 
   const handleSearchTextChange = (newSearchText: any) => {
