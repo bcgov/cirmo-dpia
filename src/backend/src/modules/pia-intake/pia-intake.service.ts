@@ -205,7 +205,11 @@ export class PiaIntakeService {
         if (mpoMinistries.includes(query.filterByMinistry))
           clause.ministry = query.filterByMinistry;
         else {
+          // for scenario 2, this query clause will have issue
+          // if you are drafter of pia submit to this ministry but you are not
+          // the mpo of this ministry, you will not see your draft PIAs
           clause.ministry = IsNull();
+          clause.createdByGuid = user.idir_user_guid;
         }
       });
     }

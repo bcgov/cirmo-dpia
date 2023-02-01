@@ -841,6 +841,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: IsNull(),
             status: 'INCOMPLETE',
+            createdByGuid: 'AAA00001B22C333DD4EEEEE55F6666G77',
           },
         ],
         order: {
