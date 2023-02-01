@@ -200,7 +200,19 @@ export class PiaIntakeService {
     /** filter logic here */
     if (query.filterByStatus) {
       whereClause.forEach((clause) => {
-        clause.status = query.filterByStatus;
+        // if the clause has a status condition, it is scenario 2, we need to make sure this one is not override exclude incomplete pia
+        // which if the filterByStatus value is incomplete, we just set this value to null. which means the user can not see any pia
+        if (clause.status) {
+          if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE)
+            clause.status = IsNull();
+          else {
+            clause.status = query.filterByStatus;
+          }
+        } else {
+          // if the status condition does not exist, we can sure this is the scenario 1 clause,so just setup the query
+          // as the drafter always can see their own pia with any status
+          clause.status = query.filterByStatus;
+        }
       });
     }
     if (query.filterByMinistry) {
