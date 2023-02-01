@@ -73,7 +73,7 @@ h4 {
 .bcgovPageContainer {
   margin-top: calc($header-height + $navbar-height);
   min-height: calc(100vh - $header-height - $navbar-height);
-  flex-direction:column;
+  flex-direction: column;
   background-color: #f2f2f2;
   padding-top: $padding-block;
   padding-bottom: calc($padding-block + $footer-height);
