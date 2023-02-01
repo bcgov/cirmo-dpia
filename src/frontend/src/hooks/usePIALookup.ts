@@ -20,7 +20,10 @@ export const usePIALookup = (
 
   useEffect(() => {
     (async () => {
-      let params = {};
+      let params: any = {};
+      for (const [key, value] of searchParams.entries()) {
+        params[key] = value;
+      }
       if (sortBy && sortOrder) {
         params = {
           sortBy: sortBy,
@@ -40,6 +43,7 @@ export const usePIALookup = (
           pageSize: String(pageSize),
         };
       }
+
       if (searchParams.get('searchText')) {
         params = {
           ...params,

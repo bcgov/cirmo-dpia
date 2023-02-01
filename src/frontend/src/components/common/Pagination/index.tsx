@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faAngleLeft,
+  faAngleRight,
+} from '@fortawesome/free-solid-svg-icons';
 
 type PaginationProps = {
   currentPage: number;
