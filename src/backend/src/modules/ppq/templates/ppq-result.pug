@@ -37,9 +37,7 @@ div(style='padding-left: 5px; color: #444444')
 
       div(style=`${field_gap_style}`)
         div(style=`${key_style}`) Involves
-        if otherFactors.length === 0
-          div N/A
-        else 
+        if otherFactors.length !== 0
           ul
             each factor in otherFactors
               li #{factor}
