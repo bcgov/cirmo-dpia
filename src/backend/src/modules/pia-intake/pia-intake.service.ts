@@ -314,15 +314,19 @@ export class PiaIntakeService {
       ...piaIntakeForm,
       ...{
         updatedAt: shortDate(piaIntakeForm.createdAt),
-        ministry: ministry || 'N/A',
-        initiativeDescription: marked.parse(
-          piaIntakeForm.initiativeDescription,
-        ),
-        initiativeScope: marked.parse(piaIntakeForm.initiativeScope),
-        dataElementsInvolved: marked.parse(piaIntakeForm.dataElementsInvolved),
+        ministry: ministry || '',
+        initiativeDescription: piaIntakeForm.initiativeDescription
+          ? marked.parse(piaIntakeForm.initiativeDescription)
+          : '',
+        initiativeScope: piaIntakeForm.initiativeScope
+          ? marked.parse(piaIntakeForm.initiativeScope)
+          : '',
+        dataElementsInvolved: piaIntakeForm.dataElementsInvolved
+          ? marked.parse(piaIntakeForm.dataElementsInvolved)
+          : '',
         riskMitigation: piaIntakeForm.riskMitigation
           ? marked.parse(piaIntakeForm.riskMitigation)
-          : null,
+          : '',
       },
     };
 
