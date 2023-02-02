@@ -63,13 +63,15 @@ export class PpqService {
       ...ppqForm,
       ...{
         updatedAt: shortDate(ppqForm.createdAt),
-        ministry: ministry || 'N/A',
-        piaType: piaType || 'N/A',
+        ministry: ministry || '',
+        piaType: piaType || '',
         delegatedReviewType: delegatedReviewType,
         proposedStartDate: ppqForm.proposedStartDate
           ? shortDate(ppqForm.proposedStartDate)
-          : 'N/A',
-        description: marked.parse(ppqForm.description),
+          : '',
+        description: ppqForm.description
+          ? marked.parse(ppqForm.description)
+          : '',
         otherFactors,
       },
     };
