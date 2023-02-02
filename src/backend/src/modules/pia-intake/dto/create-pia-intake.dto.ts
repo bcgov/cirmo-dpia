@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsOptional,
@@ -194,4 +195,13 @@ export class CreatePiaIntakeDto {
     example: PiaIntakeStatusEnum.MPO_REVIEW,
   })
   status: PiaIntakeStatusEnum;
+
+  @IsDateString()
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    required: false,
+    example: new Date(),
+  })
+  submittedAt: Date;
 }

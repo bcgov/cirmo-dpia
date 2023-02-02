@@ -1,5 +1,5 @@
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
-import { Column, Entity } from 'typeorm';
+import { Column, CreateDateColumn, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
@@ -121,4 +121,11 @@ export class PiaIntakeEntity extends BaseEntity {
     nullable: true,
   })
   updatedByDisplayName: string;
+  @CreateDateColumn({
+    name: 'submitted_at',
+    type: 'timestamptz',
+    nullable: true,
+    default: null,
+  })
+  submittedAt: Date;
 }
