@@ -53,7 +53,10 @@ export class HttpRequest {
 
     if (!response.ok) {
       throw new Error('Something went wrong', {
-        cause: new Error(`${response.status}`),
+        cause: {
+          status: response.status,
+          data: response.status !== 204 ? await response.json() : {},
+        } as any,
       });
     }
 

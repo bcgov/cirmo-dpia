@@ -91,14 +91,15 @@ const PIADetailPage = () => {
             : PIOptions[2],
         );
       } catch (e) {
-        if (e instanceof Error && e.cause instanceof Error) {
-          const errorCode = e.cause.message as unknown as string;
-          if (errorCode === '404') {
+        if (e instanceof Error && e.cause) {
+          const cause = e.cause as any;
+          const errorCode = cause?.status;
+          if (errorCode === 404) {
             win.location = routes.NOT_FOUND;
           } else if (
-            errorCode === '401' ||
-            errorCode === '403' ||
-            errorCode === '410'
+            errorCode === 401 ||
+            errorCode === 403 ||
+            errorCode === 410
           ) {
             win.location = routes.NOT_AUTHORIZED;
           } else {

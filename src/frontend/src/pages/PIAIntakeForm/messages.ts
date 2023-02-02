@@ -132,13 +132,13 @@ export default {
     },
     Conflict: {
       ConfirmLabel: {
-        en: 'Okay',
+        en: 'Back to view',
       },
       TitleText: {
-        en: 'Auto-save failed',
+        en: '${user} is editing this PIA',
       },
       ParagraphText: {
-        en: 'This document was last saved at ${time}. Before you leave the page, ensure you capture any unsaved work you don’t want to lose. Any unsaved changes will be lost.',
+        en: 'Please reach out to ${user} for further questions. Refresh to view any changes.',
       },
     },
   },

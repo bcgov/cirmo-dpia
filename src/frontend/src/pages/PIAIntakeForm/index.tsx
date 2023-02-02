@@ -74,7 +74,7 @@ const PIAIntakeFormPage = () => {
   //
   // Event Handlers
   //
-  const handleShowModal = (modalType: string) => {
+  const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
       case 'cancel':
         setPiaModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
@@ -105,11 +105,13 @@ const PIAIntakeFormPage = () => {
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
-        setPiaModalTitleText(Messages.Modal.Conflict.TitleText.en);
+        setPiaModalTitleText(
+          Messages.Modal.Conflict.TitleText.en.replace('${user}', conflictUser),
+        );
         setPiaModalParagraph(
           Messages.Modal.Conflict.ParagraphText.en.replace(
-            '${time}',
-            getShortTime(pia?.updatedAt),
+            '${user}',
+            conflictUser,
           ),
         );
         setPiaModalButtonValue('conflict');
@@ -304,9 +306,9 @@ const PIAIntakeFormPage = () => {
           )}.`,
           show: true,
         });
-        if (e?.cause?.message === '409') {
+        if (e?.cause?.status === 409) {
           setIsConflict(true);
-          handleShowModal('conflict');
+          handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
         }
       }
     };
