@@ -27,6 +27,7 @@ This structure diagram show all directories and specific files of interest. It d
     |   └── README.md                           # Github Actions and Environments specific Documentation 
     ├── .husky                                  #
     |    └── pre-commit                         # shell script run before a branch can be pushed up to remote repository for pre-linting  
+    ├── docs                                    # Relevant Documentation incl. Architecture diagrams
     ├── openshift                               # Openshift Object Repository
     |   ├── backup                              # Directory containing k8s artifacts and documentation related to deploying postgres backup containers to DEV/TEST/PROD
     |   |   ├── README.md                       #
