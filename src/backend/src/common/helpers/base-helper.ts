@@ -56,9 +56,15 @@ export class ExcludeBaseSelection
  * @param entity any entity that extends BaseEntity
  * @returns Partial entity that does not include excluded fields
  */
-export function omitBaseKeys<T>(entity = {}) {
+export function omitBaseKeys<T>(
+  entity = {},
+  additionalKeysToOmit: Array<string> = [],
+) {
   return omit(
-    Object.getOwnPropertyNames(new ExcludeBaseSelection()),
+    [
+      ...Object.getOwnPropertyNames(new ExcludeBaseSelection()),
+      ...additionalKeysToOmit,
+    ],
     entity,
-  ) as Omit<T, keyof ExcludeBaseSelection>;
+  ) as T;
 }
