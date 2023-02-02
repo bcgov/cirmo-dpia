@@ -7,6 +7,7 @@ import {
   Req,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
@@ -28,6 +29,9 @@ export class GcNotifyController {
   })
   @ApiOkResponse({
     description: 'Successfully sent email notification.',
+  })
+  @ApiBadRequestResponse({
+    description: 'There is something wrong with the request body.',
   })
   @HttpCode(HttpStatus.OK)
   async sendEmail(
