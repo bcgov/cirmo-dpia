@@ -3,7 +3,6 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
   Req,
 } from '@nestjs/common';
@@ -11,7 +10,6 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { IRequest } from 'src/common/interfaces/request.interface';
@@ -24,8 +22,7 @@ import { GcNotifyService } from './gcnotify.service';
 export class GcNotifyController {
   constructor(private readonly gcnotifyService: GcNotifyService) {}
 
-  @Post(':mpoEmail')
-  @ApiParam({ name: 'mpoEmail', type: String, required: true })
+  @Post()
   @ApiOperation({
     description: 'Send an email notification request to GCNotify.',
   })
@@ -35,8 +32,8 @@ export class GcNotifyController {
   @HttpCode(HttpStatus.OK)
   async sendEmail(
     @Req() req: IRequest,
-    @Param('mpoEmail') mpoEmail,
-    @Body() gcNotifyEmailDto: GcNotifyEmailDto,
+    @Body('emailDto') gcNotifyEmailDto: GcNotifyEmailDto,
+    @Body('mpoEmail') mpoEmail: string,
   ): Promise<any> {
     return this.gcnotifyService.sendEmail(req.user, mpoEmail, gcNotifyEmailDto);
   }
