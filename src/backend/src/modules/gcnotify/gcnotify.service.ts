@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { KeycloakUser } from '../auth/keycloak-user.model';
 import { GcNotifyEmailDto } from './dto/gcnotify-pia.dto';
+import { GcNotifyRO } from './ro/gcnotify.ro';
 
 @Injectable()
 export class GcNotifyService {
@@ -11,7 +12,7 @@ export class GcNotifyService {
   async sendEmail(
     user: KeycloakUser,
     emailProps: GcNotifyEmailDto,
-  ): Promise<any> {
+  ): Promise<GcNotifyRO> {
     const data = await firstValueFrom(
       this.httpService.post(
         `${process.env.GCNOTIFY_BASE_URL}/v2/notifications/email`,
@@ -33,6 +34,6 @@ export class GcNotifyService {
         },
       ),
     );
-    return data.status;
+    return data;
   }
 }
