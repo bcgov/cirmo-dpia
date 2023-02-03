@@ -21,9 +21,6 @@ export const usePIALookup = (
   useEffect(() => {
     (async () => {
       let params: any = {};
-      for (const [key, value] of searchParams.entries()) {
-        params[key] = value;
-      }
       if (sortBy && sortOrder) {
         params = {
           sortBy: sortBy,
