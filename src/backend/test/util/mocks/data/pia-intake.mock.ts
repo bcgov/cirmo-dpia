@@ -38,6 +38,7 @@ const piaIntakeDataMock = {
 export const piaIntakeEntityMock: PiaIntakeEntity = {
   ...baseEntityMock,
   ...piaIntakeDataMock,
+  ...{ updatedByDisplayName: 'Richard, King CITZ:EX' },
 };
 
 export const createPiaIntakeMock: CreatePiaIntakeDto = {

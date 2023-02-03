@@ -23,7 +23,21 @@ describe('BaseHelper', () => {
       const entityRecord = { ...piaIntakeEntityMock };
       const expectedFormattedResult = { ...getPiaIntakeROMock };
 
-      expect(omitBaseKeys(entityRecord)).toEqual(expectedFormattedResult);
+      expect(omitBaseKeys(entityRecord, ['updatedByDisplayName'])).toEqual(
+        expectedFormattedResult,
+      );
+    });
+
+    it('should not break even when the excluded keys is not part of the entity', () => {
+      const entityRecord = { ...piaIntakeEntityMock };
+      delete entityRecord.updatedByDisplayName;
+
+      const expectedFormattedResult = { ...getPiaIntakeROMock };
+
+      // deleting the key that does not exist
+      expect(omitBaseKeys(entityRecord, ['updatedByDisplayName'])).toEqual(
+        expectedFormattedResult,
+      );
     });
   });
 });
