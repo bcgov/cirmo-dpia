@@ -16,7 +16,6 @@ import {
 import { IRequest } from '../../common/interfaces/request.interface';
 import { GcNotifyEmailDto } from './dto/gcnotify-pia.dto';
 import { GcNotifyService } from './gcnotify.service';
-import { GcNotifyRO } from './ro/gcnotify.ro';
 
 @Controller('mail')
 @ApiTags('mail')
@@ -38,7 +37,7 @@ export class GcNotifyController {
   async sendEmail(
     @Req() req: IRequest,
     @Body() gcNotifyEmailDto: GcNotifyEmailDto,
-  ): Promise<GcNotifyRO> {
+  ): Promise<string> {
     return this.gcnotifyService.sendEmail(req.user, gcNotifyEmailDto);
   }
 }
