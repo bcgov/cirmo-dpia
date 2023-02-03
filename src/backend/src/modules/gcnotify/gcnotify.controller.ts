@@ -13,12 +13,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { IRequest } from 'src/common/interfaces/request.interface';
+import { IRequest } from '../../common/interfaces/request.interface';
 import { GcNotifyEmailDto } from './dto/gcnotify-pia.dto';
 import { GcNotifyService } from './gcnotify.service';
+import { GcNotifyRO } from './ro/gcnotify.ro';
 
-@Controller('gcnotify')
-@ApiTags('gcnotify')
+@Controller('mail')
+@ApiTags('mail')
 @ApiBearerAuth()
 export class GcNotifyController {
   constructor(private readonly gcnotifyService: GcNotifyService) {}
@@ -36,9 +37,8 @@ export class GcNotifyController {
   @HttpCode(HttpStatus.OK)
   async sendEmail(
     @Req() req: IRequest,
-    @Body('emailDto') gcNotifyEmailDto: GcNotifyEmailDto,
-    @Body('mpoEmail') mpoEmail: string,
-  ): Promise<any> {
-    return this.gcnotifyService.sendEmail(req.user, mpoEmail, gcNotifyEmailDto);
+    @Body() gcNotifyEmailDto: GcNotifyEmailDto,
+  ): Promise<GcNotifyRO> {
+    return this.gcnotifyService.sendEmail(req.user, gcNotifyEmailDto);
   }
 }
