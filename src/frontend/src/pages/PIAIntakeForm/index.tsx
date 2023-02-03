@@ -44,6 +44,8 @@ const PIAIntakeFormPage = () => {
   const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
 
   const [isConflict, setIsConflict] = useState<boolean>(false);
+  const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
+    useState<boolean>(false);
 
   const [lastSaveAlertInfo, setLastSaveAlertInfo] =
     useState<ILastSaveAlterInfo>({
@@ -112,7 +114,18 @@ const PIAIntakeFormPage = () => {
             getShortTime(pia?.updatedAt),
           ),
         );
-        setPiaModalButtonValue('conflict');
+        setPiaModalButtonValue(modalType);
+        break;
+      case 'autoSaveFailed':
+        setPiaModalConfirmLabel(Messages.Modal.AutoSaveFailed.ConfirmLabel.en);
+        setPiaModalTitleText(Messages.Modal.AutoSaveFailed.TitleText.en);
+        setPiaModalParagraph(
+          Messages.Modal.AutoSaveFailed.ParagraphText.en.replace(
+            '${time}',
+            getShortTime(pia?.updatedAt),
+          ),
+        );
+        setPiaModalButtonValue(modalType);
         break;
       default:
         break;
@@ -173,6 +186,10 @@ const PIAIntakeFormPage = () => {
 
     setPia(updatedPia);
 
+    // reset flags after successful save
+    setIsAutoSaveFailedPopupShown(false);
+    setIsConflict(false);
+
     return updatedPia;
   };
 
@@ -196,6 +213,8 @@ const PIAIntakeFormPage = () => {
           navigate(-1);
         }
       } else if (buttonValue === 'conflict') {
+        // noop
+      } else if (buttonValue === 'autoSaveFailed') {
         // noop
       } else {
         const updatedPia = await upsertAndUpdatePia();
@@ -307,6 +326,9 @@ const PIAIntakeFormPage = () => {
         if (e?.cause?.message === '409') {
           setIsConflict(true);
           handleShowModal('conflict');
+        } else if (!isAutoSaveFailedPopupShown) {
+          handleShowModal('autoSaveFailed');
+          setIsAutoSaveFailedPopupShown(true);
         }
       }
     };
