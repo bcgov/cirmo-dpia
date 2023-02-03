@@ -35,14 +35,12 @@ const PIADetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>('');
-  const [pia, setPia] = useState<any>({});
+  const [pia, setPia] = useState<IPIAIntake>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
   const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
   const [piOption, setPIOption] = useState('');
-
-  const [piaStatus, setPiaStatus] = useState('');
 
   //
   // Modal State
@@ -57,7 +55,7 @@ const PIADetailPage = () => {
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
   const updatePiaHttpRequest = (
-    updatedId: string,
+    updatedId: number,
     requestBody: Partial<IPIAIntake>,
   ) => {
     return HttpRequest.patch<IPIAIntake>(
@@ -80,9 +78,6 @@ const PIADetailPage = () => {
           MinistryList.filter((item) => item.value === result.ministry)[0]
             .label,
         );
-        if (result.status) {
-          setPiaStatus(result.status);
-        }
         setPIOption(
           result.hasAddedPiToDataElements === true
             ? PIOptions[0]
@@ -155,8 +150,12 @@ const PIADetailPage = () => {
   };
 
   const handleEdit = () => {
+    if (!pia?.id) {
+      console.error('PIA id not found');
+      return;
+    }
     // the status will change to enum when Brandon pr merged
-    if (piaStatus === PiaStatuses.MPO_REVIEW) {
+    if (pia.status === PiaStatuses.MPO_REVIEW) {
       handleShowModal('edit');
     } else {
       navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
@@ -170,13 +169,18 @@ const PIADetailPage = () => {
   };
 
   const handleStatusSubmit = async () => {
+    if (!pia?.id) {
+      console.error('PIA id not found.');
+      return;
+    }
+
     const requestBody: Partial<IPIAIntake> = {
       status: statusLocal,
       saveId: pia?.saveId,
     };
     try {
       const res = await updatePiaHttpRequest(
-        pia?.id,
+        pia.id,
         requestBody,
       ); /* PIA will be set after data is updated in backend */
       setPia(res);
@@ -213,8 +217,13 @@ const PIADetailPage = () => {
             saveId: pia?.saveId,
           };
     try {
+      if (!pia?.id) {
+        console.error('PIA id not found.');
+        return;
+      }
+
       if (buttonValue === 'submit') {
-        const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
+        const updatedPia = await updatePiaHttpRequest(pia.id, requestBody);
         setPia(updatedPia);
         navigate(routes.PIA_INTAKE_RESULT, {
           state: { result: updatedPia },
@@ -264,7 +273,7 @@ const PIADetailPage = () => {
       <div className="component__wrapper">
         <div className="full__width">
           <div className="mb-5">
-            {piaStatus === 'INCOMPLETE' && (
+            {pia?.status === 'INCOMPLETE' && (
               <Alert
                 type="banner-warning"
                 message="Warning: Your MPO cannot see or help you with this PIA until you click “Submit to MPO”. "
@@ -318,8 +327,8 @@ const PIADetailPage = () => {
               >
                 <FontAwesomeIcon icon={faPenToSquare} />
               </button>
-              {(piaStatus === PiaStatuses.EDIT_IN_PROGRESS ||
-                piaStatus === PiaStatuses.INCOMPLETE) && (
+              {(pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
+                pia?.status === PiaStatuses.INCOMPLETE) && (
                 <button
                   className="bcgovbtn bcgovbtn__primary mx-2"
                   onClick={() => handleSubmit()}

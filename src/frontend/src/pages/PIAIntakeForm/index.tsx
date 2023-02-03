@@ -3,7 +3,7 @@ import InputText from '../../components/common/InputText/InputText';
 import { MinistryList, PIOptions, PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -44,6 +44,8 @@ const PIAIntakeFormPage = () => {
   const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
 
   const [isConflict, setIsConflict] = useState<boolean>(false);
+  const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
+    useState<boolean>(false);
 
   const [lastSaveAlertInfo, setLastSaveAlertInfo] =
     useState<ILastSaveAlterInfo>({
@@ -114,7 +116,18 @@ const PIAIntakeFormPage = () => {
             conflictUser,
           ),
         );
-        setPiaModalButtonValue('conflict');
+        setPiaModalButtonValue(modalType);
+        break;
+      case 'autoSaveFailed':
+        setPiaModalConfirmLabel(Messages.Modal.AutoSaveFailed.ConfirmLabel.en);
+        setPiaModalTitleText(Messages.Modal.AutoSaveFailed.TitleText.en);
+        setPiaModalParagraph(
+          Messages.Modal.AutoSaveFailed.ParagraphText.en.replace(
+            '${time}',
+            getShortTime(pia?.updatedAt),
+          ),
+        );
+        setPiaModalButtonValue(modalType);
         break;
       default:
         break;
@@ -134,13 +147,14 @@ const PIAIntakeFormPage = () => {
     return updatedPia;
   };
 
+  const hasFormChanged = useCallback(() => {
+    return !shallowEqual(stalePia, pia, ['updatedAt', 'saveId']);
+  }, [pia, stalePia]);
+
   const upsertAndUpdatePia = async (changes: Partial<IPIAIntake> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
 
-    if (
-      !hasExplicitChanges &&
-      shallowEqual(stalePia, pia, ['updatedAt', 'saveId'])
-    ) {
+    if (!hasExplicitChanges && !hasFormChanged()) {
       // only expected fields have changes; no need call update
       return pia;
     }
@@ -175,6 +189,10 @@ const PIAIntakeFormPage = () => {
 
     setPia(updatedPia);
 
+    // reset flags after successful save
+    setIsAutoSaveFailedPopupShown(false);
+    setIsConflict(false);
+
     return updatedPia;
   };
 
@@ -199,6 +217,8 @@ const PIAIntakeFormPage = () => {
         }
       } else if (buttonValue === 'conflict') {
         // noop
+      } else if (buttonValue === 'autoSaveFailed') {
+        // noop
       } else {
         const updatedPia = await upsertAndUpdatePia();
         navigate(`/pia/intake/${updatedPia?.id}/${updatedPia?.title}`);
@@ -220,10 +240,16 @@ const PIAIntakeFormPage = () => {
     handleShowModal(modalType);
   };
 
-  const alertUserLeave = (e: any) => {
-    e.preventDefault();
+  const alertUserLeave = useCallback(
+    (e: any) => {
+      // if no changes in the form recently, do not show warning leaving the page
+      if (!hasFormChanged()) {
+        return;
+      }
 
-    /* 
+      e.preventDefault();
+
+      /* 
       For cross-browser support
       
       This function uses e.returnValue, which has been deprecated for 9+ years.
@@ -235,10 +261,12 @@ const PIAIntakeFormPage = () => {
       - https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
       - https://contest-server.cs.uchicago.edu/ref/JavaScript/developer.mozilla.org/en-US/docs/Web/API/Event/returnValue.html
     */
-    e.returnValue = true;
+      e.returnValue = true;
 
-    e.defaultPrevented = true;
-  };
+      e.defaultPrevented = true;
+    },
+    [hasFormChanged],
+  );
 
   const handleBackClick = () => {
     handleShowModal('cancel');
@@ -309,6 +337,9 @@ const PIAIntakeFormPage = () => {
         if (e?.cause?.status === 409) {
           setIsConflict(true);
           handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
+        } else if (!isAutoSaveFailedPopupShown) {
+          handleShowModal('autoSaveFailed');
+          setIsAutoSaveFailedPopupShown(true);
         }
       }
     };
@@ -324,7 +355,7 @@ const PIAIntakeFormPage = () => {
     return () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
-  }, []);
+  }, [alertUserLeave, hasFormChanged]);
 
   return (
     <div className="bcgovPageContainer background background__form">
