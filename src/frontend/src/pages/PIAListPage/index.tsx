@@ -37,7 +37,9 @@ const PIAList = () => {
     for (const [key, value] of searchParams.entries()) {
       params[key] = value;
     }
-    if (searchText) params.searchText = searchText;
+    // if the searchText is not empty, means user input some new searchText, we update it, otherwise delete it from params
+    if (searchText !== '') params.searchText = searchText;
+    else delete params.searchText;
     setSearchParams(params);
   }, [searchParams, searchText, setSearchParams]);
 
