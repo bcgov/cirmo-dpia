@@ -135,17 +135,15 @@ const PPQFormPage = () => {
               />
             </div>
             <div className="row">
-              <div className="form-group">
-                <Dropdown
-                  id="ministry-select"
-                  value={ministry}
-                  label="Ministry"
-                  optionalClass="col-md-6"
-                  options={MinistryList}
-                  changeHandler={(e) => setMinistry(e.target.value)}
-                  required={true}
-                />
-              </div>
+              <Dropdown
+                id="ministry-select"
+                value={ministry}
+                label="Ministry"
+                optionalClass="col-md-6"
+                options={MinistryList}
+                changeHandler={(e) => setMinistry(e.target.value)}
+                required={true}
+              />
             </div>
             <div className="form-group">
               <h2>{Messages.InitiativeFactorsHeading.en}</h2>
