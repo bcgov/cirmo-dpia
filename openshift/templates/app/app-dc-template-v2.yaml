@@ -43,7 +43,7 @@ objects:
           lastTriggeredImage: >-
             image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
       - type: ConfigChange
-    replicas: 1
+    replicas: 2
     revisionHistoryLimit: 10
     test: false
     selector:
