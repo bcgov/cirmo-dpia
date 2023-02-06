@@ -20,8 +20,7 @@ import { RolesEnum } from 'src/common/enums/roles.enum';
 import { filterMpoRoles } from 'src/common/helpers/roles.helper';
 import { IRoleInfo } from 'src/common/constants/roles.constants';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
-import { GetPiaIntakeRO } from './ro/get-pia-intake.ro';
-import { omitBaseKeys } from '../../common/helpers/base-helper';
+import { getFormattedRecords, GetPiaIntakeRO } from './ro/get-pia-intake.ro';
 import { UpdatePiaIntakeDto } from './dto/update-pia-intake.dto';
 import { PiaIntakeFindQuery } from './dto/pia-intake-find-query.dto';
 import { PaginatedRO } from 'src/common/paginated.ro';
@@ -46,11 +45,12 @@ export class PiaIntakeService {
       createdByUsername: user.idir_username,
       updatedByGuid: user.idir_user_guid,
       updatedByUsername: user.idir_username,
+      updatedByDisplayName: user.display_name,
       drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
     });
 
     const formattedPiaInfoForm: GetPiaIntakeRO =
-      omitBaseKeys<PiaIntakeEntity>(piaInfoForm);
+      getFormattedRecords(piaInfoForm);
 
     return formattedPiaInfoForm;
   }
@@ -73,9 +73,10 @@ export class PiaIntakeService {
 
     // check if the user is not acting on / updating a stale version
     if (existingRecord.saveId !== updatePiaIntakeDto.saveId) {
-      throw new ConflictException(
-        'You may not have an updated version of the document',
-      );
+      throw new ConflictException({
+        updatedByDisplayName: existingRecord.updatedByDisplayName,
+        message: 'You may not have an updated version of the document',
+      });
     }
 
     // remove the provided saveId
@@ -88,6 +89,7 @@ export class PiaIntakeService {
       saveId: existingRecord.saveId + 1,
       updatedByGuid: user.idir_user_guid,
       updatedByUsername: user.idir_username,
+      updatedByDisplayName: user.display_name,
     });
 
     // fetch and return the updated record
@@ -121,8 +123,7 @@ export class PiaIntakeService {
     this.validateUserAccess(user, userRoles, piaIntakeForm);
 
     // Remove keys from the user's view that are not required
-    const formattedRecords: GetPiaIntakeRO =
-      omitBaseKeys<PiaIntakeEntity>(piaIntakeForm);
+    const formattedRecords: GetPiaIntakeRO = getFormattedRecords(piaIntakeForm);
 
     // Return the formatted PIA intake record
     return formattedRecords;
@@ -286,8 +287,8 @@ export class PiaIntakeService {
     });
 
     // Remove keys from the user's view that are not required
-    const formattedRecords: GetPiaIntakeRO[] = entityRecords.map((record) =>
-      omitBaseKeys<PiaIntakeEntity>(record),
+    const formattedRecords = entityRecords.map((record) =>
+      getFormattedRecords(record),
     );
 
     const paginatedResult = new PaginatedRO(

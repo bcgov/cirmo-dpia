@@ -130,7 +130,7 @@ export default {
         en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
       },
     },
-    Conflict: {
+    AutoSaveFailed: {
       ConfirmLabel: {
         en: 'Okay',
       },
@@ -139,6 +139,17 @@ export default {
       },
       ParagraphText: {
         en: 'This document was last saved at ${time}. Before you leave the page, ensure you capture any unsaved work you don’t want to lose. Any unsaved changes will be lost.',
+      },
+    },
+    Conflict: {
+      ConfirmLabel: {
+        en: 'Back to view',
+      },
+      TitleText: {
+        en: '${user} is editing this PIA',
+      },
+      ParagraphText: {
+        en: 'Please reach out to ${user} for further questions. Refresh to view any changes.',
       },
     },
   },

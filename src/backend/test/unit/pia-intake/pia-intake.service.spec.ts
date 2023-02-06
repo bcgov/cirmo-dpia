@@ -128,10 +128,13 @@ describe('PiaIntakeService', () => {
         createdByUsername: user.idir_username,
         updatedByGuid: user.idir_user_guid,
         updatedByUsername: user.idir_username,
+        updatedByDisplayName: user.display_name,
         drafterEmail: user.email,
       });
 
-      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity);
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
+        'updatedByDisplayName',
+      ]);
 
       expect(result).toEqual(getPiaIntakeRO);
     });
@@ -1193,7 +1196,9 @@ describe('PiaIntakeService', () => {
         piaIntakeEntityMock,
       );
 
-      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntityMock);
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntityMock, [
+        'updatedByDisplayName',
+      ]);
       expect(result).toEqual(getPiaIntakeROMock);
     });
   });
@@ -1244,6 +1249,7 @@ describe('PiaIntakeService', () => {
         saveId: 2,
         updatedByGuid: user.idir_user_guid,
         updatedByUsername: user.idir_username,
+        updatedByDisplayName: user.display_name,
       });
     });
 
@@ -1296,6 +1302,7 @@ describe('PiaIntakeService', () => {
         saveId: 2,
         updatedByGuid: user.idir_user_guid,
         updatedByUsername: user.idir_username,
+        updatedByDisplayName: user.display_name,
       });
       expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
 
@@ -1325,9 +1332,10 @@ describe('PiaIntakeService', () => {
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
       ).rejects.toThrow(
-        new ConflictException(
-          'You may not have an updated version of the document',
-        ),
+        new ConflictException({
+          updatedByDisplayName: piaIntakeMock.updatedByDisplayName,
+          message: 'You may not have an updated version of the document',
+        }),
       );
 
       expect(service.findOneBy).toHaveBeenCalledWith({ id });

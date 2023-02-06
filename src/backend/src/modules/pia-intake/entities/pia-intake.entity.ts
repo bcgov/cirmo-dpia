@@ -115,4 +115,10 @@ export class PiaIntakeEntity extends BaseEntity {
     default: 1,
   })
   saveId: number;
+
+  @Column({
+    name: 'updated_by_display_name',
+    nullable: true,
+  })
+  updatedByDisplayName: string;
 }
