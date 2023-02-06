@@ -23,6 +23,7 @@ import Alert from '../../components/common/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PiaTypesEnum } from '../../types/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../types/enums/delegated-review-types.enum';
+import Dropdown from '../../components/common/Dropdown';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
@@ -134,32 +135,16 @@ const PPQFormPage = () => {
               />
             </div>
             <div className="row">
-              <div className="form-group col-md-6">
-                <label>
-                  <p className="select-label">Ministry</p>
-                  <div className="dropdown">
-                    <select
-                      key="ministry"
-                      className="form-control"
-                      value={ministry}
-                      onChange={(e) => setMinistry(e.target.value)}
-                      required
-                    >
-                      <option key="selectMinistry" disabled={true} value="">
-                        Select one
-                      </option>
-                      {MinistryList.map((option, index) => (
-                        <option key={index} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <FontAwesomeIcon
-                      className="dropdown-icon"
-                      icon={faChevronDown}
-                    />
-                  </div>
-                </label>
+              <div className="form-group">
+                <Dropdown
+                  id="ministry-select"
+                  value={ministry}
+                  label="Ministry"
+                  optionalClass="col-md-6"
+                  options={MinistryList}
+                  changeHandler={(e) => setMinistry(e.target.value)}
+                  required={true}
+                />
               </div>
             </div>
             <div className="form-group">
