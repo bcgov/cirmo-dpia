@@ -23,6 +23,7 @@ import Alert from '../../components/common/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PiaTypesEnum } from '../../types/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../types/enums/delegated-review-types.enum';
+import { dateToString } from '../../utils/date';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const PPQFormPage = () => {
     DelegatedReviewTypesEnum | string | null
   >();
   const [containsStartDate, setContainsStartDate] = useState('Yes');
-  const [startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
   const [description, setDescription] = useState('');
   const [checkedPIItems, setCheckedPIItems] = useState({
     hasSensitivePersonalInformation: false,
@@ -94,7 +95,10 @@ const PPQFormPage = () => {
       title: title,
       ministry: ministry,
       description: description,
-      proposedStartDate: startDate,
+      proposedStartDate:
+        startDate && containsStartDate === 'Yes'
+          ? dateToString(startDate)
+          : null,
       piaType: piaType,
       delegatedReviewType: delegatedReviewType,
       ...checkedPIItems,
@@ -292,7 +296,7 @@ const PPQFormPage = () => {
                     </label>
                     <CustomInputDate
                       key="startDate"
-                      placeholderText={'yyyy-mm-dd'}
+                      placeholderText={'yyyy/mm/dd'}
                       dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
