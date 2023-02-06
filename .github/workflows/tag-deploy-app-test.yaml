@@ -166,7 +166,7 @@ jobs:
   TEST-Success-Notify:
     runs-on: ubuntu-latest
     environment: APP-Test
-    needs: [ TEST-cleanup ]
+    needs: [ TEST-e2e ]
     steps:
       - name: Message Teams Channel on Success
         run: |
@@ -177,7 +177,7 @@ jobs:
             "@type": "MessageCard",
             "themeColor": "0072C6",
             "title": "SUCCESS! WebApp Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished.",
-            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://test.pia.gov.bc.ca).",
+            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n End-to-end test suite has passed \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://test.pia.gov.bc.ca).",
           }'
 
   TEST-Failure-Notify:
