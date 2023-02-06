@@ -186,7 +186,7 @@ jobs:
   DEV-Success-Notify:
     runs-on: ubuntu-latest
     environment: APP-Dev
-    needs: [ DEV-cleanup ]
+    needs: [ DEV-e2e ]
     steps:
       - name: Message Teams Channel on Success
         run: |
@@ -196,8 +196,8 @@ jobs:
             "@context": "https://schema.org/extensions",
             "@type": "MessageCard",
             "themeColor": "0072C6",
-            "title": "SUCCESS! WebApp Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished.",
-            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca).",
+            "title": "SUCCESS! WebApp Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished!.",
+            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n End-to-end test suite has passed \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca).",
           }'
 
   DEV-Failure-Notify:
