@@ -37,10 +37,10 @@ export class PpqEntity extends BaseEntity {
 
   @Column({
     name: 'proposed_start_date',
-    type: 'timestamptz',
+    type: 'character varying',
     nullable: true,
   })
-  proposedStartDate: Date;
+  proposedStartDate: string;
 
   @Column({
     name: 'has_sensitive_personal_information',
