@@ -29,7 +29,7 @@
     "@uiw/react-md-editor": "3.19.0",
     "breakpoint-sass": "3.0.0",
     "react": "18.2.0",
-    "react-datepicker": "4.8.0",
+    "react-datepicker": "4.10.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.4.2",
     "react-tooltip": "4.4.2",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/jest": "29.1.2",
     "@types/react": "18.0.17",
-    "@types/react-datepicker": "4.4.2",
+    "@types/react-datepicker": "4.8.0",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.40.0",
     "@typescript-eslint/parser": "5.40.0",
