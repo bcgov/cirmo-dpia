@@ -66,9 +66,7 @@ export class PpqService {
         ministry: ministry || '',
         piaType: piaType || '',
         delegatedReviewType: delegatedReviewType,
-        proposedStartDate: ppqForm.proposedStartDate
-          ? shortDate(ppqForm.proposedStartDate)
-          : '',
+        proposedStartDate: ppqForm.proposedStartDate || '',
         description: ppqForm.description
           ? marked.parse(ppqForm.description)
           : '',
