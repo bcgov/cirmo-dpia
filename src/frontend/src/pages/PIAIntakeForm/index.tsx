@@ -240,6 +240,108 @@ const PIAIntakeFormPage = () => {
     handleShowModal(modalType);
   };
 
+  /*
+   * @Description - This function is used to validate the form
+   * and display a red border around the invalid fields
+   * and scroll to the first invalid field.
+   *
+   * @param submit event - the event that triggered the validation
+   *
+   * How it works: The function loops through the form fields and checks if they are valid.
+   * If they are not valid, it adds the class 'is-invalid' to the field and scrolls to the first invalid field.
+   * If the field is a rich text editor <MD-Editor>, it adds the class 'form-control' to the field.
+   * This is because the rich text editor is a div and not an input field.
+   * The class 'is-invalid' is used to display the red border.
+   *
+   */
+  const handleValidation = (event: any) => {
+    let invalid = false;
+    let formId = '';
+    // Reset error messages
+    const reset = document.getElementsByClassName('is-invalid');
+    if (reset) {
+      [...reset].forEach((el) => {
+        el.classList.remove('is-invalid');
+      });
+    }
+    const richText = document.getElementsByClassName('richText');
+    if (richText) {
+      [...richText].forEach((el) => {
+        el.classList.remove('form-control');
+      });
+    }
+    if (!pia?.title) {
+      invalid = true;
+      formId = 'title';
+    }
+    if (!pia?.ministry && !invalid) {
+      invalid = true;
+      formId = 'ministry-select';
+    }
+    if (!pia?.branch && !invalid) {
+      invalid = true;
+      formId = 'branch';
+    }
+    if (!pia?.drafterName && !invalid) {
+      invalid = true;
+      formId = 'drafterName';
+    }
+    if (!pia?.drafterTitle && !invalid) {
+      invalid = true;
+      formId = 'drafterTitle';
+    }
+    if ((!pia?.drafterEmail || pia.drafterEmail === undefined) && !invalid) {
+      invalid = true;
+      formId = 'drafterEmail';
+    }
+    if (!pia?.leadName && !invalid) {
+      invalid = true;
+      formId = 'leadName';
+    }
+    if (!pia?.leadTitle && !invalid) {
+      invalid = true;
+      formId = 'leadTitle';
+    }
+    if (!pia?.leadEmail && !invalid) {
+      invalid = true;
+      formId = 'leadEmail';
+    }
+    if (!pia?.mpoName && !invalid) {
+      invalid = true;
+      formId = 'mpoName';
+    }
+    if (!pia?.mpoEmail && !invalid) {
+      invalid = true;
+      formId = 'mpoEmail';
+    }
+    if (!pia?.initiativeDescription && !invalid) {
+      invalid = true;
+      formId = 'initiativeDescription';
+    }
+    if (!pia?.initiativeScope && !invalid) {
+      invalid = true;
+      formId = 'initiativeScope';
+    }
+    if (!pia?.dataElementsInvolved && !invalid) {
+      invalid = true;
+      formId = 'dataElementsInvolved';
+    }
+    if (!pia?.riskMitigation && !invalid) {
+      invalid = true;
+      formId = 'riskMitigation';
+    }
+
+    if (invalid) {
+      const ele = document.getElementById(formId);
+      if (ele) {
+        window.scrollTo(ele.offsetLeft, ele.offsetTop - 160);
+        ele.className += ' is-invalid form-control';
+      }
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+
   const alertUserLeave = useCallback(
     (e: any) => {
       // if no changes in the form recently, do not show warning leaving the page
@@ -361,7 +463,7 @@ const PIAIntakeFormPage = () => {
     <div className="bcgovPageContainer background background__form">
       <section className="ppq-form-section form__container">
         <form
-          className="container__padding-inline"
+          className="container__padding-inline needs-validation"
           onSubmit={(e) => {
             handleStatusChange(PiaStatuses.MPO_REVIEW);
             handleSubmit(e);
@@ -419,6 +521,7 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Your name"
+                  id="drafterName"
                   value={pia?.drafterName}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'drafterName')
@@ -429,6 +532,7 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Your email"
+                  id="drafterEmail"
                   value={pia?.drafterEmail}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'drafterEmail')
@@ -442,6 +546,7 @@ const PIAIntakeFormPage = () => {
               <div className="col-md-6">
                 <InputText
                   label="Your title"
+                  id="drafterTitle"
                   value={pia?.drafterTitle}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'drafterTitle')
@@ -454,6 +559,7 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Initiative lead name"
+                  id="leadName"
                   value={pia?.leadName}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'leadName')
@@ -464,6 +570,7 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="Initiative lead email"
+                  id="leadEmail"
                   value={pia?.leadEmail}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'leadEmail')
@@ -477,6 +584,7 @@ const PIAIntakeFormPage = () => {
               <div className="col-md-6">
                 <InputText
                   label="Initiative lead title"
+                  id="leadTitle"
                   value={pia?.leadTitle}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'leadTitle')
@@ -493,6 +601,7 @@ const PIAIntakeFormPage = () => {
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
                   linkHref={Messages.GeneralInfoSection.MPOLinkHref}
                   hasIcon={true}
+                  id="mpoName"
                   value={pia?.mpoName}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'mpoName')
@@ -503,6 +612,7 @@ const PIAIntakeFormPage = () => {
               <div className="col">
                 <InputText
                   label="MPO email"
+                  id="mpoEmail"
                   value={pia?.mpoEmail}
                   onChange={(e) =>
                     piaStateChangeHandler(e.target.value, 'mpoEmail')
@@ -520,13 +630,15 @@ const PIAIntakeFormPage = () => {
             <p className="form__helper-text">
               {Messages.InitiativeDescriptionSection.HelperText.en}
             </p>
-            <MDEditor
-              preview="edit"
-              value={pia?.initiativeDescription}
-              onChange={(value) =>
-                piaStateChangeHandler(value, 'initiativeDescription')
-              }
-            />
+            <div className="richText" id="initiativeDescription">
+              <MDEditor
+                preview="edit"
+                value={pia?.initiativeDescription}
+                onChange={(value) =>
+                  piaStateChangeHandler(value, 'initiativeDescription')
+                }
+              />
+            </div>
           </section>
           <section className="form__section">
             <h2 className="form__h2">
@@ -535,13 +647,16 @@ const PIAIntakeFormPage = () => {
             <p className="form__helper-text">
               {Messages.InitiativeScopeSection.HelperText.en}
             </p>
-            <MDEditor
-              preview="edit"
-              value={pia?.initiativeScope}
-              onChange={(value) =>
-                piaStateChangeHandler(value, 'initiativeScope')
-              }
-            />
+            <div className="richText" id="initiativeScope">
+              <MDEditor
+                preview="edit"
+                value={pia?.initiativeScope}
+                defaultTabEnable={true}
+                onChange={(value) =>
+                  piaStateChangeHandler(value, 'initiativeScope')
+                }
+              />
+            </div>
           </section>
           <section className="form__section">
             <h2 className="form__h2">
@@ -550,13 +665,16 @@ const PIAIntakeFormPage = () => {
             <p className="form__helper-text">
               {Messages.InitiativeDataElementsSection.HelperText.en}
             </p>
-            <MDEditor
-              preview="edit"
-              value={pia?.dataElementsInvolved}
-              onChange={(value) =>
-                piaStateChangeHandler(value, 'dataElementsInvolved')
-              }
-            />
+            <div className="richText" id="dataElementsInvolved">
+              <MDEditor
+                preview="edit"
+                value={pia?.dataElementsInvolved}
+                defaultTabEnable={true}
+                onChange={(value) =>
+                  piaStateChangeHandler(value, 'dataElementsInvolved')
+                }
+              />
+            </div>
           </section>
           <section className="form__section">
             <h2 className="form__h2">
@@ -593,13 +711,16 @@ const PIAIntakeFormPage = () => {
               <p className="form__helper-text">
                 {Messages.InitiativeRiskReductionSection.HelperText.en}
               </p>
-              <MDEditor
-                preview="edit"
-                value={pia?.riskMitigation}
-                onChange={(value) =>
-                  piaStateChangeHandler(value, 'riskMitigation')
-                }
-              />
+              <div className="richText" id="riskMitigation">
+                <MDEditor
+                  preview="edit"
+                  value={pia?.riskMitigation}
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    piaStateChangeHandler(value, 'riskMitigation')
+                  }
+                />
+              </div>
             </section>
           )}
           <div className="horizontal-divider"></div>
@@ -621,6 +742,7 @@ const PIAIntakeFormPage = () => {
               <button
                 type="submit"
                 className="bcgovbtn bcgovbtn__primary btn-next"
+                onClick={handleValidation}
               >
                 Submit
               </button>
