@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsDate,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Validate,
 } from '@nestjs/class-validator';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../../common/enums/delegated-review-types.enum';
+import { DateStringValidator } from 'src/common/validators/date-string.validator';
 
 export class PpqPostDTO {
   @IsString()
@@ -54,11 +54,15 @@ export class PpqPostDTO {
   })
   delegatedReviewType: DelegatedReviewTypesEnum;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  @Type(() => Date)
-  @ApiProperty({ type: Date, required: false })
-  proposedStartDate?: Date;
+  @Validate(DateStringValidator)
+  @ApiProperty({
+    type: String,
+    required: false,
+    example: '2022/06/20',
+  })
+  proposedStartDate?: string;
 
   @IsBoolean()
   @IsOptional()
