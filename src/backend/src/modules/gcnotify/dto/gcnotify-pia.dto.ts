@@ -23,6 +23,15 @@ export class GcNotifyEmailDto {
   @ApiProperty({
     type: String,
     required: true,
+    example: 'Jane Doe',
+  })
+  mpoName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: String,
+    required: true,
     example: 'Google Analytics',
   })
   piaTitle: string;
