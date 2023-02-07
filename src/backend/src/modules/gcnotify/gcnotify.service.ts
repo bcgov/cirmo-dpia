@@ -11,7 +11,7 @@ export class GcNotifyService {
     const data = await firstValueFrom(
       this.httpService
         .post(
-          `${process.env.GCNOTIFY_BASE_URL}/v2/notifications/email`,
+          `https://api.notification.canada.ca/v2/notifications/email`,
           {
             email_address: emailProps.mpoEmail,
             template_id: process.env.GCNOTIFY_TEMPLATE_ID,
@@ -32,7 +32,7 @@ export class GcNotifyService {
         .pipe(
           map((response: any) => response.data),
           catchError((e) => {
-            console.error(e.response.data, e.response.status);
+            console.error(e.response);
             throw new HttpException(e.response.data, e.response.status);
           }),
         ),

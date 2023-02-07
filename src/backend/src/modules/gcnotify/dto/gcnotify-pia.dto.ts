@@ -14,7 +14,7 @@ export class GcNotifyEmailDto {
   @ApiProperty({
     type: String,
     required: true,
-    example: 'firstname.lastname@gov.bc.ca',
+    example: 'simulate-delivered@notification.canada.ca',
   })
   mpoEmail: string;
 
