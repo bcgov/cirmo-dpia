@@ -8,7 +8,7 @@ objects:
 - kind: RoleBinding
   apiVersion: rbac.authorization.k8s.io/v1
   metadata:
-    name: ey-developers-edit
+    name: ey-developers-idir-edit
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       environment: ${ENVIRONMENT}
@@ -16,16 +16,16 @@ objects:
   subjects:
     - apiGroup: rbac.authorization.k8s.io
       kind: User
-      name: will-freshworks@github
+      name: william.sonnex@gov.bc.ca
     - apiGroup: rbac.authorization.k8s.io
       kind: User
-      name: vanics@github
+      name: icaro.pachecolopesdeoliveira@gov.bc.ca
     - apiGroup: rbac.authorization.k8s.io
       kind: User
-      name: kushal-arora-fw@github
+      name: kushal.arora@gov.bc.ca
     - apiGroup: rbac.authorization.k8s.io
       kind: User
-      name: binggaofw@github
+      name: bing.gao@gov.bc.ca
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole

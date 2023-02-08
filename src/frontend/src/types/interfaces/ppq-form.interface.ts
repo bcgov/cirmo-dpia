@@ -17,6 +17,6 @@ export interface IPPQForm {
   hasBcServicesCardOnboarding?: boolean;
   hasAiOrMl?: boolean;
   hasPartnershipNonMinistry?: boolean;
-  proposedStartDate?: Date | null;
+  proposedStartDate?: string | null;
   description?: string;
 }
