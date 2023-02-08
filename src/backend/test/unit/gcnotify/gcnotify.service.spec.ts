@@ -95,31 +95,8 @@ describe('GcNotifyService', () => {
 
       expect(data).toEqual(result.statusText);
     });
-  });
 
-  describe('`httpService.post` method', () => {
-    /**
-     * This tests that httpService works.
-     *
-     * @Input
-     *  - gcNotifyEmailDto
-     *  - Third-party API URL
-     *  - GCNotify Template ID
-     *  - Auth & Content-Type headers
-     *
-     * @Output
-     *   - Response statusText
-     */
-
-    const result = {
-      data: {},
-      headers: {},
-      config: { url: 'http://localhost:8080/mockUrl' },
-      status: 200,
-      statusText: 'Created',
-    };
-
-    it('succeeds in sending an email notification', async () => {
+    it('succeeds in sending an httpService POST request', async () => {
       const gcNotifyEmailDto: GcNotifyEmailDto = { ...sendGcNotifyEmailMock };
 
       jest.spyOn(httpService, 'post').mockImplementation(() => of(result));
