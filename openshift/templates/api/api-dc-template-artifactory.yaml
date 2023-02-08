@@ -154,6 +154,21 @@ objects:
                   secretKeyRef:
                     name: postgres-connection-secret
                     key: POSTGRES_HOST
+              - name: GCNOTIFY_BASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: gcnotify-integration-key
+                    key: GCNOTIFY_BASE_URL
+              - name: GCNOTIFY_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: gcnotify-integration-key
+                    key: GCNOTIFY_API_KEY
+              - name: GCNOTIFY_TEMPLATE_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: gcnotify-integration-key
+                    key: GCNOTIFY_TEMPLATE_ID
             ports:
               - containerPort: 3000
                 protocol: TCP
