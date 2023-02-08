@@ -9,6 +9,8 @@ export enum TokenStorageKeys {
   REFRESH_TOKEN = 'refreshToken',
   REFRESH_TOKEN_EXPIRY = 'refreshTokenExpiry',
   TOKENS_LAST_REFRESHED_AT = 'tokensLastRefreshedAt',
+  LAST_ACTIVITY_AT = 'lastActivityAt',
+  IS_AUTO_LOGOUT_WARNING_POPUP_OPEN = 'isAutoLogoutWarningPopupOpen',
 }
 
 export enum ConfigStorageKeys {
@@ -46,6 +48,7 @@ export const storeAuthTokens = (data: IKeycloakToken) => {
     now + +data.refresh_expires_in * 1000,
   );
   AppStorage.setItem(TokenStorageKeys.TOKENS_LAST_REFRESHED_AT, +now);
+  AppStorage.setItem(TokenStorageKeys.LAST_ACTIVITY_AT, +now);
 };
 
 export const clearAuthTokens = () => {

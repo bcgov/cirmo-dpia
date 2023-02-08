@@ -2,14 +2,14 @@ import { clearStorage } from './auth';
 
 export class AppStorage {
   static setItem(key: string, value: any) {
-    if (!key || !value) return;
+    if (!key || value === null || value === undefined) return;
 
     localStorage.setItem(key, JSON.stringify(value));
 
     return true;
   }
 
-  static getItem(key: string) {
+  static getItem<T = any>(key: string) {
     if (!key) return;
 
     const value = localStorage.getItem(key);
@@ -17,7 +17,7 @@ export class AppStorage {
     if (!value) return;
 
     try {
-      const parsedValue = JSON.parse(value);
+      const parsedValue = JSON.parse(value) as T;
       return parsedValue;
     } catch (e) {
       // if the storage is compromised, log the user out
@@ -42,5 +42,13 @@ export class AppStorage {
 
   static clear() {
     localStorage.clear();
+  }
+
+  static addStorageListener(listener: (event: StorageEvent) => void) {
+    window.addEventListener('storage', listener);
+  }
+
+  static removeStorageListener(listener: (event: StorageEvent) => void) {
+    window.removeEventListener('storage', listener);
   }
 }
