@@ -162,7 +162,7 @@ objects:
               - name: GCNOTIFY_API_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: gc-knotify-integration-key
+                    name: gc-notify-integration-key
                     key: GCNOTIFY_API_KEY
               - name: GCNOTIFY_TEMPLATE_ID
                 valueFrom:
