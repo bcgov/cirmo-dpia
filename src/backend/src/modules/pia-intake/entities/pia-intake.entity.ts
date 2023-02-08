@@ -121,4 +121,12 @@ export class PiaIntakeEntity extends BaseEntity {
     nullable: true,
   })
   updatedByDisplayName: string;
+
+  @Column({
+    name: 'submitted_at',
+    type: 'timestamptz',
+    nullable: true,
+    default: null,
+  })
+  submittedAt: Date;
 }

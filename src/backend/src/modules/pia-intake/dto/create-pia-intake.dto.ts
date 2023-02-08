@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsOptional,
@@ -35,6 +36,7 @@ export const piaIntakeEntityMock = {
   7. Mikayla LaShae Bartholomew as Tunde Price
   `,
   hasAddedPiToDataElements: false,
+  submittedAt: new Date(),
   riskMitigation: `The film was released on [Blu-ray](https://en.wikipedia.org/wiki/Blu-ray) and [DVD](https://en.wikipedia.org/wiki/DVD) February 8, 2022 by [Warner Bros. Home Entertainment](https://en.wikipedia.org/wiki/Warner_Bros._Home_Entertainment), with the 4K Ultra HD release through [Warner Archive Collection](https://en.wikipedia.org/wiki/Warner_Archive_Collection) on the same date.`,
 };
 
@@ -194,4 +196,13 @@ export class CreatePiaIntakeDto {
     example: PiaIntakeStatusEnum.MPO_REVIEW,
   })
   status: PiaIntakeStatusEnum;
+
+  @IsDateString()
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    required: false,
+    example: new Date(),
+  })
+  submittedAt: Date;
 }
