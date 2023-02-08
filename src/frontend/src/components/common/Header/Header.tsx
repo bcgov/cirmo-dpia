@@ -28,15 +28,16 @@ function Header({ user }: Props) {
   const navigate = useNavigate();
   const { setAuthenticated } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [accessToken, setAccessToken] = useState(
-    AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN),
+  const [accessToken, setAccessToken] = useState<string | null>(
+    AppStorage.getItem<string>(TokenStorageKeys.ACCESS_TOKEN) || null,
   );
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
   const code = searchParams.get('code');
   const didAuthRef = useRef(false);
-  const { keycloakUserDetail, error: userInfoError } =
-    useFetchKeycloakUserInfo(accessToken);
+  const { keycloakUserDetail, error: userInfoError } = useFetchKeycloakUserInfo(
+    accessToken || null,
+  );
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
   const win: Window = window;
