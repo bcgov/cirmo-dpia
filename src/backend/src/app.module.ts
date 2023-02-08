@@ -14,6 +14,7 @@ import { PpqModule } from './modules/ppq/ppq.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
 import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
+import { GCNotifyModule } from './modules/gcnotify/gcnotify.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
     }),
     KeycloakConnectModule.register(configService.getKeycloakConfig()),
     PiaIntakeModule,
+    GCNotifyModule,
   ],
   controllers: [AppController],
   providers: [
