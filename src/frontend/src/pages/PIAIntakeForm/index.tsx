@@ -326,9 +326,11 @@ const PIAIntakeFormPage = () => {
       invalid = true;
       formId = 'dataElementsInvolved';
     }
-    if (!pia?.riskMitigation && !invalid) {
-      invalid = true;
-      formId = 'riskMitigation';
+    if (pia?.hasAddedPiToDataElements === false) {
+      if (!pia?.riskMitigation && !invalid) {
+        invalid = true;
+        formId = 'riskMitigation';
+      }
     }
 
     if (invalid) {
