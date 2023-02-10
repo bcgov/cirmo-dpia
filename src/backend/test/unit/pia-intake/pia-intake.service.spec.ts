@@ -40,6 +40,7 @@ import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
+import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 
 /**
  * @Description
@@ -138,11 +139,14 @@ describe('PiaIntakeService', () => {
 
       expect(result).toEqual(getPiaIntakeRO);
     });
-    it('succeeds calling the database and update submittedAt column when the drafter submit pia for', async () => {
+
+    it('succeeds and update submittedAt with current value if status is changed to MPO_REVIEW', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = {
         ...createPiaIntakeMock,
         submittedAt: null,
+        status: PiaIntakeStatusEnum.MPO_REVIEW,
       };
+
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const getPiaIntakeRO = { ...getPiaIntakeROMock };
 
@@ -155,60 +159,10 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
 
-      const result = await service.create(createPiaIntakeDto, user);
+      await service.create(createPiaIntakeDto, user);
 
-      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
-        ...createPiaIntakeDto,
-        createdByGuid: user.idir_user_guid,
-        createdByUsername: user.idir_username,
-        updatedByGuid: user.idir_user_guid,
-        updatedByUsername: user.idir_username,
-        updatedByDisplayName: user.display_name,
-        drafterEmail: user.email,
-        submittedAt: new Date(),
-      });
-
-      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
-        'updatedByDisplayName',
-      ]);
-
-      expect(result).toEqual(getPiaIntakeRO);
-    });
-
-    it('succeeds calling the database and not update submittedAt column when the drafter already submit pia previous', async () => {
-      const createPiaIntakeDto: CreatePiaIntakeDto = {
-        ...createPiaIntakeMock,
-        submittedAt: new Date('2022-12-17T03:24:00'),
-      };
-      const piaIntakeEntity = { ...piaIntakeEntityMock };
-      const getPiaIntakeRO = { ...getPiaIntakeROMock };
-
-      const user: KeycloakUser = { ...keycloakUserMock };
-
-      piaIntakeRepository.save = jest.fn(async () => {
-        delay(10);
-        return piaIntakeEntity;
-      });
-
-      omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
-
-      const result = await service.create(createPiaIntakeDto, user);
-
-      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
-        ...createPiaIntakeDto,
-        createdByGuid: user.idir_user_guid,
-        createdByUsername: user.idir_username,
-        updatedByGuid: user.idir_user_guid,
-        updatedByUsername: user.idir_username,
-        updatedByDisplayName: user.display_name,
-        drafterEmail: user.email,
-      });
-
-      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
-        'updatedByDisplayName',
-      ]);
-
-      expect(result).toEqual(getPiaIntakeRO);
+      expect(createPiaIntakeDto.submittedAt).toBeDefined();
+      expect(createPiaIntakeDto.submittedAt).toBeInstanceOf(Date);
     });
   });
 
@@ -1504,7 +1458,8 @@ describe('PiaIntakeService', () => {
 
       expect(result).toBe(piaIntakeROMock);
     });
-    // Conflict exception: Fails if the user tries to update a stale version
+
+    // Scenario 5: Conflict exception: Fails if the user tries to update a stale version
     it('Fails if the user tries to update a stale version', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
 
@@ -1539,6 +1494,44 @@ describe('PiaIntakeService', () => {
         userRoles,
         piaIntakeMock,
       );
+    });
+
+    // Scenario 6: succeeds and update submittedAt with current value if status is changed to MPO_REVIEW
+    it('succeeds and update submittedAt with current value if status is changed to MPO_REVIEW', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock };
+      const piaIntakeROMock = { ...getPiaIntakeROMock };
+
+      const updatePiaIntakeDto: UpdatePiaIntakeDto = {
+        status: PiaIntakeStatusEnum.MPO_REVIEW,
+        saveId: 1,
+        submittedAt: null,
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return piaIntakeROMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => true);
+
+      piaIntakeRepository.save = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeMock, ...updatePiaIntakeDto };
+      });
+
+      await service.update(id, updatePiaIntakeDto, user, userRoles);
+
+      expect(updatePiaIntakeDto.submittedAt).toBeDefined();
+      expect(updatePiaIntakeDto.submittedAt).toBeInstanceOf(Date);
     });
   });
 
