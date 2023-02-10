@@ -25,7 +25,7 @@ function NavBar({ pages }: INavbarPages): ReactElement {
             <li key={page.id}>
               <NavLink
                 className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
-                  page.link === currentPath && 'active'
+                  page.link === currentPath ? 'active' : ''
                 }`}
                 to={page.link}
               >
