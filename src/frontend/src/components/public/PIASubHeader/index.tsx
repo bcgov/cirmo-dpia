@@ -21,6 +21,7 @@ import { PIASubHeaderProps } from './interfaces';
 
 function PIASubHeader({
   pia,
+  lastSaveAlertInfo,
   onChange = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
