@@ -320,7 +320,7 @@ export class PiaIntakeService {
     const pdfParsedData = {
       ...piaIntakeForm,
       ...{
-        updatedAt: shortDate(piaIntakeForm.createdAt),
+        updatedAt: shortDate(piaIntakeForm.updatedAt),
         ministry: ministry || '',
         initiativeDescription: piaIntakeForm.initiativeDescription
           ? marked.parse(piaIntakeForm.initiativeDescription)
