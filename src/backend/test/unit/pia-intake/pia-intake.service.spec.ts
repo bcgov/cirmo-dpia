@@ -1335,131 +1335,7 @@ describe('PiaIntakeService', () => {
       expect(result).toBe(piaIntakeROMock);
     });
 
-    // Scenario 3: Test succeeds,  user submitted their pia in first time will update submittedAt column
-    it('succeeds call repository.update to update submittedAt column when the drafter first submit pia', async () => {
-      const piaIntakeMock = { ...piaIntakeEntityMock };
-      const piaIntakeROMock = { ...getPiaIntakeROMock };
-
-      const updatePiaIntakeDto = {
-        status: PiaIntakeStatusEnum.MPO_REVIEW,
-        saveId: 1,
-        submittedAt: null,
-      };
-      const user: KeycloakUser = { ...keycloakUserMock };
-      const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 1;
-
-      service.findOneBy = jest.fn(async () => {
-        delay(10);
-        return piaIntakeMock;
-      });
-
-      service.findOneById = jest.fn(async () => {
-        delay(10);
-        return piaIntakeROMock;
-      });
-
-      service.validateUserAccess = jest.fn(() => true);
-      service.updateSubmittedAt = jest.fn(() => {
-        return { ...updatePiaIntakeDto, submittedAt: new Date() };
-      });
-      piaIntakeRepository.save = jest.fn(async () => {
-        delay(10);
-        return { ...piaIntakeMock, ...updatePiaIntakeDto };
-      });
-
-      const result = await service.update(
-        id,
-        updatePiaIntakeDto,
-        user,
-        userRoles,
-      );
-
-      expect(service.findOneBy).toHaveBeenCalledWith({ id });
-      expect(service.validateUserAccess).toHaveBeenCalledWith(
-        user,
-        userRoles,
-        piaIntakeEntityMock,
-      );
-      expect(service.updateSubmittedAt).toHaveBeenCalledWith(
-        updatePiaIntakeDto,
-      );
-      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
-        id,
-        ...updatePiaIntakeDto,
-        saveId: 2,
-        updatedByGuid: user.idir_user_guid,
-        updatedByUsername: user.idir_username,
-        updatedByDisplayName: user.display_name,
-      });
-      expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
-
-      expect(result).toBe(piaIntakeROMock);
-    });
-
-    // Scenario 4: Test succeeds,  if the submittedAt column already set, no update in future submit action
-    it('succeeds call repository.update but not update submittedAt column when the column not null', async () => {
-      const piaIntakeMock = { ...piaIntakeEntityMock };
-      const piaIntakeROMock = { ...getPiaIntakeROMock };
-
-      const updatePiaIntakeDto = {
-        status: PiaIntakeStatusEnum.MPO_REVIEW,
-        saveId: 1,
-        submittedAt: new Date('2022-12-17T03:24:00'),
-      };
-      const user: KeycloakUser = { ...keycloakUserMock };
-      const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 1;
-
-      service.findOneBy = jest.fn(async () => {
-        delay(10);
-        return piaIntakeMock;
-      });
-
-      service.findOneById = jest.fn(async () => {
-        delay(10);
-        return piaIntakeROMock;
-      });
-
-      service.validateUserAccess = jest.fn(() => true);
-      service.updateSubmittedAt = jest.fn(() => {
-        return { ...updatePiaIntakeDto };
-      });
-      piaIntakeRepository.save = jest.fn(async () => {
-        delay(10);
-        return { ...piaIntakeMock, ...updatePiaIntakeDto };
-      });
-
-      const result = await service.update(
-        id,
-        updatePiaIntakeDto,
-        user,
-        userRoles,
-      );
-
-      expect(service.findOneBy).toHaveBeenCalledWith({ id });
-      expect(service.validateUserAccess).toHaveBeenCalledWith(
-        user,
-        userRoles,
-        piaIntakeEntityMock,
-      );
-      expect(service.updateSubmittedAt).toHaveBeenCalledWith(
-        updatePiaIntakeDto,
-      );
-      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
-        id,
-        ...updatePiaIntakeDto,
-        saveId: 2,
-        updatedByGuid: user.idir_user_guid,
-        updatedByUsername: user.idir_username,
-        updatedByDisplayName: user.display_name,
-      });
-      expect(service.findOneById).toHaveBeenCalledWith(id, user, userRoles);
-
-      expect(result).toBe(piaIntakeROMock);
-    });
-
-    // Scenario 5: Conflict exception: Fails if the user tries to update a stale version
+    // Scenario 3: Conflict exception: Fails if the user tries to update a stale version
     it('Fails if the user tries to update a stale version', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
 
@@ -1496,7 +1372,7 @@ describe('PiaIntakeService', () => {
       );
     });
 
-    // Scenario 6: succeeds and update submittedAt with current value if status is changed to MPO_REVIEW
+    // Scenario 4: succeeds and update submittedAt with current value if status is changed to MPO_REVIEW
     it('succeeds and update submittedAt with current value if status is changed to MPO_REVIEW', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
       const piaIntakeROMock = { ...getPiaIntakeROMock };
