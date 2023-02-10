@@ -17,8 +17,9 @@ import Modal from '../../components/common/Modal';
 import { shallowEqual } from '../../utils/object-comparison.util';
 import { SupportedAlertTypes } from '../../components/common/Alert/interfaces';
 import { getShortTime } from '../../utils/date';
+import PIASubHeader from '../../components/public/PIASubHeader';
 
-interface ILastSaveAlterInfo {
+export interface ILastSaveAlterInfo {
   message: string;
   type: SupportedAlertTypes;
   show: boolean;
@@ -462,316 +463,309 @@ const PIAIntakeFormPage = () => {
   }, [alertUserLeave, hasFormChanged]);
 
   return (
-    <div className="bcgovPageContainer background background__form">
-      <section className="ppq-form-section form__container">
-        <form
-          className="container__padding-inline needs-validation"
-          onSubmit={(e) => {
-            handleStatusChange(PiaStatuses.MPO_REVIEW);
-            handleSubmit(e);
-          }}
-        >
-          <div className="row justify-content-between">
-            <div className="col col-md-6">
-              <h1>{Messages.PiaIntakeHeader.H1Text.en}</h1>
-            </div>
-            {lastSaveAlertInfo.show && (
-              <div className="col col-md-4">
-                <Alert
-                  type={lastSaveAlertInfo.type}
-                  message={lastSaveAlertInfo.message}
-                  showInitialIcon={true}
-                  showCloseIcon={false}
-                />
-              </div>
-            )}
-          </div>
-          <section className="form__section">
-            <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
-            <div className="row">
-              <InputText
-                label="Title"
-                value={pia?.title}
-                onChange={(e) => piaStateChangeHandler(e.target.value, 'title')}
-                required={true}
-              />
-            </div>
-            <div className="row">
-              <Dropdown
-                id="ministry-select"
-                value={pia?.ministry || ''}
-                label="Ministry"
-                optionalClass="col-md-6"
-                options={MinistryList}
-                changeHandler={(e) =>
-                  piaStateChangeHandler(e.target.value, 'ministry')
-                }
-                required={true}
-              />
-              <div className="col">
+    <>
+      <PIASubHeader pia={pia} lastSaveAlertInfo={lastSaveAlertInfo} />
+      <div className="bcgovPageContainer background background__form">
+        <section className="ppq-form-section form__container">
+          <form
+            className="container__padding-inline needs-validation"
+            onSubmit={(e) => {
+              handleStatusChange(PiaStatuses.MPO_REVIEW);
+              handleSubmit(e);
+            }}
+          >
+            <section className="form__section">
+              <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
+              <div className="row">
                 <InputText
-                  label="Branch"
-                  value={pia?.branch}
-                  required={true}
+                  label="Title"
+                  value={pia?.title}
                   onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'branch')
-                  }
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <InputText
-                  label="Your name"
-                  id="drafterName"
-                  value={pia?.drafterName}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'drafterName')
+                    piaStateChangeHandler(e.target.value, 'title')
                   }
                   required={true}
                 />
               </div>
-              <div className="col">
-                <InputText
-                  label="Your email"
-                  id="drafterEmail"
-                  value={pia?.drafterEmail}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'drafterEmail')
-                  }
-                  required={true}
-                  type="email"
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <InputText
-                  label="Your title"
-                  id="drafterTitle"
-                  value={pia?.drafterTitle}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'drafterTitle')
+              <div className="row">
+                <Dropdown
+                  id="ministry-select"
+                  value={pia?.ministry || ''}
+                  label="Ministry"
+                  optionalClass="col-md-6"
+                  options={MinistryList}
+                  changeHandler={(e) =>
+                    piaStateChangeHandler(e.target.value, 'ministry')
                   }
                   required={true}
                 />
+                <div className="col">
+                  <InputText
+                    label="Branch"
+                    value={pia?.branch}
+                    required={true}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'branch')
+                    }
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <InputText
-                  label="Initiative lead name"
-                  id="leadName"
-                  value={pia?.leadName}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'leadName')
-                  }
-                  required={true}
-                />
+              <div className="row">
+                <div className="col">
+                  <InputText
+                    label="Your name"
+                    id="drafterName"
+                    value={pia?.drafterName}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'drafterName')
+                    }
+                    required={true}
+                  />
+                </div>
+                <div className="col">
+                  <InputText
+                    label="Your email"
+                    id="drafterEmail"
+                    value={pia?.drafterEmail}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'drafterEmail')
+                    }
+                    required={true}
+                    type="email"
+                  />
+                </div>
               </div>
-              <div className="col">
-                <InputText
-                  label="Initiative lead email"
-                  id="leadEmail"
-                  value={pia?.leadEmail}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'leadEmail')
-                  }
-                  required={true}
-                  type="email"
-                />
+              <div className="row">
+                <div className="col-md-6">
+                  <InputText
+                    label="Your title"
+                    id="drafterTitle"
+                    value={pia?.drafterTitle}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'drafterTitle')
+                    }
+                    required={true}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <InputText
-                  label="Initiative lead title"
-                  id="leadTitle"
-                  value={pia?.leadTitle}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'leadTitle')
-                  }
-                  required={true}
-                />
+              <div className="row">
+                <div className="col">
+                  <InputText
+                    label="Initiative lead name"
+                    id="leadName"
+                    value={pia?.leadName}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'leadName')
+                    }
+                    required={true}
+                  />
+                </div>
+                <div className="col">
+                  <InputText
+                    label="Initiative lead email"
+                    id="leadEmail"
+                    value={pia?.leadEmail}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'leadEmail')
+                    }
+                    required={true}
+                    type="email"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row form__row--flex-end">
-              <div className="col">
-                <InputText
-                  label="Ministry Privacy Officer"
-                  helperText={Messages.GeneralInfoSection.MPOHelperText.en}
-                  linkText={Messages.GeneralInfoSection.MPOLinkText.en}
-                  linkHref={Messages.GeneralInfoSection.MPOLinkHref}
-                  hasIcon={true}
-                  id="mpoName"
-                  value={pia?.mpoName}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'mpoName')
-                  }
-                  required={true}
-                />
+              <div className="row">
+                <div className="col-md-6">
+                  <InputText
+                    label="Initiative lead title"
+                    id="leadTitle"
+                    value={pia?.leadTitle}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'leadTitle')
+                    }
+                    required={true}
+                  />
+                </div>
               </div>
-              <div className="col">
-                <InputText
-                  label="MPO email"
-                  id="mpoEmail"
-                  value={pia?.mpoEmail}
-                  onChange={(e) =>
-                    piaStateChangeHandler(e.target.value, 'mpoEmail')
-                  }
-                  required={true}
-                  type="email"
-                />
+              <div className="row form__row--flex-end">
+                <div className="col">
+                  <InputText
+                    label="Ministry Privacy Officer"
+                    helperText={Messages.GeneralInfoSection.MPOHelperText.en}
+                    linkText={Messages.GeneralInfoSection.MPOLinkText.en}
+                    linkHref={Messages.GeneralInfoSection.MPOLinkHref}
+                    hasIcon={true}
+                    id="mpoName"
+                    value={pia?.mpoName}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'mpoName')
+                    }
+                    required={true}
+                  />
+                </div>
+                <div className="col">
+                  <InputText
+                    label="MPO email"
+                    id="mpoEmail"
+                    value={pia?.mpoEmail}
+                    onChange={(e) =>
+                      piaStateChangeHandler(e.target.value, 'mpoEmail')
+                    }
+                    required={true}
+                    type="email"
+                  />
+                </div>
               </div>
-            </div>
-          </section>
-          <section className="form__section">
-            <h2 className="form__h2">
-              {Messages.InitiativeDescriptionSection.H2Text.en}
-            </h2>
-            <p className="form__helper-text">
-              {Messages.InitiativeDescriptionSection.HelperText.en}
-            </p>
-            <div className="richText" id="initiativeDescription">
-              <MDEditor
-                preview="edit"
-                value={pia?.initiativeDescription}
-                onChange={(value) =>
-                  piaStateChangeHandler(value, 'initiativeDescription')
-                }
-              />
-            </div>
-          </section>
-          <section className="form__section">
-            <h2 className="form__h2">
-              {Messages.InitiativeScopeSection.H2Text.en}
-            </h2>
-            <p className="form__helper-text">
-              {Messages.InitiativeScopeSection.HelperText.en}
-            </p>
-            <div className="richText" id="initiativeScope">
-              <MDEditor
-                preview="edit"
-                value={pia?.initiativeScope}
-                defaultTabEnable={true}
-                onChange={(value) =>
-                  piaStateChangeHandler(value, 'initiativeScope')
-                }
-              />
-            </div>
-          </section>
-          <section className="form__section">
-            <h2 className="form__h2">
-              {Messages.InitiativeDataElementsSection.H2Text.en}
-            </h2>
-            <p className="form__helper-text">
-              {Messages.InitiativeDataElementsSection.HelperText.en}
-            </p>
-            <div className="richText" id="dataElementsInvolved">
-              <MDEditor
-                preview="edit"
-                value={pia?.dataElementsInvolved}
-                defaultTabEnable={true}
-                onChange={(value) =>
-                  piaStateChangeHandler(value, 'dataElementsInvolved')
-                }
-              />
-            </div>
-          </section>
-          <section className="form__section">
-            <h2 className="form__h2">
-              {Messages.InitiativePISection.H2Text.en}
-            </h2>
-            <p className="form__helper-text">
-              <a
-                href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
-                rel="noreferrer external"
-                target="_blank"
-              >
-                {Messages.InitiativePISection.LinkText.en}
-              </a>
-              {Messages.InitiativePISection.HelperText.en}
-            </p>
-            {PIOptions.map((option, index) => (
-              <label key={index} className="form__input-label input-label-row">
-                <input
-                  type="radio"
-                  name="pi-options-radio"
-                  value={option}
-                  onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[0] === option}
-                />
-                {option}
-              </label>
-            ))}
-          </section>
-          {pia?.hasAddedPiToDataElements === false && (
+            </section>
             <section className="form__section">
               <h2 className="form__h2">
-                {Messages.InitiativeRiskReductionSection.H2Text.en}
+                {Messages.InitiativeDescriptionSection.H2Text.en}
               </h2>
               <p className="form__helper-text">
-                {Messages.InitiativeRiskReductionSection.HelperText.en}
+                {Messages.InitiativeDescriptionSection.HelperText.en}
               </p>
-              <div className="richText" id="riskMitigation">
+              <div className="richText" id="initiativeDescription">
                 <MDEditor
                   preview="edit"
-                  value={pia?.riskMitigation}
-                  defaultTabEnable={true}
+                  value={pia?.initiativeDescription}
                   onChange={(value) =>
-                    piaStateChangeHandler(value, 'riskMitigation')
+                    piaStateChangeHandler(value, 'initiativeDescription')
                   }
                 />
               </div>
             </section>
-          )}
-          <div className="horizontal-divider"></div>
-          <div className="form__button-row">
-            <button
-              className="bcgovbtn bcgovbtn__secondary btn-back"
-              onClick={handleBackClick}
-            >
-              Back
-            </button>
-            <div className="form__button-group">
+            <section className="form__section">
+              <h2 className="form__h2">
+                {Messages.InitiativeScopeSection.H2Text.en}
+              </h2>
+              <p className="form__helper-text">
+                {Messages.InitiativeScopeSection.HelperText.en}
+              </p>
+              <div className="richText" id="initiativeScope">
+                <MDEditor
+                  preview="edit"
+                  value={pia?.initiativeScope}
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    piaStateChangeHandler(value, 'initiativeScope')
+                  }
+                />
+              </div>
+            </section>
+            <section className="form__section">
+              <h2 className="form__h2">
+                {Messages.InitiativeDataElementsSection.H2Text.en}
+              </h2>
+              <p className="form__helper-text">
+                {Messages.InitiativeDataElementsSection.HelperText.en}
+              </p>
+              <div className="richText" id="dataElementsInvolved">
+                <MDEditor
+                  preview="edit"
+                  value={pia?.dataElementsInvolved}
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    piaStateChangeHandler(value, 'dataElementsInvolved')
+                  }
+                />
+              </div>
+            </section>
+            <section className="form__section">
+              <h2 className="form__h2">
+                {Messages.InitiativePISection.H2Text.en}
+              </h2>
+              <p className="form__helper-text">
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
+                  rel="noreferrer external"
+                  target="_blank"
+                >
+                  {Messages.InitiativePISection.LinkText.en}
+                </a>
+                {Messages.InitiativePISection.HelperText.en}
+              </p>
+              {PIOptions.map((option, index) => (
+                <label
+                  key={index}
+                  className="form__input-label input-label-row"
+                >
+                  <input
+                    type="radio"
+                    name="pi-options-radio"
+                    value={option}
+                    onChange={handlePIOptionChange}
+                    defaultChecked={PIOptions[0] === option}
+                  />
+                  {option}
+                </label>
+              ))}
+            </section>
+            {pia?.hasAddedPiToDataElements === false && (
+              <section className="form__section">
+                <h2 className="form__h2">
+                  {Messages.InitiativeRiskReductionSection.H2Text.en}
+                </h2>
+                <p className="form__helper-text">
+                  {Messages.InitiativeRiskReductionSection.HelperText.en}
+                </p>
+                <div className="richText" id="riskMitigation">
+                  <MDEditor
+                    preview="edit"
+                    value={pia?.riskMitigation}
+                    defaultTabEnable={true}
+                    onChange={(value) =>
+                      piaStateChangeHandler(value, 'riskMitigation')
+                    }
+                  />
+                </div>
+              </section>
+            )}
+            <div className="horizontal-divider"></div>
+            <div className="form__button-row">
               <button
-                type="button"
-                className="bcgovbtn bcgovbtn__secondary"
-                onClick={handleSaveChanges}
+                className="bcgovbtn bcgovbtn__secondary btn-back"
+                onClick={handleBackClick}
               >
-                Save changes
+                Back
               </button>
-              <button
-                type="submit"
-                className="bcgovbtn bcgovbtn__primary btn-next"
-                onClick={handleValidation}
-              >
-                Submit
-              </button>
+              <div className="form__button-group">
+                <button
+                  type="button"
+                  className="bcgovbtn bcgovbtn__secondary"
+                  onClick={handleSaveChanges}
+                >
+                  Save changes
+                </button>
+                <button
+                  type="submit"
+                  className="bcgovbtn bcgovbtn__primary btn-next"
+                  onClick={handleValidation}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
-          </div>
-          {message && (
-            <Alert
-              type="danger"
-              message={message}
-              className="mt-4"
-              onClose={() => setMessage('')}
-            />
-          )}
-        </form>
-      </section>
-      <Modal
-        confirmLabel={piaModalConfirmLabel}
-        cancelLabel={piaModalCancelLabel}
-        titleText={piaModalTitleText}
-        show={showPiaModal}
-        value={piaModalButtonValue}
-        handleClose={(e) => handleModalClose(e)}
-        handleCancel={handleModalCancel}
-      >
-        <p className="modal-text">{piaModalParagraph}</p>
-      </Modal>
-    </div>
+            {message && (
+              <Alert
+                type="danger"
+                message={message}
+                className="mt-4"
+                onClose={() => setMessage('')}
+              />
+            )}
+          </form>
+        </section>
+        <Modal
+          confirmLabel={piaModalConfirmLabel}
+          cancelLabel={piaModalCancelLabel}
+          titleText={piaModalTitleText}
+          show={showPiaModal}
+          value={piaModalButtonValue}
+          handleClose={(e) => handleModalClose(e)}
+          handleCancel={handleModalCancel}
+        >
+          <p className="modal-text">{piaModalParagraph}</p>
+        </Modal>
+      </div>
+    </>
   );
 };
 
