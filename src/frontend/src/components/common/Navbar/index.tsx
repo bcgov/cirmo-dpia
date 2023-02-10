@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { INavbarPages } from './interfaces';
 
 function NavBar({ pages }: INavbarPages): ReactElement {
+  const currentPath = window.location.pathname;
+
   return (
     <nav className="navbar-container wrapper">
       <ul className="navbar">
@@ -10,7 +12,9 @@ function NavBar({ pages }: INavbarPages): ReactElement {
           return page.link === '/pia-list' ? (
             <li key={page.id}>
               <NavLink
-                className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark"
+                className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
+                  page.link === currentPath && 'active'
+                }`}
                 to={page.link}
                 end
               >
@@ -20,7 +24,9 @@ function NavBar({ pages }: INavbarPages): ReactElement {
           ) : (
             <li key={page.id}>
               <NavLink
-                className="bcgovbtn bcgovbtn__secondary--dark"
+                className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
+                  page.link === currentPath && 'active'
+                }`}
                 to={page.link}
               >
                 {page.label}
