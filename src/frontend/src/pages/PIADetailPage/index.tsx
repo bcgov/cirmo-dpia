@@ -5,9 +5,9 @@ import {
 import {
   faFileArrowDown,
   faPenToSquare,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { dateToString } from '../../utils/date';
 import { statusList } from '../../utils/status';
 import messages from './messages';
@@ -223,6 +223,9 @@ const PIADetailPage = () => {
       }
 
       if (buttonValue === 'submit') {
+        // here will check if this is the first submit, if so will add submittedAt property
+        // otherwise no action needed
+        if (!pia?.submittedAt) requestBody.submittedAt = new Date();
         const updatedPia = await updatePiaHttpRequest(pia.id, requestBody);
         setPia(updatedPia);
         navigate(routes.PIA_INTAKE_RESULT, {
@@ -432,7 +435,9 @@ const PIADetailPage = () => {
                   )}
                 </div>
               </div>
-              <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
+              <div className="col col-md-4">
+                {pia.submittedAt ? dateToString(pia.submittedAt) : 'N/A'}
+              </div>
               <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
             </div>
           </div>

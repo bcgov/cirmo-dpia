@@ -203,9 +203,13 @@ const PIAIntakeFormPage = () => {
     const buttonValue = event.target.value;
     try {
       if (buttonValue === 'submit') {
-        const updatedPia = await upsertAndUpdatePia({
+        const reqBody: Partial<IPIAIntake> = {
           status: PiaStatuses.MPO_REVIEW,
-        });
+        };
+        // here will check if this is the first submit, if so will add submittedAt property
+        // otherwise no action needed
+        if (!pia?.submittedAt) reqBody.submittedAt = new Date();
+        const updatedPia = await upsertAndUpdatePia(reqBody);
         navigate(routes.PIA_INTAKE_RESULT, {
           state: { result: updatedPia },
         });

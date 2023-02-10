@@ -23,6 +23,7 @@ export interface IPIAIntake {
   updatedAt?: Date;
   status?: string;
   saveId?: number;
+  submittedAt?: Date | null;
 }
 
 export interface IPIAIntakeResponse {
