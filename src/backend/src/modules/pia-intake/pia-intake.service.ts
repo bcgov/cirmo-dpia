@@ -39,6 +39,11 @@ export class PiaIntakeService {
     createPiaIntakeDto: CreatePiaIntakeDto,
     user: KeycloakUser,
   ): Promise<GetPiaIntakeRO> {
+    // update submittedAt column if it is first time submit
+    createPiaIntakeDto.submittedAt = this.updatedSubmittedAt(
+      createPiaIntakeDto.submittedAt,
+      createPiaIntakeDto.status,
+    );
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
       createdByGuid: user.idir_user_guid,
@@ -82,6 +87,11 @@ export class PiaIntakeService {
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
 
+    // update submittedAt column if it is first time submit
+    updatePiaIntakeDto.submittedAt = this.updatedSubmittedAt(
+      updatePiaIntakeDto.submittedAt,
+      updatePiaIntakeDto.status,
+    );
     // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
     await this.piaIntakeRepository.save({
       id,
@@ -400,4 +410,15 @@ export class PiaIntakeService {
     // Throw Forbidden user access if none of the above scenarios are met
     throw new ForbiddenException();
   }
+
+  /**
+   * @method updatedSubmittedAt
+   *
+   * @description
+   * This method will update submittedAt column in pia-intake table for the first time the drafter submit their pia
+   */
+  updatedSubmittedAt = (submittedAt: Date, status: PiaIntakeStatusEnum) => {
+    if (!submittedAt && status === PiaIntakeStatusEnum.MPO_REVIEW)
+      return (submittedAt = new Date());
+  };
 }

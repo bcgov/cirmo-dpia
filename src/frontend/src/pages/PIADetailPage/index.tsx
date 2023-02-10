@@ -177,6 +177,7 @@ const PIADetailPage = () => {
     const requestBody: Partial<IPIAIntake> = {
       status: statusLocal,
       saveId: pia?.saveId,
+      submittedAt: pia?.submittedAt,
     };
     try {
       const res = await updatePiaHttpRequest(
@@ -211,6 +212,7 @@ const PIADetailPage = () => {
         ? {
             status: PiaStatuses.MPO_REVIEW,
             saveId: pia?.saveId,
+            submittedAt: pia?.submittedAt,
           }
         : {
             status: PiaStatuses.EDIT_IN_PROGRESS,
@@ -223,9 +225,6 @@ const PIADetailPage = () => {
       }
 
       if (buttonValue === 'submit') {
-        // here will check if this is the first submit, if so will add submittedAt property
-        // otherwise no action needed
-        if (!pia?.submittedAt) requestBody.submittedAt = new Date();
         const updatedPia = await updatePiaHttpRequest(pia.id, requestBody);
         setPia(updatedPia);
         navigate(routes.PIA_INTAKE_RESULT, {
@@ -436,7 +435,7 @@ const PIADetailPage = () => {
                 </div>
               </div>
               <div className="col col-md-4">
-                {pia.submittedAt ? dateToString(pia.submittedAt) : 'N/A'}
+                {pia.submittedAt ? dateToString(pia.submittedAt) : ''}
               </div>
               <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
             </div>
