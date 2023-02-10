@@ -20,11 +20,18 @@ div(style='padding-left: 5px; color: #444444')
     div
       img(src='https://moa.ubc.ca/wp-content/uploads/2021/02/BCID_H_rgb_pos.png' height='65px')
     div(style='margin-top: 10px; font-size: 0.8rem')
-      div COMPLETED
+      div LAST MODIFIED
       div(style='text-align: right') #{updatedAt}
+  
+  //- Title Section
   div(style='margin-top: 60px')
     h1 #{title}
-  div(style='margin-top: 50px; display: flex; flex-direction: row')
+  
+  //- PIA Intake Section
+  div(style='margin-top: 30px;')
+    h2(style='border-bottom: 1px solid black; display: inline-block;') PIA Intake
+  
+  div(style='margin-top: 10px; display: flex; flex-direction: row')
     div(style='width: 30%')
       div
         div(style=`${key_style}`) Filled By
@@ -75,3 +82,49 @@ div(style='padding-left: 5px; color: #444444')
         div(style=`${field_gap_style}`)
           div(style=`${key_style}`) How will the risk of unintentionally collecting personal information be reduced
           div !{riskMitigation}
+
+  //- Signature Section
+  div(style='margin-top: 60px;')
+    h2 Signatures
+    
+  //- Initiative Lead Signature Section
+  div(style='margin-top: 50px;')
+    h4(style='font-style: italic;') Initiative Lead
+  
+  div(style='margin-top: 80px; display: flex; flex-direction: row; font-weight: bold;')
+    div(style='width: 33.33%; margin-right: 30px;')
+      div(style='border-bottom: 1px black solid; ')
+      div(style='text-align: center; margin-top: 10px;') Name
+
+    div(style='width: 33.33%; margin: 0 15px;')
+      div(style='border-bottom: 1px black solid;')
+      div(style='text-align: center; margin-top: 10px;') Signature
+
+    div(style='width: 33.33%; margin-left: 30px;')
+      div(style='border-bottom: 1px black solid;')
+      div(style='text-align: center; margin-top: 10px;') Date signed
+
+  //- MPO Signature Section
+  div(style='margin-top: 80px;')
+    h4(style='font-style: italic;') Ministry Privacy Officer (MPO)
+  
+  div(style='margin-top: 80px; display: flex; flex-direction: row; font-weight: bold;')
+    div(style='width: 33.33%; margin-right: 30px;')
+      div(style='border-bottom: 1px black solid; ')
+      div(style='text-align: center; margin-top: 10px;') Name
+
+    div(style='width: 33.33%; margin: 0 15px;')
+      div(style='border-bottom: 1px black solid;')
+      div(style='text-align: center; margin-top: 10px;') Signature
+
+    div(style='width: 33.33%; margin-left: 30px;')
+      div(style='border-bottom: 1px black solid;')
+      div(style='text-align: center; margin-top: 10px;') Date signed
+    
+  //- MPO Comment Section
+  div(style='margin-top: 80px;')
+    h4(style='font-style: italic;') MPO Comment
+  
+  div(style='margin-top: 60px; width: 100%; border-bottom: 1px solid black; font-weight: bold;')
+
+//- EOF
