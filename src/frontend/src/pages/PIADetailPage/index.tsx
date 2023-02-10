@@ -5,9 +5,9 @@ import {
 import {
   faFileArrowDown,
   faPenToSquare,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { dateToString } from '../../utils/date';
 import { statusList } from '../../utils/status';
 import messages from './messages';
@@ -177,6 +177,7 @@ const PIADetailPage = () => {
     const requestBody: Partial<IPIAIntake> = {
       status: statusLocal,
       saveId: pia?.saveId,
+      submittedAt: pia?.submittedAt,
     };
     try {
       const res = await updatePiaHttpRequest(
@@ -211,6 +212,7 @@ const PIADetailPage = () => {
         ? {
             status: PiaStatuses.MPO_REVIEW,
             saveId: pia?.saveId,
+            submittedAt: pia?.submittedAt,
           }
         : {
             status: PiaStatuses.EDIT_IN_PROGRESS,
@@ -432,7 +434,9 @@ const PIADetailPage = () => {
                   )}
                 </div>
               </div>
-              <div className="col col-md-4">{dateToString(pia.createdAt)}</div>
+              <div className="col col-md-4">
+                {pia.submittedAt ? dateToString(pia.submittedAt) : ''}
+              </div>
               <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
             </div>
           </div>
