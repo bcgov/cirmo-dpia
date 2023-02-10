@@ -435,7 +435,7 @@ const PIADetailPage = () => {
                 </div>
               </div>
               <div className="col col-md-4">
-                {pia.submittedAt ? dateToString(pia.submittedAt) : ''}
+                {pia.submittedAt ? dateToString(pia.submittedAt) : 'N/A'}
               </div>
               <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
             </div>
