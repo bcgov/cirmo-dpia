@@ -241,6 +241,32 @@ const PIAIntakeFormPage = () => {
     handleShowModal(modalType);
   };
 
+  const handleStatusChange = (piaStatus: any) => {
+    switch (piaStatus) {
+      case 'incomplete':
+        piaStateChangeHandler('INCOMPLETE', 'status');
+        break;
+      case 'edit-in-progress':
+        piaStateChangeHandler('EDIT_IN_PROGRESS', 'status');
+        break;
+      case 'mpo-review':
+        piaStateChangeHandler('MPO_REVIEW', 'status');
+        break;
+      case 'pct-review':
+        piaStateChangeHandler('PCT_REVIEW', 'status');
+        break;
+      default:
+        break;
+    }
+  };
+
+  //
+  // Form Submission Handler
+  //
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    handleShowModal('submit');
+  };
   /*
    * @Description - This function is used to validate the form
    * and display a red border around the invalid fields
@@ -342,6 +368,9 @@ const PIAIntakeFormPage = () => {
       }
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      handleStatusChange(PiaStatuses.MPO_REVIEW);
+      handleSubmit(event);
     }
   };
 
@@ -373,10 +402,6 @@ const PIAIntakeFormPage = () => {
     [hasFormChanged],
   );
 
-  const handleBackClick = () => {
-    handleShowModal('cancel');
-  };
-
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     event.target.value === 'Yes'
@@ -384,33 +409,6 @@ const PIAIntakeFormPage = () => {
       : event.target.value === "I'm not sure"
       ? piaStateChangeHandler(null, 'hasAddedPiToDataElements')
       : piaStateChangeHandler(false, 'hasAddedPiToDataElements');
-  };
-
-  const handleStatusChange = (piaStatus: any) => {
-    switch (piaStatus) {
-      case 'incomplete':
-        piaStateChangeHandler('INCOMPLETE', 'status');
-        break;
-      case 'edit-in-progress':
-        piaStateChangeHandler('EDIT_IN_PROGRESS', 'status');
-        break;
-      case 'mpo-review':
-        piaStateChangeHandler('MPO_REVIEW', 'status');
-        break;
-      case 'pct-review':
-        piaStateChangeHandler('PCT_REVIEW', 'status');
-        break;
-      default:
-        break;
-    }
-  };
-
-  //
-  // Form Submission Handler
-  //
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    handleShowModal('submit');
   };
 
   useEffect(() => {
@@ -464,7 +462,12 @@ const PIAIntakeFormPage = () => {
 
   return (
     <>
-      <PIASubHeader pia={pia} lastSaveAlertInfo={lastSaveAlertInfo} />
+      <PIASubHeader
+        pia={pia}
+        lastSaveAlertInfo={lastSaveAlertInfo}
+        onSaveChangeClick={handleSaveChanges}
+        onSubmitClick={handleValidation}
+      />
       <div className="bcgovPageContainer background background__form">
         <section className="ppq-form-section form__container">
           <form
@@ -718,31 +721,6 @@ const PIAIntakeFormPage = () => {
                 </div>
               </section>
             )}
-            <div className="horizontal-divider"></div>
-            <div className="form__button-row">
-              <button
-                className="bcgovbtn bcgovbtn__secondary btn-back"
-                onClick={handleBackClick}
-              >
-                Back
-              </button>
-              <div className="form__button-group">
-                <button
-                  type="button"
-                  className="bcgovbtn bcgovbtn__secondary"
-                  onClick={handleSaveChanges}
-                >
-                  Save changes
-                </button>
-                <button
-                  type="submit"
-                  className="bcgovbtn bcgovbtn__primary btn-next"
-                  onClick={handleValidation}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
             {message && (
               <Alert
                 type="danger"

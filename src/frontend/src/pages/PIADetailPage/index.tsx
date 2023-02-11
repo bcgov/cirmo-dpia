@@ -27,7 +27,6 @@ import {
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
 import Modal from '../../components/common/Modal';
-import PIASubHeader from '../../components/public/PIASubHeader';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
