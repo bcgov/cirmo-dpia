@@ -51,7 +51,7 @@ function PIASubHeader({
   return (
     <>
       <div className="subheader-container wrapper">
-        <h1>New PIA</h1>
+        <h1>{pia.title ? pia.title : 'New PIA'}</h1>
         <div className="col">
           {downloadError && (
             <Alert
