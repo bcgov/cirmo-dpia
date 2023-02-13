@@ -151,7 +151,11 @@ a:hover {
 
   border: none;
   background-color: transparent;
-  font-weight: 700;
+  font-weight: 400;
+
+  &.active {
+    font-weight: 700;
+  }
 }
 
 .bcgovbtn__tertiary--dark {

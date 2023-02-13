@@ -106,10 +106,6 @@ const PIAList = () => {
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
         <h1>List of PIAs</h1>
-        <a href="/ppq" className="bcgovbtn bcgovbtn__primary">
-          Create New
-          <FontAwesomeIcon icon={faPlus} />
-        </a>
       </div>
       <div className="search-container-wrapper">
         <PIAIntakeFilter />
