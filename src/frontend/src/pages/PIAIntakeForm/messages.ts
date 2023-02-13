@@ -124,10 +124,10 @@ export default {
         en: `Cancel`,
       },
       TitleText: {
-        en: `Submit for MPO review?`,
+        en: `Submit for PIA Intake?`,
       },
       ParagraphText: {
-        en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
+        en: `Are you sure you want to submit your PIA intake?`,
       },
     },
     AutoSaveFailed: {

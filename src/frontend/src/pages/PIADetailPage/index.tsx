@@ -27,6 +27,7 @@ import {
 } from '../../utils/file-download.util';
 import Spinner from '../../components/common/Spinner';
 import Modal from '../../components/common/Modal';
+import PIASubHeader from '../../components/public/PIASubHeader';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -38,8 +39,6 @@ const PIADetailPage = () => {
   const [pia, setPia] = useState<IPIAIntake>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
   const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState('');
   const [piOption, setPIOption] = useState('');
 
   //
@@ -193,7 +192,6 @@ const PIADetailPage = () => {
 
   const handleAlertClose = () => {
     setFetchPiaError('');
-    setDownloadError('');
   };
 
   const handleModalClose = async (event: any) => {
@@ -246,317 +244,272 @@ const PIADetailPage = () => {
     setShowModal(false);
   };
 
-  const handleDownload = async () => {
-    setDownloadError('');
-
-    if (!id) {
-      console.error(
-        'Something went wrong. Result Id not available for download',
-      );
-      setDownloadError('Something went wrong. Please try again.');
-      return;
-    }
-
-    setIsDownloading(true);
-    try {
-      await FileDownload.download(
-        API_ROUTES.PIA_INTAKE_RESULT_DOWNLOAD.replace(':id', `${id}`),
-        FileDownloadTypeEnum.PDF,
-      );
-    } catch (e) {
-      setDownloadError('Something went wrong. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
   return (
-    <div className="bcgovPageContainer wrapper">
-      <div className="component__wrapper">
-        <div className="full__width">
-          <div className="mb-5">
-            {pia?.status === 'INCOMPLETE' && (
-              <Alert
-                type="banner-warning"
-                message="Warning: Your MPO cannot see or help you with this PIA until you click “Submit to MPO”. "
-                className="mt-2"
-                showInitialIcon={true}
-                showCloseIcon={false}
-              />
-            )}
-          </div>
-          {fetchPiaError && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2"
-            />
-          )}
-          {downloadError && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2"
-            />
-          )}
-          {message && (
-            <Alert
-              type="danger"
-              message={message}
-              className="mb-4"
-              onClose={() => setMessage('')}
-            />
-          )}
-          <div className="container form__title">
-            <div className="col col-md-8">
-              <h1>{pia.title}</h1>
-            </div>
-            <div className="row">
-              <button
-                className={`bcgovbtn bcgovbtn__secondary mx-2 ${
-                  isDownloading ? 'opacity-50 pe-none' : ''
-                }`}
-                onClick={() => handleDownload()}
-              >
-                <FontAwesomeIcon icon={faFileArrowDown} />
-                {isDownloading && <Spinner />}
-              </button>
-              <button
-                className="bcgovbtn bcgovbtn__secondary mx-2"
-                onClick={() => handleEdit()}
-              >
-                <FontAwesomeIcon icon={faPenToSquare} />
-              </button>
-              {(pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
-                pia?.status === PiaStatuses.INCOMPLETE) && (
-                <button
-                  className="bcgovbtn bcgovbtn__primary mx-2"
-                  onClick={() => handleSubmit()}
-                >
-                  Submit
-                </button>
+    <>
+      <PIASubHeader
+        pia={pia}
+        secondaryButtonText="Edit"
+        primaryButtonText="Submit"
+        onSaveChangeClick={() => handleEdit()}
+        onSubmitClick={() => handleSubmit()}
+      />
+      <div className="bcgovPageContainer wrapper">
+        <div className="component__wrapper">
+          <div className="full__width">
+            <div className="mb-5">
+              {pia?.status === 'INCOMPLETE' && (
+                <Alert
+                  type="banner-warning"
+                  message="Warning: Your MPO cannot see or help you with this PIA until you click “Submit to MPO”. "
+                  className="mt-2"
+                  showInitialIcon={true}
+                  showCloseIcon={false}
+                />
               )}
             </div>
-          </div>
-          <div>
-            <div className="row">
-              <div className="col col-md-4">
-                <strong>Status</strong>
+            {fetchPiaError && (
+              <Alert
+                type="danger"
+                message="Something went wrong. Please try again."
+                onClose={handleAlertClose}
+                className="mt-2"
+              />
+            )}
+            {message && (
+              <Alert
+                type="danger"
+                message={message}
+                className="mb-4"
+                onClose={() => setMessage('')}
+              />
+            )}
+
+            <div>
+              <div className="row">
+                <div className="col col-md-4">
+                  <strong>Status</strong>
+                </div>
+                <div className="col col-md-4">
+                  <strong>Submitted on</strong>
+                </div>
+                <div className="col col-md-4">
+                  <strong>Last modified</strong>
+                </div>
               </div>
-              <div className="col col-md-4">
-                <strong>Submitted on</strong>
-              </div>
-              <div className="col col-md-4">
-                <strong>Last modified</strong>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col col-md-4">
-                <div className="dropdownSatusContainer">
-                  {isMPO() ? (
-                    <div className="dropdown">
-                      <button
-                        className="dropdown-toggles form-control"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
+              <div className="row">
+                <div className="col col-md-4">
+                  <div className="dropdownSatusContainer">
+                    {isMPO() ? (
+                      <div className="dropdown">
+                        <button
+                          className="dropdown-toggles form-control"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <div
+                            className={`statusBlock ${
+                              pia.status ? statusList[pia.status].class : ''
+                            }`}
+                          >
+                            {pia.status
+                              ? statusList[pia.status].title
+                              : statusList[PiaStatuses.INCOMPLETE].title}
+                          </div>
+                        </button>
+                        {pia.status ? (
+                          pia.status in statusList ? (
+                            <ul
+                              className="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton1"
+                            >
+                              {statusList[
+                                pia.status
+                              ].Priviliges.MPO.changeStatus.map(
+                                (statuskey, index) =>
+                                  pia.status !== statuskey &&
+                                  statuskey !== PiaStatuses.COMPLETED ? (
+                                    <li
+                                      key={index}
+                                      onClick={() => {
+                                        changeStatefn(statuskey);
+                                      }}
+                                      className="dropdown-item-container"
+                                    >
+                                      <div
+                                        className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
+                                      >
+                                        {statusList[statuskey].title}
+                                      </div>
+                                    </li>
+                                  ) : (
+                                    ''
+                                  ),
+                              )}
+                            </ul>
+                          ) : (
+                            ''
+                          )
+                        ) : (
+                          ''
+                        )}
+                        <FontAwesomeIcon
+                          className="dropdown-icon"
+                          icon={faChevronDown}
+                        />
+                      </div>
+                    ) : pia.status ? (
+                      pia.status in statusList ? (
                         <div
                           className={`statusBlock ${
-                            pia.status ? statusList[pia.status].class : ''
+                            statusList[pia.status].class
                           }`}
                         >
                           {pia.status
                             ? statusList[pia.status].title
-                            : statusList[PiaStatuses.INCOMPLETE].title}
+                            : 'Completed'}
                         </div>
-                      </button>
-                      {pia.status ? (
-                        pia.status in statusList ? (
-                          <ul
-                            className="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton1"
-                          >
-                            {statusList[
-                              pia.status
-                            ].Priviliges.MPO.changeStatus.map(
-                              (statuskey, index) =>
-                                pia.status !== statuskey &&
-                                statuskey !== PiaStatuses.COMPLETED ? (
-                                  <li
-                                    key={index}
-                                    onClick={() => {
-                                      changeStatefn(statuskey);
-                                    }}
-                                    className="dropdown-item-container"
-                                  >
-                                    <div
-                                      className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
-                                    >
-                                      {statusList[statuskey].title}
-                                    </div>
-                                  </li>
-                                ) : (
-                                  ''
-                                ),
-                            )}
-                          </ul>
-                        ) : (
-                          ''
-                        )
                       ) : (
                         ''
-                      )}
-                      <FontAwesomeIcon
-                        className="dropdown-icon"
-                        icon={faChevronDown}
-                      />
-                    </div>
-                  ) : pia.status ? (
-                    pia.status in statusList ? (
-                      <div
-                        className={`statusBlock ${
-                          statusList[pia.status].class
-                        }`}
-                      >
-                        {pia.status
-                          ? statusList[pia.status].title
-                          : 'Completed'}
-                      </div>
+                      )
                     ) : (
                       ''
-                    )
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </div>
-              <div className="col col-md-4">
-                {pia.submittedAt ? dateToString(pia.submittedAt) : 'N/A'}
-              </div>
-              <div className="col col-md-4">{dateToString(pia.updatedAt)}</div>
-            </div>
-          </div>
-          <div className="horizontal-divider"></div>
-          <div className="container d-grid gap-3">
-            <h2>
-              <b>{messages.GeneralInfoSection.H2Text.en}</b>
-            </h2>
-            <div>
-              <div className="row ">
-                <div className="col col-md-4">
-                  <b>Drafter</b>
+                    )}
+                  </div>
                 </div>
                 <div className="col col-md-4">
-                  <b>Initiative Lead</b>
+                  {pia.submittedAt ? dateToString(pia.submittedAt) : ''}
                 </div>
                 <div className="col col-md-4">
-                  <b>Ministry Privacy Officer </b>
+                  {dateToString(pia.updatedAt)}
                 </div>
               </div>
-              <div className="row">
-                <div className="col col-md-4">{pia.drafterName}</div>
-                <div className="col col-md-4">{pia.leadName}</div>
-                <div className="col col-md-4">{pia.mpoName}</div>
-              </div>
-              <div className="row">
-                <div className="col col-md-4">{pia.drafterTitle}</div>
-                <div className="col col-md-4">{pia.leadTitle}</div>
-                <div className="col col-md-4">{pia.mpoEmail}</div>
-              </div>
-              <div className="row">
-                <div className="col col-md-4">{pia.drafterEmail}</div>
-                <div className="col col-md-4">{pia.leadEmail}</div>
-              </div>
             </div>
-            <div>
-              <div className="row">
-                <div className="col col-md-4">
-                  <b>Ministry</b>
-                </div>
-                <div className="col col-md-4">
-                  <b>Branch</b>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col col-md-4">{piaMinistryFullName}</div>
-                <div className="col col-md-4">{pia.branch}</div>
-              </div>
-            </div>
-          </div>
-          <div className="container pt-5 form__section">
-            <h2 className="pb-3">
-              <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
-            </h2>
-            <div>
-              <h2 className="form__h2">
-                {messages.InitiativeDescriptionSection.H2Text.en}
-              </h2>
-
-              <div>
-                <MDEditor preview="preview" value={pia.initiativeDescription} />
-              </div>
-            </div>
-            <div className="form__section">
-              <h2 className="form__h2">
-                {messages.InitiativeScopeSection.H2Text.en}
-              </h2>
-
-              <div>
-                <MDEditor preview="preview" value={pia.initiativeScope} />
-              </div>
-            </div>
-            <div className="form__section">
-              <h2 className="pb-2 pt-3">
-                {messages.InitiativeDataElementsSection.H2Text.en}
-              </h2>
-
-              <div>
-                <MDEditor preview="preview" value={pia.dataElementsInvolved} />
-              </div>
-            </div>
-          </div>
-          {piOption === 'No' && (
-            <div className="container pt-5">
+            <div className="horizontal-divider"></div>
+            <div className="container d-grid gap-3">
               <h2>
-                <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
+                <b>{messages.GeneralInfoSection.H2Text.en}</b>
+              </h2>
+              <div>
+                <div className="row ">
+                  <div className="col col-md-4">
+                    <b>Drafter</b>
+                  </div>
+                  <div className="col col-md-4">
+                    <b>Initiative Lead</b>
+                  </div>
+                  <div className="col col-md-4">
+                    <b>Ministry Privacy Officer </b>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col col-md-4">{pia.drafterName}</div>
+                  <div className="col col-md-4">{pia.leadName}</div>
+                  <div className="col col-md-4">{pia.mpoName}</div>
+                </div>
+                <div className="row">
+                  <div className="col col-md-4">{pia.drafterTitle}</div>
+                  <div className="col col-md-4">{pia.leadTitle}</div>
+                  <div className="col col-md-4">{pia.mpoEmail}</div>
+                </div>
+                <div className="row">
+                  <div className="col col-md-4">{pia.drafterEmail}</div>
+                  <div className="col col-md-4">{pia.leadEmail}</div>
+                </div>
+              </div>
+              <div>
+                <div className="row">
+                  <div className="col col-md-4">
+                    <b>Ministry</b>
+                  </div>
+                  <div className="col col-md-4">
+                    <b>Branch</b>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col col-md-4">{piaMinistryFullName}</div>
+                  <div className="col col-md-4">{pia.branch}</div>
+                </div>
+              </div>
+            </div>
+            <div className="container pt-5 form__section">
+              <h2 className="pb-3">
+                <b>{messages.GeneralInfoSection.H2TextTwo.en}</b>
               </h2>
               <div>
                 <h2 className="form__h2">
-                  {messages.InitiativePISection.H2Text.en}
+                  {messages.InitiativeDescriptionSection.H2Text.en}
                 </h2>
 
                 <div>
-                  <p>{piOption}</p>
+                  <MDEditor
+                    preview="preview"
+                    value={pia.initiativeDescription}
+                  />
                 </div>
               </div>
               <div className="form__section">
                 <h2 className="form__h2">
-                  {messages.InitiativeRiskReductionSection.H2Text.en}
+                  {messages.InitiativeScopeSection.H2Text.en}
                 </h2>
+
                 <div>
-                  <MDEditor preview="preview" value={pia.riskMitigation} />
+                  <MDEditor preview="preview" value={pia.initiativeScope} />
+                </div>
+              </div>
+              <div className="form__section">
+                <h2 className="pb-2 pt-3">
+                  {messages.InitiativeDataElementsSection.H2Text.en}
+                </h2>
+
+                <div>
+                  <MDEditor
+                    preview="preview"
+                    value={pia.dataElementsInvolved}
+                  />
                 </div>
               </div>
             </div>
-          )}
+            {piOption === 'No' && (
+              <div className="container pt-5">
+                <h2>
+                  <b>{messages.GeneralInfoSection.H2TextThree.en}</b>
+                </h2>
+                <div>
+                  <h2 className="form__h2">
+                    {messages.InitiativePISection.H2Text.en}
+                  </h2>
+
+                  <div>
+                    <p>{piOption}</p>
+                  </div>
+                </div>
+                <div className="form__section">
+                  <h2 className="form__h2">
+                    {messages.InitiativeRiskReductionSection.H2Text.en}
+                  </h2>
+                  <div>
+                    <MDEditor preview="preview" value={pia.riskMitigation} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <Modal
+            confirmLabel={modalConfirmLabel}
+            cancelLabel={modalCancelLabel}
+            titleText={modalTitleText}
+            show={showModal}
+            value={modalButtonValue}
+            handleClose={(e) => handleModalClose(e)}
+            handleCancel={handleModalCancel}
+          >
+            <p className="modal-text">{modalParagraph}</p>
+          </Modal>
         </div>
-        <Modal
-          confirmLabel={modalConfirmLabel}
-          cancelLabel={modalCancelLabel}
-          titleText={modalTitleText}
-          show={showModal}
-          value={modalButtonValue}
-          handleClose={(e) => handleModalClose(e)}
-          handleCancel={handleModalCancel}
-        >
-          <p className="modal-text">{modalParagraph}</p>
-        </Modal>
       </div>
-    </div>
+    </>
   );
 };
 

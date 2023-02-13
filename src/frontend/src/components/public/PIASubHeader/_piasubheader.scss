@@ -1,0 +1,22 @@
+.subheader-container {
+    display: flex;
+    position: fixed;
+    top: $piasubheader-height;
+    height: $piasubheader-height;
+    width: 100%;
+    background-color: $bg-white;
+    z-index: 100;
+  }
+  
+  .subheader {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    max-width: 80%;
+    list-style: none;
+    margin-bottom: 0;
+    & :first-child {
+      padding-left: 0;
+    }
+  }
+  
