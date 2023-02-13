@@ -4,4 +4,9 @@ export const NavPages = [
     label: 'List of PIAs',
     link: '/pia-list',
   },
+  {
+    id: 2,
+    label: 'Create new PIA',
+    link: '/ppq',
+  },
 ];
