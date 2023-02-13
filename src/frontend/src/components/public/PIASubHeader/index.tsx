@@ -14,6 +14,8 @@ import Spinner from '../../common/Spinner';
 
 function PIASubHeader({
   pia,
+  secondaryButtonText = 'Save',
+  primaryButtonText = 'Submit PIA intake',
   lastSaveAlertInfo,
   onSaveChangeClick = () => {},
   onSubmitClick = () => {},
@@ -81,7 +83,7 @@ function PIASubHeader({
               )}
             </div>
           </div>
-          {lastSaveAlertInfo.show && (
+          {lastSaveAlertInfo?.show && (
             <div className="col col-md-4">
               <Alert
                 type={lastSaveAlertInfo.type}
@@ -104,14 +106,14 @@ function PIASubHeader({
             onClick={onSaveChangeClick}
             className="mx-2 bcgovbtn bcgovbtn__secondary"
           >
-            Save
+            {secondaryButtonText}
           </button>
 
           <button
             onClick={onSubmitClick}
             className="bcgovbtn bcgovbtn__primary"
           >
-            Submit PIA intake
+            {primaryButtonText}
           </button>
         </div>
       </div>
