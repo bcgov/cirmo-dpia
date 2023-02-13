@@ -53,18 +53,20 @@ function PIASubHeader({
   return (
     <>
       <div className="subheader-container wrapper">
-        <h1>{pia.title ? pia.title : 'New PIA'}</h1>
-        <div className="col">
-          {downloadError && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2 col-sm-1"
-            />
-          )}
+        <div className="subheader">
+          <h1>{pia.title ? pia.title : 'New PIA'}</h1>
+          <div className="col">
+            {downloadError && (
+              <Alert
+                type="danger"
+                message="Something went wrong. Please try again."
+                onClose={handleAlertClose}
+                className="mt-2 col-sm-1"
+              />
+            )}
+          </div>
         </div>
-        <div className=" row ms-auto ">
+        <div className=" subheader row ms-auto ">
           <div className="col">
             <div>Status</div>
             <div>
