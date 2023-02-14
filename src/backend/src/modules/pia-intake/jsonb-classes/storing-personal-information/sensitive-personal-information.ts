@@ -4,9 +4,9 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class SensitivePersonalInformation {
   @IsEnum(YesNoInput)
   @IsOptional()
-  doesInvolve: YesNoInput;
+  doesInvolve?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  disclosedOutsideCanada: YesNoInput;
+  disclosedOutsideCanada?: YesNoInput;
 }

@@ -4,13 +4,13 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class Correction {
   @IsEnum(YesNoInput)
   @IsOptional()
-  haveProcessInPlace: YesNoInput;
+  haveProcessInPlace?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  willDocument: YesNoInput;
+  willDocument?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  willConductNotifications: YesNoInput;
+  willConductNotifications?: YesNoInput;
 }

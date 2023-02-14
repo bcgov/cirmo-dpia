@@ -4,17 +4,17 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class AccessToPersonalInformation {
   @IsEnum(YesNoInput)
   @IsOptional()
-  onlyCertainRolesAccessInformation: YesNoInput;
+  onlyCertainRolesAccessInformation?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  accessApproved: YesNoInput;
+  accessApproved?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  useAuditLogs: YesNoInput;
+  useAuditLogs?: YesNoInput;
 
   @IsString()
   @IsOptional()
-  additionalStrategies: string;
+  additionalStrategies?: string;
 }

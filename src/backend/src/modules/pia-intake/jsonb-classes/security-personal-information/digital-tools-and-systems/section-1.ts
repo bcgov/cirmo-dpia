@@ -4,9 +4,9 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class DigitalToolsAndSystemsSection1 {
   @IsEnum(YesNoInput)
   @IsOptional()
-  involveDigitalToolsAndSystems: YesNoInput;
+  involveDigitalToolsAndSystems?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  haveSecurityAssessment: YesNoInput;
+  haveSecurityAssessment?: YesNoInput;
 }

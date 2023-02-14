@@ -4,13 +4,13 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class Retention {
   @IsEnum(YesNoInput)
   @IsOptional()
-  usePIForDecision: YesNoInput;
+  usePIForDecision?: YesNoInput;
 
   @IsEnum(YesNoInput)
   @IsOptional()
-  haveApprovedInfoSchedule: YesNoInput;
+  haveApprovedInfoSchedule?: YesNoInput;
 
   @IsString()
   @IsOptional()
-  describeRetention: string;
+  describeRetention?: string;
 }

@@ -22,7 +22,7 @@ class ServiceProviderDetails {
 export class DisclosureSection1 {
   @IsEnum(YesNoInput)
   @IsOptional()
-  sensitiveInfoStoredByServiceProvider: YesNoInput;
+  sensitiveInfoStoredByServiceProvider?: YesNoInput;
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -31,9 +31,9 @@ export class DisclosureSection1 {
 
   @IsString()
   @IsOptional()
-  disclosureDetails: string;
+  disclosureDetails?: string;
 
   @IsString()
   @IsOptional()
-  contractualTerms: string;
+  contractualTerms?: string;
 }

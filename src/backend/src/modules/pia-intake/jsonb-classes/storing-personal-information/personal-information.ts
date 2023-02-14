@@ -4,9 +4,9 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 export class PersonalInformation {
   @IsEnum(YesNoInput)
   @IsOptional()
-  storedOutsideCanada: YesNoInput;
+  storedOutsideCanada?: YesNoInput;
 
   @IsString()
   @IsOptional()
-  whereDetails: string;
+  whereDetails?: string;
 }
