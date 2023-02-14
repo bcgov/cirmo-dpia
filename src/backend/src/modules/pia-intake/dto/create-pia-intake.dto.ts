@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
+  IsNotEmptyObject,
   IsObject,
   IsOptional,
   IsString,
@@ -280,6 +281,7 @@ export class CreatePiaIntakeDto {
 
   @IsObject()
   @IsOptional()
+  @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => CollectionUseAndDisclosure)
   @ApiProperty({
@@ -291,6 +293,7 @@ export class CreatePiaIntakeDto {
 
   @IsObject()
   @IsOptional()
+  @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => StoringPersonalInformation)
   @ApiProperty({

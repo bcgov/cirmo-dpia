@@ -1,7 +1,7 @@
 import {
   IsArray,
+  IsNotEmptyObject,
   IsObject,
-  IsOptional,
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
@@ -10,13 +10,12 @@ import { StepWalkthrough } from './steps-walkthrough.class';
 
 export class CollectionUseAndDisclosure {
   @IsArray()
-  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => StepWalkthrough)
   steps: Array<StepWalkthrough>;
 
   @IsObject()
-  @IsOptional()
+  @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => CollectionNotice)
   collectionNotice: CollectionNotice;
