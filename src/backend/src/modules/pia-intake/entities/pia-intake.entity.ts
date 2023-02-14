@@ -139,48 +139,42 @@ export class PiaIntakeEntity extends BaseEntity {
   @Column({
     name: 'collection_use_and_disclosure',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   collectionUseAndDisclosure: CollectionUseAndDisclosure;
 
   @Column({
     name: 'storing_personal_information',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   storingPersonalInformation: StoringPersonalInformation;
 
   @Column({
     name: 'security_personal_information',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   securityPersonalInformation: SecurityPersonalInformation;
 
   @Column({
     name: 'accuracy_correction_and_retention',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
 
   @Column({
     name: 'personal_information_banks',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   personalInformationBanks: PersonalInformationBanks;
 
   @Column({
     name: 'additional_risks',
     type: 'jsonb',
-    nullable: false,
-    default: () => "'{}'",
+    nullable: true,
   })
   additionalRisks: AdditionalRisks;
 }
