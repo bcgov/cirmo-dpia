@@ -15,6 +15,7 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
+import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
 import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
@@ -155,6 +156,14 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       managingPersonName: 'John Doe',
       managingPersonPhone: '(587-555-555)',
     },
+  },
+  additionalRisks: {
+    risks: [
+      {
+        risk: 'Leak 1',
+        response: 'Response 1',
+      },
+    ],
   },
 };
 
@@ -383,4 +392,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.personalInformationBanks,
   })
   personalInformationBanks: PersonalInformationBanks;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => AdditionalRisks)
+  @ApiProperty({
+    type: AdditionalRisks,
+    required: false,
+    example: piaIntakeEntityMock.additionalRisks,
+  })
+  additionalRisks: AdditionalRisks;
 }

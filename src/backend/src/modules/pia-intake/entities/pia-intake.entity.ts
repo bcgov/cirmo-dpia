@@ -7,6 +7,7 @@ import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-in
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
 import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
+import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -174,4 +175,12 @@ export class PiaIntakeEntity extends BaseEntity {
     default: () => "'{}'",
   })
   personalInformationBanks: PersonalInformationBanks;
+
+  @Column({
+    name: 'additional_risks',
+    type: 'jsonb',
+    nullable: false,
+    default: () => "'{}'",
+  })
+  additionalRisks: AdditionalRisks;
 }

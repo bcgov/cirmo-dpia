@@ -143,6 +143,14 @@ const piaIntakeDataMock = {
       managingPersonPhone: '(587-555-555)',
     },
   },
+  additionalRisks: {
+    risks: [
+      {
+        risk: 'Leak 1',
+        response: 'Response 1',
+      },
+    ],
+  },
 };
 
 export const piaIntakeEntityMock: PiaIntakeEntity = {
