@@ -95,7 +95,7 @@ const piaIntakeDataMock = {
             likelihoodOfUnauthorizedAccess: 'Medium',
             levelOfPrivacyRisk: 'Medium',
             riskResponse: 'immediately revoke',
-            outstandingRisk: 'No',
+            outstandingRisk: 'None',
           },
         ],
       },
@@ -117,6 +117,21 @@ const piaIntakeDataMock = {
       accessApproved: YesNoInput.YES,
       useAuditLogs: YesNoInput.NO,
       additionalStrategies: 'PEM file access',
+    },
+  },
+  accuracyCorrectionAndRetention: {
+    accuracy: {
+      description: 'Integrate with 3rd party validators',
+    },
+    correction: {
+      haveProcessInPlace: YesNoInput.YES,
+      willDocument: YesNoInput.YES,
+      willConductNotifications: YesNoInput.YES,
+    },
+    retention: {
+      usePIForDecision: YesNoInput.YES,
+      haveApprovedInfoSchedule: YesNoInput.NO,
+      describeRetention: 'will store in S3 Glacier Deep Archive',
     },
   },
 };

@@ -14,6 +14,7 @@ import { Type } from 'class-transformer';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
+import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
@@ -106,7 +107,7 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
             likelihoodOfUnauthorizedAccess: 'Medium',
             levelOfPrivacyRisk: 'Medium',
             riskResponse: 'immediately revoke',
-            outstandingRisk: 'No',
+            outstandingRisk: 'None',
           },
         ],
       },
@@ -128,6 +129,21 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       accessApproved: YesNoInput.YES,
       useAuditLogs: YesNoInput.NO,
       additionalStrategies: 'PEM file access',
+    },
+  },
+  accuracyCorrectionAndRetention: {
+    accuracy: {
+      description: 'Integrate with 3rd party validators',
+    },
+    correction: {
+      haveProcessInPlace: YesNoInput.YES,
+      willDocument: YesNoInput.YES,
+      willConductNotifications: YesNoInput.YES,
+    },
+    retention: {
+      usePIForDecision: YesNoInput.YES,
+      haveApprovedInfoSchedule: YesNoInput.NO,
+      describeRetention: 'will store in S3 Glacier Deep Archive',
     },
   },
 };
@@ -333,4 +349,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.securityPersonalInformation,
   })
   securityPersonalInformation: SecurityPersonalInformation;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => AccuracyCorrectionAndRetention)
+  @ApiProperty({
+    type: AccuracyCorrectionAndRetention,
+    required: false,
+    example: piaIntakeEntityMock.accuracyCorrectionAndRetention,
+  })
+  accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
 }

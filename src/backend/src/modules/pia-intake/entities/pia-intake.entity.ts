@@ -5,6 +5,7 @@ import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
+import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -156,4 +157,12 @@ export class PiaIntakeEntity extends BaseEntity {
     default: () => "'{}'",
   })
   securityPersonalInformation: SecurityPersonalInformation;
+
+  @Column({
+    name: 'accuracy_correction_and_retention',
+    type: 'jsonb',
+    nullable: false,
+    default: () => "'{}'",
+  })
+  accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
 }
