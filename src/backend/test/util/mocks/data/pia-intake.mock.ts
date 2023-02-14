@@ -1,4 +1,5 @@
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
+import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { CreatePiaIntakeDto } from 'src/modules/pia-intake/dto/create-pia-intake.dto';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
@@ -52,6 +53,52 @@ const piaIntakeDataMock = {
     collectionNotice: {
       drafterInput: 'Test Input',
       mpoInput: 'Updated Input',
+    },
+  },
+  storingPersonalInformation: {
+    personalInformation: {
+      storedOutsideCanada: YesNoInput.YES,
+      whereDetails: 'USA',
+    },
+    sensitivePersonalInformation: {
+      doesInvolve: YesNoInput.YES,
+      disclosedOutsideCanada: YesNoInput.NO,
+    },
+    disclosuresOutsideCanada: {
+      section1: {
+        sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
+        serviceProviderList: [
+          {
+            name: 'Amazon',
+            cloudInfraName: 'AWS',
+            details: 'Stored in cloud',
+          },
+        ],
+        disclosureDetails: 'S3 storage in us-east-1: US East (N. Virginia)',
+        contractualTerms: 'None',
+      },
+      section2: {
+        relyOnExistingContract: YesNoInput.YES,
+        enterpriseServiceAccessDetails: 'S3',
+      },
+      section3: {
+        unauthorizedAccessMeasures: 'IAM rules are in effect',
+      },
+      section4: {
+        trackAccessDetails: 'IAM',
+      },
+      section5: {
+        privacyRisks: [
+          {
+            risk: 'Leak of Creds',
+            impact: 'Access of instance',
+            likelihoodOfUnauthorizedAccess: 'Medium',
+            levelOfPrivacyRisk: 'Medium',
+            riskResponse: 'immediately revoke',
+            outstandingRisk: 'No',
+          },
+        ],
+      },
     },
   },
 };

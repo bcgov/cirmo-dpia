@@ -10,9 +10,11 @@ import {
 } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure/index.class';
+import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information/index.class';
 
 export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   title: 'Test PIA for screening King Richard',
@@ -60,6 +62,52 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     collectionNotice: {
       drafterInput: 'Test Input',
       mpoInput: 'Updated Input',
+    },
+  },
+  storingPersonalInformation: {
+    personalInformation: {
+      storedOutsideCanada: YesNoInput.YES,
+      whereDetails: 'USA',
+    },
+    sensitivePersonalInformation: {
+      doesInvolve: YesNoInput.YES,
+      disclosedOutsideCanada: YesNoInput.NO,
+    },
+    disclosuresOutsideCanada: {
+      section1: {
+        sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
+        serviceProviderList: [
+          {
+            name: 'Amazon',
+            cloudInfraName: 'AWS',
+            details: 'Stored in cloud',
+          },
+        ],
+        disclosureDetails: 'S3 storage in us-east-1: US East (N. Virginia)',
+        contractualTerms: 'None',
+      },
+      section2: {
+        relyOnExistingContract: YesNoInput.YES,
+        enterpriseServiceAccessDetails: 'S3',
+      },
+      section3: {
+        unauthorizedAccessMeasures: 'IAM rules are in effect',
+      },
+      section4: {
+        trackAccessDetails: 'IAM',
+      },
+      section5: {
+        privacyRisks: [
+          {
+            risk: 'Leak of Creds',
+            impact: 'Access of instance',
+            likelihoodOfUnauthorizedAccess: 'Medium',
+            levelOfPrivacyRisk: 'Medium',
+            riskResponse: 'immediately revoke',
+            outstandingRisk: 'No',
+          },
+        ],
+      },
     },
   },
 };
@@ -240,4 +288,15 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.collectionUseAndDisclosure,
   })
   collectionUseAndDisclosure: CollectionUseAndDisclosure;
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => StoringPersonalInformation)
+  @ApiProperty({
+    type: StoringPersonalInformation,
+    required: false,
+    example: piaIntakeEntityMock.storingPersonalInformation,
+  })
+  storingPersonalInformation: StoringPersonalInformation;
 }
