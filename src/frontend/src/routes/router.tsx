@@ -6,6 +6,7 @@ import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
 import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
+import PIACollectionUseAndDisclosure from '../components/public/PIACollectionUseAndDisclosure';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -115,6 +116,7 @@ const Router = () => {
       </Route>
 
       <Route path="/not-authorized" element={<Unauthorized />} />
+      <Route path="/tab1" element={<PIACollectionUseAndDisclosure />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
