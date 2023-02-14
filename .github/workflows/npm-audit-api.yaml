@@ -1,0 +1,27 @@
+name: NPM Audit - API
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  scan:
+    name: npm audit
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Repository
+      - uses: actions/checkout@v3
+
+      # Install API Dependencies
+      - name: install dependencies
+        run: |
+          cd src/backend/
+          npm ci
+
+      # Checkout for moderate or higher vulnerabilities in Frontend package.json
+      - uses: oke-py/npm-audit-action@v2
+        with:
+          audit_level: moderate
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_directory: src/backend
