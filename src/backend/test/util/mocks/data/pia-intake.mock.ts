@@ -101,6 +101,24 @@ const piaIntakeDataMock = {
       },
     },
   },
+  securityPersonalInformation: {
+    digitalToolsAndSystems: {
+      section1: {
+        involveDigitalToolsAndSystems: YesNoInput.NO,
+        haveSecurityAssessment: YesNoInput.NO,
+      },
+      section2: {
+        onGovServers: YesNoInput.NO,
+        whereDetails: 'on AWS Cloud',
+      },
+    },
+    accessToPersonalInformation: {
+      onlyCertainRolesAccessInformation: YesNoInput.YES,
+      accessApproved: YesNoInput.YES,
+      useAuditLogs: YesNoInput.NO,
+      additionalStrategies: 'PEM file access',
+    },
+  },
 };
 
 export const piaIntakeEntityMock: PiaIntakeEntity = {

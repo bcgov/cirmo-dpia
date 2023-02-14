@@ -15,6 +15,7 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure/index.class';
+import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information/index.class';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information/index.class';
 
 export const piaIntakeEntityMock: CreatePiaIntakeDto = {
@@ -109,6 +110,24 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
           },
         ],
       },
+    },
+  },
+  securityPersonalInformation: {
+    digitalToolsAndSystems: {
+      section1: {
+        involveDigitalToolsAndSystems: YesNoInput.NO,
+        haveSecurityAssessment: YesNoInput.NO,
+      },
+      section2: {
+        onGovServers: YesNoInput.NO,
+        whereDetails: 'on AWS Cloud',
+      },
+    },
+    accessToPersonalInformation: {
+      onlyCertainRolesAccessInformation: YesNoInput.YES,
+      accessApproved: YesNoInput.YES,
+      useAuditLogs: YesNoInput.NO,
+      additionalStrategies: 'PEM file access',
     },
   },
 };
@@ -302,4 +321,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.storingPersonalInformation,
   })
   storingPersonalInformation: StoringPersonalInformation;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => SecurityPersonalInformation)
+  @ApiProperty({
+    type: SecurityPersonalInformation,
+    required: false,
+    example: piaIntakeEntityMock.securityPersonalInformation,
+  })
+  securityPersonalInformation: SecurityPersonalInformation;
 }
