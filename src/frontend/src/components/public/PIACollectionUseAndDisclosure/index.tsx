@@ -5,6 +5,7 @@ import InputText from '../../common/InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { isMPORole } from '../../../utils/helper.util';
 
 export interface TableColProps {
   label: string;
@@ -57,7 +58,9 @@ const PIACollectionUseAndDisclosure = () => {
       ],
     ]);
   };
-
+  const isMPO = () => {
+    return isMPORole();
+  };
   const removeRow = (index: number) => {
     const newData = [...rows];
     newData.splice(index, 1);
@@ -163,7 +166,7 @@ const PIACollectionUseAndDisclosure = () => {
         <h2 className="pt-5">{Messages.CollectionNotice.PartTwo.Title.en}</h2>
         <div className="richText pb-4" id="MPOCommentsDisclosure">
           <MDEditor
-            preview="edit"
+            preview={isMPO() ? 'edit' : 'preview'}
             value={MPOCommentsDisclosure}
             defaultTabEnable={true}
             onChange={(value) => setMPOCommentsDisclosure(value ? value : '')}
