@@ -2,9 +2,9 @@ import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
-import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure/index.class';
-import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information/index.class';
-import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information/index.class';
+import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
+import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
+import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {

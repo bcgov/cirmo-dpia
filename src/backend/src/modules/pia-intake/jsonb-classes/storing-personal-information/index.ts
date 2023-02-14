@@ -4,9 +4,9 @@ import {
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
-import { DisclosuresOutsideCanada } from './disclosures-outside-canda/index.class';
-import { PersonalInformation } from './personal-information.class';
-import { SensitivePersonalInformation } from './sensitive-personal-information.class';
+import { DisclosuresOutsideCanada } from './disclosures-outside-canda';
+import { PersonalInformation } from './personal-information';
+import { SensitivePersonalInformation } from './sensitive-personal-information';
 
 export class StoringPersonalInformation {
   @IsObject()

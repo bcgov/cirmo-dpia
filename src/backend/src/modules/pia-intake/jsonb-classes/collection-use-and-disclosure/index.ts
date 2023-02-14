@@ -5,8 +5,8 @@ import {
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
-import { CollectionNotice } from './collection-notice.class';
-import { StepWalkthrough } from './steps-walkthrough.class';
+import { CollectionNotice } from './collection-notice';
+import { StepWalkthrough } from './steps-walkthrough';
 
 export class CollectionUseAndDisclosure {
   @IsArray()

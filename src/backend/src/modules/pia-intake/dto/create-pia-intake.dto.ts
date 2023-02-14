@@ -14,9 +14,9 @@ import { Type } from 'class-transformer';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
-import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure/index.class';
-import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information/index.class';
-import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information/index.class';
+import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
+import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
+import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 
 export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   title: 'Test PIA for screening King Richard',
