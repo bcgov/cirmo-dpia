@@ -16,7 +16,7 @@ import {
 } from '../constants/pia-intake-allowed-sort-fields';
 import { PiaFilterDrafterByCurrentUserEnum } from '../enums/pia-filter-drafter-by-current-user.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
-import { piaIntakeEntityMock } from './create-pia-intake.dto';
+import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
 
 export class PiaIntakeFindQuery {
   @ApiProperty({
