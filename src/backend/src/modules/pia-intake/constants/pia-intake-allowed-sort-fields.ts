@@ -1,6 +1,7 @@
-import { PiaIntakeEntity } from '../entities/pia-intake.entity';
+export type PiaIntakeAllowedSortFieldsType =
+  | 'drafterName'
+  | 'updatedAt'
+  | 'createdAt';
 
-export const PiaIntakeAllowedSortFields: Array<keyof PiaIntakeEntity> = [
-  'drafterName',
-  'updatedAt',
-];
+export const PiaIntakeAllowedSortFields: Array<PiaIntakeAllowedSortFieldsType> =
+  ['drafterName', 'updatedAt', 'createdAt'];

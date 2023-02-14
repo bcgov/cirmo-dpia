@@ -27,6 +27,7 @@ import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
 import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
+import { PiaIntakeAllowedSortFieldsType } from './constants/pia-intake-allowed-sort-fields';
 
 @Injectable()
 export class PiaIntakeService {
@@ -271,7 +272,9 @@ export class PiaIntakeService {
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
-    const orderBy: Partial<Record<keyof PiaIntakeEntity, SortOrderEnum>> = {};
+    const orderBy: Partial<
+      Record<PiaIntakeAllowedSortFieldsType, SortOrderEnum>
+    > = {};
 
     // if sortBy is provided, sort the filtered records by the provided field
     // sortOrder can be as provided or by default descending

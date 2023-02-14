@@ -10,8 +10,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { GovMinistriesEnum } from 'src/common/enums/gov-ministries.enum';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
-import { PiaIntakeAllowedSortFields } from '../constants/pia-intake-allowed-sort-fields';
-import { PiaIntakeEntity } from '../entities/pia-intake.entity';
+import {
+  PiaIntakeAllowedSortFields,
+  PiaIntakeAllowedSortFieldsType,
+} from '../constants/pia-intake-allowed-sort-fields';
 import { PiaFilterDrafterByCurrentUserEnum } from '../enums/pia-filter-drafter-by-current-user.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { piaIntakeEntityMock } from './create-pia-intake.dto';
@@ -86,7 +88,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsIn(PiaIntakeAllowedSortFields)
   @IsOptional()
-  readonly sortBy?: keyof PiaIntakeEntity;
+  readonly sortBy?: PiaIntakeAllowedSortFieldsType;
 
   @ApiProperty({
     required: false,
