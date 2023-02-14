@@ -34,6 +34,26 @@ const piaIntakeDataMock = {
   status: PiaIntakeStatusEnum.MPO_REVIEW,
   saveId: 1,
   submittedAt: new Date(),
+  collectionUseAndDisclosure: {
+    steps: [
+      {
+        drafterInput: 'Make a Checklist.',
+        mpoInput: 'Agreed',
+        foippaInput: 'Agreed',
+        OtherInput: 'Agreed',
+      },
+      {
+        drafterInput: 'Set Your Budget.',
+        mpoInput: 'Set precise budget',
+        foippaInput: 'Agreed',
+        OtherInput: 'Agreed',
+      },
+    ],
+    collectionNotice: {
+      drafterInput: 'Test Input',
+      mpoInput: 'Updated Input',
+    },
+  },
 };
 
 export const piaIntakeEntityMock: PiaIntakeEntity = {

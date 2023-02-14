@@ -2,6 +2,7 @@ import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
+import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure/index.class';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -129,4 +130,12 @@ export class PiaIntakeEntity extends BaseEntity {
     default: null,
   })
   submittedAt: Date;
+
+  @Column({
+    name: 'collection_use_and_disclosure',
+    type: 'jsonb',
+    nullable: false,
+    default: () => "'{}'",
+  })
+  collectionUseAndDisclosure: CollectionUseAndDisclosure;
 }
