@@ -41,6 +41,7 @@ import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
+import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
 
 /**
  * @Description
@@ -163,6 +164,50 @@ describe('PiaIntakeService', () => {
 
       expect(createPiaIntakeDto.submittedAt).toBeDefined();
       expect(createPiaIntakeDto.submittedAt).toBeInstanceOf(Date);
+    });
+
+    it('succeeds for jsonb columns with empty values', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        ...emptyJsonbValues,
+      };
+
+      const piaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        ...emptyJsonbValues,
+      };
+
+      const getPiaIntakeRO = {
+        ...getPiaIntakeROMock,
+        ...emptyJsonbValues,
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+
+      piaIntakeRepository.save = jest.fn(async () => {
+        delay(10);
+        return piaIntakeEntity;
+      });
+
+      omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
+
+      const result = await service.create(createPiaIntakeDto, user);
+
+      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
+        ...createPiaIntakeDto,
+        createdByGuid: user.idir_user_guid,
+        createdByUsername: user.idir_username,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
+        updatedByDisplayName: user.display_name,
+        drafterEmail: user.email,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
+        'updatedByDisplayName',
+      ]);
+
+      expect(result).toEqual(getPiaIntakeRO);
     });
   });
 
