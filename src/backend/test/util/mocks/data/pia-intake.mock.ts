@@ -134,6 +134,15 @@ const piaIntakeDataMock = {
       describeRetention: 'will store in S3 Glacier Deep Archive',
     },
   },
+  personalInformationBanks: {
+    resultingPIB: {
+      willResultInPIB: YesNoInput.YES,
+      descriptionInformationType: 'Name and address of the user',
+      mainMinistryInvolved: 'Citizen Services',
+      managingPersonName: 'John Doe',
+      managingPersonPhone: '(587-555-555)',
+    },
+  },
 };
 
 export const piaIntakeEntityMock: PiaIntakeEntity = {

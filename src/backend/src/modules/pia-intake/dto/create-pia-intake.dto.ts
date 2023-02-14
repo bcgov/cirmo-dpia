@@ -16,6 +16,7 @@ import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
+import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 
@@ -144,6 +145,15 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       usePIForDecision: YesNoInput.YES,
       haveApprovedInfoSchedule: YesNoInput.NO,
       describeRetention: 'will store in S3 Glacier Deep Archive',
+    },
+  },
+  personalInformationBanks: {
+    resultingPIB: {
+      willResultInPIB: YesNoInput.YES,
+      descriptionInformationType: 'Name and address of the user',
+      mainMinistryInvolved: 'Citizen Services',
+      managingPersonName: 'John Doe',
+      managingPersonPhone: '(587-555-555)',
     },
   },
 };
@@ -361,4 +371,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.accuracyCorrectionAndRetention,
   })
   accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => PersonalInformationBanks)
+  @ApiProperty({
+    type: PersonalInformationBanks,
+    required: false,
+    example: piaIntakeEntityMock.personalInformationBanks,
+  })
+  personalInformationBanks: PersonalInformationBanks;
 }
