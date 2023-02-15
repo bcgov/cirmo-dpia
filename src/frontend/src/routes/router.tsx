@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
+import PIAAdditionalRisks from '../components/public/PIAAdditionalRisks';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -118,6 +119,7 @@ const Router = () => {
       </Route>
 
       <Route path="/not-authorized" element={<Unauthorized />} />
+      <Route path="/tab2" element={<PIAAdditionalRisks />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
