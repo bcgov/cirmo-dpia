@@ -35,22 +35,25 @@ export class CollectionUseAndDisclosure {
  * This method validates role access to collectionUseAndDisclosure
  */
 export const validateRoleForCollectionUseAndDisclosure = (
-  piaCollectionUseAndDisclosure: CollectionUseAndDisclosure,
+  updatedValue: CollectionUseAndDisclosure,
+  storedValue: CollectionUseAndDisclosure,
   userType: UserTypesEnum,
 ) => {
-  if (!piaCollectionUseAndDisclosure) return;
+  if (!updatedValue) return;
 
   // steps walkthrough validations
-  const steps = piaCollectionUseAndDisclosure?.steps;
-  if (steps?.length) {
-    steps.forEach((step: StepWalkthrough) => {
-      validateRoleForStepWalkthrough(step, userType);
+  const updatedSteps = updatedValue?.steps;
+  const storedSteps = storedValue?.steps;
+  if (updatedSteps?.length) {
+    updatedSteps.forEach((step: StepWalkthrough, i: number) => {
+      validateRoleForStepWalkthrough(step, storedSteps?.[i], userType);
     });
   }
 
   // collection notice validations
   validateRoleForCollectionNotice(
-    piaCollectionUseAndDisclosure?.collectionNotice,
+    updatedValue?.collectionNotice,
+    storedValue?.collectionNotice,
     userType,
   );
 };

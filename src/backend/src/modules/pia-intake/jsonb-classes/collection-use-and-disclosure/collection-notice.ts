@@ -35,20 +35,23 @@ export const CollectionNoticeMetadata: Array<IFormField<CollectionNotice>> = [
  * This method validates role access to CollectionNotice values
  */
 export const validateRoleForCollectionNotice = (
-  collectionNotice: CollectionNotice,
+  updatedValue: CollectionNotice,
+  storedValue: CollectionNotice,
   userType: UserTypesEnum,
 ) => {
-  if (!collectionNotice) return;
+  if (!updatedValue) return;
 
-  const keys = Object.keys(collectionNotice) as Array<keyof CollectionNotice>;
+  const keys = Object.keys(updatedValue) as Array<keyof CollectionNotice>;
 
   keys.forEach((key) => {
-    const value = collectionNotice?.[key];
+    const updatedKeyValue = updatedValue?.[key];
+    const storedKeyValue = storedValue?.[key];
     const metadata = CollectionNoticeMetadata.find((m) => m.key === key);
 
     validateRoleForFormField(
       metadata,
-      value,
+      updatedKeyValue,
+      storedKeyValue,
       userType,
       `collectionNotice.${key}`,
     );

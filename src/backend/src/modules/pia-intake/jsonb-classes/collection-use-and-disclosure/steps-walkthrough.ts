@@ -55,17 +55,25 @@ export const StepWalkthroughMetadata: Array<IFormField<StepWalkthrough>> = [
  * This method validates role access to StepWalkthrough values
  */
 export const validateRoleForStepWalkthrough = (
-  step: StepWalkthrough,
+  updatedStep: StepWalkthrough,
+  storedStep: StepWalkthrough,
   userType: UserTypesEnum,
 ) => {
-  if (!step) return;
+  if (!updatedStep) return;
 
-  const keys = Object.keys(step) as Array<keyof StepWalkthrough>;
+  const keys = Object.keys(updatedStep) as Array<keyof StepWalkthrough>;
 
   keys.forEach((key) => {
-    const value = step?.[key];
+    const updatedValue = updatedStep?.[key];
+    const storedValue = storedStep?.[key];
     const metadata = StepWalkthroughMetadata.find((m) => m.key === key);
 
-    validateRoleForFormField(metadata, value, userType, `steps.${key}`);
+    validateRoleForFormField(
+      metadata,
+      updatedValue,
+      storedValue,
+      userType,
+      `steps.${key}`,
+    );
   });
 };

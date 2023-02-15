@@ -47,7 +47,7 @@ export class PiaIntakeService {
 
     // sending DRAFTER to userType as only a drafter can create a new PIA;
     // A user could have MPO privileges, however while creating a PIA he/she is acting as a drafter
-    this.validateJsonbFields(createPiaIntakeDto, UserTypesEnum.DRAFTER);
+    this.validateJsonbFields(createPiaIntakeDto, null, UserTypesEnum.DRAFTER);
 
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
@@ -90,7 +90,7 @@ export class PiaIntakeService {
     }
 
     // validate jsonb fields for role access
-    this.validateJsonbFields(updatePiaIntakeDto, userType);
+    this.validateJsonbFields(updatePiaIntakeDto, existingRecord, userType);
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
@@ -448,11 +448,13 @@ export class PiaIntakeService {
    * 6. additionalRisks
    */
   validateJsonbFields(
-    pia: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
     userType: UserTypesEnum,
   ) {
     validateRoleForCollectionUseAndDisclosure(
-      pia?.collectionUseAndDisclosure,
+      updatedValue?.collectionUseAndDisclosure,
+      storedValue?.collectionUseAndDisclosure,
       userType,
     );
     // space for future validators, as needed

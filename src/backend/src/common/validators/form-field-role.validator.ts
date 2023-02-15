@@ -10,11 +10,14 @@ import { IFormField } from '../interfaces/form-field.interface';
  */
 export const validateRoleForFormField = <T>(
   metadata: IFormField<T>,
-  value: any,
+  updatedValue: any,
+  storedValue: any,
   userType: UserTypesEnum,
   path: string,
 ) => {
-  if (!value) return; // if value not edited - no need to validate permissions
+  if (!updatedValue) return; // if value not edited - no need to validate permissions
+
+  if (typeof updatedValue === 'string' && updatedValue === storedValue) return; // if value is not updated by the current user;
 
   if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
 
