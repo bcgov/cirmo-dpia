@@ -4,40 +4,40 @@ import {
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
-import { DisclosureSection1 } from './section-1';
-import { DisclosureSection2 } from './section-2';
-import { DisclosureSection3 } from './section-3';
-import { DisclosureSection4 } from './section-4';
-import { DisclosureSection5 } from './section-5';
+import { DisclosureStorage } from './section-storage';
+import { DisclosureContract } from './section-contract';
+import { DisclosureControls } from './section-controls';
+import { DisclosureTrackAccess } from './section-track-access';
+import { DisclosureRisks } from './section-risks';
 
 export class DisclosuresOutsideCanada {
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => DisclosureSection1)
-  section1: DisclosureSection1;
+  @Type(() => DisclosureStorage)
+  storage: DisclosureStorage;
 
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => DisclosureSection2)
-  section2: DisclosureSection2;
+  @Type(() => DisclosureContract)
+  contract: DisclosureContract;
 
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => DisclosureSection3)
-  section3: DisclosureSection3;
+  @Type(() => DisclosureControls)
+  controls: DisclosureControls;
 
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => DisclosureSection4)
-  section4: DisclosureSection4;
+  @Type(() => DisclosureTrackAccess)
+  trackAccess: DisclosureTrackAccess;
 
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => DisclosureSection5)
-  section5: DisclosureSection5;
+  @Type(() => DisclosureRisks)
+  risks: DisclosureRisks;
 }

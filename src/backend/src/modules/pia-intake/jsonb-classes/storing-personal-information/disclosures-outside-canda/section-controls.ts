@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from '@nestjs/class-validator';
 
-export class DisclosureSection4 {
+export class DisclosureControls {
   @IsString()
   @IsOptional()
-  trackAccessDetails?: string;
+  unauthorizedAccessMeasures?: string;
 }

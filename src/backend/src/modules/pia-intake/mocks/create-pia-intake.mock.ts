@@ -61,7 +61,7 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       disclosedOutsideCanada: YesNoInput.NO,
     },
     disclosuresOutsideCanada: {
-      section1: {
+      storage: {
         sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
         serviceProviderList: [
           {
@@ -73,17 +73,17 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
         disclosureDetails: 'S3 storage in us-east-1: US East (N. Virginia)',
         contractualTerms: 'None',
       },
-      section2: {
+      contract: {
         relyOnExistingContract: YesNoInput.YES,
         enterpriseServiceAccessDetails: 'S3',
       },
-      section3: {
+      controls: {
         unauthorizedAccessMeasures: 'IAM rules are in effect',
       },
-      section4: {
+      trackAccess: {
         trackAccessDetails: 'IAM',
       },
-      section5: {
+      risks: {
         privacyRisks: [
           {
             risk: 'Leak of Creds',
@@ -99,11 +99,11 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   },
   securityPersonalInformation: {
     digitalToolsAndSystems: {
-      section1: {
+      toolsAndAssessment: {
         involveDigitalToolsAndSystems: YesNoInput.NO,
         haveSecurityAssessment: YesNoInput.NO,
       },
-      section2: {
+      storage: {
         onGovServers: YesNoInput.NO,
         whereDetails: 'on AWS Cloud',
       },

@@ -21,7 +21,7 @@ class PrivacyRisk {
   outstandingRisk: string;
 }
 
-export class DisclosureSection5 {
+export class DisclosureRisks {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PrivacyRisk)

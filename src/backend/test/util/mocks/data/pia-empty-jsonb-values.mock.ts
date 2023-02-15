@@ -16,34 +16,34 @@ export const emptyJsonbValues = {
       disclosedOutsideCanada: null,
     },
     disclosuresOutsideCanada: {
-      section1: {
+      storage: {
         sensitiveInfoStoredByServiceProvider: null,
         serviceProviderList: [],
         disclosureDetails: null,
         contractualTerms: null,
       },
-      section2: {
+      contract: {
         relyOnExistingContract: null,
         enterpriseServiceAccessDetails: null,
       },
-      section3: {
+      controls: {
         unauthorizedAccessMeasures: null,
       },
-      section4: {
+      trackAccess: {
         trackAccessDetails: null,
       },
-      section5: {
+      risks: {
         privacyRisks: [],
       },
     },
   },
   securityPersonalInformation: {
     digitalToolsAndSystems: {
-      section1: {
+      toolsAndAssessment: {
         involveDigitalToolsAndSystems: null,
         haveSecurityAssessment: null,
       },
-      section2: {
+      storage: {
         onGovServers: null,
         whereDetails: null,
       },

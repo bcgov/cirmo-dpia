@@ -19,7 +19,7 @@ class ServiceProviderDetails {
   details: string;
 }
 
-export class DisclosureSection1 {
+export class DisclosureStorage {
   @IsEnum(YesNoInput)
   @IsOptional()
   sensitiveInfoStoredByServiceProvider?: YesNoInput;

@@ -1,12 +1,12 @@
 import { IsEnum, IsOptional, IsString } from '@nestjs/class-validator';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 
-export class DisclosureSection2 {
+export class DigitalToolsAndSystemsStorage {
   @IsEnum(YesNoInput)
   @IsOptional()
-  relyOnExistingContract?: YesNoInput;
+  onGovServers?: YesNoInput;
 
   @IsString()
   @IsOptional()
-  enterpriseServiceAccessDetails?: string;
+  whereDetails?: string;
 }
