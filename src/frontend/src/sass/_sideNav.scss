@@ -1,13 +1,17 @@
 .sidenav {
     height: 100%;
+    position: fixed;
+    left: 3rem;
     z-index: 1;
     background-color: transparent;
     overflow-x: hidden;
     transition: 0.5s;
-    
+    width: $max-sidenav-width;
+
     ul,li {
         list-style-type: none;
-        padding:0;
+        margin: 0;
+        padding: 0;
     }
 
     li {
@@ -20,7 +24,7 @@
 
     .active {
         color: $link-blue;
-        font-weight:bold;
+        font-weight: bold;
         padding-left: 30px;
     }
     li {
@@ -33,11 +37,11 @@
         position:relative;
     }
 
-    .active:before {
-        position:absolute;
-        content:"";
+    .active::before {
+        position: absolute;
+        content: "";
         background-image: url("/src/assets/active-menu-arrow.svg");
-        background-position:  left 0% bottom 50%;
+        background-position: left 0% bottom 50%;
         background-repeat: no-repeat;
         left:0px;
         height:20px;
@@ -52,20 +56,20 @@
     }
 
     a {
-        text-decoration:none;
+        text-decoration: none;
         color: $link-blue;
     }
     a:hover {
         color: $link-blue;
-        text-decoration:underline;
+        text-decoration: underline;
     }
 
     .sidenav__icon--active {
-        margin-right:1em;
+        margin-right: 1em;
     }
 
     .cursor-pointer {
-        cursor:pointer;
+        cursor: pointer;
     }
 
     .bcgovbtn {

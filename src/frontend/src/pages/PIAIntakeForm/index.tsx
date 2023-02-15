@@ -492,10 +492,8 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <section className="side-nav__container">
-            <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
-          </section>
-          <section className="form__container ms-md-auto content__container">
+          <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
+          <section className="ppq-form-section form__container ms-md-auto content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet context={[pia, piaStateChangeHandler]} />
