@@ -54,7 +54,7 @@ const List = ({
                           <div>
                             {index === 0 ? (
                               <label className="mt-3 ">
-                                {'Risk' + (idx + 1)}
+                                {'Risk' + ' ' + (idx + 1)}
                               </label>
                             ) : null}
                           </div>
