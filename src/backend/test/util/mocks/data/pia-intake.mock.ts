@@ -153,14 +153,39 @@ const piaIntakeDataMock = {
   },
 };
 
+const collectionUseAndDisclosureWithDrafterPermissions = {
+  collectionUseAndDisclosure: {
+    steps: [
+      {
+        drafterInput: 'Make a Checklist.',
+        mpoInput: null,
+        foippaInput: null,
+        OtherInput: null,
+      },
+      {
+        drafterInput: 'Set Your Budget.',
+        mpoInput: null,
+        foippaInput: null,
+        OtherInput: null,
+      },
+    ],
+    collectionNotice: {
+      drafterInput: 'Test Input',
+      mpoInput: null,
+    },
+  },
+};
+
 export const piaIntakeEntityMock: PiaIntakeEntity = {
   ...baseEntityMock,
   ...piaIntakeDataMock,
   ...{ updatedByDisplayName: 'Richard, King CITZ:EX' },
+  ...collectionUseAndDisclosureWithDrafterPermissions,
 };
 
 export const createPiaIntakeMock: CreatePiaIntakeDto = {
   ...piaIntakeDataMock,
+  ...collectionUseAndDisclosureWithDrafterPermissions,
 };
 
 export const getPiaIntakeROMock: GetPiaIntakeRO = {
@@ -170,4 +195,5 @@ export const getPiaIntakeROMock: GetPiaIntakeRO = {
     createdAt: baseEntityMock.createdAt,
     updatedAt: baseEntityMock.updatedAt,
   },
+  ...collectionUseAndDisclosureWithDrafterPermissions,
 };

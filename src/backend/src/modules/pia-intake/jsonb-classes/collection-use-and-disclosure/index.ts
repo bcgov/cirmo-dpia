@@ -5,8 +5,15 @@ import {
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
-import { CollectionNotice } from './collection-notice';
-import { StepWalkthrough } from './steps-walkthrough';
+import { UserTypesEnum } from 'src/common/enums/users.enum';
+import {
+  CollectionNotice,
+  validateRoleForCollectionNotice,
+} from './collection-notice';
+import {
+  StepWalkthrough,
+  validateRoleForStepWalkthrough,
+} from './steps-walkthrough';
 
 export class CollectionUseAndDisclosure {
   @IsArray()
@@ -20,3 +27,30 @@ export class CollectionUseAndDisclosure {
   @Type(() => CollectionNotice)
   collectionNotice: CollectionNotice;
 }
+
+/**
+ * @method validateRoleForCollectionUseAndDisclosure
+ *
+ * @description
+ * This method validates role access to collectionUseAndDisclosure
+ */
+export const validateRoleForCollectionUseAndDisclosure = (
+  piaCollectionUseAndDisclosure: CollectionUseAndDisclosure,
+  userType: UserTypesEnum,
+) => {
+  if (!piaCollectionUseAndDisclosure) return;
+
+  // steps walkthrough validations
+  const steps = piaCollectionUseAndDisclosure?.steps;
+  if (steps?.length) {
+    steps.forEach((step: StepWalkthrough) => {
+      validateRoleForStepWalkthrough(step, userType);
+    });
+  }
+
+  // collection notice validations
+  validateRoleForCollectionNotice(
+    piaCollectionUseAndDisclosure?.collectionNotice,
+    userType,
+  );
+};
