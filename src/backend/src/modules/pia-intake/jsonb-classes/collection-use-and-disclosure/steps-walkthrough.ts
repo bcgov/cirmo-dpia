@@ -1,19 +1,23 @@
-import { IsString } from '@nestjs/class-validator';
+import { IsOptional, IsString } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
 
 export class StepWalkthrough {
   @IsString()
+  @IsOptional()
   drafterInput?: string;
 
   @IsString()
+  @IsOptional()
   mpoInput?: string;
 
   @IsString()
+  @IsOptional()
   foippaInput?: string;
 
   @IsString()
+  @IsOptional()
   OtherInput?: string;
 }
 

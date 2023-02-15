@@ -1,4 +1,9 @@
-import { IsArray, IsString, ValidateNested } from '@nestjs/class-validator';
+import {
+  IsArray,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
 
 class PrivacyRisk {
@@ -6,18 +11,23 @@ class PrivacyRisk {
   risk: string;
 
   @IsString()
+  @IsOptional()
   impact: string;
 
   @IsString()
+  @IsOptional()
   likelihoodOfUnauthorizedAccess: string;
 
   @IsString()
+  @IsOptional()
   levelOfPrivacyRisk: string;
 
   @IsString()
+  @IsOptional()
   riskResponse: string;
 
   @IsString()
+  @IsOptional()
   outstandingRisk: string;
 }
 

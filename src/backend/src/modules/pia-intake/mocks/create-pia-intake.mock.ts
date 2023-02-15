@@ -35,20 +35,20 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     steps: [
       {
         drafterInput: 'Make a Checklist.',
-        mpoInput: 'Agreed',
-        foippaInput: 'Agreed',
-        OtherInput: 'Agreed',
+        mpoInput: null,
+        foippaInput: null,
+        OtherInput: null,
       },
       {
         drafterInput: 'Set Your Budget.',
-        mpoInput: 'Set precise budget',
-        foippaInput: 'Agreed',
-        OtherInput: 'Agreed',
+        mpoInput: null,
+        foippaInput: null,
+        OtherInput: null,
       },
     ],
     collectionNotice: {
       drafterInput: 'Test Input',
-      mpoInput: 'Updated Input',
+      mpoInput: null,
     },
   },
   storingPersonalInformation: {

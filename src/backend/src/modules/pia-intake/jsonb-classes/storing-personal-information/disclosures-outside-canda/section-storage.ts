@@ -13,9 +13,11 @@ class ServiceProviderDetails {
   name: string;
 
   @IsString()
+  @IsOptional()
   cloudInfraName: string;
 
   @IsString()
+  @IsOptional()
   details: string;
 }
 
