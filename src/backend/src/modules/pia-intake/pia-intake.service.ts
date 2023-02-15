@@ -27,6 +27,9 @@ import { PaginatedRO } from 'src/common/paginated.ro';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from './enums/pia-filter-drafter-by-current-user.enum';
 import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
+import { PiaIntakeAllowedSortFieldsType } from './constants/pia-intake-allowed-sort-fields';
+import { validateRoleForCollectionUseAndDisclosure } from './jsonb-classes/collection-use-and-disclosure';
+import { UserTypesEnum } from 'src/common/enums/users.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -41,6 +44,10 @@ export class PiaIntakeService {
   ): Promise<GetPiaIntakeRO> {
     // update submittedAt column if it is first time submit
     this.updateSubmittedAt(createPiaIntakeDto);
+
+    // sending DRAFTER to userType as only a drafter can create a new PIA;
+    // A user could have MPO privileges, however while creating a PIA he/she is acting as a drafter
+    this.validateJsonbFields(createPiaIntakeDto, null, UserTypesEnum.DRAFTER);
 
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
@@ -72,7 +79,7 @@ export class PiaIntakeService {
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
-    this.validateUserAccess(user, userRoles, existingRecord);
+    const userType = this.validateUserAccess(user, userRoles, existingRecord);
 
     // check if the user is not acting on / updating a stale version
     if (existingRecord.saveId !== updatePiaIntakeDto.saveId) {
@@ -81,6 +88,9 @@ export class PiaIntakeService {
         message: 'You may not have an updated version of the document',
       });
     }
+
+    // validate jsonb fields for role access
+    this.validateJsonbFields(updatePiaIntakeDto, existingRecord, userType);
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
@@ -271,7 +281,9 @@ export class PiaIntakeService {
     /* ********** CONDITIONAL WHERE CLAUSE ENDS ********** */
 
     /* ********** SORT LOGIC BEGINS ********** */
-    const orderBy: Partial<Record<keyof PiaIntakeEntity, SortOrderEnum>> = {};
+    const orderBy: Partial<
+      Record<PiaIntakeAllowedSortFieldsType, SortOrderEnum>
+    > = {};
 
     // if sortBy is provided, sort the filtered records by the provided field
     // sortOrder can be as provided or by default descending
@@ -387,20 +399,20 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
     piaIntake: PiaIntakeEntity,
-  ) {
+  ): UserTypesEnum {
     if (!piaIntake.isActive) {
       throw new GoneException();
     }
 
     // Scenario 1: A self-submitted PIA
     if (user.idir_user_guid === piaIntake.createdByGuid) {
-      return true;
+      return UserTypesEnum.DRAFTER;
     }
 
     // Scenario 2: PIA is submitted to the ministry I'm an MPO of
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
     if (mpoMinistries.includes(piaIntake.ministry)) {
-      return true;
+      return UserTypesEnum.MPO;
     }
 
     // Throw Forbidden user access if none of the above scenarios are met
@@ -417,4 +429,34 @@ export class PiaIntakeService {
     if (!dto.submittedAt && dto.status === PiaIntakeStatusEnum.MPO_REVIEW)
       dto.submittedAt = new Date();
   };
+
+  /**
+   * @method validateJsonbFields
+   *
+   * @param userType - type of the logged in user
+   * It can be DRAFTER when initially creating the PIA or while editing it
+   * It shall also be DRAFTER when an MPO is drafting a PIA
+   * It can be MPO when MPO is reviewing someone else's PIA
+   *
+   * @description
+   * This method validates role access to the following fields, if needed:
+   * 1. collectionUseAndDisclosure
+   * 2. storingPersonalInformation
+   * 3. securityPersonalInformation
+   * 4. accuracyCorrectionAndRetention
+   * 5. personalInformationBanks
+   * 6. additionalRisks
+   */
+  validateJsonbFields(
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
+    userType: UserTypesEnum,
+  ) {
+    validateRoleForCollectionUseAndDisclosure(
+      updatedValue?.collectionUseAndDisclosure,
+      storedValue?.collectionUseAndDisclosure,
+      userType,
+    );
+    // space for future validators, as needed
+  }
 }
