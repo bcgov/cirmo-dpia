@@ -93,6 +93,11 @@ h4 {
   min-width: 70%;
 }
 
+.component__container {
+  position:relative;
+  width:100%;
+}
+
 .component__wrapper {
   display: flex;
   background-color: $bg-white;
@@ -110,6 +115,11 @@ h4 {
     margin-bottom: 3em;
   }
 }
+
+.right__container {
+  width: calc(100% - $sidenav-width);
+}
+
 
 .component__row--create-new-form {
   padding: 0;

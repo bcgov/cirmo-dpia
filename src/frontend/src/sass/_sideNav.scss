@@ -1,0 +1,58 @@
+.sidenav {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    background-color: transparent;
+    overflow-x: hidden;
+    transition: 0.5s;
+    width:$sidenav-width;
+    ul,li {
+        list-style-type: none;
+        margin:0;
+        padding:0;
+    }
+
+    .sidenav__link--blue {
+        color: $link-blue;
+    }
+
+    .active {
+        color: $link-blue;
+        font-weight:bold;
+        padding-left: 30px;
+    }
+
+    .active:before {
+        position:absolute;
+        content:"";
+        background-image: url("/src/assets/active-menu-arrow.svg");
+        background-position:  left 0% bottom 50%;
+        background-repeat: no-repeat;
+        left:0px;
+        height:20px;
+        width:20px;
+
+    }
+
+    .navbar {
+        display: block;
+    }
+
+    a {
+        text-decoration:none;
+        color: $link-blue;
+    }
+    a:hover {
+        color: $link-blue;
+        text-decoration:underline;
+    }
+
+    .sidenav__icon--active {
+        margin-right:1em;
+    }
+
+    .cursor-pointer {
+        cursor:pointer;
+    }
+}
+
