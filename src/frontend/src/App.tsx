@@ -24,7 +24,7 @@ function App() {
 
         {pathname.startsWith('/') && !isAuthenticated() ? null : (
           <>
-            <NavBar pages={pages} />
+            <NavBar pages={pages} CSSclass="navbar-container wrapper" />
             <AppActivityManager />
           </>
         )}
