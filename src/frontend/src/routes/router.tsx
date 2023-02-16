@@ -60,7 +60,12 @@ const Router = () => {
 
           <Route path="new" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
-            <Route path="intake" element={<PIAFormIntake />} />
+            <Route path="intake" element={<PIAIntakeFormPage />} />
+            {/* Placeholder for other tabs */}
+            <Route
+              path="disclosure"
+              element={<PIACollectionUseAndDisclosure />}
+            />
           </Route>
 
           <Route path=":id/view/:title" element={<PIADetailPage />} />
