@@ -2,6 +2,12 @@ import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
+import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
+import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
+import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
+import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
+import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
+import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -129,4 +135,46 @@ export class PiaIntakeEntity extends BaseEntity {
     default: null,
   })
   submittedAt: Date;
+
+  @Column({
+    name: 'collection_use_and_disclosure',
+    type: 'jsonb',
+    nullable: true,
+  })
+  collectionUseAndDisclosure: CollectionUseAndDisclosure;
+
+  @Column({
+    name: 'storing_personal_information',
+    type: 'jsonb',
+    nullable: true,
+  })
+  storingPersonalInformation: StoringPersonalInformation;
+
+  @Column({
+    name: 'security_personal_information',
+    type: 'jsonb',
+    nullable: true,
+  })
+  securityPersonalInformation: SecurityPersonalInformation;
+
+  @Column({
+    name: 'accuracy_correction_and_retention',
+    type: 'jsonb',
+    nullable: true,
+  })
+  accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
+
+  @Column({
+    name: 'personal_information_banks',
+    type: 'jsonb',
+    nullable: true,
+  })
+  personalInformationBanks: PersonalInformationBanks;
+
+  @Column({
+    name: 'additional_risks',
+    type: 'jsonb',
+    nullable: true,
+  })
+  additionalRisks: AdditionalRisks;
 }

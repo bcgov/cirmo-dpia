@@ -41,6 +41,8 @@ import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/
 import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
+import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
+import { UserTypesEnum } from 'src/common/enums/users.enum';
 
 /**
  * @Description
@@ -107,7 +109,8 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockClear();
     });
 
-    it('succeeds calling the database repository with correct data', async () => {
+    // Scenario 1
+    it('succeeds calling the database when a drafter creates PIA with the correct data ', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = { ...createPiaIntakeMock };
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const getPiaIntakeRO = { ...getPiaIntakeROMock };
@@ -140,6 +143,7 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(getPiaIntakeRO);
     });
 
+    // Scenario 2
     it('succeeds and update submittedAt with current value if status is changed to MPO_REVIEW', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = {
         ...createPiaIntakeMock,
@@ -163,6 +167,81 @@ describe('PiaIntakeService', () => {
 
       expect(createPiaIntakeDto.submittedAt).toBeDefined();
       expect(createPiaIntakeDto.submittedAt).toBeInstanceOf(Date);
+    });
+
+    // Scenario 3
+    it('succeeds for jsonb columns with empty values', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        ...emptyJsonbValues,
+      };
+
+      const piaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        ...emptyJsonbValues,
+      };
+
+      const getPiaIntakeRO = {
+        ...getPiaIntakeROMock,
+        ...emptyJsonbValues,
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+
+      piaIntakeRepository.save = jest.fn(async () => {
+        delay(10);
+        return piaIntakeEntity;
+      });
+
+      omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
+
+      const result = await service.create(createPiaIntakeDto, user);
+
+      expect(piaIntakeRepository.save).toHaveBeenCalledWith({
+        ...createPiaIntakeDto,
+        createdByGuid: user.idir_user_guid,
+        createdByUsername: user.idir_username,
+        updatedByGuid: user.idir_user_guid,
+        updatedByUsername: user.idir_username,
+        updatedByDisplayName: user.display_name,
+        drafterEmail: user.email,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
+        'updatedByDisplayName',
+      ]);
+
+      expect(result).toEqual(getPiaIntakeRO);
+    });
+
+    // Scenario 4
+    it('fails when a drafter tries to create fields they do not have permissions to ', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        collectionUseAndDisclosure: {
+          steps: [
+            {
+              drafterInput: 'Make a Checklist.',
+              mpoInput: 'I do not have privilege to edit this',
+              foippaInput: 'I do not have privilege to edit this',
+              OtherInput: 'I do not have privilege to edit this',
+            },
+          ],
+          collectionNotice: {
+            drafterInput: 'Test Input',
+            mpoInput: 'I do not have privilege to edit this',
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+
+      await expect(service.create(createPiaIntakeDto, user)).rejects.toThrow(
+        new ForbiddenException({
+          path: 'steps.mpoInput',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
     });
   });
 
@@ -1209,7 +1288,7 @@ describe('PiaIntakeService', () => {
         return { ...piaIntakeEntityMock };
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
 
       omitBaseKeysSpy.mockImplementation(() => getPiaIntakeROMock);
 
@@ -1252,7 +1331,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1302,7 +1381,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1353,7 +1432,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1397,7 +1476,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1408,6 +1487,92 @@ describe('PiaIntakeService', () => {
 
       expect(updatePiaIntakeDto.submittedAt).toBeDefined();
       expect(updatePiaIntakeDto.submittedAt).toBeInstanceOf(Date);
+    });
+
+    // Scenario 5: fails with Forbidden if DRAFTER tries to update fields they don't have permissions to
+    it("fails with Forbidden if DRAFTER tries to update fields they don't have permissions to", async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+
+      const updatePiaIntakeDto = {
+        collectionUseAndDisclosure: {
+          steps: [
+            {
+              drafterInput: 'Make a Checklist.',
+              mpoInput: null,
+              foippaInput: null,
+              OtherInput: null,
+            },
+          ],
+          collectionNotice: {
+            drafterInput: 'Test Input',
+            mpoInput: 'I do not have access to update this field',
+          },
+        },
+        saveId: 10,
+      };
+
+      const userType = UserTypesEnum.DRAFTER;
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => userType);
+
+      await expect(
+        service.update(id, updatePiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'collectionNotice.mpoInput',
+          message:
+            'You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.',
+        }),
+      );
+    });
+
+    // Scenario 6: succeeds if scenario 5 updates are requested by an MPO
+    it('succeeds if scenario 5 updates are requested by an MPO', async () => {
+      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+
+      const updatePiaIntakeDto = {
+        collectionUseAndDisclosure: {
+          steps: [
+            {
+              drafterInput: 'Make a Checklist.',
+              mpoInput: null,
+              foippaInput: null,
+              OtherInput: null,
+            },
+          ],
+          collectionNotice: {
+            drafterInput: 'Test Input',
+            mpoInput: 'I now DO have access to update this field',
+          },
+        },
+        saveId: 10,
+      };
+
+      const userType = UserTypesEnum.MPO;
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const id = 1;
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return piaIntakeMock;
+      });
+
+      service.validateUserAccess = jest.fn(() => userType);
+
+      await expect(
+        service.update(id, updatePiaIntakeDto, user, userRoles),
+      ).resolves.not.toThrow();
     });
   });
 
@@ -1519,8 +1684,8 @@ describe('PiaIntakeService', () => {
       }
     });
 
-    // Scenario 2: Test succeeds when the record is self submitted irrespective of user role or ministry they belong
-    it('succeeds when the record is self submitted irrespective of user role or ministry they belong', () => {
+    // Scenario 2: Test succeeds and returns userType - drafter when the record is self submitted
+    it('succeeds and returns userType - drafter when the record is self submitted', () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'TEST_USER',
@@ -1533,11 +1698,11 @@ describe('PiaIntakeService', () => {
 
       const result = service.validateUserAccess(user, userRoles, piaIntake);
 
-      expect(result).toBe(true);
+      expect(result).toBe(UserTypesEnum.DRAFTER);
     });
 
-    // Scenario 3: Test succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
-    it('succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', () => {
+    // Scenario 3: succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
+    it('succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'USER_1',
@@ -1551,7 +1716,7 @@ describe('PiaIntakeService', () => {
 
       const result = service.validateUserAccess(user, userRoles, piaIntake);
 
-      expect(result).toBe(true);
+      expect(result).toBe(UserTypesEnum.MPO);
     });
 
     // Scenario 4: Test fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of

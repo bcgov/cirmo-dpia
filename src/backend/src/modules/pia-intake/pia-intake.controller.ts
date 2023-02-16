@@ -47,6 +47,9 @@ export class PiaIntakeController {
   @ApiCreatedResponse({
     description: 'Successfully submitted a PIA-intake form',
   })
+  @ApiForbiddenResponse({
+    description: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+  })
   async create(
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
     @Req() req: IRequest,
