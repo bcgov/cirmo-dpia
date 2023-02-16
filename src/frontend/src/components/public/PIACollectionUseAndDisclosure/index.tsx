@@ -85,7 +85,7 @@ const PIACollectionUseAndDisclosure = () => {
   };
 
   return (
-    <div className="bcgovPageContainer wrapper ">
+    <div className=" form__container ms-md-auto right__container ">
       <h1 className="results-header">{Messages.Headings.Title.en}</h1>
       <span>{Messages.Headings.Subtitle.en}</span>
       <h2 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h2>
