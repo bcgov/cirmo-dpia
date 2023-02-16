@@ -3,7 +3,7 @@ import { piaFormSideNavPages as pages } from './pia-form-sideNav-pages';
 
 /* TODO: This logic is not complete. Will need to be worked on
     when implementing next steps */
-const enableSidenavList = (pi: boolean | null) => {
+const enableSideNavList = (pi: boolean | null) => {
   pages.map((page) => {
     if (pi) {
       /* All features are enabled if the 
@@ -31,10 +31,10 @@ interface PI {
 }
 
 const PiaSideNav = (personal_information: PI) => {
-  const sideelement = enableSidenavList(
+  const sideElement = enableSideNavList(
     personal_information.personal_information,
   );
-  return <NavBar pages={sideelement} CSSclass="sidenav" />;
+  return <NavBar pages={sideElement} CSSclass="sidenav" />;
 };
 
 export default PiaSideNav;
