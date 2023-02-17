@@ -7,7 +7,7 @@ export const NavPages = [
   },
   {
     id: 2,
-    label: 'Create new PIA',
+    label: 'Create new',
     link: '/ppq',
     enable: true,
   },

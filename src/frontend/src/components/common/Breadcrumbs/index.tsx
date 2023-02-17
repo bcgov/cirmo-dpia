@@ -18,7 +18,7 @@ const Breadcrumbs = (): React.ReactElement => {
         List of PIAs
       </Link>
       <FontAwesomeIcon className="icon breadcrumb-arrow" icon={faAngleRight} />
-      <b>Create New</b>
+      <b>Create New PIA</b>
     </nav>
   );
 };

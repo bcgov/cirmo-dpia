@@ -19,6 +19,10 @@
 
 .form__section {
   margin-top: 4rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .form__h2 {
