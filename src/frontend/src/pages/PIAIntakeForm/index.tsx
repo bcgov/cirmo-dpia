@@ -7,7 +7,7 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
-import { shallowEqual } from '../../utils/object-comparison.util';
+import { deepEqual } from '../../utils/object-comparison.util';
 import { SupportedAlertTypes } from '../../components/common/Alert/interfaces';
 import { getShortTime } from '../../utils/date';
 import PIASubHeader from '../../components/public/PIASubHeader';
@@ -152,7 +152,7 @@ const PIAFormPage = () => {
   };
 
   const hasFormChanged = useCallback(() => {
-    return !shallowEqual(stalePia, pia, ['updatedAt', 'saveId']);
+    return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
   }, [pia, stalePia]);
 
   const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
@@ -210,7 +210,7 @@ const PIAFormPage = () => {
         const updatedPia = await upsertAndUpdatePia({
           status: PiaStatuses.MPO_REVIEW,
         });
-        navigate(routes.PIA_INTAKE_RESULT, {
+        navigate(routes.PIA_RESULT, {
           state: { result: updatedPia },
         });
       } else if (buttonValue === 'cancel') {
@@ -405,15 +405,6 @@ const PIAFormPage = () => {
     [hasFormChanged],
   );
 
-  const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    event.target.value === 'Yes'
-      ? piaStateChangeHandler(true, 'hasAddedPiToDataElements')
-      : event.target.value === "I'm not sure"
-      ? piaStateChangeHandler(null, 'hasAddedPiToDataElements')
-      : piaStateChangeHandler(false, 'hasAddedPiToDataElements');
-  };
-
   useEffect(() => {
     // No initial state to fetch OR already fetched
     // if not in edit mode (no id available) OR initial state already fetched
@@ -476,7 +467,9 @@ const PIAFormPage = () => {
           <PIASideNav
             personal_information={Boolean(pia?.hasAddedPiToDataElements)}
           ></PIASideNav>
-          <Outlet context={[pia, piaStateChangeHandler]} />
+          <section className="ppq-form-section form__container ms-md-auto right__container">
+            <Outlet context={[pia, piaStateChangeHandler]} />
+          </section>
         </div>
         <Modal
           confirmLabel={piaModalConfirmLabel}

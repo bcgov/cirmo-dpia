@@ -2,6 +2,7 @@ import { Children, useContext, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
+import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -42,24 +43,18 @@ const Router = () => {
           <Route path="result" element={<PIAIntakeResultsPage />} />
           <Route path="new" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
-            <Route path="intake" element={<PIAIntakeFormPage />} />
-            {/* Placeholder for other tabs */}
+            <Route path="intake" element={<PIAFormIntake />} />
           </Route>
-          <Route path=":id" element={<PIAIntakeFormPage />}>
-            <Route index element={<Navigate relative="path" to="intake" />} />
-            <Route path="intake">
-              <Route path="" element={<PIADetailPage />} />
-              <Route path="edit" element={<PIAIntakeFormPage />} />
+          <Route path=":id">
+            <Route index element={<Navigate relative="path" to="view" />} />
+            <Route path="view" element={<PIADetailPage />} />
+            <Route path="intake" element={<PIAIntakeFormPage />}>
+              <Route index element={<Navigate relative="path" to="edit" />} />
+              <Route path="edit" element={<PIAFormIntake />} />
             </Route>
             {/* Placeholder for other tabs */}
           </Route>
         </Route>
-        <Route path="/pia-intake/:id/edit" element={<PIAIntakeFormPage />} />
-        <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
-        <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
-        <Route path="/pia-list" element={<PIAList />} />
-        <Route path="/pia-list/*" element={<PIAList />} />
-        <Route path="/pia/intake/:id/:title" element={<PIADetailPage />} />
       </Route>
       <Route path="/not-authorized" element={<Unauthorized />} />
       <Route path="/" element={<LandingPage />} />

@@ -28,6 +28,7 @@ import {
   IPiaForm,
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
+import { buildDynamicPath } from '../../utils/path';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -157,7 +158,7 @@ const PIADetailPage = () => {
     if (pia.status === PiaStatuses.MPO_REVIEW) {
       handleShowModal('edit');
     } else {
-      navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
+      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }), {
         state: pia,
       });
     }
@@ -225,13 +226,13 @@ const PIADetailPage = () => {
       if (buttonValue === 'submit') {
         const updatedPia = await updatePiaHttpRequest(pia.id, requestBody);
         setPia(updatedPia);
-        navigate(routes.PIA_INTAKE_RESULT, {
+        navigate(routes.PIA_RESULT, {
           state: { result: updatedPia },
         });
       } else {
         const updatedPia = await updatePiaHttpRequest(pia?.id, requestBody);
         setPia(updatedPia);
-        navigate(`${routes.PIA_INTAKE}/${id}/edit`, {
+        navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }), {
           state: pia,
         });
       }

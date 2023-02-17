@@ -13,7 +13,7 @@ const Breadcrumbs = (): React.ReactElement => {
             ? 'breadcrumb-not-active'
             : 'breadcrumb-active'
         }
-        to="/pia-list"
+        to="/pia/list"
       >
         List of PIAs
       </Link>

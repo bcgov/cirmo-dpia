@@ -10,6 +10,7 @@ import piaImg from '../../assets/pia_intake.svg';
 import { Link } from 'react-router-dom';
 import messages from './messages';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
+import { routes } from '../../constant/routes';
 
 interface IComponentProps {
   showMPOContents: boolean;
@@ -34,7 +35,7 @@ function PPQLandingPage(props: IComponentProps) {
 
               <div data-cy="ppq-btn">
                 <Link
-                  to="/pia-intake"
+                  to={routes.PIA_NEW}
                   className="bcgovbtn bcgovbtn__primary ppq-btn"
                 >
                   Start PIA Intake
