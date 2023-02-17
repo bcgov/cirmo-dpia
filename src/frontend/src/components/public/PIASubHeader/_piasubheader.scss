@@ -1,8 +1,8 @@
 .subheader-container {
     display: flex;
     position: fixed;
-    top: $piasubheader-height;
-    height: $piasubheader-height;
+    top: $piaSubheader-top;
+    height: $piaSubheader-height;
     width: 100%;
     background-color: $bg-white;
     z-index: 100;

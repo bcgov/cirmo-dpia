@@ -66,8 +66,8 @@ $padding-block: 7rem;
 $footer-height: 46px;
 
 /* pia subheader variables */
-$piasubheader-height: 100px;
-$piasubheader-height: 7rem;
+$piaSubheader-top: calc($header-height + $navbar-height);
+$piaSubheader-height: 7rem;
 
 /* Taken from bootstrap */
 
