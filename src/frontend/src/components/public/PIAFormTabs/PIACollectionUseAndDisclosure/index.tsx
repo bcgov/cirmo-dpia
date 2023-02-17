@@ -1,17 +1,74 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import InputText from '../../common/InputText/InputText';
+import InputText from '../../../common/InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import { isMPORole } from '../../../utils/helper.util';
-import PIASideNav from '../PIASideNav';
+import { useNavigate, useParams } from 'react-router-dom';
+import { isMPORole } from '../../../../utils/helper.util';
+import PIASideNav from '../../PIASideNav';
+import {
+  IPIAIntake,
+  IPIAIntakeResponse,
+} from '../../../../types/interfaces/pia-intake.interface';
+import { HttpRequest } from '../../../../utils/http-request.util';
+import { API_ROUTES } from '../../../../constant/apiRoutes';
+import PIASubHeader from '../../PIASubHeader';
 
 const PIACollectionUseAndDisclosure = () => {
   const navigate = useNavigate();
+  /* below code will be removed when we have a parent component to handle subheader */
+
+  const { id } = useParams();
+  const [pia, setPia] = useState<IPIAIntake>({});
+  const [fetchPiaError, setFetchPiaError] = useState('');
+  const updatePiaHttpRequest = (
+    updatedId: number,
+    requestBody: Partial<IPIAIntake>,
+  ) => {
+    return HttpRequest.patch<IPIAIntake>(
+      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${updatedId}`),
+      requestBody,
+    );
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // Actually perform fetch
+        const result = (
+          await HttpRequest.get<IPIAIntakeResponse>(
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
+          )
+        ).data;
+        setPia(result);
+      } catch (e) {
+        setFetchPiaError('Something went wrong. Please try again.');
+        throw new Error('Fetch pia failed');
+      }
+    })();
+  }, [id]);
+
   const [disclosure, setDisclosure] = useState('');
   const [steps, setSteps] = useState([
+    {
+      drafterInput: null,
+      mpoInput: null,
+      foippaInput: null,
+      OtherInput: null,
+    },
+    {
+      drafterInput: null,
+      mpoInput: null,
+      foippaInput: null,
+      OtherInput: null,
+    },
+    {
+      drafterInput: null,
+      mpoInput: null,
+      foippaInput: null,
+      OtherInput: null,
+    },
     {
       drafterInput: null,
       mpoInput: null,
@@ -106,6 +163,15 @@ const PIACollectionUseAndDisclosure = () => {
         { value: null, id: 'OtherInput' },
       ],
     ]);
+    setSteps([
+      ...steps,
+      {
+        drafterInput: null,
+        mpoInput: null,
+        foippaInput: null,
+        OtherInput: null,
+      },
+    ]);
   };
   const isMPO = () => {
     return isMPORole();
@@ -114,6 +180,8 @@ const PIACollectionUseAndDisclosure = () => {
     const newData = [...rows];
     newData.splice(index, 1);
     setRows(newData);
+    delete steps[index];
+    setSteps(steps);
     changeDisclosureData(newData, 'steps');
   };
   const handleBackClick = () => {
@@ -143,9 +211,18 @@ const PIACollectionUseAndDisclosure = () => {
     changeDisclosureData(steps, 'steps');
   };
 
+  const printResult = () => {
+    console.log('result', disclosureData);
+  };
+
   return (
     <>
       {/* PIA sub header will handle later  */}
+      <PIASubHeader
+        pia={pia}
+        secondaryButtonText="Edit"
+        primaryButtonText="Submit"
+      />
       <div className="bcgovPageContainer background background__form wrapper">
         <div className="component__container">
           <PIASideNav personal_information={Boolean(true)}></PIASideNav>
@@ -287,6 +364,7 @@ const PIACollectionUseAndDisclosure = () => {
               <button
                 type="submit"
                 className="bcgovbtn bcgovbtn__primary btn-next"
+                onClick={printResult}
               >
                 Next
               </button>

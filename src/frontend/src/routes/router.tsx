@@ -7,6 +7,7 @@ import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
 import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
 import PIACollectionUseAndDisclosure from '../components/public/PIACollectionUseAndDisclosure';
+import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/PIACollectionUseAndDisclosure';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -62,10 +63,6 @@ const Router = () => {
             <Route index element={<Navigate relative="path" to="intake" />} />
             <Route path="intake" element={<PIAIntakeFormPage />} />
             {/* Placeholder for other tabs */}
-            <Route
-              path="disclosure"
-              element={<PIACollectionUseAndDisclosure />}
-            />
           </Route>
 
           <Route path=":id/view/:title" element={<PIADetailPage />} />
@@ -118,8 +115,6 @@ const Router = () => {
             </Route>
           </Route>
         </Route>
-        <Route path="/pia-intake/:id/edit" element={<PIAIntakeFormPage />} />
-        <Route path="/pia-intake" element={<PIAIntakeFormPage />} />
         <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
         <Route path="/pia-list" element={<PIAList />} />
         <Route path="/pia-list/*" element={<PIAList />} />

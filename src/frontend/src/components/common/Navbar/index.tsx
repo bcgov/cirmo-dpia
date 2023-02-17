@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { INavbarPages } from './interfaces';
 
 function NavBar({
@@ -7,6 +7,7 @@ function NavBar({
   CSSclass = 'navbar-container wrapper',
 }: INavbarPages): ReactElement {
   const currentPath = window.location.pathname;
+  const { id } = useParams();
   return (
     <nav className={CSSclass}>
       <ul className="navbar">
