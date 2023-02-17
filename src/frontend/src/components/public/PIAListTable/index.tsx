@@ -3,6 +3,8 @@ import { dateToString } from '../../../utils/date';
 import { statusList } from '../../../utils/status';
 import TableOrdering from './TableOrdering';
 import { IDataTable } from './interface';
+import { routes } from '../../../constant/routes';
+import { buildDynamicPath } from '../../../utils/path';
 
 const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
   return (
@@ -52,14 +54,16 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                 )}
               </td>
               <td>
-                <Link
-                  className="bcgovbtn bcgovbtn__tertiary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  to={`/pia/intake/${pia.id}/${pia.title}`}
-                >
-                  View Details
-                </Link>
+                {pia.id && (
+                  <Link
+                    className="bcgovbtn bcgovbtn__tertiary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    to={buildDynamicPath(routes.PIA_VIEW, { id: pia.id })}
+                  >
+                    View Details
+                  </Link>
+                )}
               </td>
             </tr>
           ))}

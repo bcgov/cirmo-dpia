@@ -38,7 +38,7 @@ function LandingPage() {
               </button>
             )}
             {isAuthenticated() && (
-              <Link className="bcgovbtn bcgovbtn__primary" to="/pia-list">
+              <Link className="bcgovbtn bcgovbtn__primary" to="/pia">
                 Access App
               </Link>
             )}

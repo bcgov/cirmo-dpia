@@ -10,7 +10,7 @@ export const piaFormSideNavPages: INavbarItem[] = [
   {
     id: 1,
     label: 'PIA Intake',
-    link: '/pia-intake',
+    link: '/pia/:id',
     enable: true,
   },
 ];

@@ -1,9 +1,9 @@
 import { MouseEventHandler } from 'react';
 import { ILastSaveAlterInfo } from '../../../pages/PIAIntakeForm';
-import { IPIAIntake } from '../../../types/interfaces/pia-intake.interface';
+import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 
 export interface PIASubHeaderProps {
-  pia: IPIAIntake;
+  pia: IPiaForm;
   secondaryButtonText?: string;
   primaryButtonText?: string;
   lastSaveAlertInfo?: ILastSaveAlterInfo;
