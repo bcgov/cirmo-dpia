@@ -1,7 +1,6 @@
-import Pagination from '../../components/common/Pagination';
-import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
+import { GovMinistriesEnum } from '../../../../types/enums/gov-ministries.enum';
 
-export interface IPIAIntake {
+export interface IPiaFormIntake {
   title?: string;
   ministry?: GovMinistriesEnum | string;
   branch?: string;
@@ -18,17 +17,4 @@ export interface IPIAIntake {
   dataElementsInvolved?: string;
   hasAddedPiToDataElements?: boolean | null;
   riskMitigation?: string | undefined;
-  id?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  status?: string;
-  saveId?: number;
-  submittedAt?: Date | null;
-}
-
-export interface IPIAIntakeResponse {
-  data: IPIAIntake;
-  total: number;
-  page: number;
-  pageSize: number;
 }

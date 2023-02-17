@@ -8,7 +8,6 @@ import PIADetailPage from '../pages/PIADetailPage';
 import PIAIntakeFormPage from '../pages/PIAIntakeForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAList from '../pages/PIAListPage';
-import PiaFormPage from '../pages/PiaFormPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
@@ -41,12 +40,13 @@ const Router = () => {
           <Route index element={<Navigate relative="path" to="list" />} />
           <Route path="list" element={<PIAList />} />
           <Route path="result" element={<PIAIntakeResultsPage />} />
-          <Route path="new" element={<PiaFormPage />}>
+          <Route path="new" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
             <Route path="intake" element={<PIAIntakeFormPage />} />
             {/* Placeholder for other tabs */}
           </Route>
-          <Route path=":id" element={<PiaFormPage />}>
+          <Route path=":id" element={<PIAIntakeFormPage />}>
+            <Route index element={<Navigate relative="path" to="intake" />} />
             <Route path="intake">
               <Route path="" element={<PIADetailPage />} />
               <Route path="edit" element={<PIAIntakeFormPage />} />

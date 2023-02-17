@@ -1,17 +1,10 @@
-import Dropdown from '../../components/common/Dropdown';
-import InputText from '../../components/common/InputText/InputText';
-import { MinistryList, PIOptions, PiaStatuses } from '../../constant/constant';
+import { PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
-import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  IPIAIntake,
-  IPIAIntakeResponse,
-} from '../../types/interfaces/pia-intake.interface';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { shallowEqual } from '../../utils/object-comparison.util';
@@ -19,6 +12,15 @@ import { SupportedAlertTypes } from '../../components/common/Alert/interfaces';
 import { getShortTime } from '../../utils/date';
 import PIASubHeader from '../../components/public/PIASubHeader';
 import PIASideNav from '../../components/public/PIASideNav';
+import {
+  IPiaForm,
+  IPiaFormResponse,
+} from '../../types/interfaces/pia-form.interface';
+
+export type PiaStateChangeHandlerType = (
+  value: any,
+  key: keyof IPiaForm,
+) => any;
 
 export interface ILastSaveAlterInfo {
   message: string;
@@ -26,17 +28,17 @@ export interface ILastSaveAlterInfo {
   show: boolean;
 }
 
-const PIAIntakeFormPage = () => {
+const PIAFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const emptyState: IPIAIntake = {
+  const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
   };
 
-  const [stalePia, setStalePia] = useState<IPIAIntake>(emptyState);
-  const [pia, setPia] = useState<IPIAIntake>(emptyState);
+  const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
+  const [pia, setPia] = useState<IPiaForm>(emptyState);
 
   // if id is provided, fetch initial and updated state from db
   const [initialPiaStateFetched, setInitialPiaStateFetched] =
@@ -56,7 +58,7 @@ const PIAIntakeFormPage = () => {
       show: false,
     });
 
-  const piaStateChangeHandler = (value: any, key: keyof IPIAIntake) => {
+  const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
     setStalePia(pia);
 
     setPia((latest) => ({
@@ -139,7 +141,7 @@ const PIAIntakeFormPage = () => {
 
   const fetchAndUpdatePia = async (piaId: string) => {
     const updatedPia = (
-      await HttpRequest.get<IPIAIntakeResponse>(
+      await HttpRequest.get<IPiaFormResponse>(
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
       )
     ).data;
@@ -153,7 +155,7 @@ const PIAIntakeFormPage = () => {
     return !shallowEqual(stalePia, pia, ['updatedAt', 'saveId']);
   }, [pia, stalePia]);
 
-  const upsertAndUpdatePia = async (changes: Partial<IPIAIntake> = {}) => {
+  const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
 
     if (!hasExplicitChanges && !hasFormChanged()) {
@@ -161,15 +163,15 @@ const PIAIntakeFormPage = () => {
       return pia;
     }
 
-    let updatedPia: IPIAIntake;
+    let updatedPia: IPiaForm;
 
     if (pia?.id) {
-      updatedPia = await HttpRequest.patch<IPIAIntake>(
+      updatedPia = await HttpRequest.patch<IPiaForm>(
         API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
         { ...pia, ...changes },
       );
     } else {
-      updatedPia = await HttpRequest.post<IPIAIntake>(API_ROUTES.PIA_INTAKE, {
+      updatedPia = await HttpRequest.post<IPiaForm>(API_ROUTES.PIA_INTAKE, {
         ...pia,
         ...changes,
       });
@@ -474,268 +476,7 @@ const PIAIntakeFormPage = () => {
           <PIASideNav
             personal_information={Boolean(pia?.hasAddedPiToDataElements)}
           ></PIASideNav>
-          <section className="ppq-form-section form__container ms-md-auto right__container">
-            <form
-              className="container__padding-inline needs-validation"
-              onSubmit={(e) => {
-                handleStatusChange(PiaStatuses.MPO_REVIEW);
-                handleSubmit(e);
-              }}
-            >
-              <section className="form__section">
-                <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
-                <div className="row">
-                  <InputText
-                    label="Title"
-                    value={pia?.title}
-                    onChange={(e) =>
-                      piaStateChangeHandler(e.target.value, 'title')
-                    }
-                    required={true}
-                  />
-                </div>
-                <div className="row">
-                  <Dropdown
-                    id="ministry-select"
-                    value={pia?.ministry || ''}
-                    label="Ministry"
-                    optionalClass="col-md-6"
-                    options={MinistryList}
-                    changeHandler={(e) =>
-                      piaStateChangeHandler(e.target.value, 'ministry')
-                    }
-                    required={true}
-                  />
-                  <div className="col">
-                    <InputText
-                      label="Branch"
-                      value={pia?.branch}
-                      required={true}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'branch')
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <InputText
-                      label="Your name"
-                      id="drafterName"
-                      value={pia?.drafterName}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'drafterName')
-                      }
-                      required={true}
-                    />
-                  </div>
-                  <div className="col">
-                    <InputText
-                      label="Your email"
-                      id="drafterEmail"
-                      value={pia?.drafterEmail}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'drafterEmail')
-                      }
-                      required={true}
-                      type="email"
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <InputText
-                      label="Your title"
-                      id="drafterTitle"
-                      value={pia?.drafterTitle}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'drafterTitle')
-                      }
-                      required={true}
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <InputText
-                      label="Initiative lead name"
-                      id="leadName"
-                      value={pia?.leadName}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'leadName')
-                      }
-                      required={true}
-                    />
-                  </div>
-                  <div className="col">
-                    <InputText
-                      label="Initiative lead email"
-                      id="leadEmail"
-                      value={pia?.leadEmail}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'leadEmail')
-                      }
-                      required={true}
-                      type="email"
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <InputText
-                      label="Initiative lead title"
-                      id="leadTitle"
-                      value={pia?.leadTitle}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'leadTitle')
-                      }
-                      required={true}
-                    />
-                  </div>
-                </div>
-                <div className="row form__row--flex-end">
-                  <div className="col">
-                    <InputText
-                      label="Ministry Privacy Officer"
-                      helperText={Messages.GeneralInfoSection.MPOHelperText.en}
-                      linkText={Messages.GeneralInfoSection.MPOLinkText.en}
-                      linkHref={Messages.GeneralInfoSection.MPOLinkHref}
-                      hasIcon={true}
-                      id="mpoName"
-                      value={pia?.mpoName}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'mpoName')
-                      }
-                      required={true}
-                    />
-                  </div>
-                  <div className="col">
-                    <InputText
-                      label="MPO email"
-                      id="mpoEmail"
-                      value={pia?.mpoEmail}
-                      onChange={(e) =>
-                        piaStateChangeHandler(e.target.value, 'mpoEmail')
-                      }
-                      required={true}
-                      type="email"
-                    />
-                  </div>
-                </div>
-              </section>
-              <section className="form__section">
-                <h2 className="form__h2">
-                  {Messages.InitiativeDescriptionSection.H2Text.en}
-                </h2>
-                <p className="form__helper-text">
-                  {Messages.InitiativeDescriptionSection.HelperText.en}
-                </p>
-                <div className="richText" id="initiativeDescription">
-                  <MDEditor
-                    preview="edit"
-                    value={pia?.initiativeDescription}
-                    onChange={(value) =>
-                      piaStateChangeHandler(value, 'initiativeDescription')
-                    }
-                  />
-                </div>
-              </section>
-              <section className="form__section">
-                <h2 className="form__h2">
-                  {Messages.InitiativeScopeSection.H2Text.en}
-                </h2>
-                <p className="form__helper-text">
-                  {Messages.InitiativeScopeSection.HelperText.en}
-                </p>
-                <div className="richText" id="initiativeScope">
-                  <MDEditor
-                    preview="edit"
-                    value={pia?.initiativeScope}
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      piaStateChangeHandler(value, 'initiativeScope')
-                    }
-                  />
-                </div>
-              </section>
-              <section className="form__section">
-                <h2 className="form__h2">
-                  {Messages.InitiativeDataElementsSection.H2Text.en}
-                </h2>
-                <p className="form__helper-text">
-                  {Messages.InitiativeDataElementsSection.HelperText.en}
-                </p>
-                <div className="richText" id="dataElementsInvolved">
-                  <MDEditor
-                    preview="edit"
-                    value={pia?.dataElementsInvolved}
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      piaStateChangeHandler(value, 'dataElementsInvolved')
-                    }
-                  />
-                </div>
-              </section>
-              <section className="form__section">
-                <h2 className="form__h2">
-                  {Messages.InitiativePISection.H2Text.en}
-                </h2>
-                <p className="form__helper-text">
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
-                    rel="noreferrer external"
-                    target="_blank"
-                  >
-                    {Messages.InitiativePISection.LinkText.en}
-                  </a>
-                  {Messages.InitiativePISection.HelperText.en}
-                </p>
-                {PIOptions.map((option, index) => (
-                  <label
-                    key={index}
-                    className="form__input-label input-label-row"
-                  >
-                    <input
-                      type="radio"
-                      name="pi-options-radio"
-                      value={option}
-                      onChange={handlePIOptionChange}
-                      defaultChecked={PIOptions[0] === option}
-                    />
-                    {option}
-                  </label>
-                ))}
-              </section>
-              {pia?.hasAddedPiToDataElements === false && (
-                <section className="form__section">
-                  <h2 className="form__h2">
-                    {Messages.InitiativeRiskReductionSection.H2Text.en}
-                  </h2>
-                  <p className="form__helper-text">
-                    {Messages.InitiativeRiskReductionSection.HelperText.en}
-                  </p>
-                  <div className="richText" id="riskMitigation">
-                    <MDEditor
-                      preview="edit"
-                      value={pia?.riskMitigation}
-                      defaultTabEnable={true}
-                      onChange={(value) =>
-                        piaStateChangeHandler(value, 'riskMitigation')
-                      }
-                    />
-                  </div>
-                </section>
-              )}
-              {message && (
-                <Alert
-                  type="danger"
-                  message={message}
-                  className="mt-4"
-                  onClose={() => setMessage('')}
-                />
-              )}
-            </form>
-          </section>
+          <Outlet context={[pia, piaStateChangeHandler]} />
         </div>
         <Modal
           confirmLabel={piaModalConfirmLabel}
@@ -753,4 +494,4 @@ const PIAIntakeFormPage = () => {
   );
 };
 
-export default PIAIntakeFormPage;
+export default PIAFormPage;

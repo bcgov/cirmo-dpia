@@ -1,8 +1,4 @@
 import {
-  IPIAIntake,
-  IPIAIntakeResponse,
-} from '../../types/interfaces/pia-intake.interface';
-import {
   faFileArrowDown,
   faPenToSquare,
   faChevronDown,
@@ -28,6 +24,10 @@ import {
 import Spinner from '../../components/common/Spinner';
 import Modal from '../../components/common/Modal';
 import PIASubHeader from '../../components/public/PIASubHeader';
+import {
+  IPiaForm,
+  IPiaFormResponse,
+} from '../../types/interfaces/pia-form.interface';
 
 const PIADetailPage = () => {
   // https://github.com/microsoft/TypeScript/issues/48949
@@ -36,7 +36,7 @@ const PIADetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>('');
-  const [pia, setPia] = useState<IPIAIntake>({});
+  const [pia, setPia] = useState<IPiaForm>({});
   const [fetchPiaError, setFetchPiaError] = useState('');
   const [piaMinistryFullName, setPiaMinistryFullName] = useState('');
   const [piOption, setPIOption] = useState('');
@@ -55,9 +55,9 @@ const PIADetailPage = () => {
 
   const updatePiaHttpRequest = (
     updatedId: number,
-    requestBody: Partial<IPIAIntake>,
+    requestBody: Partial<IPiaForm>,
   ) => {
-    return HttpRequest.patch<IPIAIntake>(
+    return HttpRequest.patch<IPiaForm>(
       API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${updatedId}`),
       requestBody,
     );
@@ -68,7 +68,7 @@ const PIADetailPage = () => {
       try {
         // Actually perform fetch
         const result = (
-          await HttpRequest.get<IPIAIntakeResponse>(
+          await HttpRequest.get<IPiaFormResponse>(
             API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
           )
         ).data;
@@ -173,7 +173,7 @@ const PIADetailPage = () => {
       return;
     }
 
-    const requestBody: Partial<IPIAIntake> = {
+    const requestBody: Partial<IPiaForm> = {
       status: statusLocal,
       saveId: pia?.saveId,
       submittedAt: pia?.submittedAt,
@@ -205,7 +205,7 @@ const PIADetailPage = () => {
     event.preventDefault();
     const buttonValue = event.target.value;
 
-    const requestBody: Partial<IPIAIntake> =
+    const requestBody: Partial<IPiaForm> =
       buttonValue === 'submit'
         ? {
             status: PiaStatuses.MPO_REVIEW,

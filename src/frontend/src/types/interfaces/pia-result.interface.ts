@@ -1,11 +1,11 @@
-import { IPIAIntake } from './pia-intake.interface';
+import { IPiaForm } from './pia-form.interface';
 
 export interface IPIAResult {
   id: number;
 }
 
 export interface IPIAResults {
-  data: IPIAIntake[];
+  data: IPiaForm[];
   page: number;
   pageSize: number;
   total: number;

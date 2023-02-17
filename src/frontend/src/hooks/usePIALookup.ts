@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../constant/apiRoutes';
+import { IPiaForm } from '../types/interfaces/pia-form.interface';
 
-import { IPIAIntake } from '../types/interfaces/pia-intake.interface';
 import { IPIAResults } from '../types/interfaces/pia-result.interface';
 import { HttpRequest } from '../utils/http-request.util';
 
@@ -12,7 +12,7 @@ export const usePIALookup = (
   pageNumber: number,
   pageSize: number,
 ) => {
-  const [tableData, setTableData] = useState<IPIAIntake[]>([]);
+  const [tableData, setTableData] = useState<IPiaForm[]>([]);
   const [PageSize, setPageSize] = useState<number>(0);
   const [Total, setTotal] = useState<number>(0);
   const [Page, setPage] = useState<number>(0);
