@@ -16,6 +16,8 @@ import {
   IPiaForm,
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
+import { buildDynamicPath } from '../../utils/path';
+import Spinner from '../../components/common/Spinner';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -215,7 +217,7 @@ const PIAFormPage = () => {
         });
       } else if (buttonValue === 'cancel') {
         if (pia?.id) {
-          navigate(`/pia/intake/${pia.id}/${pia.title}`);
+          navigate(buildDynamicPath(routes.PIA_VIEW, { id: pia.id }));
         } else {
           navigate(-1);
         }
@@ -225,7 +227,13 @@ const PIAFormPage = () => {
         // noop
       } else {
         const updatedPia = await upsertAndUpdatePia();
-        navigate(`/pia/intake/${updatedPia?.id}/${updatedPia?.title}`);
+
+        if (!updatedPia.id) {
+          console.error('Invalid PIA id');
+          throw new Error();
+        }
+
+        navigate(buildDynamicPath(routes.PIA_VIEW, { id: updatedPia.id }));
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
@@ -468,7 +476,16 @@ const PIAFormPage = () => {
             personal_information={Boolean(pia?.hasAddedPiToDataElements)}
           ></PIASideNav>
           <section className="ppq-form-section form__container ms-md-auto right__container">
-            <Outlet context={[pia, piaStateChangeHandler]} />
+            {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
+            {!id || initialPiaStateFetched ? (
+              <Outlet context={[pia, piaStateChangeHandler]} />
+            ) : (
+              <div className="w-100">
+                <div className="d-flex justify-content-center">
+                  <Spinner />
+                </div>
+              </div>
+            )}
           </section>
         </div>
         <Modal
