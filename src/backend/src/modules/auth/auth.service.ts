@@ -87,7 +87,7 @@ export class AuthService {
               ),
           ),
           catchError((e) => {
-            throw new HttpException(e.response?.data, e.response?.status);
+            throw new HttpException(e.response.data, e.response.status);
           }),
         ),
     );
@@ -104,7 +104,7 @@ export class AuthService {
       this.httpService.get(this.keycloakUserInfoUri, params).pipe(
         map((res: any) => res.data as KeycloakUser),
         catchError((e) => {
-          throw new HttpException(e.response?.data, e.response?.status);
+          throw new HttpException(e.response.data, e.response.status);
         }),
       ),
     );
@@ -139,8 +139,8 @@ export class AuthService {
               ),
           ),
           catchError((e) => {
-            console.error(e.response?.data, e.response?.status);
-            throw new HttpException(e.response?.data, e.response?.status);
+            console.error(e.response.data, e.response.status);
+            throw new HttpException(e.response.data, e.response.status);
           }),
         ),
     );
@@ -164,8 +164,8 @@ export class AuthService {
         .pipe(
           map((res: any) => res.data),
           catchError((e) => {
-            console.error(e.response?.data, e.response?.status);
-            throw new HttpException(e.response?.data, e.response?.status);
+            console.error(e.response.data, e.response.status);
+            throw new HttpException(e.response.data, e.response.status);
           }),
         ),
     );
