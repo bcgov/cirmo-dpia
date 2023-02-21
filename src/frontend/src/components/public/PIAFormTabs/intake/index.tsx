@@ -11,33 +11,18 @@ import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
 
 export const PIAFormIntake = () => {
-  const { id } = useParams();
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>({});
-
-  useEffect(() => {
-    if (id && pia) {
-      // extract PIA intake fields from PIA
-      setIntakeForm(exportIntakeFromPia(pia));
-    }
-
-    if (!id) {
-      // empty state
-      setIntakeForm({
-        hasAddedPiToDataElements: true,
-      });
-    }
-  }, [id, pia]);
-
-  if (id && !pia) {
-    // if opening existing PIA, and we do not have it from context, probably it is
-    // we should never reach this block, cz parent should always send pia
-    return <>Loading...</>;
-  }
+  const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
+    exportIntakeFromPia(pia),
+  );
 
   const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
+    setIntakeForm((state) => ({
+      ...state,
+      [key]: value,
+    }));
     piaStateChangeHandler(value, key);
   };
 
