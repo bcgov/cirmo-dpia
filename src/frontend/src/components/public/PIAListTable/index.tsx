@@ -59,7 +59,10 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                     className="bcgovbtn bcgovbtn__tertiary"
                     target="_blank"
                     rel="noopener noreferrer"
-                    to={buildDynamicPath(routes.PIA_VIEW, { id: pia.id })}
+                    to={buildDynamicPath(routes.PIA_VIEW, {
+                      id: pia.id,
+                      title: pia.title || '',
+                    })}
                   >
                     View Details
                   </Link>

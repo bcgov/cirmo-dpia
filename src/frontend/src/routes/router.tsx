@@ -47,7 +47,7 @@ const Router = () => {
           </Route>
           <Route path=":id">
             <Route index element={<Navigate relative="path" to="view" />} />
-            <Route path="view" element={<PIADetailPage />} />
+            <Route path="view/:title" element={<PIADetailPage />} />
             <Route path="intake" element={<PIAIntakeFormPage />}>
               <Route index element={<Navigate relative="path" to="edit" />} />
               <Route path="edit" element={<PIAFormIntake />} />

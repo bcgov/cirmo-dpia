@@ -217,7 +217,12 @@ const PIAFormPage = () => {
         });
       } else if (buttonValue === 'cancel') {
         if (pia?.id) {
-          navigate(buildDynamicPath(routes.PIA_VIEW, { id: pia.id }));
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: pia.id,
+              title: pia.title || '',
+            }),
+          );
         } else {
           navigate(-1);
         }
@@ -233,7 +238,12 @@ const PIAFormPage = () => {
           throw new Error();
         }
 
-        navigate(buildDynamicPath(routes.PIA_VIEW, { id: updatedPia.id }));
+        navigate(
+          buildDynamicPath(routes.PIA_VIEW, {
+            id: updatedPia.id,
+            title: updatedPia.title || '',
+          }),
+        );
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
