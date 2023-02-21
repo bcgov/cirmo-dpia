@@ -4,13 +4,13 @@ export interface ICollectionUseAndDisclosure {
   collectionNotice?: CollectionNoticeInput;
 }
 
-interface StepInput {
-  drafterInput: string;
-  mpoInput: string;
-  foippaInput: string;
-  OtherInput: string;
+export interface StepInput {
+  drafterInput?: string;
+  mpoInput?: string;
+  foippaInput?: string;
+  OtherInput?: string;
 }
-interface CollectionNoticeInput {
-  drafterInput: string;
-  mpoInput: string;
+export interface CollectionNoticeInput {
+  drafterInput?: string;
+  mpoInput?: string;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
 import InputText from '../../../common/InputText/InputText';
@@ -7,15 +7,36 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { isMPORole } from '../../../../utils/helper.util';
 import PIASideNav from '../../PIASideNav';
-import { IPiaFormIntake } from '../intake/pia-form-intake.interface';
-import { HttpRequest } from '../../../../utils/http-request.util';
-import { API_ROUTES } from '../../../../constant/apiRoutes';
 import PIASubHeader from '../../PIASubHeader';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
-import { exportIntakeFromPia } from '../intake/helper/extract-intake-from-pia.helper';
+
+import {
+  CollectionNoticeInput,
+  ICollectionUseAndDisclosure,
+} from './CollectionUseAndDisclosure';
 
 const PIACollectionUseAndDisclosure = () => {
+  const navigate = useNavigate();
+  const [pia, piaStateChangeHandler] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+
+  const [collectionUseAndDisclosureForm, setCollectionUseAndDisclosureForm] =
+    useState(pia.collectionUseAndDisclosure);
+
+  const stateChangeHandler = (
+    value: any,
+    key: keyof ICollectionUseAndDisclosure,
+  ) => {
+    setCollectionUseAndDisclosureForm((state) => ({
+      ...state,
+      [key]: value,
+    }));
+    piaStateChangeHandler(
+      collectionUseAndDisclosureForm,
+      'collectionUseAndDisclosure',
+    );
+  };
   const [disclosure, setDisclosure] = useState('');
   const [steps, setSteps] = useState([
     {
@@ -44,39 +65,11 @@ const PIACollectionUseAndDisclosure = () => {
     },
   ]);
   const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState('');
-  const [disclosureData, setDisclosureData] = useState({
-    steps: [
-      {
-        drafterInput: null,
-        mpoInput: null,
-        foippaInput: null,
-        OtherInput: null,
-      },
-      {
-        drafterInput: null,
-        mpoInput: null,
-        foippaInput: null,
-        OtherInput: null,
-      },
-      {
-        drafterInput: null,
-        mpoInput: null,
-        foippaInput: null,
-        OtherInput: null,
-      },
-      {
-        drafterInput: null,
-        mpoInput: null,
-        foippaInput: null,
-        OtherInput: null,
-      },
-    ],
-    collectionNotice: {
-      drafterInput: null,
-      mpoInput: null,
-    },
-  });
-
+  const [collectionNotice, setCollectionNotice] =
+    useState<CollectionNoticeInput>({
+      drafterInput: '',
+      mpoInput: '',
+    });
   const [rows, setRows] = useState([
     [
       { value: null, id: 'drafterInput' },
@@ -103,50 +96,6 @@ const PIACollectionUseAndDisclosure = () => {
       { value: null, id: 'OtherInput' },
     ],
   ]);
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
-
-  useEffect(() => {
-    if (id && pia) {
-      // extract PIA intake fields from PIA
-      setDisclosureData(exportIntakeFromPia(pia));
-    }
-
-    if (!id) {
-      // empty state
-      setDisclosureData({});
-    }
-  }, [id, pia]);
-
-  if (id && !pia) {
-    // if opening existing PIA, and we do not have it from context, probably it is
-    // we should never reach this block, cz parent should always send pia
-    return <>Loading...</>;
-  }
-
-  const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
-    piaStateChangeHandler(value, key);
-  };
-
-  const changeDisclosureData = (value: any, key: string) => {
-    console.log('test check value', value);
-    switch (key) {
-      case 'steps':
-        disclosureData.steps = value;
-        setDisclosureData(disclosureData);
-        break;
-      case 'mpoInput':
-        disclosureData.collectionNotice.mpoInput = value;
-        setDisclosureData(disclosureData);
-        break;
-      case 'drafterInput':
-        disclosureData.collectionNotice.drafterInput = value;
-        setDisclosureData(disclosureData);
-        break;
-    }
-  };
 
   const addRow = () => {
     setRows([
@@ -177,7 +126,7 @@ const PIACollectionUseAndDisclosure = () => {
     setRows(newData);
     delete steps[index];
     setSteps(steps);
-    changeDisclosureData(newData, 'steps');
+    stateChangeHandler(newData, 'steps');
   };
   const handleBackClick = () => {
     // 👇️ replace set to true
@@ -203,11 +152,11 @@ const PIACollectionUseAndDisclosure = () => {
       return steps;
     });
     setSteps(newSteps[0]);
-    changeDisclosureData(steps, 'steps');
+    stateChangeHandler(steps, 'steps');
   };
 
   const printResult = () => {
-    console.log('result', disclosureData);
+    console.log('result', collectionUseAndDisclosureForm);
   };
 
   return (
@@ -329,7 +278,11 @@ const PIACollectionUseAndDisclosure = () => {
                   defaultTabEnable={true}
                   onChange={(value) => {
                     setDisclosure(value ? value : '');
-                    changeDisclosureData(value, 'drafterInput');
+                    setCollectionNotice({
+                      mpoInput: MPOCommentsDisclosure,
+                      drafterInput: disclosure,
+                    });
+                    stateChangeHandler(value, 'collectionNotice');
                   }}
                 />
               </div>
@@ -343,7 +296,11 @@ const PIACollectionUseAndDisclosure = () => {
                   defaultTabEnable={true}
                   onChange={(value) => {
                     setMPOCommentsDisclosure(value ? value : '');
-                    changeDisclosureData(value, 'mpoInput');
+                    setCollectionNotice({
+                      mpoInput: MPOCommentsDisclosure,
+                      drafterInput: disclosure,
+                    });
+                    stateChangeHandler(value, 'collectionNotice');
                   }}
                 />
               </div>
