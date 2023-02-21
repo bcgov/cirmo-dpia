@@ -4,51 +4,18 @@ import MDEditor from '@uiw/react-md-editor';
 import InputText from '../../../common/InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { isMPORole } from '../../../../utils/helper.util';
 import PIASideNav from '../../PIASideNav';
-import {
-  IPIAIntake,
-  IPIAIntakeResponse,
-} from '../../../../types/interfaces/pia-intake.interface';
+import { IPiaFormIntake } from '../intake/pia-form-intake.interface';
 import { HttpRequest } from '../../../../utils/http-request.util';
 import { API_ROUTES } from '../../../../constant/apiRoutes';
 import PIASubHeader from '../../PIASubHeader';
+import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { exportIntakeFromPia } from '../intake/helper/extract-intake-from-pia.helper';
 
 const PIACollectionUseAndDisclosure = () => {
-  const navigate = useNavigate();
-  /* below code will be removed when we have a parent component to handle subheader */
-
-  const { id } = useParams();
-  const [pia, setPia] = useState<IPIAIntake>({});
-  const [fetchPiaError, setFetchPiaError] = useState('');
-  const updatePiaHttpRequest = (
-    updatedId: number,
-    requestBody: Partial<IPIAIntake>,
-  ) => {
-    return HttpRequest.patch<IPIAIntake>(
-      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${updatedId}`),
-      requestBody,
-    );
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        // Actually perform fetch
-        const result = (
-          await HttpRequest.get<IPIAIntakeResponse>(
-            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
-          )
-        ).data;
-        setPia(result);
-      } catch (e) {
-        setFetchPiaError('Something went wrong. Please try again.');
-        throw new Error('Fetch pia failed');
-      }
-    })();
-  }, [id]);
-
   const [disclosure, setDisclosure] = useState('');
   const [steps, setSteps] = useState([
     {
@@ -109,23 +76,7 @@ const PIACollectionUseAndDisclosure = () => {
       mpoInput: null,
     },
   });
-  const changeDisclosureData = (value: any, key: string) => {
-    console.log('test check value', value);
-    switch (key) {
-      case 'steps':
-        disclosureData.steps = value;
-        setDisclosureData(disclosureData);
-        break;
-      case 'mpoInput':
-        disclosureData.collectionNotice.mpoInput = value;
-        setDisclosureData(disclosureData);
-        break;
-      case 'drafterInput':
-        disclosureData.collectionNotice.drafterInput = value;
-        setDisclosureData(disclosureData);
-        break;
-    }
-  };
+
   const [rows, setRows] = useState([
     [
       { value: null, id: 'drafterInput' },
@@ -152,6 +103,50 @@ const PIACollectionUseAndDisclosure = () => {
       { value: null, id: 'OtherInput' },
     ],
   ]);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [pia, piaStateChangeHandler] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+
+  useEffect(() => {
+    if (id && pia) {
+      // extract PIA intake fields from PIA
+      setDisclosureData(exportIntakeFromPia(pia));
+    }
+
+    if (!id) {
+      // empty state
+      setDisclosureData({});
+    }
+  }, [id, pia]);
+
+  if (id && !pia) {
+    // if opening existing PIA, and we do not have it from context, probably it is
+    // we should never reach this block, cz parent should always send pia
+    return <>Loading...</>;
+  }
+
+  const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
+    piaStateChangeHandler(value, key);
+  };
+
+  const changeDisclosureData = (value: any, key: string) => {
+    console.log('test check value', value);
+    switch (key) {
+      case 'steps':
+        disclosureData.steps = value;
+        setDisclosureData(disclosureData);
+        break;
+      case 'mpoInput':
+        disclosureData.collectionNotice.mpoInput = value;
+        setDisclosureData(disclosureData);
+        break;
+      case 'drafterInput':
+        disclosureData.collectionNotice.drafterInput = value;
+        setDisclosureData(disclosureData);
+        break;
+    }
+  };
 
   const addRow = () => {
     setRows([

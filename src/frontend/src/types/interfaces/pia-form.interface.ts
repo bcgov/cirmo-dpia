@@ -13,6 +13,7 @@ export interface IPiaForm extends IPiaFormIntake {
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention; 
   additionalRisks?: IAdditionalRisks;
   personalInformationBanks?: IPersonalInformationBanks;
+  collectionUseAndDisclosure?: Record<string, unknown>;
 }
 
 export interface IPiaFormResponse {
