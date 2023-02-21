@@ -1,4 +1,3 @@
-import { Children, useContext, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
@@ -61,8 +60,7 @@ const Router = () => {
 
           <Route path="new" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
-            <Route path="intake" element={<PIAIntakeFormPage />} />
-            {/* Placeholder for other tabs */}
+            <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
           <Route path=":id/view/:title" element={<PIADetailPage />} />
