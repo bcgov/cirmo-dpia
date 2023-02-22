@@ -193,16 +193,28 @@ const PIACollectionUseAndDisclosure = () => {
                     {rows.map((items, idx) => (
                       <tr key={idx}>
                         <td className="pt-4 col-sm-1">Step {idx + 1}</td>
-                        {items.map((item, index) => (
-                          <td className="px-2" key={index}>
-                            <InputText
-                              type="text"
-                              value={item.value}
-                              id={item.id}
-                              onChange={(e) => handleOnChange(e, idx, index)}
-                            />
-                          </td>
-                        ))}
+                        {items.map((item, index) =>
+                          index === 0 ? (
+                            <td className="px-2" key={index}>
+                              <InputText
+                                type="text"
+                                value={item.value}
+                                id={item.id}
+                                onChange={(e) => handleOnChange(e, idx, index)}
+                              />
+                            </td>
+                          ) : (
+                            <td className="px-2" key={index}>
+                              <InputText
+                                type="text"
+                                value={item.value}
+                                id={item.id}
+                                onChange={(e) => handleOnChange(e, idx, index)}
+                                isDisabled={isMPO() ? false : true}
+                              />
+                            </td>
+                          ),
+                        )}
 
                         <td className="pt-4">
                           <button
