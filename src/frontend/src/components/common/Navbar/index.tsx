@@ -14,22 +14,20 @@ function NavBar({
           .filter((page) => page.enable)
           .map((page) => {
             return (
-              <section key={page.id}>
+              <li key={page.id}>
                 {page.isDivider ? (
-                  <>---FIX Divider CSS---</>
+                  <hr />
                 ) : (
-                  <li>
-                    <NavLink
-                      className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
-                        page.link === currentPath ? 'active' : ''
-                      }`}
-                      to={page.link}
-                    >
-                      {page.label}
-                    </NavLink>
-                  </li>
+                  <NavLink
+                    className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
+                      page.link === currentPath ? 'active' : ''
+                    }`}
+                    to={page.link}
+                  >
+                    {page.label}
+                  </NavLink>
                 )}
-              </section>
+              </li>
             );
           })}
       </ul>
