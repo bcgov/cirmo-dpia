@@ -119,7 +119,6 @@ const Router = () => {
       </Route>
 
       <Route path="/not-authorized" element={<Unauthorized />} />
-      <Route path="/tab2" element={<PIAAdditionalRisks />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
