@@ -9,4 +9,5 @@ export interface INavbarItem {
   link: string;
   enable?: boolean;
   onclick?: () => void;
+  isDivider?: true;
 }

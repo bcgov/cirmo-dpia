@@ -10,22 +10,28 @@ function NavBar({
   return (
     <nav className={CSSclass}>
       <ul className="navbar">
-        {pages.map((page, key) => {
-          return page.enable === true ? (
-            <li key={key}>
-              <NavLink
-                className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
-                  page.link === currentPath ? 'active' : ''
-                }`}
-                to={page.link}
-              >
-                {page.label}
-              </NavLink>
-            </li>
-          ) : (
-            ''
-          );
-        })}
+        {pages
+          .filter((page) => page.enable)
+          .map((page) => {
+            return (
+              <section key={page.id}>
+                {page.isDivider ? (
+                  <>---FIX Divider CSS---</>
+                ) : (
+                  <li>
+                    <NavLink
+                      className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
+                        page.link === currentPath ? 'active' : ''
+                      }`}
+                      to={page.link}
+                    >
+                      {page.label}
+                    </NavLink>
+                  </li>
+                )}
+              </section>
+            );
+          })}
       </ul>
     </nav>
   );

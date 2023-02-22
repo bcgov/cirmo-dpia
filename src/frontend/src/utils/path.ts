@@ -1,7 +1,7 @@
 // converts ('/pia/:id/intake', {id: 2}) to '/pia/2/intake'
 export const buildDynamicPath = (
   route: string,
-  data: Record<string, string | number>,
+  data: Record<string, string | number | undefined>,
 ): string => {
   if (!data || !route) return '';
 

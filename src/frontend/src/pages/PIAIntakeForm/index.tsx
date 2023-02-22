@@ -220,7 +220,7 @@ const PIAFormPage = () => {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
               id: pia.id,
-              title: pia.title || '',
+              title: pia.title,
             }),
           );
         } else {
@@ -231,6 +231,7 @@ const PIAFormPage = () => {
       } else if (buttonValue === 'autoSaveFailed') {
         // noop
       } else {
+        // edit
         const updatedPia = await upsertAndUpdatePia();
 
         if (!updatedPia.id) {
@@ -239,9 +240,9 @@ const PIAFormPage = () => {
         }
 
         navigate(
-          buildDynamicPath(routes.PIA_VIEW, {
+          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
             id: updatedPia.id,
-            title: updatedPia.title || '',
+            title: updatedPia.title,
           }),
         );
       }
@@ -482,9 +483,7 @@ const PIAFormPage = () => {
       />
       <div className="bcgovPageContainer background background__form wrapper">
         <div className="component__container">
-          <PIASideNav
-            personal_information={Boolean(pia?.hasAddedPiToDataElements)}
-          ></PIASideNav>
+          <PIASideNav pia={pia}></PIASideNav>
           <section className="ppq-form-section form__container ms-md-auto right__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
