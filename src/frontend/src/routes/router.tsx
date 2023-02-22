@@ -5,6 +5,7 @@ import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
+import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
