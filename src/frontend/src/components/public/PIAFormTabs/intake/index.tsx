@@ -37,8 +37,8 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <form className="container__padding-inline needs-validation">
-        <section className="form__section">
+      <form className="needs-validation">
+        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
           <h2>{Messages.GeneralInfoSection.H2Text.en}</h2>
           <div className="row">
             <InputText
@@ -169,7 +169,7 @@ export const PIAFormIntake = () => {
             </div>
           </div>
         </section>
-        <section className="form__section">
+        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
           <h2 className="form__h2">
             {Messages.InitiativeDescriptionSection.H2Text.en}
           </h2>
@@ -186,7 +186,7 @@ export const PIAFormIntake = () => {
             />
           </div>
         </section>
-        <section className="form__section">
+        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
           <h2 className="form__h2">
             {Messages.InitiativeScopeSection.H2Text.en}
           </h2>
@@ -202,7 +202,7 @@ export const PIAFormIntake = () => {
             />
           </div>
         </section>
-        <section className="form__section">
+        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
           <h2 className="form__h2">
             {Messages.InitiativeDataElementsSection.H2Text.en}
           </h2>
@@ -220,7 +220,7 @@ export const PIAFormIntake = () => {
             />
           </div>
         </section>
-        <section className="form__section">
+        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
           <h2 className="form__h2">{Messages.InitiativePISection.H2Text.en}</h2>
           <p className="form__helper-text">
             <a
@@ -246,7 +246,7 @@ export const PIAFormIntake = () => {
           ))}
         </section>
         {intakeForm?.hasAddedPiToDataElements === false && (
-          <section className="form__section">
+          <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
             <h2 className="form__h2">
               {Messages.InitiativeRiskReductionSection.H2Text.en}
             </h2>
