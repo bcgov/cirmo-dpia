@@ -102,7 +102,7 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="personalInformationBank" element={comingSoonBanner}>
+            <Route path="personalInformationBank">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
