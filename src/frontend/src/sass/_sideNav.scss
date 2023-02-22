@@ -21,6 +21,16 @@
         font-weight:bold;
         padding-left: 30px;
     }
+    li {
+        width:100%;
+        overflow:hidden;
+        margin-block:1.5em;
+    }
+    a {
+        display: inline list-item;
+        width: 100%;
+        word-break: break-all;
+    }
 
     .active:before {
         position:absolute;

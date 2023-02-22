@@ -485,7 +485,7 @@ const PIAFormPage = () => {
           <PIASideNav
             personal_information={Boolean(pia?.hasAddedPiToDataElements)}
           ></PIASideNav>
-          <section className="ppq-form-section form__container ms-md-auto right__container">
+          <section className="form__container ms-md-auto right__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet context={[pia, piaStateChangeHandler]} />

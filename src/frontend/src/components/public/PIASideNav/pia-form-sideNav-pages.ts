@@ -10,7 +10,13 @@ export const piaFormSideNavPages: INavbarItem[] = [
   {
     id: 1,
     label: 'PIA Intake',
-    link: '/pia/:id',
+    link: '/pia/:id/intake',
+    enable: true,
+  },
+  {
+    id: 2,
+    label: 'Accuracy Correction and Retention',
+    link: '/pia/:id/accuracy-correction-and-retention',
     enable: true,
   },
 ];

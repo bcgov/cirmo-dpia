@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
+import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -51,6 +52,13 @@ const Router = () => {
             <Route path="intake" element={<PIAIntakeFormPage />}>
               <Route index element={<Navigate relative="path" to="edit" />} />
               <Route path="edit" element={<PIAFormIntake />} />
+            </Route>
+            <Route
+              path="accuracy-correction-and-retention"
+              element={<PIAIntakeFormPage />}
+            >
+              <Route index element={<Navigate relative="path" to="edit" />} />
+              <Route path="edit" element={<AccuracyCorrectionAndRetention />} />
             </Route>
             {/* Placeholder for other tabs */}
           </Route>
