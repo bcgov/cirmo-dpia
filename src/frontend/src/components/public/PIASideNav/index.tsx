@@ -4,7 +4,13 @@ import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import NavBar from '../../common/Navbar';
 import { piaFormSideNavPages } from './pia-form-sideNav-pages';
 
-const PiaSideNav = ({ pia }: { pia: IPiaForm }) => {
+const PiaSideNav = ({
+  pia,
+  isNewForm,
+}: {
+  pia: IPiaForm;
+  isNewForm: boolean;
+}) => {
   const { pathname } = useLocation();
 
   // check if in edit mode, redirect to navigate related links
@@ -12,11 +18,14 @@ const PiaSideNav = ({ pia }: { pia: IPiaForm }) => {
 
   const mode = pathname?.split('/').pop(); // edit or view
   useEffect(() => {
-    setIsEditMode(mode === 'edit');
-  }, [pathname, mode]);
+    setIsEditMode(mode === 'edit' || isNewForm);
+  }, [pathname, mode, isNewForm]);
 
   return (
-    <NavBar pages={piaFormSideNavPages(pia, isEditMode)} CSSclass="sidenav" />
+    <NavBar
+      pages={piaFormSideNavPages(pia, isEditMode, isNewForm)}
+      CSSclass="sidenav"
+    />
   );
 };
 

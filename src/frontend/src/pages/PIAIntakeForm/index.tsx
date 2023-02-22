@@ -484,7 +484,7 @@ const PIAFormPage = () => {
       <div className="bcgovPageContainer background background__form wrapper">
         <div className="component__container">
           <section className="side-nav__container">
-            <PIASideNav pia={pia}></PIASideNav>
+            <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
           </section>
           <section className="ppq-form-section form__container ms-md-auto content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}

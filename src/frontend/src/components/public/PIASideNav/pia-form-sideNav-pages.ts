@@ -12,19 +12,23 @@ import { INavbarItem } from '../../common/Navbar/interfaces';
 export const piaFormSideNavPages = (
   pia: IPiaForm,
   isEditMode = false,
+  isNewForm = false,
 ): INavbarItem[] => {
   // This will change once Next Steps tab is implemented
   const showPostIntakeTabs =
     !!pia?.hasAddedPiToDataElements && !!pia?.submittedAt;
 
+  const intakeLink = isNewForm
+    ? routes.PIA_NEW
+    : isEditMode
+    ? routes.PIA_INTAKE_EDIT
+    : routes.PIA_INTAKE_VIEW;
+
   return [
     {
       id: 1,
       label: 'PIA Intake',
-      link: buildDynamicPath(
-        isEditMode ? routes.PIA_INTAKE_EDIT : routes.PIA_INTAKE_VIEW,
-        { id: pia?.id },
-      ),
+      link: buildDynamicPath(intakeLink, { id: pia?.id }),
       enable: true, // always show
     },
     {
