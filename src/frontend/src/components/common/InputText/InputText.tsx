@@ -19,6 +19,7 @@ interface InputTextProps {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
+  isDisabled?: boolean;
 }
 
 const InputText = ({
@@ -35,6 +36,7 @@ const InputText = ({
   onChange = () => {},
   required = false,
   labelSide = 'top',
+  isDisabled = false,
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -74,6 +76,7 @@ const InputText = ({
         onChange={onChange}
         className="form-control"
         required={required}
+        disabled={isDisabled}
       />
     </div>
   );

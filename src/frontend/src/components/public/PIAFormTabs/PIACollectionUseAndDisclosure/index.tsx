@@ -243,7 +243,7 @@ const PIACollectionUseAndDisclosure = () => {
                   mpoInput: MPOCommentsDisclosure,
                   drafterInput: disclosure,
                 });
-                stateChangeHandler(value, 'collectionNotice');
+                stateChangeHandler(collectionNotice, 'collectionNotice');
               }}
             />
           </div>
@@ -259,7 +259,7 @@ const PIACollectionUseAndDisclosure = () => {
                   mpoInput: MPOCommentsDisclosure,
                   drafterInput: disclosure,
                 });
-                stateChangeHandler(value, 'collectionNotice');
+                stateChangeHandler(collectionNotice, 'collectionNotice');
               }}
             />
           </div>
