@@ -69,7 +69,7 @@ const PIAFormPage = () => {
     }));
   };
 
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>(''); // FIX THIS - alert is lost somewhere during refactor
   //
   // Modal State
   //

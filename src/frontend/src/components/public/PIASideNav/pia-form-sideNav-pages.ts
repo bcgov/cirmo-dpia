@@ -13,6 +13,7 @@ export const piaFormSideNavPages = (
   pia: IPiaForm,
   isEditMode = false,
 ): INavbarItem[] => {
+  // This will change once Next Steps tab is implemented
   const showPostIntakeTabs =
     !!pia?.hasAddedPiToDataElements && !!pia?.submittedAt;
 
@@ -52,7 +53,7 @@ export const piaFormSideNavPages = (
         isEditMode ? routes.PIA_DISCLOSURE_EDIT : routes.PIA_DISCLOSURE_VIEW,
         { id: pia?.id },
       ),
-      enable: !!pia?.hasAddedPiToDataElements && !!pia?.submittedAt,
+      enable: showPostIntakeTabs,
     },
     {
       id: 6,
