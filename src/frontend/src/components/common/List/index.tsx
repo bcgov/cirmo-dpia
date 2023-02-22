@@ -10,6 +10,7 @@ interface InputTextProps {
 }
 
 interface ListProps {
+  inputLabel?: string;
   data: InputTextProps[][];
   columnsName: string[];
   handleOnChange: (
@@ -19,14 +20,17 @@ interface ListProps {
   ) => void;
   addRow: MouseEventHandler<HTMLButtonElement>;
   removeRow: (idx: number) => void;
+  enableRemove?: boolean;
 }
 
 const List = ({
+  inputLabel = '',
   data,
   columnsName,
   handleOnChange,
   addRow,
   removeRow,
+  enableRemove = true,
 }: ListProps) => {
   return (
     <div>
@@ -37,9 +41,7 @@ const List = ({
               <thead>
                 <tr>
                   {columnsName.map((column, index) => (
-                    <th className="" key={index}>
-                      {column}
-                    </th>
+                    <th key={index}>{column}</th>
                   ))}
                   <th />
                 </tr>
@@ -51,10 +53,10 @@ const List = ({
                     {items.map((item, index) => (
                       <td key={index}>
                         <div className=" row">
-                          <div>
+                          <div className="mt-3 col-sm-2">
                             {index === 0 ? (
                               <label className="mt-3 ">
-                                {'Risk' + ' ' + (idx + 1)}
+                                {inputLabel + ' ' + (idx + 1)}
                               </label>
                             ) : null}
                           </div>
@@ -70,14 +72,16 @@ const List = ({
                       </td>
                     ))}
 
-                    <td>
-                      <button
-                        className=" btn btn-outline-danger mt-2 "
-                        onClick={() => removeRow(idx)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </td>
+                    {enableRemove ? (
+                      <td>
+                        <button
+                          className=" btn btn-outline-danger mt-2 "
+                          onClick={() => removeRow(idx)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>

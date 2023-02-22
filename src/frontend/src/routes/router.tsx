@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
-import PIAAdditionalRisks from '../components/public/PIAAdditionalRisks';
+import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';

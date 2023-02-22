@@ -14,7 +14,7 @@ interface InputTextProps {
   hasIcon?: boolean;
   type?: SupportedInputTypes;
   className?: string;
-  value?: string;
+  value?: string | null;
   placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   required?: boolean;
