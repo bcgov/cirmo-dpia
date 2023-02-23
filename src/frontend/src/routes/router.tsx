@@ -113,10 +113,6 @@ const Router = () => {
             </Route>
           </Route>
         </Route>
-        <Route path="/pia-result" element={<PIAIntakeResultsPage />} />
-        <Route path="/pia-list" element={<PIAList />} />
-        <Route path="/pia-list/*" element={<PIAList />} />
-        <Route path="/pia/intake/:id/:title" element={<PIADetailPage />} />
       </Route>
 
       <Route path="/not-authorized" element={<Unauthorized />} />
