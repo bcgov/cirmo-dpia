@@ -76,10 +76,6 @@ export const AccuracyCorrectionAndRetention = () => {
     );
   };
 
-  const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('change');
-  };
-
   return (
     <>
       <form className="needs-validation">
