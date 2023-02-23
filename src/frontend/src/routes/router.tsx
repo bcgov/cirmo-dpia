@@ -78,7 +78,7 @@ const Router = () => {
 
             <Route path="collectionUseAndDisclosure">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<PIACollectionUseAndDisclosure />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
