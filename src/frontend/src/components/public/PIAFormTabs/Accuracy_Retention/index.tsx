@@ -10,9 +10,9 @@ export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const defaultState: IAccuracyCorrectionAndRetention ={
-    accuracy: { 
-      description: null 
+  const defaultState: IAccuracyCorrectionAndRetention = {
+    accuracy: {
+      description: null,
     },
     correction: {
       haveProcessInPlace: null,
@@ -24,7 +24,7 @@ export const AccuracyCorrectionAndRetention = () => {
       haveApprovedInfoSchedule: null,
       describeRetention: null,
     },
-};
+  };
 
   const [
     accuracyCorrectionAndRetentionForm,
@@ -91,7 +91,10 @@ export const AccuracyCorrectionAndRetention = () => {
           <div className="">
             <MDEditor
               preview="edit"
-              value={accuracyCorrectionAndRetentionForm?.accuracy?.description  || undefined}
+              value={
+                accuracyCorrectionAndRetentionForm?.accuracy?.description ||
+                undefined
+              }
               onChange={(value) =>
                 stateChangeHandler(value, 'accuracy.description')
               }
