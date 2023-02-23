@@ -1,6 +1,6 @@
 import { PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -69,7 +69,7 @@ const PIAFormPage = () => {
     }));
   };
 
-  const [message, setMessage] = useState<string>(''); // FIX THIS - alert is lost somewhere during refactor
+  const [message, setMessage] = useState<string>('');
   //
   // Modal State
   //
@@ -482,6 +482,15 @@ const PIAFormPage = () => {
         onSubmitClick={handleValidation}
       />
       <div className="bcgovPageContainer background background__form wrapper">
+        {message && (
+          <Alert
+            type="danger"
+            message={message}
+            className="mt-0 mb-4"
+            onClose={() => setMessage('')}
+          />
+        )}
+
         <div className="component__container">
           <section className="side-nav__container">
             <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
