@@ -111,7 +111,7 @@ const Router = () => {
 
             <Route path="additionalRisks" element={comingSoonBanner}>
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<PIAAdditionalRisks />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
           </Route>
