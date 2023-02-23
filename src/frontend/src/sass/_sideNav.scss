@@ -1,15 +1,17 @@
 .sidenav {
     height: 100%;
-    position: fixed;
     z-index: 1;
     background-color: transparent;
     overflow-x: hidden;
     transition: 0.5s;
-    width:$sidenav-width;
+    
     ul,li {
         list-style-type: none;
-        margin:0;
         padding:0;
+    }
+
+    li {
+        margin-bottom: 0.75rem;
     }
 
     .sidenav__link--blue {
@@ -53,6 +55,14 @@
 
     .cursor-pointer {
         cursor:pointer;
+    }
+
+    .bcgovbtn {
+        max-height: inherit;
+        white-space: pre-wrap;
+        font-size:16px;
+        align-items: flex-start;
+        text-align: start;
     }
 }
 

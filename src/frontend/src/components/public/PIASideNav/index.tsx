@@ -1,40 +1,32 @@
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import NavBar from '../../common/Navbar';
-import { piaFormSideNavPages as pages } from './pia-form-sideNav-pages';
+import { piaFormSideNavPages } from './pia-form-sideNav-pages';
 
-/* TODO: This logic is not complete. Will need to be worked on
-    when implementing next steps */
-const enableSideNavList = (pi: boolean | null) => {
-  pages.map((page) => {
-    if (pi) {
-      /* All features are enabled if the 
-                initiative has personal information */
-      if (page.label === 'Next Steps') {
-        page.enable = false;
-      } else {
-        page.enable = true;
-      }
-    } else {
-      /* Only the delegated features are enabled if the 
-                initiative has no personal information */
-      if (page.label === 'PIA Intake' || page.label === 'Next Steps') {
-        page.enable = true;
-      } else {
-        page.enable = false;
-      }
-    }
-  });
-  return pages;
-};
+const PiaSideNav = ({
+  pia,
+  isNewForm,
+}: {
+  pia: IPiaForm;
+  isNewForm: boolean;
+}) => {
+  const { pathname } = useLocation();
 
-interface PI {
-  personal_information: boolean;
-}
+  // check if in edit mode, redirect to navigate related links
+  const [isEditMode, setIsEditMode] = useState(false);
 
-const PiaSideNav = (personal_information: PI) => {
-  const sideElement = enableSideNavList(
-    personal_information.personal_information,
+  const mode = pathname?.split('/').pop(); // edit or view
+  useEffect(() => {
+    setIsEditMode(mode === 'edit' || isNewForm);
+  }, [pathname, mode, isNewForm]);
+
+  return (
+    <NavBar
+      pages={piaFormSideNavPages(pia, isEditMode, isNewForm)}
+      CSSclass="sidenav"
+    />
   );
-  return <NavBar pages={sideElement} CSSclass="sidenav" />;
 };
 
 export default PiaSideNav;

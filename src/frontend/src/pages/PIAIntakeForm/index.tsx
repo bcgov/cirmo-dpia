@@ -1,6 +1,6 @@
 import { PiaStatuses } from '../../constant/constant';
 import Messages from './messages';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
@@ -220,7 +220,7 @@ const PIAFormPage = () => {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
               id: pia.id,
-              title: pia.title || '',
+              title: pia.title,
             }),
           );
         } else {
@@ -231,6 +231,7 @@ const PIAFormPage = () => {
       } else if (buttonValue === 'autoSaveFailed') {
         // noop
       } else {
+        // edit
         const updatedPia = await upsertAndUpdatePia();
 
         if (!updatedPia.id) {
@@ -239,9 +240,9 @@ const PIAFormPage = () => {
         }
 
         navigate(
-          buildDynamicPath(routes.PIA_VIEW, {
+          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
             id: updatedPia.id,
-            title: updatedPia.title || '',
+            title: updatedPia.title,
           }),
         );
       }
@@ -481,11 +482,20 @@ const PIAFormPage = () => {
         onSubmitClick={handleValidation}
       />
       <div className="bcgovPageContainer background background__form wrapper">
+        {message && (
+          <Alert
+            type="danger"
+            message={message}
+            className="mt-0 mb-4"
+            onClose={() => setMessage('')}
+          />
+        )}
+
         <div className="component__container">
-          <PIASideNav
-            personal_information={Boolean(pia?.hasAddedPiToDataElements)}
-          ></PIASideNav>
-          <section className="ppq-form-section form__container ms-md-auto right__container">
+          <section className="side-nav__container">
+            <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
+          </section>
+          <section className="ppq-form-section form__container ms-md-auto content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet context={[pia, piaStateChangeHandler]} />
