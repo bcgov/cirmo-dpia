@@ -35,9 +35,9 @@ jobs:
       # Tag Docker Image built with prod
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-webapp ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/app-dev:latest
+          docker tag cirmo-dpia_dpia-webapp ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/app-dev:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/app-dev:latest
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/app-dev:latest
