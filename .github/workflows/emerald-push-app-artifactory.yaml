@@ -1,15 +1,11 @@
-name: EMERALD - Push API to Artifactory
+name: EMERALD - Push WebApp to Artifactory
 
-on:
-  push:
-    branches: [ main ]
-    paths:
-      - "src/backend/**"
+on: 
   workflow_dispatch:
   
 jobs:
   DPIA-API-Build-Tag-Push:
-    environment: API-Dev
+    environment: APP-Dev
     runs-on: ubuntu-latest
     steps:
     
@@ -25,16 +21,11 @@ jobs:
           registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
           username: ${{ secrets.ARTPROJ_SA_USERNAME }}
           password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
-          
-      # Setup environment variables
-      - name: Setup environment
-        run: |
-          make api-setup-env
       
       # Build the DPIA API Application Image via docker-compose
       - name: Build the Docker image
         run: |
-          docker-compose build dpia-api
+          docker-compose build dpia-webapp
       
       # TROUBLESHOOTING - view images present in github action run
       - name: Docker List Images
@@ -44,9 +35,9 @@ jobs:
       # Tag Docker Image built with prod
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest
+          docker tag cirmo-dpia_dpia-webapp ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/app-dev:latest
 
       # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/$REPLACE_ME_WITH_NEW_PROJECT/app-dev:latest
