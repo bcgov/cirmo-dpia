@@ -265,14 +265,6 @@ export const PIAFormIntake = () => {
             </div>
           </section>
         )}
-        {/* {message && (
-          <Alert
-            type="danger"
-            message={message}
-            className="mt-4"
-            onClose={() => setMessage('')}
-          />
-        )} */}
       </form>
     </>
   );

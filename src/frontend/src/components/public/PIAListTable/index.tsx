@@ -61,7 +61,7 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                     rel="noopener noreferrer"
                     to={buildDynamicPath(routes.PIA_VIEW, {
                       id: pia.id,
-                      title: pia.title || '',
+                      title: pia.title,
                     })}
                   >
                     View Details

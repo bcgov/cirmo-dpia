@@ -14,10 +14,11 @@ interface InputTextProps {
   hasIcon?: boolean;
   type?: SupportedInputTypes;
   className?: string;
-  value?: string;
+  value?: string | null;
   placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   required?: boolean;
+  labelSide?: 'top' | 'left';
 }
 
 const InputText = ({
@@ -33,13 +34,24 @@ const InputText = ({
   placeholder = '',
   onChange = () => {},
   required = false,
+  labelSide = 'top',
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
 
+  let labelSideClasses = ' ';
+  labelSideClasses += labelSide === 'top' ? 'flex-column ' : 'flex-row ';
+  labelSideClasses += labelSide === 'left' ? 'align-items-center ' : ' ';
+
   return (
-    <div className={'form-group ' + className}>
-      <label htmlFor={inputId}>{label}</label>
+    <div
+      className={`input-text-container form-group d-flex ${labelSideClasses} ${className}`}
+    >
+      {label && (
+        <label className={labelSide === 'left' ? 'mt-0' : ''} htmlFor={inputId}>
+          {label}
+        </label>
+      )}
       {helperText !== '' && (
         <p className="form-group__p--margin-zero">
           {helperText}
