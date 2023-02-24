@@ -22,7 +22,9 @@ const PIAAdditionalRisks = () => {
   };
 
   const [risks, setRisks] = useState<Array<IAdditionRisk>>(
-    additionalRisksForm?.risks || [
+    (additionalRisksForm?.risks.length > 0
+      ? additionalRisksForm?.risks
+      : null) || [
       {
         risk: '',
         response: '',
