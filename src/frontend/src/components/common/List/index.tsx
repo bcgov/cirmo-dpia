@@ -2,15 +2,13 @@ import React, { ChangeEvent, MouseEventHandler } from 'react';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import InputText from '../InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-interface InputTextProps {
-  label: string;
-  field: string;
+export interface InputTextProps {
+  label?: string;
   value: string;
   id: string;
 }
 
 interface ListProps {
-  inputLabel?: string;
   data: InputTextProps[][];
   columnsName: string[];
   handleOnChange: (
@@ -24,7 +22,6 @@ interface ListProps {
 }
 
 const List = ({
-  inputLabel = '',
   data,
   columnsName,
   handleOnChange,
@@ -50,30 +47,21 @@ const List = ({
               <tr key={idx}>
                 {items.map((item, index) => (
                   <td key={index}>
-                    <div className="row">
-                      <div className="mt-3 col-sm-2">
-                        {index === 0 ? (
-                          <label className="mt-3 ">
-                            {inputLabel + ' ' + (idx + 1)}
-                          </label>
-                        ) : null}
-                      </div>
-                      <div className="px-2 col-sm-10">
-                        <InputText
-                          type="text"
-                          value={item.value}
-                          id={item.id}
-                          onChange={(e) => handleOnChange(e, idx, index)}
-                        />
-                      </div>
-                    </div>
+                    <InputText
+                      type="text"
+                      value={item.value}
+                      id={item.id}
+                      onChange={(e) => handleOnChange(e, idx, index)}
+                      labelSide="left"
+                      label={item.label}
+                    />
                   </td>
                 ))}
 
                 {enableRemove ? (
                   <td>
                     <button
-                      className=" btn btn-outline-danger mt-2 "
+                      className=" btn btn-outline-danger"
                       onClick={() => removeRow(idx)}
                     >
                       <FontAwesomeIcon icon={faTrash} />

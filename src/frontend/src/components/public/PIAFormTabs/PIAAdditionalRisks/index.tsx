@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import Messages from './messages';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import List from '../../../common/List';
-import { IAdditionalRisks } from './AdditionalRisks';
+import { useOutletContext } from 'react-router-dom';
+import List, { InputTextProps } from '../../../common/List';
+import { IAdditionalRisks, IAdditionRisk } from './AdditionalRisks';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 
 const PIAAdditionalRisks = () => {
-  const navigate = useNavigate();
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const [additionalRisksForm, setAdditionalRisksForm] = useState(
-    pia.additionalRisks,
-  );
+  const [additionalRisksForm, setAdditionalRisksForm] =
+    useState<IAdditionalRisks>(pia.additionalRisks || { risks: [] });
 
   const stateChangeHandler = (value: any, key: keyof IAdditionalRisks) => {
     setAdditionalRisksForm((state) => ({
@@ -22,50 +20,41 @@ const PIAAdditionalRisks = () => {
     }));
     piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
   };
-  const [risks, setRisks] = useState([
-    {
-      risk: '',
-      response: '',
-    },
-    {
-      risk: '',
-      response: '',
-    },
-    {
-      risk: '',
-      response: '',
-    },
-    {
-      risk: '',
-      response: '',
-    },
-  ]);
-  const [rows, setRows] = useState([
-    [
-      { label: 'one', field: 'one', value: 'Sample input', id: 'one' },
-      { label: 'two', field: 'two', value: 'Sample input', id: 'two' },
+
+  const [risks, setRisks] = useState<Array<IAdditionRisk>>(
+    additionalRisksForm?.risks || [
+      {
+        risk: '',
+        response: '',
+      },
+      {
+        risk: '',
+        response: '',
+      },
+      {
+        risk: '',
+        response: '',
+      },
+      {
+        risk: '',
+        response: '',
+      },
     ],
-    [
-      { label: 'one', field: 'one', value: 'Sample input', id: 'one' },
-      { label: 'two', field: 'two', value: 'Sample input', id: 'two' },
-    ],
-    [
-      { label: 'one', field: 'one', value: 'Sample input', id: 'one' },
-      { label: 'two', field: 'two', value: 'Sample input', id: 'two' },
-    ],
-    [
-      { label: 'one', field: 'one', value: 'Sample input', id: 'one' },
-      { label: 'two', field: 'two', value: 'Sample input', id: 'two' },
-    ],
-  ]);
+  );
+
+  const [rows, setRows] = useState<Array<InputTextProps[]>>(
+    risks.map((risk, i) => [
+      { label: `Risk ${i}`, value: risk.risk, id: 'one' },
+      { value: risk.response, id: 'two' },
+    ]),
+  );
 
   const addRow = () => {
-    console.log('test', rows);
     setRows([
       ...rows,
       [
-        { label: 'one', field: 'one', value: 'Sample input', id: 'one' },
-        { label: 'two', field: 'two', value: 'Sample input', id: 'two' },
+        { label: `Risk ${rows.length + 1}`, value: '', id: 'one' },
+        { value: '', id: 'two' },
       ],
     ]);
 
@@ -87,12 +76,6 @@ const PIAAdditionalRisks = () => {
     setRisks(risks);
     stateChangeHandler(risks, 'risks');
   };
-  const handleBackClick = () => {
-    // 👇️ replace set to true
-
-    // TODO replace this with the correct  value in full pia scenario
-    console.log(additionalRisksForm);
-  };
 
   const handleOnChange = (e: any, row: number, col: number) => {
     const newData = rows.map((d, i) => {
@@ -111,34 +94,23 @@ const PIAAdditionalRisks = () => {
     setRisks(newRisks[0]);
     stateChangeHandler(risks, 'risks');
   };
+
   const columnsName = ['Possible risk', 'Response'];
+
   return (
     <>
-      <div className="container__padding-inline needs-validation">
-        <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
+      <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
 
-        <section className="card">
-          <List
-            inputLabel="Risk"
-            data={rows}
-            columnsName={columnsName}
-            handleOnChange={handleOnChange}
-            addRow={addRow}
-            removeRow={removeRow}
-            enableRemove={false}
-          />
-        </section>
-
-        <div className="horizontal-divider"></div>
-        <div className="form-buttons">
-          <button
-            className="bcgovbtn bcgovbtn__secondary btn-back"
-            onClick={() => handleBackClick()}
-          >
-            Back
-          </button>
-        </div>
-      </div>
+      <section className="card p-3">
+        <List
+          data={rows}
+          columnsName={columnsName}
+          handleOnChange={handleOnChange}
+          addRow={addRow}
+          removeRow={removeRow}
+          enableRemove={true}
+        />
+      </section>
     </>
   );
 };

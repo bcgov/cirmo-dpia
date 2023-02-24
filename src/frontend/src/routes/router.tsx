@@ -79,25 +79,19 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="storingPersonalInformation" element={comingSoonBanner}>
+            <Route path="storingPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route
-              path="securityOfPersonalInformation"
-              element={comingSoonBanner}
-            >
+            <Route path="securityOfPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route
-              path="accuracyCorrectionAndRetention"
-              element={comingSoonBanner}
-            >
+            <Route path="accuracyCorrectionAndRetention">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
@@ -109,7 +103,7 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="additionalRisks" element={comingSoonBanner}>
+            <Route path="additionalRisks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PIAAdditionalRisks />} />
               <Route path="view" element={comingSoonBanner} />

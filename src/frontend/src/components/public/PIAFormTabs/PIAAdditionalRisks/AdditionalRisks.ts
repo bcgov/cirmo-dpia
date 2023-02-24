@@ -1,8 +1,8 @@
 export interface IAdditionalRisks {
-  risks?: [
-    {
-      risk?: string | null;
-      response?: string | null;
-    },
-  ];
+  risks: Array<IAdditionRisk>;
+}
+
+export interface IAdditionRisk {
+  risk: string;
+  response: string;
 }
