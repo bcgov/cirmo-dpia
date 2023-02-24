@@ -75,7 +75,7 @@ const List = ({
       </div>
 
       <div className="pt-4 pb-4 view-pid">
-        <button onClick={addRow} className="bcgovbtn bcgovbtn__tertiary  ">
+        <button onClick={addRow} className="bcgovbtn bcgovbtn__tertiary bold">
           Add more rows
           <FontAwesomeIcon icon={faPlus} />
         </button>
