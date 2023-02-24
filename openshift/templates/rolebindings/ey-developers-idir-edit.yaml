@@ -19,7 +19,7 @@ objects:
       name: william.sonnex@gov.bc.ca
     - apiGroup: rbac.authorization.k8s.io
       kind: User
-      name: icaro.pachecolopesdeoliveira@gov.bc.ca
+      name: pacheco.lopesdeoliveira@gov.bc.ca
     - apiGroup: rbac.authorization.k8s.io
       kind: User
       name: kushal.arora@gov.bc.ca
