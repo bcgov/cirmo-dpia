@@ -12,15 +12,21 @@ import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import {
   CollectionNoticeInput,
   ICollectionUseAndDisclosure,
+  StepInput,
 } from './CollectionUseAndDisclosure';
+import List, { InputTextProps } from '../../../common/List';
 
 const PIACollectionUseAndDisclosure = () => {
-  const navigate = useNavigate();
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
   const [collectionUseAndDisclosureForm, setCollectionUseAndDisclosureForm] =
-    useState(pia.collectionUseAndDisclosure);
+    useState<ICollectionUseAndDisclosure>(
+      pia.collectionUseAndDisclosure || {
+        steps: [],
+        collectionNotice: {},
+      },
+    );
 
   const stateChangeHandler = (
     value: any,
@@ -36,82 +42,68 @@ const PIACollectionUseAndDisclosure = () => {
     );
   };
   const [disclosure, setDisclosure] = useState('');
-  const [steps, setSteps] = useState([
-    {
-      drafterInput: null,
-      mpoInput: null,
-      foippaInput: null,
-      OtherInput: null,
-    },
-    {
-      drafterInput: null,
-      mpoInput: null,
-      foippaInput: null,
-      OtherInput: null,
-    },
-    {
-      drafterInput: null,
-      mpoInput: null,
-      foippaInput: null,
-      OtherInput: null,
-    },
-    {
-      drafterInput: null,
-      mpoInput: null,
-      foippaInput: null,
-      OtherInput: null,
-    },
-  ]);
+  const [steps, setSteps] = useState<Array<StepInput>>(
+    (collectionUseAndDisclosureForm?.steps.length > 0
+      ? collectionUseAndDisclosureForm?.steps
+      : null) || [
+      {
+        drafterInput: '',
+        mpoInput: '',
+        foippaInput: '',
+        OtherInput: '',
+      },
+      {
+        drafterInput: '',
+        mpoInput: '',
+        foippaInput: '',
+        OtherInput: '',
+      },
+      {
+        drafterInput: '',
+        mpoInput: '',
+        foippaInput: '',
+        OtherInput: '',
+      },
+      {
+        drafterInput: '',
+        mpoInput: '',
+        foippaInput: '',
+        OtherInput: '',
+      },
+    ],
+  );
   const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState('');
   const [collectionNotice, setCollectionNotice] =
     useState<CollectionNoticeInput>({
       drafterInput: '',
       mpoInput: '',
     });
-  const [rows, setRows] = useState([
-    [
-      { value: null, id: 'drafterInput' },
-      { value: null, id: 'mpoInput' },
-      { value: null, id: 'foippaInput' },
-      { value: null, id: 'OtherInput' },
-    ],
-    [
-      { value: null, id: 'drafterInput' },
-      { value: null, id: 'mpoInput' },
-      { value: null, id: 'foippaInput' },
-      { value: null, id: 'OtherInput' },
-    ],
-    [
-      { value: null, id: 'drafterInput' },
-      { value: null, id: 'mpoInput' },
-      { value: null, id: 'foippaInput' },
-      { value: null, id: 'OtherInput' },
-    ],
-    [
-      { value: null, id: 'drafterInput' },
-      { value: null, id: 'mpoInput' },
-      { value: null, id: 'foippaInput' },
-      { value: null, id: 'OtherInput' },
-    ],
-  ]);
+  const [rows, setRows] = useState<Array<InputTextProps[]>>(
+    steps.map((step, i) => [
+      { label: `Step ${i}`, value: step.drafterInput, id: 'one' },
+      { value: step.mpoInput, id: 'two' },
+      { value: step.foippaInput, id: 'three' },
+      { value: step.OtherInput, id: 'four' },
+    ]),
+  );
 
   const addRow = () => {
     setRows([
       ...rows,
       [
-        { value: null, id: 'drafterInput' },
-        { value: null, id: 'mpoInput' },
-        { value: null, id: 'foippaInput' },
-        { value: null, id: 'OtherInput' },
+        { label: `Step ${rows.length + 1} `, value: '', id: 'one' },
+        { value: '', id: 'two' },
+        { value: '', id: 'three' },
+        { value: '', id: 'four' },
       ],
     ]);
     setSteps([
       ...steps,
       {
-        drafterInput: null,
-        mpoInput: null,
-        foippaInput: null,
-        OtherInput: null,
+        drafterInput: '',
+        mpoInput: '',
+        foippaInput: '',
+        OtherInput: '',
       },
     ]);
   };
@@ -125,12 +117,6 @@ const PIACollectionUseAndDisclosure = () => {
     delete steps[index];
     setSteps(steps);
     stateChangeHandler(newData, 'steps');
-  };
-  const handleBackClick = () => {
-    // 👇️ replace set to true
-
-    // TODO replace this with the correct  value in full pia scenario
-    navigate(-1);
   };
 
   const handleOnChange = (e: any, row: number, col: number) => {
@@ -153,90 +139,27 @@ const PIACollectionUseAndDisclosure = () => {
     stateChangeHandler(steps, 'steps');
   };
 
-  const printResult = () => {
-    console.log('result', collectionUseAndDisclosureForm);
-  };
-
+  const columnsName = [
+    Messages.WorkThroughDetails.DescriptionColumnOne.en,
+    Messages.WorkThroughDetails.DescriptionColumnTwo.en,
+    Messages.WorkThroughDetails.DescriptionColumnThree.en,
+    Messages.WorkThroughDetails.DescriptionColumnFour.en,
+  ];
   return (
     <>
-      <form className="container__padding-inline needs-validation">
+      <div className="container__padding-inline needs-validation">
         <h1 className="results-header">{Messages.Headings.Title.en}</h1>
         <span>{Messages.Headings.Subtitle.en}</span>
         <h2 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h2>
         <section className="card">
-          <div className="container">
-            <div className="row">
-              <div>
-                <table className="data-table__container" id="tab_logic">
-                  <thead>
-                    <tr>
-                      <th className="text-center"> </th>
-                      <th className="text-center" key={'DescriptionColumnOne'}>
-                        {Messages.WorkThroughDetails.DescriptionColumnOne.en}
-                      </th>
-                      <th className="text-center" key={'DescriptionColumnTwo'}>
-                        {Messages.WorkThroughDetails.DescriptionColumnTwo.en}
-                      </th>
-                      <th
-                        className="text-center"
-                        key={'DescriptionColumnThree'}
-                      >
-                        {Messages.WorkThroughDetails.DescriptionColumnThree.en}
-                      </th>
-                      <th className="text-center" key={'DescriptionColumnFour'}>
-                        {Messages.WorkThroughDetails.DescriptionColumnFour.en}
-                      </th>
-                      <th />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((items, idx) => (
-                      <tr key={idx}>
-                        <td className="pt-4 col-sm-1">Step {idx + 1}</td>
-                        {items.map((item, index) =>
-                          index === 0 ? (
-                            <td className="px-2" key={index}>
-                              <InputText
-                                type="text"
-                                value={item.value}
-                                id={item.id}
-                                onChange={(e) => handleOnChange(e, idx, index)}
-                              />
-                            </td>
-                          ) : (
-                            <td className="px-2" key={index}>
-                              <InputText
-                                type="text"
-                                value={item.value}
-                                id={item.id}
-                                onChange={(e) => handleOnChange(e, idx, index)}
-                                isDisabled={isMPO() ? false : true}
-                              />
-                            </td>
-                          ),
-                        )}
-
-                        <td className="pt-4">
-                          <button
-                            className=" btn btn-outline-danger "
-                            onClick={() => removeRow(idx)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div className="pt-4 pb-4 view-pid">
-            <button onClick={addRow} className="bcgovbtn bcgovbtn__tertiary  ">
-              Add more rows
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-          </div>
+          <List
+            data={rows}
+            columnsName={columnsName}
+            handleOnChange={handleOnChange}
+            addRow={addRow}
+            removeRow={removeRow}
+            enableRemove={true}
+          />
         </section>
 
         <h2 className="pt-4 pb-4">{Messages.CollectionNotice.Title.en}</h2>
@@ -276,23 +199,7 @@ const PIACollectionUseAndDisclosure = () => {
             />
           </div>
         </section>
-        <div className="horizontal-divider"></div>
-        <div className="form-buttons">
-          <button
-            className="bcgovbtn bcgovbtn__secondary btn-back"
-            onClick={handleBackClick}
-          >
-            Back
-          </button>
-          <button
-            type="submit"
-            className="bcgovbtn bcgovbtn__primary btn-next"
-            onClick={printResult}
-          >
-            Next
-          </button>
-        </div>
-      </form>
+      </div>
     </>
   );
 };

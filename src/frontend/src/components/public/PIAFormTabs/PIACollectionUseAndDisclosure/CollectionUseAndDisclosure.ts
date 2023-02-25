@@ -1,14 +1,14 @@
 export interface ICollectionUseAndDisclosure {
-  steps?: [StepInput];
+  steps: Array<StepInput>;
 
-  collectionNotice?: CollectionNoticeInput;
+  collectionNotice: CollectionNoticeInput;
 }
 
 export interface StepInput {
-  drafterInput?: string;
-  mpoInput?: string;
-  foippaInput?: string;
-  OtherInput?: string;
+  drafterInput: string;
+  mpoInput: string;
+  foippaInput: string;
+  OtherInput: string;
 }
 export interface CollectionNoticeInput {
   drafterInput?: string;
