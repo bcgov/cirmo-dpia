@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
 
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { YesNoInputOptions } from '../../../../constant/constant';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -10,7 +10,6 @@ import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPersonalInformationBanks } from './PersonalInformationBanks';
 
 const PIAPersonalInformationBanks = () => {
-  const navigate = useNavigate();
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
@@ -47,12 +46,6 @@ const PIAPersonalInformationBanks = () => {
   const [PIBManagingPersonName, setPIBManagingPersonName] = useState('');
   const [otherMinistryInvolved, setOtherMinistryInvolved] = useState('');
   const [PIBManagingPersonPhone, setPIBManagingPersonPhone] = useState('');
-  const handleBackClick = () => {
-    // 👇️ replace set to true
-
-    // TODO replace this with the correct  value in full pia scenario
-    navigate(-1);
-  };
 
   const choosePIBs = (event: any) => {
     const containsPIB = event.target.value === 'Yes' ? 'YES' : 'NO';
@@ -210,19 +203,6 @@ const PIAPersonalInformationBanks = () => {
           </div>
         </div>
       </section>
-
-      <div className="horizontal-divider"></div>
-      <div className="form-buttons">
-        <button
-          className="bcgovbtn bcgovbtn__secondary btn-back"
-          onClick={handleBackClick}
-        >
-          Back
-        </button>
-        <button type="submit" className="bcgovbtn bcgovbtn__primary btn-next">
-          Next
-        </button>
-      </div>
     </div>
   );
 };
