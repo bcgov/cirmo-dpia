@@ -2,6 +2,7 @@ import React, { ChangeEvent, MouseEventHandler } from 'react';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import InputText from '../InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isMPORole } from '../../../utils/helper.util';
 export interface InputTextProps {
   label?: string;
   value: string;
@@ -19,6 +20,7 @@ interface ListProps {
   addRow: MouseEventHandler<HTMLButtonElement>;
   removeRow: (idx: number) => void;
   enableRemove?: boolean;
+  sourceTab: string;
 }
 
 const List = ({
@@ -28,6 +30,7 @@ const List = ({
   addRow,
   removeRow,
   enableRemove = true,
+  sourceTab,
 }: ListProps) => {
   return (
     <>
@@ -54,6 +57,9 @@ const List = ({
                       onChange={(e) => handleOnChange(e, idx, index)}
                       labelSide="left"
                       label={item.label}
+                      isDisabled={
+                        index != 0 && sourceTab === 'disclosure' && !isMPORole()
+                      }
                     />
                   </td>
                 ))}

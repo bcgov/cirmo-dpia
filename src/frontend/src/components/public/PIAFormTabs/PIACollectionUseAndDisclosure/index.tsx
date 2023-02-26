@@ -159,6 +159,7 @@ const PIACollectionUseAndDisclosure = () => {
             addRow={addRow}
             removeRow={removeRow}
             enableRemove={true}
+            sourceTab="disclosure"
           />
         </section>
 

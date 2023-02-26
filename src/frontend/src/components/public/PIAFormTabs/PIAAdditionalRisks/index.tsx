@@ -111,6 +111,7 @@ const PIAAdditionalRisks = () => {
           addRow={addRow}
           removeRow={removeRow}
           enableRemove={true}
+          sourceTab="additionalRisks"
         />
       </section>
     </>
