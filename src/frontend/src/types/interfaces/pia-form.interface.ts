@@ -1,4 +1,5 @@
 import { IPiaFormIntake } from '../../components/public/PIAFormTabs/intake/pia-form-intake.interface';
+import { IAdditionalRisks } from '../../components/public/PIAFormTabs/PIAAdditionalRisks/AdditionalRisks';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;
@@ -7,6 +8,7 @@ export interface IPiaForm extends IPiaFormIntake {
   status?: string;
   saveId?: number;
   submittedAt?: Date | null;
+  additionalRisks?: IAdditionalRisks;
 }
 
 export interface IPiaFormResponse {

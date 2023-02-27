@@ -1,0 +1,52 @@
+name: EMERALD - Push API to Artifactory
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/backend/**"
+  workflow_dispatch:
+  
+jobs:
+  DPIA-API-Build-Tag-Push:
+    environment: API-Dev
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Checkout CIRMO-DPIA Github Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+            
+      - name: Login to Artifactory to Pull Images in S2I Build
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
+          
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
+      
+      # Build the DPIA API Application Image via docker-compose
+      - name: Build the Docker image
+        run: |
+          docker-compose build dpia-api
+      
+      # TROUBLESHOOTING - view images present in github action run
+      - name: Docker List Images
+        run: |
+          docker image ls 
+      
+      # Tag Docker Image built with prod
+      - name: Docker Tag Version
+        run: |
+          docker tag cirmo-dpia_dpia-api ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest
+
+      # Push docker image to BC Gov Repository  
+      - name: Docker Push Version
+        run: |
+          docker push ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest

@@ -67,6 +67,7 @@ h4 {
 }
 
 .container__padding-inline {
+  width: 100%;
   padding-inline: $container-padding-inline;
 }
 
@@ -96,6 +97,7 @@ h4 {
 .component__container {
   position:relative;
   width:100%;
+  display: flex;
 }
 
 .component__wrapper {
@@ -116,8 +118,14 @@ h4 {
   }
 }
 
-.right__container {
-  width: calc(100% - $sidenav-width);
+.side-nav__container {
+  flex: 1;
+  max-width: $max-sidenav-width;
+}
+
+.content__container {
+  flex: 3;
+  margin-left: 3rem;
 }
 
 

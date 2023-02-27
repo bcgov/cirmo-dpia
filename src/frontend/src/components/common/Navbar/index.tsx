@@ -10,22 +10,26 @@ function NavBar({
   return (
     <nav className={CSSclass}>
       <ul className="navbar">
-        {pages.map((page, key) => {
-          return page.enable === true ? (
-            <li key={key}>
-              <NavLink
-                className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
-                  page.link === currentPath ? 'active' : ''
-                }`}
-                to={page.link}
-              >
-                {page.label}
-              </NavLink>
-            </li>
-          ) : (
-            ''
-          );
-        })}
+        {pages
+          .filter((page) => page.enable)
+          .map((page) => {
+            return (
+              <li key={page.id}>
+                {page.isDivider ? (
+                  <hr />
+                ) : (
+                  <NavLink
+                    className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
+                      page.link === currentPath ? 'active' : ''
+                    }`}
+                    to={page.link}
+                  >
+                    {page.label}
+                  </NavLink>
+                )}
+              </li>
+            );
+          })}
       </ul>
     </nav>
   );
