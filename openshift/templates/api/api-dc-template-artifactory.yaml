@@ -19,7 +19,7 @@ objects:
       app.kubernetes.io/instance: dpia-api-artifactory
       app.kubernetes.io/name: dpia-api-artifactory
       app.openshift.io/runtime: nodejs
-      app.openshift.io/runtime-namespace: b996e6-dev
+      app.openshift.io/runtime-namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
   spec:
     strategy:
       type: Rolling
@@ -179,13 +179,13 @@ objects:
                 subPath: config.json
             terminationMessagePolicy: File
             image: >-
-              artifacts.developer.gov.bc.ca/tb99-dpia-api-docker-local/dpia-api:latest
+              artifacts.developer.gov.bc.ca/daa7-dpia-image-repository/api-dev:latest
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         dnsPolicy: ClusterFirst
         securityContext: {}
         imagePullSecrets:
-          - name: dpia-pull-secret-dev
+          - name: emerald-artifactory-pull
         schedulerName: default-scheduler
 
 parameters:
@@ -203,7 +203,7 @@ parameters:
     displayName: License Plate
     name: LICENSE_PLATE
     required: true
-    value: b996e6
+    value: aa77ab
   - description: Imagestream
     displayName: Imagestream
     name: IMAGESTREAM
