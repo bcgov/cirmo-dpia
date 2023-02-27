@@ -43,34 +43,34 @@ const PIACollectionUseAndDisclosure = () => {
   };
   const [disclosure, setDisclosure] = useState('');
   const [steps, setSteps] = useState<Array<StepInput>>(
-    (collectionUseAndDisclosureForm?.steps.length > 0
+    collectionUseAndDisclosureForm?.steps.length > 0
       ? collectionUseAndDisclosureForm?.steps
-      : null) || [
-      {
-        drafterInput: '',
-        mpoInput: '',
-        foippaInput: '',
-        OtherInput: '',
-      },
-      {
-        drafterInput: '',
-        mpoInput: '',
-        foippaInput: '',
-        OtherInput: '',
-      },
-      {
-        drafterInput: '',
-        mpoInput: '',
-        foippaInput: '',
-        OtherInput: '',
-      },
-      {
-        drafterInput: '',
-        mpoInput: '',
-        foippaInput: '',
-        OtherInput: '',
-      },
-    ],
+      : [
+          {
+            drafterInput: '',
+            mpoInput: '',
+            foippaInput: '',
+            OtherInput: '',
+          },
+          {
+            drafterInput: '',
+            mpoInput: '',
+            foippaInput: '',
+            OtherInput: '',
+          },
+          {
+            drafterInput: '',
+            mpoInput: '',
+            foippaInput: '',
+            OtherInput: '',
+          },
+          {
+            drafterInput: '',
+            mpoInput: '',
+            foippaInput: '',
+            OtherInput: '',
+          },
+        ],
   );
   const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState('');
   const [collectionNotice, setCollectionNotice] =
