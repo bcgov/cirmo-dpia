@@ -52,6 +52,10 @@ a:hover {
     text-decoration: underline;
     color: var(--text-color);
   }
+
+  &.bold {
+    font-weight: bold;
+  }
 }
 
 .bcgovbtn:focus,

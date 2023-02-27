@@ -4,6 +4,7 @@ import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
+import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -79,16 +80,13 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="storingPersonalInformation" element={comingSoonBanner}>
+            <Route path="storingPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route
-              path="securityOfPersonalInformation"
-              element={comingSoonBanner}
-            >
+            <Route path="securityOfPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={comingSoonBanner} />
               <Route path="view" element={comingSoonBanner} />
@@ -106,9 +104,9 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="additionalRisks" element={comingSoonBanner}>
+            <Route path="additionalRisks">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<PIAAdditionalRisks />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
           </Route>
