@@ -74,7 +74,7 @@ const PIAAdditionalRisks = () => {
     const newData = [...rows];
     newData.splice(index, 1);
     setRows(newData);
-    delete risks[index];
+    risks.splice(index, 1);
     setRisks(risks);
     stateChangeHandler(risks, 'risks');
   };

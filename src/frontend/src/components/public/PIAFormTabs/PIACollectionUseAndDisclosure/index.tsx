@@ -114,9 +114,9 @@ const PIACollectionUseAndDisclosure = () => {
     const newData = [...rows];
     newData.splice(index, 1);
     setRows(newData);
-    delete steps[index];
+    steps.splice(index, 1);
     setSteps(steps);
-    stateChangeHandler(newData, 'steps');
+    stateChangeHandler(steps, 'steps');
   };
 
   const handleOnChange = (e: any, row: number, col: number) => {
