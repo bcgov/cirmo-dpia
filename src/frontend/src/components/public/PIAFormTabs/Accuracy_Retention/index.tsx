@@ -66,10 +66,6 @@ export const AccuracyCorrectionAndRetention = () => {
         }
       }
     }
-    console.log(
-      'accuracyCorrectionAndRetentionForm',
-      accuracyCorrectionAndRetentionForm,
-    );
     piaStateChangeHandler(
       accuracyCorrectionAndRetentionForm,
       'accuracyCorrectionAndRetention',
