@@ -15,7 +15,8 @@ export const piaFormSideNavPages = (
   isNewForm = false,
 ): INavbarItem[] => {
   // This will change once Next Steps tab is implemented
-  const showPostIntakeTabs = !!pia?.hasAddedPiToDataElements;
+  const showPostIntakeTabs =
+    !!pia?.hasAddedPiToDataElements && !!pia?.submittedAt;
 
   const intakeLink = isNewForm
     ? routes.PIA_NEW
