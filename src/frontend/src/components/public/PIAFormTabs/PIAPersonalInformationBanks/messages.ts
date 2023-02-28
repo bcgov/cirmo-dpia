@@ -12,10 +12,10 @@ export default {
     Title: {
       en: `Resulting in a PIB`,
     },
-    QuestionOne: {
+    QuestionWillResultInPIB: {
       en: `Will your initiative result in a personal information bank (PIB)?`,
     },
-    QuestionOneDescription: {
+    QuestionPIBDescription: {
       en: `Describe the type of information in the bank`,
     },
   },

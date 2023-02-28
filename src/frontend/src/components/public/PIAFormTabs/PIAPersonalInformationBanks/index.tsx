@@ -40,7 +40,7 @@ const PIAPersonalInformationBanks = () => {
       'personalInformationBanks',
     );
   };
-  const [containsPIBs, setContainsPIBs] = useState('Yes');
+  const [containsPIBs, setContainsPIBs] = useState('YES');
   const [PIBDescriptionType, setPIBDescriptionType] = useState('');
   const [mainMinistryInvolved, setMainMinistryInvolved] = useState('');
   const [PIBManagingPersonName, setPIBManagingPersonName] = useState('');
@@ -79,13 +79,17 @@ const PIAPersonalInformationBanks = () => {
   };
 
   return (
-    <div className="container__padding-inline needs-validation">
-      <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
+    <div>
+      <h2 className="results-header">
+        <b>{Messages.Headings.Title.en}</b>
+      </h2>
       <p> {Messages.Headings.Description.en}</p>
-      <h2 className="px-2 py-2">{Messages.Section.Title.en}</h2>
+      <h3 className="pt-4 pb-3">{Messages.Section.Title.en}</h3>
       <section className="card">
-        <div className="px-4 py-4">
-          <h2>{Messages.Section.QuestionOne.en}</h2>
+        <div className="form-group px-4 py-4">
+          <label htmlFor="pibQuestionWillResultInPIB">
+            {Messages.Section.QuestionWillResultInPIB.en}
+          </label>
           <div>
             <div className="form-group row">
               <div>
@@ -122,8 +126,11 @@ const PIAPersonalInformationBanks = () => {
             {containsPIBs === 'YES' && (
               <div>
                 <div className="form-group">
-                  <h2>{Messages.Section.QuestionOneDescription.en}</h2>
+                  <label className="pt-4" htmlFor="pibDescriptionType">
+                    {Messages.Section.QuestionPIBDescription.en}
+                  </label>
                   <MDEditor
+                    id="pibDescriptionType"
                     preview="edit"
                     value={PIBDescriptionType}
                     onChange={handlePIBDescriptionTypeChange}
@@ -135,7 +142,6 @@ const PIAPersonalInformationBanks = () => {
                       label="Main ministry or agency involved"
                       value={mainMinistryInvolved}
                       required={true}
-                      className="mt-4"
                       onChange={(e) => {
                         setMainMinistryInvolved(e.target.value);
                         setResultingPIB({
@@ -168,7 +174,6 @@ const PIAPersonalInformationBanks = () => {
                       label="Name of person responsible for managing the PIB"
                       id="PIBresponsiblePersonal"
                       value={PIBManagingPersonName}
-                      className="mt-4"
                       onChange={(e) => {
                         setPIBManagingPersonName(e.target.value);
                         setResultingPIB({
