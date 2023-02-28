@@ -147,7 +147,9 @@ const PIACollectionUseAndDisclosure = () => {
   ];
   return (
     <>
-      <h1 className="results-header">{Messages.Headings.Title.en}</h1>
+      <h2 className="results-header">
+        <b>{Messages.Headings.Title.en}</b>
+      </h2>
       <span>{Messages.Headings.Subtitle.en}</span>
       <h2 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h2>
       <section className="card p-3">
@@ -164,11 +166,14 @@ const PIACollectionUseAndDisclosure = () => {
 
       <h2 className="pt-4 pb-4">{Messages.CollectionNotice.Title.en}</h2>
 
-      <section className="card pt-5 px-5">
-        <h2>{Messages.CollectionNotice.PartOne.Title.en}</h2>
-        <p>{Messages.CollectionNotice.PartOne.Description.en}</p>
+      <section className=" card pt-5 px-5">
+        <label htmlFor="collectionNoticeDrafter">
+          {Messages.CollectionNotice.PartOne.Title.en}
+        </label>
+        <sub>{Messages.CollectionNotice.PartOne.Description.en}</sub>
         <div className="richText" id="drafterDisclosure">
           <MDEditor
+            id="collectionNoticeDrafter"
             preview="edit"
             value={disclosure}
             defaultTabEnable={true}
@@ -182,9 +187,12 @@ const PIACollectionUseAndDisclosure = () => {
             }}
           />
         </div>
-        <h2 className="pt-5">{Messages.CollectionNotice.PartTwo.Title.en}</h2>
+        <label htmlFor="collectionNoticeMPO" className="pt-5">
+          {Messages.CollectionNotice.PartTwo.Title.en}
+        </label>
         <div className="richText pb-4" id="MPOCommentsDisclosure">
           <MDEditor
+            id="collectionNoticeMPO"
             preview={isMPO() ? 'edit' : 'preview'}
             value={MPOCommentsDisclosure}
             defaultTabEnable={true}

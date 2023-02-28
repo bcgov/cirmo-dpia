@@ -67,7 +67,7 @@ const List = ({
                 {enableRemove ? (
                   <td>
                     <button
-                      className=" btn btn-outline-danger"
+                      className=" form-control btn btn-outline-danger"
                       onClick={() => removeRow(idx)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
