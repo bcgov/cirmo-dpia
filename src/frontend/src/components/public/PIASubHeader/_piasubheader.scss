@@ -1,23 +1,32 @@
 .subheader-container {
-    display: flex;
-    position: fixed;
-    top: $piaSubheader-top;
-    height: $piaSubheader-height;
-    width: 100%;
-    background-color: $bg-white;
-    z-index: 100;
-    box-shadow: 0px 17px 29px 0px #DCE2EE99;
+  display: flex;
+  position: fixed;
+  top: $piaSubheader-top;
+  height: $piaSubheader-height;
+  width: 100%;
+  background-color: $bg-white;
+  z-index: 100;
+  box-shadow: 0px 17px 29px 0px #dce2ee99;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 30%;
+    margin: 0px;
+    padding: 0px;
   }
-  
-  .subheader {
-    display: flex;
-    gap: 1em;
-    align-items: center;
-    max-width: 80%;
-    list-style: none;
-    margin-bottom: 0;
-    & :first-child {
-      padding-left: 0;
-    }
+}
+
+.subheader {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  max-width: 80%;
+  list-style: none;
+  margin-bottom: 0;
+  & :first-child {
+    //padding-left: 0;
   }
-  
+}

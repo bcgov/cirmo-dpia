@@ -29,6 +29,7 @@ h1 {
 
 h2 {
   font-size: 1.728rem;
+  font-weight: 700;
 }
 
 h3 {
@@ -37,6 +38,16 @@ h3 {
 
 h4 {
   font-size: 1.2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  line-height: $line-height;
 }
 
 .spacer {
@@ -107,8 +118,8 @@ h4 {
 }
 
 .component__container {
-  position:relative;
-  width:100%;
+  position: relative;
+  width: 100%;
   display: flex;
 }
 
@@ -123,7 +134,7 @@ h4 {
   padding-block: 5em;
   padding-inline: 7em;
   margin-block: 2em;
-  width:100%;
+  width: 100%;
 
   & > .img__empty-pia-list {
     margin-bottom: 3em;
@@ -140,7 +151,6 @@ h4 {
   margin-left: 3rem;
 }
 
-
 .component__row--create-new-form {
   padding: 0;
   padding-left: 5rem;
@@ -154,7 +164,7 @@ h4 {
 }
 
 .full__width {
-  width:100%;
+  width: 100%;
 }
 
 .overflow-clip {

@@ -75,271 +75,51 @@ export const AccuracyCorrectionAndRetention = () => {
   return (
     <>
       <form className="">
-        <h1 className="form__title">{Messages.PageTitle.en}</h1>
+        <h2 className="">{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
-        <h2 className="form__h2">{Messages.FormElements.Accuracy.H2Text.en}</h2>
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-          <p>
-            <strong>{Messages.FormElements.Accuracy.Question.en}</strong>
-          </p>
-          <p>{Messages.FormElements.Accuracy.HelperText.en}</p>
-          <div className="">
-            <MDEditor
-              preview="edit"
-              value={
-                accuracyCorrectionAndRetentionForm?.accuracy?.description ||
-                undefined
-              }
-              onChange={(value) =>
-                stateChangeHandler(value, 'accuracy.description')
-              }
-            />
-          </div>
-        </section>
-
-        <h2 className="form__h2">
-          {Messages.FormElements.RequestCorrection.H2Text.en}
-        </h2>
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-          <div>
+        <section className="section__padding-block">
+          <h3 className="form__h2">
+            {Messages.FormElements.Accuracy.H2Text.en}
+          </h3>
+          <div className="drop-shadow section__padding-inline bg-white section__padding-block ">
             <p>
-              <strong>
-                {
-                  Messages.FormElements.RequestCorrection.haveProcessinPlace
-                    .Question.en
-                }
-              </strong>
+              <strong>{Messages.FormElements.Accuracy.Question.en}</strong>
             </p>
-            <p>
-              {
-                Messages.FormElements.RequestCorrection.haveProcessinPlace
-                  .HelperText.en
-              }
-            </p>
+            <p>{Messages.FormElements.Accuracy.HelperText.en}</p>
             <div className="">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="haveProcessinPlace"
-                  value="YES"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.haveProcessInPlace === 'YES' ||
-                    !accuracyCorrectionAndRetentionForm?.correction
-                      ?.haveProcessInPlace
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.haveProcessInPlace',
-                    )
-                  }
-                />
-                Yes
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="haveProcessinPlace"
-                  value="NO"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.haveProcessInPlace === 'NO'
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.haveProcessInPlace',
-                    )
-                  }
-                />
-                No
-              </div>
-            </div>
-          </div>
-
-          <div className="section__padding-block">
-            <p>
-              <strong>
-                {
-                  Messages.FormElements.RequestCorrection.willDocument.Question
-                    .en
+              <MDEditor
+                preview="edit"
+                value={
+                  accuracyCorrectionAndRetentionForm?.accuracy?.description ||
+                  undefined
                 }
-              </strong>
-            </p>
-            <div className="">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillDocument"
-                  value="YES"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.willDocument === 'YES' ||
-                    !accuracyCorrectionAndRetentionForm?.correction
-                      ?.willDocument
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.willDocument',
-                    )
-                  }
-                />
-                Yes
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillDocument"
-                  value="NO"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.willDocument === 'NO'
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.willDocument',
-                    )
-                  }
-                />
-                No
-              </div>
-            </div>
-          </div>
-
-          <div className="section__padding-block">
-            <p>
-              <strong>
-                {
-                  Messages.FormElements.RequestCorrection
-                    .willConductNotifications.Question.en
+                onChange={(value) =>
+                  stateChangeHandler(value, 'accuracy.description')
                 }
-              </strong>
-            </p>
-            <div className="">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillconductNotifications"
-                  value="YES"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.willConductNotifications === 'YES' ||
-                    !accuracyCorrectionAndRetentionForm?.correction
-                      ?.willConductNotifications
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.willConductNotifications',
-                    )
-                  }
-                />
-                Yes
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillconductNotifications"
-                  value="NO"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.correction
-                      ?.willConductNotifications === 'NO'
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'correction.willConductNotifications',
-                    )
-                  }
-                />
-                No
-              </div>
+              />
             </div>
           </div>
         </section>
 
-        <h2 className="form__h2">
-          {Messages.FormElements.PersonalInformationDecision.H2Text.en}
-        </h2>
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-          <div className="section__padding-block">
-            <p>
-              <strong>
-                {
-                  Messages.FormElements.PersonalInformationDecision
-                    .usePIForDecision.Question.en
-                }
-              </strong>
-            </p>
-            <div className="">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillProvideInformation"
-                  value="YES"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.retention
-                      ?.usePIForDecision === 'YES' ||
-                    !accuracyCorrectionAndRetentionForm?.retention
-                      ?.usePIForDecision
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'retention.usePIForDecision',
-                    )
-                  }
-                />
-                Yes
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="WillProvideInformation"
-                  value="NO"
-                  checked={
-                    accuracyCorrectionAndRetentionForm?.retention
-                      ?.usePIForDecision === 'NO'
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'retention.usePIForDecision',
-                    )
-                  }
-                />
-                No
-              </div>
-            </div>
-          </div>
-          {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-            'YES' ||
-          !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
-            <div className="section__padding-block">
+        <section className="section__padding-block">
+          <h3 className="form__h2">
+            {Messages.FormElements.RequestCorrection.H2Text.en}
+          </h3>
+          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+            <div>
               <p>
                 <strong>
                   {
-                    Messages.FormElements.PersonalInformationDecision
-                      .haveApprovedInfoSchedule.Question.en
+                    Messages.FormElements.RequestCorrection.haveProcessinPlace
+                      .Question.en
                   }
                 </strong>
               </p>
               <p>
                 {
-                  Messages.FormElements.PersonalInformationDecision
-                    .haveApprovedInfoSchedule.HelperText.en
+                  Messages.FormElements.RequestCorrection.haveProcessinPlace
+                    .HelperText.en
                 }
               </p>
               <div className="">
@@ -347,18 +127,18 @@ export const AccuracyCorrectionAndRetention = () => {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="HaveApprovedInfoSchedule"
+                    name="haveProcessinPlace"
                     value="YES"
                     checked={
-                      accuracyCorrectionAndRetentionForm?.retention
-                        ?.haveApprovedInfoSchedule === 'YES' ||
-                      !accuracyCorrectionAndRetentionForm?.retention
-                        ?.haveApprovedInfoSchedule
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.haveProcessInPlace === 'YES' ||
+                      !accuracyCorrectionAndRetentionForm?.correction
+                        ?.haveProcessInPlace
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'retention.haveApprovedInfoSchedule',
+                        'correction.haveProcessInPlace',
                       )
                     }
                   />
@@ -368,16 +148,16 @@ export const AccuracyCorrectionAndRetention = () => {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="HaveApprovedInfoSchedule"
+                    name="haveProcessinPlace"
                     value="NO"
                     checked={
-                      accuracyCorrectionAndRetentionForm?.retention
-                        ?.haveApprovedInfoSchedule === 'NO'
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.haveProcessInPlace === 'NO'
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'retention.haveApprovedInfoSchedule',
+                        'correction.haveProcessInPlace',
                       )
                     }
                   />
@@ -385,36 +165,264 @@ export const AccuracyCorrectionAndRetention = () => {
                 </div>
               </div>
             </div>
-          ) : null}
-          {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-            'YES' ||
-          !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
-            accuracyCorrectionAndRetentionForm?.retention
-              ?.haveApprovedInfoSchedule === 'YES' ||
-            !accuracyCorrectionAndRetentionForm?.retention
-              ?.haveApprovedInfoSchedule ? (
+
+            <div className="section__padding-block">
+              <p>
+                <strong>
+                  {
+                    Messages.FormElements.RequestCorrection.willDocument
+                      .Question.en
+                  }
+                </strong>
+              </p>
+              <div className="">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillDocument"
+                    value="YES"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.willDocument === 'YES' ||
+                      !accuracyCorrectionAndRetentionForm?.correction
+                        ?.willDocument
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'correction.willDocument',
+                      )
+                    }
+                  />
+                  Yes
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillDocument"
+                    value="NO"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.willDocument === 'NO'
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'correction.willDocument',
+                      )
+                    }
+                  />
+                  No
+                </div>
+              </div>
+            </div>
+
+            <div className="section__padding-block">
+              <p>
+                <strong>
+                  {
+                    Messages.FormElements.RequestCorrection
+                      .willConductNotifications.Question.en
+                  }
+                </strong>
+              </p>
+              <div className="">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillconductNotifications"
+                    value="YES"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.willConductNotifications === 'YES' ||
+                      !accuracyCorrectionAndRetentionForm?.correction
+                        ?.willConductNotifications
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'correction.willConductNotifications',
+                      )
+                    }
+                  />
+                  Yes
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillconductNotifications"
+                    value="NO"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.correction
+                        ?.willConductNotifications === 'NO'
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'correction.willConductNotifications',
+                      )
+                    }
+                  />
+                  No
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section__padding-block">
+          <h3 className="form__h2">
+            {Messages.FormElements.PersonalInformationDecision.H2Text.en}
+          </h3>
+          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+            <div className="section__padding-block">
+              <p>
+                <strong>
+                  {
+                    Messages.FormElements.PersonalInformationDecision
+                      .usePIForDecision.Question.en
+                  }
+                </strong>
+              </p>
+              <div className="">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillProvideInformation"
+                    value="YES"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.retention
+                        ?.usePIForDecision === 'YES' ||
+                      !accuracyCorrectionAndRetentionForm?.retention
+                        ?.usePIForDecision
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'retention.usePIForDecision',
+                      )
+                    }
+                  />
+                  Yes
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="WillProvideInformation"
+                    value="NO"
+                    checked={
+                      accuracyCorrectionAndRetentionForm?.retention
+                        ?.usePIForDecision === 'NO'
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'retention.usePIForDecision',
+                      )
+                    }
+                  />
+                  No
+                </div>
+              </div>
+            </div>
+            {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
+              'YES' ||
+            !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
               <div className="section__padding-block">
                 <p>
                   <strong>
                     {
                       Messages.FormElements.PersonalInformationDecision
-                        .describeRetention.Question.en
+                        .haveApprovedInfoSchedule.Question.en
                     }
                   </strong>
                 </p>
-                <MDEditor
-                  preview="edit"
-                  value={
-                    accuracyCorrectionAndRetentionForm?.retention
-                      ?.describeRetention || undefined
+                <p>
+                  {
+                    Messages.FormElements.PersonalInformationDecision
+                      .haveApprovedInfoSchedule.HelperText.en
                   }
-                  onChange={(value) =>
-                    stateChangeHandler(value, 'retention.describeRetention')
-                  }
-                />
+                </p>
+                <div className="">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="HaveApprovedInfoSchedule"
+                      value="YES"
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.retention
+                          ?.haveApprovedInfoSchedule === 'YES' ||
+                        !accuracyCorrectionAndRetentionForm?.retention
+                          ?.haveApprovedInfoSchedule
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'retention.haveApprovedInfoSchedule',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="HaveApprovedInfoSchedule"
+                      value="NO"
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.retention
+                          ?.haveApprovedInfoSchedule === 'NO'
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'retention.haveApprovedInfoSchedule',
+                        )
+                      }
+                    />
+                    No
+                  </div>
+                </div>
               </div>
-            ) : null
-          ) : null}
+            ) : null}
+            {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
+              'YES' ||
+            !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
+              accuracyCorrectionAndRetentionForm?.retention
+                ?.haveApprovedInfoSchedule === 'YES' ||
+              !accuracyCorrectionAndRetentionForm?.retention
+                ?.haveApprovedInfoSchedule ? (
+                <div className="section__padding-block">
+                  <p>
+                    <strong>
+                      {
+                        Messages.FormElements.PersonalInformationDecision
+                          .describeRetention.Question.en
+                      }
+                    </strong>
+                  </p>
+                  <MDEditor
+                    preview="edit"
+                    value={
+                      accuracyCorrectionAndRetentionForm?.retention
+                        ?.describeRetention || undefined
+                    }
+                    onChange={(value) =>
+                      stateChangeHandler(value, 'retention.describeRetention')
+                    }
+                  />
+                </div>
+              ) : null
+            ) : null}
+          </div>
         </section>
       </form>
     </>

@@ -26,10 +26,8 @@
     li {
         width:100%;
         overflow:hidden;
-        margin-block:1.5em;
     }
     a {
-        display: inline list-item;
         width: 100%;
         word-break: break-all;
     }
@@ -73,6 +71,8 @@
         font-size:16px;
         align-items: flex-start;
         text-align: start;
+        word-break: break-word;
+        justify-content:start;
     }
 }
 
