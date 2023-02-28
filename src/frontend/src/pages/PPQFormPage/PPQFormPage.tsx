@@ -7,7 +7,7 @@ import {
   MinistryList,
   PIATypes,
   ReviewTypes,
-  startDateOptions,
+  YesNoInputOptions,
 } from '../../constant/constant';
 import Messages from './messages';
 
@@ -242,8 +242,8 @@ const PPQFormPage = () => {
               <div className="start-date-container">
                 <div className="form-group col-md-6">
                   <div>
-                    {startDateOptions.map((option, index) => {
-                      return startDateOptions[0] === option ? (
+                    {YesNoInputOptions.map((option, index) => {
+                      return YesNoInputOptions[0] === option ? (
                         <div key={index} onChange={chooseStartDate}>
                           <label className="input-label">
                             <input
