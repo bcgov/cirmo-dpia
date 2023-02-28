@@ -46,7 +46,7 @@ const PIAAdditionalRisks = () => {
 
   const [rows, setRows] = useState<Array<InputTextProps[]>>(
     risks.map((risk, i) => [
-      { label: `Risk ${i}`, value: risk.risk, id: 'one' },
+      { label: `Risk ${i + 1}`, value: risk.risk, id: 'one' },
       { value: risk.response, id: 'two' },
     ]),
   );

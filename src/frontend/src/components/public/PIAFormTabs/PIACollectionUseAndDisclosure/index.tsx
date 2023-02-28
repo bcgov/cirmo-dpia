@@ -80,7 +80,7 @@ const PIACollectionUseAndDisclosure = () => {
     });
   const [rows, setRows] = useState<Array<InputTextProps[]>>(
     steps.map((step, i) => [
-      { label: `Step ${i}`, value: step.drafterInput, id: 'one' },
+      { label: `Step ${i + 1}`, value: step.drafterInput, id: 'one' },
       { value: step.mpoInput, id: 'two' },
       { value: step.foippaInput, id: 'three' },
       { value: step.OtherInput, id: 'four' },
@@ -147,60 +147,58 @@ const PIACollectionUseAndDisclosure = () => {
   ];
   return (
     <>
-      <div className="container__padding-inline needs-validation">
-        <h1 className="results-header">{Messages.Headings.Title.en}</h1>
-        <span>{Messages.Headings.Subtitle.en}</span>
-        <h2 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h2>
-        <section className="card">
-          <List
-            data={rows}
-            columnsName={columnsName}
-            handleOnChange={handleOnChange}
-            addRow={addRow}
-            removeRow={removeRow}
-            enableRemove={true}
-            sourceTab="disclosure"
+      <h1 className="results-header">{Messages.Headings.Title.en}</h1>
+      <span>{Messages.Headings.Subtitle.en}</span>
+      <h2 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h2>
+      <section className="card p-3">
+        <List
+          data={rows}
+          columnsName={columnsName}
+          handleOnChange={handleOnChange}
+          addRow={addRow}
+          removeRow={removeRow}
+          enableRemove={true}
+          sourceTab="disclosure"
+        />
+      </section>
+
+      <h2 className="pt-4 pb-4">{Messages.CollectionNotice.Title.en}</h2>
+
+      <section className="card pt-5 px-5">
+        <h2>{Messages.CollectionNotice.PartOne.Title.en}</h2>
+        <p>{Messages.CollectionNotice.PartOne.Description.en}</p>
+        <div className="richText" id="drafterDisclosure">
+          <MDEditor
+            preview="edit"
+            value={disclosure}
+            defaultTabEnable={true}
+            onChange={(value) => {
+              setDisclosure(value ? value : '');
+              setCollectionNotice({
+                mpoInput: MPOCommentsDisclosure,
+                drafterInput: disclosure,
+              });
+              stateChangeHandler(collectionNotice, 'collectionNotice');
+            }}
           />
-        </section>
-
-        <h2 className="pt-4 pb-4">{Messages.CollectionNotice.Title.en}</h2>
-
-        <section className="card pt-5 px-5">
-          <h2>{Messages.CollectionNotice.PartOne.Title.en}</h2>
-          <p>{Messages.CollectionNotice.PartOne.Description.en}</p>
-          <div className="richText" id="drafterDisclosure">
-            <MDEditor
-              preview="edit"
-              value={disclosure}
-              defaultTabEnable={true}
-              onChange={(value) => {
-                setDisclosure(value ? value : '');
-                setCollectionNotice({
-                  mpoInput: MPOCommentsDisclosure,
-                  drafterInput: disclosure,
-                });
-                stateChangeHandler(collectionNotice, 'collectionNotice');
-              }}
-            />
-          </div>
-          <h2 className="pt-5">{Messages.CollectionNotice.PartTwo.Title.en}</h2>
-          <div className="richText pb-4" id="MPOCommentsDisclosure">
-            <MDEditor
-              preview={isMPO() ? 'edit' : 'preview'}
-              value={MPOCommentsDisclosure}
-              defaultTabEnable={true}
-              onChange={(value) => {
-                setMPOCommentsDisclosure(value ? value : '');
-                setCollectionNotice({
-                  mpoInput: MPOCommentsDisclosure,
-                  drafterInput: disclosure,
-                });
-                stateChangeHandler(collectionNotice, 'collectionNotice');
-              }}
-            />
-          </div>
-        </section>
-      </div>
+        </div>
+        <h2 className="pt-5">{Messages.CollectionNotice.PartTwo.Title.en}</h2>
+        <div className="richText pb-4" id="MPOCommentsDisclosure">
+          <MDEditor
+            preview={isMPO() ? 'edit' : 'preview'}
+            value={MPOCommentsDisclosure}
+            defaultTabEnable={true}
+            onChange={(value) => {
+              setMPOCommentsDisclosure(value ? value : '');
+              setCollectionNotice({
+                mpoInput: MPOCommentsDisclosure,
+                drafterInput: disclosure,
+              });
+              stateChangeHandler(collectionNotice, 'collectionNotice');
+            }}
+          />
+        </div>
+      </section>
     </>
   );
 };
