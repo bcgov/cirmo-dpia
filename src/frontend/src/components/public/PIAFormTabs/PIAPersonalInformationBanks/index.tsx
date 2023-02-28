@@ -69,7 +69,7 @@ const PIAPersonalInformationBanks = () => {
 
     stateChangeHandler(resultingPIB, 'resultingPIB');
   };
-  const handlePIBDescriptionTypeChange = (newMessage: any) => {
+  const handlePIBDescriptionTypeChange = (newMessage = '') => {
     setPIBDescriptionType(newMessage);
     setResultingPIB({
       ...resultingPIB,
