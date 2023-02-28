@@ -71,6 +71,18 @@ h4 {
   padding-inline: $container-padding-inline;
 }
 
+.section__padding-inline {
+  padding-inline: $section-padding-inline;
+}
+
+.section__padding-block {
+  padding-block: $section-padding-block;
+}
+
+.section__margin-block {
+  margin-block: $section-margin-block;
+}
+
 .bcgovPageContainer {
   margin-top: calc($header-height + $navbar-height);
   min-height: calc(100vh - $header-height - $navbar-height);
@@ -147,4 +159,12 @@ h4 {
 
 .overflow-clip {
   overflow: clip;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.drop-shadow {
+  box-shadow: $drop-shadow;
 }
