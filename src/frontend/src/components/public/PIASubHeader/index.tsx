@@ -52,47 +52,44 @@ function PIASubHeader({
   };
   return (
     <div className="subheader-container wrapper">
-      <div className="subheader">
-        <h1>{pia.title ? pia.title : 'New PIA'}</h1>
-        <div className="col">
-          {downloadError && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2 col-sm-1"
-            />
+      <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
+      <div className="">
+        {downloadError && (
+          <Alert
+            type="danger"
+            message="Something went wrong. Please try again."
+            onClose={handleAlertClose}
+            className="mt-2 col-sm-1"
+          />
+        )}
+      </div>
+      <div className="">
+        <div>Status</div>
+        <div>
+          {pia.status ? (
+            pia.status in statusList ? (
+              <div className={`statusBlock ${statusList[pia.status].class}`}>
+                {statusList[pia.status].title}
+              </div>
+            ) : (
+              ''
+            )
+          ) : (
+            ''
           )}
         </div>
       </div>
-      <div className=" subheader row ms-auto ">
-        <div className="col">
-          <div>Status</div>
-          <div>
-            {pia.status ? (
-              pia.status in statusList ? (
-                <div className={`statusBlock ${statusList[pia.status].class}`}>
-                  {statusList[pia.status].title}
-                </div>
-              ) : (
-                ''
-              )
-            ) : (
-              ''
-            )}
-          </div>
+      {lastSaveAlertInfo?.show && (
+        <div>
+          <Alert
+            type={lastSaveAlertInfo.type}
+            message={lastSaveAlertInfo.message}
+            showInitialIcon={true}
+            showCloseIcon={false}
+          />
         </div>
-        {lastSaveAlertInfo?.show && (
-          <div className="col col-md-4">
-            <Alert
-              type={lastSaveAlertInfo.type}
-              message={lastSaveAlertInfo.message}
-              showInitialIcon={true}
-              showCloseIcon={false}
-            />
-          </div>
-        )}
-
+      )}
+      <div className="d-flex">
         <button
           onClick={() => handleDownload()}
           className="mx-2 bcgovbtn bcgovbtn__secondary"

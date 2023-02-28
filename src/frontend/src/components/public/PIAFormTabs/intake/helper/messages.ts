@@ -1,8 +1,25 @@
 export default {
   PiaIntakeHeader: {
     H1Text: {
-      en: `Fill out the PIA`,
+      en: 'PIA Intake',
     },
+    H2Text: {
+      en: 'Before you start',
+    },
+    ListText: [
+      {
+        en: 'Fill out this form if you work or are a service provider to a ministry in the Government of B.C. and are starting a new initiative or significantly changing an existing initiative',
+      },
+      {
+        en: 'Do your best to fill out the fields below, but know that you can return to this section and edit your answers in the future',
+      },
+      {
+        en: 'Until you click “Submit”, this form is only visible to you',
+      },
+      {
+        en: 'After you submit this form, your MPO will be able to see it and help you with any questions you might have',
+      },
+    ],
   },
   GeneralInfoSection: {
     H2Text: {
@@ -17,8 +34,11 @@ export default {
     MPOLinkHref: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers`,
   },
   InitiativeDescriptionSection: {
-    H2Text: {
-      en: `1. What is the initiative?`,
+    SectionHeading: {
+      en: `Initiative Details`,
+    },
+    Question: {
+      en: `What is the initiative?`,
     },
     HelperText: {
       en: `Describe your initiative in enough detail that a reader who knows nothing 
@@ -29,7 +49,7 @@ export default {
   },
   InitiativeScopeSection: {
     H2Text: {
-      en: `2. What is the scope of the PIA?`,
+      en: `What is the scope of the PIA?`,
     },
     HelperText: {
       en: `Your initiative might be part of a larger one or might be rolled out in 
@@ -39,7 +59,7 @@ export default {
   },
   InitiativeDataElementsSection: {
     H2Text: {
-      en: `3. What are the data or information elements involved in your initiative?`,
+      en: `What are the data or information elements involved in your initiative?`,
     },
     HelperText: {
       en: `Please list all the elements of information or data that you might collect, 
@@ -49,8 +69,11 @@ export default {
     },
   },
   InitiativePISection: {
-    H2Text: {
-      en: `4. Did you list personal information in question 3?`,
+    SectionHeading: {
+      en: `Personal Information`,
+    },
+    Question: {
+      en: `Did you list personal information in question 3?`,
     },
     LinkText: {
       en: `Personal information`,
@@ -63,7 +86,7 @@ export default {
   },
   InitiativeRiskReductionSection: {
     H2Text: {
-      en: `5. How will you reduce the risk of unintentionally collecting personal 
+      en: `How will you reduce the risk of unintentionally collecting personal 
           information?`,
     },
     HelperText: {
