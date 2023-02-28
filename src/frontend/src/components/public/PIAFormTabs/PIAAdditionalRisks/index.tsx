@@ -22,24 +22,26 @@ const PIAAdditionalRisks = () => {
   };
 
   const [risks, setRisks] = useState<Array<IAdditionRisk>>(
-    additionalRisksForm?.risks || [
-      {
-        risk: '',
-        response: '',
-      },
-      {
-        risk: '',
-        response: '',
-      },
-      {
-        risk: '',
-        response: '',
-      },
-      {
-        risk: '',
-        response: '',
-      },
-    ],
+    additionalRisksForm?.risks.length > 0
+      ? additionalRisksForm?.risks
+      : [
+          {
+            risk: '',
+            response: '',
+          },
+          {
+            risk: '',
+            response: '',
+          },
+          {
+            risk: '',
+            response: '',
+          },
+          {
+            risk: '',
+            response: '',
+          },
+        ],
   );
 
   const [rows, setRows] = useState<Array<InputTextProps[]>>(
