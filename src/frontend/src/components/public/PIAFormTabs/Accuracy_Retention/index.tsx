@@ -74,7 +74,7 @@ export const AccuracyCorrectionAndRetention = () => {
 
   return (
     <>
-      <form className="needs-validation">
+      <form className="">
         <h1 className="form__title">{Messages.PageTitle.en}</h1>
         <p>{Messages.PageDescription.en}</p>
 

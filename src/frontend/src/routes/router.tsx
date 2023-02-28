@@ -95,7 +95,7 @@ const Router = () => {
             <Route path="accuracyCorrectionAndRetention">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<AccuracyCorrectionAndRetention />} />
-              <Route path="view" element={<AccuracyCorrectionAndRetention />} />
+              <Route path="view" element={comingSoonBanner} />
             </Route>
 
             <Route path="personalInformationBank">
