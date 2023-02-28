@@ -5,6 +5,7 @@ import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
+import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -100,7 +101,7 @@ const Router = () => {
 
             <Route path="personalInformationBank">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<PIAPersonalInformationBanks />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 

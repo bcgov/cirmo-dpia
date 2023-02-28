@@ -224,7 +224,7 @@ export const ReviewTypes = [
 
 export const PIOptions = ['Yes', 'No', "I'm not sure"];
 
-export const startDateOptions = ['Yes', 'No'];
+export const YesNoInputOptions = ['Yes', 'No'];
 
 export enum PiaStatuses {
   INCOMPLETE = 'INCOMPLETE',
