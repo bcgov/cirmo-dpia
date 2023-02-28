@@ -33,7 +33,7 @@
     "react-dom": "18.2.0",
     "react-router-dom": "6.4.2",
     "react-tooltip": "4.4.2",
-    "sass": "1.55.0"
+    "sass": "1.58.3"
   },
   "devDependencies": {
     "@types/jest": "29.1.2",
