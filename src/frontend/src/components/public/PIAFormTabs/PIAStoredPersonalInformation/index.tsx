@@ -1,5 +1,5 @@
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
@@ -15,14 +15,12 @@ import {
 import Messages from './messages';
 
 const StoredPersonalInformation = () => {
-  // TODO: Add prop for making everything in readonly for the view version of the tab
-
   const navigate = useNavigate();
 
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const [storedPersonalInformationForm, setStoredPersonalInformationForm] =
+  const [storingPersonalInformationForm, setstoringPersonalInformationForm] =
     useState(
       pia?.storedPersonalInformation || {
         personalInformation: {
@@ -61,19 +59,19 @@ const StoredPersonalInformation = () => {
     value: any,
     key: keyof IStoredPersonalInformation,
   ) => {
-    setStoredPersonalInformationForm((state) => ({
+    setstoringPersonalInformationForm((state) => ({
       ...state,
       [key]: value,
     }));
     piaStateChangeHandler(
-      storedPersonalInformationForm,
+      storingPersonalInformationForm,
       'storedPersonalInformation',
     );
   };
 
   const [personalInformation, setPersonalInformation] = useState({
     storedOutsideCanada: YesNoInput.YES,
-    whereDetails: ' ',
+    whereDetails: '',
   });
 
   const [sensitivePersonalInformation, setSensitivePersonalInformation] =
@@ -107,9 +105,9 @@ const StoredPersonalInformation = () => {
   const [serviceProviders, setServiceProviders] = useState<
     Array<ServiceProviderDetails>
   >(
-    storedPersonalInformationForm?.disclosuresOutsideCanada.storage
+    storingPersonalInformationForm?.disclosuresOutsideCanada.storage
       .serviceProviderList.length > 0
-      ? storedPersonalInformationForm?.disclosuresOutsideCanada.storage
+      ? storingPersonalInformationForm?.disclosuresOutsideCanada.storage
           .serviceProviderList
       : [
           {
@@ -154,16 +152,53 @@ const StoredPersonalInformation = () => {
     ]),
   );
 
+  const addServiceProvidersRow = () => {
+    setListServiceProvidersRows([
+      ...listServiceProvidersRows,
+      [
+        { value: '', id: 'one' },
+        { value: '', id: 'two' },
+        { value: '', id: 'three' },
+      ],
+    ]);
+    setServiceProviders([
+      ...serviceProviders,
+      {
+        name: '',
+        cloudInfraName: '',
+        details: '',
+      },
+    ]);
+  };
+
+  const removeServiceProvidersRow = (index: number) => {
+    const newData = [...listServiceProvidersRows];
+    newData.splice(index, 1);
+    setListServiceProvidersRows(newData);
+    serviceProviders.splice(index, 1);
+    setServiceProviders(serviceProviders);
+    stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
+  };
+
   const listServiceProvidersHeaders = [
-    Messages.SectionThree.TableColumnHeaders.ColumnOne.en,
-    Messages.SectionThree.TableColumnHeaders.ColumnTwo.en,
-    Messages.SectionThree.TableColumnHeaders.ColumnThree.en,
+    {
+      name: Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
+        .Name.en,
+    },
+    {
+      name: Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
+        .CloudInfrastructure.en,
+    },
+    {
+      name: Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
+        .StorageDetails.en,
+    },
   ];
 
   const [risks, setRisks] = useState<Array<PrivacyRisk>>(
-    storedPersonalInformationForm?.disclosuresOutsideCanada.risks.privacyRisks
+    storingPersonalInformationForm?.disclosuresOutsideCanada.risks.privacyRisks
       .length > 0
-      ? storedPersonalInformationForm?.disclosuresOutsideCanada.risks
+      ? storingPersonalInformationForm?.disclosuresOutsideCanada.risks
           .privacyRisks
       : [
           {
@@ -212,13 +247,47 @@ const StoredPersonalInformation = () => {
     ]),
   );
 
+  const addRisksRow = () => {
+    setListRisksRows([
+      ...listRisksRows,
+      [
+        { value: '', id: 'one' },
+        { value: '', id: 'two' },
+        { value: '', id: 'three' },
+        { value: '', id: 'four' },
+      ],
+    ]);
+    setRisks([
+      ...risks,
+      {
+        risk: '',
+        impact: '',
+        likelihoodOfUnauthorizedAccess: '',
+        levelOfPrivacyRisk: '',
+        riskResponse: '',
+        outstandingRisk: '',
+      },
+    ]);
+  };
+
+  const removeRisksRow = (index: number) => {
+    const newData = [...listServiceProvidersRows];
+    newData.splice(index, 1);
+    setListRisksRows(newData);
+    risks.splice(index, 1);
+    setRisks(risks);
+    stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
+  };
+
   const listRisksHeaders = [
-    Messages.SectionSeven.TableColumnHeaders.ColumnOne.en,
-    Messages.SectionSeven.TableColumnHeaders.ColumnTwo.en,
-    Messages.SectionSeven.TableColumnHeaders.ColumnThree.en,
-    Messages.SectionSeven.TableColumnHeaders.ColumnFour.en,
-    Messages.SectionSeven.TableColumnHeaders.ColumnFive.en,
-    Messages.SectionSeven.TableColumnHeaders.ColumnSix.en,
+    { name: Messages.Risks.RisksTableColumnHeaders.PrivacyRisk.en },
+    { name: Messages.Risks.RisksTableColumnHeaders.Impact.en },
+    {
+      name: Messages.Risks.RisksTableColumnHeaders.LikelihoodOfUnauthorized.en,
+    },
+    { name: Messages.Risks.RisksTableColumnHeaders.LevelOfPrivacyRisk.en },
+    { name: Messages.Risks.RisksTableColumnHeaders.RiskResponse.en },
+    { name: Messages.Risks.RisksTableColumnHeaders.OutstandingRisk.en },
   ];
 
   const handlePiOutsideCanadaChange = (e: any) => {
@@ -226,20 +295,20 @@ const StoredPersonalInformation = () => {
       ...personalInformation,
       storedOutsideCanada: e.target.value,
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       personalInformation,
     });
     stateChangeHandler(personalInformation, 'personalInformation');
   };
 
-  const handlePiWhereDetailsChange = (e: any) => {
+  const handlePiWhereDetailsChange = (value: string) => {
     setPersonalInformation({
       ...personalInformation,
-      whereDetails: e.target.value,
+      whereDetails: value,
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       personalInformation,
     });
     stateChangeHandler(personalInformation, 'personalInformation');
@@ -250,8 +319,8 @@ const StoredPersonalInformation = () => {
       ...sensitivePersonalInformation,
       doesInvolve: e.target.value,
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       sensitivePersonalInformation,
     });
     stateChangeHandler(
@@ -269,8 +338,8 @@ const StoredPersonalInformation = () => {
           sensitiveInfoStoredByServiceProvider: e.target.value,
         },
       });
-      setStoredPersonalInformationForm({
-        ...storedPersonalInformationForm,
+      setstoringPersonalInformationForm({
+        ...storingPersonalInformationForm,
         disclosuresOutsideCanada,
       });
       stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
@@ -286,42 +355,42 @@ const StoredPersonalInformation = () => {
         serviceProviderList: e.target.value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
   const handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange = (
-    e: any,
+    value: string,
   ) => {
     setDisclosuresOutsideCanada({
       ...disclosuresOutsideCanada,
       storage: {
         ...disclosuresOutsideCanada.storage,
-        disclosureDetails: e.target.value,
+        disclosureDetails: value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
   const handleDisclosuresOutsideCanadaStorageContractualTermsChange = (
-    e: any,
+    value: string,
   ) => {
     setDisclosuresOutsideCanada({
       ...disclosuresOutsideCanada,
       storage: {
         ...disclosuresOutsideCanada.storage,
-        contractualTerms: e.target.value,
+        contractualTerms: value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
@@ -337,54 +406,54 @@ const StoredPersonalInformation = () => {
         relyOnExistingContract: e.target.value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
   const handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange =
-    (e: any) => {
+    (value: string) => {
       setDisclosuresOutsideCanada({
         ...disclosuresOutsideCanada,
         contract: {
           ...disclosuresOutsideCanada.contract,
-          enterpriseServiceAccessDetails: e.target.value,
+          enterpriseServiceAccessDetails: value,
         },
       });
-      setStoredPersonalInformationForm({
-        ...storedPersonalInformationForm,
+      setstoringPersonalInformationForm({
+        ...storingPersonalInformationForm,
         disclosuresOutsideCanada,
       });
       stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
     };
 
-  const handleDisclosuresOutsideCanadaControlsChange = (e: any) => {
+  const handleDisclosuresOutsideCanadaControlsChange = (value: string) => {
     setDisclosuresOutsideCanada({
       ...disclosuresOutsideCanada,
       controls: {
         ...disclosuresOutsideCanada.controls,
-        unauthorizedAccessMeasures: e.target.value,
+        unauthorizedAccessMeasures: value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
-  const handleDisclosuresOutsideCanadaTrackAccessChange = (e: any) => {
+  const handleDisclosuresOutsideCanadaTrackAccessChange = (value: string) => {
     setDisclosuresOutsideCanada({
       ...disclosuresOutsideCanada,
       trackAccess: {
         ...disclosuresOutsideCanada.trackAccess,
-        trackAccessDetails: e.target.value,
+        trackAccessDetails: value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
@@ -398,8 +467,8 @@ const StoredPersonalInformation = () => {
         privacyRisks: e.target.value,
       },
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
@@ -412,8 +481,8 @@ const StoredPersonalInformation = () => {
       ...sensitivePersonalInformation,
       disclosedOutsideCanada: e.target.value,
     });
-    setStoredPersonalInformationForm({
-      ...storedPersonalInformationForm,
+    setstoringPersonalInformationForm({
+      ...storingPersonalInformationForm,
       sensitivePersonalInformation,
     });
     stateChangeHandler(
@@ -427,7 +496,9 @@ const StoredPersonalInformation = () => {
       index: 1,
       value: YesNoInput.YES,
       groupName: 'pi-outside-canada',
-      isDefault: true,
+      isDefault:
+        storingPersonalInformationForm.personalInformation
+          .storedOutsideCanada === YesNoInput.YES,
       changeHandler: (newValue: YesNoInput) =>
         handlePiOutsideCanadaChange(newValue),
     },
@@ -435,7 +506,9 @@ const StoredPersonalInformation = () => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'pi-outside-canada',
-      isDefault: false,
+      isDefault:
+        storingPersonalInformationForm.personalInformation
+          .storedOutsideCanada === YesNoInput.NO,
       changeHandler: (newValue: YesNoInput) =>
         handlePiOutsideCanadaChange(newValue),
     },
@@ -445,8 +518,10 @@ const StoredPersonalInformation = () => {
     {
       index: 1,
       value: YesNoInput.YES,
+      isDefault:
+        storingPersonalInformationForm.sensitivePersonalInformation
+          .doesInvolve === YesNoInput.YES,
       groupName: 'sensitive-pi-involved',
-      isDefault: true,
       changeHandler: (newValue: YesNoInput) =>
         handleSensitivePersonalInformationDoesInvolveChange(newValue),
     },
@@ -454,7 +529,9 @@ const StoredPersonalInformation = () => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-involved',
-      isDefault: false,
+      isDefault:
+        storingPersonalInformationForm.sensitivePersonalInformation
+          .doesInvolve === YesNoInput.NO,
       changeHandler: (newValue: YesNoInput) =>
         handleSensitivePersonalInformationDoesInvolveChange(newValue),
     },
@@ -465,7 +542,9 @@ const StoredPersonalInformation = () => {
       index: 1,
       value: YesNoInput.YES,
       groupName: 'sensitive-pi-disclosed-outside-canada',
-      isDefault: true,
+      isDefault:
+        storingPersonalInformationForm.sensitivePersonalInformation
+          .disclosedOutsideCanada === YesNoInput.YES,
       changeHandler: (newValue: YesNoInput) =>
         handleSensitivePersonalInformationDisclosedOutsideCanadaChange(
           newValue,
@@ -475,7 +554,9 @@ const StoredPersonalInformation = () => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-disclosed-outside-canada',
-      isDefault: false,
+      isDefault:
+        storingPersonalInformationForm.sensitivePersonalInformation
+          .disclosedOutsideCanada === YesNoInput.NO,
       changeHandler: (newValue: YesNoInput) =>
         handleSensitivePersonalInformationDisclosedOutsideCanadaChange(
           newValue,
@@ -488,7 +569,9 @@ const StoredPersonalInformation = () => {
       index: 1,
       value: YesNoInput.YES,
       groupName: 'relying-on-existing-contract',
-      isDefault: true,
+      isDefault:
+        storingPersonalInformationForm.disclosuresOutsideCanada.contract
+          .relyOnExistingContract === YesNoInput.YES,
       changeHandler: (newValue: YesNoInput) =>
         handleDisclosuresOutsideCanadaContractRelyOnExistingChange(newValue),
     },
@@ -496,7 +579,9 @@ const StoredPersonalInformation = () => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'relying-on-existing-contract',
-      isDefault: false,
+      isDefault:
+        storingPersonalInformationForm.disclosuresOutsideCanada.contract
+          .relyOnExistingContract === YesNoInput.NO,
       changeHandler: (newValue: YesNoInput) =>
         handleDisclosuresOutsideCanadaContractRelyOnExistingChange(newValue),
     },
@@ -507,7 +592,9 @@ const StoredPersonalInformation = () => {
       index: 1,
       value: YesNoInput.YES,
       groupName: 'sensitive-pi-stored-by-service-provider',
-      isDefault: true,
+      isDefault:
+        storingPersonalInformationForm.disclosuresOutsideCanada.storage
+          .sensitiveInfoStoredByServiceProvider === YesNoInput.YES,
       changeHandler: (newValue: YesNoInput) =>
         handleDisclosuresOutsideCanadaStorageSensitiveInfoStoredByServiceProviderChange(
           newValue,
@@ -517,7 +604,9 @@ const StoredPersonalInformation = () => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-stored-by-service-provider',
-      isDefault: false,
+      isDefault:
+        storingPersonalInformationForm.disclosuresOutsideCanada.storage
+          .sensitiveInfoStoredByServiceProvider === YesNoInput.NO,
       changeHandler: (newValue: YesNoInput) =>
         handleDisclosuresOutsideCanadaStorageSensitiveInfoStoredByServiceProviderChange(
           newValue,
@@ -530,95 +619,122 @@ const StoredPersonalInformation = () => {
       <h2>{Messages.Heading.H2Text.en}</h2>
       <p>{Messages.Heading.PText.en}</p>
       <section className="form__section">
-        <h3 className="py-3">{Messages.SectionOne.H3Text.en}</h3>
+        <h3 className="py-3">{Messages.PersonalInformation.H3Text.en}</h3>
         <div className="card-wrapper py-5 px-5">
           <div>
-            <p>{Messages.SectionOne.QuestionOne.en}</p>
+            <p>{Messages.PersonalInformation.StoredOutsideCanada.en}</p>
             {piOutsideOfCanadaRadios.map((radio, index) => (
               <Radio key={index} {...radio} />
             ))}
           </div>
-          <div className="pt-5">
-            <p>{Messages.SectionOne.QuestionTwo.en}</p>
-            <MDEditor
-              preview={isMPORole() ? 'edit' : 'preview'}
-              value={personalInformation.whereDetails}
-              defaultTabEnable={true}
-              onChange={handlePiWhereDetailsChange}
-            />
-          </div>
+          {personalInformation?.storedOutsideCanada === YesNoInput.YES && (
+            <div className="pt-5">
+              <p>{Messages.PersonalInformation.StoredWhere.en}</p>
+              <MDEditor
+                preview={isMPORole() ? 'edit' : 'preview'}
+                value={personalInformation.whereDetails}
+                defaultTabEnable={true}
+                onChange={(value) => handlePiWhereDetailsChange(value || '')}
+              />
+            </div>
+          )}
         </div>
       </section>
-      <section className="form__section">
-        <h3 className="py-3">{Messages.SectionTwo.H3Text.en}</h3>
-        <div className="card-wrapper py-5 px-5">
-          <div>
-            <p>{Messages.SectionTwo.QuestionOne.en}</p>
-            {sensitivePiInvolved.map((radio, index) => (
-              <Radio key={index} {...radio} />
-            ))}
+      {personalInformation?.storedOutsideCanada === YesNoInput.YES && (
+        <section className="form__section">
+          <h3 className="py-3">
+            {Messages.SensitivePersonalInformation.H3Text.en}
+          </h3>
+          <div className="card-wrapper py-5 px-5">
+            <div>
+              <p>{Messages.SensitivePersonalInformation.DoesInvolve.en}</p>
+              {sensitivePiInvolved.map((radio, index) => (
+                <Radio key={index} {...radio} />
+              ))}
+            </div>
+            {sensitivePersonalInformation?.doesInvolve === YesNoInput.YES && (
+              <div className="pt-5">
+                <MDEditor.Markdown
+                  source={
+                    Messages.SensitivePersonalInformation
+                      .SensitivePersonalInformationDislosedUnderFOIPPA.en
+                  }
+                />
+                {sensitivePiDisclosedOutsideCanada.map((radio, index) => (
+                  <Radio key={index} {...radio} />
+                ))}
+              </div>
+            )}
           </div>
-          <div className="pt-5">
-            <MDEditor.Markdown source={Messages.SectionTwo.QuestionTwo.en} />
-            {sensitivePiDisclosedOutsideCanada.map((radio, index) => (
-              <Radio key={index} {...radio} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
       {sensitivePersonalInformation.disclosedOutsideCanada ===
         YesNoInput.NO && (
         <>
           <section className="form__section">
             <div className="py-3 form__section-header">
-              <h3>{Messages.SectionThree.H3Text.en}</h3>
-              <MDEditor.Markdown source={Messages.SectionThree.PText.en} />
+              <h3>{Messages.AssessmentOfDisclosures.H3Text.en}</h3>
+              <MDEditor.Markdown
+                source={Messages.AssessmentOfDisclosures.PText.en}
+              />
             </div>
             <div className="card-wrapper py-5 px-5">
               <div>
-                <p>{Messages.SectionThree.QuestionOne.en}</p>
+                <p>
+                  {
+                    Messages.AssessmentOfDisclosures
+                      .SensitivePersonalInformationStoredByServiceProvider.en
+                  }
+                </p>
                 {sensitivePiStoredByServiceProvider.map((radio, index) => (
                   <Radio key={index} {...radio} />
                 ))}
               </div>
-              {disclosuresOutsideCanada.storage
+              {disclosuresOutsideCanada?.storage
                 .sensitiveInfoStoredByServiceProvider === YesNoInput.YES && (
                 <div className="pt-5">
                   <List
                     data={listServiceProvidersRows}
-                    columnsName={listServiceProvidersHeaders}
+                    columns={listServiceProvidersHeaders}
                     handleOnChange={
                       handleDisclosuresOutsideCanadaStorageServiceProviderListChange
                     }
-                    addRow={() => {}}
-                    removeRow={() => {}}
+                    addRow={addServiceProvidersRow}
+                    removeRow={removeServiceProvidersRow}
                   />
                 </div>
               )}
               <div className="pt-5">
-                <p>{Messages?.SectionThree.QuestionTwo.en}</p>
+                <p>{Messages.AssessmentOfDisclosures.DisclosureDetails.en}</p>
                 <MDEditor
                   preview={isMPORole() ? 'edit' : 'preview'}
                   value={disclosuresOutsideCanada.storage.disclosureDetails}
                   defaultTabEnable={true}
-                  onChange={
-                    handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange
+                  onChange={(value) =>
+                    handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange(
+                      value || '',
+                    )
                   }
                 />
               </div>
               <div className="pt-5">
                 <div>
-                  <p>{Messages?.SectionThree.QuestionThree.en}</p>
+                  <p>{Messages.AssessmentOfDisclosures.ContractualTerms.en}</p>
                   <MDEditor.Markdown
-                    source={Messages.SectionThree.QuestionThree.HelperText.en}
+                    source={
+                      Messages.AssessmentOfDisclosures.ContractualTerms
+                        .HelperText.en
+                    }
                   />
                 </div>
                 <MDEditor
                   preview={isMPORole() ? 'edit' : 'preview'}
                   value={disclosuresOutsideCanada.storage.contractualTerms}
                   defaultTabEnable={true}
-                  onChange={
-                    handleDisclosuresOutsideCanadaStorageContractualTermsChange
+                  onChange={(value) =>
+                    handleDisclosuresOutsideCanadaStorageContractualTermsChange(
+                      value || '',
+                    )
                   }
                 />
               </div>
@@ -627,7 +743,7 @@ const StoredPersonalInformation = () => {
           <section className="form__section my-4">
             <div className="card-wrapper py-5 px-5">
               <div>
-                <p>{Messages.SectionFour.QuestionOne.en}</p>
+                <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
                 {relyingOnExistingContract.map((radio, index) => (
                   <Radio key={index} {...radio} />
                 ))}
@@ -638,12 +754,14 @@ const StoredPersonalInformation = () => {
                   <MDEditor
                     preview={isMPORole() ? 'edit' : 'preview'}
                     value={
-                      disclosuresOutsideCanada.contract
+                      disclosuresOutsideCanada?.contract
                         .enterpriseServiceAccessDetails
                     }
                     defaultTabEnable={true}
-                    onChange={
-                      handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange
+                    onChange={(value) =>
+                      handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange(
+                        value || '',
+                      )
                     }
                   />
                 </div>
@@ -652,43 +770,47 @@ const StoredPersonalInformation = () => {
           </section>
           <section className="form__section my-4">
             <div className="card-wrapper py-5 px-5">
-              <p>{Messages.SectionFive.QuestionOne.en}</p>
+              <p>{Messages.Controls.WhatControlsAreInPlace.en}</p>
               <MDEditor
                 preview={isMPORole() ? 'edit' : 'preview'}
                 value={
                   disclosuresOutsideCanada.controls.unauthorizedAccessMeasures
                 }
                 defaultTabEnable={true}
-                onChange={handleDisclosuresOutsideCanadaControlsChange}
+                onChange={(value) =>
+                  handleDisclosuresOutsideCanadaControlsChange(value || '')
+                }
               />
             </div>
           </section>
           <section className="form__section my-4">
             <div className="card-wrapper py-5 px-5">
-              <p>{Messages.SectionSix.QuestionOne.en}</p>
+              <p>{Messages.TrackAccess.TrackAccessDetails.en}</p>
               <MDEditor
                 preview={isMPORole() ? 'edit' : 'preview'}
                 value={disclosuresOutsideCanada.trackAccess.trackAccessDetails}
                 defaultTabEnable={true}
-                onChange={handleDisclosuresOutsideCanadaTrackAccessChange}
+                onChange={(value) =>
+                  handleDisclosuresOutsideCanadaTrackAccessChange(value || '')
+                }
               />
             </div>
           </section>
           <section className="form__section my-4">
             <div className="card-wrapper py-5 px-5">
               <div>
-                <p>{Messages.SectionSeven.QuestionOne.en}</p>
+                <p>{Messages.Risks.DescribePrivacyRisks.en}</p>
                 <MDEditor.Markdown
-                  source={Messages.SectionSeven.QuestionOne.HelperText.en}
+                  source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
                 />
               </div>
               <div>
                 <List
                   data={listRisksRows}
-                  columnsName={listRisksHeaders}
+                  columns={listRisksHeaders}
                   handleOnChange={handleDisclosuresOutsideCanadaRisksChange}
-                  addRow={() => {}}
-                  removeRow={() => {}}
+                  addRow={addRisksRow}
+                  removeRow={removeRisksRow}
                 />
               </div>
             </div>

@@ -89,7 +89,7 @@ const Router = () => {
             >
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<StoredPersonalInformation />} />
-              <Route path="view" element={<StoredPersonalInformation />} />
+              <Route path="view" element={comingSoonBanner} />
             </Route>
 
             <Route path="securityOfPersonalInformation">
