@@ -112,7 +112,7 @@ const AppActivityManager = (): React.ReactElement => {
       // Code reaches here if a local storage changed in other tabs
 
       if (!isAuthenticated()) {
-        // if not authenticated, log the user out if not authenticated
+        // if not authenticated, log the user out
         // added return: since no further processing is required
         return logMeOut();
       }
