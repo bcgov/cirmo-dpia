@@ -11,6 +11,11 @@
 
     & > thead > tr {
       border-bottom: 2px solid $accent-colour;
+      & > th {
+        & > div.no-bold {
+          font-weight: normal;
+      } 
+     } 
     }
 
     /* we may not need this 
@@ -39,7 +44,7 @@
           width: 50ch;
         }
 
-        & > td:nth-child(5) {
+        & > td.no-padding {
           padding: 0;
   
           & > a {
