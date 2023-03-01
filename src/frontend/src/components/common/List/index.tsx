@@ -39,7 +39,13 @@ const List = ({
           <thead>
             <tr>
               {columnsName.map((column, index) => (
-                <th key={index}>{column}</th>
+                <th key={index}>
+                  {column.split('"').map((name, idx) => (
+                    <div className={idx === 0 ? '' : 'no-bold'} key={name}>
+                      {name}
+                    </div>
+                  ))}
+                </th>
               ))}
               <th />
             </tr>
