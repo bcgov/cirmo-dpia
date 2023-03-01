@@ -38,7 +38,9 @@ const PIACollectionUseAndDisclosure = () => {
       'collectionUseAndDisclosure',
     );
   };
-  const [disclosure, setDisclosure] = useState('');
+  const [disclosure, setDisclosure] = useState(
+    collectionUseAndDisclosureForm?.collectionNotice?.drafterInput || '',
+  );
   const [steps, setSteps] = useState<Array<StepInput>>(
     collectionUseAndDisclosureForm?.steps.length > 0
       ? collectionUseAndDisclosureForm?.steps
@@ -69,7 +71,9 @@ const PIACollectionUseAndDisclosure = () => {
           },
         ],
   );
-  const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState('');
+  const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState(
+    collectionUseAndDisclosureForm?.collectionNotice?.mpoInput || '',
+  );
   const [collectionNotice, setCollectionNotice] =
     useState<CollectionNoticeInput>({
       drafterInput: '',
@@ -103,6 +107,7 @@ const PIACollectionUseAndDisclosure = () => {
         OtherInput: '',
       },
     ]);
+    stateChangeHandler(steps, 'steps');
   };
   const isMPO = () => {
     return isMPORole();
@@ -133,7 +138,8 @@ const PIACollectionUseAndDisclosure = () => {
       return steps;
     });
     setSteps(newSteps[0]);
-    stateChangeHandler(steps, 'steps');
+    console.log('test', steps);
+    stateChangeHandler(newSteps[0], 'steps');
   };
 
   const columnsName = [
