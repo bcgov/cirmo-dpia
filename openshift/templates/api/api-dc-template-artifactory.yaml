@@ -46,6 +46,8 @@ objects:
         labels:
           app: dpia-api-artifactory
           deploymentconfig: dpia-api-artifactory
+          strimzi.io/name: dpia-api-artifactory
+          DataClass: Medium
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
       spec:

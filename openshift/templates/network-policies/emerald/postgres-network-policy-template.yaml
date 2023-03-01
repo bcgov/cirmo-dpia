@@ -7,7 +7,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/name: postgres
+      strimzi.io/name: postgresql
   egress:
     - ports:
         - protocol: TCP
@@ -35,7 +35,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              strimzi.io/name: postgres
+              strimzi.io/name: postgresql
     - ports:
         - protocol: TCP
           port: 3000
