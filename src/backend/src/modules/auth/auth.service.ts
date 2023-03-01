@@ -139,8 +139,15 @@ export class AuthService {
               ),
           ),
           catchError((e) => {
-            console.error(e.response.data, e.response.status);
-            throw new HttpException(e.response.data, e.response.status);
+            console.error(
+              'auth.service.ts:refreshAccessToken:data',
+              e?.response?.data || 'Error data unknown, Something Went wrong',
+              e?.response?.status || 500,
+            );
+            throw new HttpException(
+              e?.response?.data || 'Error data unknown, Something Went wrong',
+              e?.response?.status || 500,
+            );
           }),
         ),
     );
@@ -164,8 +171,15 @@ export class AuthService {
         .pipe(
           map((res: any) => res.data),
           catchError((e) => {
-            console.error(e.response.data, e.response.status);
-            throw new HttpException(e.response.data, e.response.status);
+            console.error(
+              'auth.service.ts:logout:data',
+              e?.response?.data || 'Error data unknown, Something Went wrong',
+              e?.response?.status || 500,
+            );
+            throw new HttpException(
+              e?.response?.data || 'Error data unknown, Something Went wrong',
+              e?.response?.status || 500,
+            );
           }),
         ),
     );

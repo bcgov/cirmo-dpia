@@ -101,10 +101,9 @@ export const refreshAuthTokens = async () => {
         false,
       );
 
-      // clear existing tokens
-      clearAuthTokens();
-
-      // store new token
+      // overwrite auth tokens
+      // Note: Not deleting and storing: but overwriting the existing tokens
+      // Reason: Deleting the tokens first triggers a storage event on other tabs, which logs the app out as the tokens are missing for the interim.
       storeAuthTokens(tokenDetails);
 
       // return success
