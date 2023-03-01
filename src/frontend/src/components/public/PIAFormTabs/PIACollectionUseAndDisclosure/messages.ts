@@ -32,7 +32,18 @@ export default {
     },
     DrafterInput: {
       Title: {
-        en: `Review the sample collection notice and write your collection notice below. `,
+        PartOne: {
+          en: `Review the `,
+        },
+        PartTwo: {
+          en: ` sample collection notice`,
+        },
+        PartThree: {
+          en: ` and write your collection notice below.`,
+        },
+      },
+      Link: {
+        en: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments/guidance-for-privacy-impact-assessments#q-6`,
       },
       Description: {
         en: `If you are collecting personal information directly from the individual the information is about, FOIPPA requires that you provide a collection notice (except in limited circumstances). If you believe there is a reason for an exception, contact your MPO.`,

@@ -151,7 +151,7 @@ const PIACollectionUseAndDisclosure = () => {
         <b>{Messages.Headings.Title.en}</b>
       </h2>
       <span>{Messages.Headings.Subtitle.en}</span>
-      <h3 className="pt-3 pb-3">{Messages.WorkThroughDetails.Title.en}</h3>
+      <h3 className="pt-4 pb-2">{Messages.WorkThroughDetails.Title.en}</h3>
       <section className="card p-3">
         <List
           data={rows}
@@ -164,14 +164,25 @@ const PIACollectionUseAndDisclosure = () => {
         />
       </section>
 
-      <h3 className="pt-4 pb-4">{Messages.CollectionNotice.Title.en}</h3>
+      <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
 
       <section className=" card pt-5 px-5">
         <div className="form-group">
           <label htmlFor="collectionNoticeDrafter">
-            {Messages.CollectionNotice.DrafterInput.Title.en}
+            {Messages.CollectionNotice.DrafterInput.Title.PartOne.en}
+            <a
+              href={Messages.CollectionNotice.DrafterInput.Link.en}
+              rel="noreferrer external"
+              target="_blank"
+            >
+              {Messages.CollectionNotice.DrafterInput.Title.PartTwo.en}
+            </a>
+            {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
           </label>
-          <span>{Messages.CollectionNotice.DrafterInput.Description.en}</span>
+
+          <div className="section__question-hint">
+            {Messages.CollectionNotice.DrafterInput.Description.en}
+          </div>
           <div className="richText" id="drafterDisclosure">
             <MDEditor
               id="collectionNoticeDrafter"
