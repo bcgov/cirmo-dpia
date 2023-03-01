@@ -58,7 +58,7 @@ export class AuthController {
   @Unprotected()
   refreshAccessToken(@Body() token: AppTokensDto) {
     try {
-      this.authService.refreshAccessToken(token.refresh_token);
+      return this.authService.refreshAccessToken(token.refresh_token);
     } catch (e) {
       if (e instanceof HttpException) {
         throw new HttpException(' Token failed', e.getStatus());
