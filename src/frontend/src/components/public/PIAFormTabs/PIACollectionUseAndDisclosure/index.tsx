@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import InputText from '../../../common/InputText/InputText';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { isMPORole } from '../../../../utils/helper.util';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
