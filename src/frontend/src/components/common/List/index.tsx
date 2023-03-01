@@ -2,16 +2,21 @@ import React, { ChangeEvent, MouseEventHandler } from 'react';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import InputText from '../InputText/InputText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isMPORole } from '../../../utils/helper.util';
 export interface InputTextProps {
   label?: string;
   value: string;
   id: string;
 }
 
+interface ColumnMetaData {
+  name: string;
+  isDisable?: boolean;
+  className?: string;
+  hint?: string;
+}
 interface ListProps {
   data: InputTextProps[][];
-  columnsName: string[];
+  columns: Array<ColumnMetaData>;
   handleOnChange: (
     event: ChangeEvent<HTMLInputElement>,
     row: number,
@@ -20,17 +25,15 @@ interface ListProps {
   addRow: MouseEventHandler<HTMLButtonElement>;
   removeRow: (idx: number) => void;
   enableRemove?: boolean;
-  sourceTab: string;
 }
 
 const List = ({
   data,
-  columnsName,
+  columns,
   handleOnChange,
   addRow,
   removeRow,
   enableRemove = true,
-  sourceTab,
 }: ListProps) => {
   return (
     <>
@@ -38,13 +41,12 @@ const List = ({
         <table id="tab_logic" className="table data-table">
           <thead>
             <tr>
-              {columnsName.map((column, index) => (
-                <th key={index}>
-                  {column.split('"').map((name, idx) => (
-                    <div className={idx === 0 ? '' : 'no-bold'} key={name}>
-                      {name}
-                    </div>
-                  ))}
+              {columns.map((column, index) => (
+                <th key={index} className={column.className}>
+                  {column.name}
+                  {column.hint && (
+                    <div className={'no-bold'}>{column.hint}</div>
+                  )}
                 </th>
               ))}
               <th />
@@ -55,7 +57,7 @@ const List = ({
             {data.map((items, idx) => (
               <tr key={idx}>
                 {items.map((item, index) => (
-                  <td key={index}>
+                  <td key={index} className={columns[index].className}>
                     <InputText
                       type="text"
                       value={item.value}
@@ -63,9 +65,7 @@ const List = ({
                       onChange={(e) => handleOnChange(e, idx, index)}
                       labelSide="left"
                       label={item.label}
-                      isDisabled={
-                        index != 0 && sourceTab === 'disclosure' && !isMPORole()
-                      }
+                      isDisabled={columns[index].isDisable}
                     />
                   </td>
                 ))}

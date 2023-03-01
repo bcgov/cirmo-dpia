@@ -17,13 +17,16 @@ export default {
       en: `Describe the way personal information moves through your initiative step by step as if you were explaining it to someone who does not know about your initiative.`,
     },
     ColumnMpoInput: {
-      en: `Collection, use, disclosure "(for MPO use only)`,
+      en: `Collection, use, disclosure`,
     },
     ColumnFoippaInput: {
-      en: `FOIPPA authority "(for MPO use only)`,
+      en: `FOIPPA authority`,
     },
     ColumnOtherInput: {
-      en: `Other legal authority "(for MPO use only)`,
+      en: `Other legal authority`,
+    },
+    columnHint: {
+      en: '(for MPO use only)',
     },
   },
   CollectionNotice: {
@@ -35,7 +38,7 @@ export default {
         PartOne: {
           en: `Review the `,
         },
-        PartTwo: {
+        LinkText: {
           en: ` sample collection notice`,
         },
         PartThree: {

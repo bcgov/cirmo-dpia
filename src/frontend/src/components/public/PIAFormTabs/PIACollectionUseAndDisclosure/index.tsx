@@ -109,9 +109,7 @@ const PIACollectionUseAndDisclosure = () => {
     ]);
     stateChangeHandler(steps, 'steps');
   };
-  const isMPO = () => {
-    return isMPORole();
-  };
+
   const removeRow = (index: number) => {
     const newData = [...rows];
     newData.splice(index, 1);
@@ -142,11 +140,26 @@ const PIACollectionUseAndDisclosure = () => {
     stateChangeHandler(newSteps[0], 'steps');
   };
 
-  const columnsName = [
-    Messages.WorkThroughDetails.ColumnDrafterInput.en,
-    Messages.WorkThroughDetails.ColumnMpoInput.en,
-    Messages.WorkThroughDetails.ColumnFoippaInput.en,
-    Messages.WorkThroughDetails.ColumnOtherInput.en,
+  const columns = [
+    {
+      name: Messages.WorkThroughDetails.ColumnDrafterInput.en,
+      className: 'border-end',
+    },
+    {
+      name: Messages.WorkThroughDetails.ColumnMpoInput.en,
+      hint: Messages.WorkThroughDetails.columnHint.en,
+      isDisable: !isMPORole(),
+    },
+    {
+      name: Messages.WorkThroughDetails.ColumnFoippaInput.en,
+      hint: Messages.WorkThroughDetails.columnHint.en,
+      isDisable: !isMPORole(),
+    },
+    {
+      name: Messages.WorkThroughDetails.ColumnOtherInput.en,
+      hint: Messages.WorkThroughDetails.columnHint.en,
+      isDisable: !isMPORole(),
+    },
   ];
   return (
     <>
@@ -158,12 +171,11 @@ const PIACollectionUseAndDisclosure = () => {
       <section className="card p-3">
         <List
           data={rows}
-          columnsName={columnsName}
+          columns={columns}
           handleOnChange={handleOnChange}
           addRow={addRow}
           removeRow={removeRow}
           enableRemove={true}
-          sourceTab="disclosure"
         />
       </section>
 
@@ -178,7 +190,7 @@ const PIACollectionUseAndDisclosure = () => {
               rel="noreferrer external"
               target="_blank"
             >
-              {Messages.CollectionNotice.DrafterInput.Title.PartTwo.en}
+              {Messages.CollectionNotice.DrafterInput.Title.LinkText.en}
             </a>
             {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
           </label>
@@ -210,7 +222,7 @@ const PIACollectionUseAndDisclosure = () => {
           <div className="richText pb-4" id="MPOCommentsDisclosure">
             <MDEditor
               id="collectionNoticeMPO"
-              preview={isMPO() ? 'edit' : 'preview'}
+              preview={isMPORole() ? 'edit' : 'preview'}
               value={MPOCommentsDisclosure}
               defaultTabEnable={true}
               onChange={(value) => {

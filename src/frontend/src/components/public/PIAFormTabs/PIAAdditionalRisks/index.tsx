@@ -97,7 +97,7 @@ const PIAAdditionalRisks = () => {
     stateChangeHandler(risks, 'risks');
   };
 
-  const columnsName = ['Possible risk', 'Response'];
+  const columns = [{ name: 'Possible risk' }, { name: 'Response' }];
 
   return (
     <>
@@ -106,12 +106,11 @@ const PIAAdditionalRisks = () => {
       <section className="card p-3">
         <List
           data={rows}
-          columnsName={columnsName}
+          columns={columns}
           handleOnChange={handleOnChange}
           addRow={addRow}
           removeRow={removeRow}
           enableRemove={true}
-          sourceTab="additionalRisks"
         />
       </section>
     </>
