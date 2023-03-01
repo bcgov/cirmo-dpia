@@ -8,9 +8,15 @@ export interface InputTextProps {
   id: string;
 }
 
+interface ColumnMetaData {
+  name: string;
+  isDisable?: boolean;
+  className?: string;
+  hint?: string;
+}
 interface ListProps {
   data: InputTextProps[][];
-  columnsName: string[];
+  columns: Array<ColumnMetaData>;
   handleOnChange: (
     event: ChangeEvent<HTMLInputElement>,
     row: number,
@@ -23,7 +29,7 @@ interface ListProps {
 
 const List = ({
   data,
-  columnsName,
+  columns,
   handleOnChange,
   addRow,
   removeRow,
@@ -35,8 +41,13 @@ const List = ({
         <table id="tab_logic" className="table data-table">
           <thead>
             <tr>
-              {columnsName.map((column, index) => (
-                <th key={index}>{column}</th>
+              {columns.map((column, index) => (
+                <th key={index} className={column.className}>
+                  {column.name}
+                  {column.hint && (
+                    <div className={'no-bold'}>{column.hint}</div>
+                  )}
+                </th>
               ))}
               <th />
             </tr>
@@ -46,7 +57,7 @@ const List = ({
             {data.map((items, idx) => (
               <tr key={idx}>
                 {items.map((item, index) => (
-                  <td key={index}>
+                  <td key={index} className={columns[index].className}>
                     <InputText
                       type="text"
                       value={item.value}
@@ -54,6 +65,7 @@ const List = ({
                       onChange={(e) => handleOnChange(e, idx, index)}
                       labelSide="left"
                       label={item.label}
+                      isDisabled={columns[index].isDisable}
                     />
                   </td>
                 ))}
@@ -61,7 +73,7 @@ const List = ({
                 {enableRemove ? (
                   <td>
                     <button
-                      className=" btn btn-outline-danger"
+                      className=" form-control btn btn-outline-danger"
                       onClick={() => removeRow(idx)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
