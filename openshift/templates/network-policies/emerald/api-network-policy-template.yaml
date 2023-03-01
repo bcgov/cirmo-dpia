@@ -11,37 +11,10 @@ spec:
   egress:
     - ports:
         - protocol: TCP
-          port: 3000
+          port: 5432
       to:
         - podSelector:
             matchLabels:
-              strimzi.io/name: dpia-api-artifactory
+              strimzi.io/name: postgresql
   policyTypes:
     - Egress
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: aa77ab-network-policy-api-ingress
-  namespace: aa77ab-dev
-spec:
-  podSelector:
-    matchLabels:
-      strimzi.io/name: dpia-api-artifactory
-  ingress:
-    - ports:
-        - protocol: TCP
-          port: 3000
-      from:
-        - podSelector:
-            matchLabels:
-              strimzi.io/name: dpia-api-artifactory
-    - ports:
-        - protocol: TCP
-          port: 5432
-      from:
-        - podSelector:
-            matchLabels:
-              strimzi.io/name: postgres
-  policyTypes:
-    - Ingress
