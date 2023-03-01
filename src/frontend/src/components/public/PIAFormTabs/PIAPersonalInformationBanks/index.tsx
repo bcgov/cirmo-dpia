@@ -40,12 +40,25 @@ const PIAPersonalInformationBanks = () => {
       'personalInformationBanks',
     );
   };
-  const [containsPIBs, setContainsPIBs] = useState('YES');
-  const [PIBDescriptionType, setPIBDescriptionType] = useState('');
-  const [mainMinistryInvolved, setMainMinistryInvolved] = useState('');
-  const [PIBManagingPersonName, setPIBManagingPersonName] = useState('');
-  const [otherMinistryInvolved, setOtherMinistryInvolved] = useState('');
-  const [PIBManagingPersonPhone, setPIBManagingPersonPhone] = useState('');
+  const [containsPIBs, setContainsPIBs] = useState(
+    personalInformationBanksForm?.resultingPIB?.willResultInPIB || 'YES',
+  );
+  const [PIBDescriptionType, setPIBDescriptionType] = useState(
+    personalInformationBanksForm?.resultingPIB?.descriptionInformationType ||
+      '',
+  );
+  const [mainMinistryInvolved, setMainMinistryInvolved] = useState(
+    personalInformationBanksForm?.resultingPIB?.mainMinistryInvolved || '',
+  );
+  const [PIBManagingPersonName, setPIBManagingPersonName] = useState(
+    personalInformationBanksForm?.resultingPIB?.managingPersonName || '',
+  );
+  const [otherMinistryInvolved, setOtherMinistryInvolved] = useState(
+    personalInformationBanksForm?.resultingPIB?.otherMinistryInvolved || '',
+  );
+  const [PIBManagingPersonPhone, setPIBManagingPersonPhone] = useState(
+    personalInformationBanksForm?.resultingPIB?.managingPersonPhone || '',
+  );
 
   const choosePIBs = (event: any) => {
     const containsPIB = event.target.value === 'Yes' ? 'YES' : 'NO';
@@ -102,7 +115,7 @@ const PIAPersonalInformationBanks = () => {
                           type="radio"
                           name="start-initiative-radio"
                           value={option}
-                          defaultChecked
+                          checked={containsPIBs === 'YES'}
                         />
                         {option}
                       </label>
@@ -115,6 +128,7 @@ const PIAPersonalInformationBanks = () => {
                           type="radio"
                           name="start-initiative-radio"
                           value={option}
+                          checked={containsPIBs === 'NO'}
                         />
                         {option}
                       </label>
