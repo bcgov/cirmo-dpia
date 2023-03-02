@@ -30,6 +30,7 @@
     a {
         width: 100%;
         word-break: break-all;
+        position:relative;
     }
 
     .active:before {
@@ -41,6 +42,8 @@
         left:0px;
         height:20px;
         width:20px;
+        top:19px; /* Eye balling to align the arrow with the text */
+        transform:translateY(-50%);
 
     }
 
