@@ -1,73 +1,92 @@
 import MDEditor from '@uiw/react-md-editor';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { isMPORole } from '../../../../utils/helper.util';
+import { deepEqual } from '../../../../utils/object-comparison.util';
 import List, { InputTextProps } from '../../../common/List';
 import Radio from '../../../common/Radio';
 import {
-  IStoredPersonalInformation,
+  IStoringPersonalInformation,
   PrivacyRisk,
   ServiceProviderDetails,
 } from './interfaces';
 import Messages from './messages';
 
-const StoredPersonalInformation = () => {
+const StoringPersonalInformation = () => {
   const navigate = useNavigate();
 
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const [storingPersonalInformationForm, setstoringPersonalInformationForm] =
-    useState(
-      pia?.storedPersonalInformation || {
-        personalInformation: {
-          storedOutsideCanada: YesNoInput.YES,
-          whereDetails: '',
+  const defaultState: IStoringPersonalInformation = useMemo(
+    () => ({
+      personalInformation: {
+        storedOutsideCanada: YesNoInput.YES,
+        whereDetails: '',
+      },
+      sensitivePersonalInformation: {
+        doesInvolve: YesNoInput.YES,
+        disclosedOutsideCanada: YesNoInput.YES,
+      },
+      disclosuresOutsideCanada: {
+        storage: {
+          sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
+          serviceProviderList: [],
+          disclosureDetails: '',
+          contractualTerms: '',
         },
-        sensitivePersonalInformation: {
-          doesInvolve: YesNoInput.YES,
-          disclosedOutsideCanada: YesNoInput.YES,
+        contract: {
+          relyOnExistingContract: YesNoInput.YES,
+          enterpriseServiceAccessDetails: '',
         },
-        disclosuresOutsideCanada: {
-          storage: {
-            sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
-            serviceProviderList: [],
-            disclosureDetails: '',
-            contractualTerms: '',
-          },
-          contract: {
-            relyOnExistingContract: YesNoInput.YES,
-            enterpriseServiceAccessDetails: '',
-          },
-          controls: {
-            unauthorizedAccessMeasures: '',
-          },
-          trackAccess: {
-            trackAccessDetails: '',
-          },
-          risks: {
-            privacyRisks: [],
-          },
+        controls: {
+          unauthorizedAccessMeasures: '',
+        },
+        trackAccess: {
+          trackAccessDetails: '',
+        },
+        risks: {
+          privacyRisks: [],
         },
       },
-    );
+    }),
+    [],
+  );
+
+  const initialFormState = useMemo(
+    () => pia.storingPersonalInformation || defaultState,
+    [defaultState, pia.storingPersonalInformation],
+  );
+
+  const [storingPersonalInformationForm, setStoringPersonalInformationForm] =
+    useState<IStoringPersonalInformation>(initialFormState);
 
   const stateChangeHandler = (
     value: any,
-    key: keyof IStoredPersonalInformation,
+    key: keyof IStoringPersonalInformation,
   ) => {
-    setstoringPersonalInformationForm((state) => ({
+    setStoringPersonalInformationForm((state) => ({
       ...state,
       [key]: value,
     }));
-    piaStateChangeHandler(
-      storingPersonalInformationForm,
-      'storedPersonalInformation',
-    );
   };
+
+  useEffect(() => {
+    if (!deepEqual(initialFormState, storingPersonalInformationForm)) {
+      piaStateChangeHandler(
+        storingPersonalInformationForm,
+        'storingPersonalInformation',
+      );
+    }
+  }, [
+    pia.storingPersonalInformation,
+    piaStateChangeHandler,
+    storingPersonalInformationForm,
+    initialFormState,
+  ]);
 
   const [personalInformation, setPersonalInformation] = useState({
     storedOutsideCanada: YesNoInput.YES,
@@ -255,6 +274,8 @@ const StoredPersonalInformation = () => {
         { value: '', id: 'two' },
         { value: '', id: 'three' },
         { value: '', id: 'four' },
+        { value: '', id: 'five' },
+        { value: '', id: 'six' },
       ],
     ]);
     setRisks([
@@ -271,7 +292,7 @@ const StoredPersonalInformation = () => {
   };
 
   const removeRisksRow = (index: number) => {
-    const newData = [...listServiceProvidersRows];
+    const newData = [...listRisksRows];
     newData.splice(index, 1);
     setListRisksRows(newData);
     risks.splice(index, 1);
@@ -295,7 +316,7 @@ const StoredPersonalInformation = () => {
       ...personalInformation,
       storedOutsideCanada: e.target.value,
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       personalInformation,
     });
@@ -307,7 +328,7 @@ const StoredPersonalInformation = () => {
       ...personalInformation,
       whereDetails: value,
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       personalInformation,
     });
@@ -319,7 +340,7 @@ const StoredPersonalInformation = () => {
       ...sensitivePersonalInformation,
       doesInvolve: e.target.value,
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       sensitivePersonalInformation,
     });
@@ -331,6 +352,7 @@ const StoredPersonalInformation = () => {
 
   const handleDisclosuresOutsideCanadaStorageSensitiveInfoStoredByServiceProviderChange =
     (e: any) => {
+      console.log(e);
       setDisclosuresOutsideCanada({
         ...disclosuresOutsideCanada,
         storage: {
@@ -338,7 +360,7 @@ const StoredPersonalInformation = () => {
           sensitiveInfoStoredByServiceProvider: e.target.value,
         },
       });
-      setstoringPersonalInformationForm({
+      setStoringPersonalInformationForm({
         ...storingPersonalInformationForm,
         disclosuresOutsideCanada,
       });
@@ -347,18 +369,24 @@ const StoredPersonalInformation = () => {
 
   const handleDisclosuresOutsideCanadaStorageServiceProviderListChange = (
     e: any,
+    row: number,
+    col: number,
   ) => {
-    setDisclosuresOutsideCanada({
-      ...disclosuresOutsideCanada,
-      storage: {
-        ...disclosuresOutsideCanada.storage,
-        serviceProviderList: e.target.value,
-      },
+    const newData = listServiceProvidersRows.map((d, i) => {
+      if (i === row) {
+        d[col].value = e.target.value;
+      }
+
+      return d;
     });
-    setstoringPersonalInformationForm({
-      ...storingPersonalInformationForm,
-      disclosuresOutsideCanada,
+    setListServiceProvidersRows(newData);
+    const newServiceProviders = newData.map((item, index) => {
+      serviceProviders[index].name = item[0].value;
+      serviceProviders[index].cloudInfraName = item[1].value;
+      serviceProviders[index].details = item[2].value;
+      return serviceProviders;
     });
+    setServiceProviders(newServiceProviders[0]);
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
@@ -372,7 +400,7 @@ const StoredPersonalInformation = () => {
         disclosureDetails: value,
       },
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
@@ -389,7 +417,7 @@ const StoredPersonalInformation = () => {
         contractualTerms: value,
       },
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
@@ -406,7 +434,7 @@ const StoredPersonalInformation = () => {
         relyOnExistingContract: e.target.value,
       },
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
@@ -422,7 +450,7 @@ const StoredPersonalInformation = () => {
           enterpriseServiceAccessDetails: value,
         },
       });
-      setstoringPersonalInformationForm({
+      setStoringPersonalInformationForm({
         ...storingPersonalInformationForm,
         disclosuresOutsideCanada,
       });
@@ -437,7 +465,7 @@ const StoredPersonalInformation = () => {
         unauthorizedAccessMeasures: value,
       },
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
@@ -452,25 +480,36 @@ const StoredPersonalInformation = () => {
         trackAccessDetails: value,
       },
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       disclosuresOutsideCanada,
     });
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
-  const handleDisclosuresOutsideCanadaRisksChange = (e: any) => {
-    setDisclosuresOutsideCanada({
-      ...disclosuresOutsideCanada,
-      risks: {
-        ...disclosuresOutsideCanada.risks,
-        privacyRisks: e.target.value,
-      },
+  const handleDisclosuresOutsideCanadaRisksChange = (
+    e: any,
+    row: number,
+    col: number,
+  ) => {
+    const newData = listRisksRows.map((d, i) => {
+      if (i === row) {
+        d[col].value = e.target.value;
+      }
+
+      return d;
     });
-    setstoringPersonalInformationForm({
-      ...storingPersonalInformationForm,
-      disclosuresOutsideCanada,
+    setListRisksRows(newData);
+    const newRisks = newData.map((item, index) => {
+      risks[index].risk = item[0].value;
+      risks[index].impact = item[1].value;
+      risks[index].likelihoodOfUnauthorizedAccess = item[2].value;
+      risks[index].levelOfPrivacyRisk = item[3].value;
+      risks[index].riskResponse = item[4].value;
+      risks[index].outstandingRisk = item[5].value;
+      return risks;
     });
+    setRisks(newRisks[0]);
     stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
   };
 
@@ -481,7 +520,7 @@ const StoredPersonalInformation = () => {
       ...sensitivePersonalInformation,
       disclosedOutsideCanada: e.target.value,
     });
-    setstoringPersonalInformationForm({
+    setStoringPersonalInformationForm({
       ...storingPersonalInformationForm,
       sensitivePersonalInformation,
     });
@@ -545,10 +584,8 @@ const StoredPersonalInformation = () => {
       isDefault:
         storingPersonalInformationForm.sensitivePersonalInformation
           .disclosedOutsideCanada === YesNoInput.YES,
-      changeHandler: (newValue: YesNoInput) =>
-        handleSensitivePersonalInformationDisclosedOutsideCanadaChange(
-          newValue,
-        ),
+      changeHandler: (e: any) =>
+        handleSensitivePersonalInformationDisclosedOutsideCanadaChange(e),
     },
     {
       index: 2,
@@ -557,10 +594,8 @@ const StoredPersonalInformation = () => {
       isDefault:
         storingPersonalInformationForm.sensitivePersonalInformation
           .disclosedOutsideCanada === YesNoInput.NO,
-      changeHandler: (newValue: YesNoInput) =>
-        handleSensitivePersonalInformationDisclosedOutsideCanadaChange(
-          newValue,
-        ),
+      changeHandler: (e: any) =>
+        handleSensitivePersonalInformationDisclosedOutsideCanadaChange(e),
     },
   ];
 
@@ -821,4 +856,4 @@ const StoredPersonalInformation = () => {
   );
 };
 
-export default StoredPersonalInformation;
+export default StoringPersonalInformation;

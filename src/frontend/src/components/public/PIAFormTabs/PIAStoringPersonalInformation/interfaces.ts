@@ -15,7 +15,7 @@ export type ServiceProviderDetails = {
   details: string;
 };
 
-export interface IStoredPersonalInformation {
+export interface IStoringPersonalInformation {
   personalInformation: {
     storedOutsideCanada: YesNoInput;
     whereDetails: string;

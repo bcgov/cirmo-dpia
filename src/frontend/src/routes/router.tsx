@@ -16,7 +16,7 @@ import PIAList from '../pages/PIAListPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
-import StoredPersonalInformation from '../components/public/PIAFormTabs/PIAStoredPersonalInformation';
+import StoringPersonalInformation from '../components/public/PIAFormTabs/PIAStoringPersonalInformation';
 import { isAuthenticated } from '../utils/auth';
 import { isMPORole } from '../utils/helper.util';
 
@@ -61,7 +61,7 @@ const Router = () => {
 
           <Route path="new" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
-            <Route path="intake" element={<StoredPersonalInformation />} />
+            <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
           <Route path=":id/view/:title" element={<PIADetailPage />} />
@@ -85,10 +85,10 @@ const Router = () => {
 
             <Route
               path="storingPersonalInformation"
-              element={<StoredPersonalInformation />}
+              element={<StoringPersonalInformation />}
             >
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<StoredPersonalInformation />} />
+              <Route path="edit" element={<StoringPersonalInformation />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 

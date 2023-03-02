@@ -74,7 +74,10 @@ const List = ({
                   <td>
                     <button
                       className=" form-control btn btn-outline-danger"
-                      onClick={() => removeRow(idx)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        removeRow(idx);
+                      }}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -87,7 +90,13 @@ const List = ({
       </div>
 
       <div className="pt-4 pb-4 view-pid">
-        <button onClick={addRow} className="bcgovbtn bcgovbtn__tertiary bold">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            addRow(e);
+          }}
+          className="bcgovbtn bcgovbtn__tertiary bold"
+        >
           Add more rows
           <FontAwesomeIcon icon={faPlus} />
         </button>
