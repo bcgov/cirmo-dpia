@@ -4,7 +4,6 @@ import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
-import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
 import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/Security_Personal_Information';
 import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/PIACollectionUseAndDisclosure';
 
@@ -18,6 +17,7 @@ import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import { isAuthenticated } from '../utils/auth';
 import { isMPORole } from '../utils/helper.util';
+import PIAAgreementsAndInformationBanks from '../components/public/PIAFormTabs/agreementsAndInformationBanks';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -100,9 +100,12 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="personalInformationBank">
+            <Route path="agreementsAndInformationBank">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<PIAPersonalInformationBanks />} />
+              <Route
+                path="edit"
+                element={<PIAAgreementsAndInformationBanks />}
+              />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 

@@ -7,9 +7,10 @@ import { YesNoInputOptions } from '../../../../constant/constant';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
-import { IPersonalInformationBanks } from './PersonalInformationBanks';
+import { IPersonalInformationBanks } from './AgreementsAndInformationBanks';
+import CustomInputDate from '../../../common/CustomInputDate';
 
-const PIAPersonalInformationBanks = () => {
+const PIAAgreementsAndInformationBanks = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
@@ -17,6 +18,7 @@ const PIAPersonalInformationBanks = () => {
     useState<IPersonalInformationBanks>(
       pia.personalInformationBanks || {
         resultingPIB: {},
+        involveISA: {},
       },
     );
   const [resultingPIB, setResultingPIB] = useState({
@@ -26,6 +28,20 @@ const PIAPersonalInformationBanks = () => {
     otherMinistryInvolved: '',
     managingPersonName: '',
     managingPersonPhone: '',
+  });
+
+  const [isaStartDate, setIsaStartDate] = useState<Date | null>(null);
+  const [isaEndDate, setIsaEndDate] = useState<Date | null>(null);
+
+  const [involveISA, setInvolveISA] = useState({
+    willInvolveISA: 'YES',
+    descriptionISA: '',
+    mainMinistryInvolved: '',
+    otherMinistryInvolved: '',
+    businessContactPersonName: '',
+    businessContactPersonPhone: '',
+    ISAStartDate: null,
+    ISAEndDate: null,
   });
   const stateChangeHandler = (
     value: any,
@@ -96,12 +112,166 @@ const PIAPersonalInformationBanks = () => {
       <h2 className="results-header">
         <b>{Messages.Headings.Title.en}</b>
       </h2>
-      <p> {Messages.Headings.Description.en}</p>
-      <h3 className="pt-4 pb-3">{Messages.Section.Title.en}</h3>
+
+      <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
       <section className="card">
         <div className="form-group px-4 py-4">
           <label htmlFor="pibQuestionWillResultInPIB">
-            {Messages.Section.QuestionWillResultInPIB.en}
+            {Messages.InvolveISA.Section.QuestionInvolveISA.en}
+          </label>
+          <div>
+            <div className="form-group row">
+              <div>
+                {YesNoInputOptions.map((option, index) => {
+                  return YesNoInputOptions[0] === option ? (
+                    <div key={index} onChange={choosePIBs}>
+                      <label className="input-label">
+                        <input
+                          key={index}
+                          type="radio"
+                          name="start-initiative-radio"
+                          value={option}
+                          checked={containsPIBs === 'YES'}
+                        />
+                        {option}
+                      </label>
+                    </div>
+                  ) : (
+                    <div key={index} onChange={choosePIBs}>
+                      <label className="input-label">
+                        <input
+                          key={index}
+                          type="radio"
+                          name="start-initiative-radio"
+                          value={option}
+                          checked={containsPIBs === 'NO'}
+                        />
+                        {option}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            {containsPIBs === 'YES' && (
+              <div>
+                <div className="form-group">
+                  <label className="pt-4" htmlFor="isaDescription">
+                    {Messages.InvolveISA.Section.DescriptionISA.en}
+                  </label>
+                  <MDEditor
+                    id="isaDescription"
+                    preview="edit"
+                    value={PIBDescriptionType}
+                    onChange={handlePIBDescriptionTypeChange}
+                  />
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <InputText
+                      label="Main ministry or agency involved"
+                      value={mainMinistryInvolved}
+                      required={true}
+                      onChange={(e) => {
+                        setMainMinistryInvolved(e.target.value);
+                        setResultingPIB({
+                          ...resultingPIB,
+                          mainMinistryInvolved: e.target.value,
+                        });
+                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                      }}
+                    />
+                  </div>
+                  <div className="col ">
+                    <InputText
+                      label="Any other ministries, agencies, public bodies or organizations involved"
+                      value={otherMinistryInvolved}
+                      required={true}
+                      onChange={(e) => {
+                        setOtherMinistryInvolved(e.target.value);
+                        setResultingPIB({
+                          ...resultingPIB,
+                          otherMinistryInvolved: e.target.value,
+                        });
+                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row mt-2 form__row--flex-end">
+                  <div className="col">
+                    <InputText
+                      label="Business contact title of person responsible for maintaining the ISA"
+                      helperText="This individual may change positions– please enter their title, not their name."
+                      id="PIBresponsiblePersonal"
+                      value={PIBManagingPersonName}
+                      onChange={(e) => {
+                        setPIBManagingPersonName(e.target.value);
+                        setResultingPIB({
+                          ...resultingPIB,
+                          managingPersonName: e.target.value,
+                        });
+                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                      }}
+                      required={true}
+                    />
+                  </div>
+                  <div className="col">
+                    <div>
+                      <InputText
+                        label="Business contact phone number of person responsible for maintaining the ISA"
+                        id="drafterEmail"
+                        className="mt-4"
+                        value={PIBManagingPersonPhone}
+                        onChange={(e) => {
+                          setPIBManagingPersonPhone(e.target.value);
+                          setResultingPIB({
+                            ...resultingPIB,
+                            managingPersonPhone: e.target.value,
+                          });
+                          stateChangeHandler(resultingPIB, 'resultingPIB');
+                        }}
+                        required={true}
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="form-group col">
+                    <label id="start-date-label">ISA start date</label>
+                    <CustomInputDate
+                      key="isaStartDate"
+                      placeholderText={'yyyy/mm/dd'}
+                      dateFormat="yyyy/MM/dd"
+                      selected={isaStartDate === null ? null : isaStartDate}
+                      onChange={(date: any) => setIsaStartDate(date)}
+                      required
+                    />
+                  </div>
+                  <div className="form-group col">
+                    <label id="start-date-label">ISA end date</label>
+                    <CustomInputDate
+                      key="isaEndDate"
+                      placeholderText={'yyyy/mm/dd'}
+                      dateFormat="yyyy/MM/dd"
+                      selected={isaEndDate === null ? null : isaEndDate}
+                      onChange={(date: any) => setIsaEndDate(date)}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <h3 className="pt-4 pb-3">{Messages.ResultingPIB.Headings.Title.en}</h3>
+      <section className="card">
+        <div className="form-group px-4 py-4">
+          <label htmlFor="pibQuestionWillResultInPIB">
+            {Messages.ResultingPIB.Section.QuestionWillResultInPIB.en}
           </label>
           <div>
             <div className="form-group row">
@@ -141,7 +311,7 @@ const PIAPersonalInformationBanks = () => {
               <div>
                 <div className="form-group">
                   <label className="pt-4" htmlFor="pibDescriptionType">
-                    {Messages.Section.QuestionPIBDescription.en}
+                    {Messages.ResultingPIB.Section.QuestionPIBDescription.en}
                   </label>
                   <MDEditor
                     id="pibDescriptionType"
@@ -226,4 +396,4 @@ const PIAPersonalInformationBanks = () => {
   );
 };
 
-export default PIAPersonalInformationBanks;
+export default PIAAgreementsAndInformationBanks;
