@@ -1,20 +1,20 @@
 export interface IAgreementsAndInformationBanks {
-  resultingPIB?: {
+  personalInformationBanks?: {
     willResultInPIB?: string;
-    descriptionInformationType?: string;
-    mainMinistryInvolved?: string;
-    otherMinistryInvolved?: string;
-    managingPersonName?: string;
-    managingPersonPhone?: string;
+    description?: string;
+    mainMinistryOrAgencyInvolved?: string;
+    otherGroupsInvolved?: string;
+    contactTitle?: string;
+    contactPhone?: string;
   };
-  involveISA?: {
-    willInvolveISA?: string;
-    descriptionISA?: string;
-    mainMinistryInvolved?: string;
-    otherMinistryInvolved?: string;
-    businessContactPersonName?: string;
-    businessContactPersonPhone?: string;
-    ISAStartDate?: string | null;
-    ISAEndDate?: string | null;
+  informationSharingAgreement?: {
+    doesInvolveISA?: string;
+    description?: string;
+    mainMinistryOrAgencyInvolved?: string;
+    otherGroupsInvolved?: string;
+    contactTitle?: string;
+    contactPhone?: string;
+    startDate?: string | null;
+    endDate?: string | null;
   };
 }

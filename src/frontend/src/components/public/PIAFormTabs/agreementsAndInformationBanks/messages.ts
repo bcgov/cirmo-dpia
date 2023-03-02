@@ -8,7 +8,7 @@ export default {
   ResultingPIB: {
     Headings: {
       Title: {
-        en: `Personal information banks (PIBs)`,
+        en: `Personal information banks (PIB)`,
       },
       Description: {
         en: `A personal information bank (PIB) is a collection of personal information searchable by name or unique identifier.`,

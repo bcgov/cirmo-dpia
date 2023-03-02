@@ -15,23 +15,23 @@ const PIAAgreementsAndInformationBanks = () => {
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
   const defaultState: IAgreementsAndInformationBanks = {
-    resultingPIB: {
+    personalInformationBanks: {
       willResultInPIB: 'YES',
-      descriptionInformationType: '',
-      mainMinistryInvolved: '',
-      otherMinistryInvolved: '',
-      managingPersonName: '',
-      managingPersonPhone: '',
+      description: '',
+      mainMinistryOrAgencyInvolved: '',
+      otherGroupsInvolved: '',
+      contactTitle: '',
+      contactPhone: '',
     },
-    involveISA: {
-      willInvolveISA: 'YES',
-      descriptionISA: '',
-      mainMinistryInvolved: '',
-      otherMinistryInvolved: '',
-      businessContactPersonName: '',
-      businessContactPersonPhone: '',
-      ISAStartDate: null,
-      ISAEndDate: null,
+    informationSharingAgreement: {
+      doesInvolveISA: 'YES',
+      description: '',
+      mainMinistryOrAgencyInvolved: '',
+      otherGroupsInvolved: '',
+      contactTitle: '',
+      contactPhone: '',
+      startDate: null,
+      endDate: null,
     },
   };
   const [
@@ -41,27 +41,24 @@ const PIAAgreementsAndInformationBanks = () => {
     pia.agreementsAndInformationBanks || defaultState,
   );
 
-  const [isaStartDate, setIsaStartDate] = useState<Date | null>(null);
-  const [isaEndDate, setIsaEndDate] = useState<Date | null>(null);
-
   const stateChangeHandler = (value: any, nestedKey: string) => {
     if (nestedKey) {
       const keyString = nestedKey.split('.');
       const key1 = keyString[0];
       const key2 = keyString[1];
-      if (key1 === 'resultingPIB') {
+      if (key1 === 'personalInformationBanks') {
         setAgreementsAndInformationBanksForm((state) => ({
           ...state,
-          resultingPIB: {
-            ...state.resultingPIB,
+          personalInformationBanks: {
+            ...state.personalInformationBanks,
             [key2]: value,
           },
         }));
-      } else if (key1 === 'involveISA') {
+      } else if (key1 === 'informationSharingAgreement') {
         setAgreementsAndInformationBanksForm((state) => ({
           ...state,
-          involveISA: {
-            ...state.involveISA,
+          informationSharingAgreement: {
+            ...state.informationSharingAgreement,
             [key2]: value,
           },
         }));
@@ -94,15 +91,15 @@ const PIAAgreementsAndInformationBanks = () => {
                     name="involve-isa-radio"
                     value="YES"
                     checked={
-                      agreementsAndInformationBanksForm?.involveISA
-                        ?.willInvolveISA === 'YES'
+                      agreementsAndInformationBanksForm
+                        ?.informationSharingAgreement?.doesInvolveISA === 'YES'
                         ? true
                         : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'involveISA.willInvolveISA',
+                        'informationSharingAgreement.doesInvolveISA',
                       )
                     }
                   />
@@ -116,15 +113,15 @@ const PIAAgreementsAndInformationBanks = () => {
                     name="involve-isa-radio"
                     value="NO"
                     checked={
-                      agreementsAndInformationBanksForm?.involveISA
-                        ?.willInvolveISA === 'NO'
+                      agreementsAndInformationBanksForm
+                        ?.informationSharingAgreement?.doesInvolveISA === 'NO'
                         ? true
                         : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'involveISA.willInvolveISA',
+                        'informationSharingAgreement.doesInvolveISA',
                       )
                     }
                   />
@@ -133,8 +130,8 @@ const PIAAgreementsAndInformationBanks = () => {
               </div>
             </div>
 
-            {agreementsAndInformationBanksForm?.involveISA?.willInvolveISA ===
-              'YES' && (
+            {agreementsAndInformationBanksForm?.informationSharingAgreement
+              ?.doesInvolveISA === 'YES' && (
               <div>
                 <div className="form-group">
                   <label className="pt-4" htmlFor="isaDescription">
@@ -144,11 +141,14 @@ const PIAAgreementsAndInformationBanks = () => {
                     id="isaDescription"
                     preview="edit"
                     value={
-                      agreementsAndInformationBanksForm?.involveISA
-                        ?.descriptionISA || ''
+                      agreementsAndInformationBanksForm
+                        ?.informationSharingAgreement?.description || ''
                     }
                     onChange={(value) =>
-                      stateChangeHandler(value, 'involveISA.descriptionISA')
+                      stateChangeHandler(
+                        value,
+                        'informationSharingAgreement.description',
+                      )
                     }
                   />
                 </div>
@@ -157,14 +157,15 @@ const PIAAgreementsAndInformationBanks = () => {
                     <InputText
                       label="Main ministry or agency involved"
                       value={
-                        agreementsAndInformationBanksForm?.involveISA
-                          ?.mainMinistryInvolved || ''
+                        agreementsAndInformationBanksForm
+                          ?.informationSharingAgreement
+                          ?.mainMinistryOrAgencyInvolved || ''
                       }
                       required={true}
                       onChange={(e) => {
                         stateChangeHandler(
                           e.target.value,
-                          'involveISA.mainMinistryInvolved',
+                          'informationSharingAgreement.mainMinistryOrAgencyInvolved',
                         );
                       }}
                     />
@@ -173,14 +174,15 @@ const PIAAgreementsAndInformationBanks = () => {
                     <InputText
                       label="Any other ministries, agencies, public bodies or organizations involved"
                       value={
-                        agreementsAndInformationBanksForm?.involveISA
-                          ?.otherMinistryInvolved || ''
+                        agreementsAndInformationBanksForm
+                          ?.informationSharingAgreement?.otherGroupsInvolved ||
+                        ''
                       }
                       required={true}
                       onChange={(e) => {
                         stateChangeHandler(
                           e.target.value,
-                          'involveISA.otherMinistryInvolved',
+                          'informationSharingAgreement.otherGroupsInvolved',
                         );
                       }}
                     />
@@ -193,32 +195,32 @@ const PIAAgreementsAndInformationBanks = () => {
                       helperText="This individual may change positions– please enter their title, not their name."
                       id="businessContactPersonName"
                       value={
-                        agreementsAndInformationBanksForm?.involveISA
-                          ?.businessContactPersonName || ''
+                        agreementsAndInformationBanksForm
+                          ?.informationSharingAgreement?.contactTitle || ''
                       }
                       onChange={(e) => {
                         stateChangeHandler(
                           e.target.value,
-                          'involveISA.businessContactPersonName',
+                          'informationSharingAgreement.contactTitle',
                         );
                       }}
                       required={true}
                     />
                   </div>
-                  <div className="col">
+                  <div className="col mt-2">
                     <div>
                       <InputText
                         label="Business contact phone number of person responsible for maintaining the ISA"
                         id="businessContactPersonPhone"
                         className="mt-4"
                         value={
-                          agreementsAndInformationBanksForm?.involveISA
-                            ?.businessContactPersonPhone || ''
+                          agreementsAndInformationBanksForm
+                            ?.informationSharingAgreement?.contactPhone || ''
                         }
                         onChange={(e) => {
                           stateChangeHandler(
                             e.target.value,
-                            'involveISA.businessContactPersonPhone',
+                            'informationSharingAgreement.contactPhone',
                           );
                         }}
                         required={true}
@@ -226,32 +228,54 @@ const PIAAgreementsAndInformationBanks = () => {
                       />
                     </div>
                   </div>
-                  <div className="row mt-2">
-                    <div className="col">
-                      <div className="form-group">
-                        <label id="start-date-label">ISA start date</label>
-                        <CustomInputDate
-                          key="isaStartDate"
-                          placeholderText={'yyyy/mm/dd'}
-                          dateFormat="yyyy/MM/dd"
-                          selected={isaStartDate === null ? null : isaStartDate}
-                          onChange={(date: any) => setIsaStartDate(date)}
-                          required
-                        />
-                      </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <div className="form-group">
+                      <label id="start-date-label">ISA start date</label>
+                      <CustomInputDate
+                        key="isaStartDate"
+                        placeholderText={'yyyy/mm/dd'}
+                        dateFormat="yyyy/MM/dd"
+                        selected={
+                          agreementsAndInformationBanksForm
+                            ?.informationSharingAgreement.startDate === null
+                            ? null
+                            : agreementsAndInformationBanksForm
+                                ?.informationSharingAgreement?.startDate
+                        }
+                        onChange={(date: any) =>
+                          stateChangeHandler(
+                            date,
+                            'informationSharingAgreement.startDate',
+                          )
+                        }
+                        required
+                      />
                     </div>
-                    <div className="col">
-                      <div className="px-3 form-group">
-                        <label id="end-date-label">ISA end date</label>
-                        <CustomInputDate
-                          key="isaEndDate"
-                          placeholderText={'yyyy/mm/dd'}
-                          dateFormat="yyyy/MM/dd"
-                          selected={isaEndDate === null ? null : isaEndDate}
-                          onChange={(date: any) => setIsaEndDate(date)}
-                          required
-                        />
-                      </div>
+                  </div>
+                  <div className="col">
+                    <div className=" form-group ">
+                      <label id="end-date-label">ISA end date</label>
+                      <CustomInputDate
+                        key="isaEndDate"
+                        placeholderText={'yyyy/mm/dd'}
+                        dateFormat="yyyy/MM/dd"
+                        selected={
+                          agreementsAndInformationBanksForm
+                            ?.informationSharingAgreement.endDate === null
+                            ? null
+                            : agreementsAndInformationBanksForm
+                                ?.informationSharingAgreement?.endDate
+                        }
+                        onChange={(date: any) =>
+                          stateChangeHandler(
+                            date,
+                            'informationSharingAgreement.endDate',
+                          )
+                        }
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -277,15 +301,15 @@ const PIAAgreementsAndInformationBanks = () => {
                       name="will-resultPIB-radio"
                       value="YES"
                       checked={
-                        agreementsAndInformationBanksForm?.resultingPIB
-                          ?.willResultInPIB === 'YES'
+                        agreementsAndInformationBanksForm
+                          ?.personalInformationBanks?.willResultInPIB === 'YES'
                           ? true
                           : false
                       }
                       onChange={(e) =>
                         stateChangeHandler(
                           e.target.value,
-                          'resultingPIB.willResultInPIB',
+                          'personalInformationBanks.willResultInPIB',
                         )
                       }
                     />
@@ -299,15 +323,15 @@ const PIAAgreementsAndInformationBanks = () => {
                       name="will-resultPIB-radio"
                       value="NO"
                       checked={
-                        agreementsAndInformationBanksForm?.resultingPIB
-                          ?.willResultInPIB === ''
+                        agreementsAndInformationBanksForm
+                          ?.personalInformationBanks?.willResultInPIB === 'NO'
                           ? true
                           : false
                       }
                       onChange={(e) =>
                         stateChangeHandler(
                           e.target.value,
-                          'resultingPIB.willResultInPIB',
+                          'personalInformationBanks.willResultInPIB',
                         )
                       }
                     />
@@ -315,7 +339,7 @@ const PIAAgreementsAndInformationBanks = () => {
                   </div>
                 </div>
               </div>
-              {agreementsAndInformationBanksForm?.resultingPIB
+              {agreementsAndInformationBanksForm?.personalInformationBanks
                 ?.willResultInPIB === 'YES' && (
                 <div>
                   <div className="form-group">
@@ -326,13 +350,13 @@ const PIAAgreementsAndInformationBanks = () => {
                       id="pibDescriptionType"
                       preview="edit"
                       value={
-                        agreementsAndInformationBanksForm?.resultingPIB
-                          ?.descriptionInformationType || ''
+                        agreementsAndInformationBanksForm
+                          ?.personalInformationBanks?.description || ''
                       }
                       onChange={(value) =>
                         stateChangeHandler(
                           value,
-                          'resultingPIB.descriptionInformationType',
+                          'personalInformationBanks.description',
                         )
                       }
                     />
@@ -342,14 +366,15 @@ const PIAAgreementsAndInformationBanks = () => {
                       <InputText
                         label="Main ministry or agency involved"
                         value={
-                          agreementsAndInformationBanksForm?.resultingPIB
-                            ?.mainMinistryInvolved || ''
+                          agreementsAndInformationBanksForm
+                            ?.personalInformationBanks
+                            ?.mainMinistryOrAgencyInvolved || ''
                         }
                         required={true}
                         onChange={(e) => {
                           stateChangeHandler(
                             e.target.value,
-                            'resultingPIB.mainMinistryInvolved',
+                            'personalInformationBanks.mainMinistryOrAgencyInvolved',
                           );
                         }}
                       />
@@ -358,14 +383,15 @@ const PIAAgreementsAndInformationBanks = () => {
                       <InputText
                         label="Any other ministries, agencies, public bodies or organizations involved"
                         value={
-                          agreementsAndInformationBanksForm?.resultingPIB
-                            ?.otherMinistryInvolved || ''
+                          agreementsAndInformationBanksForm
+                            ?.personalInformationBanks?.otherGroupsInvolved ||
+                          ''
                         }
                         required={true}
                         onChange={(e) => {
                           stateChangeHandler(
                             e.target.value,
-                            'resultingPIB.otherMinistryInvolved',
+                            'personalInformationBanks.otherGroupsInvolved',
                           );
                         }}
                       />
@@ -374,16 +400,17 @@ const PIAAgreementsAndInformationBanks = () => {
                   <div className="row mt-2">
                     <div className="col">
                       <InputText
-                        label="Name of person responsible for managing the PIB"
+                        label="Business contact title of person responsible for maintaining the PIB"
+                        helperText="This individual may change positions– please enter their title, not their name."
                         id="managingPersonName"
                         value={
-                          agreementsAndInformationBanksForm?.resultingPIB
-                            ?.managingPersonName || ''
+                          agreementsAndInformationBanksForm
+                            ?.personalInformationBanks?.contactTitle || ''
                         }
                         onChange={(e) => {
                           stateChangeHandler(
                             e.target.value,
-                            'resultingPIB.managingPersonName',
+                            'personalInformationBanks.contactTitle',
                           );
                         }}
                         required={true}
@@ -391,16 +418,16 @@ const PIAAgreementsAndInformationBanks = () => {
                     </div>
                     <div className="col">
                       <InputText
-                        label="Phone number of person responsible for managing the PIB"
+                        label="Business contact phone number of person responsible for maintaining the PIB"
                         id="managingPersonPhone"
                         value={
-                          agreementsAndInformationBanksForm?.resultingPIB
-                            ?.managingPersonPhone || ''
+                          agreementsAndInformationBanksForm
+                            ?.personalInformationBanks?.contactPhone || ''
                         }
                         onChange={(e) => {
                           stateChangeHandler(
                             e.target.value,
-                            'resultingPIB.managingPersonPhone',
+                            'personalInformationBanks.contactPhone',
                           );
                         }}
                         required={true}
