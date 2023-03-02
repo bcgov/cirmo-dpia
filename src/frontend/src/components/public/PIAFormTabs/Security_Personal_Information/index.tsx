@@ -136,8 +136,6 @@ export const SecurityPersonalInformation = () => {
                     securityPersonalInformationForm?.digitalToolsAndSystems
                       ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
                     'YES'
-                      ? true
-                      : false
                   }
                   onChange={(e) =>
                     stateChangeHandler(
@@ -158,8 +156,6 @@ export const SecurityPersonalInformation = () => {
                     securityPersonalInformationForm?.digitalToolsAndSystems
                       ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
                     'NO'
-                      ? true
-                      : false
                   }
                   onChange={(e) =>
                     stateChangeHandler(
@@ -201,8 +197,6 @@ export const SecurityPersonalInformation = () => {
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.toolsAndAssessment?.haveSecurityAssessment === 'YES'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -222,8 +216,6 @@ export const SecurityPersonalInformation = () => {
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.toolsAndAssessment?.haveSecurityAssessment === 'NO'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -256,8 +248,6 @@ export const SecurityPersonalInformation = () => {
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'YES'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -277,8 +267,6 @@ export const SecurityPersonalInformation = () => {
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'NO'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -372,8 +360,6 @@ export const SecurityPersonalInformation = () => {
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
                       ?.useAuditLogs === 'YES'
-                      ? true
-                      : false
                   }
                   value="useAuditLogs"
                   label={Messages.FormElements.AccessPI.auditLogs.Question.en}
