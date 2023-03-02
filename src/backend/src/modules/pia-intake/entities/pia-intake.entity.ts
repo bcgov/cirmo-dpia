@@ -6,8 +6,8 @@ import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
-import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
 import { AdditionalRisks } from '../jsonb-classes/additional-risks';
+import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-information-banks';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -165,11 +165,11 @@ export class PiaIntakeEntity extends BaseEntity {
   accuracyCorrectionAndRetention: AccuracyCorrectionAndRetention;
 
   @Column({
-    name: 'personal_information_banks',
+    name: 'agreements_and_information_banks',
     type: 'jsonb',
     nullable: true,
   })
-  personalInformationBanks: PersonalInformationBanks;
+  agreementsAndInformationBanks: AgreementsAndInformationBanks;
 
   @Column({
     name: 'additional_risks',

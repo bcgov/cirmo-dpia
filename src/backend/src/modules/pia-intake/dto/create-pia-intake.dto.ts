@@ -16,7 +16,7 @@ import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correction-and-retention';
 import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
-import { PersonalInformationBanks } from '../jsonb-classes/personal-information-banks';
+import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-information-banks';
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
@@ -239,13 +239,13 @@ export class CreatePiaIntakeDto {
   @IsOptional()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => PersonalInformationBanks)
+  @Type(() => AgreementsAndInformationBanks)
   @ApiProperty({
-    type: PersonalInformationBanks,
+    type: AgreementsAndInformationBanks,
     required: false,
-    example: piaIntakeEntityMock.personalInformationBanks,
+    example: piaIntakeEntityMock.agreementsAndInformationBanks,
   })
-  personalInformationBanks: PersonalInformationBanks;
+  agreementsAndInformationBanks: AgreementsAndInformationBanks;
 
   @IsObject()
   @IsOptional()
