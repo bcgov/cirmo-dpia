@@ -397,7 +397,7 @@ const PIAAgreementsAndInformationBanks = () => {
                       />
                     </div>
                   </div>
-                  <div className="row mt-2">
+                  <div className="row mt-2 form__row--flex-end">
                     <div className="col">
                       <InputText
                         label="Business contact title of person responsible for maintaining the PIB"
@@ -416,7 +416,7 @@ const PIAAgreementsAndInformationBanks = () => {
                         required={true}
                       />
                     </div>
-                    <div className="col">
+                    <div className="col ">
                       <InputText
                         label="Business contact phone number of person responsible for maintaining the PIB"
                         id="managingPersonPhone"
