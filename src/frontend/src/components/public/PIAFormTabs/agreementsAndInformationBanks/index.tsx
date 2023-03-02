@@ -7,153 +7,134 @@ import { YesNoInputOptions } from '../../../../constant/constant';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
-import { IPersonalInformationBanks } from './AgreementsAndInformationBanks';
+import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 
 const PIAAgreementsAndInformationBanks = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const [personalInformationBanksForm, setPersonalInformationBanksForm] =
-    useState<IPersonalInformationBanks>(
-      pia.personalInformationBanks || {
-        resultingPIB: {},
-        involveISA: {},
-      },
-    );
-  const [resultingPIB, setResultingPIB] = useState({
-    willResultInPIB: 'YES',
-    descriptionInformationType: '',
-    mainMinistryInvolved: '',
-    otherMinistryInvolved: '',
-    managingPersonName: '',
-    managingPersonPhone: '',
-  });
+  const defaultState: IAgreementsAndInformationBanks = {
+    resultingPIB: {
+      willResultInPIB: 'YES',
+      descriptionInformationType: '',
+      mainMinistryInvolved: '',
+      otherMinistryInvolved: '',
+      managingPersonName: '',
+      managingPersonPhone: '',
+    },
+    involveISA: {
+      willInvolveISA: 'YES',
+      descriptionISA: '',
+      mainMinistryInvolved: '',
+      otherMinistryInvolved: '',
+      businessContactPersonName: '',
+      businessContactPersonPhone: '',
+      ISAStartDate: null,
+      ISAEndDate: null,
+    },
+  };
+  const [
+    agreementsAndInformationBanksForm,
+    setAgreementsAndInformationBanksForm,
+  ] = useState<IAgreementsAndInformationBanks>(
+    pia.agreementsAndInformationBanks || defaultState,
+  );
 
   const [isaStartDate, setIsaStartDate] = useState<Date | null>(null);
   const [isaEndDate, setIsaEndDate] = useState<Date | null>(null);
 
-  const [involveISA, setInvolveISA] = useState({
-    willInvolveISA: 'YES',
-    descriptionISA: '',
-    mainMinistryInvolved: '',
-    otherMinistryInvolved: '',
-    businessContactPersonName: '',
-    businessContactPersonPhone: '',
-    ISAStartDate: null,
-    ISAEndDate: null,
-  });
-  const stateChangeHandler = (
-    value: any,
-    key: keyof IPersonalInformationBanks,
-  ) => {
-    setPersonalInformationBanksForm((state) => ({
-      ...state,
-      [key]: value,
-    }));
-    piaStateChangeHandler(
-      personalInformationBanksForm,
-      'personalInformationBanks',
-    );
-  };
-  const [containsPIBs, setContainsPIBs] = useState(
-    personalInformationBanksForm?.resultingPIB?.willResultInPIB || 'YES',
-  );
-  const [PIBDescriptionType, setPIBDescriptionType] = useState(
-    personalInformationBanksForm?.resultingPIB?.descriptionInformationType ||
-      '',
-  );
-  const [mainMinistryInvolved, setMainMinistryInvolved] = useState(
-    personalInformationBanksForm?.resultingPIB?.mainMinistryInvolved || '',
-  );
-  const [PIBManagingPersonName, setPIBManagingPersonName] = useState(
-    personalInformationBanksForm?.resultingPIB?.managingPersonName || '',
-  );
-  const [otherMinistryInvolved, setOtherMinistryInvolved] = useState(
-    personalInformationBanksForm?.resultingPIB?.otherMinistryInvolved || '',
-  );
-  const [PIBManagingPersonPhone, setPIBManagingPersonPhone] = useState(
-    personalInformationBanksForm?.resultingPIB?.managingPersonPhone || '',
-  );
-
-  const choosePIBs = (event: any) => {
-    const containsPIB = event.target.value === 'Yes' ? 'YES' : 'NO';
-    setContainsPIBs(containsPIB);
-    // if user choose no, reset all the value in the form json object
-    if (containsPIB === 'NO') {
-      setResultingPIB({
-        willResultInPIB: 'NO',
-        descriptionInformationType: '',
-        mainMinistryInvolved: '',
-        otherMinistryInvolved: '',
-        managingPersonName: '',
-        managingPersonPhone: '',
-      });
-    } else {
-      setResultingPIB({
-        ...resultingPIB,
-        willResultInPIB: containsPIB,
-      });
+  const stateChangeHandler = (value: any, nestedKey: string) => {
+    if (nestedKey) {
+      const keyString = nestedKey.split('.');
+      const key1 = keyString[0];
+      const key2 = keyString[1];
+      if (key1 === 'resultingPIB') {
+        setAgreementsAndInformationBanksForm((state) => ({
+          ...state,
+          resultingPIB: {
+            ...state.resultingPIB,
+            [key2]: value,
+          },
+        }));
+      } else if (key1 === 'involveISA') {
+        setAgreementsAndInformationBanksForm((state) => ({
+          ...state,
+          involveISA: {
+            ...state.involveISA,
+            [key2]: value,
+          },
+        }));
+      }
     }
-
-    stateChangeHandler(resultingPIB, 'resultingPIB');
-  };
-  const handlePIBDescriptionTypeChange = (newMessage = '') => {
-    setPIBDescriptionType(newMessage);
-    setResultingPIB({
-      ...resultingPIB,
-      descriptionInformationType: newMessage,
-    });
-    stateChangeHandler(resultingPIB, 'resultingPIB');
+    piaStateChangeHandler(
+      agreementsAndInformationBanksForm,
+      'agreementsAndInformationBanks',
+    );
   };
 
   return (
-    <div>
-      <h2 className="results-header">
-        <b>{Messages.Headings.Title.en}</b>
-      </h2>
-
-      <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
-      <section className="card">
-        <div className="form-group px-4 py-4">
-          <label htmlFor="pibQuestionWillResultInPIB">
-            {Messages.InvolveISA.Section.QuestionInvolveISA.en}
-          </label>
-          <div>
-            <div className="form-group row">
+    <>
+      <div>
+        <h2 className="results-header">
+          <b>{Messages.Headings.Title.en}</b>
+        </h2>
+        <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
+        <section className="card">
+          <div className="form-group px-4 py-4">
+            <label htmlFor="pibQuestionWillResultInPIB">
+              {Messages.InvolveISA.Section.QuestionInvolveISA.en}
+            </label>
+            <div className="form-group row ">
               <div>
-                {YesNoInputOptions.map((option, index) => {
-                  return YesNoInputOptions[0] === option ? (
-                    <div key={index} onChange={choosePIBs}>
-                      <label className="input-label">
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          checked={containsPIBs === 'YES'}
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  ) : (
-                    <div key={index} onChange={choosePIBs}>
-                      <label className="input-label">
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          checked={containsPIBs === 'NO'}
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  );
-                })}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="involve-isa-radio"
+                    value="YES"
+                    checked={
+                      agreementsAndInformationBanksForm?.involveISA
+                        ?.willInvolveISA === 'YES'
+                        ? true
+                        : false
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'involveISA.willInvolveISA',
+                      )
+                    }
+                  />
+                  Yes
+                </div>
+
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="involve-isa-radio"
+                    value="NO"
+                    checked={
+                      agreementsAndInformationBanksForm?.involveISA
+                        ?.willInvolveISA === 'NO'
+                        ? true
+                        : false
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'involveISA.willInvolveISA',
+                      )
+                    }
+                  />
+                  No
+                </div>
               </div>
             </div>
-            {containsPIBs === 'YES' && (
+
+            {agreementsAndInformationBanksForm?.involveISA?.willInvolveISA ===
+              'YES' && (
               <div>
                 <div className="form-group">
                   <label className="pt-4" htmlFor="isaDescription">
@@ -162,38 +143,45 @@ const PIAAgreementsAndInformationBanks = () => {
                   <MDEditor
                     id="isaDescription"
                     preview="edit"
-                    value={PIBDescriptionType}
-                    onChange={handlePIBDescriptionTypeChange}
+                    value={
+                      agreementsAndInformationBanksForm?.involveISA
+                        ?.descriptionISA || ''
+                    }
+                    onChange={(value) =>
+                      stateChangeHandler(value, 'involveISA.descriptionISA')
+                    }
                   />
                 </div>
                 <div className="row mt-2">
                   <div className="col">
                     <InputText
                       label="Main ministry or agency involved"
-                      value={mainMinistryInvolved}
+                      value={
+                        agreementsAndInformationBanksForm?.involveISA
+                          ?.mainMinistryInvolved || ''
+                      }
                       required={true}
                       onChange={(e) => {
-                        setMainMinistryInvolved(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          mainMinistryInvolved: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                        stateChangeHandler(
+                          e.target.value,
+                          'involveISA.mainMinistryInvolved',
+                        );
                       }}
                     />
                   </div>
                   <div className="col ">
                     <InputText
                       label="Any other ministries, agencies, public bodies or organizations involved"
-                      value={otherMinistryInvolved}
+                      value={
+                        agreementsAndInformationBanksForm?.involveISA
+                          ?.otherMinistryInvolved || ''
+                      }
                       required={true}
                       onChange={(e) => {
-                        setOtherMinistryInvolved(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          otherMinistryInvolved: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                        stateChangeHandler(
+                          e.target.value,
+                          'involveISA.otherMinistryInvolved',
+                        );
                       }}
                     />
                   </div>
@@ -203,15 +191,16 @@ const PIAAgreementsAndInformationBanks = () => {
                     <InputText
                       label="Business contact title of person responsible for maintaining the ISA"
                       helperText="This individual may change positions– please enter their title, not their name."
-                      id="PIBresponsiblePersonal"
-                      value={PIBManagingPersonName}
+                      id="businessContactPersonName"
+                      value={
+                        agreementsAndInformationBanksForm?.involveISA
+                          ?.businessContactPersonName || ''
+                      }
                       onChange={(e) => {
-                        setPIBManagingPersonName(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          managingPersonName: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
+                        stateChangeHandler(
+                          e.target.value,
+                          'involveISA.businessContactPersonName',
+                        );
                       }}
                       required={true}
                     />
@@ -220,16 +209,199 @@ const PIAAgreementsAndInformationBanks = () => {
                     <div>
                       <InputText
                         label="Business contact phone number of person responsible for maintaining the ISA"
-                        id="drafterEmail"
+                        id="businessContactPersonPhone"
                         className="mt-4"
-                        value={PIBManagingPersonPhone}
+                        value={
+                          agreementsAndInformationBanksForm?.involveISA
+                            ?.businessContactPersonPhone || ''
+                        }
                         onChange={(e) => {
-                          setPIBManagingPersonPhone(e.target.value);
-                          setResultingPIB({
-                            ...resultingPIB,
-                            managingPersonPhone: e.target.value,
-                          });
-                          stateChangeHandler(resultingPIB, 'resultingPIB');
+                          stateChangeHandler(
+                            e.target.value,
+                            'involveISA.businessContactPersonPhone',
+                          );
+                        }}
+                        required={true}
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col">
+                      <div className="form-group">
+                        <label id="start-date-label">ISA start date</label>
+                        <CustomInputDate
+                          key="isaStartDate"
+                          placeholderText={'yyyy/mm/dd'}
+                          dateFormat="yyyy/MM/dd"
+                          selected={isaStartDate === null ? null : isaStartDate}
+                          onChange={(date: any) => setIsaStartDate(date)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="px-3 form-group">
+                        <label id="end-date-label">ISA end date</label>
+                        <CustomInputDate
+                          key="isaEndDate"
+                          placeholderText={'yyyy/mm/dd'}
+                          dateFormat="yyyy/MM/dd"
+                          selected={isaEndDate === null ? null : isaEndDate}
+                          onChange={(date: any) => setIsaEndDate(date)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
+        <p> {Messages.ResultingPIB.Headings.Description.en}</p>
+        <section className="card">
+          <div className="form-group px-4 py-4">
+            <label htmlFor="pibQuestionWillResultInPIB">
+              {Messages.ResultingPIB.Section.QuestionWillResultInPIB.en}
+            </label>
+            <div>
+              <div className="form-group row">
+                <div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="will-resultPIB-radio"
+                      value="YES"
+                      checked={
+                        agreementsAndInformationBanksForm?.resultingPIB
+                          ?.willResultInPIB === 'YES'
+                          ? true
+                          : false
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'resultingPIB.willResultInPIB',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="will-resultPIB-radio"
+                      value="NO"
+                      checked={
+                        agreementsAndInformationBanksForm?.resultingPIB
+                          ?.willResultInPIB === ''
+                          ? true
+                          : false
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'resultingPIB.willResultInPIB',
+                        )
+                      }
+                    />
+                    No
+                  </div>
+                </div>
+              </div>
+              {agreementsAndInformationBanksForm?.resultingPIB
+                ?.willResultInPIB === 'YES' && (
+                <div>
+                  <div className="form-group">
+                    <label className="pt-4" htmlFor="pibDescriptionType">
+                      {Messages.ResultingPIB.Section.QuestionPIBDescription.en}
+                    </label>
+                    <MDEditor
+                      id="pibDescriptionType"
+                      preview="edit"
+                      value={
+                        agreementsAndInformationBanksForm?.resultingPIB
+                          ?.descriptionInformationType || ''
+                      }
+                      onChange={(value) =>
+                        stateChangeHandler(
+                          value,
+                          'resultingPIB.descriptionInformationType',
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col">
+                      <InputText
+                        label="Main ministry or agency involved"
+                        value={
+                          agreementsAndInformationBanksForm?.resultingPIB
+                            ?.mainMinistryInvolved || ''
+                        }
+                        required={true}
+                        onChange={(e) => {
+                          stateChangeHandler(
+                            e.target.value,
+                            'resultingPIB.mainMinistryInvolved',
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="col ">
+                      <InputText
+                        label="Any other ministries, agencies, public bodies or organizations involved"
+                        value={
+                          agreementsAndInformationBanksForm?.resultingPIB
+                            ?.otherMinistryInvolved || ''
+                        }
+                        required={true}
+                        onChange={(e) => {
+                          stateChangeHandler(
+                            e.target.value,
+                            'resultingPIB.otherMinistryInvolved',
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col">
+                      <InputText
+                        label="Name of person responsible for managing the PIB"
+                        id="managingPersonName"
+                        value={
+                          agreementsAndInformationBanksForm?.resultingPIB
+                            ?.managingPersonName || ''
+                        }
+                        onChange={(e) => {
+                          stateChangeHandler(
+                            e.target.value,
+                            'resultingPIB.managingPersonName',
+                          );
+                        }}
+                        required={true}
+                      />
+                    </div>
+                    <div className="col">
+                      <InputText
+                        label="Phone number of person responsible for managing the PIB"
+                        id="managingPersonPhone"
+                        value={
+                          agreementsAndInformationBanksForm?.resultingPIB
+                            ?.managingPersonPhone || ''
+                        }
+                        onChange={(e) => {
+                          stateChangeHandler(
+                            e.target.value,
+                            'resultingPIB.managingPersonPhone',
+                          );
                         }}
                         required={true}
                         type="text"
@@ -237,162 +409,12 @@ const PIAAgreementsAndInformationBanks = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row mt-2">
-                  <div className="form-group col">
-                    <label id="start-date-label">ISA start date</label>
-                    <CustomInputDate
-                      key="isaStartDate"
-                      placeholderText={'yyyy/mm/dd'}
-                      dateFormat="yyyy/MM/dd"
-                      selected={isaStartDate === null ? null : isaStartDate}
-                      onChange={(date: any) => setIsaStartDate(date)}
-                      required
-                    />
-                  </div>
-                  <div className="form-group col">
-                    <label id="start-date-label">ISA end date</label>
-                    <CustomInputDate
-                      key="isaEndDate"
-                      placeholderText={'yyyy/mm/dd'}
-                      dateFormat="yyyy/MM/dd"
-                      selected={isaEndDate === null ? null : isaEndDate}
-                      onChange={(date: any) => setIsaEndDate(date)}
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <h3 className="pt-4 pb-3">{Messages.ResultingPIB.Headings.Title.en}</h3>
-      <section className="card">
-        <div className="form-group px-4 py-4">
-          <label htmlFor="pibQuestionWillResultInPIB">
-            {Messages.ResultingPIB.Section.QuestionWillResultInPIB.en}
-          </label>
-          <div>
-            <div className="form-group row">
-              <div>
-                {YesNoInputOptions.map((option, index) => {
-                  return YesNoInputOptions[0] === option ? (
-                    <div key={index} onChange={choosePIBs}>
-                      <label className="input-label">
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          checked={containsPIBs === 'YES'}
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  ) : (
-                    <div key={index} onChange={choosePIBs}>
-                      <label className="input-label">
-                        <input
-                          key={index}
-                          type="radio"
-                          name="start-initiative-radio"
-                          value={option}
-                          checked={containsPIBs === 'NO'}
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
+              )}
             </div>
-            {containsPIBs === 'YES' && (
-              <div>
-                <div className="form-group">
-                  <label className="pt-4" htmlFor="pibDescriptionType">
-                    {Messages.ResultingPIB.Section.QuestionPIBDescription.en}
-                  </label>
-                  <MDEditor
-                    id="pibDescriptionType"
-                    preview="edit"
-                    value={PIBDescriptionType}
-                    onChange={handlePIBDescriptionTypeChange}
-                  />
-                </div>
-                <div className="row mt-2">
-                  <div className="col">
-                    <InputText
-                      label="Main ministry or agency involved"
-                      value={mainMinistryInvolved}
-                      required={true}
-                      onChange={(e) => {
-                        setMainMinistryInvolved(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          mainMinistryInvolved: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
-                      }}
-                    />
-                  </div>
-                  <div className="col ">
-                    <InputText
-                      label="Any other ministries, agencies, public bodies or organizations involved"
-                      value={otherMinistryInvolved}
-                      required={true}
-                      onChange={(e) => {
-                        setOtherMinistryInvolved(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          otherMinistryInvolved: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="row mt-2">
-                  <div className="col">
-                    <InputText
-                      label="Name of person responsible for managing the PIB"
-                      id="PIBresponsiblePersonal"
-                      value={PIBManagingPersonName}
-                      onChange={(e) => {
-                        setPIBManagingPersonName(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          managingPersonName: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
-                      }}
-                      required={true}
-                    />
-                  </div>
-                  <div className="col">
-                    <InputText
-                      label="Phone number of person responsible for managing the PIB"
-                      id="drafterEmail"
-                      value={PIBManagingPersonPhone}
-                      onChange={(e) => {
-                        setPIBManagingPersonPhone(e.target.value);
-                        setResultingPIB({
-                          ...resultingPIB,
-                          managingPersonPhone: e.target.value,
-                        });
-                        stateChangeHandler(resultingPIB, 'resultingPIB');
-                      }}
-                      required={true}
-                      type="text"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 };
 

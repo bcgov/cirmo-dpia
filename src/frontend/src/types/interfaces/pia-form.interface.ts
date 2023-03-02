@@ -2,8 +2,8 @@ import { IPiaFormIntake } from '../../components/public/PIAFormTabs/intake/pia-f
 import { IAccuracyCorrectionAndRetention } from '../../components/public/PIAFormTabs/Accuracy_Retention/accuracy-retention-interface';
 import { IAdditionalRisks } from '../../components/public/PIAFormTabs/PIAAdditionalRisks/AdditionalRisks';
 import { ISecurityPersonalInformation } from '../../components/public/PIAFormTabs/Security_Personal_Information/security-personal-info-interface';
-import { IPersonalInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/AgreementsAndInformationBanks';
 import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs/PIACollectionUseAndDisclosure/CollectionUseAndDisclosure';
+import { IAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/AgreementsAndInformationBanks';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;
@@ -14,8 +14,8 @@ export interface IPiaForm extends IPiaFormIntake {
   submittedAt?: Date | null;
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention;
   additionalRisks?: IAdditionalRisks;
-  personalInformationBanks?: IPersonalInformationBanks;
   securityPersonalInformation?: ISecurityPersonalInformation;
+  agreementsAndInformationBanks?: IAgreementsAndInformationBanks;
   collectionUseAndDisclosure?: ICollectionUseAndDisclosure;
 }
 

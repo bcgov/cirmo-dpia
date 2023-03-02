@@ -1,4 +1,4 @@
-export interface IPersonalInformationBanks {
+export interface IAgreementsAndInformationBanks {
   resultingPIB?: {
     willResultInPIB?: string;
     descriptionInformationType?: string;
@@ -14,7 +14,7 @@ export interface IPersonalInformationBanks {
     otherMinistryInvolved?: string;
     businessContactPersonName?: string;
     businessContactPersonPhone?: string;
-    ISAStartDate?: string;
+    ISAStartDate?: string | null;
     ISAEndDate?: string | null;
   };
 }
