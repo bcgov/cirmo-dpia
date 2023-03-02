@@ -1,5 +1,5 @@
 import MDEditor from '@uiw/react-md-editor';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -12,31 +12,35 @@ export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const defaultState: ISecurityPersonalInformation = {
-    digitalToolsAndSystems: {
-      toolsAndAssessment: {
-        involveDigitalToolsAndSystems: 'YES',
-        haveSecurityAssessment: 'YES',
+  const defaultState: ISecurityPersonalInformation = useMemo(
+    () => ({
+      digitalToolsAndSystems: {
+        toolsAndAssessment: {
+          involveDigitalToolsAndSystems: 'YES',
+          haveSecurityAssessment: 'YES',
+        },
+        storage: {
+          onGovServers: 'NO',
+          whereDetails: '',
+        },
       },
-      storage: {
-        onGovServers: 'NO',
-        whereDetails: '',
+      accessToPersonalInformation: {
+        onlyCertainRolesAccessInformation: 'NO',
+        accessApproved: 'NO',
+        useAuditLogs: 'NO',
+        additionalStrategies: '',
       },
-    },
-    accessToPersonalInformation: {
-      onlyCertainRolesAccessInformation: 'NO',
-      accessApproved: 'NO',
-      useAuditLogs: 'NO',
-      additionalStrategies: '',
-    },
-  };
+    }),
+    [],
+  );
+
+  const initialFormState = useMemo(
+    () => pia.securityPersonalInformation || defaultState,
+    [defaultState, pia.securityPersonalInformation],
+  );
 
   const [securityPersonalInformationForm, setSecurityPersonalInformationForm] =
-    useState<ISecurityPersonalInformation>(
-      pia.securityPersonalInformation
-        ? JSON.parse(JSON.stringify(pia.securityPersonalInformation))
-        : defaultState,
-    );
+    useState<ISecurityPersonalInformation>(initialFormState);
 
   const stateChangeHandler = (value: any, nestedKey: string) => {
     if (nestedKey) {
@@ -90,12 +94,7 @@ export const SecurityPersonalInformation = () => {
 
   // passing updated data to parent for auto-save for work efficiently only if there are changes
   useEffect(() => {
-    if (
-      !deepEqual(
-        pia.securityPersonalInformation || {},
-        securityPersonalInformationForm,
-      )
-    ) {
+    if (!deepEqual(initialFormState, securityPersonalInformationForm)) {
       piaStateChangeHandler(
         securityPersonalInformationForm,
         'securityPersonalInformation',
@@ -105,6 +104,7 @@ export const SecurityPersonalInformation = () => {
     pia.securityPersonalInformation,
     piaStateChangeHandler,
     securityPersonalInformationForm,
+    initialFormState,
   ]);
 
   return (
