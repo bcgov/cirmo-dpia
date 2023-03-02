@@ -15,7 +15,7 @@ export const SecurityPersonalInformation = () => {
     digitalToolsAndSystems: {
       toolsAndAssessment: {
         involveDigitalToolsAndSystems: 'YES',
-        haveSecurityAssessment: 'NO',
+        haveSecurityAssessment: 'YES',
       },
       storage: {
         onGovServers: 'NO',
@@ -234,10 +234,7 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value={
-                      securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.onGovServers || 'NO'
-                    }
+                    value='YES'
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'YES'
@@ -258,10 +255,7 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value={
-                      securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.onGovServers || 'NO'
-                    }
+                    value='NO'
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'NO'
