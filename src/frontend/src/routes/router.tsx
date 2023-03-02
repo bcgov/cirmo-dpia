@@ -6,6 +6,7 @@ import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
 import PIAPersonalInformationBanks from '../components/public/PIAFormTabs/PIAPersonalInformationBanks';
+import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/Security_Personal_Information';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -89,7 +90,7 @@ const Router = () => {
 
             <Route path="securityOfPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<SecurityPersonalInformation />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
