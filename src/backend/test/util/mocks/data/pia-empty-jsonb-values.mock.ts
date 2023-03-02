@@ -70,13 +70,24 @@ export const emptyJsonbValues = {
       describeRetention: null,
     },
   },
-  personalInformationBanks: {
-    resultingPIB: {
+  agreementsAndInformationBanks: {
+    informationSharingAgreement: {
+      doesInvolveISA: null,
+      description: null,
+      mainMinistryOrAgencyInvolved: null,
+      otherGroupsInvolved: null,
+      contactTitle: null,
+      contactPhone: null,
+      startDate: null,
+      endDate: null,
+    },
+    personalInformationBanks: {
       willResultInPIB: null,
-      descriptionInformationType: null,
-      mainMinistryInvolved: null,
-      managingPersonName: null,
-      managingPersonPhone: null,
+      description: null,
+      mainMinistryOrAgencyInvolved: 'Citizen Services',
+      otherGroupsInvolved: null,
+      contactTitle: null,
+      contactPhone: null,
     },
   },
   additionalRisks: {

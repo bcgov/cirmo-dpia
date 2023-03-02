@@ -130,13 +130,24 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       describeRetention: 'will store in S3 Glacier Deep Archive',
     },
   },
-  personalInformationBanks: {
-    resultingPIB: {
+  agreementsAndInformationBanks: {
+    informationSharingAgreement: {
+      doesInvolveISA: YesNoInput.YES,
+      description: 'Some cloud agreement',
+      mainMinistryOrAgencyInvolved: 'Citizen Services',
+      otherGroupsInvolved: 'Forests, Alpha',
+      contactTitle: 'John Doe',
+      contactPhone: '(587-555-555)',
+      startDate: '2023/06/20',
+      endDate: '2023/12/20',
+    },
+    personalInformationBanks: {
       willResultInPIB: YesNoInput.YES,
-      descriptionInformationType: 'Name and address of the user',
-      mainMinistryInvolved: 'Citizen Services',
-      managingPersonName: 'John Doe',
-      managingPersonPhone: '(587-555-555)',
+      description: 'Name and address of the user',
+      mainMinistryOrAgencyInvolved: 'Citizen Services',
+      otherGroupsInvolved: 'Forests, Alpha',
+      contactTitle: 'John Doe',
+      contactPhone: '(587-555-555)',
     },
   },
   additionalRisks: {

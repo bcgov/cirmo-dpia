@@ -1,28 +1,28 @@
 import { IsEnum, IsOptional, IsString } from '@nestjs/class-validator';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 
-export class ResultingPIB {
+export class PersonalInformationBanks {
   @IsEnum(YesNoInput)
   @IsOptional()
   willResultInPIB?: YesNoInput;
 
   @IsString()
   @IsOptional()
-  descriptionInformationType?: string;
+  description?: string;
 
   @IsString()
   @IsOptional()
-  mainMinistryInvolved?: string;
+  mainMinistryOrAgencyInvolved?: string;
 
   @IsString()
   @IsOptional()
-  otherMinistryInvolved?: string;
+  otherGroupsInvolved?: string;
 
   @IsString()
   @IsOptional()
-  managingPersonName?: string;
+  contactTitle?: string;
 
   @IsString()
   @IsOptional()
-  managingPersonPhone?: string;
+  contactPhone?: string;
 }
