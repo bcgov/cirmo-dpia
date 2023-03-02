@@ -46,7 +46,7 @@ const PIAAdditionalRisks = () => {
 
   const [rows, setRows] = useState<Array<InputTextProps[]>>(
     risks.map((risk, i) => [
-      { label: `Risk ${i}`, value: risk.risk, id: 'one' },
+      { label: `Risk ${i + 1}`, value: risk.risk, id: 'one' },
       { value: risk.response, id: 'two' },
     ]),
   );
@@ -74,7 +74,7 @@ const PIAAdditionalRisks = () => {
     const newData = [...rows];
     newData.splice(index, 1);
     setRows(newData);
-    delete risks[index];
+    risks.splice(index, 1);
     setRisks(risks);
     stateChangeHandler(risks, 'risks');
   };
@@ -97,7 +97,7 @@ const PIAAdditionalRisks = () => {
     stateChangeHandler(risks, 'risks');
   };
 
-  const columnsName = ['Possible risk', 'Response'];
+  const columns = [{ name: 'Possible risk' }, { name: 'Response' }];
 
   return (
     <>
@@ -106,7 +106,7 @@ const PIAAdditionalRisks = () => {
       <section className="card p-3">
         <List
           data={rows}
-          columnsName={columnsName}
+          columns={columns}
           handleOnChange={handleOnChange}
           addRow={addRow}
           removeRow={removeRow}

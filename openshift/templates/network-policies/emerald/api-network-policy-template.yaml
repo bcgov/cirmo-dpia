@@ -7,15 +7,15 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/name: dpia-api-artifactory
+      strimzi.io/name: dpia-api
   egress:
     - ports:
         - protocol: TCP
-          port: 3000
+          port: 5432
       to:
         - podSelector:
             matchLabels:
-              strimzi.io/name: dpia-api-artifactory
+              strimzi.io/name: postgresql
   policyTypes:
     - Egress
 ---
@@ -27,21 +27,14 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/name: dpia-api-artifactory
+      strimzi.io/name: dpia-api
   ingress:
     - ports:
         - protocol: TCP
-          port: 3000
+          port: 8080
       from:
         - podSelector:
             matchLabels:
-              strimzi.io/name: dpia-api-artifactory
-    - ports:
-        - protocol: TCP
-          port: 5432
-      from:
-        - podSelector:
-            matchLabels:
-              strimzi.io/name: postgres
+              strimzi.io/name: dpia-webapp
   policyTypes:
     - Ingress

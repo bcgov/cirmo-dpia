@@ -53,7 +53,7 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                   ''
                 )}
               </td>
-              <td>
+              <td className="no-padding">
                 {pia.id && (
                   <Link
                     className="bcgovbtn bcgovbtn__tertiary"

@@ -2,19 +2,19 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: aa77ab-network-policy-postgresql-ingress
+  name: aa77ab-network-policy-app-egress
   namespace: aa77ab-dev
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/name: postgresql
-  ingress:
+      strimzi.io/name: dpia-webapp
+  egress:
     - ports:
         - protocol: TCP
-          port: 5432
-      from:
+          port: 8080
+      to:
         - podSelector:
             matchLabels:
-              strimzi.io/name: dpia-api-artifactory
+              strimzi.io/name: dpia-api
   policyTypes:
-    - Ingress
+    - Egress
