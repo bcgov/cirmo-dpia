@@ -5,7 +5,7 @@ import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { ISecurityPersonalInformation } from './security-personal-info-interface';
-import Callout from '../../../common/Callout';
+import Checkbox from '../../../common/Checkbox';
 
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler] =
@@ -35,15 +35,13 @@ export const SecurityPersonalInformation = () => {
       pia.securityPersonalInformation || defaultState,
     );
 
-  const stateChangeHandler = (value: any, nestedkey: string) => {
-    if (nestedkey) {
-      const keyString = nestedkey.split('.');
+  const stateChangeHandler = (value: any, nestedKey: string) => {
+    if (nestedKey) {
+      const keyString = nestedKey.split('.');
       if (keyString.length == 3) {
         const Key1 = keyString[0];
         const Key2 = keyString[1];
         const Key3 = keyString[2];
-        console.log(Key1, Key2, Key3);
-        console.log('Value is' + value);
         if (Key1 === 'digitalToolsAndSystems') {
           if (Key2 === 'toolsAndAssessment') {
             setSecurityPersonalInformationForm((state) => ({
@@ -74,13 +72,15 @@ export const SecurityPersonalInformation = () => {
       if (keyString.length == 2) {
         const Key1 = keyString[0];
         const Key2 = keyString[1];
-        setSecurityPersonalInformationForm((state) => ({
-          ...state,
-          accessToPersonalInformation: {
-            ...state.accessToPersonalInformation,
-            [Key2]: value,
-          },
-        }));
+        if (Key1 === 'accessToPersonalInformation') {
+          setSecurityPersonalInformationForm((state) => ({
+            ...state,
+            accessToPersonalInformation: {
+              ...state.accessToPersonalInformation,
+              [Key2]: value,
+            },
+          }));
+        }
       }
     }
     piaStateChangeHandler(
@@ -91,7 +91,7 @@ export const SecurityPersonalInformation = () => {
 
   return (
     <>
-      <div className="">
+      <div>
         <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
         <section className="section__padding-block">
@@ -107,7 +107,7 @@ export const SecurityPersonalInformation = () => {
                 }
               </strong>
             </p>
-            <div className="">
+            <div>
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -234,7 +234,10 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value="YES"
+                    value={
+                      securityPersonalInformationForm?.digitalToolsAndSystems
+                        ?.storage?.onGovServers || 'NO'
+                    }
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'YES'
@@ -255,7 +258,10 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value="NO"
+                    value={
+                      securityPersonalInformationForm?.digitalToolsAndSystems
+                        ?.storage?.onGovServers || 'NO'
+                    }
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'NO'
@@ -275,14 +281,14 @@ export const SecurityPersonalInformation = () => {
               {securityPersonalInformationForm?.digitalToolsAndSystems.storage
                 .onGovServers === 'NO' && (
                 <div className="section__padding-block">
-                  <p>
+                  <div>
                     <strong>
                       {
                         Messages.FormElements.DigitalTools.StorageDescription
                           .Question.en
                       }
                     </strong>
-                  </p>
+                  </div>
                   <MDEditor
                     preview="edit"
                     value={
@@ -313,83 +319,70 @@ export const SecurityPersonalInformation = () => {
               </strong>
             </p>
             <p>{Messages.FormElements.AccessPI.SectionDescription.en}</p>
-            <div className="form-check">
-              <div className="section__margin-block">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="AccessPI"
-                  value="YES"
+            <div>
+              <div className="section__margin-block checkbox-default">
+                <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
                       ?.onlyCertainRolesAccessInformation === 'YES'
-                      ? true
-                      : false
+                  }
+                  value="AccessPI"
+                  label={
+                    Messages.FormElements.AccessPI.OnlyCertainRolesAccessInfo
+                      .Question.en
                   }
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.value,
+                      e.target.checked ? 'YES' : 'NO',
                       'accessToPersonalInformation.onlyCertainRolesAccessInformation',
                     )
                   }
                 />
-                {
-                  Messages.FormElements.AccessPI.OnlyCertainRolesAccessInfo
-                    .Question.en
-                }
               </div>
-              <div className="section__margin-block">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="NeedAccess"
-                  value="YES"
+              <div className="section__margin-block checkbox-default">
+                <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
                       ?.accessApproved === 'YES'
-                      ? true
-                      : false
                   }
+                  value="NeedAccess"
+                  label={Messages.FormElements.AccessPI.NeedAccess.Question.en}
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.value,
+                      e.target.checked ? 'YES' : 'NO',
                       'accessToPersonalInformation.accessApproved',
                     )
                   }
                 />
-                {Messages.FormElements.AccessPI.NeedAccess.Question.en}
               </div>
-              <div className="section__margin-block">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="AuditLogs"
-                  value="YES"
+              <div className="section__margin-block checkbox-default">
+                <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
                       ?.useAuditLogs === 'YES'
                       ? true
                       : false
                   }
+                  value="useAuditLogs"
+                  label={Messages.FormElements.AccessPI.auditLogs.Question.en}
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.value,
+                      e.target.checked ? 'YES' : 'NO',
                       'accessToPersonalInformation.useAuditLogs',
                     )
                   }
                 />
-                {Messages.FormElements.AccessPI.auditLogs.Question.en}
               </div>
             </div>
             <div className="section__padding-block">
-              <p>
+              <div>
                 <strong>
                   {
                     Messages.FormElements.AccessPI.DescribeStratergies.Question
                       .en
                   }
                 </strong>
-              </p>
+              </div>
               <MDEditor
                 preview="edit"
                 value={

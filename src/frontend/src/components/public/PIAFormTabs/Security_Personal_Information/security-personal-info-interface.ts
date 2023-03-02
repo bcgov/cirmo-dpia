@@ -1,18 +1,18 @@
 export interface ISecurityPersonalInformation {
   digitalToolsAndSystems: {
     toolsAndAssessment: {
-      involveDigitalToolsAndSystems: string | null;
-      haveSecurityAssessment: string | null;
+      involveDigitalToolsAndSystems: string;
+      haveSecurityAssessment: string;
     };
     storage: {
-      onGovServers: string | null;
-      whereDetails: string | null;
+      onGovServers: string;
+      whereDetails: string;
     };
   };
   accessToPersonalInformation: {
-    onlyCertainRolesAccessInformation: string | null;
-    accessApproved: string | null;
-    useAuditLogs: string | null;
-    additionalStrategies: string | null;
+    onlyCertainRolesAccessInformation: string;
+    accessApproved: string;
+    useAuditLogs: string;
+    additionalStrategies: string;
   };
 }
