@@ -150,15 +150,6 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       contactPhone: '(587-555-555)',
     },
   },
-  // personalInformationBanks: {
-  //   resultingPIB: {
-  //     willResultInPIB: YesNoInput.YES,
-  //     descriptionInformationType: 'Name and address of the user',
-  //     mainMinistryInvolved: 'Citizen Services',
-  //     managingPersonName: 'John Doe',
-  //     managingPersonPhone: '(587-555-555)',
-  //   },
-  // },
   additionalRisks: {
     risks: [
       {
