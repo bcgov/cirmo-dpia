@@ -1,11 +1,12 @@
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { ISecurityPersonalInformation } from './security-personal-info-interface';
 import Checkbox from '../../../common/Checkbox';
+import { deepEqual } from '../../../../utils/object-comparison.util';
 
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler] =
@@ -32,7 +33,9 @@ export const SecurityPersonalInformation = () => {
 
   const [securityPersonalInformationForm, setSecurityPersonalInformationForm] =
     useState<ISecurityPersonalInformation>(
-      pia.securityPersonalInformation || defaultState,
+      pia.securityPersonalInformation
+        ? JSON.parse(JSON.stringify(pia.securityPersonalInformation))
+        : defaultState,
     );
 
   const stateChangeHandler = (value: any, nestedKey: string) => {
@@ -83,11 +86,26 @@ export const SecurityPersonalInformation = () => {
         }
       }
     }
-    piaStateChangeHandler(
-      securityPersonalInformationForm,
-      'securityPersonalInformation',
-    );
   };
+
+  // passing updated data to parent for auto-save for work efficiently only if there are changes
+  useEffect(() => {
+    if (
+      !deepEqual(
+        pia.securityPersonalInformation || {},
+        securityPersonalInformationForm,
+      )
+    ) {
+      piaStateChangeHandler(
+        securityPersonalInformationForm,
+        'securityPersonalInformation',
+      );
+    }
+  }, [
+    pia.securityPersonalInformation,
+    piaStateChangeHandler,
+    securityPersonalInformationForm,
+  ]);
 
   return (
     <>
@@ -234,7 +252,7 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value='YES'
+                    value="YES"
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'YES'
@@ -255,7 +273,7 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value='NO'
+                    value="NO"
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
                         ?.storage?.onGovServers === 'NO'
