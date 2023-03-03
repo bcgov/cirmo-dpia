@@ -138,3 +138,11 @@
     font-weight: 400;
   }
 }
+
+.form__md-question {
+  & > .wmde-markdown {
+    & > p {
+      font-weight: 700;
+    }
+  }
+}
