@@ -92,12 +92,7 @@ const StoringPersonalInformation = () => {
   };
 
   useEffect(() => {
-    console.log(
-      storingPersonalInformationForm.disclosuresOutsideCanada.storage
-        .sensitiveInfoStoredByServiceProvider,
-    );
     if (!deepEqual(initialFormState, storingPersonalInformationForm)) {
-      console.log(storingPersonalInformationForm.sensitivePersonalInformation);
       piaStateChangeHandler(
         storingPersonalInformationForm,
         'storingPersonalInformation',
@@ -399,13 +394,14 @@ const StoringPersonalInformation = () => {
   const handleDisclosuresOutsideCanadaContractRelyOnExistingChange = (
     e: any,
   ) => {
+    console.log(e.target.value);
     setStoringPersonalInformationForm((prevState) => ({
       ...prevState,
       disclosuresOutsideCanada: {
         ...prevState.disclosuresOutsideCanada,
         contract: {
           ...prevState.disclosuresOutsideCanada.contract,
-          relyOnExisitingContract: e.target.value,
+          relyOnExistingContract: e.target.value,
         },
       },
     }));
@@ -567,8 +563,8 @@ const StoringPersonalInformation = () => {
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.contract
           .relyOnExistingContract === YesNoInput.YES,
-      changeHandler: (newValue: YesNoInput) =>
-        handleDisclosuresOutsideCanadaContractRelyOnExistingChange(newValue),
+      changeHandler: (e: any) =>
+        handleDisclosuresOutsideCanadaContractRelyOnExistingChange(e),
     },
     {
       index: 2,
@@ -577,8 +573,8 @@ const StoringPersonalInformation = () => {
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.contract
           .relyOnExistingContract === YesNoInput.NO,
-      changeHandler: (newValue: YesNoInput) =>
-        handleDisclosuresOutsideCanadaContractRelyOnExistingChange(newValue),
+      changeHandler: (e: any) =>
+        handleDisclosuresOutsideCanadaContractRelyOnExistingChange(e),
     },
   ];
 
@@ -670,166 +666,171 @@ const StoringPersonalInformation = () => {
         </section>
       )}
       {storingPersonalInformationForm.sensitivePersonalInformation
-        .disclosedOutsideCanada === YesNoInput.NO && (
-        <>
-          <section className="form__section">
-            <div className="py-3 form__section-header">
-              <h3>{Messages.AssessmentOfDisclosures.H3Text.en}</h3>
-              <MDEditor.Markdown
-                source={Messages.AssessmentOfDisclosures.PText.en}
-              />
-            </div>
-            <div className="card-wrapper py-5 px-5">
-              <div>
-                <p>
-                  {
-                    Messages.AssessmentOfDisclosures
-                      .SensitivePersonalInformationStoredByServiceProvider.en
-                  }
-                </p>
-                {sensitivePiStoredByServiceProvider.map((radio, index) => (
-                  <Radio key={index} {...radio} />
-                ))}
+        .disclosedOutsideCanada === YesNoInput.NO &&
+        storingPersonalInformationForm.personalInformation
+          .storedOutsideCanada === YesNoInput.YES && (
+          <>
+            <section className="form__section">
+              <div className="py-3 form__section-header">
+                <h3>{Messages.AssessmentOfDisclosures.H3Text.en}</h3>
+                <MDEditor.Markdown
+                  source={Messages.AssessmentOfDisclosures.PText.en}
+                />
               </div>
-              {storingPersonalInformationForm.disclosuresOutsideCanada.storage
-                .sensitiveInfoStoredByServiceProvider === YesNoInput.YES && (
+              <div className="card-wrapper py-5 px-5">
+                <div>
+                  <p>
+                    {
+                      Messages.AssessmentOfDisclosures
+                        .SensitivePersonalInformationStoredByServiceProvider.en
+                    }
+                  </p>
+                  {sensitivePiStoredByServiceProvider.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))}
+                </div>
+                {storingPersonalInformationForm.disclosuresOutsideCanada.storage
+                  .sensitiveInfoStoredByServiceProvider === YesNoInput.YES && (
+                  <div className="pt-5">
+                    <List
+                      data={listServiceProvidersRows}
+                      columns={listServiceProvidersHeaders}
+                      handleOnChange={
+                        handleDisclosuresOutsideCanadaStorageServiceProviderListChange
+                      }
+                      addRow={addServiceProvidersRow}
+                      removeRow={removeServiceProvidersRow}
+                    />
+                  </div>
+                )}
                 <div className="pt-5">
-                  <List
-                    data={listServiceProvidersRows}
-                    columns={listServiceProvidersHeaders}
-                    handleOnChange={
-                      handleDisclosuresOutsideCanadaStorageServiceProviderListChange
-                    }
-                    addRow={addServiceProvidersRow}
-                    removeRow={removeServiceProvidersRow}
-                  />
-                </div>
-              )}
-              <div className="pt-5">
-                <p>{Messages.AssessmentOfDisclosures.DisclosureDetails.en}</p>
-                <MDEditor
-                  preview={isMPORole() ? 'edit' : 'preview'}
-                  value={
-                    storingPersonalInformationForm.disclosuresOutsideCanada
-                      .storage.disclosureDetails
-                  }
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange(
-                      value || '',
-                    )
-                  }
-                />
-              </div>
-              <div className="pt-5">
-                <div>
-                  <p>{Messages.AssessmentOfDisclosures.ContractualTerms.en}</p>
-                  <MDEditor.Markdown
-                    source={
-                      Messages.AssessmentOfDisclosures.ContractualTerms
-                        .HelperText.en
-                    }
-                  />
-                </div>
-                <MDEditor
-                  preview={isMPORole() ? 'edit' : 'preview'}
-                  value={
-                    storingPersonalInformationForm.disclosuresOutsideCanada
-                      .storage.contractualTerms
-                  }
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    handleDisclosuresOutsideCanadaStorageContractualTermsChange(
-                      value || '',
-                    )
-                  }
-                />
-              </div>
-            </div>
-          </section>
-          <section className="form__section my-4">
-            <div className="card-wrapper py-5 px-5">
-              <div>
-                <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
-                {relyingOnExistingContract.map((radio, index) => (
-                  <Radio key={index} {...radio} />
-                ))}
-              </div>
-              {storingPersonalInformationForm.disclosuresOutsideCanada.contract
-                .relyOnExistingContract === YesNoInput.YES && (
-                <div>
+                  <p>{Messages.AssessmentOfDisclosures.DisclosureDetails.en}</p>
                   <MDEditor
                     preview={isMPORole() ? 'edit' : 'preview'}
                     value={
                       storingPersonalInformationForm.disclosuresOutsideCanada
-                        .contract.enterpriseServiceAccessDetails
+                        .storage.disclosureDetails
                     }
                     defaultTabEnable={true}
                     onChange={(value) =>
-                      handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange(
+                      handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange(
                         value || '',
                       )
                     }
                   />
                 </div>
-              )}
-            </div>
-          </section>
-          <section className="form__section my-4">
-            <div className="card-wrapper py-5 px-5">
-              <p>{Messages.Controls.WhatControlsAreInPlace.en}</p>
-              <MDEditor
-                preview={isMPORole() ? 'edit' : 'preview'}
-                value={
-                  storingPersonalInformationForm.disclosuresOutsideCanada
-                    .controls.unauthorizedAccessMeasures
-                }
-                defaultTabEnable={true}
-                onChange={(e) =>
-                  handleDisclosuresOutsideCanadaControlsUnauthorizedAccessChange(
-                    e,
-                  )
-                }
-              />
-            </div>
-          </section>
-          <section className="form__section my-4">
-            <div className="card-wrapper py-5 px-5">
-              <p>{Messages.TrackAccess.TrackAccessDetails.en}</p>
-              <MDEditor
-                preview={isMPORole() ? 'edit' : 'preview'}
-                value={
-                  storingPersonalInformationForm.disclosuresOutsideCanada
-                    .trackAccess.trackAccessDetails
-                }
-                defaultTabEnable={true}
-                onChange={(value) =>
-                  handleDisclosuresOutsideCanadaTrackAccessChange(value || '')
-                }
-              />
-            </div>
-          </section>
-          <section className="form__section my-4">
-            <div className="card-wrapper py-5 px-5">
-              <div>
-                <p>{Messages.Risks.DescribePrivacyRisks.en}</p>
-                <MDEditor.Markdown
-                  source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
+                <div className="pt-5">
+                  <div>
+                    <p>
+                      {Messages.AssessmentOfDisclosures.ContractualTerms.en}
+                    </p>
+                    <MDEditor.Markdown
+                      source={
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.en
+                      }
+                    />
+                  </div>
+                  <MDEditor
+                    preview={isMPORole() ? 'edit' : 'preview'}
+                    value={
+                      storingPersonalInformationForm.disclosuresOutsideCanada
+                        .storage.contractualTerms
+                    }
+                    defaultTabEnable={true}
+                    onChange={(value) =>
+                      handleDisclosuresOutsideCanadaStorageContractualTermsChange(
+                        value || '',
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                <div>
+                  <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
+                  {relyingOnExistingContract.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))}
+                </div>
+                {storingPersonalInformationForm.disclosuresOutsideCanada
+                  .contract.relyOnExistingContract === YesNoInput.YES && (
+                  <div className="pt-5">
+                    <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
+                    <MDEditor
+                      preview={isMPORole() ? 'edit' : 'preview'}
+                      value={
+                        storingPersonalInformationForm.disclosuresOutsideCanada
+                          .contract.enterpriseServiceAccessDetails
+                      }
+                      defaultTabEnable={true}
+                      onChange={(value) =>
+                        handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange(
+                          value || '',
+                        )
+                      }
+                    />
+                  </div>
+                )}
+              </div>
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                <p>{Messages.Controls.WhatControlsAreInPlace.en}</p>
+                <MDEditor
+                  preview={isMPORole() ? 'edit' : 'preview'}
+                  value={
+                    storingPersonalInformationForm.disclosuresOutsideCanada
+                      .controls.unauthorizedAccessMeasures
+                  }
+                  defaultTabEnable={true}
+                  onChange={(e) =>
+                    handleDisclosuresOutsideCanadaControlsUnauthorizedAccessChange(
+                      e,
+                    )
+                  }
                 />
               </div>
-              <div>
-                <List
-                  data={listRisksRows}
-                  columns={listRisksHeaders}
-                  handleOnChange={handleDisclosuresOutsideCanadaRisksChange}
-                  addRow={addRisksRow}
-                  removeRow={removeRisksRow}
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                <p>{Messages.TrackAccess.TrackAccessDetails.en}</p>
+                <MDEditor
+                  preview={isMPORole() ? 'edit' : 'preview'}
+                  value={
+                    storingPersonalInformationForm.disclosuresOutsideCanada
+                      .trackAccess.trackAccessDetails
+                  }
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    handleDisclosuresOutsideCanadaTrackAccessChange(value || '')
+                  }
                 />
               </div>
-            </div>
-          </section>
-        </>
-      )}
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                <div>
+                  <p>{Messages.Risks.DescribePrivacyRisks.en}</p>
+                  <MDEditor.Markdown
+                    source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
+                  />
+                </div>
+                <div>
+                  <List
+                    data={listRisksRows}
+                    columns={listRisksHeaders}
+                    handleOnChange={handleDisclosuresOutsideCanadaRisksChange}
+                    addRow={addRisksRow}
+                    removeRow={removeRisksRow}
+                  />
+                </div>
+              </div>
+            </section>
+          </>
+        )}
     </form>
   );
 };
