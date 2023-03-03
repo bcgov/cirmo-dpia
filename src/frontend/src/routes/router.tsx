@@ -16,6 +16,7 @@ import PIAList from '../pages/PIAListPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
+import StoringPersonalInformation from '../components/public/PIAFormTabs/PIAStoringPersonalInformation';
 import { isAuthenticated } from '../utils/auth';
 import { isMPORole } from '../utils/helper.util';
 
@@ -82,9 +83,12 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="storingPersonalInformation">
+            <Route
+              path="storingPersonalInformation"
+              element={<StoringPersonalInformation />}
+            >
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={comingSoonBanner} />
+              <Route path="edit" element={<StoringPersonalInformation />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
 

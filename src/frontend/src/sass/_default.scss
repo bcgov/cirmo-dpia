@@ -103,6 +103,7 @@ p {
   padding-bottom: calc($padding-block + $footer-height);
   display: flex;
   justify-content: center;
+  overflow-x: hidden;
 
   &.bcgovPageContainer__with-controls {
     flex-direction: column;
