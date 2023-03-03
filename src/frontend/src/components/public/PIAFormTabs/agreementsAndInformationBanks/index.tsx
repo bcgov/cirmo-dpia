@@ -1,45 +1,67 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
 
 import { useOutletContext } from 'react-router-dom';
-import { YesNoInputOptions } from '../../../../constant/constant';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
+import { dateToString, stringToDate } from '../../../../utils/date';
+import { deepEqual } from '../../../../utils/object-comparison.util';
 
 const PIAAgreementsAndInformationBanks = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const defaultState: IAgreementsAndInformationBanks = {
-    personalInformationBanks: {
-      willResultInPIB: 'YES',
-      description: '',
-      mainMinistryOrAgencyInvolved: '',
-      otherGroupsInvolved: '',
-      contactTitle: '',
-      contactPhone: '',
-    },
-    informationSharingAgreement: {
-      doesInvolveISA: 'YES',
-      description: '',
-      mainMinistryOrAgencyInvolved: '',
-      otherGroupsInvolved: '',
-      contactTitle: '',
-      contactPhone: '',
-      startDate: null,
-      endDate: null,
-    },
-  };
+  const defaultState: IAgreementsAndInformationBanks = useMemo(
+    () => ({
+      personalInformationBanks: {
+        willResultInPIB: 'YES',
+        description: '',
+        mainMinistryOrAgencyInvolved: '',
+        otherGroupsInvolved: '',
+        contactTitle: '',
+        contactPhone: '',
+      },
+      informationSharingAgreement: {
+        doesInvolveISA: 'YES',
+        description: '',
+        mainMinistryOrAgencyInvolved: '',
+        otherGroupsInvolved: '',
+        contactTitle: '',
+        contactPhone: '',
+        startDate: null,
+        endDate: null,
+      },
+    }),
+    [],
+  );
+  const [startDate, setStartDate] = useState<Date | null>(
+    pia.agreementsAndInformationBanks?.informationSharingAgreement?.startDate
+      ? stringToDate(
+          pia.agreementsAndInformationBanks?.informationSharingAgreement
+            ?.startDate,
+        )
+      : null,
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    pia.agreementsAndInformationBanks?.informationSharingAgreement?.endDate
+      ? stringToDate(
+          pia.agreementsAndInformationBanks?.informationSharingAgreement
+            ?.endDate,
+        )
+      : null,
+  );
+  const initialFormState = useMemo(
+    () => pia.agreementsAndInformationBanks || defaultState,
+    [defaultState, pia.agreementsAndInformationBanks],
+  );
   const [
     agreementsAndInformationBanksForm,
     setAgreementsAndInformationBanksForm,
-  ] = useState<IAgreementsAndInformationBanks>(
-    pia.agreementsAndInformationBanks || defaultState,
-  );
+  ] = useState<IAgreementsAndInformationBanks>(initialFormState);
 
   const stateChangeHandler = (value: any, nestedKey: string) => {
     if (nestedKey) {
@@ -55,6 +77,8 @@ const PIAAgreementsAndInformationBanks = () => {
           },
         }));
       } else if (key1 === 'informationSharingAgreement') {
+        if (key2 === 'startDate' || key2 === 'endDate')
+          value = dateToString(value);
         setAgreementsAndInformationBanksForm((state) => ({
           ...state,
           informationSharingAgreement: {
@@ -64,11 +88,22 @@ const PIAAgreementsAndInformationBanks = () => {
         }));
       }
     }
-    piaStateChangeHandler(
-      agreementsAndInformationBanksForm,
-      'agreementsAndInformationBanks',
-    );
   };
+
+  // passing updated data to parent for auto-save for work efficiently only if there are changes
+  useEffect(() => {
+    if (!deepEqual(initialFormState, agreementsAndInformationBanksForm)) {
+      piaStateChangeHandler(
+        agreementsAndInformationBanksForm,
+        'agreementsAndInformationBanks',
+      );
+    }
+  }, [
+    pia.agreementsAndInformationBanks,
+    piaStateChangeHandler,
+    agreementsAndInformationBanksForm,
+    initialFormState,
+  ]);
 
   return (
     <>
@@ -237,19 +272,14 @@ const PIAAgreementsAndInformationBanks = () => {
                         key="isaStartDate"
                         placeholderText={'yyyy/mm/dd'}
                         dateFormat="yyyy/MM/dd"
-                        selected={
-                          agreementsAndInformationBanksForm
-                            ?.informationSharingAgreement.startDate === null
-                            ? null
-                            : agreementsAndInformationBanksForm
-                                ?.informationSharingAgreement?.startDate
-                        }
-                        onChange={(date: any) =>
+                        selected={startDate === null ? null : startDate}
+                        onChange={(date: any) => {
+                          setStartDate(date);
                           stateChangeHandler(
                             date,
                             'informationSharingAgreement.startDate',
-                          )
-                        }
+                          );
+                        }}
                         required
                       />
                     </div>
@@ -261,19 +291,14 @@ const PIAAgreementsAndInformationBanks = () => {
                         key="isaEndDate"
                         placeholderText={'yyyy/mm/dd'}
                         dateFormat="yyyy/MM/dd"
-                        selected={
-                          agreementsAndInformationBanksForm
-                            ?.informationSharingAgreement.endDate === null
-                            ? null
-                            : agreementsAndInformationBanksForm
-                                ?.informationSharingAgreement?.endDate
-                        }
-                        onChange={(date: any) =>
+                        selected={endDate === null ? null : endDate}
+                        onChange={(date: any) => {
+                          setEndDate(date);
                           stateChangeHandler(
                             date,
                             'informationSharingAgreement.endDate',
-                          )
-                        }
+                          );
+                        }}
                         required
                       />
                     </div>
