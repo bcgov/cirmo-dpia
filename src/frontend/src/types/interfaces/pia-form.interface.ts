@@ -4,6 +4,7 @@ import { IAdditionalRisks } from '../../components/public/PIAFormTabs/PIAAdditio
 import { ISecurityPersonalInformation } from '../../components/public/PIAFormTabs/Security_Personal_Information/security-personal-info-interface';
 import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs/PIACollectionUseAndDisclosure/CollectionUseAndDisclosure';
 import { IAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/AgreementsAndInformationBanks';
+import { IStoringPersonalInformation } from '../../components/public/PIAFormTabs/PIAStoringPersonalInformation/interfaces';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;
@@ -17,6 +18,7 @@ export interface IPiaForm extends IPiaFormIntake {
   securityPersonalInformation?: ISecurityPersonalInformation;
   agreementsAndInformationBanks?: IAgreementsAndInformationBanks;
   collectionUseAndDisclosure?: ICollectionUseAndDisclosure;
+  storingPersonalInformation?: IStoringPersonalInformation;
 }
 
 export interface IPiaFormResponse {
