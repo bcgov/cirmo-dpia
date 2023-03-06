@@ -22,7 +22,5 @@ export const getShortTime = (date = new Date()) => {
 };
 
 export const stringToDate = (date: string) => {
-  const [year, month, day] = date.split('/');
-
-  return new Date(+year, +month - 1, +day);
+  return new Date(date);
 };
