@@ -27,8 +27,10 @@ export const routes = {
   PIA_ACCURACY_CORRECTION_AND_RETENTION_VIEW:
     '/pia/:id/accuracyCorrectionAndRetention/view',
 
-  PIA_PERSONAL_INFORMATION_BANK_EDIT: '/pia/:id/personalInformationBank/edit',
-  PIA_PERSONAL_INFORMATION_BANK_VIEW: '/pia/:id/personalInformationBank/view',
+  PIA_AGREEMENTS_AND_INFORMATION_BANK_EDIT:
+    '/pia/:id/agreementsAndInformationBank/edit',
+  PIA_AGREEMENTS_AND_INFORMATION_BANK_VIEW:
+    '/pia/:id/agreementsAndInformationBank/view',
 
   PIA_ADDITIONAL_RISKS_EDIT: '/pia/:id/additionalRisks/edit',
   PIA_ADDITIONAL_RISKS_VIEW: '/pia/:id/additionalRisks/view',
