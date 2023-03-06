@@ -65,7 +65,7 @@ objects:
         containers:
           - name: ${APPLICATION_NAME}
             image: >-
-              image-registry.openshift-image-registry.svc:5000/b996e6-tools/dpia-webapp@sha256:56c6cf8c06e9e9426b208ac87ee8b88bcff4419e401d7f520b28f543ec72b1b0
+              artifacts.developer.gov.bc.ca/daa7-dpia-image-repository/app-dev:latest
             ports:
               - containerPort: 80
                 protocol: TCP
@@ -83,6 +83,8 @@ objects:
         terminationGracePeriodSeconds: 30
         dnsPolicy: ClusterFirst
         securityContext: {}
+        imagePullSecrets:
+          - name: emerald-artifactory-pull
         schedulerName: default-scheduler
 
 parameters:
