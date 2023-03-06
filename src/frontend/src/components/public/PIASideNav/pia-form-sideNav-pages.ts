@@ -99,11 +99,11 @@ export const piaFormSideNavPages = (
     },
     {
       id: 9,
-      label: 'Personal information banks',
+      label: 'Agreements and information banks',
       link: buildDynamicPath(
         isEditMode
-          ? routes.PIA_PERSONAL_INFORMATION_BANK_EDIT
-          : routes.PIA_PERSONAL_INFORMATION_BANK_VIEW,
+          ? routes.PIA_AGREEMENTS_AND_INFORMATION_BANK_EDIT
+          : routes.PIA_AGREEMENTS_AND_INFORMATION_BANK_VIEW,
         {
           id: pia?.id,
         },

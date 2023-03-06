@@ -20,3 +20,7 @@ export const dateToString = (date = new Date(), options = {}) => {
 export const getShortTime = (date = new Date()) => {
   return new Date(date).toLocaleTimeString('en', { timeStyle: 'short' });
 };
+
+export const stringToDate = (date: string) => {
+  return new Date(date);
+};

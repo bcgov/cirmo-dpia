@@ -1,6 +1,6 @@
 .form__container {
-  width: 80em;
-  max-width: 80%;
+  max-width: 90%;
+  background-color: inherit;
 }
 
 .form-control {
@@ -18,10 +18,22 @@
 }
 
 .form__section {
-  margin-top: 4rem;
+  margin-top: 3rem;
+
+  & > :not(h3) {
+    background-color: $bg-white;
+  }
 
   &:first-child {
     margin-top: 0;
+  }
+
+  & .form__section-header {
+    background-color: $bg-lightgray;
+
+    & * {
+      background-color: inherit;
+    }
   }
 }
 
@@ -35,6 +47,7 @@
 
 .form__helper-text {
   color: $text-gray;
+  font-weight: 400;
 }
 
 .form__input-label {
@@ -63,6 +76,12 @@
 
 .form-group__p--margin-zero {
   margin: 0;
+}
+
+.form-group {
+  & > label:is(#end-date-label) {
+    margin-block-start: 0;
+  }
 }
 
 .search-container-wrapper {
@@ -117,5 +136,19 @@
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+  }
+}
+
+.wmde-markdown {
+  & > p {
+    font-weight: 400;
+  }
+}
+
+.form__md-question {
+  & > .wmde-markdown {
+    & > p {
+      font-weight: 700;
+    }
   }
 }
