@@ -1,10 +1,10 @@
 import { IPiaFormIntake } from '../../components/public/PIAFormTabs/intake/pia-form-intake.interface';
-import { IAccuracyCorrectionAndRetention } from '../../components/public/PIAFormTabs/Accuracy_Retention/accuracy-retention-interface';
-import { IAdditionalRisks } from '../../components/public/PIAFormTabs/PIAAdditionalRisks/AdditionalRisks';
-import { ISecurityPersonalInformation } from '../../components/public/PIAFormTabs/Security_Personal_Information/security-personal-info-interface';
-import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs/PIACollectionUseAndDisclosure/CollectionUseAndDisclosure';
+import { IAccuracyCorrectionAndRetention } from '../../components/public/PIAFormTabs/accuracyRetention/accuracy-retention-interface';
+import { IAdditionalRisks } from '../../components/public/PIAFormTabs/additionalRisks/AdditionalRisks';
+import { ISecurityPersonalInformation } from '../../components/public/PIAFormTabs/securityPersonalInformation/security-personal-info-interface';
+import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs/collectionUseAndDisclosure/CollectionUseAndDisclosure';
 import { IAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/AgreementsAndInformationBanks';
-import { IStoringPersonalInformation } from '../../components/public/PIAFormTabs/PIAStoringPersonalInformation/interfaces';
+import { IStoringPersonalInformation } from '../../components/public/PIAFormTabs/storingPersonalInformation/interfaces';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;

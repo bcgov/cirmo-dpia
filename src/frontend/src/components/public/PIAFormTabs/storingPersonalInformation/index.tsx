@@ -408,21 +408,21 @@ const StoringPersonalInformation = () => {
   };
 
   const handleDisclosuresOutsideCanadaContractEnterpriseServiceAccessDetailsChange =
-    (e: any) => {
+    (value: string) => {
       setStoringPersonalInformationForm((prevState) => ({
         ...prevState,
         disclosuresOutsideCanada: {
           ...prevState.disclosuresOutsideCanada,
           contract: {
             ...prevState.disclosuresOutsideCanada.contract,
-            relyOnExistingContract: e.target.value,
+            enterpriseServiceAccessDetails: value,
           },
         },
       }));
     };
 
   const handleDisclosuresOutsideCanadaControlsUnauthorizedAccessChange = (
-    e: any,
+    value: string,
   ) => {
     setStoringPersonalInformationForm((prevState) => ({
       ...prevState,
@@ -430,7 +430,7 @@ const StoringPersonalInformation = () => {
         ...prevState.disclosuresOutsideCanada,
         controls: {
           ...prevState.disclosuresOutsideCanada.controls,
-          unauthorizedAccessMeasures: e.target.value,
+          unauthorizedAccessMeasures: value,
         },
       },
     }));
@@ -763,7 +763,7 @@ const StoringPersonalInformation = () => {
                       preview={isMPORole() ? 'edit' : 'preview'}
                       value={
                         storingPersonalInformationForm.disclosuresOutsideCanada
-                          .contract.enterpriseServiceAccessDetails
+                          .contract.enterpriseServiceAccessDetails || ''
                       }
                       defaultTabEnable={true}
                       onChange={(value) =>
@@ -786,9 +786,9 @@ const StoringPersonalInformation = () => {
                       .controls.unauthorizedAccessMeasures
                   }
                   defaultTabEnable={true}
-                  onChange={(e) =>
+                  onChange={(value) =>
                     handleDisclosuresOutsideCanadaControlsUnauthorizedAccessChange(
-                      e,
+                      value || '',
                     )
                   }
                 />
