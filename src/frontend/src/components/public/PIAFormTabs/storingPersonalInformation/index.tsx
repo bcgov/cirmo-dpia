@@ -786,9 +786,9 @@ const StoringPersonalInformation = () => {
                       .controls.unauthorizedAccessMeasures
                   }
                   defaultTabEnable={true}
-                  onChange={(e) =>
+                  onChange={(value) =>
                     handleDisclosuresOutsideCanadaControlsUnauthorizedAccessChange(
-                      e,
+                      value || '',
                     )
                   }
                 />
