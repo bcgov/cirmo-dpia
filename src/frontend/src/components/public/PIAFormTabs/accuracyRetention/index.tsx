@@ -1,5 +1,5 @@
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -7,33 +7,40 @@ import Messages from './helper/messages';
 import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { deepEqual } from '../../../../utils/object-comparison.util';
 
 export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-  const defaultState: IAccuracyCorrectionAndRetention = {
-    accuracy: {
-      description: null,
-    },
-    correction: {
-      haveProcessInPlace: null,
-      willDocument: null,
-      willConductNotifications: null,
-    },
-    retention: {
-      usePIForDecision: null,
-      haveApprovedInfoSchedule: null,
-      describeRetention: null,
-    },
-  };
+  const defaultState: IAccuracyCorrectionAndRetention = useMemo(
+    () => ({
+      accuracy: {
+        description: null,
+      },
+      correction: {
+        haveProcessInPlace: null,
+        willDocument: null,
+        willConductNotifications: null,
+      },
+      retention: {
+        usePIForDecision: null,
+        haveApprovedInfoSchedule: null,
+        describeRetention: null,
+      },
+    }),
+    [],
+  );
+
+  const initialFormState = useMemo(
+    () => pia.accuracyCorrectionAndRetention || defaultState,
+    [defaultState, pia.accuracyCorrectionAndRetention],
+  );
 
   const [
     accuracyCorrectionAndRetentionForm,
     setAccuracyCorrectionAndRetentionForm,
-  ] = useState<IAccuracyCorrectionAndRetention>(
-    pia.accuracyCorrectionAndRetention || defaultState,
-  );
+  ] = useState<IAccuracyCorrectionAndRetention>(initialFormState);
 
   const stateChangeHandler = (value: any, nestedkey: string) => {
     if (nestedkey) {
@@ -68,11 +75,21 @@ export const AccuracyCorrectionAndRetention = () => {
         }
       }
     }
-    piaStateChangeHandler(
-      accuracyCorrectionAndRetentionForm,
-      'accuracyCorrectionAndRetention',
-    );
   };
+
+  useEffect(() => {
+    if (!deepEqual(initialFormState, accuracyCorrectionAndRetentionForm)) {
+      piaStateChangeHandler(
+        accuracyCorrectionAndRetentionForm,
+        'accuracyCorrectionAndRetention',
+      );
+    }
+  }, [
+    pia.accuracyCorrectionAndRetention,
+    piaStateChangeHandler,
+    accuracyCorrectionAndRetentionForm,
+    initialFormState,
+  ]);
 
   return (
     <>

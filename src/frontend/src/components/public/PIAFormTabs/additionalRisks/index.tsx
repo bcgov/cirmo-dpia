@@ -142,6 +142,17 @@ const PIAAdditionalRisks = () => {
 
   const columns = [{ name: 'Possible risk' }, { name: 'Response' }];
 
+  useEffect(() => {
+    if (!deepEqual(initialFormState, additionalRisksForm)) {
+      piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
+    }
+  }, [
+    pia.additionalRisks,
+    piaStateChangeHandler,
+    additionalRisksForm,
+    initialFormState,
+  ]);
+
   return (
     <>
       <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>

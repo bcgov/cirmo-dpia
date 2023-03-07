@@ -48,7 +48,10 @@ const PIACollectionUseAndDisclosure = () => {
           OtherInput: '',
         },
       ],
-      collectionNotice: { drafterInput: '', mpoInput: '' },
+      collectionNotice: {
+        drafterInput: '',
+        mpoInput: '',
+      },
     }),
     [],
   );
@@ -194,6 +197,21 @@ const PIACollectionUseAndDisclosure = () => {
       isDisable: !isMPORole(),
     },
   ];
+
+  useEffect(() => {
+    if (!deepEqual(initialFormState, collectionUseAndDisclosureForm)) {
+      piaStateChangeHandler(
+        collectionUseAndDisclosureForm,
+        'collectionUseAndDisclosure',
+      );
+    }
+  }, [
+    pia.collectionUseAndDisclosure,
+    piaStateChangeHandler,
+    collectionUseAndDisclosureForm,
+    initialFormState,
+  ]);
+
   return (
     <>
       <h2 className="results-header">
