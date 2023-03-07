@@ -187,6 +187,24 @@ export class CreatePiaIntakeDto {
   })
   submittedAt: Date;
 
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: piaIntakeEntityMock.isNextStepsSeenForDelegatedFlow,
+  })
+  isNextStepsSeenForDelegatedFlow: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: piaIntakeEntityMock.isNextStepsSeenForNonDelegatedFlow,
+  })
+  isNextStepsSeenForNonDelegatedFlow: boolean;
+
   @IsObject()
   @IsOptional()
   @IsNotEmptyObject()

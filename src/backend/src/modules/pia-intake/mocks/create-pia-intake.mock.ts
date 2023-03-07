@@ -30,6 +30,8 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     `,
   hasAddedPiToDataElements: false,
   submittedAt: new Date(),
+  isNextStepsSeenForDelegatedFlow: false,
+  isNextStepsSeenForNonDelegatedFlow: false,
   riskMitigation: `The film was released on [Blu-ray](https://en.wikipedia.org/wiki/Blu-ray) and [DVD](https://en.wikipedia.org/wiki/DVD) February 8, 2022 by [Warner Bros. Home Entertainment](https://en.wikipedia.org/wiki/Warner_Bros._Home_Entertainment), with the 4K Ultra HD release through [Warner Archive Collection](https://en.wikipedia.org/wiki/Warner_Archive_Collection) on the same date.`,
   collectionUseAndDisclosure: {
     steps: [
