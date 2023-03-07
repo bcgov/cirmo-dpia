@@ -15,7 +15,7 @@ export const piaFormSideNavPages = (
   isNewForm = false,
 ): INavbarItem[] => {
   // This will change once Next Steps tab is implemented
-  const showPostIntakeTabs = !!pia?.hasAddedPiToDataElements;
+  const showPostIntakeTabs = ((pia?.hasAddedPiToDataElements === true) || (pia?.hasAddedPiToDataElements === null));
 
   const intakeLink = isNewForm
     ? routes.PIA_NEW
@@ -33,8 +33,11 @@ export const piaFormSideNavPages = (
     {
       id: 2,
       label: 'Next steps',
-      link: '',
-      enable: false, // enable them in subsequent tickets
+      link: buildDynamicPath(
+        routes.PIA_NEXT_STEPS_EDIT,
+        { id: pia?.id },
+      ),
+      enable: true, // enable them in subsequent tickets
     },
     {
       id: 3,
