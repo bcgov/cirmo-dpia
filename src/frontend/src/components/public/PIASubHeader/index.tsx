@@ -11,6 +11,7 @@ import {
 } from '../../../utils/file-download.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
+import { useLocation } from 'react-router-dom';
 
 function PIASubHeader({
   pia,
@@ -24,6 +25,8 @@ function PIASubHeader({
   // this pr just add download function for faEllipsisH icon
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
+  const { pathname } = useLocation();
+  const nextStepAction = pathname?.split('/').includes('nextSteps');
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -53,61 +56,74 @@ function PIASubHeader({
   return (
     <div className="subheader-container wrapper">
       <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
-      <div className="">
-        {downloadError && (
-          <Alert
-            type="danger"
-            message="Something went wrong. Please try again."
-            onClose={handleAlertClose}
-            className="mt-2 col-sm-1"
-          />
-        )}
-      </div>
-      <div className="">
-        <div>Status</div>
-        <div>
-          {pia.status ? (
-            pia.status in statusList ? (
-              <div className={`statusBlock ${statusList[pia.status].class}`}>
-                {statusList[pia.status].title}
-              </div>
-            ) : (
-              ''
-            )
-          ) : (
-            ''
+      <div
+        className={
+          nextStepAction
+            ? 'other__elements-nextstep-container'
+            : 'other__elements-container'
+        }
+      >
+        <div className="">
+          {downloadError && (
+            <Alert
+              type="danger"
+              message="Something went wrong. Please try again."
+              onClose={handleAlertClose}
+              className="mt-2 col-sm-1"
+            />
           )}
         </div>
-      </div>
-      {lastSaveAlertInfo?.show && (
-        <div>
-          <Alert
-            type={lastSaveAlertInfo.type}
-            message={lastSaveAlertInfo.message}
-            showInitialIcon={true}
-            showCloseIcon={false}
-          />
+        <div className="">
+          <div>Status</div>
+          <div>
+            {pia.status ? (
+              pia.status in statusList ? (
+                <div className={`statusBlock ${statusList[pia.status].class}`}>
+                  {statusList[pia.status].title}
+                </div>
+              ) : (
+                ''
+              )
+            ) : (
+              ''
+            )}
+          </div>
         </div>
-      )}
-      <div className="d-flex">
-        <button
-          onClick={() => handleDownload()}
-          className="mx-2 bcgovbtn bcgovbtn__secondary"
-        >
-          <FontAwesomeIcon icon={faEllipsisH} />
-          {isDownloading && <Spinner />}
-        </button>
-
-        <button
-          onClick={onSaveChangeClick}
-          className="mx-2 bcgovbtn bcgovbtn__secondary"
-        >
-          {secondaryButtonText}
-        </button>
-
-        <button onClick={onSubmitClick} className="bcgovbtn bcgovbtn__primary">
-          {primaryButtonText}
-        </button>
+        {lastSaveAlertInfo?.show && !nextStepAction && (
+          <div>
+            <Alert
+              type={lastSaveAlertInfo.type}
+              message={lastSaveAlertInfo.message}
+              showInitialIcon={true}
+              showCloseIcon={false}
+            />
+          </div>
+        )}
+        <div className="d-flex">
+          <button
+            onClick={() => handleDownload()}
+            className="mx-2 bcgovbtn bcgovbtn__secondary"
+          >
+            <FontAwesomeIcon icon={faEllipsisH} />
+            {isDownloading && <Spinner />}
+          </button>
+          {!nextStepAction && (
+            <button
+              onClick={onSaveChangeClick}
+              className="mx-2 bcgovbtn bcgovbtn__secondary"
+            >
+              {secondaryButtonText}
+            </button>
+          )}
+          {!nextStepAction && (
+            <button
+              onClick={onSubmitClick}
+              className="bcgovbtn bcgovbtn__primary"
+            >
+              {primaryButtonText}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

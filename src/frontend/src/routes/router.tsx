@@ -2,10 +2,7 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
-import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/accuracyRetention';
-import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
-import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/securityPersonalInformation';
-import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/collectionUseAndDisclosure';
+import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIADetailPage from '../pages/PIADetailPage';
@@ -19,6 +16,10 @@ import StoringPersonalInformation from '../components/public/PIAFormTabs/storing
 import { isAuthenticated } from '../utils/auth';
 import { isMPORole } from '../utils/helper.util';
 import PIAAgreementsAndInformationBanks from '../components/public/PIAFormTabs/agreementsAndInformationBanks';
+import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/collectionUseAndDisclosure';
+import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/securityPersonalInformation';
+import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/accuracyRetention';
+import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -75,6 +76,12 @@ const Router = () => {
               {/* update above default to view once the PIA intake view component is built */}
               <Route path="edit" element={<PIAFormIntake />} />
               <Route path="view" element={comingSoonBanner} />
+            </Route>
+
+            <Route path="nextSteps">
+              <Route index element={<Navigate relative="path" to="edit" />} />
+              {/* update above default to view once the PIA intake view component is built */}
+              <Route path="edit" element={<PIANextSteps />} />
             </Route>
 
             <Route path="collectionUseAndDisclosure">

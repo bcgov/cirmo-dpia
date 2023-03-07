@@ -37,6 +37,8 @@ const PIAFormPage = () => {
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
+    isNextStepsSeenForDelegatedFlow: false,
+    isNextStepsSeenForNonDelegatedFlow: false,
   };
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
@@ -212,9 +214,14 @@ const PIAFormPage = () => {
         const updatedPia = await upsertAndUpdatePia({
           status: PiaStatuses.MPO_REVIEW,
         });
-        navigate(routes.PIA_RESULT, {
-          state: { result: updatedPia },
-        });
+        if (pia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
+              id: pia.id,
+              title: pia.title,
+            }),
+          );
+        }
       } else if (buttonValue === 'cancel') {
         if (pia?.id) {
           navigate(

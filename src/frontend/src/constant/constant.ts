@@ -222,7 +222,20 @@ export const ReviewTypes = [
   },
 ];
 
-export const PIOptions = ['Yes', 'No', "I'm not sure"];
+export const PIOptions = [
+  {
+    key: 'Yes',
+    value: true,
+  },
+  {
+    key: 'No',
+    value: false,
+  },
+  {
+    key: "I'm not sure",
+    Value: null,
+  },
+];
 
 export const YesNoInputOptions = ['Yes', 'No'];
 

@@ -9,6 +9,8 @@ export const routes = {
   PIA_INTAKE_EDIT: '/pia/:id/intake/edit',
   PIA_INTAKE_VIEW: '/pia/:id/intake/view',
 
+  PIA_NEXT_STEPS_EDIT: '/pia/:id/nextSteps/edit',
+
   PIA_DISCLOSURE_EDIT: '/pia/:id/collectionUseAndDisclosure/edit',
   PIA_DISCLOSURE_VIEW: '/pia/:id/collectionUseAndDisclosure/view',
 

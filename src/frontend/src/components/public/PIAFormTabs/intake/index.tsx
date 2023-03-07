@@ -268,11 +268,11 @@ export const PIAFormIntake = () => {
                 <input
                   type="radio"
                   name="pi-options-radio"
-                  value={option}
+                  value={option.key}
                   onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[0] === option}
+                  checked={option.value === pia?.hasAddedPiToDataElements}
                 />
-                {option}
+                {option.key}
               </label>
             ))}
             {intakeForm?.hasAddedPiToDataElements === false && (
