@@ -4,7 +4,7 @@ export default {
   },
   Delegated: {
     heading: {
-      en:`Notify your MPO`,
+      en: `Notify your MPO`,
     },
     description: {
       en: `The next step is to send an email to your ministry privacy officer and let them know you have completed the PIA intake. Find your MPO here. Your MPO will make sure your answers are complete, and they may ask for more information.
@@ -19,8 +19,8 @@ export default {
       },
       email: {
         en: `Privacy.Helpline@gov.bc.ca`,
-      }
-    }
+      },
+    },
   },
   FullPIA: {
     FillOutPIA: {
@@ -36,17 +36,17 @@ export default {
         en: `Choose one of the following:`,
       },
       paragraph1: {
-        en: `To continue drafting this PIA without your MPO’s help, select “Stay in Incomplete status”. Your PIA will be visible to only you, the drafter. At any point, if you submit your PIA, your MPO will be able to view it. Your PIA does not have to be complete for you to submit it to your MPO.`
+        en: `To continue drafting this PIA without your MPO’s help, select “Stay in Incomplete status”. Your PIA will be visible to only you, the drafter. At any point, if you submit your PIA, your MPO will be able to view it. Your PIA does not have to be complete for you to submit it to your MPO.`,
       },
       paragraph2: {
-        en:`To continue drafting with your MPOs help, select “Submit to MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`
+        en: `To continue drafting with your MPOs help, select “Submit to MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`,
       },
       CTA1: {
         en: `Stay in Incomplete status`,
       },
       CTA2: {
         en: `Share with my MPO`,
-      }
-    }
-  }
+      },
+    },
+  },
 };

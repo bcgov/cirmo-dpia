@@ -57,7 +57,13 @@ function PIASubHeader({
   return (
     <div className="subheader-container wrapper">
       <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
-      <div className={nextStepAction?'other__elements-nextstep-container':'other__elements-container'}>
+      <div
+        className={
+          nextStepAction
+            ? 'other__elements-nextstep-container'
+            : 'other__elements-container'
+        }
+      >
         <div className="">
           {downloadError && (
             <Alert
@@ -68,7 +74,7 @@ function PIASubHeader({
             />
           )}
         </div>
-          <div className="">
+        <div className="">
           <div>Status</div>
           <div>
             {pia.status ? (

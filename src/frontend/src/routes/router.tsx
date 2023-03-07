@@ -77,7 +77,7 @@ const Router = () => {
               <Route path="edit" element={<PIAFormIntake />} />
               <Route path="view" element={comingSoonBanner} />
             </Route>
-            
+
             <Route path="nextSteps">
               <Route index element={<Navigate relative="path" to="edit" />} />
               {/* update above default to view once the PIA intake view component is built */}
