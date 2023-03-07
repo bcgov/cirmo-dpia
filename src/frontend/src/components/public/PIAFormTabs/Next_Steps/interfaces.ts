@@ -14,6 +14,6 @@ export interface IModalObject {
     className: string;
   };
   action: {
-    statusChange: PiaStatuses | string;
+    statusChange: PiaStatuses;
   };
 }

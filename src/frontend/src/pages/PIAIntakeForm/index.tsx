@@ -221,10 +221,6 @@ const PIAFormPage = () => {
               title: pia.title,
             }),
           );
-        } else {
-          navigate(routes.PIA_NEXT_STEPS_EDIT, {
-            state: { result: updatedPia },
-          });
         }
       } else if (buttonValue === 'cancel') {
         if (pia?.id) {

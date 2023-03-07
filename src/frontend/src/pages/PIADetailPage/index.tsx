@@ -78,12 +78,13 @@ const PIADetailPage = () => {
           MinistryList.filter((item) => item.value === result.ministry)[0]
             .label,
         );
+        /* Note this is a workaround to get the PI option value */
         setPIOption(
           result.hasAddedPiToDataElements === true
-            ? PIOptions[0]
+            ? PIOptions[0]?.key
             : result.hasAddedPiToDataElements === false
-            ? PIOptions[1]
-            : PIOptions[2],
+            ? PIOptions[1]?.key
+            : PIOptions[2]?.key,
         );
       } catch (e) {
         if (e instanceof Error && e.cause) {

@@ -31,9 +31,6 @@ export const PIANextSteps = () => {
   useEffect(() => {
     if (pia.hasAddedPiToDataElements === false) {
       if (pia.isNextStepsSeenForDelegatedFlow) {
-        console.log(
-          'Is next steps delegated ' + pia.isNextStepsSeenForDelegatedFlow,
-        );
         // redirect to view page
         navigateFn(routes.PIA_VIEW);
       } else {
@@ -41,11 +38,8 @@ export const PIANextSteps = () => {
         piaStateChangeHandler(false, 'isNextStepsSeenForNonDelegatedFlow');
       }
     } else {
+      // if true or null
       if (pia.isNextStepsSeenForNonDelegatedFlow) {
-        console.log(
-          'Is next steps Non delegated ' +
-            pia.isNextStepsSeenForNonDelegatedFlow,
-        );
         // redirect to next tab
         navigateFn(routes.PIA_DISCLOSURE_EDIT);
       } else {
@@ -53,7 +47,9 @@ export const PIANextSteps = () => {
         piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
       }
     }
-  });
+    /* This is to prevent this function being called for every update as
+    this is only required to be called once when the component is mounted */
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const nextStepmodalObject: IModalObject = {
     modalShow: false,
@@ -69,7 +65,7 @@ export const PIANextSteps = () => {
       className: '',
     },
     action: {
-      statusChange: pia.status ? pia.status : PiaStatuses.INCOMPLETE,
+      statusChange: pia.status as PiaStatuses,
     },
   };
 
@@ -87,9 +83,8 @@ export const PIANextSteps = () => {
         /* This sets the modal information for the next step action */
         setNextStepAction({
           modalShow: true,
-          modalTitle: 'Complete PIA',
-          modalDescription:
-            'Your Ministry Privacy Officer (MPO) will be able to review and edit in order to help you with the PIA process.',
+          modalTitle: messages.FullPIA.Modal.share.title.en,
+          modalDescription: messages.FullPIA.Modal.share.description.en,
           value: 'complete',
           modalButtonCancel: {
             label: 'Cancel',
@@ -103,13 +98,12 @@ export const PIANextSteps = () => {
             statusChange: PiaStatuses.EDIT_IN_PROGRESS,
           },
         });
-        console.log(nextStepAction.modalShow);
         break;
       case 'incomplete':
         setNextStepAction({
           modalShow: true,
-          modalDescription: 'Only you will be able to view or edit the PIA.',
-          modalTitle: 'Stay in Incomplete status?',
+          modalDescription: messages.FullPIA.Modal.incomplete.description.en,
+          modalTitle: messages.FullPIA.Modal.incomplete.title.en,
           value: 'save',
           modalButtonCancel: {
             label: 'Cancel',
@@ -123,14 +117,13 @@ export const PIANextSteps = () => {
             statusChange: PiaStatuses.INCOMPLETE,
           },
         });
-        console.log(nextStepAction.modalShow);
         break;
     }
   };
 
-  const handleModalClose = (e: any) => {
+  const updateStatus = (e: any) => {
     /* set status based on what button is clicked */
-    stateChangeHandler('modalShow', true);
+    stateChangeHandler('modalShow', false);
     if (nextStepAction.value === 'complete') {
       /* set status to edit in progress */
       piaStateChangeHandler(PiaStatuses.EDIT_IN_PROGRESS, 'status');
@@ -170,13 +163,13 @@ export const PIANextSteps = () => {
                     className="bcgovbtn bcgovbtn__secondary"
                     onClick={() => handleNextStepAction('incomplete')}
                   >
-                    {messages.FullPIA.ChooseFollowing.CTA1.en}
+                    {messages.FullPIA.ChooseFollowing.Primary.en}
                   </button>
                   <button
                     className="bcgovbtn bcgovbtn__primary"
                     onClick={() => handleNextStepAction('share')}
                   >
-                    {messages.FullPIA.ChooseFollowing.CTA2.en}
+                    {messages.FullPIA.ChooseFollowing.Secondary.en}
                   </button>
                 </div>
               </div>
@@ -188,7 +181,7 @@ export const PIANextSteps = () => {
               titleText={nextStepAction.modalTitle}
               show={nextStepAction.modalShow}
               value={nextStepAction.value}
-              handleClose={(e) => handleModalClose(e)}
+              handleClose={(e) => updateStatus(e)}
               handleCancel={handleModalCancel}
             >
               <p className="modal-text">{nextStepAction.modalDescription}</p>

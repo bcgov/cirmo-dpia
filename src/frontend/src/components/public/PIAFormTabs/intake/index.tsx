@@ -35,19 +35,6 @@ export const PIAFormIntake = () => {
       : stateChangeHandler(false, 'hasAddedPiToDataElements');
   };
 
-  const validatePIOption = () => {
-    if (pia?.hasAddedPiToDataElements === null) {
-      return "I'm not sure";
-    }
-    if (pia?.hasAddedPiToDataElements === true) {
-      return 'Yes';
-    }
-    if (pia?.hasAddedPiToDataElements === false) {
-      return 'No';
-    }
-    return '';
-  };
-
   return (
     <>
       <section className="">
@@ -281,11 +268,11 @@ export const PIAFormIntake = () => {
                 <input
                   type="radio"
                   name="pi-options-radio"
-                  value={option}
+                  value={option.key}
                   onChange={handlePIOptionChange}
-                  checked={option === validatePIOption()}
+                  checked={option.value === pia?.hasAddedPiToDataElements}
                 />
-                {option}
+                {option.key}
               </label>
             ))}
             {intakeForm?.hasAddedPiToDataElements === false && (

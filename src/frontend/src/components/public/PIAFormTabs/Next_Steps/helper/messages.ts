@@ -41,11 +41,29 @@ export default {
       paragraph2: {
         en: `To continue drafting with your MPOs help, select “Submit to MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`,
       },
-      CTA1: {
+      Primary: {
         en: `Stay in Incomplete status`,
       },
-      CTA2: {
+      Secondary: {
         en: `Share with my MPO`,
+      },
+    },
+    Modal: {
+      share: {
+        title: {
+          en: 'Complete PIA',
+        },
+        description: {
+          en: 'Your Ministry Privacy Officer (MPO) will be able to review and edit in order to help you with the PIA process.',
+        },
+      },
+      incomplete: {
+        title: {
+          en: 'Stay in Incomplete status?',
+        },
+        description: {
+          en: 'Only you will be able to view or edit the PIA.',
+        },
       },
     },
   },

@@ -27,7 +27,6 @@ function PIASubHeader({
   const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-  console.log(nextStepAction);
   const handleDownload = async () => {
     setDownloadError('');
 
