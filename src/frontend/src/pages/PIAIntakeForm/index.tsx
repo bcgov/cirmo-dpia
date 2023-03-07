@@ -212,7 +212,10 @@ const PIAFormPage = () => {
     try {
       if (buttonValue === 'submit') {
         const updatedPia = await upsertAndUpdatePia({
-            status: (pia?.hasAddedPiToDataElements === false) ? PiaStatuses.MPO_REVIEW : PiaStatuses.INCOMPLETE,
+          status:
+            pia?.hasAddedPiToDataElements === false
+              ? PiaStatuses.MPO_REVIEW
+              : PiaStatuses.INCOMPLETE,
         });
         if (pia?.id) {
           navigate(
