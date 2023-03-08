@@ -51,7 +51,7 @@ export default {
     Modal: {
       share: {
         title: {
-          en: 'Complete PIA',
+          en: 'Share with MPO?',
         },
         description: {
           en: 'Your Ministry Privacy Officer (MPO) will be able to review and edit in order to help you with the PIA process.',
