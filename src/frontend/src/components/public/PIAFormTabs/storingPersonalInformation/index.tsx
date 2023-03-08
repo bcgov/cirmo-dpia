@@ -14,6 +14,8 @@ import {
   ServiceProviderDetails,
 } from './interfaces';
 import Messages from './messages';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 const StoringPersonalInformation = () => {
   const [pia, piaStateChangeHandler] =
@@ -673,12 +675,31 @@ const StoringPersonalInformation = () => {
             {storingPersonalInformationForm.sensitivePersonalInformation
               .doesInvolve === YesNoInput.YES && (
               <div className="pt-5 form__md-question">
-                <MDEditor.Markdown
-                  source={
+                <p>
+                  {
                     Messages.SensitivePersonalInformation
                       .SensitivePersonalInformationDislosedUnderFOIPPA.en
                   }
-                />
+                  <a
+                    href={
+                      Messages.SensitivePersonalInformation
+                        .SensitivePersonalInformationDislosedUnderFOIPPA.Link
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.SensitivePersonalInformation
+                        .SensitivePersonalInformationDislosedUnderFOIPPA
+                        .LinkText.en
+                    }
+                    <FontAwesomeIcon
+                      icon={faUpRightFromSquare}
+                      className="helper-text__link-icon"
+                    />
+                  </a>
+                  ?
+                </p>
                 {sensitivePiDisclosedOutsideCanada.map((radio, index) => (
                   <Radio key={index} {...radio} />
                 ))}
@@ -695,9 +716,19 @@ const StoringPersonalInformation = () => {
             <section className="form__section">
               <div className="py-3 form__section-header">
                 <h3>{Messages.AssessmentOfDisclosures.H3Text.en}</h3>
-                <MDEditor.Markdown
-                  source={Messages.AssessmentOfDisclosures.PText.en}
-                />
+                {Messages.AssessmentOfDisclosures.HelperText.en}
+                <a
+                  href={Messages.AssessmentOfDisclosures.HelperText.Link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {Messages.AssessmentOfDisclosures.HelperText.LinkText.en}
+                  <FontAwesomeIcon
+                    icon={faUpRightFromSquare}
+                    className="helper-text__link-icon"
+                  />
+                </a>
+                .
               </div>
               <div className="card-wrapper py-5 px-5">
                 <div>
@@ -746,12 +777,65 @@ const StoringPersonalInformation = () => {
                     <p>
                       {Messages.AssessmentOfDisclosures.ContractualTerms.en}
                     </p>
-                    <MDEditor.Markdown
-                      source={
+                    {
+                      Messages.AssessmentOfDisclosures.ContractualTerms
+                        .HelperText.PartOne.en
+                    }
+                    <a
+                      href={
                         Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.en
+                          .HelperText.PrivacyProtectionLink
                       }
-                    />
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.PrivacyProtectionLinkText.en
+                      }
+                      <FontAwesomeIcon
+                        icon={faUpRightFromSquare}
+                        className="helper-text__link-icon"
+                      />
+                    </a>
+                    {
+                      Messages.AssessmentOfDisclosures.ContractualTerms
+                        .HelperText.PartTwo.en
+                    }
+                    <a
+                      href={
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.PrivacyHelplineEmailLink
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.PrivacyHelplineEmailLinkText.en
+                      }
+                    </a>
+                    {
+                      Messages.AssessmentOfDisclosures.ContractualTerms
+                        .HelperText.PartThree.en
+                    }
+                    <a
+                      href={
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.PrivacyHelplinePhoneLink
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.AssessmentOfDisclosures.ContractualTerms
+                          .HelperText.PrivacyHelplinePhoneLinkText.en
+                      }
+                    </a>
+                    {
+                      Messages.AssessmentOfDisclosures.ContractualTerms
+                        .HelperText.PartFour.en
+                    }
                   </div>
                   <MDEditor
                     preview={isMPORole() ? 'edit' : 'preview'}
