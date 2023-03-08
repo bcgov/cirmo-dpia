@@ -213,7 +213,10 @@ const PIAFormPage = () => {
     try {
       if (buttonValue === 'submit') {
         const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.MPO_REVIEW,
+          status:
+            pia?.hasAddedPiToDataElements === false
+              ? PiaStatuses.MPO_REVIEW
+              : PiaStatuses.INCOMPLETE,
         });
         if (pia?.id) {
           navigate(
@@ -399,7 +402,6 @@ const PIAFormPage = () => {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      handleStatusChange(PiaStatuses.MPO_REVIEW);
       handleSubmit(event);
     }
   };
