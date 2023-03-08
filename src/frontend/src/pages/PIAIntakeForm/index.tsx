@@ -566,26 +566,28 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            <div>
-              <div className="horizontal-divider"></div>
-              <div className="form-buttons">
-                <button
-                  className="bcgovbtn bcgovbtn__secondary btn-back"
-                  onClick={handleBack}
-                >
-                  Back
-                </button>
-                {!pathname.includes('additionalRisks') && (
+            {!pathname.includes('intake') && (
+              <div>
+                <div className="horizontal-divider"></div>
+                <div className="form-buttons">
                   <button
-                    type="submit"
-                    className="bcgovbtn  bcgovbtn__secondary btn-next"
-                    onClick={handleNext}
+                    className="bcgovbtn bcgovbtn__secondary btn-back"
+                    onClick={handleBack}
                   >
-                    Next
+                    Back
                   </button>
-                )}
+                  {!pathname.includes('additionalRisks') && (
+                    <button
+                      type="submit"
+                      className="bcgovbtn  bcgovbtn__secondary btn-next"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </section>
         </div>
 
