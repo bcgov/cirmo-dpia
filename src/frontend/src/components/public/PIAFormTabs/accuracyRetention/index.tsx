@@ -5,6 +5,8 @@ import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler] =
@@ -344,9 +346,48 @@ export const AccuracyCorrectionAndRetention = () => {
                   </strong>
                 </p>
                 <p>
+                  <a
+                    href={
+                      Messages.FormElements.PersonalInformationDecision
+                        .haveApprovedInfoSchedule.FOIPPALink
+                    }
+                    rel="noreferrer external"
+                    target="_blank"
+                  >
+                    {
+                      Messages.FormElements.PersonalInformationDecision
+                        .haveApprovedInfoSchedule.FOIPPAText.en
+                    }
+                    <FontAwesomeIcon
+                      className="helper-text__link-icon"
+                      icon={faUpRightFromSquare}
+                    />
+                  </a>
                   {
                     Messages.FormElements.PersonalInformationDecision
-                      .haveApprovedInfoSchedule.HelperText.en
+                      .haveApprovedInfoSchedule.HelperTextPartOne.en
+                  }
+                  <a
+                    href={
+                      Messages.FormElements.PersonalInformationDecision
+                        .haveApprovedInfoSchedule.IMALink
+                    }
+                    rel="noreferrer external"
+                    target="_blank"
+                  >
+                    {
+                      Messages.FormElements.PersonalInformationDecision
+                        .haveApprovedInfoSchedule.IMAText.en
+                    }
+                    <FontAwesomeIcon
+                      className="helper-text__link-icon"
+                      icon={faUpRightFromSquare}
+                    />
+                  </a>
+
+                  {
+                    Messages.FormElements.PersonalInformationDecision
+                      .haveApprovedInfoSchedule.HelperTextPartTwo.en
                   }
                 </p>
                 <div className="">
@@ -397,7 +438,7 @@ export const AccuracyCorrectionAndRetention = () => {
               'YES' ||
             !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
               accuracyCorrectionAndRetentionForm?.retention
-                ?.haveApprovedInfoSchedule === 'YES' ||
+                ?.haveApprovedInfoSchedule === 'NO' ||
               !accuracyCorrectionAndRetentionForm?.retention
                 ?.haveApprovedInfoSchedule ? (
                 <div className="section__padding-block">
