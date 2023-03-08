@@ -85,7 +85,6 @@ export const AccuracyCorrectionAndRetention = () => {
       );
     }
   }, [
-    pia.accuracyCorrectionAndRetention,
     piaStateChangeHandler,
     accuracyCorrectionAndRetentionForm,
     initialFormState,

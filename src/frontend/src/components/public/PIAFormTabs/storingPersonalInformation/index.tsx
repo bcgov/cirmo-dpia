@@ -98,12 +98,7 @@ const StoringPersonalInformation = () => {
         'storingPersonalInformation',
       );
     }
-  }, [
-    pia.storingPersonalInformation,
-    piaStateChangeHandler,
-    storingPersonalInformationForm,
-    initialFormState,
-  ]);
+  }, [piaStateChangeHandler, storingPersonalInformationForm, initialFormState]);
 
   const [serviceProviders, setServiceProviders] = useState<
     Array<ServiceProviderDetails>

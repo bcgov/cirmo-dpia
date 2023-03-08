@@ -81,12 +81,7 @@ const PIACollectionUseAndDisclosure = () => {
         'collectionUseAndDisclosure',
       );
     }
-  }, [
-    pia.collectionUseAndDisclosure,
-    piaStateChangeHandler,
-    collectionUseAndDisclosureForm,
-    initialFormState,
-  ]);
+  }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
 
   const [disclosure, setDisclosure] = useState(
     collectionUseAndDisclosureForm?.collectionNotice?.drafterInput || '',
