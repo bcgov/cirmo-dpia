@@ -5,6 +5,8 @@ import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler] =
@@ -356,6 +358,10 @@ export const AccuracyCorrectionAndRetention = () => {
                       Messages.FormElements.PersonalInformationDecision
                         .haveApprovedInfoSchedule.FOIPPAText.en
                     }
+                    <FontAwesomeIcon
+                      className="helper-text__link-icon"
+                      icon={faUpRightFromSquare}
+                    />
                   </a>
                   {
                     Messages.FormElements.PersonalInformationDecision
@@ -373,6 +379,10 @@ export const AccuracyCorrectionAndRetention = () => {
                       Messages.FormElements.PersonalInformationDecision
                         .haveApprovedInfoSchedule.IMAText.en
                     }
+                    <FontAwesomeIcon
+                      className="helper-text__link-icon"
+                      icon={faUpRightFromSquare}
+                    />
                   </a>
 
                   {
