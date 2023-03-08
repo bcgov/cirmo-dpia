@@ -53,9 +53,17 @@ export default {
         Question: {
           en: 'Do you have an approved information schedule in place related to personal information used to make decisions?',
         },
-        HelperText: {
-          en: 'FOIPPA requires that ministries keep personal information for a minimum of one year after it is used to make a decision about an individual. In addition, the Information Management Act requires that you dispose of government information only in accordance with an approved information schedule or with the approval of the Chief Records Officer.',
+        HelperTextPartOne: {
+          en: ' requires that ministries keep personal information for a minimum of one year after it is used to make a decision about an individual. In addition, the ',
         },
+
+        HelperTextPartTwo: {
+          en: ` requires that you dispose of government information only in accordance with an approved information schedule or with the approval of the Chief Records Officer.`,
+        },
+        FOIPPAText: { en: `FOIPPA` },
+        IMAText: { en: `Information Management Act` },
+        FOIPPALink: `https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section31`,
+        IMALink: `https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/central-government-agencies/corporate-information-records-management-office/information-management-act`,
       },
       describeRetention: {
         Question: {

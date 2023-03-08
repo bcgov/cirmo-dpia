@@ -1,25 +1,61 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import { useOutletContext } from 'react-router-dom';
 import List, { InputTextProps } from '../../../common/List';
 import { IAdditionalRisks, IAdditionRisk } from './AdditionalRisks';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { deepEqual } from '../../../../utils/object-comparison.util';
 
 const PIAAdditionalRisks = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
+  const defaultState: IAdditionalRisks = useMemo(
+    () => ({
+      risks: [
+        {
+          risk: '',
+          response: ',',
+        },
+        {
+          risk: '',
+          response: ',',
+        },
+        {
+          risk: '',
+          response: ',',
+        },
+        {
+          risk: '',
+          response: ',',
+        },
+      ],
+    }),
+    [],
+  );
+
+  const initialFormState = useMemo(
+    () => pia.additionalRisks || defaultState,
+    [defaultState, pia.additionalRisks],
+  );
+
   const [additionalRisksForm, setAdditionalRisksForm] =
-    useState<IAdditionalRisks>(pia.additionalRisks || { risks: [] });
+    useState<IAdditionalRisks>(initialFormState);
 
   const stateChangeHandler = (value: any, key: keyof IAdditionalRisks) => {
     setAdditionalRisksForm((state) => ({
       ...state,
       [key]: value,
     }));
-    piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
   };
+
+  // passing updated data to parent for auto-save for work efficiently only if there are changes
+  useEffect(() => {
+    if (!deepEqual(initialFormState, additionalRisksForm)) {
+      piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
+    }
+  }, [piaStateChangeHandler, additionalRisksForm, initialFormState]);
 
   const [risks, setRisks] = useState<Array<IAdditionRisk>>(
     additionalRisksForm?.risks.length > 0
@@ -73,6 +109,13 @@ const PIAAdditionalRisks = () => {
   const removeRow = (index: number) => {
     const newData = [...rows];
     newData.splice(index, 1);
+    // fix the label out of order after remove a row for list
+    // TODO refactor and move remove row to list comp itself
+    newData.forEach((element, idx) => {
+      element.forEach((e) => {
+        e.label = e.label ? `Risk ${idx + 1} ` : '';
+      });
+    });
     setRows(newData);
     risks.splice(index, 1);
     setRisks(risks);
@@ -80,21 +123,21 @@ const PIAAdditionalRisks = () => {
   };
 
   const handleOnChange = (e: any, row: number, col: number) => {
-    const newData = rows.map((d, i) => {
+    const newRowData = rows.map((d, i) => {
       if (i === row) {
         d[col].value = e.target.value;
       }
 
       return d;
     });
-    setRows(newData);
-    const newRisks = newData.map((item, index) => {
+    setRows(newRowData);
+    const updatedRisks = newRowData.map((item, index) => {
       risks[index].risk = item[0].value;
       risks[index].response = item[1].value;
       return risks;
     });
-    setRisks(newRisks[0]);
-    stateChangeHandler(risks, 'risks');
+    setRisks(updatedRisks[0]);
+    stateChangeHandler(updatedRisks[0], 'risks');
   };
 
   const columns = [{ name: 'Possible risk' }, { name: 'Response' }];
