@@ -50,13 +50,6 @@ const PIAAdditionalRisks = () => {
     }));
   };
 
-  // passing updated data to parent for auto-save for work efficiently only if there are changes
-  useEffect(() => {
-    if (!deepEqual(initialFormState, additionalRisksForm)) {
-      piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
-    }
-  }, [piaStateChangeHandler, additionalRisksForm, initialFormState]);
-
   const [risks, setRisks] = useState<Array<IAdditionRisk>>(
     additionalRisksForm?.risks.length > 0
       ? additionalRisksForm?.risks
@@ -141,6 +134,12 @@ const PIAAdditionalRisks = () => {
   };
 
   const columns = [{ name: 'Possible risk' }, { name: 'Response' }];
+
+  useEffect(() => {
+    if (!deepEqual(initialFormState, additionalRisksForm)) {
+      piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
+    }
+  }, [piaStateChangeHandler, additionalRisksForm, initialFormState]);
 
   return (
     <>

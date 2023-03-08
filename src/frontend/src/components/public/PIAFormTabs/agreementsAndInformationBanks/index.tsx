@@ -99,7 +99,6 @@ const PIAAgreementsAndInformationBanks = () => {
       );
     }
   }, [
-    pia.agreementsAndInformationBanks,
     piaStateChangeHandler,
     agreementsAndInformationBanksForm,
     initialFormState,

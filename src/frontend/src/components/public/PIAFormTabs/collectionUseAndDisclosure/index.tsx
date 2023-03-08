@@ -48,7 +48,10 @@ const PIACollectionUseAndDisclosure = () => {
           OtherInput: '',
         },
       ],
-      collectionNotice: { drafterInput: '', mpoInput: '' },
+      collectionNotice: {
+        drafterInput: '',
+        mpoInput: '',
+      },
     }),
     [],
   );
@@ -69,21 +72,6 @@ const PIACollectionUseAndDisclosure = () => {
       [key]: value,
     }));
   };
-
-  // passing updated data to parent for auto-save for work efficiently only if there are changes
-  useEffect(() => {
-    if (!deepEqual(initialFormState, collectionUseAndDisclosureForm)) {
-      piaStateChangeHandler(
-        collectionUseAndDisclosureForm,
-        'collectionUseAndDisclosure',
-      );
-    }
-  }, [
-    pia.collectionUseAndDisclosure,
-    piaStateChangeHandler,
-    collectionUseAndDisclosureForm,
-    initialFormState,
-  ]);
 
   const [disclosure, setDisclosure] = useState(
     collectionUseAndDisclosureForm?.collectionNotice?.drafterInput || '',
@@ -194,6 +182,16 @@ const PIACollectionUseAndDisclosure = () => {
       isDisable: !isMPORole(),
     },
   ];
+
+  useEffect(() => {
+    if (!deepEqual(initialFormState, collectionUseAndDisclosureForm)) {
+      piaStateChangeHandler(
+        collectionUseAndDisclosureForm,
+        'collectionUseAndDisclosure',
+      );
+    }
+  }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
+
   return (
     <>
       <h2 className="results-header">

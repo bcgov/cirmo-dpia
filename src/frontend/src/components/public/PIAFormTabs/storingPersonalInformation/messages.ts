@@ -15,7 +15,7 @@ export default {
       en: `Is any personal information stored outside of Canada?`,
     },
     StoredWhere: {
-      en: `Where are you storing the personal informaiton involved in your initiative?`,
+      en: `Where are you storing the personal information involved in your initiative?`,
     },
   },
   SensitivePersonalInformation: {

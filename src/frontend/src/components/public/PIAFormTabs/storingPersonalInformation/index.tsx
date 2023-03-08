@@ -98,12 +98,7 @@ const StoringPersonalInformation = () => {
         'storingPersonalInformation',
       );
     }
-  }, [
-    pia.storingPersonalInformation,
-    piaStateChangeHandler,
-    storingPersonalInformationForm,
-    initialFormState,
-  ]);
+  }, [piaStateChangeHandler, storingPersonalInformationForm, initialFormState]);
 
   const [serviceProviders, setServiceProviders] = useState<
     Array<ServiceProviderDetails>
@@ -172,6 +167,10 @@ const StoringPersonalInformation = () => {
         details: '',
       },
     ]);
+    stateChangeHandler(
+      disclosuresOutsideCanada.storage.serviceProviderList,
+      'disclosuresOutsideCanada',
+    );
   };
 
   const removeServiceProvidersRow = (index: number) => {
@@ -180,7 +179,10 @@ const StoringPersonalInformation = () => {
     setListServiceProvidersRows(newData);
     serviceProviders.splice(index, 1);
     setServiceProviders(serviceProviders);
-    stateChangeHandler(disclosuresOutsideCanada, 'disclosuresOutsideCanada');
+    stateChangeHandler(
+      disclosuresOutsideCanada.storage.serviceProviderList,
+      'disclosuresOutsideCanada',
+    );
   };
 
   const listServiceProvidersHeaders = [
@@ -359,6 +361,16 @@ const StoringPersonalInformation = () => {
       return serviceProviders;
     });
     setServiceProviders(newServiceProviders[0]);
+    setStoringPersonalInformationForm((prevState) => ({
+      ...prevState,
+      disclosuresOutsideCanada: {
+        ...prevState.disclosuresOutsideCanada,
+        storage: {
+          ...prevState.disclosuresOutsideCanada.storage,
+          serviceProviderList: newServiceProviders[0],
+        },
+      },
+    }));
   };
 
   const handleDisclosuresOutsideCanadaStorageDisclosureDetailsChange = (
@@ -472,6 +484,16 @@ const StoringPersonalInformation = () => {
       return risks;
     });
     setRisks(newRisks[0]);
+    setStoringPersonalInformationForm((prevState) => ({
+      ...prevState,
+      disclosuresOutsideCanada: {
+        ...prevState.disclosuresOutsideCanada,
+        risks: {
+          ...prevState.disclosuresOutsideCanada.risks,
+          privacyRisks: newRisks[0],
+        },
+      },
+    }));
   };
 
   const handleSensitivePersonalInformationDisclosedOutsideCanadaChange = (
