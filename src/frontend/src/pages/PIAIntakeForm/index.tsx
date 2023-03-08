@@ -480,8 +480,8 @@ const PIAFormPage = () => {
     const tabName = pathname.split('/')[3];
 
     switch (tabName) {
-      case 'intake':
-        navigate(pathname.replace('intake', 'collectionUseAndDisclosure'));
+      case 'nextSteps':
+        navigate(pathname.replace('nextSteps', 'collectionUseAndDisclosure'));
         break;
       case 'collectionUseAndDisclosure':
         navigate(
