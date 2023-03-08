@@ -864,7 +864,8 @@ const StoringPersonalInformation = () => {
                 {storingPersonalInformationForm.disclosuresOutsideCanada
                   .contract.relyOnExistingContract === YesNoInput.YES && (
                   <div className="pt-5">
-                    <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
+                    <p>{Messages.Contract.EnterpriseService.en}</p>
+                    {Messages.Contract.EnterpriseService.HelperText.en}
                     <MDEditor
                       preview={isMPORole() ? 'edit' : 'preview'}
                       value={
