@@ -74,8 +74,8 @@ export const AccuracyCorrectionAndRetention = () => {
 
   return (
     <>
-      <form className="">
-        <h2 className="">{Messages.PageTitle.en}</h2>
+      <form>
+        <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
         <section className="section__padding-block">

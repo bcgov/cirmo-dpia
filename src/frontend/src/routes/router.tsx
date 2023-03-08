@@ -99,7 +99,7 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="securityOfPersonalInformation">
+            <Route path="securityPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<SecurityPersonalInformation />} />
               <Route path="view" element={comingSoonBanner} />
@@ -111,7 +111,7 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="agreementsAndInformationBank">
+            <Route path="agreementsAndInformationBanks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route
                 path="edit"

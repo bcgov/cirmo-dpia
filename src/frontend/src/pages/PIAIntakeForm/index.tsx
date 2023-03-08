@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { deepEqual } from '../../utils/object-comparison.util';
@@ -32,6 +32,7 @@ export interface ILastSaveAlterInfo {
 
 const PIAFormPage = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { id } = useParams();
 
   const emptyState: IPiaForm = {
@@ -472,7 +473,59 @@ const PIAFormPage = () => {
 
     return () => clearTimeout(autoSaveTimer);
   });
+  const handleBack = () => {
+    navigate(-1);
+  };
+  const handleNext = () => {
+    const tabName = pathname.split('/')[3];
 
+    switch (tabName) {
+      case 'intake':
+        navigate(pathname.replace('intake', 'collectionUseAndDisclosure'));
+        break;
+      case 'collectionUseAndDisclosure':
+        navigate(
+          pathname.replace(
+            'collectionUseAndDisclosure',
+            'storingPersonalInformation',
+          ),
+        );
+        break;
+      case 'accuracyCorrectionAndRetention':
+        navigate(
+          pathname.replace(
+            'accuracyCorrectionAndRetention',
+            'agreementsAndInformationBanks',
+          ),
+        );
+        break;
+      case 'securityPersonalInformation':
+        navigate(
+          pathname.replace(
+            'securityPersonalInformation',
+            'accuracyCorrectionAndRetention',
+          ),
+        );
+        break;
+      case 'agreementsAndInformationBanks':
+        navigate(
+          pathname.replace('agreementsAndInformationBanks', 'additionalRisks'),
+        );
+        break;
+      case 'storingPersonalInformation':
+        navigate(
+          pathname.replace(
+            'storingPersonalInformation',
+            'securityPersonalInformation',
+          ),
+        );
+        break;
+      case 'additionalRisks':
+        break;
+      default:
+        break;
+    }
+  };
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
     return () => {
@@ -513,6 +566,26 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
+            <div>
+              <div className="horizontal-divider"></div>
+              <div className="form-buttons">
+                <button
+                  className="bcgovbtn bcgovbtn__secondary btn-back"
+                  onClick={handleBack}
+                >
+                  Back
+                </button>
+                {!pathname.includes('additionalRisks') && (
+                  <button
+                    type="submit"
+                    className="bcgovbtn  bcgovbtn__secondary btn-next"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </div>
           </section>
         </div>
 
