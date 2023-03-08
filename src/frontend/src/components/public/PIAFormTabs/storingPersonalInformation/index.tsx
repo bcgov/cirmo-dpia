@@ -367,7 +367,7 @@ const StoringPersonalInformation = () => {
         ...prevState.disclosuresOutsideCanada,
         storage: {
           ...prevState.disclosuresOutsideCanada.storage,
-          serviceProviderList: newServiceProviders,
+          serviceProviderList: newServiceProviders[0],
         },
       },
     }));
@@ -490,7 +490,7 @@ const StoringPersonalInformation = () => {
         ...prevState.disclosuresOutsideCanada,
         risks: {
           ...prevState.disclosuresOutsideCanada.risks,
-          privacyRisks: newRisks,
+          privacyRisks: newRisks[0],
         },
       },
     }));
