@@ -101,7 +101,6 @@ export const SecurityPersonalInformation = () => {
       );
     }
   }, [
-    pia.securityPersonalInformation,
     piaStateChangeHandler,
     securityPersonalInformationForm,
     initialFormState,
