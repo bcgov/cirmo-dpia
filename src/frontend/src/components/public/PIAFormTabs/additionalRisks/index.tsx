@@ -131,13 +131,11 @@ const PIAAdditionalRisks = () => {
       return d;
     });
     setRows(newRowData);
-    console.log('new row data', newRowData);
     const updatedRisks = newRowData.map((item, index) => {
       risks[index].risk = item[0].value;
       risks[index].response = item[1].value;
       return risks;
     });
-    console.log('new risk data', updatedRisks);
     setRisks(updatedRisks[0]);
     stateChangeHandler(updatedRisks[0], 'risks');
   };
