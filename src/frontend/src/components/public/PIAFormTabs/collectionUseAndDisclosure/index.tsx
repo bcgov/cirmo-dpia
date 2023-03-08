@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
 import { useOutletContext } from 'react-router-dom';
@@ -12,18 +12,53 @@ import {
   StepInput,
 } from './CollectionUseAndDisclosure';
 import List, { InputTextProps } from '../../../common/List';
+import { deepEqual } from '../../../../utils/object-comparison.util';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 const PIACollectionUseAndDisclosure = () => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
+  const defaultState: ICollectionUseAndDisclosure = useMemo(
+    () => ({
+      steps: [
+        {
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
+        {
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
+        {
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
+        {
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
+      ],
+      collectionNotice: { drafterInput: '', mpoInput: '' },
+    }),
+    [],
+  );
+
+  const initialFormState = useMemo(
+    () => pia.collectionUseAndDisclosure || defaultState,
+    [defaultState, pia.collectionUseAndDisclosure],
+  );
   const [collectionUseAndDisclosureForm, setCollectionUseAndDisclosureForm] =
-    useState<ICollectionUseAndDisclosure>(
-      pia.collectionUseAndDisclosure || {
-        steps: [],
-        collectionNotice: {},
-      },
-    );
+    useState<ICollectionUseAndDisclosure>(initialFormState);
 
   const stateChangeHandler = (
     value: any,
@@ -33,43 +68,30 @@ const PIACollectionUseAndDisclosure = () => {
       ...state,
       [key]: value,
     }));
-    piaStateChangeHandler(
-      collectionUseAndDisclosureForm,
-      'collectionUseAndDisclosure',
-    );
   };
+
+  // passing updated data to parent for auto-save for work efficiently only if there are changes
+  useEffect(() => {
+    if (!deepEqual(initialFormState, collectionUseAndDisclosureForm)) {
+      piaStateChangeHandler(
+        collectionUseAndDisclosureForm,
+        'collectionUseAndDisclosure',
+      );
+    }
+  }, [
+    pia.collectionUseAndDisclosure,
+    piaStateChangeHandler,
+    collectionUseAndDisclosureForm,
+    initialFormState,
+  ]);
+
   const [disclosure, setDisclosure] = useState(
     collectionUseAndDisclosureForm?.collectionNotice?.drafterInput || '',
   );
   const [steps, setSteps] = useState<Array<StepInput>>(
     collectionUseAndDisclosureForm?.steps.length > 0
       ? collectionUseAndDisclosureForm?.steps
-      : [
-          {
-            drafterInput: '',
-            mpoInput: '',
-            foippaInput: '',
-            OtherInput: '',
-          },
-          {
-            drafterInput: '',
-            mpoInput: '',
-            foippaInput: '',
-            OtherInput: '',
-          },
-          {
-            drafterInput: '',
-            mpoInput: '',
-            foippaInput: '',
-            OtherInput: '',
-          },
-          {
-            drafterInput: '',
-            mpoInput: '',
-            foippaInput: '',
-            OtherInput: '',
-          },
-        ],
+      : initialFormState.steps,
   );
   const [MPOCommentsDisclosure, setMPOCommentsDisclosure] = useState(
     collectionUseAndDisclosureForm?.collectionNotice?.mpoInput || '',
@@ -113,6 +135,14 @@ const PIACollectionUseAndDisclosure = () => {
   const removeRow = (index: number) => {
     const newData = [...rows];
     newData.splice(index, 1);
+
+    // fix the label out of order after remove a row for list
+    // TODO refactor and move remove row to list comp itself
+    newData.forEach((element, idx) => {
+      element.forEach((e) => {
+        e.label = e.label ? `Step ${idx + 1} ` : '';
+      });
+    });
     setRows(newData);
     steps.splice(index, 1);
     setSteps(steps);
@@ -136,8 +166,11 @@ const PIACollectionUseAndDisclosure = () => {
       return steps;
     });
     setSteps(newSteps[0]);
-    console.log('test', steps);
     stateChangeHandler(newSteps[0], 'steps');
+    piaStateChangeHandler(
+      collectionUseAndDisclosureForm,
+      'collectionUseAndDisclosure',
+    );
   };
 
   const columns = [
@@ -191,6 +224,10 @@ const PIACollectionUseAndDisclosure = () => {
               target="_blank"
             >
               {Messages.CollectionNotice.DrafterInput.Title.LinkText.en}
+              <FontAwesomeIcon
+                className="helper-text__link-icon"
+                icon={faUpRightFromSquare}
+              />
             </a>
             {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
           </label>
