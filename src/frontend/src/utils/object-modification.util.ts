@@ -36,7 +36,7 @@ export const modifyNestedObject = <T>(
     const updatedState = [...prevState];
     updatedState[Number(key)] = nestedState;
 
-    return updatedState as T;
+    return updatedState as unknown as T;
   }
 
   // if prev state is an object, return the updated object
