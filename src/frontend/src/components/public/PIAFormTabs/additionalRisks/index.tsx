@@ -48,13 +48,6 @@ const PIAAdditionalRisks = () => {
     { key: 'response', displayName: 'Response' },
   ];
 
-  // passing updated data to parent for auto-save to work efficiently only if there are changes
-  useEffect(() => {
-    if (!deepEqual(initialFormState, additionalRisksForm)) {
-      piaStateChangeHandler(additionalRisksForm, 'additionalRisks');
-    }
-  }, [piaStateChangeHandler, additionalRisksForm, initialFormState]);
-
   return (
     <>
       <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
@@ -66,7 +59,6 @@ const PIAAdditionalRisks = () => {
           onChangeHandler={(updatedData) => {
             stateChangeHandler(updatedData, 'risks');
           }}
-          allowRowDelete={true}
         />
       </section>
     </>
