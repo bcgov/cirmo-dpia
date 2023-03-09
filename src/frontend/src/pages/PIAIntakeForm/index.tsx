@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { deepEqual } from '../../utils/object-comparison.util';
@@ -18,6 +18,8 @@ import {
 } from '../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
+import { piaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
+import PIANavButton from '../../components/public/PIANavButton';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -515,6 +517,7 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
+            <PIANavButton pia={pia} />
           </section>
         </div>
 
