@@ -18,6 +18,7 @@ import {
 } from '../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
+import { piaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -479,54 +480,17 @@ const PIAFormPage = () => {
     navigate(-1);
   };
   const handleNext = () => {
-    const tabName = pathname.split('/')[3];
-
-    switch (tabName) {
-      case 'nextSteps':
-        navigate(pathname.replace('nextSteps', 'collectionUseAndDisclosure'));
-        break;
-      case 'collectionUseAndDisclosure':
-        navigate(
-          pathname.replace(
-            'collectionUseAndDisclosure',
-            'storingPersonalInformation',
-          ),
-        );
-        break;
-      case 'accuracyCorrectionAndRetention':
-        navigate(
-          pathname.replace(
-            'accuracyCorrectionAndRetention',
-            'agreementsAndInformationBanks',
-          ),
-        );
-        break;
-      case 'securityPersonalInformation':
-        navigate(
-          pathname.replace(
-            'securityPersonalInformation',
-            'accuracyCorrectionAndRetention',
-          ),
-        );
-        break;
-      case 'agreementsAndInformationBanks':
-        navigate(
-          pathname.replace('agreementsAndInformationBanks', 'additionalRisks'),
-        );
-        break;
-      case 'storingPersonalInformation':
-        navigate(
-          pathname.replace(
-            'storingPersonalInformation',
-            'securityPersonalInformation',
-          ),
-        );
-        break;
-      case 'additionalRisks':
-        break;
-      default:
-        break;
-    }
+    const editMode = pathname.split('/')[4];
+    const pages = piaFormSideNavPages(
+      pia,
+      editMode === 'edit' ? true : false,
+      false,
+    );
+    const currentTabObj = pages.filter((page) => page.link === pathname);
+    const nextTabObj = pages.filter(
+      (page) => page.id === currentTabObj[0].id + 1,
+    );
+    navigate(nextTabObj[0].link);
   };
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
