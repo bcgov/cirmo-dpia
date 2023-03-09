@@ -46,6 +46,7 @@ const PIACollectionUseAndDisclosure = () => {
       key: 'drafterInput',
       displayName: Messages.WorkThroughDetails.ColumnDrafterInput.en,
       className: 'border-end',
+      numberedLabelPrefix: 'Step',
     },
     {
       key: 'mpoInput',
