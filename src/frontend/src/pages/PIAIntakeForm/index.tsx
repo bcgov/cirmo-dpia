@@ -19,6 +19,7 @@ import {
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import { piaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
+import PIANavButton from '../../components/public/PIANavButton';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -33,7 +34,6 @@ export interface ILastSaveAlterInfo {
 
 const PIAFormPage = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { id } = useParams();
 
   const emptyState: IPiaForm = {
@@ -476,22 +476,7 @@ const PIAFormPage = () => {
 
     return () => clearTimeout(autoSaveTimer);
   });
-  const handleBack = () => {
-    navigate(-1);
-  };
-  const handleNext = () => {
-    const editMode = pathname.split('/')[4];
-    const pages = piaFormSideNavPages(
-      pia,
-      editMode === 'edit' ? true : false,
-      false,
-    );
-    const currentTabObj = pages.filter((page) => page.link === pathname);
-    const nextTabObj = pages.filter(
-      (page) => page.id === currentTabObj[0].id + 1,
-    );
-    navigate(nextTabObj[0].link);
-  };
+
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
     return () => {
@@ -532,28 +517,7 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            {!pathname.includes('intake') && (
-              <div>
-                <div className="horizontal-divider"></div>
-                <div className="form-buttons">
-                  <button
-                    className="bcgovbtn bcgovbtn__secondary btn-back"
-                    onClick={handleBack}
-                  >
-                    Back
-                  </button>
-                  {!pathname.includes('additionalRisks') && (
-                    <button
-                      type="submit"
-                      className="bcgovbtn  bcgovbtn__secondary btn-next"
-                      onClick={handleNext}
-                    >
-                      Next
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+            <PIANavButton pia={pia} />
           </section>
         </div>
 
