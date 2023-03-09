@@ -4,7 +4,7 @@ export interface ICollectionUseAndDisclosure {
   collectionNotice: CollectionNoticeInput;
 }
 
-export interface StepInput {
+export interface StepInput extends Record<string, string> {
   drafterInput: string;
   mpoInput: string;
   foippaInput: string;
