@@ -77,6 +77,7 @@ export const AccuracyCorrectionAndRetention = () => {
     }
   };
 
+  // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     if (!deepEqual(initialFormState, accuracyCorrectionAndRetentionForm)) {
       piaStateChangeHandler(
