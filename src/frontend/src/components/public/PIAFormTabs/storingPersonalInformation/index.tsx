@@ -711,7 +711,9 @@ const StoringPersonalInformation = () => {
       {storingPersonalInformationForm.sensitivePersonalInformation
         .disclosedOutsideCanada === YesNoInput.NO &&
         storingPersonalInformationForm.personalInformation
-          .storedOutsideCanada === YesNoInput.YES && (
+          .storedOutsideCanada === YesNoInput.YES &&
+        storingPersonalInformationForm.sensitivePersonalInformation
+          .doesInvolve === YesNoInput.YES && (
           <>
             <section className="form__section">
               <div className="py-3 form__section-header">
