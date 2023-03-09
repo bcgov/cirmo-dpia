@@ -62,7 +62,6 @@ export const Table = ({
   // share updated data whenever there is a change
   useEffect(() => {
     if (onChangeHandler && !deepEqual(initialData, data)) {
-      console.log('inside', data);
       onChangeHandler(data);
     }
   }, [data, initialData, onChangeHandler]);
