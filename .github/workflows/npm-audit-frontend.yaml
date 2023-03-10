@@ -22,6 +22,6 @@ jobs:
       # Checkout for moderate or higher vulnerabilities in Frontend package.json
       - uses: oke-py/npm-audit-action@v2
         with:
-          audit_level: moderate
+          audit_level: high
           github_token: ${{ secrets.GITHUB_TOKEN }}
           working_directory: src/frontend
