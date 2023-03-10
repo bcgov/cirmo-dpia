@@ -7,6 +7,8 @@ import Messages from './helper/messages';
 import { ISecurityPersonalInformation } from './security-personal-info-interface';
 import Checkbox from '../../../common/Checkbox';
 import { deepEqual } from '../../../../utils/object-comparison.util';
+import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler] =
@@ -16,18 +18,18 @@ export const SecurityPersonalInformation = () => {
     () => ({
       digitalToolsAndSystems: {
         toolsAndAssessment: {
-          involveDigitalToolsAndSystems: 'YES',
-          haveSecurityAssessment: 'YES',
+          involveDigitalToolsAndSystems: YesNoInput.YES,
+          haveSecurityAssessment: YesNoInput.YES,
         },
         storage: {
-          onGovServers: 'NO',
+          onGovServers: YesNoInput.NO,
           whereDetails: '',
         },
       },
       accessToPersonalInformation: {
-        onlyCertainRolesAccessInformation: 'NO',
-        accessApproved: 'NO',
-        useAuditLogs: 'NO',
+        onlyCertainRolesAccessInformation: YesNoInput.NO,
+        accessApproved: YesNoInput.NO,
+        useAuditLogs: YesNoInput.NO,
         additionalStrategies: '',
       },
     }),
@@ -42,54 +44,8 @@ export const SecurityPersonalInformation = () => {
   const [securityPersonalInformationForm, setSecurityPersonalInformationForm] =
     useState<ISecurityPersonalInformation>(initialFormState);
 
-  const stateChangeHandler = (value: any, nestedKey: string) => {
-    if (nestedKey) {
-      const keyString = nestedKey.split('.');
-      if (keyString.length == 3) {
-        const Key1 = keyString[0];
-        const Key2 = keyString[1];
-        const Key3 = keyString[2];
-        if (Key1 === 'digitalToolsAndSystems') {
-          if (Key2 === 'toolsAndAssessment') {
-            setSecurityPersonalInformationForm((state) => ({
-              ...state,
-              digitalToolsAndSystems: {
-                ...state.digitalToolsAndSystems,
-                toolsAndAssessment: {
-                  ...state.digitalToolsAndSystems?.toolsAndAssessment,
-                  [Key3]: value,
-                },
-              },
-            }));
-          }
-          if (Key2 === 'storage') {
-            setSecurityPersonalInformationForm((state) => ({
-              ...state,
-              digitalToolsAndSystems: {
-                ...state.digitalToolsAndSystems,
-                storage: {
-                  ...state.digitalToolsAndSystems?.storage,
-                  [Key3]: value,
-                },
-              },
-            }));
-          }
-        }
-      }
-      if (keyString.length == 2) {
-        const Key1 = keyString[0];
-        const Key2 = keyString[1];
-        if (Key1 === 'accessToPersonalInformation') {
-          setSecurityPersonalInformationForm((state) => ({
-            ...state,
-            accessToPersonalInformation: {
-              ...state.accessToPersonalInformation,
-              [Key2]: value,
-            },
-          }));
-        }
-      }
-    }
+  const stateChangeHandler = (value: any, path: string) => {
+    setNestedReactState(setSecurityPersonalInformationForm, path, value);
   };
 
   // passing updated data to parent for auto-save to work efficiently only if there are changes
@@ -130,11 +86,11 @@ export const SecurityPersonalInformation = () => {
                   className="form-check-input"
                   type="radio"
                   name="InvolveDigitalTools"
-                  value="YES"
+                  value={YesNoInput.YES}
                   checked={
                     securityPersonalInformationForm?.digitalToolsAndSystems
                       ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
-                    'YES'
+                    YesNoInput.YES
                   }
                   onChange={(e) =>
                     stateChangeHandler(
@@ -167,7 +123,8 @@ export const SecurityPersonalInformation = () => {
               </div>
             </div>
             {securityPersonalInformationForm?.digitalToolsAndSystems
-              .toolsAndAssessment.involveDigitalToolsAndSystems === 'YES' && (
+              .toolsAndAssessment.involveDigitalToolsAndSystems ===
+              YesNoInput.YES && (
               <div>
                 <p className="callout-container section__margin-block">
                   {
@@ -192,10 +149,11 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="SecurityAssesment"
-                    value="YES"
+                    value={YesNoInput.YES}
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.toolsAndAssessment?.haveSecurityAssessment === 'YES'
+                        ?.toolsAndAssessment?.haveSecurityAssessment ===
+                      YesNoInput.YES
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -243,10 +201,10 @@ export const SecurityPersonalInformation = () => {
                     className="form-check-input"
                     type="radio"
                     name="Storage"
-                    value="YES"
+                    value={YesNoInput.YES}
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.onGovServers === 'YES'
+                        ?.storage?.onGovServers === YesNoInput.YES
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -323,7 +281,7 @@ export const SecurityPersonalInformation = () => {
                 <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
-                      ?.onlyCertainRolesAccessInformation === 'YES'
+                      ?.onlyCertainRolesAccessInformation === YesNoInput.YES
                   }
                   value="AccessPI"
                   label={
@@ -332,7 +290,7 @@ export const SecurityPersonalInformation = () => {
                   }
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.checked ? 'YES' : 'NO',
+                      e.target.checked ? YesNoInput.YES : YesNoInput.NO,
                       'accessToPersonalInformation.onlyCertainRolesAccessInformation',
                     )
                   }
@@ -342,13 +300,13 @@ export const SecurityPersonalInformation = () => {
                 <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
-                      ?.accessApproved === 'YES'
+                      ?.accessApproved === YesNoInput.YES
                   }
                   value="NeedAccess"
                   label={Messages.FormElements.AccessPI.NeedAccess.Question.en}
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.checked ? 'YES' : 'NO',
+                      e.target.checked ? YesNoInput.YES : YesNoInput.NO,
                       'accessToPersonalInformation.accessApproved',
                     )
                   }
@@ -358,13 +316,13 @@ export const SecurityPersonalInformation = () => {
                 <Checkbox
                   checked={
                     securityPersonalInformationForm?.accessToPersonalInformation
-                      ?.useAuditLogs === 'YES'
+                      ?.useAuditLogs === YesNoInput.YES
                   }
                   value="useAuditLogs"
                   label={Messages.FormElements.AccessPI.auditLogs.Question.en}
                   onChange={(e) =>
                     stateChangeHandler(
-                      e.target.checked ? 'YES' : 'NO',
+                      e.target.checked ? YesNoInput.YES : YesNoInput.NO,
                       'accessToPersonalInformation.useAuditLogs',
                     )
                   }
