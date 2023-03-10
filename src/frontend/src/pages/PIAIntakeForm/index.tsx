@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { deepEqual } from '../../utils/object-comparison.util';
@@ -18,7 +18,6 @@ import {
 } from '../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
-import { piaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
 import PIANavButton from '../../components/public/PIANavButton';
 
 export type PiaStateChangeHandlerType = (
@@ -213,7 +212,7 @@ const PIAFormPage = () => {
     const buttonValue = event.target.value;
     try {
       if (buttonValue === 'submit') {
-        const updatedPia = await upsertAndUpdatePia({
+        await upsertAndUpdatePia({
           status:
             pia?.hasAddedPiToDataElements === false
               ? PiaStatuses.MPO_REVIEW
@@ -273,25 +272,6 @@ const PIAFormPage = () => {
     const modalType =
       piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
     handleShowModal(modalType);
-  };
-
-  const handleStatusChange = (piaStatus: any) => {
-    switch (piaStatus) {
-      case 'incomplete':
-        piaStateChangeHandler('INCOMPLETE', 'status');
-        break;
-      case 'edit-in-progress':
-        piaStateChangeHandler('EDIT_IN_PROGRESS', 'status');
-        break;
-      case 'mpo-review':
-        piaStateChangeHandler('MPO_REVIEW', 'status');
-        break;
-      case 'pct-review':
-        piaStateChangeHandler('PCT_REVIEW', 'status');
-        break;
-      default:
-        break;
-    }
   };
 
   //
