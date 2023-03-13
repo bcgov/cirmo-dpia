@@ -25,6 +25,7 @@ interface TableProps {
   data?: TabularData;
   allowRowAdd?: boolean;
   allowRowDelete?: boolean;
+  readOnly?: boolean;
   onChangeHandler?: (updatedData: TabularData) => void;
 }
 
@@ -33,6 +34,7 @@ export const Table = ({
   data: initialData = [],
   allowRowAdd = true,
   allowRowDelete = true,
+  readOnly = false,
   onChangeHandler,
 }: TableProps) => {
   const [data, setData] = useState<TabularData>(initialData);
@@ -102,23 +104,34 @@ export const Table = ({
                         key={column.key + '-' + index}
                         className={column.className || ''}
                       >
-                        <InputText
-                          type="text"
-                          value={rowData?.[column.key]}
-                          labelSide="left"
-                          label={
-                            column.numberedLabelPrefix &&
-                            `${column.numberedLabelPrefix} ${index + 1}`
-                          }
-                          isDisabled={column.isDisable}
-                          onChange={(e) =>
-                            handleDataChange(e, `${index}.${column.key}`)
-                          }
-                        />
+                        {!readOnly ? (
+                          <InputText
+                            type="text"
+                            value={rowData?.[column.key]}
+                            labelSide="left"
+                            label={
+                              column.numberedLabelPrefix &&
+                              `${column.numberedLabelPrefix} ${index + 1}`
+                            }
+                            isDisabled={column.isDisable}
+                            onChange={(e) =>
+                              handleDataChange(e, `${index}.${column.key}`)
+                            }
+                          />
+                        ) : (
+                          <p>
+                            {column.numberedLabelPrefix && (
+                              <label>
+                                {column.numberedLabelPrefix} {index + 1}
+                              </label>
+                            )}
+                            {rowData?.[column.key]}
+                          </p>
+                        )}
                       </td>
                     ))}
 
-                    {allowRowDelete && (
+                    {allowRowDelete && !readOnly && (
                       <td key={'action' + '-' + index}>
                         <button
                           className=" form-control btn btn-outline-danger"
@@ -140,16 +153,18 @@ export const Table = ({
       </div>
 
       <div className="pt-4 pb-4 view-pid">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            addEmptyRow();
-          }}
-          className="bcgovbtn bcgovbtn__tertiary bold"
-        >
-          Add more rows
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
+        {!readOnly && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              addEmptyRow();
+            }}
+            className="bcgovbtn bcgovbtn__tertiary bold"
+          >
+            Add more rows
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        )}
       </div>
     </>
   );
