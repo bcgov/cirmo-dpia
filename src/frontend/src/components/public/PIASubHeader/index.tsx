@@ -28,6 +28,13 @@ function PIASubHeader({
   const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
   const nextStepAction = pathname?.split('/').includes('nextSteps');
+  secondaryButtonText = pathname?.split('/').includes('view')
+    ? 'Edit'
+    : ' Save';
+
+  primaryButtonText = pathname?.split('/').includes('view')
+    ? 'Submit'
+    : 'Submit PIA intake';
   const handleDownload = async () => {
     setDownloadError('');
 
