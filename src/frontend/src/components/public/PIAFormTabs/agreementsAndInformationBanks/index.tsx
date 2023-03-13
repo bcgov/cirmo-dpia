@@ -5,7 +5,7 @@ import InputText from '../../../common/InputText/InputText';
 import { useOutletContext } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';

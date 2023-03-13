@@ -4,7 +4,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { useOutletContext } from 'react-router-dom';
 import { isMPORole } from '../../../../utils/helper.util';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 
 import { ICollectionUseAndDisclosure } from './CollectionUseAndDisclosure';
 import { deepEqual } from '../../../../utils/object-comparison.util';

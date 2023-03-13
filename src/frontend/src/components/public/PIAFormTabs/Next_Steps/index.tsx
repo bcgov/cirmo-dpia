@@ -1,18 +1,13 @@
 import messages from './helper/messages';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { useEffect } from 'react';
 import { buildDynamicPath } from '../../../../utils/path';
 import { routes } from '../../../../constant/routes';
-import { HttpRequest } from '../../../../utils/http-request.util';
 import NextStepsDelegatedFlow from './nextStepsDelegatedFlow';
 import NextStepsPI from './nextStepsPI';
 
-import {
-  IPiaForm,
-  IPiaFormResponse,
-} from '../../../../types/interfaces/pia-form.interface';
-import { API_ROUTES } from '../../../../constant/apiRoutes';
+import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 
 export const PIANextSteps = () => {
   const navigate = useNavigate();
