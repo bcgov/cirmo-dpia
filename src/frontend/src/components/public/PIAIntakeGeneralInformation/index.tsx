@@ -13,7 +13,7 @@ const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
   );
   return (
     <>
-      <div className="card p-3">
+      <div className="card p-5">
         <div className="container d-grid gap-3">
           <div>
             <div className="row ">
@@ -46,7 +46,7 @@ const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
             </div>
           </div>
           <div>
-            <div className="row">
+            <div className="row mt-4">
               <div className="col col-md-3">
                 <b>Ministry Privacy Officer </b>
               </div>
