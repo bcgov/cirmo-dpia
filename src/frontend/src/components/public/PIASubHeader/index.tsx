@@ -12,6 +12,7 @@ import {
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
 import { useLocation } from 'react-router-dom';
+import { PiaStatuses } from '../../../constant/constant';
 
 function PIASubHeader({
   pia,
@@ -115,7 +116,7 @@ function PIASubHeader({
               {secondaryButtonText}
             </button>
           )}
-          {!nextStepAction && (
+          {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
               className="bcgovbtn bcgovbtn__primary"
