@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
 import { API_ROUTES } from '../../constant/apiRoutes';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { deepEqual } from '../../utils/object-comparison.util';
@@ -34,7 +34,7 @@ export interface ILastSaveAlterInfo {
 const PIAFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { pathname } = useLocation();
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
@@ -268,9 +268,8 @@ const PIAFormPage = () => {
 
   const handleSaveChanges = () => {
     // By default set the status to Incomplete
-    const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
-    const modalType =
-      piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
+    // const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
+    const modalType = pathname?.split('/').includes('view') ? 'edit' : 'save';
     handleShowModal(modalType);
   };
 
