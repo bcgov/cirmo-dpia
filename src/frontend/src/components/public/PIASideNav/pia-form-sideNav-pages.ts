@@ -31,7 +31,6 @@ export const piaFormSideNavPages = (
     : routes.PIA_INTAKE_VIEW;
 
     const checkNextSteps = ():boolean => {
-      console.log('pathname', pathname);
       if (pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id})) {
         return true;
       } else {
