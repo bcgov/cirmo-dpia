@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { buildDynamicPath } from '../../../../utils/path';
 import { routes } from '../../../../constant/routes';
 import { HttpRequest } from '../../../../utils/http-request.util';
-import  NextStepsDelegatedFlow  from './nextStepsDelegatedFlow'
-import NextStepsPI from './nextStepsPI'
+import NextStepsDelegatedFlow from './nextStepsDelegatedFlow';
+import NextStepsPI from './nextStepsPI';
 
 import {
   IPiaForm,
@@ -27,8 +27,6 @@ export const PIANextSteps = () => {
       }),
     );
   };
-
-
 
   useEffect(() => {
     if (pia.hasAddedPiToDataElements === false) {
@@ -53,18 +51,15 @@ export const PIANextSteps = () => {
     this is only required to be called once when the component is mounted */
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-
-
-
   return (
     <>
       <div className="nextSteps">
         <h2> {messages.PageTitle.en} </h2>
         {pia?.hasAddedPiToDataElements === true ||
         pia?.hasAddedPiToDataElements === null ? (
-            <NextStepsPI navigateFn={navigateFn}/>
+          <NextStepsPI navigateFn={navigateFn} />
         ) : (
-            <NextStepsDelegatedFlow />
+          <NextStepsDelegatedFlow />
         )}
       </div>
     </>

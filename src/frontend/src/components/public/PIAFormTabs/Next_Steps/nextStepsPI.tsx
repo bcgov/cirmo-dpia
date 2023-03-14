@@ -8,97 +8,96 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
 import { routes } from '../../../../constant/routes';
 
-interface PIFlow{
-    navigateFn: (url: string) => void;
+interface PIFlow {
+  navigateFn: (url: string) => void;
 }
 
-const NextStepsPI = (navigateFn:PIFlow) => {
-    const navigate = useNavigate();
-    const [pia, piaStateChangeHandler] =
-      useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+const NextStepsPI = (navigateFn: PIFlow) => {
+  const navigate = useNavigate();
+  const [pia, piaStateChangeHandler] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
 
-    const nextStepmodalObject: IModalObject = {
-        modalShow: false,
-        modalTitle: '',
-        modalDescription: '',
-        value: '',
-        modalButtonCancel: {
-          label: '',
-          className: '',
-        },
-        modalButtonConfirm: {
-          label: '',
-          className: '',
-        },
-        action: {
-          statusChange: pia.status as PiaStatuses,
-        },
-      };
-    
-      const [nextStepAction, setNextStepAction] =
-        useState<IModalObject>(nextStepmodalObject);
-    
-      const stateChangeHandler = (key: string, value: any) => {
-        setNextStepAction({ ...nextStepAction, [key]: value });
-      };
-    
-      const handleNextStepAction = (action: string) => {
-        stateChangeHandler('modalShow', true);
-        switch (action) {
-          case 'share':
-            /* This sets the modal information for the next step action */
-            setNextStepAction({
-              modalShow: true,
-              modalTitle: messages.FullPIA.Modal.share.title.en,
-              modalDescription: messages.FullPIA.Modal.share.description.en,
-              value: 'complete',
-              modalButtonCancel: {
-                label: 'Cancel',
-                className: 'bcgovbtn bcgovbtn__secondary',
-              },
-              modalButtonConfirm: {
-                label: 'Yes, share',
-                className: 'bcgovbtn bcgovbtn__primary',
-              },
-              action: {
-                statusChange: PiaStatuses.EDIT_IN_PROGRESS,
-              },
-            });
-            break;
-          case 'incomplete':
-            setNextStepAction({
-              modalShow: true,
-              modalDescription: messages.FullPIA.Modal.incomplete.description.en,
-              modalTitle: messages.FullPIA.Modal.incomplete.title.en,
-              value: 'save',
-              modalButtonCancel: {
-                label: 'Cancel',
-                className: 'bcgovbtn bcgovbtn__secondary',
-              },
-              modalButtonConfirm: {
-                label: 'Yes, stay in incomplete',
-                className: 'bcgovbtn bcgovbtn__primary',
-              },
-              action: {
-                statusChange: PiaStatuses.INCOMPLETE,
-              },
-            });
-            break;
-        }
-      };
-    
-      const updateStatus = (e: any) => {
-        /* set status based on what button is clicked */
-        stateChangeHandler('modalShow', false);
-        if (nextStepAction.value === 'complete') {
-          /* set status to edit in progress */
-          piaStateChangeHandler(PiaStatuses.EDIT_IN_PROGRESS, 'status');
-        } else {
-          piaStateChangeHandler(PiaStatuses.INCOMPLETE, 'status');
-        }
-        navigateFn.navigateFn(routes.PIA_DISCLOSURE_EDIT);
-      };
+  const nextStepmodalObject: IModalObject = {
+    modalShow: false,
+    modalTitle: '',
+    modalDescription: '',
+    value: '',
+    modalButtonCancel: {
+      label: '',
+      className: '',
+    },
+    modalButtonConfirm: {
+      label: '',
+      className: '',
+    },
+    action: {
+      statusChange: pia.status as PiaStatuses,
+    },
+  };
 
+  const [nextStepAction, setNextStepAction] =
+    useState<IModalObject>(nextStepmodalObject);
+
+  const stateChangeHandler = (key: string, value: any) => {
+    setNextStepAction({ ...nextStepAction, [key]: value });
+  };
+
+  const handleNextStepAction = (action: string) => {
+    stateChangeHandler('modalShow', true);
+    switch (action) {
+      case 'share':
+        /* This sets the modal information for the next step action */
+        setNextStepAction({
+          modalShow: true,
+          modalTitle: messages.FullPIA.Modal.share.title.en,
+          modalDescription: messages.FullPIA.Modal.share.description.en,
+          value: 'complete',
+          modalButtonCancel: {
+            label: 'Cancel',
+            className: 'bcgovbtn bcgovbtn__secondary',
+          },
+          modalButtonConfirm: {
+            label: 'Yes, share',
+            className: 'bcgovbtn bcgovbtn__primary',
+          },
+          action: {
+            statusChange: PiaStatuses.EDIT_IN_PROGRESS,
+          },
+        });
+        break;
+      case 'incomplete':
+        setNextStepAction({
+          modalShow: true,
+          modalDescription: messages.FullPIA.Modal.incomplete.description.en,
+          modalTitle: messages.FullPIA.Modal.incomplete.title.en,
+          value: 'save',
+          modalButtonCancel: {
+            label: 'Cancel',
+            className: 'bcgovbtn bcgovbtn__secondary',
+          },
+          modalButtonConfirm: {
+            label: 'Yes, stay in incomplete',
+            className: 'bcgovbtn bcgovbtn__primary',
+          },
+          action: {
+            statusChange: PiaStatuses.INCOMPLETE,
+          },
+        });
+        break;
+    }
+  };
+
+  const updateStatus = (e: any) => {
+    /* set status based on what button is clicked */
+    stateChangeHandler('modalShow', false);
+    if (nextStepAction.value === 'complete') {
+      /* set status to edit in progress */
+      piaStateChangeHandler(PiaStatuses.EDIT_IN_PROGRESS, 'status');
+    } else {
+      piaStateChangeHandler(PiaStatuses.INCOMPLETE, 'status');
+    }
+    navigateFn.navigateFn(routes.PIA_DISCLOSURE_EDIT);
+  };
 
   const handleModalCancel = () => {
     /* reset default */
