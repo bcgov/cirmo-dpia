@@ -1,7 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';

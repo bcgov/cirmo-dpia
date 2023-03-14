@@ -31,19 +31,20 @@ export default {
     },
     Edit: {
       ConfirmLabel: {
-        en: `Save`,
+        en: `Yes, continue`,
       },
       CancelLabel: {
-        en: `Don't save`,
+        en: `Cancel`,
       },
       TitleText: {
-        en: `Do you want to save changes?`,
+        en: `Change status to "Edit in progress"?`,
       },
+
       ParagraphText: {
-        en: `Your changes will be lost if you don't save them`,
+        en: `Make changes yourself or work with your MPO to edit your PIA until it is ready for another review.`,
       },
     },
-    Submit: {
+    SubmitPiaIntake: {
       ConfirmLabel: {
         en: `Yes, submit`,
       },
@@ -55,6 +56,21 @@ export default {
       },
       ParagraphText: {
         en: `Are you sure you want to submit your PIA intake?`,
+      },
+    },
+    SubmitPiaForm: {
+      ConfirmLabel: {
+        en: `Yes, submit`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Submit for MPO review?`,
+      },
+
+      ParagraphText: {
+        en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
       },
     },
     AutoSaveFailed: {

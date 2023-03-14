@@ -1,7 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { isMPORole } from '../../../../utils/helper.util';
@@ -119,7 +119,6 @@ const StoringPersonalInformation = () => {
     useState<IStoringPersonalInformation>(initialFormState);
 
   const stateChangeHandler = (value: any, path: string) => {
-    console.log(value, path);
     setNestedReactState(setStoringPersonalInformationForm, path, value);
   };
 

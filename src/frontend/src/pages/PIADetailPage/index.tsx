@@ -250,6 +250,7 @@ const PIADetailPage = () => {
     <>
       <PIASubHeader
         pia={pia}
+        mode={'view'}
         secondaryButtonText="Edit"
         primaryButtonText="Submit"
         onSaveChangeClick={() => handleEdit()}

@@ -3,7 +3,7 @@ import Messages from './messages';
 import { useOutletContext } from 'react-router-dom';
 import { IAdditionalRisks } from './AdditionalRisks';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { ColumnMetaData, Table } from '../../../common/Table';

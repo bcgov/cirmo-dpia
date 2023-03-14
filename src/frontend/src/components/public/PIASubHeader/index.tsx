@@ -12,13 +12,16 @@ import {
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
 import { useLocation } from 'react-router-dom';
+import { PiaStatuses } from '../../../constant/constant';
 
 function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
-  primaryButtonText = 'Submit PIA intake',
+  mode = 'edit',
   lastSaveAlertInfo,
+  isIntakeSubmitted,
   onSaveChangeClick = () => {},
+  onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
   //TODO implement tooltip for faEllipsisH icon, so when mouse hover, will display download word
@@ -27,6 +30,8 @@ function PIASubHeader({
   const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
   const nextStepAction = pathname?.split('/').includes('nextSteps');
+  secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
+
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -107,20 +112,24 @@ function PIASubHeader({
             <FontAwesomeIcon icon={faEllipsisH} />
             {isDownloading && <Spinner />}
           </button>
+
+          {/* Save or Edit button */}
           {!nextStepAction && (
             <button
-              onClick={onSaveChangeClick}
+              onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
               className="mx-2 bcgovbtn bcgovbtn__secondary"
             >
               {secondaryButtonText}
             </button>
           )}
-          {!nextStepAction && (
+
+          {/* Submission button */}
+          {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
               className="bcgovbtn bcgovbtn__primary"
             >
-              {primaryButtonText}
+              {isIntakeSubmitted ? 'Submit' : 'Submit PIA intake'}
             </button>
           )}
         </div>

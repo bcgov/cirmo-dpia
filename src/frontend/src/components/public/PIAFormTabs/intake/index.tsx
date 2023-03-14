@@ -2,17 +2,18 @@ import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { MinistryList, PIOptions } from '../../../../constant/constant';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import Dropdown from '../../../common/Dropdown';
 import InputText from '../../../common/InputText/InputText';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
+import PIAIntakeGeneralInformation from './viewGeneralInformation';
 
 export const PIAFormIntake = () => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+  const [pia, piaStateChangeHandler, isReadOnly] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
 
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),
@@ -37,18 +38,25 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <section className="">
+      <section>
         <h2>{Messages.PiaIntakeHeader.H1Text.en} </h2>
-        <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
-        <ul>
-          {Messages.PiaIntakeHeader.ListText.map((item, index) => (
-            <li key={index}>{item.en}</li>
-          ))}
-        </ul>
+        {!isReadOnly && (
+          <>
+            <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
+            <ul>
+              {Messages.PiaIntakeHeader.ListText.map((item, index) => (
+                <li key={index}>{item.en}</li>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
-      <form className="needs-validation">
-        <section className="section__padding-block">
-          <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
+
+      <section className="section__padding-block">
+        <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
+        {isReadOnly ? (
+          <PIAIntakeGeneralInformation pia={pia} />
+        ) : (
           <div className="drop-shadow section__padding-inline section__padding-block bg-white">
             <div className="row">
               <InputText
@@ -185,121 +193,120 @@ export const PIAFormIntake = () => {
               </div>
             </div>
           </div>
-        </section>
+        )}
+      </section>
 
-        <section className="section__padding-block">
-          <h3 className="">
-            {Messages.InitiativeDescriptionSection.SectionHeading.en}
-          </h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <p className="">
-              <strong>
-                {Messages.InitiativeDescriptionSection.Question.en}
-              </strong>
-            </p>
-            <p className="form__helper-text">
-              {Messages.InitiativeDescriptionSection.HelperText.en}
-            </p>
-            <div className="richText" id="initiativeDescription">
-              <MDEditor
-                preview="edit"
-                value={intakeForm?.initiativeDescription}
-                onChange={(value) =>
-                  stateChangeHandler(value, 'initiativeDescription')
-                }
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-          <p className="form__h2">
-            <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
+      <section className="section__padding-block">
+        <h3 className="">
+          {Messages.InitiativeDescriptionSection.SectionHeading.en}
+        </h3>
+        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          <p className="">
+            <strong>{Messages.InitiativeDescriptionSection.Question.en}</strong>
           </p>
           <p className="form__helper-text">
-            {Messages.InitiativeScopeSection.HelperText.en}
+            {Messages.InitiativeDescriptionSection.HelperText.en}
           </p>
-          <div className="richText" id="initiativeScope">
+          <div className="richText" id="initiativeDescription">
             <MDEditor
-              preview="edit"
-              value={intakeForm?.initiativeScope}
-              defaultTabEnable={true}
-              onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
-            />
-          </div>
-        </section>
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-          <p className="form__h2">
-            <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
-          </p>
-          <p className="form__helper-text">
-            {Messages.InitiativeDataElementsSection.HelperText.en}
-          </p>
-          <div className="richText" id="dataElementsInvolved">
-            <MDEditor
-              preview="edit"
-              value={intakeForm?.dataElementsInvolved}
-              defaultTabEnable={true}
+              preview={isReadOnly ? 'preview' : 'edit'}
+              value={intakeForm?.initiativeDescription}
               onChange={(value) =>
-                stateChangeHandler(value, 'dataElementsInvolved')
+                stateChangeHandler(value, 'initiativeDescription')
               }
             />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="section__padding-block">
-          <h3 className="">{Messages.InitiativePISection.SectionHeading.en}</h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <p className="">
-              <strong>{Messages.InitiativePISection.Question.en}</strong>
-            </p>
-            <p className="form__helper-text">
-              <a
-                href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
-                rel="noreferrer external"
-                target="_blank"
-              >
-                {Messages.InitiativePISection.LinkText.en}
-              </a>
-              {Messages.InitiativePISection.HelperText.en}
-            </p>
-            {PIOptions.map((option, index) => (
-              <label key={index} className="form__input-label input-label-row">
-                <input
-                  type="radio"
-                  name="pi-options-radio"
-                  value={option.key}
-                  onChange={handlePIOptionChange}
-                  checked={option.value === pia?.hasAddedPiToDataElements}
+      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+        <p className="form__h2">
+          <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
+        </p>
+        <p className="form__helper-text">
+          {Messages.InitiativeScopeSection.HelperText.en}
+        </p>
+        <div className="richText" id="initiativeScope">
+          <MDEditor
+            preview={isReadOnly ? 'preview' : 'edit'}
+            value={intakeForm?.initiativeScope}
+            defaultTabEnable={true}
+            onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
+          />
+        </div>
+      </section>
+      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+        <p className="form__h2">
+          <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
+        </p>
+        <p className="form__helper-text">
+          {Messages.InitiativeDataElementsSection.HelperText.en}
+        </p>
+        <div className="richText" id="dataElementsInvolved">
+          <MDEditor
+            preview={isReadOnly ? 'preview' : 'edit'}
+            value={intakeForm?.dataElementsInvolved}
+            defaultTabEnable={true}
+            onChange={(value) =>
+              stateChangeHandler(value, 'dataElementsInvolved')
+            }
+          />
+        </div>
+      </section>
+
+      <section className="section__padding-block">
+        <h3 className="">{Messages.InitiativePISection.SectionHeading.en}</h3>
+        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          <p className="">
+            <strong>{Messages.InitiativePISection.Question.en}</strong>
+          </p>
+          <p className="form__helper-text">
+            <a
+              href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
+              rel="noreferrer external"
+              target="_blank"
+            >
+              {Messages.InitiativePISection.LinkText.en}
+            </a>
+            {Messages.InitiativePISection.HelperText.en}
+          </p>
+          {PIOptions.map((option, index) => (
+            <label key={index} className="form__input-label input-label-row">
+              <input
+                disabled={isReadOnly}
+                type="radio"
+                name="pi-options-radio"
+                value={option.key}
+                onChange={handlePIOptionChange}
+                checked={option.value === pia?.hasAddedPiToDataElements}
+              />
+              {option.key}
+            </label>
+          ))}
+          {intakeForm?.hasAddedPiToDataElements === false && (
+            <div className="section__padding-block">
+              <p className="">
+                <strong>
+                  {Messages.InitiativeRiskReductionSection.H2Text.en}
+                </strong>
+              </p>
+              <p className="form__helper-text">
+                {Messages.InitiativeRiskReductionSection.HelperText.en}
+              </p>
+              <div className="richText" id="riskMitigation">
+                <MDEditor
+                  preview={isReadOnly ? 'preview' : 'edit'}
+                  value={intakeForm?.riskMitigation}
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    stateChangeHandler(value, 'riskMitigation')
+                  }
                 />
-                {option.key}
-              </label>
-            ))}
-            {intakeForm?.hasAddedPiToDataElements === false && (
-              <div className="section__padding-block">
-                <p className="">
-                  <strong>
-                    {Messages.InitiativeRiskReductionSection.H2Text.en}
-                  </strong>
-                </p>
-                <p className="form__helper-text">
-                  {Messages.InitiativeRiskReductionSection.HelperText.en}
-                </p>
-                <div className="richText" id="riskMitigation">
-                  <MDEditor
-                    preview="edit"
-                    value={intakeForm?.riskMitigation}
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      stateChangeHandler(value, 'riskMitigation')
-                    }
-                  />
-                </div>
               </div>
-            )}
-          </div>
-        </section>
-      </form>
+            </div>
+          )}
+        </div>
+      </section>
     </>
   );
 };

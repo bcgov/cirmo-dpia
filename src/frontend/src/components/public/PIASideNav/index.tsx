@@ -7,19 +7,18 @@ import { piaFormSideNavPages } from './pia-form-sideNav-pages';
 const PiaSideNav = ({
   pia,
   isNewForm,
+  isReadOnly,
 }: {
   pia: IPiaForm;
   isNewForm: boolean;
+  isReadOnly: boolean;
 }) => {
-  const { pathname } = useLocation();
-
   // check if in edit mode, redirect to navigate related links
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const mode = pathname?.split('/').pop(); // edit or view
   useEffect(() => {
-    setIsEditMode(mode === 'edit' || isNewForm);
-  }, [pathname, mode, isNewForm]);
+    setIsEditMode(!isReadOnly || isNewForm);
+  }, [isReadOnly, isNewForm]);
 
   return (
     <NavBar
