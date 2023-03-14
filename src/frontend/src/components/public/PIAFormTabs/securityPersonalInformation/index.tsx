@@ -10,6 +10,7 @@ import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
+<<<<<<< HEAD
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
     useOutletContext<
@@ -17,6 +18,17 @@ export const SecurityPersonalInformation = () => {
     >();
 
   if (accessControl) accessControl();
+=======
+interface IComponentProps {
+  isReadOnly: boolean;
+}
+
+export const SecurityPersonalInformation = (props: IComponentProps) => {
+  const [pia, piaStateChangeHandler] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+>>>>>>> 1e55b5f5 (Introduce readOnly prop.)
+
+  const { isReadOnly } = props;
 
   const defaultState: ISecurityPersonalInformation = useMemo(
     () => ({
