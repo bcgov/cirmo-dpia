@@ -5,7 +5,7 @@ import { PiaStatuses } from '../../../../constant/constant';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { routes } from '../../../../constant/routes';
 
 interface PIFlow {
