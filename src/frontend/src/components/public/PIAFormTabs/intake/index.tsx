@@ -10,7 +10,7 @@ import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
 import { dateToString } from '../../../../utils/date';
-import PIAIntakeGeneralInformation from '../../PIAIntakeGeneralInformation';
+import PIAIntakeGeneralInformation from './viewGeneralInformation';
 interface IntakeFormProps {
   isReadOnly?: boolean;
 }

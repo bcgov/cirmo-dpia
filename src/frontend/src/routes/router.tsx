@@ -5,7 +5,6 @@ import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
-import PIADetailPage from '../pages/PIADetailPage';
 import PIAIntakeFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAList from '../pages/PIAListPage';
@@ -41,7 +40,6 @@ const Router = () => {
       </div>
     </div>
   );
-
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>

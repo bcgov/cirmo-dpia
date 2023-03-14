@@ -25,6 +25,7 @@ export type PiaStateChangeHandlerType = (
   key: keyof IPiaForm,
 ) => any;
 
+export type PiaFormOpenMode = 'edit' | 'view';
 export interface ILastSaveAlterInfo {
   message: string;
   type: SupportedAlertTypes;
@@ -41,7 +42,9 @@ const PIAFormPage = () => {
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
-
+  const mode: PiaFormOpenMode = pathname?.split('/').includes('view')
+    ? 'view'
+    : 'edit';
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
 
@@ -106,6 +109,7 @@ const PIAFormPage = () => {
         setPiaModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
         setPiaModalTitleText(Messages.Modal.Edit.TitleText.en);
         setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
+        setPiaModalButtonValue('edit');
         break;
       case 'submit':
         setPiaModalConfirmLabel(Messages.Modal.Submit.ConfirmLabel.en);
@@ -205,6 +209,21 @@ const PIAFormPage = () => {
     return updatedPia;
   };
 
+  const handleEdit = () => {
+    if (!pia?.id) {
+      console.error('PIA id not found');
+      return;
+    }
+    // the status will change to enum when Brandon pr merged
+    if (pia.status === PiaStatuses.MPO_REVIEW) {
+      handleShowModal('edit');
+    } else {
+      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }), {
+        state: pia,
+      });
+    }
+  };
+
   const handleModalClose = async (event: any) => {
     setShowPiaModal(false);
     // call backend patch endpoint to save the change
@@ -234,6 +253,18 @@ const PIAFormPage = () => {
               title: pia.title,
             }),
           );
+        } else {
+          navigate(-1);
+        }
+      } else if (buttonValue === 'edit') {
+        await upsertAndUpdatePia({
+          status:
+            pia?.status === PiaStatuses.MPO_REVIEW
+              ? PiaStatuses.EDIT_IN_PROGRESS
+              : pia?.status,
+        });
+        if (pia?.id) {
+          navigate(pathname.replace('view', 'edit'));
         } else {
           navigate(-1);
         }
@@ -268,8 +299,9 @@ const PIAFormPage = () => {
 
   const handleSaveChanges = () => {
     // By default set the status to Incomplete
-    // const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
-    const modalType = pathname?.split('/').includes('view') ? 'edit' : 'save';
+    const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
+    const modalType =
+      piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
     handleShowModal(modalType);
   };
 
@@ -468,7 +500,9 @@ const PIAFormPage = () => {
       <PIASubHeader
         pia={pia}
         lastSaveAlertInfo={lastSaveAlertInfo}
+        mode={mode}
         onSaveChangeClick={handleSaveChanges}
+        onEditClick={handleEdit}
         onSubmitClick={handleValidation}
       />
       <div className="bcgovPageContainer background background__form wrapper">

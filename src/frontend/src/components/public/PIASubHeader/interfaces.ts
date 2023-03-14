@@ -6,7 +6,9 @@ export interface PIASubHeaderProps {
   pia: IPiaForm;
   secondaryButtonText?: string;
   primaryButtonText?: string;
+  mode: string;
   lastSaveAlertInfo?: ILastSaveAlterInfo;
   onSaveChangeClick?: MouseEventHandler<HTMLButtonElement>;
   onSubmitClick?: MouseEventHandler<HTMLButtonElement>;
+  onEditClick?: MouseEventHandler<HTMLButtonElement>;
 }

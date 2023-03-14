@@ -18,8 +18,10 @@ function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
   primaryButtonText = 'Submit PIA intake',
+  mode = 'edit',
   lastSaveAlertInfo,
   onSaveChangeClick = () => {},
+  onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
   //TODO implement tooltip for faEllipsisH icon, so when mouse hover, will display download word
@@ -28,13 +30,9 @@ function PIASubHeader({
   const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-  secondaryButtonText = pathname?.split('/').includes('view')
-    ? 'Edit'
-    : ' Save';
+  secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
 
-  primaryButtonText = pathname?.split('/').includes('view')
-    ? 'Submit'
-    : 'Submit PIA intake';
+  primaryButtonText = mode === 'view' ? 'Submit' : 'Submit PIA intake';
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -117,7 +115,7 @@ function PIASubHeader({
           </button>
           {!nextStepAction && (
             <button
-              onClick={onSaveChangeClick}
+              onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
               className="mx-2 bcgovbtn bcgovbtn__secondary"
             >
               {secondaryButtonText}
