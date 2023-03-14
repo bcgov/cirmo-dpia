@@ -276,6 +276,7 @@ export const PIAFormIntake = ({ isReadOnly = false }: IntakeFormProps) => {
           {PIOptions.map((option, index) => (
             <label key={index} className="form__input-label input-label-row">
               <input
+                disabled={isReadOnly}
                 type="radio"
                 name="pi-options-radio"
                 value={option.key}
