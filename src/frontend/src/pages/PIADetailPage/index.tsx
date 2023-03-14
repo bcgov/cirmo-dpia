@@ -253,6 +253,7 @@ const PIADetailPage = () => {
         mode={'view'}
         secondaryButtonText="Edit"
         primaryButtonText="Submit"
+        isIntakeSubmitted={true}
         onSaveChangeClick={() => handleEdit()}
         onSubmitClick={() => handleSubmit()}
       />
