@@ -42,7 +42,6 @@ import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
-import { UserTypesEnum } from 'src/common/enums/users.enum';
 
 /**
  * @Description
@@ -116,6 +115,7 @@ describe('PiaIntakeService', () => {
       const getPiaIntakeRO = { ...getPiaIntakeROMock };
 
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -124,7 +124,7 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
 
-      const result = await service.create(createPiaIntakeDto, user);
+      const result = await service.create(createPiaIntakeDto, user, userRoles);
 
       expect(piaIntakeRepository.save).toHaveBeenCalledWith({
         ...createPiaIntakeDto,
@@ -155,6 +155,7 @@ describe('PiaIntakeService', () => {
       const getPiaIntakeRO = { ...getPiaIntakeROMock };
 
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -163,7 +164,7 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
 
-      await service.create(createPiaIntakeDto, user);
+      await service.create(createPiaIntakeDto, user, userRoles);
 
       expect(createPiaIntakeDto.submittedAt).toBeDefined();
       expect(createPiaIntakeDto.submittedAt).toBeInstanceOf(Date);
@@ -187,6 +188,7 @@ describe('PiaIntakeService', () => {
       };
 
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -195,7 +197,7 @@ describe('PiaIntakeService', () => {
 
       omitBaseKeysSpy.mockReturnValue(getPiaIntakeRO);
 
-      const result = await service.create(createPiaIntakeDto, user);
+      const result = await service.create(createPiaIntakeDto, user, userRoles);
 
       expect(piaIntakeRepository.save).toHaveBeenCalledWith({
         ...createPiaIntakeDto,
@@ -235,8 +237,44 @@ describe('PiaIntakeService', () => {
       };
 
       const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
 
-      await expect(service.create(createPiaIntakeDto, user)).rejects.toThrow(
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'steps.mpoInput',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
+
+    // Scenario 5
+    it('passes when an MPO of any ministry tries to update the same fields [mentioned in the above scenario]', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        collectionUseAndDisclosure: {
+          steps: [
+            {
+              drafterInput: 'Make a Checklist.',
+              mpoInput: 'I do not have privilege to edit this',
+              foippaInput: 'I do not have privilege to edit this',
+              OtherInput: 'I do not have privilege to edit this',
+            },
+          ],
+          collectionNotice: {
+            drafterInput: 'Test Input',
+            mpoInput: 'I do not have privilege to edit this',
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_HLTH];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).resolves.not.toThrow(
         new ForbiddenException({
           path: 'steps.mpoInput',
           message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
@@ -1288,7 +1326,7 @@ describe('PiaIntakeService', () => {
         return { ...piaIntakeEntityMock };
       });
 
-      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
+      service.validateUserAccess = jest.fn(() => true);
 
       omitBaseKeysSpy.mockImplementation(() => getPiaIntakeROMock);
 
@@ -1331,7 +1369,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
+      service.validateUserAccess = jest.fn(() => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1381,7 +1419,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
+      service.validateUserAccess = jest.fn(() => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1432,7 +1470,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
+      service.validateUserAccess = jest.fn(() => true);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1476,7 +1514,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => UserTypesEnum.DRAFTER);
+      service.validateUserAccess = jest.fn(() => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1491,7 +1529,15 @@ describe('PiaIntakeService', () => {
 
     // Scenario 5: fails with Forbidden if DRAFTER tries to update fields they don't have permissions to
     it("fails with Forbidden if DRAFTER tries to update fields they don't have permissions to", async () => {
-      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = []; // Drafter Role
+      const id = 1;
+
+      const piaIntakeMock: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        saveId: 10,
+        createdByGuid: user.idir_user_guid,
+      };
 
       const updatePiaIntakeDto = {
         collectionUseAndDisclosure: {
@@ -1511,18 +1557,13 @@ describe('PiaIntakeService', () => {
         saveId: 10,
       };
 
-      const userType = UserTypesEnum.DRAFTER;
-
-      const user: KeycloakUser = { ...keycloakUserMock };
-      const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 1;
-
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => userType);
+      // mock validated user access
+      service.validateUserAccess = jest.fn(() => null);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1537,7 +1578,14 @@ describe('PiaIntakeService', () => {
 
     // Scenario 6: succeeds if scenario 5 updates are requested by an MPO
     it('succeeds if scenario 5 updates are requested by an MPO', async () => {
-      const piaIntakeMock = { ...piaIntakeEntityMock, saveId: 10 };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_HLTH]; // MPO
+      const id = 1;
+
+      const piaIntakeMock: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        saveId: 10,
+      };
 
       const updatePiaIntakeDto = {
         collectionUseAndDisclosure: {
@@ -1557,18 +1605,13 @@ describe('PiaIntakeService', () => {
         saveId: 10,
       };
 
-      const userType = UserTypesEnum.MPO;
-
-      const user: KeycloakUser = { ...keycloakUserMock };
-      const userRoles = [RolesEnum.MPO_CITZ];
-      const id = 1;
+      // mock validated user access
+      service.validateUserAccess = jest.fn(() => null);
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return piaIntakeMock;
       });
-
-      service.validateUserAccess = jest.fn(() => userType);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1684,7 +1727,7 @@ describe('PiaIntakeService', () => {
       }
     });
 
-    // Scenario 2: Test succeeds and returns userType - drafter when the record is self submitted
+    // Scenario 2: Test succeeds when the record is self submitted
     it('succeeds and returns userType - drafter when the record is self submitted', () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
@@ -1698,10 +1741,10 @@ describe('PiaIntakeService', () => {
 
       const result = service.validateUserAccess(user, userRoles, piaIntake);
 
-      expect(result).toBe(UserTypesEnum.DRAFTER);
+      expect(result).toBe(true);
     });
 
-    // Scenario 3: succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
+    // Scenario 3: succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
     it('succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
@@ -1716,7 +1759,7 @@ describe('PiaIntakeService', () => {
 
       const result = service.validateUserAccess(user, userRoles, piaIntake);
 
-      expect(result).toBe(UserTypesEnum.MPO);
+      expect(result).toBe(true);
     });
 
     // Scenario 4: Test fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of

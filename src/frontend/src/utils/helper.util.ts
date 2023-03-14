@@ -13,5 +13,5 @@ export const isMPORole = () => {
   const item = AppStorage.getItem(ConfigStorageKeys.ROLES);
   if (!item) return false;
 
-  return item.filter((x: string) => x.includes('MPO'));
+  return item.some((x: string) => x.includes('MPO-'));
 };
