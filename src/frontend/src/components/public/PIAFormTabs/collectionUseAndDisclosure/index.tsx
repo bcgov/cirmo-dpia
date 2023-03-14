@@ -135,7 +135,13 @@ const PIACollectionUseAndDisclosure = (props: IComponentProps) => {
             </div>
           )}
           <div className="richText" id="drafterDisclosure">
-            {isReadOnly ? (
+            {(isReadOnly &&
+              !collectionUseAndDisclosureForm.collectionNotice.drafterInput) ||
+            (isReadOnly &&
+              collectionUseAndDisclosureForm.collectionNotice.drafterInput ===
+                '') ? (
+              <p>Not answered</p>
+            ) : isReadOnly ? (
               <MDEditor.Markdown
                 source={
                   collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
@@ -167,7 +173,13 @@ const PIACollectionUseAndDisclosure = (props: IComponentProps) => {
             </h4>
           )}
           <div className="richText pb-4" id="MPOCommentsDisclosure">
-            {isReadOnly ? (
+            {(isReadOnly &&
+              !collectionUseAndDisclosureForm.collectionNotice.mpoInput) ||
+            (isReadOnly &&
+              collectionUseAndDisclosureForm.collectionNotice.mpoInput ===
+                '') ? (
+              <p>Not answered</p>
+            ) : isReadOnly ? (
               <MDEditor.Markdown
                 source={
                   collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
