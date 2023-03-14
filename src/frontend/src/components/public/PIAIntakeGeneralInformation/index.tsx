@@ -9,7 +9,7 @@ interface IGeneralInformationProps {
 
 const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
-    MinistryList.filter((item) => item.value === pia.ministry)[0].label || '',
+    MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
   return (
     <>
