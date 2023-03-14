@@ -41,13 +41,15 @@ export class PiaIntakeService {
   async create(
     createPiaIntakeDto: CreatePiaIntakeDto,
     user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
   ): Promise<GetPiaIntakeRO> {
     // update submittedAt column if it is first time submit
     this.updateSubmittedAt(createPiaIntakeDto);
 
-    // sending DRAFTER to userType as only a drafter can create a new PIA;
-    // A user could have MPO privileges, however while creating a PIA he/she is acting as a drafter
-    this.validateJsonbFields(createPiaIntakeDto, null, UserTypesEnum.DRAFTER);
+    // Get User role access type
+    const accessType = this.getRoleAccess(userRoles);
+
+    this.validateJsonbFields(createPiaIntakeDto, null, accessType);
 
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
@@ -79,7 +81,10 @@ export class PiaIntakeService {
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
-    const userType = this.validateUserAccess(user, userRoles, existingRecord);
+    this.validateUserAccess(user, userRoles, existingRecord);
+
+    // If the user has access, get the role access type of the user
+    const accessType = this.getRoleAccess(userRoles);
 
     // check if the user is not acting on / updating a stale version
     if (existingRecord.saveId !== updatePiaIntakeDto.saveId) {
@@ -90,7 +95,7 @@ export class PiaIntakeService {
     }
 
     // validate jsonb fields for role access
-    this.validateJsonbFields(updatePiaIntakeDto, existingRecord, userType);
+    this.validateJsonbFields(updatePiaIntakeDto, existingRecord, accessType);
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
@@ -399,24 +404,49 @@ export class PiaIntakeService {
     user: KeycloakUser,
     userRoles: RolesEnum[],
     piaIntake: PiaIntakeEntity,
-  ): UserTypesEnum {
+  ) {
     if (!piaIntake.isActive) {
       throw new GoneException();
     }
 
     // Scenario 1: A self-submitted PIA
     if (user.idir_user_guid === piaIntake.createdByGuid) {
-      return UserTypesEnum.DRAFTER;
+      return true;
     }
 
     // Scenario 2: PIA is submitted to the ministry I'm an MPO of
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
     if (mpoMinistries.includes(piaIntake.ministry)) {
-      return UserTypesEnum.MPO;
+      return true;
     }
 
     // Throw Forbidden user access if none of the above scenarios are met
     throw new ForbiddenException();
+  }
+
+  /** PREREQUISITE - Always validate if the user has access to the PIA record */
+  getRoleAccess(userRoles: RolesEnum[]): UserTypesEnum {
+    /**
+     * WHo are Drafters and MPOs? And what roles can each access
+     *
+     * -- initial logic -- Dec '2022
+     * You're a DRAFTER Role - if you are creating the PIA [doesn't matter if you're an MPO of ANY ministry]
+     * Else you're an MPO Role - if the created PIA is submitted to the ministry you're an MPO of
+     * Else throw Forbidden Exception
+     *
+     * -- Updated logic -- March 13 '2023 -- https://apps.itsm.gov.bc.ca/jira/browse/UTOPIA-908
+     * You're an MPO Role - if you are MPO of ANY ministry
+     * Else You're a DRAFTER Role
+     * Note: Reversing to check MPO first and then Drafter also enables MPOs who are drafting a PIA for a different ministry to edit MPO specific fields
+     *
+     */
+
+    const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
+    if (mpoMinistries.length > 0) {
+      return UserTypesEnum.MPO;
+    }
+
+    return UserTypesEnum.DRAFTER;
   }
 
   /**

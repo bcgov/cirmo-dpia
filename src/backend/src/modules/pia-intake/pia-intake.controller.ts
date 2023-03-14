@@ -54,7 +54,11 @@ export class PiaIntakeController {
     @Body() createPiaIntakeDto: CreatePiaIntakeDto,
     @Req() req: IRequest,
   ): Promise<GetPiaIntakeRO> {
-    return this.piaIntakeService.create(createPiaIntakeDto, req.user);
+    return this.piaIntakeService.create(
+      createPiaIntakeDto,
+      req.user,
+      req.userRoles,
+    );
   }
 
   /**
