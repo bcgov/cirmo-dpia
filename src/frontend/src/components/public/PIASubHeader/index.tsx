@@ -17,9 +17,9 @@ import { PiaStatuses } from '../../../constant/constant';
 function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
-  primaryButtonText = 'Submit PIA intake',
   mode = 'edit',
   lastSaveAlertInfo,
+  isIntakeSubmitted,
   onSaveChangeClick = () => {},
   onEditClick = () => {},
   onSubmitClick = () => {},
@@ -32,7 +32,6 @@ function PIASubHeader({
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
 
-  primaryButtonText = mode === 'view' ? 'Submit' : 'Submit PIA intake';
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -113,6 +112,8 @@ function PIASubHeader({
             <FontAwesomeIcon icon={faEllipsisH} />
             {isDownloading && <Spinner />}
           </button>
+
+          {/* Save or Edit button */}
           {!nextStepAction && (
             <button
               onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
@@ -121,12 +122,14 @@ function PIASubHeader({
               {secondaryButtonText}
             </button>
           )}
+
+          {/* Submission button */}
           {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
               className="bcgovbtn bcgovbtn__primary"
             >
-              {primaryButtonText}
+              {isIntakeSubmitted ? 'Submit' : 'Submit PIA intake'}
             </button>
           )}
         </div>

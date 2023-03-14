@@ -9,14 +9,11 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
-import { dateToString } from '../../../../utils/date';
 import PIAIntakeGeneralInformation from './viewGeneralInformation';
-interface IntakeFormProps {
-  isReadOnly?: boolean;
-}
-export const PIAFormIntake = ({ isReadOnly = false }: IntakeFormProps) => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+
+export const PIAFormIntake = () => {
+  const [pia, piaStateChangeHandler, isReadOnly] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
 
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),

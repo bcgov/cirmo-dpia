@@ -26,6 +26,7 @@ export type PiaStateChangeHandlerType = (
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';
+
 export interface ILastSaveAlterInfo {
   message: string;
   type: SupportedAlertTypes;
@@ -45,6 +46,17 @@ const PIAFormPage = () => {
   const mode: PiaFormOpenMode = pathname?.split('/').includes('view')
     ? 'view'
     : 'edit';
+
+  const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (mode !== 'edit') {
+      setFormReadOnly(true);
+    } else {
+      setFormReadOnly(false);
+    }
+  }, [mode]);
+
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
 
@@ -74,6 +86,20 @@ const PIAFormPage = () => {
       [key]: value,
     }));
   };
+
+  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      pia?.isNextStepsSeenForDelegatedFlow ||
+      pia?.isNextStepsSeenForNonDelegatedFlow
+    ) {
+      setIsIntakeSubmitted(true);
+    }
+  }, [
+    pia?.isNextStepsSeenForDelegatedFlow,
+    pia?.isNextStepsSeenForNonDelegatedFlow,
+  ]);
 
   const [message, setMessage] = useState<string>('');
   //
@@ -111,12 +137,19 @@ const PIAFormPage = () => {
         setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
         setPiaModalButtonValue('edit');
         break;
-      case 'submit':
-        setPiaModalConfirmLabel(Messages.Modal.Submit.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.Submit.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.Submit.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.Submit.ParagraphText.en);
-        setPiaModalButtonValue('submit');
+      case 'submitPiaIntake':
+        setPiaModalConfirmLabel(Messages.Modal.SubmitPiaIntake.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.SubmitPiaIntake.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.SubmitPiaIntake.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.SubmitPiaIntake.ParagraphText.en);
+        setPiaModalButtonValue('submitPiaIntake');
+        break;
+      case 'submitPiaForm':
+        setPiaModalConfirmLabel(Messages.Modal.SubmitPiaForm.ConfirmLabel.en);
+        setPiaModalCancelLabel(Messages.Modal.SubmitPiaForm.CancelLabel.en);
+        setPiaModalTitleText(Messages.Modal.SubmitPiaForm.TitleText.en);
+        setPiaModalParagraph(Messages.Modal.SubmitPiaForm.ParagraphText.en);
+        setPiaModalButtonValue('submitPiaForm');
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
@@ -228,9 +261,10 @@ const PIAFormPage = () => {
     setShowPiaModal(false);
     // call backend patch endpoint to save the change
     event.preventDefault();
+
     const buttonValue = event.target.value;
     try {
-      if (buttonValue === 'submit') {
+      if (buttonValue === 'submitPiaIntake') {
         await upsertAndUpdatePia({
           status:
             pia?.hasAddedPiToDataElements === false
@@ -242,6 +276,16 @@ const PIAFormPage = () => {
             buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
               id: pia.id,
               title: pia.title,
+            }),
+          );
+        }
+      } else if (buttonValue === 'submitPiaForm') {
+        await upsertAndUpdatePia({ status: PiaStatuses.MPO_REVIEW });
+
+        if (pia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: pia.id,
             }),
           );
         }
@@ -310,7 +354,12 @@ const PIAFormPage = () => {
   //
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    handleShowModal('submit');
+
+    if (!isIntakeSubmitted) {
+      handleShowModal('submitPiaIntake');
+    } else {
+      handleShowModal('submitPiaForm');
+    }
   };
   /*
    * @Description - This function is used to validate the form
@@ -504,6 +553,7 @@ const PIAFormPage = () => {
         onSaveChangeClick={handleSaveChanges}
         onEditClick={handleEdit}
         onSubmitClick={handleValidation}
+        isIntakeSubmitted={isIntakeSubmitted}
       />
       <div className="bcgovPageContainer background background__form wrapper">
         {message && (
@@ -517,12 +567,16 @@ const PIAFormPage = () => {
 
         <div className="component__container">
           <section className="side-nav__container">
-            <PIASideNav pia={pia} isNewForm={!id}></PIASideNav>
+            <PIASideNav
+              pia={pia}
+              isNewForm={!id}
+              isReadOnly={formReadOnly}
+            ></PIASideNav>
           </section>
           <section className="form__container ms-md-auto content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
-              <Outlet context={[pia, piaStateChangeHandler]} />
+              <Outlet context={[pia, piaStateChangeHandler, formReadOnly]} />
             ) : (
               <div className="w-100">
                 <div className="d-flex justify-content-center">

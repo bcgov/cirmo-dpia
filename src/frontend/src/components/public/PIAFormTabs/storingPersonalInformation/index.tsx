@@ -119,7 +119,6 @@ const StoringPersonalInformation = () => {
     useState<IStoringPersonalInformation>(initialFormState);
 
   const stateChangeHandler = (value: any, path: string) => {
-    console.log(value, path);
     setNestedReactState(setStoringPersonalInformationForm, path, value);
   };
 
