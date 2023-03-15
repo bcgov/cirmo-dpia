@@ -220,7 +220,9 @@ export const PIAFormIntake = () => {
           <div className="richText" id="initiativeDescription">
             {(isReadOnly && !intakeForm.initiativeDescription) ||
             (isReadOnly && intakeForm.initiativeDescription === '') ? (
-              <p><i>Not answered</i></p>
+              <p>
+                <i>Not answered</i>
+              </p>
             ) : isReadOnly ? (
               <MDEditor.Markdown source={intakeForm.initiativeDescription} />
             ) : (
@@ -252,7 +254,9 @@ export const PIAFormIntake = () => {
         <div className="richText" id="initiativeScope">
           {(isReadOnly && !intakeForm.initiativeScope) ||
           (isReadOnly && intakeForm.initiativeScope === '') ? (
-            <p><i>Not answered</i></p>
+            <p>
+              <i>Not answered</i>
+            </p>
           ) : isReadOnly ? (
             <MDEditor.Markdown source={intakeForm.initiativeScope} />
           ) : (
@@ -281,7 +285,9 @@ export const PIAFormIntake = () => {
         <div className="richText" id="dataElementsInvolved">
           {(isReadOnly && !intakeForm.dataElementsInvolved) ||
           (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
-            <p><i>Not answered</i></p>
+            <p>
+              <i>Not answered</i>
+            </p>
           ) : isReadOnly ? (
             <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
           ) : (
@@ -360,7 +366,9 @@ export const PIAFormIntake = () => {
               <div className="richText" id="riskMitigation">
                 {(isReadOnly && !intakeForm.riskMitigation) ||
                 (isReadOnly && intakeForm.riskMitigation === '') ? (
-                  <p><i>Not answered</i></p>
+                  <p>
+                    <i>Not answered</i>
+                  </p>
                 ) : isReadOnly ? (
                   <MDEditor.Markdown source={intakeForm.riskMitigation} />
                 ) : (
