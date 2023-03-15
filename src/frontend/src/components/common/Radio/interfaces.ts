@@ -5,5 +5,6 @@ export interface IRadio {
   value: string | YesNoInput;
   groupName: string;
   isDefault?: boolean;
+  readOnly?: boolean;
   changeHandler: any;
 }

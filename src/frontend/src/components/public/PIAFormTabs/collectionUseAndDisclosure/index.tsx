@@ -13,15 +13,9 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { ColumnMetaData, Table } from '../../../common/Table';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
-interface IComponentProps {
-  isReadOnly?: boolean;
-}
-
-const PIACollectionUseAndDisclosure = (props: IComponentProps) => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
-
-  const { isReadOnly } = props;
+const PIACollectionUseAndDisclosure = () => {
+  const [pia, piaStateChangeHandler, isReadOnly] =
+    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
 
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
