@@ -6,7 +6,7 @@ import { ITextInputProps } from './AgreementsAndInformationBanks';
 const PIBInputText = ({ pia }: ITextInputProps) => {
   return (
     <div>
-      <div className="container d-grid gap-3">
+      <div className="container d-grid gap-3 mt-4">
         <div className="row">
           <div className="col col-md-3">
             <b>Main ministry or agency involved</b>
