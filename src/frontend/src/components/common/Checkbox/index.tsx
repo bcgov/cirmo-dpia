@@ -20,33 +20,27 @@ const Checkbox = ({
   const [isChecked, setIsChecked] = useState(defaultChecked);
   return (
     <div className="checkbox-wrapper">
-      {!readOnly ? (
-        <label className="input-label">
-          <input
-            type="checkbox"
-            value={value}
-            checked={isChecked}
-            onChange={onChange}
-            onClick={() => setIsChecked((prev: boolean) => !prev)}
-            className={isChecked ? 'checked' : ''}
-            aria-describedby={value}
-            aria-label={label}
-            disabled={readOnly}
-            {...props}
-          />
-          {isLink === false ? (
-            label
-          ) : (
-            <a href={linkURL} target="_blank" rel="noreferrer">
-              {label}
-            </a>
-          )}
-        </label>
-      ) : (
-        <p>
-          <i>Not answered</i>
-        </p>
-      )}
+      <label className="input-label">
+        <input
+          type="checkbox"
+          value={value}
+          checked={isChecked}
+          onChange={onChange}
+          onClick={() => setIsChecked((prev: boolean) => !prev)}
+          className={isChecked ? 'checked' : ''}
+          aria-describedby={value}
+          aria-label={label}
+          disabled={readOnly}
+          {...props}
+        />
+        {isLink === false ? (
+          label
+        ) : (
+          <a href={linkURL} target="_blank" rel="noreferrer">
+            {label}
+          </a>
+        )}
+      </label>
       {!tooltip ? null : (
         <>
           <FontAwesomeIcon
