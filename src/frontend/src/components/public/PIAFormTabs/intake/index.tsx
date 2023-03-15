@@ -360,7 +360,7 @@ export const PIAFormIntake = () => {
               <div className="richText" id="riskMitigation">
                 {(isReadOnly && !intakeForm.riskMitigation) ||
                 (isReadOnly && intakeForm.riskMitigation === '') ? (
-                  <p>Not answered</p>
+                  <p><i>Not answered</i></p>
                 ) : isReadOnly ? (
                   <MDEditor.Markdown source={intakeForm.riskMitigation} />
                 ) : (
