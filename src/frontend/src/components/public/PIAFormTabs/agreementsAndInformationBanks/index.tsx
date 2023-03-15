@@ -5,11 +5,12 @@ import InputText from '../../../common/InputText/InputText';
 import { useOutletContext } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
+import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 const PIAAgreementsAndInformationBanks = () => {
   const [pia, piaStateChangeHandler] =
@@ -38,59 +39,22 @@ const PIAAgreementsAndInformationBanks = () => {
     }),
     [],
   );
-  const [startDate, setStartDate] = useState<Date | null>(
-    pia.agreementsAndInformationBanks?.informationSharingAgreement?.startDate
-      ? stringToDate(
-          pia.agreementsAndInformationBanks?.informationSharingAgreement
-            ?.startDate,
-        )
-      : null,
-  );
-  const [endDate, setEndDate] = useState<Date | null>(
-    pia.agreementsAndInformationBanks?.informationSharingAgreement?.endDate
-      ? stringToDate(
-          pia.agreementsAndInformationBanks?.informationSharingAgreement
-            ?.endDate,
-        )
-      : null,
-  );
+
   const initialFormState = useMemo(
     () => pia.agreementsAndInformationBanks || defaultState,
     [defaultState, pia.agreementsAndInformationBanks],
   );
+
   const [
     agreementsAndInformationBanksForm,
     setAgreementsAndInformationBanksForm,
   ] = useState<IAgreementsAndInformationBanks>(initialFormState);
 
-  const stateChangeHandler = (value: any, nestedKey: string) => {
-    if (nestedKey) {
-      const keyString = nestedKey.split('.');
-      const key1 = keyString[0];
-      const key2 = keyString[1];
-      if (key1 === 'personalInformationBanks') {
-        setAgreementsAndInformationBanksForm((state) => ({
-          ...state,
-          personalInformationBanks: {
-            ...state.personalInformationBanks,
-            [key2]: value,
-          },
-        }));
-      } else if (key1 === 'informationSharingAgreement') {
-        if (key2 === 'startDate' || key2 === 'endDate')
-          value = dateToString(value);
-        setAgreementsAndInformationBanksForm((state) => ({
-          ...state,
-          informationSharingAgreement: {
-            ...state.informationSharingAgreement,
-            [key2]: value,
-          },
-        }));
-      }
-    }
+  const stateChangeHandler = (value: any, path: string) => {
+    setNestedReactState(setAgreementsAndInformationBanksForm, path, value);
   };
 
-  // passing updated data to parent for auto-save for work efficiently only if there are changes
+  // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     if (!deepEqual(initialFormState, agreementsAndInformationBanksForm)) {
       piaStateChangeHandler(
@@ -127,8 +91,6 @@ const PIAAgreementsAndInformationBanks = () => {
                     checked={
                       agreementsAndInformationBanksForm
                         ?.informationSharingAgreement?.doesInvolveISA === 'YES'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -149,8 +111,6 @@ const PIAAgreementsAndInformationBanks = () => {
                     checked={
                       agreementsAndInformationBanksForm
                         ?.informationSharingAgreement?.doesInvolveISA === 'NO'
-                        ? true
-                        : false
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -269,13 +229,18 @@ const PIAAgreementsAndInformationBanks = () => {
                       <label id="start-date-label">ISA start date</label>
                       <CustomInputDate
                         key="isaStartDate"
-                        placeholderText={'yyyy/mm/dd'}
-                        dateFormat="yyyy/MM/dd"
-                        selected={startDate === null ? null : startDate}
+                        selected={
+                          agreementsAndInformationBanksForm
+                            ?.informationSharingAgreement?.startDate
+                            ? stringToDate(
+                                agreementsAndInformationBanksForm
+                                  .informationSharingAgreement.startDate,
+                              )
+                            : null
+                        }
                         onChange={(date: any) => {
-                          setStartDate(date);
                           stateChangeHandler(
-                            date,
+                            dateToString(date),
                             'informationSharingAgreement.startDate',
                           );
                         }}
@@ -288,13 +253,18 @@ const PIAAgreementsAndInformationBanks = () => {
                       <label id="end-date-label">ISA end date</label>
                       <CustomInputDate
                         key="isaEndDate"
-                        placeholderText={'yyyy/mm/dd'}
-                        dateFormat="yyyy/MM/dd"
-                        selected={endDate === null ? null : endDate}
+                        selected={
+                          agreementsAndInformationBanksForm
+                            ?.informationSharingAgreement?.endDate
+                            ? stringToDate(
+                                agreementsAndInformationBanksForm
+                                  .informationSharingAgreement.endDate,
+                              )
+                            : null
+                        }
                         onChange={(date: any) => {
-                          setEndDate(date);
                           stateChangeHandler(
-                            date,
+                            dateToString(date),
                             'informationSharingAgreement.endDate',
                           );
                         }}
@@ -327,8 +297,6 @@ const PIAAgreementsAndInformationBanks = () => {
                       checked={
                         agreementsAndInformationBanksForm
                           ?.personalInformationBanks?.willResultInPIB === 'YES'
-                          ? true
-                          : false
                       }
                       onChange={(e) =>
                         stateChangeHandler(
@@ -349,8 +317,6 @@ const PIAAgreementsAndInformationBanks = () => {
                       checked={
                         agreementsAndInformationBanksForm
                           ?.personalInformationBanks?.willResultInPIB === 'NO'
-                          ? true
-                          : false
                       }
                       onChange={(e) =>
                         stateChangeHandler(

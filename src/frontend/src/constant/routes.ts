@@ -3,8 +3,7 @@ export const routes = {
   PPQ_FORM: '/ppq-form',
   PPQ_CONNECT_WITH_MPO: '/ppq-connect',
   PIA_NEW: '/pia/new',
-  PIA_VIEW: '/pia/:id/view/:title',
-  PIA_EDIT: '/pia/:id/edit',
+  PIA_VIEW: '/pia/:id',
 
   PIA_INTAKE_EDIT: '/pia/:id/intake/edit',
   PIA_INTAKE_VIEW: '/pia/:id/intake/view',
@@ -30,9 +29,9 @@ export const routes = {
     '/pia/:id/accuracyCorrectionAndRetention/view',
 
   PIA_AGREEMENTS_AND_INFORMATION_BANK_EDIT:
-    '/pia/:id/agreementsAndInformationBank/edit',
+    '/pia/:id/agreementsAndInformationBanks/edit',
   PIA_AGREEMENTS_AND_INFORMATION_BANK_VIEW:
-    '/pia/:id/agreementsAndInformationBank/view',
+    '/pia/:id/agreementsAndInformationBanks/view',
 
   PIA_ADDITIONAL_RISKS_EDIT: '/pia/:id/additionalRisks/edit',
   PIA_ADDITIONAL_RISKS_VIEW: '/pia/:id/additionalRisks/view',

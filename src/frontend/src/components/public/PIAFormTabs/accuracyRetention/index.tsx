@@ -1,13 +1,14 @@
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Messages from './helper/messages';
 import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { deepEqual } from '../../../../utils/object-comparison.util';
+import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler] =
@@ -42,41 +43,11 @@ export const AccuracyCorrectionAndRetention = () => {
     setAccuracyCorrectionAndRetentionForm,
   ] = useState<IAccuracyCorrectionAndRetention>(initialFormState);
 
-  const stateChangeHandler = (value: any, nestedkey: string) => {
-    if (nestedkey) {
-      const keyString = nestedkey.split('.');
-      if (keyString.length > 1) {
-        const Key1 = keyString[0];
-        const Key2 = keyString[1];
-        if (Key1 === 'accuracy') {
-          setAccuracyCorrectionAndRetentionForm((state) => ({
-            ...state,
-            accuracy: {
-              ...state.accuracy,
-              [Key2]: value,
-            },
-          }));
-        } else if (Key1 === 'correction') {
-          setAccuracyCorrectionAndRetentionForm((state) => ({
-            ...state,
-            correction: {
-              ...state.correction,
-              [Key2]: value,
-            },
-          }));
-        } else if (Key1 === 'retention') {
-          setAccuracyCorrectionAndRetentionForm((state) => ({
-            ...state,
-            retention: {
-              ...state.retention,
-              [Key2]: value,
-            },
-          }));
-        }
-      }
-    }
+  const stateChangeHandler = (value: any, path: string) => {
+    setNestedReactState(setAccuracyCorrectionAndRetentionForm, path, value);
   };
 
+  // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     if (!deepEqual(initialFormState, accuracyCorrectionAndRetentionForm)) {
       piaStateChangeHandler(
@@ -92,8 +63,8 @@ export const AccuracyCorrectionAndRetention = () => {
 
   return (
     <>
-      <form className="">
-        <h2 className="">{Messages.PageTitle.en}</h2>
+      <form>
+        <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
         <section className="section__padding-block">

@@ -82,13 +82,17 @@ describe('PiaIntakeController', () => {
      */
     it('succeeds with correct data : Happy flow', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = { ...createPiaIntakeMock };
-      const mockReq: any = { user: { ...keycloakUserMock } };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [RolesEnum.MPO_CITZ],
+      };
 
       await controller.create(createPiaIntakeDto, mockReq);
 
       expect(piaIntakeService.create).toHaveBeenCalledWith(
         createPiaIntakeDto,
         mockReq.user,
+        mockReq.userRoles,
       );
     });
   });

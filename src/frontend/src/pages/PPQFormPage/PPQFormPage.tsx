@@ -279,8 +279,6 @@ const PPQFormPage = () => {
                     </label>
                     <CustomInputDate
                       key="startDate"
-                      placeholderText={'yyyy/mm/dd'}
-                      dateFormat="yyyy/MM/dd"
                       selected={startDate === null ? null : startDate}
                       onChange={(date: any) => setStartDate(date)}
                       required

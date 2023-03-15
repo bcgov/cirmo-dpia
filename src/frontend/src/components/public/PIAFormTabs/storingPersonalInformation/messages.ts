@@ -26,15 +26,23 @@ export default {
       en: `Does your initiative involve sensitive personal information?`,
     },
     SensitivePersonalInformationDislosedUnderFOIPPA: {
-      en: `Is the sensitive personal information being disclosed outside of Canada under [FOIPPA section 33(2)(f)](https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/disclosure-personal-information)?`,
+      en: `Is the sensitive personal information being disclosed outside of Canada under `,
+      LinkText: {
+        en: `FOIPPA section 33(2)(f)`,
+      },
+      Link: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/disclosure-personal-information`,
     },
   },
   AssessmentOfDisclosures: {
     H3Text: {
       en: `Assessment of disclosures outside of Canada`,
     },
-    PText: {
-      en: `You will likely need your MPO's help to complete this section. More help is available in the [Guidance on Disclosures Outside of Canada](https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments/guidance-on-disclosures-outside-of-canada).`,
+    HelperText: {
+      en: `You will likely need your MPO's help to complete this section. More help is available in the `,
+      LinkText: {
+        en: `Guidance on Disclosures Outside of Canada`,
+      },
+      Link: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments/guidance-on-disclosures-outside-of-canada`,
     },
     SensitivePersonalInformationStoredByServiceProvider: {
       en: `Is the sensitive personal information stored by a service provider?`,
@@ -45,7 +53,30 @@ export default {
     ContractualTerms: {
       en: `Describe the contractual terms in place (if applicable).`,
       HelperText: {
-        en: `For example, indicate if you have attached the Privacy Protection Schedule. If you wish to modify the [Privacy Protection Schedule](https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/agreements-contracts/privacy-protection-schedule), email [Privacy.Helpline@gov.bc.ca](mailto:privacy.helpline@gov.bc.ca), or call [250 356-1851](tel:+12503561851) for approval.`,
+        PartOne: {
+          en: `For example, indicate if you have attached the Privacy Protection Schedule. If you wish to modify the `,
+        },
+        PrivacyProtectionLinkText: {
+          en: `Privacy Protection Schedule`,
+        },
+        PrivacyProtectionLink: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/agreements-contracts/privacy-protection-schedule`,
+        PartTwo: {
+          en: `, email `,
+        },
+        PrivacyHelplineEmailLinkText: {
+          en: `Privacy.Helpline@gov.bc.ca`,
+        },
+        PrivacyHelplineEmailLink: `mailto:privacy.helpline@gov.bc.ca`,
+        PartThree: {
+          en: `, or call `,
+        },
+        PrivacyHelplinePhoneLinkText: {
+          en: `250 356-1851`,
+        },
+        PrivacyHelplinePhoneLink: `tel:+12503561851`,
+        PartFour: {
+          en: ` for approval.`,
+        },
       },
     },
     ServiceProviderTableColumnHeaders: {

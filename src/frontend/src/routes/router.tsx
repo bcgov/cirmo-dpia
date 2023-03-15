@@ -5,8 +5,7 @@ import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
-import PIADetailPage from '../pages/PIADetailPage';
-import PIAIntakeFormPage from '../pages/PIAIntakeForm';
+import PIAIntakeFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAList from '../pages/PIAListPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
@@ -41,7 +40,6 @@ const Router = () => {
       </div>
     </div>
   );
-
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
@@ -65,17 +63,14 @@ const Router = () => {
             <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
-          <Route path=":id/view/:title" element={<PIADetailPage />} />
-          {/* Replace the above path with proper view nested component once developed */}
-
           <Route path=":id" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
 
             <Route path="intake">
-              <Route index element={<Navigate relative="path" to="edit" />} />
+              <Route index element={<Navigate relative="path" to="view" />} />
               {/* update above default to view once the PIA intake view component is built */}
               <Route path="edit" element={<PIAFormIntake />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<PIAFormIntake />} />
             </Route>
 
             <Route path="nextSteps">
@@ -87,7 +82,10 @@ const Router = () => {
             <Route path="collectionUseAndDisclosure">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PIACollectionUseAndDisclosure />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route
+                path="view"
+                element={<PIACollectionUseAndDisclosure isReadOnly />}
+              />
             </Route>
 
             <Route
@@ -111,7 +109,7 @@ const Router = () => {
               <Route path="view" element={comingSoonBanner} />
             </Route>
 
-            <Route path="agreementsAndInformationBank">
+            <Route path="agreementsAndInformationBanks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route
                 path="edit"
