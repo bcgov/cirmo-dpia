@@ -14,8 +14,12 @@ import { ColumnMetaData, Table } from '../../../common/Table';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 const PIACollectionUseAndDisclosure = () => {
-  const [pia, piaStateChangeHandler, isReadOnly] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
+  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+    useOutletContext<
+      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+    >();
+
+  if (accessControl) accessControl();
 
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({

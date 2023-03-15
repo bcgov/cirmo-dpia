@@ -17,9 +17,9 @@ import { PiaStatuses } from '../../../constant/constant';
 function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
+  primaryButtonText,
   mode = 'edit',
   lastSaveAlertInfo,
-  isIntakeSubmitted,
   onSaveChangeClick = () => {},
   onEditClick = () => {},
   onSubmitClick = () => {},
@@ -129,7 +129,7 @@ function PIASubHeader({
               onClick={onSubmitClick}
               className="bcgovbtn bcgovbtn__primary"
             >
-              {isIntakeSubmitted ? 'Submit' : 'Submit PIA intake'}
+              {primaryButtonText}
             </button>
           )}
         </div>

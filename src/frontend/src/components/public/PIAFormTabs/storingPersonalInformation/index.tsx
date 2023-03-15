@@ -15,8 +15,12 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import { ColumnMetaData, Table } from '../../../common/Table';
 
 const StoringPersonalInformation = () => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+    useOutletContext<
+      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+    >();
+
+  if (accessControl) accessControl();
 
   const personalInformation = useMemo(
     () => ({
