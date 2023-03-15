@@ -252,7 +252,7 @@ export const PIAFormIntake = () => {
         <div className="richText" id="initiativeScope">
           {(isReadOnly && !intakeForm.initiativeScope) ||
           (isReadOnly && intakeForm.initiativeScope === '') ? (
-            <p>Not answered</p>
+            <p><i>Not answered</i></p>
           ) : isReadOnly ? (
             <MDEditor.Markdown source={intakeForm.initiativeScope} />
           ) : (
