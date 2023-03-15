@@ -8,12 +8,16 @@ import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
+import { useLocation } from 'react-router-dom';
 
 export const piaFormSideNavPages = (
   pia: IPiaForm,
   isEditMode = false,
   isNewForm = false,
 ): INavbarItem[] => {
+  
+  const { pathname } = useLocation();
+
   // This will change once Next Steps tab is implemented
   const showPostIntakeTabs =
     (pia?.hasAddedPiToDataElements === true ||
@@ -26,6 +30,14 @@ export const piaFormSideNavPages = (
     ? routes.PIA_INTAKE_EDIT
     : routes.PIA_INTAKE_VIEW;
 
+    const checkNextSteps = ():boolean => {
+      if (pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id})) {
+        return true;
+      } else {
+        return false;
+      } 
+    }
+
   return [
     {
       id: 1,
@@ -37,7 +49,7 @@ export const piaFormSideNavPages = (
       id: 2,
       label: 'Next steps',
       link: buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id }),
-      enable: false, // enable them in subsequent tickets
+      enable: checkNextSteps(), // enable them in subsequent tickets
     },
     {
       id: 3,
