@@ -10,7 +10,6 @@ import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
-<<<<<<< HEAD
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
     useOutletContext<
@@ -18,17 +17,6 @@ export const SecurityPersonalInformation = () => {
     >();
 
   if (accessControl) accessControl();
-=======
-interface IComponentProps {
-  isReadOnly: boolean;
-}
-
-export const SecurityPersonalInformation = (props: IComponentProps) => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
->>>>>>> 1e55b5f5 (Introduce readOnly prop.)
-
-  const { isReadOnly } = props;
 
   const defaultState: ISecurityPersonalInformation = useMemo(
     () => ({
@@ -88,93 +76,40 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
             {Messages.FormElements.DigitalTools.SectionTitle.en}
           </h3>
           <div className="drop-shadow section__padding-inline bg-white section__padding-block section-border-radius">
-            <p>
-              <strong>
-                {
-                  Messages.FormElements.DigitalTools.InvolveDigitalTools
-                    .Question.en
-                }
-              </strong>
-            </p>
-            <div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="InvolveDigitalTools"
-                  value={YesNoInput.YES}
-                  checked={
-                    securityPersonalInformationForm?.digitalToolsAndSystems
-                      ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
-                    YesNoInput.YES
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems',
-                    )
-                  }
-                />
-                Yes
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="InvolveDigitalTools"
-                  value="NO"
-                  checked={
-                    securityPersonalInformationForm?.digitalToolsAndSystems
-                      ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
-                    'NO'
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems',
-                    )
-                  }
-                />
-                No
-              </div>
-            </div>
-            {securityPersonalInformationForm?.digitalToolsAndSystems
-              .toolsAndAssessment.involveDigitalToolsAndSystems ===
-              YesNoInput.YES && (
-              <div>
-                <p className="callout-container section__margin-block">
-                  {
-                    Messages.FormElements.DigitalTools.InvolveDigitalTools.Note
-                      .en
-                  }
-                </p>
-              </div>
-            )}
-            <div className="section__padding-block">
+            {!isReadOnly ? (
               <p>
                 <strong>
                   {
-                    Messages.FormElements.DigitalTools.SecurityAssesment
+                    Messages.FormElements.DigitalTools.InvolveDigitalTools
                       .Question.en
                   }
                 </strong>
               </p>
-              <div className="">
+            ) : (
+              <h4>
+                {
+                  Messages.FormElements.DigitalTools.InvolveDigitalTools
+                    .Question.en
+                }
+              </h4>
+            )}
+            {!isReadOnly ? (
+              <div>
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="SecurityAssesment"
+                    name="InvolveDigitalTools"
                     value={YesNoInput.YES}
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.toolsAndAssessment?.haveSecurityAssessment ===
+                        ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
                       YesNoInput.YES
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment',
+                        'digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems',
                       )
                     }
                   />
@@ -184,97 +119,228 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="SecurityAssesment"
-                    value="NO"
+                    name="InvolveDigitalTools"
+                    value={YesNoInput.NO}
                     checked={
                       securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.toolsAndAssessment?.haveSecurityAssessment === 'NO'
+                        ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
+                      YesNoInput.NO
                     }
                     onChange={(e) =>
                       stateChangeHandler(
                         e.target.value,
-                        'digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment',
+                        'digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems',
                       )
                     }
                   />
                   No
                 </div>
               </div>
+            ) : (
+              <p>
+                {securityPersonalInformationForm.digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems.charAt(
+                  0,
+                )}
+                {securityPersonalInformationForm.digitalToolsAndSystems.toolsAndAssessment.involveDigitalToolsAndSystems
+                  .slice(1)
+                  .toLowerCase()}
+              </p>
+            )}
+            {securityPersonalInformationForm?.digitalToolsAndSystems
+              .toolsAndAssessment.involveDigitalToolsAndSystems ===
+              YesNoInput.YES &&
+              !isReadOnly && (
+                <div>
+                  <p className="callout-container section__margin-block">
+                    {
+                      Messages.FormElements.DigitalTools.InvolveDigitalTools
+                        .Note.en
+                    }
+                  </p>
+                </div>
+              )}
+            <div className="section__padding-block">
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.en
+                    }
+                  </strong>
+                </p>
+              ) : (
+                <h4>
+                  {
+                    Messages.FormElements.DigitalTools.SecurityAssesment
+                      .Question.en
+                  }
+                </h4>
+              )}
+              {!isReadOnly ? (
+                <div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="SecurityAssesment"
+                      value={YesNoInput.YES}
+                      checked={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.toolsAndAssessment?.haveSecurityAssessment ===
+                        YesNoInput.YES
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="SecurityAssesment"
+                      value="NO"
+                      checked={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.toolsAndAssessment?.haveSecurityAssessment === 'NO'
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment',
+                        )
+                      }
+                    />
+                    No
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  {securityPersonalInformationForm.digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment.charAt(
+                    0,
+                  )}
+                  {securityPersonalInformationForm.digitalToolsAndSystems.toolsAndAssessment.haveSecurityAssessment
+                    .slice(1)
+                    .toLowerCase()}
+                </p>
+              )}
             </div>
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
-            .toolsAndAssessment.haveSecurityAssessment === 'NO' && (
+            .toolsAndAssessment.haveSecurityAssessment === YesNoInput.NO && (
             <div className="bg-white section__padding-block section__margin-block section__padding-inline section-border-radius">
-              <p>
-                <strong>
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {Messages.FormElements.DigitalTools.Storage.Question.en}
+                  </strong>
+                </p>
+              ) : (
+                <h4>
                   {Messages.FormElements.DigitalTools.Storage.Question.en}
-                </strong>
-              </p>
-              <div className="">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="Storage"
-                    value={YesNoInput.YES}
-                    checked={
-                      securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.onGovServers === YesNoInput.YES
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'digitalToolsAndSystems.storage.onGovServers',
-                      )
-                    }
-                  />
-                  Yes
+                </h4>
+              )}
+              {!isReadOnly ? (
+                <div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="Storage"
+                      value={YesNoInput.YES}
+                      checked={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.storage?.onGovServers === YesNoInput.YES
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'digitalToolsAndSystems.storage.onGovServers',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="Storage"
+                      value={YesNoInput.NO}
+                      checked={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.storage?.onGovServers === YesNoInput.NO
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'digitalToolsAndSystems.storage.onGovServers',
+                        )
+                      }
+                    />
+                    No
+                  </div>
                 </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="Storage"
-                    value="NO"
-                    checked={
-                      securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.onGovServers === 'NO'
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'digitalToolsAndSystems.storage.onGovServers',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </div>
+              ) : (
+                <p>{`${securityPersonalInformationForm.digitalToolsAndSystems.storage.onGovServers.charAt(
+                  0,
+                )}${securityPersonalInformationForm.digitalToolsAndSystems.storage.onGovServers
+                  .slice(1)
+                  .toLowerCase()}`}</p>
+              )}
               {securityPersonalInformationForm?.digitalToolsAndSystems.storage
-                .onGovServers === 'NO' && (
+                .onGovServers === YesNoInput.NO && (
                 <div className="section__padding-block">
-                  <div>
-                    <strong>
+                  {!isReadOnly ? (
+                    <p>
+                      <strong>
+                        {
+                          Messages.FormElements.DigitalTools.StorageDescription
+                            .Question.en
+                        }
+                      </strong>
+                    </p>
+                  ) : (
+                    <h4>
                       {
                         Messages.FormElements.DigitalTools.StorageDescription
                           .Question.en
                       }
-                    </strong>
-                  </div>
-                  <MDEditor
-                    preview="edit"
-                    value={
-                      securityPersonalInformationForm?.digitalToolsAndSystems
-                        ?.storage?.whereDetails || ''
-                    }
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value,
-                        'digitalToolsAndSystems.storage.whereDetails',
-                      )
-                    }
-                  />
+                    </h4>
+                  )}
+                  {!isReadOnly ? (
+                    <MDEditor
+                      preview="edit"
+                      value={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.storage?.whereDetails || ''
+                      }
+                      onChange={(value) =>
+                        stateChangeHandler(
+                          value,
+                          'digitalToolsAndSystems.storage.whereDetails',
+                        )
+                      }
+                    />
+                  ) : securityPersonalInformationForm.digitalToolsAndSystems
+                      .storage.whereDetails ? (
+                    <MDEditor.Markdown
+                      source={
+                        securityPersonalInformationForm?.digitalToolsAndSystems
+                          ?.storage?.whereDetails
+                      }
+                    />
+                  ) : (
+                    <p>
+                      <i>Not answered</i>
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -286,12 +352,18 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
             {Messages.FormElements.AccessPI.SectionTitle.en}
           </h3>
           <div className="drop-shadow section__padding-inline bg-white section__padding-block section-border-radius">
-            <p>
-              <strong>
-                {Messages.FormElements.AccessPI.SectionSuHeading.en}
-              </strong>
-            </p>
-            <p>{Messages.FormElements.AccessPI.SectionDescription.en}</p>
+            {!isReadOnly ? (
+              <>
+                <p>
+                  <strong>
+                    {Messages.FormElements.AccessPI.SectionSuHeading.en}
+                  </strong>
+                </p>
+                <p>{Messages.FormElements.AccessPI.SectionDescription.en}</p>
+              </>
+            ) : (
+              <h4>{Messages.FormElements.AccessPI.SectionSuHeading.en}</h4>
+            )}
             <div>
               <div className="section__margin-block checkbox-default">
                 <Checkbox
@@ -304,6 +376,7 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
                     Messages.FormElements.AccessPI.OnlyCertainRolesAccessInfo
                       .Question.en
                   }
+                  readOnly={isReadOnly}
                   onChange={(e) =>
                     stateChangeHandler(
                       e.target.checked ? YesNoInput.YES : YesNoInput.NO,
@@ -320,6 +393,7 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
                   }
                   value="NeedAccess"
                   label={Messages.FormElements.AccessPI.NeedAccess.Question.en}
+                  readOnly={isReadOnly}
                   onChange={(e) =>
                     stateChangeHandler(
                       e.target.checked ? YesNoInput.YES : YesNoInput.NO,
@@ -336,6 +410,7 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
                   }
                   value="useAuditLogs"
                   label={Messages.FormElements.AccessPI.auditLogs.Question.en}
+                  readOnly={isReadOnly}
                   onChange={(e) =>
                     stateChangeHandler(
                       e.target.checked ? YesNoInput.YES : YesNoInput.NO,
@@ -346,27 +421,50 @@ export const SecurityPersonalInformation = (props: IComponentProps) => {
               </div>
             </div>
             <div className="section__padding-block">
-              <div>
-                <strong>
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {
+                      Messages.FormElements.AccessPI.DescribeStratergies
+                        .Question.en
+                    }
+                  </strong>
+                </p>
+              ) : (
+                <h4>
                   {
                     Messages.FormElements.AccessPI.DescribeStratergies.Question
                       .en
                   }
-                </strong>
-              </div>
-              <MDEditor
-                preview="edit"
-                value={
-                  securityPersonalInformationForm.accessToPersonalInformation
-                    .additionalStrategies || ''
-                }
-                onChange={(value) =>
-                  stateChangeHandler(
-                    value,
-                    'accessToPersonalInformation.additionalStrategies',
-                  )
-                }
-              />
+                </h4>
+              )}
+              {!isReadOnly ? (
+                <MDEditor
+                  preview="edit"
+                  value={
+                    securityPersonalInformationForm.accessToPersonalInformation
+                      .additionalStrategies || ''
+                  }
+                  onChange={(value) =>
+                    stateChangeHandler(
+                      value,
+                      'accessToPersonalInformation.additionalStrategies',
+                    )
+                  }
+                />
+              ) : securityPersonalInformationForm.accessToPersonalInformation
+                  .additionalStrategies ? (
+                <MDEditor.Markdown
+                  source={
+                    securityPersonalInformationForm.accessToPersonalInformation
+                      .additionalStrategies
+                  }
+                />
+              ) : (
+                <p>
+                  <i>Not answered</i>
+                </p>
+              )}
             </div>
           </div>
         </section>
