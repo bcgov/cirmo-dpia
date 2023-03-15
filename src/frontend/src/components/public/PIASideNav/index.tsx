@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import NavBar from '../../common/Navbar';
-import { piaFormSideNavPages } from './pia-form-sideNav-pages';
+import { PiaFormSideNavPages } from './pia-form-sideNav-pages';
 
 const PiaSideNav = ({
   pia,
@@ -22,7 +22,7 @@ const PiaSideNav = ({
 
   return (
     <NavBar
-      pages={piaFormSideNavPages(pia, isEditMode, isNewForm)}
+      pages={PiaFormSideNavPages(pia, isEditMode, isNewForm)}
       CSSclass="sidenav"
     />
   );
