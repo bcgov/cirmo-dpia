@@ -12,8 +12,12 @@ import { IPiaFormIntake } from './pia-form-intake.interface';
 import PIAIntakeGeneralInformation from './viewGeneralInformation';
 
 export const PIAFormIntake = () => {
-  const [pia, piaStateChangeHandler, isReadOnly] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
+  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+    useOutletContext<
+      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+    >();
+
+  if (accessControl) accessControl();
 
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),

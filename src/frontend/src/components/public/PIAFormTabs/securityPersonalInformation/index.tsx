@@ -11,8 +11,12 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 export const SecurityPersonalInformation = () => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+    useOutletContext<
+      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+    >();
+
+  if (accessControl) accessControl();
 
   const defaultState: ISecurityPersonalInformation = useMemo(
     () => ({

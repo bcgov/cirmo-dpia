@@ -27,6 +27,16 @@ export type PiaStateChangeHandlerType = (
 
 export type PiaFormOpenMode = 'edit' | 'view';
 
+export enum SubmitButtonTextEnum {
+  INTAKE = 'Submit Pia intake',
+  FORM = 'Submit',
+}
+
+export enum PiaFormSubmissionTypeEnum {
+  PI,
+  DELEGATED,
+}
+
 export interface ILastSaveAlterInfo {
   message: string;
   type: SupportedAlertTypes;
@@ -100,6 +110,33 @@ const PIAFormPage = () => {
     pia?.isNextStepsSeenForDelegatedFlow,
     pia?.isNextStepsSeenForNonDelegatedFlow,
   ]);
+
+  const [submitButtonText, setSubmitButtonText] =
+    useState<SubmitButtonTextEnum>(SubmitButtonTextEnum.INTAKE);
+
+  useEffect(() => {
+    const onIntakePage =
+      pathname ===
+      buildDynamicPath(
+        mode === 'edit' ? routes.PIA_INTAKE_EDIT : routes.PIA_INTAKE_VIEW,
+        {
+          id: pia?.id,
+        },
+      );
+
+    if (onIntakePage) {
+      setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
+    } else {
+      setSubmitButtonText(SubmitButtonTextEnum.FORM);
+    }
+  }, [mode, pathname, pia?.id]);
+
+  // DO NOT allow user to edit in the MPO review status.
+  const accessControl = useCallback(() => {
+    if (pia?.status === PiaStatuses.MPO_REVIEW && mode === 'edit') {
+      navigate(buildDynamicPath(routes.PIA_VIEW, { id: pia?.id }));
+    }
+  }, [mode, navigate, pia?.id, pia?.status]);
 
   const [message, setMessage] = useState<string>('');
   //
@@ -355,9 +392,10 @@ const PIAFormPage = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    if (!isIntakeSubmitted) {
+    // if the user is in pia intake tab, then show submit pia intake; else submit full form
+    if (submitButtonText === SubmitButtonTextEnum.INTAKE) {
       handleShowModal('submitPiaIntake');
-    } else {
+    } else if (submitButtonText === SubmitButtonTextEnum.FORM) {
       handleShowModal('submitPiaForm');
     }
   };
@@ -549,11 +587,11 @@ const PIAFormPage = () => {
       <PIASubHeader
         pia={pia}
         lastSaveAlertInfo={lastSaveAlertInfo}
+        primaryButtonText={submitButtonText}
         mode={mode}
         onSaveChangeClick={handleSaveChanges}
         onEditClick={handleEdit}
         onSubmitClick={handleValidation}
-        isIntakeSubmitted={isIntakeSubmitted}
       />
       <div className="bcgovPageContainer background background__form wrapper">
         {message && (
@@ -576,7 +614,14 @@ const PIAFormPage = () => {
           <section className="form__container ms-md-auto content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
-              <Outlet context={[pia, piaStateChangeHandler, formReadOnly]} />
+              <Outlet
+                context={[
+                  pia,
+                  piaStateChangeHandler,
+                  formReadOnly,
+                  accessControl,
+                ]}
+              />
             ) : (
               <div className="w-100">
                 <div className="d-flex justify-content-center">
