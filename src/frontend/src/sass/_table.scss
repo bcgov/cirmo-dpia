@@ -18,34 +18,22 @@
      } 
     }
 
-    /* we may not need this 
-    & > tbody > tr > td:nth-child(4) {
-      color: green;
-      font-weight: 700;
-      display: flex;
-      gap: 0.5em;
-      padding-right: 0;
-
-      &::before {
-        content: '\A';
-        width: 0.5em;
-        height: 0.5em;
-        border-radius: 50%;
-        background-color: green;
-        align-self: center;
-        display: inline-block;
-        margin-top: 0.17em;
-      }
-    }
-*/
     & > tbody {
       & > tr {
         & > td:first-child {
           width: 50ch;
         }
 
-        & > td.no-padding {
-          padding: 0;
+        & > td {
+
+          &.no-padding {
+            padding: 0;
+          }
+
+          & > p > label {
+            font-weight: 700;
+            margin-inline-end: 1em;
+          }
   
           & > a {
             margin-inline: auto 0;

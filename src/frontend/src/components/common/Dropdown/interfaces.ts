@@ -14,4 +14,5 @@ export interface IDropdown {
   options: IDropdownOptions[];
   changeHandler?: ChangeEventHandler<HTMLSelectElement>;
   required?: boolean;
+  readOnly?: boolean;
 }

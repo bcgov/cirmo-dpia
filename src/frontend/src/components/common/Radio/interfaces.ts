@@ -1,4 +1,3 @@
-import { ChangeEventHandler } from 'react';
 import { YesNoInput } from '../../../types/enums/yes-no.enum';
 
 export interface IRadio {

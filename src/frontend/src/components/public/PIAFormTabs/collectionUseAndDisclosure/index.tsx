@@ -13,9 +13,15 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { ColumnMetaData, Table } from '../../../common/Table';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
-const PIACollectionUseAndDisclosure = () => {
+interface IComponentProps {
+  isReadOnly?: boolean;
+}
+
+const PIACollectionUseAndDisclosure = (props: IComponentProps) => {
   const [pia, piaStateChangeHandler] =
     useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+
+  const { isReadOnly } = props;
 
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
@@ -92,6 +98,7 @@ const PIACollectionUseAndDisclosure = () => {
           onChangeHandler={(updatedData) => {
             stateChangeHandler(updatedData, 'steps');
           }}
+          readOnly={isReadOnly}
         />
       </section>
 
@@ -99,53 +106,98 @@ const PIACollectionUseAndDisclosure = () => {
 
       <section className=" card pt-5 px-5">
         <div className="form-group">
-          <label htmlFor="collectionNoticeDrafter">
-            {Messages.CollectionNotice.DrafterInput.Title.PartOne.en}
-            <a
-              href={Messages.CollectionNotice.DrafterInput.Link.en}
-              rel="noreferrer external"
-              target="_blank"
-            >
+          {!isReadOnly ? (
+            <label htmlFor="collectionNoticeDrafter">
+              {Messages.CollectionNotice.DrafterInput.Title.PartOne.en}
+              <a
+                href={Messages.CollectionNotice.DrafterInput.Link.en}
+                rel="noreferrer external"
+                target="_blank"
+              >
+                {Messages.CollectionNotice.DrafterInput.Title.LinkText.en}
+                <FontAwesomeIcon
+                  className="helper-text__link-icon"
+                  icon={faUpRightFromSquare}
+                />
+              </a>
+              {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
+            </label>
+          ) : (
+            <h4>
+              {Messages.CollectionNotice.DrafterInput.Title.PartOne.en}
               {Messages.CollectionNotice.DrafterInput.Title.LinkText.en}
-              <FontAwesomeIcon
-                className="helper-text__link-icon"
-                icon={faUpRightFromSquare}
-              />
-            </a>
-            {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
-          </label>
-
-          <div className="section__question-hint">
-            {Messages.CollectionNotice.DrafterInput.Description.en}
-          </div>
+              {Messages.CollectionNotice.DrafterInput.Title.PartThree.en}
+            </h4>
+          )}
+          {!isReadOnly && (
+            <div className="section__question-hint">
+              {Messages.CollectionNotice.DrafterInput.Description.en}
+            </div>
+          )}
           <div className="richText" id="drafterDisclosure">
-            <MDEditor
-              id="collectionNoticeDrafter"
-              preview="edit"
-              value={
-                collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
-              }
-              defaultTabEnable={true}
-              onChange={(value) => {
-                stateChangeHandler(value, 'collectionNotice.drafterInput');
-              }}
-            />
+            {(isReadOnly &&
+              !collectionUseAndDisclosureForm.collectionNotice.drafterInput) ||
+            (isReadOnly &&
+              collectionUseAndDisclosureForm.collectionNotice.drafterInput ===
+                '') ? (
+              <p>Not answered</p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown
+                source={
+                  collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
+                }
+              />
+            ) : (
+              <MDEditor
+                id="collectionNoticeDrafter"
+                preview="edit"
+                value={
+                  collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
+                }
+                defaultTabEnable={true}
+                onChange={(value) => {
+                  stateChangeHandler(value, 'collectionNotice.drafterInput');
+                }}
+              />
+            )}
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="collectionNoticeMPO" className="pt-5">
-            {Messages.CollectionNotice.MpoInput.Title.en}
-          </label>
+          {!isReadOnly ? (
+            <label htmlFor="collectionNoticeMPO" className="pt-5">
+              {Messages.CollectionNotice.MpoInput.Title.en}
+            </label>
+          ) : (
+            <h4 className="pt-5">
+              {Messages.CollectionNotice.MpoInput.Title.en}
+            </h4>
+          )}
           <div className="richText pb-4" id="MPOCommentsDisclosure">
-            <MDEditor
-              id="collectionNoticeMPO"
-              preview={isMPORole() ? 'edit' : 'preview'}
-              value={collectionUseAndDisclosureForm?.collectionNotice?.mpoInput}
-              defaultTabEnable={true}
-              onChange={(value) => {
-                stateChangeHandler(value, 'collectionNotice.mpoInput');
-              }}
-            />
+            {(isReadOnly &&
+              !collectionUseAndDisclosureForm.collectionNotice.mpoInput) ||
+            (isReadOnly &&
+              collectionUseAndDisclosureForm.collectionNotice.mpoInput ===
+                '') ? (
+              <p>Not answered</p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown
+                source={
+                  collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
+                }
+              />
+            ) : (
+              <MDEditor
+                id="collectionNoticeMPO"
+                preview={isMPORole() ? 'edit' : 'preview'}
+                value={
+                  collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
+                }
+                defaultTabEnable={true}
+                onChange={(value) => {
+                  stateChangeHandler(value, 'collectionNotice.mpoInput');
+                }}
+              />
+            )}
           </div>
         </div>
       </section>
