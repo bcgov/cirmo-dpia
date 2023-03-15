@@ -112,7 +112,10 @@ const Router = () => {
                 path="edit"
                 element={<PIAAgreementsAndInformationBanks />}
               />
-              <Route path="view" element={comingSoonBanner} />
+              <Route
+                path="view"
+                element={<PIAAgreementsAndInformationBanks />}
+              />
             </Route>
 
             <Route path="additionalRisks">
