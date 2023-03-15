@@ -16,17 +16,12 @@ import PIBInputText from './viewPIBTextInput';
 import ISAInputText from './viewISATextInput';
 
 const PIAAgreementsAndInformationBanks = () => {
-<<<<<<< HEAD
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
     useOutletContext<
       [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
     >();
 
   if (accessControl) accessControl();
-=======
-  const [pia, piaStateChangeHandler, isReadOnly] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType, boolean]>();
->>>>>>> 6c735670 (update aib tab for view mode)
 
   const defaultState: IAgreementsAndInformationBanks = useMemo(
     () => ({
