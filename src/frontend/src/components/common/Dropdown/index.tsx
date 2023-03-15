@@ -31,8 +31,12 @@ const Dropdown = ({
               </option>
             ))}
           </select>
-        ) : (
+        ) : value ? (
           <p>{value.split('_').join(' ')}</p>
+        ) : (
+          <p>
+            <i>Not answered</i>
+          </p>
         )}
       </div>
     </div>

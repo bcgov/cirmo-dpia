@@ -6,8 +6,9 @@ const Radio = ({
   value,
   changeHandler,
   isDefault,
+  readOnly = false,
 }: IRadio) => {
-  return (
+  return !readOnly ? (
     <label key={index} className="form__input-label">
       <input
         type="radio"
@@ -18,6 +19,8 @@ const Radio = ({
       />
       {`${value.charAt(0)}${value.slice(1).toLowerCase()}`}
     </label>
+  ) : (
+    <p>{`${value.charAt(0)}${value.slice(1).toLowerCase()}`}</p>
   );
 };
 

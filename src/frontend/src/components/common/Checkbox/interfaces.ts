@@ -8,5 +8,6 @@ export interface ICheckbox {
   tooltipText?: string;
   isLink?: boolean;
   linkURL?: string;
+  readOnly?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }

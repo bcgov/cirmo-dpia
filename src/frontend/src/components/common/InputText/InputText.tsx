@@ -81,8 +81,12 @@ const InputText = ({
           required={required}
           disabled={isDisabled}
         />
-      ) : (
+      ) : value ? (
         <p>{value}</p>
+      ) : (
+        <p>
+          <i>Not answered</i>
+        </p>
       )}
     </div>
   );
