@@ -18,7 +18,7 @@ export default {
           en: 'You may need to involve your MPO and possibly your Ministry Information Security Officer (MISO). Together you can assess whether your initiative needs a security assessment',
         },
       },
-      SecurityAssesment: {
+      SecurityAssessment: {
         Question: {
           PartOne: {
             en: `Do you or will you have a `,
