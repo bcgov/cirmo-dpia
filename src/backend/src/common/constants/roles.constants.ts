@@ -114,6 +114,6 @@ export const Roles: Record<RolesEnum, IRoleInfo> = {
   },
   [RolesEnum.MPO_EMCR]: {
     user: UserTypesEnum.MPO,
-    ministry: GovMinistriesEnum.EDUCATION_AND_CHILD_CARE,
+    ministry: GovMinistriesEnum.EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS,
   },
 };
