@@ -18,9 +18,26 @@ export default {
           en: 'You may need to involve your MPO and possibly your Ministry Information Security Officer (MISO). Together you can assess whether your initiative needs a security assessment',
         },
       },
-      SecurityAssesment: {
+      SecurityAssessment: {
         Question: {
-          en: 'Do you or will you have a security assessment to help you ensure the initiative meets the reasonable security requirements of FOIPPA section 30?',
+          PartOne: {
+            en: `Do you or will you have a `,
+          },
+          LinkTextOne: {
+            en: `security assessment`,
+          },
+          LinkHrefOne:
+            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/information-security/defensible-security/security-prerequisites/security-assessment',
+          PartTwo: {
+            en: ` to help you ensure the initiative meets the reasonable security requirements of `,
+          },
+          LinkTextTwo: {
+            en: `FOIPPA section 30`,
+          },
+          LinkHrefTwo: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/protection-personal-information`,
+          PartThree: {
+            en: `?`,
+          },
         },
       },
       Storage: {
