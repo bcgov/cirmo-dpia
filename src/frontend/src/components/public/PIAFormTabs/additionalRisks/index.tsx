@@ -63,6 +63,7 @@ const PIAAdditionalRisks = () => {
           onChangeHandler={(updatedData) => {
             stateChangeHandler(updatedData, 'risks');
           }}
+          readOnly={isReadOnly}
         />
       </section>
     </>
