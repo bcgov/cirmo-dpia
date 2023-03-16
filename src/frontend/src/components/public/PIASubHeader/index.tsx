@@ -21,6 +21,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
+  primaryButtonText,
   handleStatusChange,
   mode = 'edit',
   lastSaveAlertInfo,
