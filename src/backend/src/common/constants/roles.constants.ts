@@ -8,9 +8,9 @@ export interface IRoleInfo {
 }
 
 export const Roles: Record<RolesEnum, IRoleInfo> = {
-  [RolesEnum.MPO_AEST]: {
+  [RolesEnum.MPO_PSEF]: {
     user: UserTypesEnum.MPO,
-    ministry: GovMinistriesEnum.ADVANCED_EDUCATION_AND_SKILLS_TRAINING,
+    ministry: GovMinistriesEnum.POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS,
   },
   [RolesEnum.MPO_AGRI]: {
     user: UserTypesEnum.MPO,
@@ -64,17 +64,17 @@ export const Roles: Record<RolesEnum, IRoleInfo> = {
     user: UserTypesEnum.MPO,
     ministry: GovMinistriesEnum.INDIGENOUS_RELATIONS_AND_RECONCILIATION,
   },
-  [RolesEnum.MPO_JERI]: {
+  [RolesEnum.MPO_JEDI]: {
     user: UserTypesEnum.MPO,
-    ministry: GovMinistriesEnum.JOBS_ECONOMIC_RECOVERY_AND_INNOVATION,
+    ministry: GovMinistriesEnum.JOBS_ECONOMIC_DEVELOPMENT_AND_INNOVATION,
   },
   [RolesEnum.MPO_LBR]: {
     user: UserTypesEnum.MPO,
     ministry: GovMinistriesEnum.LABOUR,
   },
-  [RolesEnum.MPO_LWRS]: {
+  [RolesEnum.MPO_WLRS]: {
     user: UserTypesEnum.MPO,
-    ministry: GovMinistriesEnum.LAND_WATER_AND_RESOURCE_STEWARDSHIP,
+    ministry: GovMinistriesEnum.WATER_LAND_AND_RESOURCE_STEWARDSHIP,
   },
   [RolesEnum.MPO_LDBR]: {
     user: UserTypesEnum.MPO,
@@ -94,8 +94,7 @@ export const Roles: Record<RolesEnum, IRoleInfo> = {
   },
   [RolesEnum.MPO_PSSG]: {
     user: UserTypesEnum.MPO,
-    ministry:
-      GovMinistriesEnum.PUBLIC_SAFETY_AND_SOLICITOR_GENERAL_AND_EMERGENCY_BC,
+    ministry: GovMinistriesEnum.PUBLIC_SAFETY_AND_SOLICITOR_GENERAL,
   },
   [RolesEnum.MPO_SDPR]: {
     user: UserTypesEnum.MPO,
@@ -108,5 +107,13 @@ export const Roles: Record<RolesEnum, IRoleInfo> = {
   [RolesEnum.MPO_TRAN]: {
     user: UserTypesEnum.MPO,
     ministry: GovMinistriesEnum.TRANSPORTATION_AND_INFRASTRUCTURE,
+  },
+  [RolesEnum.MPO_HOUS]: {
+    user: UserTypesEnum.MPO,
+    ministry: GovMinistriesEnum.HOUSING,
+  },
+  [RolesEnum.MPO_EMCR]: {
+    user: UserTypesEnum.MPO,
+    ministry: GovMinistriesEnum.EDUCATION_AND_CHILD_CARE,
   },
 };
