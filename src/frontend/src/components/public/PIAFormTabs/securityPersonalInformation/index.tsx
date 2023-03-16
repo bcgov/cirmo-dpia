@@ -164,41 +164,41 @@ export const SecurityPersonalInformation = () => {
                 <p>
                   <strong>
                     {
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.PartOne.en
                     }
                     <a
                       href={
-                        Messages.FormElements.DigitalTools.SecurityAssesment
+                        Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkHrefOne
                       }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {
-                        Messages.FormElements.DigitalTools.SecurityAssesment
+                        Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkTextOne.en
                       }
                     </a>
                     {
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.PartTwo.en
                     }
                     <a
                       href={
-                        Messages.FormElements.DigitalTools.SecurityAssesment
+                        Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkHrefTwo
                       }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {
-                        Messages.FormElements.DigitalTools.SecurityAssesment
+                        Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkTextTwo.en
                       }
                     </a>
                     {
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.PartThree.en
                     }
                   </strong>
@@ -206,41 +206,41 @@ export const SecurityPersonalInformation = () => {
               ) : (
                 <h4>
                   {
-                    Messages.FormElements.DigitalTools.SecurityAssesment
+                    Messages.FormElements.DigitalTools.SecurityAssessment
                       .Question.PartOne.en
                   }
                   <a
                     href={
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkHrefOne
                     }
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkTextOne.en
                     }
                   </a>
                   {
-                    Messages.FormElements.DigitalTools.SecurityAssesment
+                    Messages.FormElements.DigitalTools.SecurityAssessment
                       .Question.PartTwo.en
                   }
                   <a
                     href={
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkHrefTwo
                     }
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {
-                      Messages.FormElements.DigitalTools.SecurityAssesment
+                      Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkTextTwo.en
                     }
                   </a>
                   {
-                    Messages.FormElements.DigitalTools.SecurityAssesment
+                    Messages.FormElements.DigitalTools.SecurityAssessment
                       .Question.PartThree.en
                   }
                 </h4>
@@ -251,7 +251,7 @@ export const SecurityPersonalInformation = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="SecurityAssesment"
+                      name="SecurityAssessment"
                       value={YesNoInput.YES}
                       checked={
                         securityPersonalInformationForm?.digitalToolsAndSystems
@@ -271,7 +271,7 @@ export const SecurityPersonalInformation = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="SecurityAssesment"
+                      name="SecurityAssessment"
                       value="NO"
                       checked={
                         securityPersonalInformationForm?.digitalToolsAndSystems
