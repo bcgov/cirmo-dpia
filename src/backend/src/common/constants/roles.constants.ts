@@ -8,7 +8,7 @@ export interface IRoleInfo {
 }
 
 export const Roles: Record<RolesEnum, IRoleInfo> = {
-  [RolesEnum.MPO_PSEF]: {
+  [RolesEnum.MPO_PSFS]: {
     user: UserTypesEnum.MPO,
     ministry: GovMinistriesEnum.POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS,
   },

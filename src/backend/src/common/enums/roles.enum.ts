@@ -1,5 +1,5 @@
 export enum RolesEnum {
-  MPO_PSEF = 'MPO-PSEF',
+  MPO_PSFS = 'MPO-PSFS',
   MPO_AGRI = 'MPO-AGRI',
   MPO_AG = 'MPO-AG',
   MPO_PSA = 'MPO-PSA',

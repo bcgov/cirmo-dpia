@@ -4,7 +4,7 @@ import { IConstant } from '../interfaces/constants.inteface';
 export const GovMinistries: IConstant = {
   [GovMinistriesEnum.POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS]: {
     label: 'Post-Secondary Education and Future Skills',
-    code: 'PSEF',
+    code: 'PSFS',
   },
   [GovMinistriesEnum.AGRICULTURE_AND_FOOD]: {
     label: 'Agriculture and Food',
