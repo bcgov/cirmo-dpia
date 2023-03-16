@@ -124,7 +124,10 @@ const PIAFormPage = () => {
         },
       );
 
-    if (onIntakePage) {
+    const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
+
+    // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
+    if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
       setSubmitButtonText(SubmitButtonTextEnum.FORM);
