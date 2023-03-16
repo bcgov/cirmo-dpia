@@ -14,7 +14,12 @@ export default {
         en: 'How will you make sure that the personal information is accurate and complete?',
       },
       HelperText: {
-        en: 'FOIPPA section 28 states that a public body must make every reasonable effort to ensure that an individual’s personal information is accurate and complete.',
+        en: ' states that a public body must make every reasonable effort to ensure that an individual’s personal information is accurate and complete.',
+        LinkText: {
+          en: `FOIPPA section 28 `,
+        },
+        LinkHref:
+          'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/accuracy-personal-information',
       },
     },
     RequestCorrection: {
@@ -26,17 +31,42 @@ export default {
           en: 'Do you have a process in place to request personal information?',
         },
         HelperText: {
-          en: 'FOIPPA gives an individual the right to request correction of errors or omissions to their personal information. You must have a process in place to respond to these requests.',
+          en: ' gives an individual the right to request correction of errors or omissions to their personal information. You must have a process in place to respond to these requests.',
+          LinkText: {
+            en: `FOIPPA `,
+          },
+          LinkHref:
+            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
         },
       },
       willDocument: {
         Question: {
-          en: 'Sometimes it’s not possible to correct the personal information. FOIPPA requires that you make a note on the record about the request for correction if you’re not able to correct the record itself. Will you document the request to correct or annotate the record?',
+          PartOne: {
+            en: 'Sometimes it’s not possible to correct the personal information. ',
+          },
+          PartTwo: {
+            en: ` requires that you make a note on the record about the request for correction if you’re not able to correct the record itself. Will you document the request to correct or annotate the record?`,
+          },
+          LinkText: {
+            en: `FOIPPA `,
+          },
+          LinkHref:
+            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
         },
       },
       willConductNotifications: {
         Question: {
-          en: 'If you receive a request for correction from an individual and you know you disclosed their personal information in the last year, FOIPPA requires you to notify the other public body or third party recipient of the request for correction. Will you ensure that you conduct these notifications when necessary?',
+          PartOne: {
+            en: 'If you receive a request for correction from an individual and you know you disclosed their personal information in the last year, ',
+          },
+          PartTwo: {
+            en: ` requires you to notify the other public body or third party recipient of the request for correction. Will you ensure that you conduct these notifications when necessary?`,
+          },
+          LinkText: {
+            en: `FOIPPA `,
+          },
+          LinkHref:
+            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
         },
       },
     },

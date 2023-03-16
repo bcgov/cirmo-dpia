@@ -82,7 +82,17 @@ export const AccuracyCorrectionAndRetention = () => {
                 <p>
                   <strong>{Messages.FormElements.Accuracy.Question.en}</strong>
                 </p>
-                <p>{Messages.FormElements.Accuracy.HelperText.en}</p>
+                <p>
+                  <a
+                    href={Messages.FormElements.Accuracy.HelperText.LinkHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {Messages.FormElements.Accuracy.HelperText.LinkText.en}
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
+                  </a>
+                  {Messages.FormElements.Accuracy.HelperText.en}
+                </p>
               </>
             ) : (
               <h4>{Messages.FormElements.Accuracy.Question.en}</h4>
@@ -130,6 +140,20 @@ export const AccuracyCorrectionAndRetention = () => {
                   </strong>
                 </p>
                 <p>
+                  <a
+                    href={
+                      Messages.FormElements.RequestCorrection.haveProcessinPlace
+                        .HelperText.LinkHref
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.FormElements.RequestCorrection.haveProcessinPlace
+                        .HelperText.LinkText.en
+                    }
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
+                  </a>
                   {
                     Messages.FormElements.RequestCorrection.haveProcessinPlace
                       .HelperText.en
@@ -138,9 +162,23 @@ export const AccuracyCorrectionAndRetention = () => {
               </>
             ) : (
               <h4>
+                <a
+                  href={
+                    Messages.FormElements.RequestCorrection.haveProcessinPlace
+                      .HelperText.LinkHref
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {
+                    Messages.FormElements.RequestCorrection.haveProcessinPlace
+                      .HelperText.LinkText.en
+                  }
+                  <FontAwesomeIcon icon={faUpRightFromSquare} />
+                </a>
                 {
                   Messages.FormElements.RequestCorrection.haveProcessinPlace
-                    .Question.en
+                    .HelperText.en
                 }
               </h4>
             )}
@@ -204,7 +242,25 @@ export const AccuracyCorrectionAndRetention = () => {
                   <strong>
                     {
                       Messages.FormElements.RequestCorrection.willDocument
-                        .Question.en
+                        .Question.PartOne.en
+                    }
+                    <a
+                      href={
+                        Messages.FormElements.RequestCorrection.willDocument
+                          .Question.LinkHref
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.FormElements.RequestCorrection.willDocument
+                          .Question.LinkText.en
+                      }
+                      <FontAwesomeIcon icon={faUpRightFromSquare} />
+                    </a>
+                    {
+                      Messages.FormElements.RequestCorrection.willDocument
+                        .Question.PartTwo.en
                     }
                   </strong>
                 </p>
@@ -212,7 +268,25 @@ export const AccuracyCorrectionAndRetention = () => {
                 <h4>
                   {
                     Messages.FormElements.RequestCorrection.willDocument
-                      .Question.en
+                      .Question.PartOne.en
+                  }
+                  <a
+                    href={
+                      Messages.FormElements.RequestCorrection.willDocument
+                        .Question.LinkHref
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.FormElements.RequestCorrection.willDocument
+                        .Question.LinkText.en
+                    }
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
+                  </a>
+                  {
+                    Messages.FormElements.RequestCorrection.willDocument
+                      .Question.PartTwo.en
                   }
                 </h4>
               )}
@@ -277,7 +351,25 @@ export const AccuracyCorrectionAndRetention = () => {
                   <strong>
                     {
                       Messages.FormElements.RequestCorrection
-                        .willConductNotifications.Question.en
+                        .willConductNotifications.Question.PartOne.en
+                    }
+                    <a
+                      href={
+                        Messages.FormElements.RequestCorrection
+                          .willConductNotifications.Question.LinkHref
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.FormElements.RequestCorrection
+                          .willConductNotifications.Question.LinkText.en
+                      }
+                      <FontAwesomeIcon icon={faUpRightFromSquare} />
+                    </a>
+                    {
+                      Messages.FormElements.RequestCorrection
+                        .willConductNotifications.Question.PartTwo.en
                     }
                   </strong>
                 </p>
@@ -285,7 +377,25 @@ export const AccuracyCorrectionAndRetention = () => {
                 <h4>
                   {
                     Messages.FormElements.RequestCorrection
-                      .willConductNotifications.Question.en
+                      .willConductNotifications.Question.PartOne.en
+                  }
+                  <a
+                    href={
+                      Messages.FormElements.RequestCorrection
+                        .willConductNotifications.Question.LinkHref
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.FormElements.RequestCorrection
+                        .willConductNotifications.Question.LinkText.en
+                    }
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
+                  </a>
+                  {
+                    Messages.FormElements.RequestCorrection
+                      .willConductNotifications.Question.PartTwo.en
                   }
                 </h4>
               )}

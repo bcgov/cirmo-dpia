@@ -24,7 +24,7 @@ export default {
             en: `Do you or will you have a `,
           },
           LinkTextOne: {
-            en: `security assessment`,
+            en: `security assessment `,
           },
           LinkHrefOne:
             'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/information-security/defensible-security/security-prerequisites/security-assessment',
@@ -32,11 +32,11 @@ export default {
             en: ` to help you ensure the initiative meets the reasonable security requirements of `,
           },
           LinkTextTwo: {
-            en: `FOIPPA section 30`,
+            en: `FOIPPA section 30 `,
           },
           LinkHrefTwo: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/protection-personal-information`,
           PartThree: {
-            en: `?`,
+            en: ` ?`,
           },
         },
       },
