@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
+import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 
 export const AccuracyCorrectionAndRetention = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
@@ -76,21 +77,39 @@ export const AccuracyCorrectionAndRetention = () => {
             {Messages.FormElements.Accuracy.H2Text.en}
           </h3>
           <div className="drop-shadow section__padding-inline bg-white section__padding-block ">
-            <p>
-              <strong>{Messages.FormElements.Accuracy.Question.en}</strong>
-            </p>
-            <p>{Messages.FormElements.Accuracy.HelperText.en}</p>
-            <div className="">
-              <MDEditor
-                preview="edit"
-                value={
-                  accuracyCorrectionAndRetentionForm?.accuracy?.description ||
-                  undefined
-                }
-                onChange={(value) =>
-                  stateChangeHandler(value, 'accuracy.description')
-                }
-              />
+            {!isReadOnly ? (
+              <>
+                <p>
+                  <strong>{Messages.FormElements.Accuracy.Question.en}</strong>
+                </p>
+                <p>{Messages.FormElements.Accuracy.HelperText.en}</p>
+              </>
+            ) : (
+              <h4>{Messages.FormElements.Accuracy.Question.en}</h4>
+            )}
+            <div>
+              {!isReadOnly ? (
+                <MDEditor
+                  preview="edit"
+                  value={
+                    accuracyCorrectionAndRetentionForm?.accuracy?.description ||
+                    undefined
+                  }
+                  onChange={(value) =>
+                    stateChangeHandler(value, 'accuracy.description')
+                  }
+                />
+              ) : accuracyCorrectionAndRetentionForm.accuracy?.description ? (
+                <MDEditor.Markdown
+                  source={
+                    accuracyCorrectionAndRetentionForm.accuracy?.description
+                  }
+                />
+              ) : (
+                <p>
+                  <i>Not answered</i>
+                </p>
+              )}
             </div>
           </div>
         </section>
@@ -100,31 +119,42 @@ export const AccuracyCorrectionAndRetention = () => {
             {Messages.FormElements.RequestCorrection.H2Text.en}
           </h3>
           <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <div>
-              <p>
-                <strong>
+            {!isReadOnly ? (
+              <>
+                <p>
+                  <strong>
+                    {
+                      Messages.FormElements.RequestCorrection.haveProcessinPlace
+                        .Question.en
+                    }
+                  </strong>
+                </p>
+                <p>
                   {
                     Messages.FormElements.RequestCorrection.haveProcessinPlace
-                      .Question.en
+                      .HelperText.en
                   }
-                </strong>
-              </p>
-              <p>
+                </p>
+              </>
+            ) : (
+              <h4>
                 {
                   Messages.FormElements.RequestCorrection.haveProcessinPlace
-                    .HelperText.en
+                    .Question.en
                 }
-              </p>
-              <div className="">
+              </h4>
+            )}
+            {!isReadOnly ? (
+              <>
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     type="radio"
                     name="haveProcessinPlace"
-                    value="YES"
+                    value={YesNoInput.YES}
                     checked={
                       accuracyCorrectionAndRetentionForm?.correction
-                        ?.haveProcessInPlace === 'YES' ||
+                        ?.haveProcessInPlace === YesNoInput.YES ||
                       !accuracyCorrectionAndRetentionForm?.correction
                         ?.haveProcessInPlace
                     }
@@ -142,10 +172,10 @@ export const AccuracyCorrectionAndRetention = () => {
                     className="form-check-input"
                     type="radio"
                     name="haveProcessinPlace"
-                    value="NO"
+                    value={YesNoInput.NO}
                     checked={
                       accuracyCorrectionAndRetentionForm?.correction
-                        ?.haveProcessInPlace === 'NO'
+                        ?.haveProcessInPlace === YesNoInput.NO
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -156,113 +186,162 @@ export const AccuracyCorrectionAndRetention = () => {
                   />
                   No
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <p>
+                {accuracyCorrectionAndRetentionForm.correction?.haveProcessInPlace?.charAt(
+                  0,
+                )}
+                {accuracyCorrectionAndRetentionForm.correction?.haveProcessInPlace
+                  ?.slice(1)
+                  .toLowerCase()}
+              </p>
+            )}
 
             <div className="section__padding-block">
-              <p>
-                <strong>
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {
+                      Messages.FormElements.RequestCorrection.willDocument
+                        .Question.en
+                    }
+                  </strong>
+                </p>
+              ) : (
+                <h4>
                   {
                     Messages.FormElements.RequestCorrection.willDocument
                       .Question.en
                   }
-                </strong>
-              </p>
-              <div className="">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillDocument"
-                    value="YES"
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.willDocument === 'YES' ||
-                      !accuracyCorrectionAndRetentionForm?.correction
-                        ?.willDocument
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.willDocument',
-                      )
-                    }
-                  />
-                  Yes
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillDocument"
-                    value="NO"
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.willDocument === 'NO'
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.willDocument',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </div>
+                </h4>
+              )}
+              {!isReadOnly ? (
+                <>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="WillDocument"
+                      value={YesNoInput.YES}
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.correction
+                          ?.willDocument === YesNoInput.YES ||
+                        !accuracyCorrectionAndRetentionForm?.correction
+                          ?.willDocument
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'correction.willDocument',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="WillDocument"
+                      value={YesNoInput.NO}
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.correction
+                          ?.willDocument === YesNoInput.NO
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'correction.willDocument',
+                        )
+                      }
+                    />
+                    No
+                  </div>
+                </>
+              ) : (
+                <p>
+                  {accuracyCorrectionAndRetentionForm.correction?.willDocument?.charAt(
+                    0,
+                  )}
+                  {accuracyCorrectionAndRetentionForm.correction?.willDocument
+                    ?.slice(1)
+                    .toLowerCase()}
+                </p>
+              )}
             </div>
 
             <div className="section__padding-block">
-              <p>
-                <strong>
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {
+                      Messages.FormElements.RequestCorrection
+                        .willConductNotifications.Question.en
+                    }
+                  </strong>
+                </p>
+              ) : (
+                <h4>
                   {
                     Messages.FormElements.RequestCorrection
                       .willConductNotifications.Question.en
                   }
-                </strong>
-              </p>
-              <div className="">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillconductNotifications"
-                    value="YES"
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.willConductNotifications === 'YES' ||
-                      !accuracyCorrectionAndRetentionForm?.correction
-                        ?.willConductNotifications
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.willConductNotifications',
-                      )
-                    }
-                  />
-                  Yes
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillconductNotifications"
-                    value="NO"
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.willConductNotifications === 'NO'
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.willConductNotifications',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </div>
+                </h4>
+              )}
+              {!isReadOnly ? (
+                <>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="WillconductNotifications"
+                      value={YesNoInput.YES}
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.correction
+                          ?.willConductNotifications === YesNoInput.YES ||
+                        !accuracyCorrectionAndRetentionForm?.correction
+                          ?.willConductNotifications
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'correction.willConductNotifications',
+                        )
+                      }
+                    />
+                    Yes
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="WillconductNotifications"
+                      value={YesNoInput.NO}
+                      checked={
+                        accuracyCorrectionAndRetentionForm?.correction
+                          ?.willConductNotifications === YesNoInput.NO
+                      }
+                      onChange={(e) =>
+                        stateChangeHandler(
+                          e.target.value,
+                          'correction.willConductNotifications',
+                        )
+                      }
+                    />
+                    No
+                  </div>
+                </>
+              ) : (
+                <p>
+                  {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications?.charAt(
+                    0,
+                  )}
+                  {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications
+                    ?.slice(1)
+                    .toLowerCase()}
+                </p>
+              )}
             </div>
           </div>
         </section>
@@ -272,7 +351,7 @@ export const AccuracyCorrectionAndRetention = () => {
             {Messages.FormElements.PersonalInformationDecision.H2Text.en}
           </h3>
           <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <div className="section__padding-block">
+            {!isReadOnly ? (
               <p>
                 <strong>
                   {
@@ -281,16 +360,25 @@ export const AccuracyCorrectionAndRetention = () => {
                   }
                 </strong>
               </p>
-              <div className="">
+            ) : (
+              <h4>
+                {
+                  Messages.FormElements.PersonalInformationDecision
+                    .usePIForDecision.Question.en
+                }
+              </h4>
+            )}
+            {!isReadOnly ? (
+              <>
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     type="radio"
                     name="WillProvideInformation"
-                    value="YES"
+                    value={YesNoInput.YES}
                     checked={
                       accuracyCorrectionAndRetentionForm?.retention
-                        ?.usePIForDecision === 'YES' ||
+                        ?.usePIForDecision === YesNoInput.YES ||
                       !accuracyCorrectionAndRetentionForm?.retention
                         ?.usePIForDecision
                     }
@@ -308,10 +396,10 @@ export const AccuracyCorrectionAndRetention = () => {
                     className="form-check-input"
                     type="radio"
                     name="WillProvideInformation"
-                    value="NO"
+                    value={YesNoInput.NO}
                     checked={
                       accuracyCorrectionAndRetentionForm?.retention
-                        ?.usePIForDecision === 'NO'
+                        ?.usePIForDecision === YesNoInput.NO
                     }
                     onChange={(e) =>
                       stateChangeHandler(
@@ -322,135 +410,189 @@ export const AccuracyCorrectionAndRetention = () => {
                   />
                   No
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <p>
+                {accuracyCorrectionAndRetentionForm.retention?.usePIForDecision?.charAt(
+                  0,
+                )}
+                {accuracyCorrectionAndRetentionForm.retention?.usePIForDecision
+                  ?.slice(1)
+                  .toLowerCase()}
+              </p>
+            )}
             {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-              'YES' ||
+              YesNoInput.YES ||
             !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
               <div className="section__padding-block">
-                <p>
-                  <strong>
+                {!isReadOnly ? (
+                  <>
+                    <p>
+                      <strong>
+                        {
+                          Messages.FormElements.PersonalInformationDecision
+                            .haveApprovedInfoSchedule.Question.en
+                        }
+                      </strong>
+                    </p>
+                    <p>
+                      <a
+                        href={
+                          Messages.FormElements.PersonalInformationDecision
+                            .haveApprovedInfoSchedule.FOIPPALink
+                        }
+                        rel="noreferrer external"
+                        target="_blank"
+                      >
+                        {
+                          Messages.FormElements.PersonalInformationDecision
+                            .haveApprovedInfoSchedule.FOIPPAText.en
+                        }
+                        <FontAwesomeIcon
+                          className="helper-text__link-icon"
+                          icon={faUpRightFromSquare}
+                        />
+                      </a>
+                      {
+                        Messages.FormElements.PersonalInformationDecision
+                          .haveApprovedInfoSchedule.HelperTextPartOne.en
+                      }
+                      <a
+                        href={
+                          Messages.FormElements.PersonalInformationDecision
+                            .haveApprovedInfoSchedule.IMALink
+                        }
+                        rel="noreferrer external"
+                        target="_blank"
+                      >
+                        {
+                          Messages.FormElements.PersonalInformationDecision
+                            .haveApprovedInfoSchedule.IMAText.en
+                        }
+                        <FontAwesomeIcon
+                          className="helper-text__link-icon"
+                          icon={faUpRightFromSquare}
+                        />
+                      </a>
+
+                      {
+                        Messages.FormElements.PersonalInformationDecision
+                          .haveApprovedInfoSchedule.HelperTextPartTwo.en
+                      }
+                    </p>
+                  </>
+                ) : (
+                  <h4>
                     {
                       Messages.FormElements.PersonalInformationDecision
                         .haveApprovedInfoSchedule.Question.en
                     }
-                  </strong>
-                </p>
-                <p>
-                  <a
-                    href={
-                      Messages.FormElements.PersonalInformationDecision
-                        .haveApprovedInfoSchedule.FOIPPALink
-                    }
-                    rel="noreferrer external"
-                    target="_blank"
-                  >
-                    {
-                      Messages.FormElements.PersonalInformationDecision
-                        .haveApprovedInfoSchedule.FOIPPAText.en
-                    }
-                    <FontAwesomeIcon
-                      className="helper-text__link-icon"
-                      icon={faUpRightFromSquare}
-                    />
-                  </a>
-                  {
-                    Messages.FormElements.PersonalInformationDecision
-                      .haveApprovedInfoSchedule.HelperTextPartOne.en
-                  }
-                  <a
-                    href={
-                      Messages.FormElements.PersonalInformationDecision
-                        .haveApprovedInfoSchedule.IMALink
-                    }
-                    rel="noreferrer external"
-                    target="_blank"
-                  >
-                    {
-                      Messages.FormElements.PersonalInformationDecision
-                        .haveApprovedInfoSchedule.IMAText.en
-                    }
-                    <FontAwesomeIcon
-                      className="helper-text__link-icon"
-                      icon={faUpRightFromSquare}
-                    />
-                  </a>
-
-                  {
-                    Messages.FormElements.PersonalInformationDecision
-                      .haveApprovedInfoSchedule.HelperTextPartTwo.en
-                  }
-                </p>
-                <div className="">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="HaveApprovedInfoSchedule"
-                      value="YES"
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.retention
-                          ?.haveApprovedInfoSchedule === 'YES' ||
-                        !accuracyCorrectionAndRetentionForm?.retention
-                          ?.haveApprovedInfoSchedule
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'retention.haveApprovedInfoSchedule',
-                        )
-                      }
-                    />
-                    Yes
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="HaveApprovedInfoSchedule"
-                      value="NO"
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.retention
-                          ?.haveApprovedInfoSchedule === 'NO'
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'retention.haveApprovedInfoSchedule',
-                        )
-                      }
-                    />
-                    No
-                  </div>
-                </div>
+                  </h4>
+                )}
+                {!isReadOnly ? (
+                  <>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="HaveApprovedInfoSchedule"
+                        value={YesNoInput.YES}
+                        checked={
+                          accuracyCorrectionAndRetentionForm?.retention
+                            ?.haveApprovedInfoSchedule === YesNoInput.YES ||
+                          !accuracyCorrectionAndRetentionForm?.retention
+                            ?.haveApprovedInfoSchedule
+                        }
+                        onChange={(e) =>
+                          stateChangeHandler(
+                            e.target.value,
+                            'retention.haveApprovedInfoSchedule',
+                          )
+                        }
+                      />
+                      Yes
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="HaveApprovedInfoSchedule"
+                        value={YesNoInput.NO}
+                        checked={
+                          accuracyCorrectionAndRetentionForm?.retention
+                            ?.haveApprovedInfoSchedule === YesNoInput.NO
+                        }
+                        onChange={(e) =>
+                          stateChangeHandler(
+                            e.target.value,
+                            'retention.haveApprovedInfoSchedule',
+                          )
+                        }
+                      />
+                      No
+                    </div>
+                  </>
+                ) : (
+                  <p>
+                    {accuracyCorrectionAndRetentionForm.retention?.haveApprovedInfoSchedule?.charAt(
+                      0,
+                    )}
+                    {accuracyCorrectionAndRetentionForm.retention?.haveApprovedInfoSchedule
+                      ?.slice(1)
+                      .toLowerCase()}
+                  </p>
+                )}
               </div>
             ) : null}
             {accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-              'YES' ||
+              YesNoInput.YES ||
             !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
               accuracyCorrectionAndRetentionForm?.retention
-                ?.haveApprovedInfoSchedule === 'NO' ||
+                ?.haveApprovedInfoSchedule === YesNoInput.NO ||
               !accuracyCorrectionAndRetentionForm?.retention
                 ?.haveApprovedInfoSchedule ? (
                 <div className="section__padding-block">
-                  <p>
-                    <strong>
+                  {!isReadOnly ? (
+                    <p>
+                      <strong>
+                        {
+                          Messages.FormElements.PersonalInformationDecision
+                            .describeRetention.Question.en
+                        }
+                      </strong>
+                    </p>
+                  ) : (
+                    <h4>
                       {
                         Messages.FormElements.PersonalInformationDecision
                           .describeRetention.Question.en
                       }
-                    </strong>
-                  </p>
-                  <MDEditor
-                    preview="edit"
-                    value={
-                      accuracyCorrectionAndRetentionForm?.retention
-                        ?.describeRetention || undefined
-                    }
-                    onChange={(value) =>
-                      stateChangeHandler(value, 'retention.describeRetention')
-                    }
-                  />
+                    </h4>
+                  )}
+                  {!isReadOnly ? (
+                    <MDEditor
+                      preview="edit"
+                      value={
+                        accuracyCorrectionAndRetentionForm?.retention
+                          ?.describeRetention || undefined
+                      }
+                      onChange={(value) =>
+                        stateChangeHandler(value, 'retention.describeRetention')
+                      }
+                    />
+                  ) : accuracyCorrectionAndRetentionForm.retention
+                      ?.describeRetention ? (
+                    <MDEditor.Markdown
+                      source={
+                        accuracyCorrectionAndRetentionForm.retention
+                          .describeRetention
+                      }
+                    />
+                  ) : (
+                    <p>
+                      <i>Not answered</i>
+                    </p>
+                  )}
                 </div>
               ) : null
             ) : null}
