@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { piaFormSideNavPages } from '../PIASideNav/pia-form-sideNav-pages';
+import { PiaFormSideNavPages } from '../PIASideNav/pia-form-sideNav-pages';
 import { INavButton } from './interface';
 
 const PIANavButton = ({ pia }: INavButton) => {
@@ -10,7 +10,7 @@ const PIANavButton = ({ pia }: INavButton) => {
   };
   const handleNext = () => {
     const editMode = pathname.split('/')[4];
-    const pages = piaFormSideNavPages(
+    const pages = PiaFormSideNavPages(
       pia,
       editMode === 'edit' ? true : false,
       false,

@@ -201,111 +201,186 @@ export const PIAFormIntake = () => {
       </section>
 
       <section className="section__padding-block">
-        <h3 className="">
-          {Messages.InitiativeDescriptionSection.SectionHeading.en}
-        </h3>
+        <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
         <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-          <p className="">
-            <strong>{Messages.InitiativeDescriptionSection.Question.en}</strong>
-          </p>
-          <p className="form__helper-text">
-            {Messages.InitiativeDescriptionSection.HelperText.en}
-          </p>
+          {!isReadOnly ? (
+            <p>
+              <strong>
+                {Messages.InitiativeDescriptionSection.Question.en}
+              </strong>
+            </p>
+          ) : (
+            <h4> {Messages.InitiativeDescriptionSection.Question.en}</h4>
+          )}
+          {!isReadOnly && (
+            <p className="form__helper-text">
+              {Messages.InitiativeDescriptionSection.HelperText.en}
+            </p>
+          )}
           <div className="richText" id="initiativeDescription">
-            <MDEditor
-              preview={isReadOnly ? 'preview' : 'edit'}
-              value={intakeForm?.initiativeDescription}
-              onChange={(value) =>
-                stateChangeHandler(value, 'initiativeDescription')
-              }
-            />
+            {(isReadOnly && !intakeForm.initiativeDescription) ||
+            (isReadOnly && intakeForm.initiativeDescription === '') ? (
+              <p>
+                <i>Not answered</i>
+              </p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown source={intakeForm.initiativeDescription} />
+            ) : (
+              <MDEditor
+                preview="edit"
+                value={intakeForm?.initiativeDescription}
+                onChange={(value) =>
+                  stateChangeHandler(value, 'initiativeDescription')
+                }
+              />
+            )}
           </div>
         </div>
       </section>
 
       <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-        <p className="form__h2">
-          <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
-        </p>
-        <p className="form__helper-text">
-          {Messages.InitiativeScopeSection.HelperText.en}
-        </p>
+        {!isReadOnly ? (
+          <p className="form__h2">
+            <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
+          </p>
+        ) : (
+          <h4>{Messages.InitiativeScopeSection.H2Text.en} </h4>
+        )}
+        {!isReadOnly && (
+          <p className="form__helper-text">
+            {Messages.InitiativeScopeSection.HelperText.en}
+          </p>
+        )}
         <div className="richText" id="initiativeScope">
-          <MDEditor
-            preview={isReadOnly ? 'preview' : 'edit'}
-            value={intakeForm?.initiativeScope}
-            defaultTabEnable={true}
-            onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
-          />
+          {(isReadOnly && !intakeForm.initiativeScope) ||
+          (isReadOnly && intakeForm.initiativeScope === '') ? (
+            <p>
+              <i>Not answered</i>
+            </p>
+          ) : isReadOnly ? (
+            <MDEditor.Markdown source={intakeForm.initiativeScope} />
+          ) : (
+            <MDEditor
+              preview="edit"
+              value={intakeForm?.initiativeScope}
+              defaultTabEnable={true}
+              onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
+            />
+          )}
         </div>
       </section>
       <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-        <p className="form__h2">
-          <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
-        </p>
-        <p className="form__helper-text">
-          {Messages.InitiativeDataElementsSection.HelperText.en}
-        </p>
+        {!isReadOnly ? (
+          <p className="form__h2">
+            <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
+          </p>
+        ) : (
+          <h4>{Messages.InitiativeDataElementsSection.H2Text.en} </h4>
+        )}
+        {!isReadOnly && (
+          <p className="form__helper-text">
+            {Messages.InitiativeDataElementsSection.HelperText.en}
+          </p>
+        )}
         <div className="richText" id="dataElementsInvolved">
-          <MDEditor
-            preview={isReadOnly ? 'preview' : 'edit'}
-            value={intakeForm?.dataElementsInvolved}
-            defaultTabEnable={true}
-            onChange={(value) =>
-              stateChangeHandler(value, 'dataElementsInvolved')
-            }
-          />
+          {(isReadOnly && !intakeForm.dataElementsInvolved) ||
+          (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
+            <p>
+              <i>Not answered</i>
+            </p>
+          ) : isReadOnly ? (
+            <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
+          ) : (
+            <MDEditor
+              preview="edit"
+              value={intakeForm?.dataElementsInvolved}
+              defaultTabEnable={true}
+              onChange={(value) =>
+                stateChangeHandler(value, 'dataElementsInvolved')
+              }
+            />
+          )}
         </div>
       </section>
 
       <section className="section__padding-block">
-        <h3 className="">{Messages.InitiativePISection.SectionHeading.en}</h3>
+        <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
         <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-          <p className="">
-            <strong>{Messages.InitiativePISection.Question.en}</strong>
-          </p>
-          <p className="form__helper-text">
-            <a
-              href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
-              rel="noreferrer external"
-              target="_blank"
-            >
-              {Messages.InitiativePISection.LinkText.en}
-            </a>
-            {Messages.InitiativePISection.HelperText.en}
-          </p>
-          {PIOptions.map((option, index) => (
-            <label key={index} className="form__input-label input-label-row">
-              <input
-                disabled={isReadOnly}
-                type="radio"
-                name="pi-options-radio"
-                value={option.key}
-                onChange={handlePIOptionChange}
-                checked={option.value === pia?.hasAddedPiToDataElements}
-              />
-              {option.key}
-            </label>
-          ))}
+          {!isReadOnly ? (
+            <p>
+              <strong>{Messages.InitiativePISection.Question.en}</strong>
+            </p>
+          ) : (
+            <h4> {Messages.InitiativePISection.Question.en}</h4>
+          )}
+          {!isReadOnly && (
+            <p className="form__helper-text">
+              <a
+                href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
+                rel="noreferrer external"
+                target="_blank"
+              >
+                {Messages.InitiativePISection.LinkText.en}
+              </a>
+              {Messages.InitiativePISection.HelperText.en}
+            </p>
+          )}
+
+          {!isReadOnly ? (
+            PIOptions.map((option, index) => (
+              <label key={index} className="form__input-label input-label-row">
+                <input
+                  disabled={isReadOnly}
+                  type="radio"
+                  name="pi-options-radio"
+                  value={option.key}
+                  onChange={handlePIOptionChange}
+                  checked={option.value === pia?.hasAddedPiToDataElements}
+                />
+                {option.key}
+              </label>
+            ))
+          ) : (
+            <p>
+              {PIOptions.find(
+                (item) => item.value === pia?.hasAddedPiToDataElements,
+              )?.key || ''}
+            </p>
+          )}
           {intakeForm?.hasAddedPiToDataElements === false && (
             <div className="section__padding-block">
-              <p className="">
-                <strong>
-                  {Messages.InitiativeRiskReductionSection.H2Text.en}
-                </strong>
-              </p>
-              <p className="form__helper-text">
-                {Messages.InitiativeRiskReductionSection.HelperText.en}
-              </p>
+              {!isReadOnly ? (
+                <p>
+                  <strong>
+                    {Messages.InitiativeRiskReductionSection.H2Text.en}
+                  </strong>
+                </p>
+              ) : (
+                <h4> {Messages.InitiativeRiskReductionSection.H2Text.en} </h4>
+              )}
+              {!isReadOnly && (
+                <p className="form__helper-text">
+                  {Messages.InitiativeRiskReductionSection.HelperText.en}
+                </p>
+              )}
               <div className="richText" id="riskMitigation">
-                <MDEditor
-                  preview={isReadOnly ? 'preview' : 'edit'}
-                  value={intakeForm?.riskMitigation}
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    stateChangeHandler(value, 'riskMitigation')
-                  }
-                />
+                {(isReadOnly && !intakeForm.riskMitigation) ||
+                (isReadOnly && intakeForm.riskMitigation === '') ? (
+                  <p>
+                    <i>Not answered</i>
+                  </p>
+                ) : isReadOnly ? (
+                  <MDEditor.Markdown source={intakeForm.riskMitigation} />
+                ) : (
+                  <MDEditor
+                    preview="edit"
+                    value={intakeForm?.riskMitigation}
+                    defaultTabEnable={true}
+                    onChange={(value) =>
+                      stateChangeHandler(value, 'riskMitigation')
+                    }
+                  />
+                )}
               </div>
             </div>
           )}

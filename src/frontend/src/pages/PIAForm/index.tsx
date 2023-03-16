@@ -293,6 +293,24 @@ const PIAFormPage = () => {
       });
     }
   };
+  const handleStatusChange = async (status: string) => {
+    if (!pia?.id) {
+      console.error('PIA id not found.');
+      return;
+    }
+    // call backend patch endpoint to update the pia status
+    const requestBody: Partial<IPiaForm> = {
+      status: status,
+      saveId: pia?.saveId,
+    };
+    try {
+      await upsertAndUpdatePia(
+        requestBody,
+      ); /* PIA will be set after data is updated in backend */
+    } catch (err: any) {
+      setMessage(err.message || 'Something went wrong. Please try again.');
+    }
+  };
 
   const handleModalClose = async (event: any) => {
     setShowPiaModal(false);
@@ -331,7 +349,6 @@ const PIAFormPage = () => {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
               id: pia.id,
-              title: pia.title,
             }),
           );
         } else {
@@ -365,7 +382,6 @@ const PIAFormPage = () => {
         navigate(
           buildDynamicPath(routes.PIA_INTAKE_EDIT, {
             id: updatedPia.id,
-            title: updatedPia.title,
           }),
         );
       }
@@ -590,6 +606,7 @@ const PIAFormPage = () => {
         primaryButtonText={submitButtonText}
         mode={mode}
         onSaveChangeClick={handleSaveChanges}
+        handleStatusChange={handleStatusChange}
         onEditClick={handleEdit}
         onSubmitClick={handleValidation}
       />
