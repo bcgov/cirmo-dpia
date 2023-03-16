@@ -2,7 +2,7 @@ export const routes = {
   PPQ_LANDING_PAGE: '/ppq',
   PPQ_FORM: '/ppq-form',
   PPQ_CONNECT_WITH_MPO: '/ppq-connect',
-  PIA_NEW: '/pia/new',
+  PIA_NEW: '/pia/new/intake',
   PIA_VIEW: '/pia/:id',
 
   PIA_INTAKE_EDIT: '/pia/:id/intake/edit',
