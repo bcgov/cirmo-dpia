@@ -165,7 +165,41 @@ export const SecurityPersonalInformation = () => {
                   <strong>
                     {
                       Messages.FormElements.DigitalTools.SecurityAssesment
-                        .Question.en
+                        .Question.PartOne.en
+                    }
+                    <a
+                      href={
+                        Messages.FormElements.DigitalTools.SecurityAssesment
+                          .Question.LinkHrefOne
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.FormElements.DigitalTools.SecurityAssesment
+                          .Question.LinkTextOne.en
+                      }
+                    </a>
+                    {
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.PartTwo.en
+                    }
+                    <a
+                      href={
+                        Messages.FormElements.DigitalTools.SecurityAssesment
+                          .Question.LinkHrefTwo
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.FormElements.DigitalTools.SecurityAssesment
+                          .Question.LinkTextTwo.en
+                      }
+                    </a>
+                    {
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.PartThree.en
                     }
                   </strong>
                 </p>
@@ -173,7 +207,41 @@ export const SecurityPersonalInformation = () => {
                 <h4>
                   {
                     Messages.FormElements.DigitalTools.SecurityAssesment
-                      .Question.en
+                      .Question.PartOne.en
+                  }
+                  <a
+                    href={
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.LinkHrefOne
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.LinkTextOne.en
+                    }
+                  </a>
+                  {
+                    Messages.FormElements.DigitalTools.SecurityAssesment
+                      .Question.PartTwo.en
+                  }
+                  <a
+                    href={
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.LinkHrefTwo
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {
+                      Messages.FormElements.DigitalTools.SecurityAssesment
+                        .Question.LinkTextTwo.en
+                    }
+                  </a>
+                  {
+                    Messages.FormElements.DigitalTools.SecurityAssesment
+                      .Question.PartThree.en
                   }
                 </h4>
               )}
