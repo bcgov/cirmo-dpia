@@ -73,8 +73,8 @@ export const OtherFactor = [
 
 export const MinistryList = [
   {
-    label: 'Advanced Education and Skills Training',
-    value: 'ADVANCED_EDUCATION_AND_SKILLS_TRAINING',
+    label: 'Post-Secondary Education and Future Skills',
+    value: 'POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS',
   },
   {
     label: 'Agriculture and Food',
@@ -129,16 +129,16 @@ export const MinistryList = [
     value: 'INDIGENOUS_RELATIONS_AND_RECONCILIATION',
   },
   {
-    label: 'Jobs, Economic Recovery and Innovation',
-    value: 'JOBS_ECONOMIC_RECOVERY_AND_INNOVATION',
+    label: 'Jobs, Economic Development and Innovation',
+    value: 'JOBS_ECONOMIC_Development_AND_INNOVATION',
   },
   {
     label: 'Labour',
     value: 'LABOUR',
   },
   {
-    label: 'Land, Water and Resource Stewardship',
-    value: 'LAND_WATER_AND_RESOURCE_STEWARDSHIP',
+    label: 'Water, Land and Resource Stewardship',
+    value: 'WATER_LAND_AND_RESOURCE_STEWARDSHIP',
   },
   {
     label: 'Liquor Distribution Branch',
@@ -157,8 +157,8 @@ export const MinistryList = [
     value: 'OFFICE_OF_THE_PREMIER',
   },
   {
-    label: 'Public Safety and Solicitor General and Emergency B.C.',
-    value: 'PUBLIC_SAFETY_AND_SOLICITOR_GENERAL_AND_EMERGENCY_BC',
+    label: 'Public Safety and Solicitor General',
+    value: 'PUBLIC_SAFETY_AND_SOLICITOR_GENERAL',
   },
   {
     label: 'Social Development and Poverty Reduction',
@@ -171,6 +171,14 @@ export const MinistryList = [
   {
     label: 'Transportation and Infrastructure',
     value: 'TRANSPORTATION_AND_INFRASTRUCTURE',
+  },
+  {
+    label: 'Housing',
+    value: 'HOUSING',
+  },
+  {
+    label: 'Emergency Management and Climate Readiness',
+    value: 'EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS',
   },
 ];
 
