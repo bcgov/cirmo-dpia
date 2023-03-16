@@ -130,7 +130,7 @@ export const MinistryList = [
   },
   {
     label: 'Jobs, Economic Development and Innovation',
-    value: 'JOBS_ECONOMIC_Development_AND_INNOVATION',
+    value: 'JOBS_ECONOMIC_DEVELOPMENT_AND_INNOVATION',
   },
   {
     label: 'Labour',
