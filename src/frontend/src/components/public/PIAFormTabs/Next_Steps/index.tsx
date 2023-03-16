@@ -24,24 +24,28 @@ export const PIANextSteps = () => {
   };
 
   useEffect(() => {
-    if (pia.hasAddedPiToDataElements === false) {
-      if (pia.isNextStepsSeenForDelegatedFlow) {
-        // redirect to view page
-        navigateFn(routes.PIA_VIEW);
+    // Countering UseEffect calling twice issue. Adding timeout for 1 second for second GET call is completed
+    setTimeout(() => {
+      if (pia.hasAddedPiToDataElements === false) {
+        if (pia.isNextStepsSeenForDelegatedFlow) {
+          // redirect to view page
+          navigateFn(routes.PIA_VIEW);
+        } else {
+          piaStateChangeHandler(true, 'isNextStepsSeenForDelegatedFlow');
+          piaStateChangeHandler(false, 'isNextStepsSeenForNonDelegatedFlow');
+        }
       } else {
-        piaStateChangeHandler(true, 'isNextStepsSeenForDelegatedFlow');
-        piaStateChangeHandler(false, 'isNextStepsSeenForNonDelegatedFlow');
+        // if true or null
+        if (pia.isNextStepsSeenForNonDelegatedFlow) {
+          // redirect to next tab
+          navigateFn(routes.PIA_DISCLOSURE_EDIT);
+        } else {
+          piaStateChangeHandler(true, 'isNextStepsSeenForNonDelegatedFlow');
+          piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
+        }
       }
-    } else {
-      // if true or null
-      if (pia.isNextStepsSeenForNonDelegatedFlow) {
-        // redirect to next tab
-        navigateFn(routes.PIA_DISCLOSURE_EDIT);
-      } else {
-        piaStateChangeHandler(true, 'isNextStepsSeenForNonDelegatedFlow');
-        piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
-      }
-    }
+    }, 1000);
+
     /* This is to prevent this function being called for every update as
     this is only required to be called once when the component is mounted */
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

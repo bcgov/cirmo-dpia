@@ -124,7 +124,9 @@ const PIAFormPage = () => {
         },
       );
 
-    if (onIntakePage) {
+    const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
+
+    if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
       setSubmitButtonText(SubmitButtonTextEnum.FORM);
@@ -224,6 +226,7 @@ const PIAFormPage = () => {
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
       )
     ).data;
+    if (initialPiaStateFetched) return;
     setStalePia(pia);
     setPia(updatedPia);
 
@@ -555,6 +558,8 @@ const PIAFormPage = () => {
     if (!id || initialPiaStateFetched) return;
 
     fetchAndUpdatePia(id).then((updatedPia) => {
+      if (!updatedPia || initialPiaStateFetched) return;
+
       setStalePia(updatedPia);
       setPia(updatedPia);
       setInitialPiaStateFetched(true); // no further fetch PIA unless requested
