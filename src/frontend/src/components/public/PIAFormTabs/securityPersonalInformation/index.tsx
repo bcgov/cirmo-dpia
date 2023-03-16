@@ -9,6 +9,8 @@ import Checkbox from '../../../common/Checkbox';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const SecurityPersonalInformation = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
@@ -179,6 +181,7 @@ export const SecurityPersonalInformation = () => {
                         Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkTextOne.en
                       }
+                      <FontAwesomeIcon icon={faUpRightFromSquare} />
                     </a>
                     {
                       Messages.FormElements.DigitalTools.SecurityAssessment
@@ -196,6 +199,7 @@ export const SecurityPersonalInformation = () => {
                         Messages.FormElements.DigitalTools.SecurityAssessment
                           .Question.LinkTextTwo.en
                       }
+                      <FontAwesomeIcon icon={faUpRightFromSquare} />
                     </a>
                     {
                       Messages.FormElements.DigitalTools.SecurityAssessment
@@ -221,6 +225,7 @@ export const SecurityPersonalInformation = () => {
                       Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkTextOne.en
                     }
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
                   </a>
                   {
                     Messages.FormElements.DigitalTools.SecurityAssessment
@@ -238,6 +243,7 @@ export const SecurityPersonalInformation = () => {
                       Messages.FormElements.DigitalTools.SecurityAssessment
                         .Question.LinkTextTwo.en
                     }
+                    <FontAwesomeIcon icon={faUpRightFromSquare} />
                   </a>
                   {
                     Messages.FormElements.DigitalTools.SecurityAssessment
