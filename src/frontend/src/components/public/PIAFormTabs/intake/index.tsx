@@ -323,8 +323,10 @@ export const PIAFormIntake = () => {
                 target="_blank"
               >
                 {Messages.InitiativePISection.LinkText.en}
+                &nbsp;
                 <FontAwesomeIcon icon={faUpRightFromSquare} />
               </a>
+              &nbsp;
               {Messages.InitiativePISection.HelperText.en}
             </p>
           )}
