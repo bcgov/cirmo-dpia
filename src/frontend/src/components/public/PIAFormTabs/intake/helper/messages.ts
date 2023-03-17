@@ -76,7 +76,7 @@ export default {
       en: `Did you list personal information in question 3?`,
     },
     LinkText: {
-      en: `Personal information`,
+      en: `Personal information `,
     },
     HelperText: {
       en: ` is any recorded information about an identifiable individual, other than 
