@@ -46,14 +46,17 @@ const Alert = ({
       )}
 
       {children ? renderElAlert() : message}
-      <span
-        className="alert-close"
-        data-dismiss="alert"
-        aria-label="Close"
-        onClick={handleClose}
-      >
-        {showCloseIcon && <span aria-hidden="true">&times;</span>}
-      </span>
+
+      {showCloseIcon && (
+        <span
+          className="alert-close"
+          data-dismiss="alert"
+          aria-label="Close"
+          onClick={handleClose}
+        >
+          <span aria-hidden="true">&times;</span>
+        </span>
+      )}
     </div>
   );
 };

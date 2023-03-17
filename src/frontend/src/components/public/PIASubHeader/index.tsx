@@ -113,7 +113,7 @@ function PIASubHeader({
               type="danger"
               message="Something went wrong. Please try again."
               onClose={handleAlertClose}
-              className="mt-2 col-sm-1"
+              className="mt-2 mx-1"
             />
           )}
         </div>
@@ -123,11 +123,11 @@ function PIASubHeader({
               type="danger"
               message="Something went wrong. Please try again."
               onClose={handleAlertClose}
-              className="mt-2 col-sm-1"
+              className="mt-2 mx-1"
             />
           )}
         </div>
-        <div className="col-md-3">
+        <div className="mx-1">
           <div>Status</div>
           <div className="dropdownSatusContainer">
             {isMPO() && mode === 'view' ? (
@@ -202,7 +202,7 @@ function PIASubHeader({
           </div>
         </div>
         {lastSaveAlertInfo?.show && !nextStepAction && (
-          <div>
+          <div className="mx-1">
             <Alert
               type={lastSaveAlertInfo.type}
               message={lastSaveAlertInfo.message}
@@ -211,20 +211,30 @@ function PIASubHeader({
             />
           </div>
         )}
-        <div className="d-flex">
+        <div className="d-flex mx-1">
           <button
-            onClick={() => handleDownload()}
             className="mx-2 bcgovbtn bcgovbtn__secondary"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded={false}
           >
             <FontAwesomeIcon icon={faEllipsisH} />
             {isDownloading && <Spinner />}
           </button>
 
+          <ul className="dropdown-menu">
+            <li>
+              <a className="dropdown-item" onClick={() => handleDownload()}>
+                Download
+              </a>
+            </li>
+          </ul>
+
           {/* Save or Edit button */}
           {!nextStepAction && (
             <button
               onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
-              className="mx-2 bcgovbtn bcgovbtn__secondary"
+              className="mx-1 bcgovbtn bcgovbtn__secondary"
             >
               {secondaryButtonText}
             </button>
@@ -234,7 +244,7 @@ function PIASubHeader({
           {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
-              className="bcgovbtn bcgovbtn__primary"
+              className="mx-1 bcgovbtn bcgovbtn__primary"
             >
               {primaryButtonText}
             </button>
