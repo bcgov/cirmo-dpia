@@ -26,7 +26,7 @@ export default {
       en: `General Information`,
     },
     MPOHelperText: {
-      en: `View the `,
+      en: `View the`,
     },
     MPOLinkText: {
       en: `Ministry Privacy Officer (MPO) Directory`,
@@ -73,13 +73,13 @@ export default {
       en: `Personal Information`,
     },
     Question: {
-      en: `Did you list personal information in question 3?`,
+      en: `Did you list personal information in the last question?`,
     },
     LinkText: {
       en: `Personal information`,
     },
     HelperText: {
-      en: ` is any recorded information about an identifiable individual, other than 
+      en: `is any recorded information about an identifiable individual, other than 
           business contact information. Personal information includes information that 
           can be used to identify an individual through association or reference.`,
     },

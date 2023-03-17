@@ -10,6 +10,8 @@ import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
 import PIAIntakeGeneralInformation from './viewGeneralInformation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const PIAFormIntake = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
@@ -321,7 +323,10 @@ export const PIAFormIntake = () => {
                 target="_blank"
               >
                 {Messages.InitiativePISection.LinkText.en}
+                &nbsp;
+                <FontAwesomeIcon icon={faUpRightFromSquare} />
               </a>
+              &nbsp;
               {Messages.InitiativePISection.HelperText.en}
             </p>
           )}
