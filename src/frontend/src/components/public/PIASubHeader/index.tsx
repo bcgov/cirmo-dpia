@@ -11,12 +11,10 @@ import {
 } from '../../../utils/file-download.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { PiaStatuses } from '../../../constant/constant';
 import { isMPORole } from '../../../utils/helper.util';
 import Modal from '../../common/Modal';
-import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
-import { HttpRequest } from '../../../utils/http-request.util';
 
 function PIASubHeader({
   pia,
@@ -29,8 +27,6 @@ function PIASubHeader({
   onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
-  //TODO implement tooltip for faEllipsisH icon, so when mouse hover, will display download word
-  // this pr just add download function for faEllipsisH icon
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
@@ -76,7 +72,6 @@ function PIASubHeader({
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
 
   const changeStatusFn = (status: string) => {
     setStatusLocal(status);
@@ -107,26 +102,14 @@ function PIASubHeader({
             : 'other__elements-container'
         }
       >
-        <div>
-          {downloadError && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2 mx-1"
-            />
-          )}
-        </div>
-        <div>
-          {message && (
-            <Alert
-              type="danger"
-              message="Something went wrong. Please try again."
-              onClose={handleAlertClose}
-              className="mt-2 mx-1"
-            />
-          )}
-        </div>
+        {downloadError && (
+          <Alert
+            type="danger"
+            message="Something went wrong. Please try again."
+            onClose={handleAlertClose}
+            className="mt-2 mx-1"
+          />
+        )}
         <div className="mx-1">
           <div>Status</div>
           <div className="dropdownSatusContainer">
