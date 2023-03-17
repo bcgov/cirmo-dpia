@@ -340,30 +340,65 @@ const StoringPersonalInformation = () => {
       <section className="form__section">
         <h3 className="py-3">{Messages.PersonalInformation.H3Text.en}</h3>
         <div className="card-wrapper py-5 px-5">
-          <div>
-            <p>{Messages.PersonalInformation.StoredOutsideCanada.en}</p>
-            {piOutsideOfCanadaRadios.map((radio, index) => (
+          {!isReadOnly ? (
+            <p className="text__font-weight--700">
+              {Messages.PersonalInformation.StoredOutsideCanada.en}
+            </p>
+          ) : (
+            <h4>{Messages.PersonalInformation.StoredOutsideCanada.en}</h4>
+          )}
+          {!isReadOnly ? (
+            piOutsideOfCanadaRadios.map((radio, index) => (
               <Radio key={index} {...radio} />
-            ))}
-          </div>
+            ))
+          ) : (
+            <p>
+              {storingPersonalInformationForm.personalInformation.storedOutsideCanada.charAt(
+                0,
+              )}
+              {storingPersonalInformationForm.personalInformation.storedOutsideCanada
+                .slice(1)
+                .toLowerCase()}
+            </p>
+          )}
           {storingPersonalInformationForm.personalInformation
             .storedOutsideCanada === YesNoInput.YES && (
             <div className="pt-5">
-              <p>{Messages.PersonalInformation.StoredWhere.en}</p>
-              <MDEditor
-                preview={isMPORole() ? 'edit' : 'preview'}
-                value={
-                  storingPersonalInformationForm.personalInformation
-                    .whereDetails
-                }
-                defaultTabEnable={true}
-                onChange={(value) =>
-                  stateChangeHandler(
-                    value || '',
-                    'personalInformation.whereDetails',
-                  )
-                }
-              />
+              {!isReadOnly ? (
+                <p className="text__font-weight--700">
+                  {Messages.PersonalInformation.StoredWhere.en}
+                </p>
+              ) : (
+                <h4>{Messages.PersonalInformation.StoredWhere.en}</h4>
+              )}
+              {!isReadOnly ? (
+                <MDEditor
+                  preview={isMPORole() ? 'edit' : 'preview'}
+                  value={
+                    storingPersonalInformationForm.personalInformation
+                      .whereDetails
+                  }
+                  defaultTabEnable={true}
+                  onChange={(value) =>
+                    stateChangeHandler(
+                      value || '',
+                      'personalInformation.whereDetails',
+                    )
+                  }
+                />
+              ) : storingPersonalInformationForm.personalInformation
+                  .whereDetails ? (
+                <MDEditor.Markdown
+                  source={
+                    storingPersonalInformationForm.personalInformation
+                      .whereDetails
+                  }
+                />
+              ) : (
+                <p>
+                  <i>Not answered</i>
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -375,43 +410,97 @@ const StoringPersonalInformation = () => {
             {Messages.SensitivePersonalInformation.H3Text.en}
           </h3>
           <div className="card-wrapper py-5 px-5">
-            <div>
-              <p>{Messages.SensitivePersonalInformation.DoesInvolve.en}</p>
-              {sensitivePiInvolved.map((radio, index) => (
+            {!isReadOnly ? (
+              <p className="text__font-weight--700">
+                {Messages.SensitivePersonalInformation.DoesInvolve.en}
+              </p>
+            ) : (
+              <h4>{Messages.SensitivePersonalInformation.DoesInvolve.en}</h4>
+            )}
+            {!isReadOnly ? (
+              sensitivePiInvolved.map((radio, index) => (
                 <Radio key={index} {...radio} />
-              ))}
-            </div>
+              ))
+            ) : (
+              <p>
+                {storingPersonalInformationForm.sensitivePersonalInformation.doesInvolve.charAt(
+                  0,
+                )}
+                {storingPersonalInformationForm.sensitivePersonalInformation.doesInvolve
+                  .slice(1)
+                  .toLowerCase()}
+              </p>
+            )}
             {storingPersonalInformationForm.sensitivePersonalInformation
               .doesInvolve === YesNoInput.YES && (
               <div className="pt-5 form__md-question">
-                <p>
-                  {
-                    Messages.SensitivePersonalInformation
-                      .SensitivePersonalInformationDislosedUnderFOIPPA.en
-                  }
-                  <a
-                    href={
-                      Messages.SensitivePersonalInformation
-                        .SensitivePersonalInformationDislosedUnderFOIPPA.Link
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                {!isReadOnly ? (
+                  <p className="text__font-weight--700">
                     {
                       Messages.SensitivePersonalInformation
-                        .SensitivePersonalInformationDislosedUnderFOIPPA
-                        .LinkText.en
+                        .SensitivePersonalInformationDislosedUnderFOIPPA.en
                     }
-                    <FontAwesomeIcon
-                      icon={faUpRightFromSquare}
-                      className="helper-text__link-icon"
-                    />
-                  </a>
-                  ?
-                </p>
-                {sensitivePiDisclosedOutsideCanada.map((radio, index) => (
-                  <Radio key={index} {...radio} />
-                ))}
+                    <a
+                      href={
+                        Messages.SensitivePersonalInformation
+                          .SensitivePersonalInformationDislosedUnderFOIPPA.Link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.SensitivePersonalInformation
+                          .SensitivePersonalInformationDislosedUnderFOIPPA
+                          .LinkText.en
+                      }
+                      <FontAwesomeIcon
+                        icon={faUpRightFromSquare}
+                        className="helper-text__link-icon"
+                      />
+                    </a>
+                    &nbsp;?
+                  </p>
+                ) : (
+                  <h4>
+                    {
+                      Messages.SensitivePersonalInformation
+                        .SensitivePersonalInformationDislosedUnderFOIPPA.en
+                    }
+                    <a
+                      href={
+                        Messages.SensitivePersonalInformation
+                          .SensitivePersonalInformationDislosedUnderFOIPPA.Link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {
+                        Messages.SensitivePersonalInformation
+                          .SensitivePersonalInformationDislosedUnderFOIPPA
+                          .LinkText.en
+                      }
+                      <FontAwesomeIcon
+                        icon={faUpRightFromSquare}
+                        className="helper-text__link-icon"
+                      />
+                    </a>
+                    &nbsp;?
+                  </h4>
+                )}
+                {!isReadOnly ? (
+                  sensitivePiDisclosedOutsideCanada.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))
+                ) : (
+                  <p>
+                    {storingPersonalInformationForm.sensitivePersonalInformation.disclosedOutsideCanada.charAt(
+                      0,
+                    )}
+                    {storingPersonalInformationForm.sensitivePersonalInformation.disclosedOutsideCanada
+                      .slice(1)
+                      .toLowerCase()}
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -442,17 +531,35 @@ const StoringPersonalInformation = () => {
                 .
               </div>
               <div className="card-wrapper py-5 px-5">
-                <div>
-                  <p>
+                {!isReadOnly ? (
+                  <p className="text__font-weight--700">
                     {
                       Messages.AssessmentOfDisclosures
                         .SensitivePersonalInformationStoredByServiceProvider.en
                     }
                   </p>
-                  {sensitivePiStoredByServiceProvider.map((radio, index) => (
+                ) : (
+                  <h4>
+                    {
+                      Messages.AssessmentOfDisclosures
+                        .SensitivePersonalInformationStoredByServiceProvider.en
+                    }
+                  </h4>
+                )}
+                {!isReadOnly ? (
+                  sensitivePiStoredByServiceProvider.map((radio, index) => (
                     <Radio key={index} {...radio} />
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <p>
+                    {storingPersonalInformationForm.disclosuresOutsideCanada.storage.sensitiveInfoStoredByServiceProvider.charAt(
+                      0,
+                    )}
+                    {storingPersonalInformationForm.disclosuresOutsideCanada.storage.sensitiveInfoStoredByServiceProvider
+                      .slice(1)
+                      .toLowerCase()}
+                  </p>
+                )}
                 {storingPersonalInformationForm.disclosuresOutsideCanada.storage
                   .sensitiveInfoStoredByServiceProvider === YesNoInput.YES && (
                   <div className="pt-5">
@@ -470,202 +577,331 @@ const StoringPersonalInformation = () => {
                           'disclosuresOutsideCanada.storage.serviceProviderList',
                         )
                       }
+                      readOnly={isReadOnly}
                     />
                   </div>
                 )}
                 <div className="pt-5">
-                  <p>{Messages.AssessmentOfDisclosures.DisclosureDetails.en}</p>
-                  <MDEditor
-                    preview={isMPORole() ? 'edit' : 'preview'}
-                    value={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .storage.disclosureDetails
-                    }
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value || '',
-                        'disclosuresOutsideCanada.storage.disclosureDetails',
-                      )
-                    }
-                  />
-                </div>
-                <div className="pt-5">
-                  <div>
-                    <p>
-                      {Messages.AssessmentOfDisclosures.ContractualTerms.en}
+                  {!isReadOnly ? (
+                    <p className="text__font-weight--700">
+                      {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
                     </p>
-                    {
-                      Messages.AssessmentOfDisclosures.ContractualTerms
-                        .HelperText.PartOne.en
-                    }
-                    <a
-                      href={
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyProtectionLink
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyProtectionLinkText.en
-                      }
-                      <FontAwesomeIcon
-                        icon={faUpRightFromSquare}
-                        className="helper-text__link-icon"
-                      />
-                    </a>
-                    {
-                      Messages.AssessmentOfDisclosures.ContractualTerms
-                        .HelperText.PartTwo.en
-                    }
-                    <a
-                      href={
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyHelplineEmailLink
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyHelplineEmailLinkText.en
-                      }
-                    </a>
-                    {
-                      Messages.AssessmentOfDisclosures.ContractualTerms
-                        .HelperText.PartThree.en
-                    }
-                    <a
-                      href={
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyHelplinePhoneLink
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {
-                        Messages.AssessmentOfDisclosures.ContractualTerms
-                          .HelperText.PrivacyHelplinePhoneLinkText.en
-                      }
-                    </a>
-                    {
-                      Messages.AssessmentOfDisclosures.ContractualTerms
-                        .HelperText.PartFour.en
-                    }
-                  </div>
-                  <MDEditor
-                    preview={isMPORole() ? 'edit' : 'preview'}
-                    value={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .storage.contractualTerms
-                    }
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value || '',
-                        'disclosuresOutsideCanada.storage.contractualTerms',
-                      )
-                    }
-                  />
-                </div>
-              </div>
-            </section>
-            <section className="form__section my-4">
-              <div className="card-wrapper py-5 px-5">
-                <div>
-                  <p>{Messages.Contract.RelyingOnExistingContract.en}</p>
-                  {relyingOnExistingContract.map((radio, index) => (
-                    <Radio key={index} {...radio} />
-                  ))}
-                </div>
-                {storingPersonalInformationForm.disclosuresOutsideCanada
-                  .contract.relyOnExistingContract === YesNoInput.YES && (
-                  <div className="pt-5">
-                    <p>{Messages.Contract.EnterpriseService.en}</p>
-                    {Messages.Contract.EnterpriseService.HelperText.en}
+                  ) : (
+                    <h4>
+                      {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
+                    </h4>
+                  )}
+                  {!isReadOnly ? (
                     <MDEditor
                       preview={isMPORole() ? 'edit' : 'preview'}
                       value={
                         storingPersonalInformationForm.disclosuresOutsideCanada
-                          .contract.enterpriseServiceAccessDetails || ''
+                          .storage.disclosureDetails
                       }
                       defaultTabEnable={true}
                       onChange={(value) =>
                         stateChangeHandler(
                           value || '',
-                          'disclosuresOutsideCanada.contract.enterpriseServiceAccessDetails',
+                          'disclosuresOutsideCanada.storage.disclosureDetails',
                         )
                       }
                     />
+                  ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                      .storage.disclosureDetails ? (
+                    <MDEditor.Markdown
+                      source={
+                        storingPersonalInformationForm.disclosuresOutsideCanada
+                          .storage.disclosureDetails
+                      }
+                    />
+                  ) : (
+                    <p>
+                      <i>Not answered</i>
+                    </p>
+                  )}
+                </div>
+                <div className="pt-5">
+                  {!isReadOnly ? (
+                    <>
+                      <p className="text__font-weight--700">
+                        {Messages.AssessmentOfDisclosures.ContractualTerms.en}
+                      </p>
+                      <div className="pb-4">
+                        {
+                          Messages.AssessmentOfDisclosures.ContractualTerms
+                            .HelperText.PartOne.en
+                        }
+                        <a
+                          href={
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyProtectionLink
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyProtectionLinkText.en
+                          }
+                          <FontAwesomeIcon
+                            icon={faUpRightFromSquare}
+                            className="helper-text__link-icon"
+                          />
+                        </a>
+                        {
+                          Messages.AssessmentOfDisclosures.ContractualTerms
+                            .HelperText.PartTwo.en
+                        }
+                        <a
+                          href={
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyHelplineEmailLink
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyHelplineEmailLinkText.en
+                          }
+                        </a>
+                        {
+                          Messages.AssessmentOfDisclosures.ContractualTerms
+                            .HelperText.PartThree.en
+                        }
+                        <a
+                          href={
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyHelplinePhoneLink
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {
+                            Messages.AssessmentOfDisclosures.ContractualTerms
+                              .HelperText.PrivacyHelplinePhoneLinkText.en
+                          }
+                        </a>
+                        {
+                          Messages.AssessmentOfDisclosures.ContractualTerms
+                            .HelperText.PartFour.en
+                        }
+                      </div>
+                    </>
+                  ) : (
+                    <h4>
+                      {Messages.AssessmentOfDisclosures.ContractualTerms.en}
+                    </h4>
+                  )}
+                  {!isReadOnly ? (
+                    <MDEditor
+                      preview={isMPORole() ? 'edit' : 'preview'}
+                      value={
+                        storingPersonalInformationForm.disclosuresOutsideCanada
+                          .storage.contractualTerms
+                      }
+                      defaultTabEnable={true}
+                      onChange={(value) =>
+                        stateChangeHandler(
+                          value || '',
+                          'disclosuresOutsideCanada.storage.contractualTerms',
+                        )
+                      }
+                    />
+                  ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                      .storage.contractualTerms ? (
+                    <MDEditor.Markdown
+                      source={
+                        storingPersonalInformationForm.disclosuresOutsideCanada
+                          .storage.contractualTerms
+                      }
+                    />
+                  ) : (
+                    <p>
+                      <i>Not answered</i>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                {!isReadOnly ? (
+                  <p className="text__font-weight--700">
+                    {Messages.Contract.RelyingOnExistingContract.en}
+                  </p>
+                ) : (
+                  <h4>{Messages.Contract.RelyingOnExistingContract.en}</h4>
+                )}
+                {!isReadOnly ? (
+                  relyingOnExistingContract.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))
+                ) : (
+                  <p>
+                    {storingPersonalInformationForm.disclosuresOutsideCanada.contract.relyOnExistingContract.charAt(
+                      0,
+                    )}
+                    {storingPersonalInformationForm.disclosuresOutsideCanada.contract.relyOnExistingContract
+                      .slice(1)
+                      .toLowerCase()}
+                  </p>
+                )}
+                {storingPersonalInformationForm.disclosuresOutsideCanada
+                  .contract.relyOnExistingContract === YesNoInput.YES && (
+                  <div className="pt-5">
+                    {!isReadOnly ? (
+                      <>
+                        <p className="text__font-weight--700">
+                          {Messages.Contract.EnterpriseService.en}
+                        </p>
+                        <div className="pb-4">
+                          {Messages.Contract.EnterpriseService.HelperText.en}
+                        </div>
+                      </>
+                    ) : (
+                      <h4>{Messages.Contract.EnterpriseService.en}</h4>
+                    )}
+                    {!isReadOnly ? (
+                      <MDEditor
+                        preview={isMPORole() ? 'edit' : 'preview'}
+                        value={
+                          storingPersonalInformationForm
+                            .disclosuresOutsideCanada.contract
+                            .enterpriseServiceAccessDetails || ''
+                        }
+                        defaultTabEnable={true}
+                        onChange={(value) =>
+                          stateChangeHandler(
+                            value || '',
+                            'disclosuresOutsideCanada.contract.enterpriseServiceAccessDetails',
+                          )
+                        }
+                      />
+                    ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                        .contract.enterpriseServiceAccessDetails ? (
+                      <MDEditor.Markdown
+                        source={
+                          storingPersonalInformationForm
+                            .disclosuresOutsideCanada.contract
+                            .enterpriseServiceAccessDetails || ''
+                        }
+                      />
+                    ) : (
+                      <p>
+                        <i>Not answered</i>
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
             </section>
             <section className="form__section my-4">
               <div className="card-wrapper py-5 px-5">
-                <p>{Messages.Controls.WhatControlsAreInPlace.en}</p>
-                <MDEditor
-                  preview={isMPORole() ? 'edit' : 'preview'}
-                  value={
-                    storingPersonalInformationForm.disclosuresOutsideCanada
-                      .controls.unauthorizedAccessMeasures
-                  }
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    stateChangeHandler(
-                      value || '',
-                      'disclosuresOutsideCanada.controls.unauthorizedAccessMeasures',
-                    )
-                  }
-                />
-              </div>
-            </section>
-            <section className="form__section my-4">
-              <div className="card-wrapper py-5 px-5">
-                <p>{Messages.TrackAccess.TrackAccessDetails.en}</p>
-                <MDEditor
-                  preview={isMPORole() ? 'edit' : 'preview'}
-                  value={
-                    storingPersonalInformationForm.disclosuresOutsideCanada
-                      .trackAccess.trackAccessDetails
-                  }
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    stateChangeHandler(
-                      value || '',
-                      'disclosuresOutsideCanada.trackAccess.trackAccessDetails',
-                    )
-                  }
-                />
-              </div>
-            </section>
-            <section className="form__section my-4">
-              <div className="card-wrapper py-5 px-5">
-                <div>
-                  <p>{Messages.Risks.DescribePrivacyRisks.en}</p>
-                  <MDEditor.Markdown
-                    source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
-                  />
-                </div>
-                <div>
-                  <Table
-                    data={
+                {!isReadOnly ? (
+                  <p className="text__font-weight--700">
+                    {Messages.Controls.WhatControlsAreInPlace.en}
+                  </p>
+                ) : (
+                  <h4>{Messages.Controls.WhatControlsAreInPlace.en}</h4>
+                )}
+                {!isReadOnly ? (
+                  <MDEditor
+                    preview={isMPORole() ? 'edit' : 'preview'}
+                    value={
                       storingPersonalInformationForm.disclosuresOutsideCanada
-                        .risks.privacyRisks
+                        .controls.unauthorizedAccessMeasures
                     }
-                    columnsMeta={
-                      disclosuresOutsideCanadaRisksPrivacyRisksColumns
-                    }
-                    onChangeHandler={(updatedValue) =>
+                    defaultTabEnable={true}
+                    onChange={(value) =>
                       stateChangeHandler(
-                        updatedValue,
-                        'disclosuresOutsideCanada.risks.privacyRisks',
+                        value || '',
+                        'disclosuresOutsideCanada.controls.unauthorizedAccessMeasures',
                       )
                     }
                   />
-                </div>
+                ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                    .controls.unauthorizedAccessMeasures ? (
+                  <MDEditor.Markdown
+                    source={
+                      storingPersonalInformationForm.disclosuresOutsideCanada
+                        .controls.unauthorizedAccessMeasures
+                    }
+                  />
+                ) : (
+                  <p>
+                    <i>Not answered</i>
+                  </p>
+                )}
+              </div>
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                {!isReadOnly ? (
+                  <p className="text__font-weight--700">
+                    {Messages.TrackAccess.TrackAccessDetails.en}
+                  </p>
+                ) : (
+                  <h4>{Messages.TrackAccess.TrackAccessDetails.en}</h4>
+                )}
+                {!isReadOnly ? (
+                  <MDEditor
+                    preview={isMPORole() ? 'edit' : 'preview'}
+                    value={
+                      storingPersonalInformationForm.disclosuresOutsideCanada
+                        .trackAccess.trackAccessDetails
+                    }
+                    defaultTabEnable={true}
+                    onChange={(value) =>
+                      stateChangeHandler(
+                        value || '',
+                        'disclosuresOutsideCanada.trackAccess.trackAccessDetails',
+                      )
+                    }
+                  />
+                ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                    .trackAccess.trackAccessDetails ? (
+                  <MDEditor.Markdown
+                    source={
+                      storingPersonalInformationForm.disclosuresOutsideCanada
+                        .trackAccess.trackAccessDetails
+                    }
+                  />
+                ) : (
+                  <p>
+                    <i>Not answered</i>
+                  </p>
+                )}
+              </div>
+            </section>
+            <section className="form__section my-4">
+              <div className="card-wrapper py-5 px-5">
+                {!isReadOnly ? (
+                  <>
+                    <p className="text__font-weight--700">
+                      {Messages.Risks.DescribePrivacyRisks.en}
+                    </p>
+                    <MDEditor.Markdown
+                      source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
+                    />
+                  </>
+                ) : (
+                  <h4>{Messages.Risks.DescribePrivacyRisks.en}</h4>
+                )}
+                <Table
+                  data={
+                    storingPersonalInformationForm.disclosuresOutsideCanada
+                      .risks.privacyRisks
+                  }
+                  columnsMeta={disclosuresOutsideCanadaRisksPrivacyRisksColumns}
+                  onChangeHandler={(updatedValue) =>
+                    stateChangeHandler(
+                      updatedValue,
+                      'disclosuresOutsideCanada.risks.privacyRisks',
+                    )
+                  }
+                  readOnly={isReadOnly}
+                />
               </div>
             </section>
           </>
