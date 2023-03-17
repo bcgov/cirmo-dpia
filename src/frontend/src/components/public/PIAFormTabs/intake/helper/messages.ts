@@ -73,7 +73,7 @@ export default {
       en: `Personal Information`,
     },
     Question: {
-      en: `Did you list personal information in question 3?`,
+      en: `Did you list personal information in the last question?`,
     },
     LinkText: {
       en: `Personal information `,
