@@ -1,0 +1,14 @@
+.data-table-row__container {
+  & > .data-row {
+    padding: 1.2rem;
+    border: 2px solid $border-disabled-colour;
+
+    &:not(:last-child) {
+      margin-bottom: 1.5rem;
+    }
+
+    .delete__btn {
+      color: $error;
+    }
+  }
+}

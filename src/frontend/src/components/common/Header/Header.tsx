@@ -137,7 +137,7 @@ function Header({ user }: Props) {
       <div data-cy="login" className="other">
         {!isAuthenticated() && (
           <button
-            className="bcgovbtn bcgovbtn__secondary--dark"
+            className="bcgovbtn bcgovbtn__secondary--dark extra-gap"
             onClick={() => login()}
           >
             Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />

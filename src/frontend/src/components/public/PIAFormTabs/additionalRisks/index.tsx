@@ -48,7 +48,7 @@ const PIAAdditionalRisks = () => {
   };
 
   const columns: Array<ColumnMetaData> = [
-    { key: 'risk', displayName: 'Possible risk', numberedLabelPrefix: 'Risk' },
+    { key: 'risk', displayName: 'Possible risk' },
     { key: 'response', displayName: 'Response' },
   ];
 
@@ -63,6 +63,7 @@ const PIAAdditionalRisks = () => {
           onChangeHandler={(updatedData) => {
             stateChangeHandler(updatedData, 'risks');
           }}
+          numberedLabelPrefix="Risk"
           readOnly={isReadOnly}
         />
       </section>

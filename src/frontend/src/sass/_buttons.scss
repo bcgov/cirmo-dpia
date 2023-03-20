@@ -56,6 +56,10 @@ a:hover {
   &.bold {
     font-weight: bold;
   }
+
+  &.min-gap {
+    gap: 0.3rem;
+  }
 }
 
 .bcgovbtn:focus,

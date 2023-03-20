@@ -13,20 +13,20 @@ export default {
     Title: {
       en: `Step-by-step walkthrough`,
     },
-    ColumnDrafterInput: {
+    SubTitle: {
       en: `Describe the way personal information moves through your initiative step by step as if you were explaining it to someone who does not know about your initiative.`,
     },
+    ColumnDrafterInput: {
+      en: `Describe the step`,
+    },
     ColumnMpoInput: {
-      en: `Collection, use, disclosure`,
+      en: `Collection, use, disclosure (for MPO use only)`,
     },
     ColumnFoippaInput: {
-      en: `FOIPPA authority`,
+      en: `FOIPPA authority (for MPO use only)`,
     },
     ColumnOtherInput: {
-      en: `Other legal authority`,
-    },
-    columnHint: {
-      en: '(for MPO use only)',
+      en: `Other legal authority (for MPO use only)`,
     },
   },
   CollectionNotice: {
