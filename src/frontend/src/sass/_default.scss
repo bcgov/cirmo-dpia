@@ -1,12 +1,61 @@
-:root {
-  box-sizing: border-box;
-}
+  @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+  :root {
+    box-sizing: border-box;
+    --custom-font-size: 14px;
+  }
+  }
+  @include breakpoint(map-get($grid-breakpoints, 'md')) {
+  :root {
+    box-sizing: border-box;
+    --custom-font-size: 16px;
+  }
+  }
 
 body {
   min-height: 100vh;
   position: relative;
   font-family: $font-family;
-  font-size: 16px;
+  font-size: var(--custom-font-size);
+  @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+    /* converting to em as the :root is default to 16px
+    most likely set by bootstrap */
+    h1 {
+      font-size: 2.05em;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 1.714em;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.42em;
+    }
+
+    h4 {
+      font-size: 1.18em;
+    }
+  }
+  @include breakpoint(map-get($grid-breakpoints, 'md')) {
+    h1 {
+      font-size: 2.074em;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 1.728em;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.44em;
+    }
+
+    h4 {
+      font-size: 1.2em;
+    }
+  }
   min-width: 100%;
 
   & > #root {
@@ -22,22 +71,8 @@ body {
   }
 }
 
-h1 {
-  font-size: 2.074rem;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 1.728rem;
-  font-weight: 700;
-}
-
-h3 {
-  font-size: 1.44rem;
-}
-
-h4 {
-  font-size: 1.2rem;
+p {
+  font-size: 1em;
 }
 
 h1,
