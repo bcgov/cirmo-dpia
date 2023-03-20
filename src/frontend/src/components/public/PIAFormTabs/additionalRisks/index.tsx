@@ -6,7 +6,8 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
-import { ColumnMetaData, Table } from '../../../common/Table';
+import { Table } from '../../../common/Table';
+import { ColumnMetaData } from '../../../common/Table/interfaces';
 
 const PIAAdditionalRisks = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
@@ -18,12 +19,7 @@ const PIAAdditionalRisks = () => {
 
   const defaultState: IAdditionalRisks = useMemo(
     () => ({
-      risks: [
-        { risk: '', response: '' },
-        { risk: '', response: '' },
-        { risk: '', response: '' },
-        { risk: '', response: '' },
-      ],
+      risks: [{ risk: '', response: '' }],
     }),
     [],
   );
@@ -48,8 +44,8 @@ const PIAAdditionalRisks = () => {
   };
 
   const columns: Array<ColumnMetaData> = [
-    { key: 'risk', displayName: 'Possible risk' },
-    { key: 'response', displayName: 'Response' },
+    { key: 'risk', label: 'Possible risk' },
+    { key: 'response', label: 'Response' },
   ];
 
   return (
@@ -64,6 +60,8 @@ const PIAAdditionalRisks = () => {
             stateChangeHandler(updatedData, 'risks');
           }}
           numberedLabelPrefix="Risk"
+          addRowBtnLabel="Add more risks"
+          format="row"
           readOnly={isReadOnly}
         />
       </section>

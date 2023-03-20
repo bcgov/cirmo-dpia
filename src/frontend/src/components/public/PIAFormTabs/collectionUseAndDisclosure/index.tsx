@@ -92,6 +92,7 @@ const PIACollectionUseAndDisclosure = () => {
           }}
           readOnly={isReadOnly}
           numberedLabelPrefix="Step"
+          addRowBtnLabel="Add more steps"
           format="row"
         />
       </section>

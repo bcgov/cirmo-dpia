@@ -12,7 +12,8 @@ import Messages from './messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
-import { ColumnMetaData, Table } from '../../../common/Table';
+import { Table } from '../../../common/Table';
+import { ColumnMetaData } from '../../../common/Table/interfaces';
 
 const StoringPersonalInformation = () => {
   const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
@@ -42,12 +43,7 @@ const StoringPersonalInformation = () => {
     () => ({
       storage: {
         sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
-        serviceProviderList: [
-          { name: '', cloudInfraName: '', details: '' },
-          { name: '', cloudInfraName: '', details: '' },
-          { name: '', cloudInfraName: '', details: '' },
-          { name: '', cloudInfraName: '', details: '' },
-        ],
+        serviceProviderList: [{ name: '', cloudInfraName: '', details: '' }],
         disclosureDetails: '',
         contractualTerms: '',
       },
@@ -63,30 +59,6 @@ const StoringPersonalInformation = () => {
       },
       risks: {
         privacyRisks: [
-          {
-            risk: '',
-            impact: '',
-            likelihoodOfUnauthorizedAccess: '',
-            levelOfPrivacyRisk: '',
-            riskResponse: '',
-            outstandingRisk: '',
-          },
-          {
-            risk: '',
-            impact: '',
-            likelihoodOfUnauthorizedAccess: '',
-            levelOfPrivacyRisk: '',
-            riskResponse: '',
-            outstandingRisk: '',
-          },
-          {
-            risk: '',
-            impact: '',
-            likelihoodOfUnauthorizedAccess: '',
-            levelOfPrivacyRisk: '',
-            riskResponse: '',
-            outstandingRisk: '',
-          },
           {
             risk: '',
             impact: '',
@@ -140,19 +112,19 @@ const StoringPersonalInformation = () => {
     [
       {
         key: 'name',
-        displayName:
+        label:
           Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
             .Name.en,
       },
       {
         key: 'cloudInfraName',
-        displayName:
+        label:
           Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
             .CloudInfrastructure.en,
       },
       {
         key: 'details',
-        displayName:
+        label:
           Messages.AssessmentOfDisclosures.ServiceProviderTableColumnHeaders
             .StorageDetails.en,
       },
@@ -162,29 +134,28 @@ const StoringPersonalInformation = () => {
     [
       {
         key: 'risk',
-        displayName: Messages.Risks.RisksTableColumnHeaders.PrivacyRisk.en,
+        label: Messages.Risks.RisksTableColumnHeaders.PrivacyRisk.en,
       },
       {
         key: 'impact',
-        displayName: Messages.Risks.RisksTableColumnHeaders.Impact.en,
+        label: Messages.Risks.RisksTableColumnHeaders.Impact.en,
       },
       {
         key: 'likelihoodOfUnauthorizedAccess',
-        displayName:
+        label:
           Messages.Risks.RisksTableColumnHeaders.LikelihoodOfUnauthorized.en,
       },
       {
         key: 'levelOfPrivacyRisk',
-        displayName:
-          Messages.Risks.RisksTableColumnHeaders.LevelOfPrivacyRisk.en,
+        label: Messages.Risks.RisksTableColumnHeaders.LevelOfPrivacyRisk.en,
       },
       {
         key: 'riskResponse',
-        displayName: Messages.Risks.RisksTableColumnHeaders.RiskResponse.en,
+        label: Messages.Risks.RisksTableColumnHeaders.RiskResponse.en,
       },
       {
         key: 'outstandingRisk',
-        displayName: Messages.Risks.RisksTableColumnHeaders.OutstandingRisk.en,
+        label: Messages.Risks.RisksTableColumnHeaders.OutstandingRisk.en,
       },
     ];
 
@@ -577,6 +548,7 @@ const StoringPersonalInformation = () => {
                           'disclosuresOutsideCanada.storage.serviceProviderList',
                         )
                       }
+                      format="row"
                       readOnly={isReadOnly}
                     />
                   </div>
@@ -888,20 +860,25 @@ const StoringPersonalInformation = () => {
                 ) : (
                   <h4>{Messages.Risks.DescribePrivacyRisks.en}</h4>
                 )}
-                <Table
-                  data={
-                    storingPersonalInformationForm.disclosuresOutsideCanada
-                      .risks.privacyRisks
-                  }
-                  columnsMeta={disclosuresOutsideCanadaRisksPrivacyRisksColumns}
-                  onChangeHandler={(updatedValue) =>
-                    stateChangeHandler(
-                      updatedValue,
-                      'disclosuresOutsideCanada.risks.privacyRisks',
-                    )
-                  }
-                  readOnly={isReadOnly}
-                />
+                <div className="pt-5">
+                  <Table
+                    data={
+                      storingPersonalInformationForm.disclosuresOutsideCanada
+                        .risks.privacyRisks
+                    }
+                    columnsMeta={
+                      disclosuresOutsideCanadaRisksPrivacyRisksColumns
+                    }
+                    onChangeHandler={(updatedValue) =>
+                      stateChangeHandler(
+                        updatedValue,
+                        'disclosuresOutsideCanada.risks.privacyRisks',
+                      )
+                    }
+                    format="row"
+                    readOnly={isReadOnly}
+                  />
+                </div>
               </div>
             </section>
           </>
