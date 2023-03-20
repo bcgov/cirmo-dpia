@@ -138,7 +138,9 @@ const PIACollectionUseAndDisclosure = () => {
             (isReadOnly &&
               collectionUseAndDisclosureForm.collectionNotice.drafterInput ===
                 '') ? (
-              <p>Not answered</p>
+              <p>
+                <i>Not answered </i>
+              </p>
             ) : isReadOnly ? (
               <MDEditor.Markdown
                 source={
@@ -176,7 +178,9 @@ const PIACollectionUseAndDisclosure = () => {
             (isReadOnly &&
               collectionUseAndDisclosureForm.collectionNotice.mpoInput ===
                 '') ? (
-              <p>Not answered</p>
+              <p>
+                <i>Not answered</i>
+              </p>
             ) : isReadOnly ? (
               <MDEditor.Markdown
                 source={
