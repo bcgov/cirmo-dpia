@@ -51,16 +51,14 @@ export const PIANextSteps = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>
-      <div className="nextSteps">
-        <h2> {messages.PageTitle.en} </h2>
-        {pia?.hasAddedPiToDataElements === true ||
-        pia?.hasAddedPiToDataElements === null ? (
-          <NextStepsPI navigateFn={navigateFn} />
-        ) : (
-          <NextStepsDelegatedFlow />
-        )}
-      </div>
-    </>
+    <div className="nextSteps">
+      <h2> {messages.PageTitle.en} </h2>
+      {pia?.hasAddedPiToDataElements === true ||
+      pia?.hasAddedPiToDataElements === null ? (
+        <NextStepsPI navigateFn={navigateFn} />
+      ) : (
+        <NextStepsDelegatedFlow />
+      )}
+    </div>
   );
 };
