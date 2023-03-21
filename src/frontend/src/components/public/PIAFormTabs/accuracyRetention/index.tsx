@@ -182,7 +182,7 @@ export const AccuracyCorrectionAndRetention = () => {
               </h4>
             )}
             {!isReadOnly ? (
-              <div>
+              <>
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -223,7 +223,7 @@ export const AccuracyCorrectionAndRetention = () => {
                   />
                   No
                 </div>
-              </div>
+              </>
             ) : (
               <p>
                 {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace?.charAt(
@@ -290,7 +290,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 </h4>
               )}
               {!isReadOnly ? (
-                <div>
+                <>
                   <div className="form-check">
                     <input
                       className="form-check-input"
@@ -331,7 +331,7 @@ export const AccuracyCorrectionAndRetention = () => {
                     />
                     No
                   </div>
-                </div>
+                </>
               ) : (
                 <p>
                   {accuracyCorrectionAndRetentionForm.correction.willDocument?.charAt(
@@ -399,7 +399,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 </h4>
               )}
               {!isReadOnly ? (
-                <div>
+                <>
                   <div className="form-check">
                     <input
                       className="form-check-input"
@@ -440,7 +440,7 @@ export const AccuracyCorrectionAndRetention = () => {
                     />
                     No
                   </div>
-                </div>
+                </>
               ) : (
                 <p>
                   {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications?.charAt(
@@ -478,7 +478,7 @@ export const AccuracyCorrectionAndRetention = () => {
               </h4>
             )}
             {!isReadOnly ? (
-              <div>
+              <>
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -519,7 +519,7 @@ export const AccuracyCorrectionAndRetention = () => {
                   />
                   No
                 </div>
-              </div>
+              </>
             ) : (
               <p>
                 {accuracyCorrectionAndRetentionForm.retention?.usePIForDecision?.charAt(
@@ -535,7 +535,7 @@ export const AccuracyCorrectionAndRetention = () => {
             !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ? (
               <div className="section__padding-block">
                 {!isReadOnly ? (
-                  <div>
+                  <>
                     <p>
                       <strong>
                         {
@@ -589,7 +589,7 @@ export const AccuracyCorrectionAndRetention = () => {
                           .haveApprovedInfoSchedule.HelperTextPartTwo.en
                       }
                     </p>
-                  </div>
+                  </>
                 ) : (
                   <h4>
                     {
@@ -599,7 +599,7 @@ export const AccuracyCorrectionAndRetention = () => {
                   </h4>
                 )}
                 {!isReadOnly ? (
-                  <div>
+                  <>
                     <div className="form-check">
                       <input
                         className="form-check-input"
@@ -640,7 +640,7 @@ export const AccuracyCorrectionAndRetention = () => {
                       />
                       No
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <p>
                     {accuracyCorrectionAndRetentionForm.retention.haveApprovedInfoSchedule?.charAt(
