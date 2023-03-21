@@ -175,7 +175,10 @@ p {
 
 .component__row--create-new-form {
   padding: 0;
-  padding-left: 5rem;
+  padding-inline: 5rem;
+  @include breakpoint(0 map-get($grid-breakpoints, 'sm')) {
+    padding-inline: 1rem;
+  }
   padding-top: 3em;
   padding-bottom: 2em;
   background-color: $bg-white;
