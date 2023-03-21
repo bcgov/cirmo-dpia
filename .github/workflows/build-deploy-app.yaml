@@ -88,10 +88,10 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "app-dc-template-v2.yaml"
-          SERVICE_TEMPLATE: "app-service-template-v2.yaml"
-          ROUTE_TEMPLATE: "app-route-template-v2.yaml"
-          DIR: "app"
+          DC_TEMPLATE: "app-dc-template.yaml"
+          SERVICE_TEMPLATE: "app-service-template.yaml"
+          ROUTE_TEMPLATE: "app-route-template.yaml"
+          DIR: "app/silver"
           IMAGESTREAM: "app-dev"
         run: |
           ./.github/helpers/deploy.sh 

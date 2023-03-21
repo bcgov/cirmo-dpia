@@ -88,10 +88,10 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
           LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
           ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "api-dc-template-v2.yaml"
-          SERVICE_TEMPLATE: "api-service-template-v2.yaml"
-          ROUTE_TEMPLATE: "api-route-template-v2.yaml"
-          DIR: "api"
+          DC_TEMPLATE: "api-dc-template.yaml"
+          SERVICE_TEMPLATE: "api-service-template.yaml"
+          ROUTE_TEMPLATE: "api-route-template.yaml"
+          DIR: "api/silver"
           IMAGESTREAM: "api-dev"
         run: |
           ./.github/helpers/deploy.sh 
