@@ -2,17 +2,24 @@ import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { MinistryList, PIOptions } from '../../../../constant/constant';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAIntakeForm';
+import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import Dropdown from '../../../common/Dropdown';
 import InputText from '../../../common/InputText/InputText';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
+import PIAIntakeGeneralInformation from './viewGeneralInformation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const PIAFormIntake = () => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+    useOutletContext<
+      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+    >();
+
+  if (accessControl) accessControl();
 
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),
@@ -37,18 +44,25 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <section className="">
+      <section>
         <h2>{Messages.PiaIntakeHeader.H1Text.en} </h2>
-        <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
-        <ul>
-          {Messages.PiaIntakeHeader.ListText.map((item, index) => (
-            <li key={index}>{item.en}</li>
-          ))}
-        </ul>
+        {!isReadOnly && (
+          <>
+            <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
+            <ul>
+              {Messages.PiaIntakeHeader.ListText.map((item, index) => (
+                <li key={index}>{item.en}</li>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
-      <form className="needs-validation">
-        <section className="section__padding-block">
-          <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
+
+      <section className="section__padding-block">
+        <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
+        {isReadOnly ? (
+          <PIAIntakeGeneralInformation pia={pia} />
+        ) : (
           <div className="drop-shadow section__padding-inline section__padding-block bg-white">
             <div className="row">
               <InputText
@@ -185,22 +199,35 @@ export const PIAFormIntake = () => {
               </div>
             </div>
           </div>
-        </section>
+        )}
+      </section>
 
-        <section className="section__padding-block">
-          <h3 className="">
-            {Messages.InitiativeDescriptionSection.SectionHeading.en}
-          </h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <p className="">
+      <section className="section__padding-block">
+        <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
+        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          {!isReadOnly ? (
+            <p>
               <strong>
                 {Messages.InitiativeDescriptionSection.Question.en}
               </strong>
             </p>
+          ) : (
+            <h4> {Messages.InitiativeDescriptionSection.Question.en}</h4>
+          )}
+          {!isReadOnly && (
             <p className="form__helper-text">
               {Messages.InitiativeDescriptionSection.HelperText.en}
             </p>
-            <div className="richText" id="initiativeDescription">
+          )}
+          <div className="richText" id="initiativeDescription">
+            {(isReadOnly && !intakeForm.initiativeDescription) ||
+            (isReadOnly && intakeForm.initiativeDescription === '') ? (
+              <p>
+                <i>Not answered</i>
+              </p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown source={intakeForm.initiativeDescription} />
+            ) : (
               <MDEditor
                 preview="edit"
                 value={intakeForm?.initiativeDescription}
@@ -208,34 +235,64 @@ export const PIAFormIntake = () => {
                   stateChangeHandler(value, 'initiativeDescription')
                 }
               />
-            </div>
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+        {!isReadOnly ? (
           <p className="form__h2">
             <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
           </p>
+        ) : (
+          <h4>{Messages.InitiativeScopeSection.H2Text.en} </h4>
+        )}
+        {!isReadOnly && (
           <p className="form__helper-text">
             {Messages.InitiativeScopeSection.HelperText.en}
           </p>
-          <div className="richText" id="initiativeScope">
+        )}
+        <div className="richText" id="initiativeScope">
+          {(isReadOnly && !intakeForm.initiativeScope) ||
+          (isReadOnly && intakeForm.initiativeScope === '') ? (
+            <p>
+              <i>Not answered</i>
+            </p>
+          ) : isReadOnly ? (
+            <MDEditor.Markdown source={intakeForm.initiativeScope} />
+          ) : (
             <MDEditor
               preview="edit"
               value={intakeForm?.initiativeScope}
               defaultTabEnable={true}
               onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
             />
-          </div>
-        </section>
-        <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+          )}
+        </div>
+      </section>
+      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
+        {!isReadOnly ? (
           <p className="form__h2">
             <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
           </p>
+        ) : (
+          <h4>{Messages.InitiativeDataElementsSection.H2Text.en} </h4>
+        )}
+        {!isReadOnly && (
           <p className="form__helper-text">
             {Messages.InitiativeDataElementsSection.HelperText.en}
           </p>
-          <div className="richText" id="dataElementsInvolved">
+        )}
+        <div className="richText" id="dataElementsInvolved">
+          {(isReadOnly && !intakeForm.dataElementsInvolved) ||
+          (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
+            <p>
+              <i>Not answered</i>
+            </p>
+          ) : isReadOnly ? (
+            <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
+          ) : (
             <MDEditor
               preview="edit"
               value={intakeForm?.dataElementsInvolved}
@@ -244,15 +301,21 @@ export const PIAFormIntake = () => {
                 stateChangeHandler(value, 'dataElementsInvolved')
               }
             />
-          </div>
-        </section>
+          )}
+        </div>
+      </section>
 
-        <section className="section__padding-block">
-          <h3 className="">{Messages.InitiativePISection.SectionHeading.en}</h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
-            <p className="">
+      <section className="section__padding-block">
+        <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
+        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          {!isReadOnly ? (
+            <p>
               <strong>{Messages.InitiativePISection.Question.en}</strong>
             </p>
+          ) : (
+            <h4> {Messages.InitiativePISection.Question.en}</h4>
+          )}
+          {!isReadOnly && (
             <p className="form__helper-text">
               <a
                 href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/personal-information?keyword=personal&keyword=information"
@@ -260,32 +323,60 @@ export const PIAFormIntake = () => {
                 target="_blank"
               >
                 {Messages.InitiativePISection.LinkText.en}
+                &nbsp;
+                <FontAwesomeIcon icon={faUpRightFromSquare} />
               </a>
+              &nbsp;
               {Messages.InitiativePISection.HelperText.en}
             </p>
-            {PIOptions.map((option, index) => (
+          )}
+
+          {!isReadOnly ? (
+            PIOptions.map((option, index) => (
               <label key={index} className="form__input-label input-label-row">
                 <input
+                  disabled={isReadOnly}
                   type="radio"
                   name="pi-options-radio"
-                  value={option}
+                  value={option.key}
                   onChange={handlePIOptionChange}
-                  defaultChecked={PIOptions[0] === option}
+                  checked={option.value === pia?.hasAddedPiToDataElements}
                 />
-                {option}
+                {option.key}
               </label>
-            ))}
-            {intakeForm?.hasAddedPiToDataElements === false && (
-              <div className="section__padding-block">
-                <p className="">
+            ))
+          ) : (
+            <p>
+              {PIOptions.find(
+                (item) => item.value === pia?.hasAddedPiToDataElements,
+              )?.key || ''}
+            </p>
+          )}
+          {intakeForm?.hasAddedPiToDataElements === false && (
+            <div className="section__padding-block">
+              {!isReadOnly ? (
+                <p>
                   <strong>
                     {Messages.InitiativeRiskReductionSection.H2Text.en}
                   </strong>
                 </p>
+              ) : (
+                <h4> {Messages.InitiativeRiskReductionSection.H2Text.en} </h4>
+              )}
+              {!isReadOnly && (
                 <p className="form__helper-text">
                   {Messages.InitiativeRiskReductionSection.HelperText.en}
                 </p>
-                <div className="richText" id="riskMitigation">
+              )}
+              <div className="richText" id="riskMitigation">
+                {(isReadOnly && !intakeForm.riskMitigation) ||
+                (isReadOnly && intakeForm.riskMitigation === '') ? (
+                  <p>
+                    <i>Not answered</i>
+                  </p>
+                ) : isReadOnly ? (
+                  <MDEditor.Markdown source={intakeForm.riskMitigation} />
+                ) : (
                   <MDEditor
                     preview="edit"
                     value={intakeForm?.riskMitigation}
@@ -294,12 +385,12 @@ export const PIAFormIntake = () => {
                       stateChangeHandler(value, 'riskMitigation')
                     }
                   />
-                </div>
+                )}
               </div>
-            )}
-          </div>
-        </section>
-      </form>
+            </div>
+          )}
+        </div>
+      </section>
     </>
   );
 };

@@ -12,6 +12,7 @@ const Checkbox = ({
   tooltipText,
   isLink,
   linkURL,
+  readOnly = false,
   onChange,
   ...props
 }: ICheckbox) => {
@@ -29,6 +30,7 @@ const Checkbox = ({
           className={isChecked ? 'checked' : ''}
           aria-describedby={value}
           aria-label={label}
+          disabled={readOnly}
           {...props}
         />
         {isLink === false ? (

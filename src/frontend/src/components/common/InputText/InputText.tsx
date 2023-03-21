@@ -20,6 +20,7 @@ interface InputTextProps {
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
+  readOnly?: boolean;
 }
 
 const InputText = ({
@@ -37,6 +38,7 @@ const InputText = ({
   required = false,
   labelSide = 'top',
   isDisabled = false,
+  readOnly = false,
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -68,16 +70,24 @@ const InputText = ({
           </a>
         </p>
       )}
-      <input
-        id={inputId}
-        type={type}
-        value={value || ''}
-        placeholder={placeholder}
-        onChange={onChange}
-        className="form-control"
-        required={required}
-        disabled={isDisabled}
-      />
+      {!readOnly ? (
+        <input
+          id={inputId}
+          type={type}
+          value={value || ''}
+          placeholder={placeholder}
+          onChange={onChange}
+          className="form-control"
+          required={required}
+          disabled={isDisabled}
+        />
+      ) : value ? (
+        <p>{value}</p>
+      ) : (
+        <p>
+          <i>Not answered</i>
+        </p>
+      )}
     </div>
   );
 };

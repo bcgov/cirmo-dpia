@@ -137,6 +137,20 @@ export class PiaIntakeEntity extends BaseEntity {
   submittedAt: Date;
 
   @Column({
+    name: 'is_next_steps_seen_for_delegated_flow',
+    nullable: false,
+    default: false,
+  })
+  isNextStepsSeenForDelegatedFlow: boolean;
+
+  @Column({
+    name: 'is_next_steps_seen_for_non_delegated_flow',
+    nullable: false,
+    default: false,
+  })
+  isNextStepsSeenForNonDelegatedFlow: boolean;
+
+  @Column({
     name: 'collection_use_and_disclosure',
     type: 'jsonb',
     nullable: true,

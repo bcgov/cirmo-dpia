@@ -2,9 +2,9 @@ import { GovMinistriesEnum } from '../enums/gov-ministries.enum';
 import { IConstant } from '../interfaces/constants.inteface';
 
 export const GovMinistries: IConstant = {
-  [GovMinistriesEnum.ADVANCED_EDUCATION_AND_SKILLS_TRAINING]: {
-    label: 'Advanced Education and Skills Training',
-    code: 'AEST',
+  [GovMinistriesEnum.POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS]: {
+    label: 'Post-Secondary Education and Future Skills',
+    code: 'PSFS',
   },
   [GovMinistriesEnum.AGRICULTURE_AND_FOOD]: {
     label: 'Agriculture and Food',
@@ -58,17 +58,17 @@ export const GovMinistries: IConstant = {
     label: 'Indigenous Relations and Reconciliation',
     code: 'IRR',
   },
-  [GovMinistriesEnum.JOBS_ECONOMIC_RECOVERY_AND_INNOVATION]: {
-    label: 'Jobs, Economic Recovery and Innovation',
-    code: 'JERI',
+  [GovMinistriesEnum.JOBS_ECONOMIC_DEVELOPMENT_AND_INNOVATION]: {
+    label: 'Jobs, Economic Development and Innovation',
+    code: 'JEDI',
   },
   [GovMinistriesEnum.LABOUR]: {
     label: 'Labour',
     code: 'LBR',
   },
-  [GovMinistriesEnum.LAND_WATER_AND_RESOURCE_STEWARDSHIP]: {
-    label: 'Land, Water and Resource Stewardship',
-    code: 'LWRS',
+  [GovMinistriesEnum.WATER_LAND_AND_RESOURCE_STEWARDSHIP]: {
+    label: 'Water, Land and Resource Stewardship',
+    code: 'WLRS',
   },
   [GovMinistriesEnum.LIQUOR_DISTRIBUTION_BRANCH]: {
     label: 'Liquor Distribution Branch',
@@ -86,8 +86,8 @@ export const GovMinistries: IConstant = {
     label: 'Office of the Premier',
     code: 'OOP',
   },
-  [GovMinistriesEnum.PUBLIC_SAFETY_AND_SOLICITOR_GENERAL_AND_EMERGENCY_BC]: {
-    label: 'Public Safety and Solicitor General and Emergency B.C.',
+  [GovMinistriesEnum.PUBLIC_SAFETY_AND_SOLICITOR_GENERAL]: {
+    label: 'Public Safety and Solicitor General',
     code: 'PSSG',
   },
   [GovMinistriesEnum.SOCIAL_DEVELOPMENT_AND_POVERTY_REDUCTION]: {
@@ -101,5 +101,13 @@ export const GovMinistries: IConstant = {
   [GovMinistriesEnum.TRANSPORTATION_AND_INFRASTRUCTURE]: {
     label: 'Transportation and Infrastructure',
     code: 'TRAN',
+  },
+  [GovMinistriesEnum.HOUSING]: {
+    label: 'Housing',
+    code: 'HOUS',
+  },
+  [GovMinistriesEnum.EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS]: {
+    label: 'Emergency Management and Climate Readiness',
+    code: 'EMCR',
   },
 };

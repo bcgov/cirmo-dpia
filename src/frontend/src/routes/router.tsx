@@ -2,23 +2,23 @@ import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
-import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/Accuracy_Retention';
-import PIAAdditionalRisks from '../components/public/PIAFormTabs/PIAAdditionalRisks';
-import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/Security_Personal_Information';
-import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/PIACollectionUseAndDisclosure';
+import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
-import PIADetailPage from '../pages/PIADetailPage';
-import PIAIntakeFormPage from '../pages/PIAIntakeForm';
+import PIAIntakeFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAList from '../pages/PIAListPage';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
-import StoringPersonalInformation from '../components/public/PIAFormTabs/PIAStoringPersonalInformation';
+import StoringPersonalInformation from '../components/public/PIAFormTabs/storingPersonalInformation';
 import { isAuthenticated } from '../utils/auth';
 import { isMPORole } from '../utils/helper.util';
 import PIAAgreementsAndInformationBanks from '../components/public/PIAFormTabs/agreementsAndInformationBanks';
+import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/collectionUseAndDisclosure';
+import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/securityPersonalInformation';
+import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/accuracyRetention';
+import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -40,7 +40,6 @@ const Router = () => {
       </div>
     </div>
   );
-
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
@@ -64,23 +63,26 @@ const Router = () => {
             <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
-          <Route path=":id/view/:title" element={<PIADetailPage />} />
-          {/* Replace the above path with proper view nested component once developed */}
-
           <Route path=":id" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
 
             <Route path="intake">
-              <Route index element={<Navigate relative="path" to="edit" />} />
+              <Route index element={<Navigate relative="path" to="view" />} />
               {/* update above default to view once the PIA intake view component is built */}
               <Route path="edit" element={<PIAFormIntake />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<PIAFormIntake />} />
+            </Route>
+
+            <Route path="nextSteps">
+              <Route index element={<Navigate relative="path" to="edit" />} />
+              {/* update above default to view once the PIA intake view component is built */}
+              <Route path="edit" element={<PIANextSteps />} />
             </Route>
 
             <Route path="collectionUseAndDisclosure">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PIACollectionUseAndDisclosure />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<PIACollectionUseAndDisclosure />} />
             </Route>
 
             <Route
@@ -95,28 +97,31 @@ const Router = () => {
             <Route path="securityOfPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<SecurityPersonalInformation />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<SecurityPersonalInformation />} />
             </Route>
 
             <Route path="accuracyCorrectionAndRetention">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<AccuracyCorrectionAndRetention />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<AccuracyCorrectionAndRetention />} />
             </Route>
 
-            <Route path="agreementsAndInformationBank">
+            <Route path="agreementsAndInformationBanks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route
                 path="edit"
                 element={<PIAAgreementsAndInformationBanks />}
               />
-              <Route path="view" element={comingSoonBanner} />
+              <Route
+                path="view"
+                element={<PIAAgreementsAndInformationBanks />}
+              />
             </Route>
 
             <Route path="additionalRisks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PIAAdditionalRisks />} />
-              <Route path="view" element={comingSoonBanner} />
+              <Route path="view" element={<PIAAdditionalRisks />} />
             </Route>
           </Route>
         </Route>

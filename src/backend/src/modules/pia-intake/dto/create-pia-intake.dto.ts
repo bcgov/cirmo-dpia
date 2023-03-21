@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsDateString,
-  IsEmail,
   IsEnum,
   IsNotEmptyObject,
   IsObject,
@@ -69,7 +68,6 @@ export class CreatePiaIntakeDto {
 
   @IsString()
   @IsOptional()
-  @IsEmail()
   @ApiProperty({
     type: String,
     required: false,
@@ -97,7 +95,6 @@ export class CreatePiaIntakeDto {
 
   @IsString()
   @IsOptional()
-  @IsEmail()
   @ApiProperty({
     type: String,
     required: false,
@@ -116,7 +113,6 @@ export class CreatePiaIntakeDto {
 
   @IsString()
   @IsOptional()
-  @IsEmail()
   @ApiProperty({
     type: String,
     required: false,
@@ -186,6 +182,24 @@ export class CreatePiaIntakeDto {
     example: new Date(),
   })
   submittedAt: Date;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: piaIntakeEntityMock.isNextStepsSeenForDelegatedFlow,
+  })
+  isNextStepsSeenForDelegatedFlow: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+    example: piaIntakeEntityMock.isNextStepsSeenForNonDelegatedFlow,
+  })
+  isNextStepsSeenForNonDelegatedFlow: boolean;
 
   @IsObject()
   @IsOptional()

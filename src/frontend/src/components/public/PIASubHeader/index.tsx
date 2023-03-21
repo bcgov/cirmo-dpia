@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 import { statusList } from '../../../utils/status';
 import { PIASubHeaderProps } from './interfaces';
@@ -11,19 +11,31 @@ import {
 } from '../../../utils/file-download.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
+import { useLocation } from 'react-router-dom';
+import { PiaStatuses } from '../../../constant/constant';
+import { isMPORole } from '../../../utils/helper.util';
+import Modal from '../../common/Modal';
 
 function PIASubHeader({
   pia,
   secondaryButtonText = 'Save',
-  primaryButtonText = 'Submit PIA intake',
+  primaryButtonText,
+  handleStatusChange,
+  mode = 'edit',
   lastSaveAlertInfo,
   onSaveChangeClick = () => {},
+  onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
-  //TODO implement tooltip for faEllipsisH icon, so when mouse hover, will display download word
-  // this pr just add download function for faEllipsisH icon
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
+  const { pathname } = useLocation();
+
+  const nextStepAction = pathname?.split('/').includes('nextSteps');
+  secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
+  const isMPO = () => {
+    return isMPORole();
+  };
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -50,65 +62,189 @@ function PIASubHeader({
   const handleAlertClose = () => {
     setDownloadError('');
   };
+  //
+  // Modal State
+  //
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [statusLocal, setStatusLocal] = useState<string>('');
+  const [modalButtonValue, setModalButtonValue] = useState<string>('');
+
+  const changeStatusFn = (status: string) => {
+    setStatusLocal(status);
+    setModalConfirmLabel(statusList[status].modal.confirmLabel);
+    setModalCancelLabel(statusList[status].modal.cancelLabel);
+    setModalTitleText(statusList[status].modal.title);
+    setModalParagraph(statusList[status].modal.description);
+    setShowModal(true);
+  };
+
+  const handleModalClose = async (event: any) => {
+    event.preventDefault();
+    handleStatusChange(statusLocal);
+    setShowModal(false);
+    // navigate(buildDynamicPath(routes.PIA_VIEW, { id: pia.id }));
+  };
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="subheader-container wrapper">
       <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
-      <div className="">
+      <div
+        className={
+          nextStepAction
+            ? 'other__elements-nextstep-container'
+            : 'other__elements-container'
+        }
+      >
         {downloadError && (
           <Alert
             type="danger"
             message="Something went wrong. Please try again."
             onClose={handleAlertClose}
-            className="mt-2 col-sm-1"
+            className="mt-2 mx-1"
           />
         )}
-      </div>
-      <div className="">
-        <div>Status</div>
-        <div>
-          {pia.status ? (
-            pia.status in statusList ? (
-              <div className={`statusBlock ${statusList[pia.status].class}`}>
-                {statusList[pia.status].title}
+        <div className="mx-1">
+          <div>Status</div>
+          <div className="dropdownSatusContainer">
+            {isMPO() && mode === 'view' ? (
+              <div className="dropdown">
+                <button
+                  className="dropdown-toggles form-control"
+                  type="button"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <div
+                    className={`statusBlock ${
+                      pia.status ? statusList[pia.status].class : ''
+                    }`}
+                  >
+                    {pia.status
+                      ? statusList[pia.status].title
+                      : statusList[PiaStatuses.INCOMPLETE].title}
+                  </div>
+                </button>
+                {pia.status ? (
+                  pia.status in statusList ? (
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton1"
+                    >
+                      {statusList[pia.status].Priviliges.MPO.changeStatus.map(
+                        (statuskey, index) =>
+                          pia.status !== statuskey &&
+                          statuskey !== PiaStatuses.COMPLETED ? (
+                            <li
+                              key={index}
+                              onClick={() => {
+                                changeStatusFn(statuskey);
+                              }}
+                              className="dropdown-item-container"
+                            >
+                              <div
+                                className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
+                              >
+                                {statusList[statuskey].title}
+                              </div>
+                            </li>
+                          ) : (
+                            ''
+                          ),
+                      )}
+                    </ul>
+                  ) : (
+                    ''
+                  )
+                ) : (
+                  ''
+                )}
+                <FontAwesomeIcon
+                  className="dropdown-icon"
+                  icon={faChevronDown}
+                />
               </div>
+            ) : pia.status ? (
+              pia.status in statusList ? (
+                <div className={`statusBlock ${statusList[pia.status].class}`}>
+                  {pia.status ? statusList[pia.status].title : 'Completed'}
+                </div>
+              ) : (
+                ''
+              )
             ) : (
               ''
-            )
-          ) : (
-            ''
+            )}
+          </div>
+        </div>
+        {lastSaveAlertInfo?.show && !nextStepAction && (
+          <div className="mx-1">
+            <Alert
+              type={lastSaveAlertInfo.type}
+              message={lastSaveAlertInfo.message}
+              showInitialIcon={true}
+              showCloseIcon={false}
+            />
+          </div>
+        )}
+        <div className="d-flex mx-1">
+          <button
+            className="mx-2 bcgovbtn bcgovbtn__secondary"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded={false}
+          >
+            <FontAwesomeIcon icon={faEllipsisH} />
+            {isDownloading && <Spinner />}
+          </button>
+
+          <ul className="dropdown-menu">
+            <li>
+              <a className="dropdown-item" onClick={() => handleDownload()}>
+                Download
+              </a>
+            </li>
+          </ul>
+
+          {/* Save or Edit button */}
+          {!nextStepAction && (
+            <button
+              onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
+              className="mx-1 bcgovbtn bcgovbtn__secondary"
+            >
+              {secondaryButtonText}
+            </button>
+          )}
+
+          {/* Submission button */}
+          {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
+            <button
+              onClick={onSubmitClick}
+              className="mx-1 bcgovbtn bcgovbtn__primary"
+            >
+              {primaryButtonText}
+            </button>
           )}
         </div>
       </div>
-      {lastSaveAlertInfo?.show && (
-        <div>
-          <Alert
-            type={lastSaveAlertInfo.type}
-            message={lastSaveAlertInfo.message}
-            showInitialIcon={true}
-            showCloseIcon={false}
-          />
-        </div>
-      )}
-      <div className="d-flex">
-        <button
-          onClick={() => handleDownload()}
-          className="mx-2 bcgovbtn bcgovbtn__secondary"
-        >
-          <FontAwesomeIcon icon={faEllipsisH} />
-          {isDownloading && <Spinner />}
-        </button>
-
-        <button
-          onClick={onSaveChangeClick}
-          className="mx-2 bcgovbtn bcgovbtn__secondary"
-        >
-          {secondaryButtonText}
-        </button>
-
-        <button onClick={onSubmitClick} className="bcgovbtn bcgovbtn__primary">
-          {primaryButtonText}
-        </button>
-      </div>
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showModal}
+        value={modalButtonValue}
+        handleClose={(e) => handleModalClose(e)}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </div>
   );
 }

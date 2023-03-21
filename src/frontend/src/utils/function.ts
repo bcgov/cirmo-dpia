@@ -8,3 +8,7 @@ export const throttle = (func: any, limit: number) => {
     }
   };
 };
+
+// returns true for "0" and false for "a"
+export const isNumberString = (numberString: string | number) =>
+  !isNaN(Number(numberString));
