@@ -77,9 +77,10 @@ export const Table = ({
     removeRow,
   };
 
-  if (format === 'row') {
-    return UseTableRowView(viewProps);
-  }
-
-  return UseTableStandardView(viewProps);
+  return (
+    <div className="data-table__container">
+      {format === 'row' && UseTableRowView(viewProps)}
+      {format === 'standard' && UseTableStandardView(viewProps)}
+    </div>
+  );
 };
