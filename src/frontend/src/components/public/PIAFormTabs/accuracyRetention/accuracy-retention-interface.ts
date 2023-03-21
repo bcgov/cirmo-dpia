@@ -1,15 +1,15 @@
 export interface IAccuracyCorrectionAndRetention {
-  accuracy?: {
-    description?: string | null;
+  accuracy: {
+    description: string;
   };
-  correction?: {
-    haveProcessInPlace?: string | null;
-    willDocument?: string | null;
-    willConductNotifications?: string | null;
+  correction: {
+    haveProcessInPlace: string;
+    willDocument: string;
+    willConductNotifications: string;
   };
-  retention?: {
-    usePIForDecision?: string | null;
-    haveApprovedInfoSchedule?: string | null;
-    describeRetention?: string | null;
+  retention: {
+    usePIForDecision: string;
+    haveApprovedInfoSchedule: string;
+    describeRetention: string;
   };
 }

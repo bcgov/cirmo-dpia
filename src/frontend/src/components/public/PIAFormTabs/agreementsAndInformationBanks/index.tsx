@@ -26,7 +26,7 @@ const PIAAgreementsAndInformationBanks = () => {
   const defaultState: IAgreementsAndInformationBanks = useMemo(
     () => ({
       personalInformationBanks: {
-        willResultInPIB: 'YES',
+        willResultInPIB: YesNoInput.YES,
         description: '',
         mainMinistryOrAgencyInvolved: '',
         otherGroupsInvolved: '',
@@ -34,7 +34,7 @@ const PIAAgreementsAndInformationBanks = () => {
         contactPhone: '',
       },
       informationSharingAgreement: {
-        doesInvolveISA: 'YES',
+        doesInvolveISA: YesNoInput.YES,
         description: '',
         mainMinistryOrAgencyInvolved: '',
         otherGroupsInvolved: '',
