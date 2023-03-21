@@ -1,12 +1,29 @@
+/* Defining a root element for the custom font size */
+@include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+  :root {
+    --custom-font-size: 14px;
+  }
+}
+
+@include breakpoint(map-get($grid-breakpoints, 'md')) {
+  :root {
+    --custom-font-size: 16px;
+  }
+}
+
 :root {
   box-sizing: border-box;
+  /* Bootstraps root overwirtes the font-size. 
+     Added important to make this have higher
+     specificity */
+  font-size: var(--custom-font-size) !important;
 }
 
 body {
   min-height: 100vh;
   position: relative;
   font-family: $font-family;
-  font-size: 16px;
+  font-size: var(--custom-font-size);
   min-width: 100%;
 
   & > #root {
@@ -38,6 +55,10 @@ h3 {
 
 h4 {
   font-size: 1.2rem;
+}
+
+p {
+  font-size: 1rem;
 }
 
 h1,
