@@ -26,7 +26,7 @@ function PPQLandingPage(props: IComponentProps) {
         </div>
         <div className="overflow-clip">
           <div className="row mt-2 mb-5 component__row--create-new-form">
-            <div className="col ">
+            <div className="col">
               <h2>
                 <b>{messages.PIAIntakeHeading.en}</b>
               </h2>
@@ -47,7 +47,7 @@ function PPQLandingPage(props: IComponentProps) {
                 <b>Estimated time:</b> 20 minutes
               </span>
             </div>
-            <div className="col col-sm-4 rounded float-end">
+            <div className="col col-md-4 rounded float-end order-first order-md-last">
               <img src={piaImg} alt="Fill form image" />
             </div>
           </div>
@@ -73,7 +73,7 @@ function PPQLandingPage(props: IComponentProps) {
                   <b>Estimated time:</b> 5 minutes
                 </span>
               </div>
-              <div className="col col-sm-4 rounded float-end">
+              <div className="col col-md-4 rounded float-end order-first order-md-last">
                 <img src={ppqImg} alt="Fill form image" />
               </div>
             </div>
