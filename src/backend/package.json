@@ -46,7 +46,7 @@
     "nest-keycloak-connect": "1.9.0",
     "pg": "8.8.0",
     "pug": "3.0.2",
-    "puppeteer": "13.5.0",
+    "puppeteer": "19.7.5",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.5.6",
