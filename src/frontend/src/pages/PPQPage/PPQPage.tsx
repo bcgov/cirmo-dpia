@@ -25,7 +25,7 @@ function PPQLandingPage(props: IComponentProps) {
           <h1 className="mb-4">Create New </h1>
         </div>
         <div className="overflow-clip">
-          <div className="row mt-2 mb-5 component__row--create-new-form">
+          <div className="row mt-2 mb-5 component__row--create-new-form drop-shadow section-border-radius">
             <div className="col">
               <h2>
                 <b>{messages.PIAIntakeHeading.en}</b>
@@ -54,7 +54,7 @@ function PPQLandingPage(props: IComponentProps) {
           {showMPOContents && (
             <div
               data-cy="ppq-img"
-              className="row mt-2 mb-5 component__row--create-new-form "
+              className="row mt-2 mb-5 component__row--create-new-form  drop-shadow section-border-radius"
             >
               <div className="col">
                 <h2>
