@@ -10,7 +10,8 @@ import { ICollectionUseAndDisclosure } from './CollectionUseAndDisclosure';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { ColumnMetaData, Table } from '../../../common/Table';
+import { Table } from '../../../common/Table';
+import { ColumnMetaData } from '../../../common/Table/interfaces';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 
 const PIACollectionUseAndDisclosure = () => {
@@ -24,9 +25,6 @@ const PIACollectionUseAndDisclosure = () => {
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
       steps: [
-        { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
-        { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
-        { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
         { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
       ],
       collectionNotice: { drafterInput: '', mpoInput: '' },
@@ -48,26 +46,21 @@ const PIACollectionUseAndDisclosure = () => {
   const columns: Array<ColumnMetaData> = [
     {
       key: 'drafterInput',
-      displayName: Messages.WorkThroughDetails.ColumnDrafterInput.en,
-      className: 'border-end',
-      numberedLabelPrefix: 'Step',
+      label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
     },
     {
       key: 'mpoInput',
-      displayName: Messages.WorkThroughDetails.ColumnMpoInput.en,
-      hint: Messages.WorkThroughDetails.columnHint.en,
+      label: Messages.WorkThroughDetails.ColumnMpoInput.en,
       isDisable: !isMPORole(),
     },
     {
       key: 'foippaInput',
-      displayName: Messages.WorkThroughDetails.ColumnFoippaInput.en,
-      hint: Messages.WorkThroughDetails.columnHint.en,
+      label: Messages.WorkThroughDetails.ColumnFoippaInput.en,
       isDisable: !isMPORole(),
     },
     {
       key: 'OtherInput',
-      displayName: Messages.WorkThroughDetails.ColumnOtherInput.en,
-      hint: Messages.WorkThroughDetails.columnHint.en,
+      label: Messages.WorkThroughDetails.ColumnOtherInput.en,
       isDisable: !isMPORole(),
     },
   ];
@@ -89,7 +82,8 @@ const PIACollectionUseAndDisclosure = () => {
       </h2>
       <span>{Messages.Headings.Subtitle.en}</span>
       <h3 className="pt-4 pb-2">{Messages.WorkThroughDetails.Title.en}</h3>
-      <section className="card p-3">
+      <p> {Messages.WorkThroughDetails.SubTitle.en}</p>
+      <section className="card p-5">
         <Table
           data={collectionUseAndDisclosureForm.steps}
           columnsMeta={columns}
@@ -97,6 +91,9 @@ const PIACollectionUseAndDisclosure = () => {
             stateChangeHandler(updatedData, 'steps');
           }}
           readOnly={isReadOnly}
+          numberedLabelPrefix="Step"
+          addRowBtnLabel="Add more steps"
+          format="row"
         />
       </section>
 
