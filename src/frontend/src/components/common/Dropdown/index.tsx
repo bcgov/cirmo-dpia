@@ -12,7 +12,7 @@ const Dropdown = ({
 }: IDropdown) => {
   return (
     <div className={`form-group ${optionalClass}`}>
-      <label htmlFor={id}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
       <div className="dropdown">
         {!readOnly ? (
           <select

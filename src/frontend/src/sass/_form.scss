@@ -84,44 +84,20 @@
   }
 }
 
-.search-container-wrapper {
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-  width: 100%;
-  
-  & > * > * > .dropdown {
-      width: 11em;
-    }
-  label {
-  display: none;
-  }
-}
-
 .search-container {
-  min-width: 450px;
-  justify-content: end;
-
-  .search-input {
-    width: 100%;
+  input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
-  .search-sub-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
 
-    label {
-      display: none;
-    }
-
-    input {
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
+  @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
+    .search_input {
+      width: 70%;
     }
   }
 
   .search-icon-container {
-    height: 38px;
+    height: 2.4rem;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }
@@ -129,7 +105,7 @@
 
 .checkbox-default {
   a {
-    font-weight:normal;
+    font-weight: normal;
     cursor: text;
     -webkit-user-select: text;
     -webkit-touch-callout: text;
