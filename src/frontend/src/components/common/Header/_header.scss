@@ -1,7 +1,6 @@
 .header {
   background-color: $primary-colour;
   border-bottom: 2px solid $accent-colour;
-  padding-inline: $wrapper-padding-inline;
   color: #fff;
   display: flex;
   height: $header-height;
@@ -16,27 +15,29 @@
   .logo {
     width: 170px;
     height: 65px;
-    margin-right:25px;
+    margin-right: 25px;
     padding: 0;
   }
-}
 
-header h1 {
-  font-family: $font-family;
-  font-weight: 600;
-  margin-block: 5px;
+  .other {
+    @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+      display: none;
+    }
+  }
+
+  p {
+    margin: 0px;
+  }
 
   span {
     color: $secondary-yellow;
     vertical-align: super;
+    @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+      vertical-align: baseline;
+    }
     font-weight: inherit;
     font-variant: small-caps;
-    font-size: 1.44rem;
   }
-}
-
-.header-h1 {
-  font-size: 1.7028rem;
 }
 
 header .banner {
@@ -63,25 +64,5 @@ header .other {
   a {
     color: white;
     font-weight: bold;
-  }
-}
-
-/*
-  These are sample media queries only. Media queries are quite subjective
-  but, in general, should be made for the three different classes of screen
-  size: phone, tablet, full.
-*/
-
-@media screen and (min-width: 600px) and (max-width: 899px) {
-  header h1 {
-    font-size: calc(7px + 2.2vw);
-    visibility: visible;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  header h1 {
-    font-size: 2em;
-    visibility: visible;
   }
 }
