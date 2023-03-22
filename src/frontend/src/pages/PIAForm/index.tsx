@@ -1,4 +1,4 @@
-import { PiaStatuses } from '../../constant/constant';
+import { PiaStatuses, PIOptions } from '../../constant/constant';
 import Messages from './messages';
 import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
@@ -332,10 +332,11 @@ const PIAFormPage = () => {
         if (
           (pia?.id &&
             pia?.isNextStepsSeenForNonDelegatedFlow === true &&
-            pia?.hasAddedPiToDataElements === true) ||
+            (pia?.hasAddedPiToDataElements === PIOptions[0].value ||
+              pia?.hasAddedPiToDataElements === PIOptions[2].value)) ||
           (pia?.id &&
             pia?.isNextStepsSeenForDelegatedFlow === true &&
-            pia?.hasAddedPiToDataElements === false)
+            pia?.hasAddedPiToDataElements === PIOptions[1].value)
         ) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
