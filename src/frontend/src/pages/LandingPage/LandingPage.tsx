@@ -5,6 +5,7 @@ import vision from '../../assets/public_homepage/vision.svg';
 import problem from '../../assets/public_homepage/problem.svg';
 import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
+import hero from '../../assets/public_homepage/hero.svg';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { isAuthenticated } from '../../utils/auth';
 
@@ -19,6 +20,7 @@ function LandingPage() {
     <div>
       <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
+          <img className="mobile-show-hero" src={hero} alt="Fill out PIA" />
           <h1>Digital Privacy Impact Assessment (DPIA)</h1>
           <p>
             The Government of BC is creating a flagship Digital Privacy Impact
