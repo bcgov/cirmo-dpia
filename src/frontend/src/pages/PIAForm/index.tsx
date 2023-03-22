@@ -329,7 +329,20 @@ const PIAFormPage = () => {
               ? PiaStatuses.MPO_REVIEW
               : PiaStatuses.INCOMPLETE,
         });
-        if (pia?.id) {
+        if (
+          (pia?.id &&
+            pia?.isNextStepsSeenForNonDelegatedFlow === true &&
+            pia?.hasAddedPiToDataElements === true) ||
+          (pia?.id &&
+            pia?.isNextStepsSeenForDelegatedFlow === true &&
+            pia?.hasAddedPiToDataElements === false)
+        ) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: pia.id,
+            }),
+          );
+        } else {
           navigate(
             buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
               id: pia.id,
