@@ -129,10 +129,10 @@ function Header({ user }: Props) {
             alt="Go to the Government of British Columbia website"
           />
         </a>
-        <p className="header-h1">
-          <strong>
+        <p>
+          <b>
             Digital Privacy Impact Assessment (DPIA) <span>beta</span>
-          </strong>
+          </b>
         </p>
       </div>
       <div className="message">{message ? <p>{message}</p> : null}</div>
