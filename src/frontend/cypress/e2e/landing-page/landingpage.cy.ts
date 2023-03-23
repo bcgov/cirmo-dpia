@@ -13,7 +13,7 @@ describe('Test DPIA Landing Page', () => {
     // We use the `cy.get()` command to get all elements that match the selector.
     // Then, we use `should` to assert that there are two matched items,
     // which are the two default items.
-    cy.get('.header-h1').contains('Digital Privacy Impact Assessment (DPIA) ');
+    cy.get('.banner').contains('Digital Privacy Impact Assessment (DPIA) ');
     cy.get('.bcgovbtn').contains('Log in with IDIR');
   });
 
