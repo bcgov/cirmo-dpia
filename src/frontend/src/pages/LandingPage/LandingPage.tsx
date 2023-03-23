@@ -21,7 +21,7 @@ function LandingPage() {
       <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
           <img
-            className="d-none d-md-block d-lg-none"
+            className=" d-md-block d-lg-none"
             src={hero}
             alt="Fill out PIA"
           />
