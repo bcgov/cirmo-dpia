@@ -28,7 +28,7 @@ export default {
       },
       haveProcessinPlace: {
         Question: {
-          en: 'Do you have a process in place to request personal information?',
+          en: 'Do you have a process in place to correct personal information?',
         },
         HelperText: {
           en: ' gives an individual the right to request correction of errors or omissions to their personal information. You must have a process in place to respond to these requests.',
