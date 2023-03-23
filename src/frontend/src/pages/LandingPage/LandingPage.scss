@@ -19,7 +19,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  max-width:45ch;
+  max-width: 90%;
   
   @include breakpoint(map-get($grid-breakpoints, 'md')) {
     max-width: 80ch;
