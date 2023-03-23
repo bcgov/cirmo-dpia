@@ -189,7 +189,7 @@ const PIAAgreementsAndInformationBanks = () => {
                 </div>
                 {!isReadOnly ? (
                   <>
-                    <div className="row mt-2">
+                    <div className="row mt-2 form__row--flex-end">
                       <div className="col">
                         <InputText
                           label="Main ministry or agency involved"
@@ -268,10 +268,10 @@ const PIAAgreementsAndInformationBanks = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row mt-2 form__row--flex-end">
                       <div className="col">
                         <div className="form-group">
-                          <label id="start-date-label">ISA start date</label>
+                          <label>ISA start date</label>
                           <CustomInputDate
                             key="isaStartDate"
                             selected={
@@ -295,7 +295,7 @@ const PIAAgreementsAndInformationBanks = () => {
                       </div>
                       <div className="col">
                         <div className=" form-group ">
-                          <label id="end-date-label">ISA end date</label>
+                          <label>ISA end date</label>
                           <CustomInputDate
                             key="isaEndDate"
                             selected={
@@ -446,7 +446,7 @@ const PIAAgreementsAndInformationBanks = () => {
                   </div>
                   {!isReadOnly ? (
                     <>
-                      <div className="row mt-2">
+                      <div className="row mt-2 form__row--flex-end">
                         <div className="col">
                           <InputText
                             label="Main ministry or agency involved"
