@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 import { statusList } from '../../../utils/status';
 import { PIASubHeaderProps } from './interfaces';
@@ -13,8 +13,8 @@ import { API_ROUTES } from '../../../constant/apiRoutes';
 import Spinner from '../../common/Spinner';
 import { useLocation } from 'react-router-dom';
 import { PiaStatuses } from '../../../constant/constant';
-import { isMPORole } from '../../../utils/helper.util';
 import Modal from '../../common/Modal';
+import StatusChangeDropDown from '../StatusChangeDropDown';
 
 function PIASubHeader({
   pia,
@@ -33,9 +33,6 @@ function PIASubHeader({
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
-  const isMPO = () => {
-    return isMPORole();
-  };
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -111,78 +108,11 @@ function PIASubHeader({
           />
         )}
         <div className="mx-1">
-          <div>Status</div>
-          <div className="dropdownSatusContainer">
-            {isMPO() && mode === 'view' ? (
-              <div className="dropdown">
-                <button
-                  className="dropdown-toggles form-control"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <div
-                    className={`statusBlock ${
-                      pia.status ? statusList[pia.status].class : ''
-                    }`}
-                  >
-                    {pia.status
-                      ? statusList[pia.status].title
-                      : statusList[PiaStatuses.INCOMPLETE].title}
-                  </div>
-                </button>
-                {pia.status ? (
-                  pia.status in statusList ? (
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      {statusList[pia.status].Priviliges.MPO.changeStatus.map(
-                        (statuskey, index) =>
-                          pia.status !== statuskey &&
-                          statuskey !== PiaStatuses.COMPLETED ? (
-                            <li
-                              key={index}
-                              onClick={() => {
-                                changeStatusFn(statuskey);
-                              }}
-                              className="dropdown-item-container"
-                            >
-                              <div
-                                className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
-                              >
-                                {statusList[statuskey].title}
-                              </div>
-                            </li>
-                          ) : (
-                            ''
-                          ),
-                      )}
-                    </ul>
-                  ) : (
-                    ''
-                  )
-                ) : (
-                  ''
-                )}
-                <FontAwesomeIcon
-                  className="dropdown-icon"
-                  icon={faChevronDown}
-                />
-              </div>
-            ) : pia.status ? (
-              pia.status in statusList ? (
-                <div className={`statusBlock ${statusList[pia.status].class}`}>
-                  {pia.status ? statusList[pia.status].title : 'Completed'}
-                </div>
-              ) : (
-                ''
-              )
-            ) : (
-              ''
-            )}
-          </div>
+          <StatusChangeDropDown
+            pia={pia}
+            mode={mode}
+            changeStatusFn={changeStatusFn}
+          />
         </div>
         {lastSaveAlertInfo?.show && !nextStepAction && (
           <div className="mx-1">
@@ -192,6 +122,16 @@ function PIASubHeader({
               showInitialIcon={true}
               showCloseIcon={false}
             />
+          </div>
+        )}
+        {mode === 'view' && (
+          <div className="mx-1">
+            <button
+              onClick={onEditClick}
+              className="mx-1 bcgovbtn bcgovbtn__secondary"
+            >
+              {secondaryButtonText}
+            </button>
           </div>
         )}
         <div className="d-flex mx-1">
@@ -206,22 +146,20 @@ function PIASubHeader({
           </button>
 
           <ul className="dropdown-menu">
-            <li>
+            <li role="button">
               <a className="dropdown-item" onClick={() => handleDownload()}>
                 Download
               </a>
             </li>
+            <li role="button">
+              {/* Save or Edit button */}
+              {!nextStepAction && mode === 'edit' && (
+                <a onClick={() => onSaveChangeClick} className="dropdown-item">
+                  {secondaryButtonText}
+                </a>
+              )}
+            </li>
           </ul>
-
-          {/* Save or Edit button */}
-          {!nextStepAction && (
-            <button
-              onClick={mode === 'view' ? onEditClick : onSaveChangeClick}
-              className="mx-1 bcgovbtn bcgovbtn__secondary"
-            >
-              {secondaryButtonText}
-            </button>
-          )}
 
           {/* Submission button */}
           {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (

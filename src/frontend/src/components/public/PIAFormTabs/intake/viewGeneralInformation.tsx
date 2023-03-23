@@ -14,7 +14,7 @@ const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
   return (
     <>
       <div className="card p-4 p-md-5">
-        <div className="container d-grid gap-3">
+        <div className="d-grid gap-3">
           <div className="row">
             <div className="col col-md-3">
               <b>Drafter</b>

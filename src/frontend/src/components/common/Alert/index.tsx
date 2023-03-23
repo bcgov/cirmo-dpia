@@ -44,9 +44,9 @@ const Alert = ({
       {showInitialIcon && type === 'danger' && (
         <FontAwesomeIcon icon={faCircleExclamation} />
       )}
-
-      {children ? renderElAlert() : message}
-
+      <span className="d-none d-xl-block">
+        {children ? renderElAlert() : message}
+      </span>
       {showCloseIcon && (
         <span
           className="alert-close"
