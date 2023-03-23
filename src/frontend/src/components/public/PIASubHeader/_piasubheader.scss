@@ -17,9 +17,9 @@
     min-width: 10%;
     margin: 0px;
     padding: 0px;
-    width:50%;
+    width: 50%;
     @include breakpoint(0 map-get($grid-breakpoints, 'xxl')) {
-      width:40%;
+      width: 40%;
     }
   }
 
