@@ -83,51 +83,57 @@ const PIAIntakeFilter = () => {
   };
 
   return (
-    <div className="d-flex me-auto">
-      <div className="mt-2"> Filter by</div>
-      <Dropdown
-        id="pia-status-select"
-        value={filterByStatus}
-        label=""
-        placeholder="Any status"
-        optionalClass="px-2"
-        options={PiaStatusList}
-        changeHandler={handlePiaStatusChange}
-        required={false}
-      />
-      {isMPORole() && (
-        <>
-          <Dropdown
-            id="ministry-select"
-            value={filterByMinistry}
-            label=""
-            placeholder="Any ministry"
-            optionalClass=""
-            options={MinistryList}
-            changeHandler={handleMinistryChange}
-            required={false}
-          />
+    <div className="w-100 d-lg-inline-flex text-nowrap align-items-center">
+      <label>Filter by</label>
 
-          <Dropdown
-            id="drafter-filter-select"
-            value={filterPiaDrafterByCurrentUser}
-            label=""
-            placeholder="Any drafter"
-            optionalClass="px-2"
-            options={PiaDrafterFilterList}
-            changeHandler={handleDrafterFilterChange}
-            required={false}
-          />
-        </>
-      )}
+      <div className="ms-lg-2 ms-xl-4">
+        <div className="row">
+          <div className="col-sm-6 col-md-3 pe-sm-0">
+            <Dropdown
+              id="pia-status-select"
+              value={filterByStatus}
+              placeholder="Any status"
+              options={PiaStatusList}
+              changeHandler={handlePiaStatusChange}
+              required={false}
+            />
+          </div>
 
-      <div>
-        <button
-          className="bcgovbtn bcgovbtn__tertiary "
-          onClick={handleClearFilterClick}
-        >
-          Clear filters
-        </button>
+          <div className="col-sm-6 col-md-3 pt-4 pt-sm-0 pe-md-0">
+            {isMPORole() && (
+              <Dropdown
+                id="ministry-select"
+                value={filterByMinistry}
+                placeholder="Any ministry"
+                options={MinistryList}
+                changeHandler={handleMinistryChange}
+                required={false}
+              />
+            )}
+          </div>
+
+          <div className="col-sm-6 col-md-3 pt-4 pt-md-0 pe-sm-0">
+            {isMPORole() && (
+              <Dropdown
+                id="drafter-filter-select"
+                value={filterPiaDrafterByCurrentUser}
+                placeholder="Any drafter"
+                options={PiaDrafterFilterList}
+                changeHandler={handleDrafterFilterChange}
+                required={false}
+              />
+            )}
+          </div>
+
+          <div className="col-sm-6 col-md-3 pt-4 pt-md-0 d-flex justify-content-start">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary p-0 fw-bold"
+              onClick={handleClearFilterClick}
+            >
+              Clear filters
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

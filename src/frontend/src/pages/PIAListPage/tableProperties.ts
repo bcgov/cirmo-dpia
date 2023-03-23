@@ -3,6 +3,7 @@ export interface TableHeadingPropertiesType {
     title: string;
     sorting: boolean;
     sortValue: number;
+    hideOnSmView?: boolean;
   };
 }
 
@@ -21,6 +22,7 @@ export const tableHeadingProperties: TableHeadingPropertiesType = {
     title: 'Drafter',
     sorting: true,
     sortValue: 0,
+    hideOnSmView: true,
   },
   status: {
     title: 'PIA status',
