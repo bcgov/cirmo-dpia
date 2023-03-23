@@ -107,15 +107,22 @@ const PIAList = () => {
       <div className="page__controls full__width">
         <h1>List of PIAs</h1>
       </div>
-      <div className="search-container-wrapper">
-        <PIAIntakeFilter />
-        <SearchBox
-          searchText={searchText}
-          onChange={handleSearchTextChange}
-          onSearchClick={updateSearchUrl}
-          onClearSearchClick={handleClearSearchText}
-        />
+      <div className="w-100">
+        <div className="row">
+          <div className="col-lg-8 col-xl-7">
+            <PIAIntakeFilter />
+          </div>
+          <div className="col-lg-4 col-xl-5 pt-4 pt-lg-0">
+            <SearchBox
+              searchText={searchText}
+              onChange={handleSearchTextChange}
+              onSearchClick={updateSearchUrl}
+              onClearSearchClick={handleClearSearchText}
+            />
+          </div>
+        </div>
       </div>
+
       {tableData.length === 0 ? (
         <EmptyPIAList />
       ) : (

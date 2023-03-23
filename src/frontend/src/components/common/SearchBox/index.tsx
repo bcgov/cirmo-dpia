@@ -12,34 +12,28 @@ const SearchBox = ({
   onClearSearchClick = () => {},
 }: SearchBoxProps) => {
   return (
-    <div className="d-flex ms-auto search-container">
-      <div className="search-sub-container">
-        <div className="search-input">
-          <InputText
-            placeholder="Search by title or drafter"
-            value={searchText}
-            required={false}
-            onChange={onChange}
-          />
-        </div>
+    <div className="w-100 d-inline-flex justify-content-lg-end search-container">
+      <InputText
+        placeholder="Search by title or drafter"
+        value={searchText}
+        className="search_input"
+        required={false}
+        onChange={onChange}
+      />
 
-        <div className="search-icon-container">
-          <button
-            onClick={onSearchClick}
-            className="bcgovbtn bcgovbtn__primary bcgovbtn__primary-search search-icon-container"
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </div>
-      </div>
-      <div className="mt-1">
-        <button
-          onClick={onClearSearchClick}
-          className="bcgovbtn bcgovbtn__tertiary "
-        >
-          Clear search
-        </button>
-      </div>
+      <button
+        onClick={onSearchClick}
+        className="search-icon-container bcgovbtn bcgovbtn__primary bcgovbtn__primary-search search-icon-container"
+      >
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </button>
+
+      <button
+        onClick={onClearSearchClick}
+        className="bcgovbtn bcgovbtn__tertiary ps-3 pe-0 fw-bold"
+      >
+        Clear search
+      </button>
     </div>
   );
 };
