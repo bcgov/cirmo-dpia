@@ -28,7 +28,7 @@ export type PiaStateChangeHandlerType = (
 export type PiaFormOpenMode = 'edit' | 'view';
 
 export enum SubmitButtonTextEnum {
-  INTAKE = 'Submit Pia intake',
+  INTAKE = 'Submit',
   FORM = 'Submit',
 }
 
@@ -261,7 +261,7 @@ const PIAFormPage = () => {
 
     setLastSaveAlertInfo({
       type: 'success',
-      message: `Auto-saved at ${getShortTime(updatedPia.updatedAt)}.`,
+      message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
       show: true,
     });
 

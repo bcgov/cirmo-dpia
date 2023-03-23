@@ -27,11 +27,12 @@
   display: flex;
   flex-flow: row wrap;
   margin: 0;
-  padding: 0;
+  padding: 7px 0px;
   color: #fff;
   list-style: none;
   align-items: center;
   height: 100%;
+  justify-content: center;
 }
 
 .footer > ul > li {
@@ -39,6 +40,7 @@
   align-items: center;
   border-right: 1px solid white;
   line-height: 1rem;
+  margin:7px 0px;
 
   &:first-child > a {
     margin-left: 0;

@@ -1,11 +1,11 @@
 /* Defining a root element for the custom font size */
-@include breakpoint(0 map-get($grid-breakpoints, 'md')) {
+@include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
   :root {
     --custom-font-size: 14px;
   }
 }
 
-@include breakpoint(map-get($grid-breakpoints, 'md')) {
+@include breakpoint(map-get($grid-breakpoints, 'lg')) {
   :root {
     --custom-font-size: 16px;
   }
