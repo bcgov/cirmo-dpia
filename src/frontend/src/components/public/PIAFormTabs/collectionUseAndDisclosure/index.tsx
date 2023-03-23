@@ -83,7 +83,7 @@ const PIACollectionUseAndDisclosure = () => {
       <span>{Messages.Headings.Subtitle.en}</span>
       <h3 className="pt-4 pb-2">{Messages.WorkThroughDetails.Title.en}</h3>
       <p> {Messages.WorkThroughDetails.SubTitle.en}</p>
-      <section className="card p-5">
+      <section className="drop-shadow card p-4 p-md-5">
         <Table
           data={collectionUseAndDisclosureForm.steps}
           columnsMeta={columns}
@@ -99,7 +99,7 @@ const PIACollectionUseAndDisclosure = () => {
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
 
-      <section className=" card pt-5 px-5">
+      <section className="drop-shadow card p-4 p-md-5">
         <div className="form-group">
           {!isReadOnly ? (
             <label htmlFor="collectionNoticeDrafter">

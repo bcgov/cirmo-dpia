@@ -77,7 +77,7 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.DigitalTools.SectionTitle.en}
           </h3>
-          <div className="drop-shadow section__padding-inline bg-white section__padding-block section-border-radius">
+          <div className="drop-shadow card p-4 p-md-5">
             {!isReadOnly ? (
               <p>
                 <strong>
@@ -308,7 +308,7 @@ export const SecurityPersonalInformation = () => {
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
             .toolsAndAssessment.haveSecurityAssessment === YesNoInput.NO && (
-            <div className="bg-white section__padding-block section__margin-block section__padding-inline section-border-radius">
+            <div className="section__margin-block drop-shadow card p-4 p-md-5">
               {!isReadOnly ? (
                 <p>
                   <strong>
@@ -425,7 +425,7 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.AccessPI.SectionTitle.en}
           </h3>
-          <div className="drop-shadow section__padding-inline bg-white section__padding-block section-border-radius">
+          <div className="drop-shadow card p-4 p-md-5">
             {!isReadOnly ? (
               <>
                 <p>
