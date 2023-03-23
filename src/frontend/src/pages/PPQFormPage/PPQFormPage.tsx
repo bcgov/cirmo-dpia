@@ -119,7 +119,7 @@ const PPQFormPage = () => {
   };
 
   return (
-    <div className="bcgovPageContainer background background__form">
+    <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <section className="ppq-form-section">
         <div>
           <form

@@ -15,28 +15,19 @@
   }
 }
 
-.mobile-show-hero {
-  display: none;
-   @include breakpoint (0 map-get($grid-breakpoints, 'xl'))
-   { display: block; }
-  }
-
-
 .hero-content {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  max-width:45ch;
+  max-width: 90%;
   
-  @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
+  @include breakpoint(map-get($grid-breakpoints, 'md')) {
     max-width: 80ch;
   }
 }
 
 .ctas {
   display: flex;
-  width: 400px;
-
   & > :not(last-child) {
     margin-right: 1em;
   }
