@@ -30,7 +30,9 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                 className={` ${
                   headings[heading].sorting ? ' enableSorting' : ''
                 } ${
-                  headings[heading].hideOnSmView ? ' d-none d-md-block' : ''
+                  headings[heading].hideOnSmView
+                    ? ' d-none d-md-table-cell'
+                    : ''
                 }`}
                 onClick={() => sorting(heading)}
               >
