@@ -17,7 +17,7 @@ const Modal = ({
 
   return (
     <div className={showHideClassName}>
-      <section className="modal-main  ">
+      <section className="modal-main">
         <span className="modal-title"> {titleText}</span>
         <div className="modal-horizontal-divider"></div>
         {children}
