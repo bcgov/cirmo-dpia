@@ -84,7 +84,7 @@ export default {
         en: `Name of service provider`,
       },
       CloudInfrastructure: {
-        en: `Name of cloud infrastructure and/or platform provider(s)(if applicable)`,
+        en: `Name of cloud infrastructure and/or platform provider(s) (if applicable)`,
       },
       StorageDetails: {
         en: `Where and how is the sensitive personal information stored (including backups)?`,
