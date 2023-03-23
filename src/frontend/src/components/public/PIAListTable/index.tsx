@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { dateToString } from '../../../utils/date';
 import { statusList } from '../../../utils/status';
 import TableOrdering from './TableOrdering';
@@ -7,6 +7,18 @@ import { routes } from '../../../constant/routes';
 import { buildDynamicPath } from '../../../utils/path';
 
 const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
+  const navigate = useNavigate();
+
+  const onTitleClick = (piaId?: number) => {
+    if (!piaId) return;
+
+    navigate(
+      buildDynamicPath(routes.PIA_INTAKE_VIEW, {
+        id: piaId,
+      }),
+    );
+  };
+
   return (
     <div className="component__wrapper data-table__container">
       <table className="table data-table">
@@ -16,7 +28,9 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
               <th
                 key={heading}
                 className={` ${
-                  headings[heading].sorting ? 'enableSorting' : ''
+                  headings[heading].sorting ? ' enableSorting' : ''
+                } ${
+                  headings[heading].hideOnSmView ? ' d-none d-md-block' : ''
                 }`}
                 onClick={() => sorting(heading)}
               >
@@ -35,9 +49,15 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
         <tbody>
           {pias.map((pia, index) => (
             <tr key={index}>
-              <td>{pia.title}</td>
+              <td
+                role="button"
+                className="fw-bold"
+                onClick={() => onTitleClick(pia.id)}
+              >
+                {pia.title}
+              </td>
               <td>{dateToString(pia.updatedAt)}</td>
-              <td>{pia.drafterName}</td>
+              <td className="d-none d-md-table-cell">{pia.drafterName}</td>
               <td>
                 {pia.status ? (
                   pia.status in statusList ? (
@@ -51,20 +71,6 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                   )
                 ) : (
                   ''
-                )}
-              </td>
-              <td className="no-padding">
-                {pia.id && (
-                  <Link
-                    className="bcgovbtn bcgovbtn__tertiary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    to={buildDynamicPath(routes.PIA_INTAKE_VIEW, {
-                      id: pia.id,
-                    })}
-                  >
-                    View Details
-                  </Link>
                 )}
               </td>
             </tr>

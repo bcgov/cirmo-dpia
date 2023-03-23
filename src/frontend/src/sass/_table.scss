@@ -14,18 +14,18 @@
       & > th {
         & > div.no-bold {
           font-weight: normal;
-      } 
-     } 
+        }
+      }
     }
 
     & > tbody {
       & > tr {
         & > td:first-child {
           width: 50ch;
+          color: $primary-colour;
         }
 
         & > td {
-
           &.no-padding {
             padding: 0;
           }
@@ -34,19 +34,14 @@
             font-weight: 700;
             margin-inline-end: 1em;
           }
-  
-          & > a {
-            margin-inline: auto 0;
-            margin-top: 0.6em;
-          }
         }
       }
     }
-    
+
     .enableSorting {
       cursor: pointer;
       img {
-        padding:0px 7px;
+        padding: 0px 7px;
       }
     }
   }
