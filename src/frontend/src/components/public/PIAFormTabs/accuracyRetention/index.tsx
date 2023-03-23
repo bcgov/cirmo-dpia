@@ -75,7 +75,7 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.Accuracy.H2Text.en}
           </h3>
-          <div className="drop-shadow section__padding-inline bg-white section__padding-block ">
+          <div className="drop-shadow card p-4 p-md-5">
             {!isReadOnly ? (
               <>
                 <p>
@@ -127,7 +127,7 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.RequestCorrection.H2Text.en}
           </h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          <div className="drop-shadow card p-4 p-md-5">
             {!isReadOnly ? (
               <>
                 <p>
@@ -459,7 +459,7 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.PersonalInformationDecision.H2Text.en}
           </h3>
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          <div className="drop-shadow card p-4 p-md-5">
             {!isReadOnly ? (
               <p>
                 <strong>
