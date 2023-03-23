@@ -2,10 +2,9 @@
   display: flex;
   margin-top: calc($header-height);
   min-height: calc(100vh - $header-height);
-
   @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
      flex-direction: column;
-     justify-content:center;
+     justify-content: center;
      align-items: center;
     }
 
