@@ -63,7 +63,7 @@ export const PIAFormIntake = () => {
         {isReadOnly ? (
           <PIAIntakeGeneralInformation pia={pia} />
         ) : (
-          <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+          <div className="drop-shadow card p-4 p-md-5">
             <div className="row">
               <InputText
                 label="Title"
@@ -204,7 +204,7 @@ export const PIAFormIntake = () => {
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
-        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+        <div className="drop-shadow card p-4 p-md-5">
           {!isReadOnly ? (
             <p>
               <strong>
@@ -240,74 +240,83 @@ export const PIAFormIntake = () => {
         </div>
       </section>
 
-      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-        {!isReadOnly ? (
-          <p className="form__h2">
-            <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
-          </p>
-        ) : (
-          <h4>{Messages.InitiativeScopeSection.H2Text.en} </h4>
-        )}
-        {!isReadOnly && (
-          <p className="form__helper-text">
-            {Messages.InitiativeScopeSection.HelperText.en}
-          </p>
-        )}
-        <div className="richText" id="initiativeScope">
-          {(isReadOnly && !intakeForm.initiativeScope) ||
-          (isReadOnly && intakeForm.initiativeScope === '') ? (
-            <p>
-              <i>Not answered</i>
+      <section className="section__padding-block">
+        <div className="drop-shadow card p-4 p-md-5">
+          {!isReadOnly ? (
+            <p className="form__h2">
+              <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
             </p>
-          ) : isReadOnly ? (
-            <MDEditor.Markdown source={intakeForm.initiativeScope} />
           ) : (
-            <MDEditor
-              preview="edit"
-              value={intakeForm?.initiativeScope}
-              defaultTabEnable={true}
-              onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
-            />
+            <h4>{Messages.InitiativeScopeSection.H2Text.en} </h4>
           )}
+          {!isReadOnly && (
+            <p className="form__helper-text">
+              {Messages.InitiativeScopeSection.HelperText.en}
+            </p>
+          )}
+          <div className="richText" id="initiativeScope">
+            {(isReadOnly && !intakeForm.initiativeScope) ||
+            (isReadOnly && intakeForm.initiativeScope === '') ? (
+              <p>
+                <i>Not answered</i>
+              </p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown source={intakeForm.initiativeScope} />
+            ) : (
+              <MDEditor
+                preview="edit"
+                value={intakeForm?.initiativeScope}
+                defaultTabEnable={true}
+                onChange={(value) =>
+                  stateChangeHandler(value, 'initiativeScope')
+                }
+              />
+            )}
+          </div>
         </div>
       </section>
-      <section className="drop-shadow section__padding-inline section__margin-block section__padding-block bg-white">
-        {!isReadOnly ? (
-          <p className="form__h2">
-            <strong>{Messages.InitiativeDataElementsSection.H2Text.en}</strong>
-          </p>
-        ) : (
-          <h4>{Messages.InitiativeDataElementsSection.H2Text.en} </h4>
-        )}
-        {!isReadOnly && (
-          <p className="form__helper-text">
-            {Messages.InitiativeDataElementsSection.HelperText.en}
-          </p>
-        )}
-        <div className="richText" id="dataElementsInvolved">
-          {(isReadOnly && !intakeForm.dataElementsInvolved) ||
-          (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
-            <p>
-              <i>Not answered</i>
+
+      <section className="section__padding-block">
+        <div className="drop-shadow card p-4 p-md-5">
+          {!isReadOnly ? (
+            <p className="form__h2">
+              <strong>
+                {Messages.InitiativeDataElementsSection.H2Text.en}
+              </strong>
             </p>
-          ) : isReadOnly ? (
-            <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
           ) : (
-            <MDEditor
-              preview="edit"
-              value={intakeForm?.dataElementsInvolved}
-              defaultTabEnable={true}
-              onChange={(value) =>
-                stateChangeHandler(value, 'dataElementsInvolved')
-              }
-            />
+            <h4>{Messages.InitiativeDataElementsSection.H2Text.en} </h4>
           )}
+          {!isReadOnly && (
+            <p className="form__helper-text">
+              {Messages.InitiativeDataElementsSection.HelperText.en}
+            </p>
+          )}
+          <div className="richText" id="dataElementsInvolved">
+            {(isReadOnly && !intakeForm.dataElementsInvolved) ||
+            (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
+              <p>
+                <i>Not answered</i>
+              </p>
+            ) : isReadOnly ? (
+              <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
+            ) : (
+              <MDEditor
+                preview="edit"
+                value={intakeForm?.dataElementsInvolved}
+                defaultTabEnable={true}
+                onChange={(value) =>
+                  stateChangeHandler(value, 'dataElementsInvolved')
+                }
+              />
+            )}
+          </div>
         </div>
       </section>
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
-        <div className="drop-shadow section__padding-inline section__padding-block bg-white">
+        <div className="drop-shadow card p-4 p-md-5">
           {!isReadOnly ? (
             <p>
               <strong>{Messages.InitiativePISection.Question.en}</strong>

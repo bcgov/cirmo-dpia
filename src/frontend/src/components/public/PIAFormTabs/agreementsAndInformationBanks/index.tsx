@@ -82,8 +82,8 @@ const PIAAgreementsAndInformationBanks = () => {
           <b>{Messages.Headings.Title.en}</b>
         </h2>
         <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
-        <section className="card">
-          <div className="form-group px-4 py-4">
+        <section className="drop-shadow card p-4 p-md-5">
+          <div className="form-group">
             {!isReadOnly ? (
               <label htmlFor="pibQuestionWillResultInPIB">
                 {Messages.InvolveISA.Section.QuestionInvolveISA.en}
@@ -329,8 +329,8 @@ const PIAAgreementsAndInformationBanks = () => {
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
         <p> {Messages.ResultingPIB.Headings.Description.en}</p>
-        <section className="card">
-          <div className="form-group px-4 py-4">
+        <section className="drop-shadow card p-4 p-md-5">
+          <div className="form-group">
             {!isReadOnly ? (
               <label htmlFor="pibQuestionWillResultInPIB">
                 {Messages.ResultingPIB.Section.QuestionWillResultInPIB.en}

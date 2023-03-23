@@ -52,7 +52,7 @@ const PIAAdditionalRisks = () => {
     <>
       <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
 
-      <section className="card p-3">
+      <section className="drop-shadow card p-4 p-md-5">
         <Table
           data={additionalRisksForm.risks}
           columnsMeta={columns}
