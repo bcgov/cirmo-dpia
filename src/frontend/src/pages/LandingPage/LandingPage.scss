@@ -2,25 +2,19 @@
   display: flex;
   margin-top: calc($header-height);
   min-height: calc(100vh - $header-height);
-  @include breakpoint(0 map-get($grid-breakpoints, 'xl')) {
+
+  @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
      flex-direction: column;
-     justify-content: center;
+     justify-content:center;
      align-items: center;
     }
 
-  @include breakpoint(map-get($grid-breakpoints, 'xl')) {
+  @include breakpoint(map-get($grid-breakpoints, 'lg')) {
     background-repeat: no-repeat;
     background-image: url(/src/assets/public_homepage/hero.svg);
     background-position: 90% 100%;
   }
 }
-
-.mobile-show-hero {
-  display: none;
-   @include breakpoint (0 map-get($grid-breakpoints, 'xl'))
-   { display: block; }
-  }
-
 
 .hero-content {
   display: flex;
@@ -28,7 +22,7 @@
   flex-direction: column;
   max-width:45ch;
   
-  @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
+  @include breakpoint(map-get($grid-breakpoints, 'md')) {
     max-width: 80ch;
   }
 }
@@ -36,7 +30,7 @@
 .ctas {
   display: flex;
   width: 400px;
-
+  
   & > :not(last-child) {
     margin-right: 1em;
   }

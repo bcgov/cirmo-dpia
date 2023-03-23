@@ -20,7 +20,11 @@ function LandingPage() {
     <div>
       <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
-          <img className="mobile-show-hero" src={hero} alt="Fill out PIA" />
+          <img
+            className="d-none d-md-block d-lg-none"
+            src={hero}
+            alt="Fill out PIA"
+          />
           <h1>Digital Privacy Impact Assessment (DPIA)</h1>
           <p>
             The Government of BC is creating a flagship Digital Privacy Impact
