@@ -645,7 +645,7 @@ const PIAFormPage = () => {
               isReadOnly={formReadOnly}
             ></PIASideNav>
           </section>
-          <section className="form__container ms-md-auto content__container">
+          <section className="ms-md-3 ms-lg-4 ms-xl-5 content__container">
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet
