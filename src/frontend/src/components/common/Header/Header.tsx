@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 
 import BCGovLogo from '../../../assets/BCGovLogo_negative.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { routes } from '../../../constant/routes';
@@ -135,16 +135,22 @@ function Header({ user }: Props) {
           </b>
         </p>
       </div>
+
       <div className="message">{message ? <p>{message}</p> : null}</div>
-      <div data-cy="login" className="other">
+
+      <div data-cy="login" className="d-flex flex-grow-1 flex-row-reverse">
+        {/* Login CTA */}
         {!isAuthenticated() && (
           <button
             className="bcgovbtn bcgovbtn__secondary--dark"
             onClick={() => login()}
           >
-            Log in with IDIR <FontAwesomeIcon className="icon" icon={faUser} />
+            <div className="d-none d-md-block">Log in with IDIR</div>
+            <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
         )}
+
+        {/* Sign out Modal */}
         <Modal
           confirmLabel="Yes, sign out"
           cancelLabel="Cancel"
@@ -159,12 +165,17 @@ function Header({ user }: Props) {
             taken out to the landing page.
           </p>
         </Modal>
+
+        {/* Sign out CTA */}
         {isAuthenticated() && (
           <button
             className="bcgovbtn bcgovbtn__secondary--dark"
             onClick={() => showModalDialog()}
           >
-            Sign Out
+            <div className="d-none d-md-block">Sign Out</div>
+            <div className="d-md-none">
+              <FontAwesomeIcon className="icon" icon={faSignOut} />
+            </div>
           </button>
         )}
       </div>
