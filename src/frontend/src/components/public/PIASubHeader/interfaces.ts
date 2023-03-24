@@ -1,9 +1,5 @@
 import { MouseEventHandler } from 'react';
-import {
-  ILastSaveAlterInfo,
-  PiaFormOpenMode,
-  PiaStateChangeHandlerType,
-} from '../../../pages/PIAForm';
+import { ILastSaveAlterInfo, PiaFormOpenMode } from '../../../pages/PIAForm';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 
 export interface PIASubHeaderProps {

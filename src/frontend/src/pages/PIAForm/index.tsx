@@ -269,6 +269,11 @@ const PIAFormPage = () => {
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
+      navigate(
+        buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+          id: updatedPia.id,
+        }),
+      );
     } else {
       setStalePia(pia);
     }
@@ -383,6 +388,15 @@ const PIAFormPage = () => {
         } else {
           navigate(-1);
         }
+      } else if (buttonValue === 'save') {
+        const newPia = await upsertAndUpdatePia();
+        if (newPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: pia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -412,11 +426,8 @@ const PIAFormPage = () => {
   };
 
   const handleSaveChanges = () => {
-    // By default set the status to Incomplete
-    const piaStatus = pia?.status ? pia.status : PiaStatuses.INCOMPLETE;
-    const modalType =
-      piaStatus === PiaStatuses.EDIT_IN_PROGRESS ? 'edit' : 'save';
-    handleShowModal(modalType);
+    // the save button now only handle save action
+    handleShowModal('save');
   };
 
   //
