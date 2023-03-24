@@ -32,7 +32,7 @@ function PIASubHeader({
   const { pathname } = useLocation();
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-  secondaryButtonText = mode === 'view' ? 'Edit' : ' Save';
+  secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
   const handleDownload = async () => {
     setDownloadError('');
 
@@ -147,16 +147,19 @@ function PIASubHeader({
 
           <ul className="dropdown-menu">
             <li role="button">
-              <a className="dropdown-item" onClick={() => handleDownload()}>
+              <button
+                className="dropdown-item"
+                onClick={() => handleDownload()}
+              >
                 Download
-              </a>
+              </button>
             </li>
             <li role="button">
               {/* Save or Edit button */}
               {!nextStepAction && mode === 'edit' && (
-                <a onClick={() => onSaveChangeClick} className="dropdown-item">
+                <button onClick={onSaveChangeClick} className="dropdown-item">
                   {secondaryButtonText}
-                </a>
+                </button>
               )}
             </li>
           </ul>
