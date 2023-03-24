@@ -148,6 +148,7 @@ function PIASubHeader({
           <ul className="dropdown-menu">
             <li role="button">
               <button
+                disabled={!pia?.id}
                 className="dropdown-item"
                 onClick={() => handleDownload()}
               >

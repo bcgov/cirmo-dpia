@@ -396,8 +396,6 @@ const PIAFormPage = () => {
               id: pia.id,
             }),
           );
-        } else {
-          navigate(-1);
         }
       } else if (buttonValue === 'conflict') {
         // noop
