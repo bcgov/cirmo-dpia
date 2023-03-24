@@ -119,7 +119,7 @@ function Header({ user }: Props) {
   return (
     <header className="header wrapper">
       <div className="banner">
-        <a href="/">
+        <a tabIndex={0} href="/">
           <img
             className="logo"
             src={BCGovLogo}
@@ -166,6 +166,7 @@ function Header({ user }: Props) {
         {/* Sign out CTA */}
         {isAuthenticated() && (
           <button
+            tabIndex={0}
             className="bcgovbtn bcgovbtn__secondary--dark"
             onClick={() => showModalDialog()}
           >

@@ -20,6 +20,11 @@ function App() {
   return (
     <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
+        <div>
+          <a href="#main-content" className="skip-to-main">
+            Skip to main content
+          </a>
+        </div>
         <Header user="" />
 
         {pathname.startsWith('/') && !isAuthenticated() ? null : (
@@ -28,8 +33,9 @@ function App() {
             <AppActivityManager />
           </>
         )}
-
-        <Router />
+        <div id="main-content">
+          <Router />
+        </div>
       </AuthContext.Provider>
       <Footer />
     </div>

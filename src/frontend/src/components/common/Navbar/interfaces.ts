@@ -1,6 +1,7 @@
 export interface INavbarPages {
   pages: INavbarItem[];
   CSSclass: string;
+  isMenu?: boolean;
 }
 
 export interface INavbarItem {
@@ -10,4 +11,7 @@ export interface INavbarItem {
   enable?: boolean;
   onclick?: () => void;
   isDivider?: true;
+  navDown?: string;
+  navUp?: string;
+  navId?: string;
 }
