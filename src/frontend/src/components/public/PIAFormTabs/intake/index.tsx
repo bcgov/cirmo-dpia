@@ -2,7 +2,10 @@ import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { MinistryList, PIOptions } from '../../../../constant/constant';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
+import {
+  PiaStateChangeHandlerType,
+  PiaValidationMessage,
+} from '../../../../pages/PIAForm';
 import Dropdown from '../../../common/Dropdown';
 import InputText from '../../../common/InputText/InputText';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -14,9 +17,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const PIAFormIntake = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+  const [
+    pia,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+    validationMessage,
+  ] =
     useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+      [
+        IPiaForm,
+        PiaStateChangeHandlerType,
+        boolean,
+        () => void,
+        PiaValidationMessage,
+      ]
     >();
 
   if (accessControl) accessControl();
@@ -67,30 +82,43 @@ export const PIAFormIntake = () => {
             <div className="row">
               <InputText
                 label="Title"
+                fieldMandatoryLabel="(required)"
                 value={intakeForm?.title}
                 onChange={(e) => stateChangeHandler(e.target.value, 'title')}
                 required={true}
               />
+              {validationMessage.piaTitle && (
+                <p className="text-danger"> {validationMessage.piaTitle}</p>
+              )}
             </div>
             <div className="row">
-              <Dropdown
-                id="ministry-select"
-                value={intakeForm?.ministry || ''}
-                label="Ministry"
-                optionalClass="col-md-6"
-                options={MinistryList}
-                changeHandler={(e) =>
-                  stateChangeHandler(e.target.value, 'ministry')
-                }
-                required={true}
-              />
+              <div className="col col-md-6">
+                <Dropdown
+                  id="ministry-select"
+                  fieldMandatoryLabel="(required)"
+                  value={intakeForm?.ministry || ''}
+                  label="Ministry"
+                  options={MinistryList}
+                  changeHandler={(e) =>
+                    stateChangeHandler(e.target.value, 'ministry')
+                  }
+                  required={true}
+                />
+                {validationMessage.piaMinistry && (
+                  <p className="text-danger">{validationMessage.piaMinistry}</p>
+                )}
+              </div>
               <div className="col">
                 <InputText
+                  fieldMandatoryLabel="(required)"
                   label="Branch"
                   value={intakeForm?.branch}
                   required={true}
                   onChange={(e) => stateChangeHandler(e.target.value, 'branch')}
                 />
+                {validationMessage.piaBranch && (
+                  <p className="text-danger"> {validationMessage.piaBranch}</p>
+                )}
               </div>
             </div>
             <div className="row">
@@ -209,6 +237,7 @@ export const PIAFormIntake = () => {
             <p>
               <strong>
                 {Messages.InitiativeDescriptionSection.Question.en}
+                <span className="text-danger"> (required)</span>
               </strong>
             </p>
           ) : (
@@ -235,6 +264,11 @@ export const PIAFormIntake = () => {
                   stateChangeHandler(value, 'initiativeDescription')
                 }
               />
+            )}
+            {validationMessage.piaInitialDescription && (
+              <p className="text-danger">
+                {validationMessage.piaInitialDescription}
+              </p>
             )}
           </div>
         </div>

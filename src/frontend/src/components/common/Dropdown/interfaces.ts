@@ -9,6 +9,7 @@ export interface IDropdown {
   id?: string;
   value: string;
   label?: string;
+  fieldMandatoryLabel?: string;
   placeholder?: string;
   optionalClass?: string;
   options: IDropdownOptions[];

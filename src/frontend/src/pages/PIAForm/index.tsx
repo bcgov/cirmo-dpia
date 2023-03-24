@@ -27,6 +27,13 @@ export type PiaStateChangeHandlerType = (
 
 export type PiaFormOpenMode = 'edit' | 'view';
 
+export interface PiaValidationMessage {
+  piaTitle?: string | null;
+  piaMinistry?: string | null;
+  piaBranch?: string | null;
+  piaInitialDescription?: string | null;
+}
+
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
@@ -99,6 +106,8 @@ const PIAFormPage = () => {
 
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
 
+  const [validationMessages, setValidationMessages] =
+    useState<PiaValidationMessage>({});
   useEffect(() => {
     if (
       pia?.isNextStepsSeenForDelegatedFlow ||
@@ -154,6 +163,7 @@ const PIAFormPage = () => {
   //
   // Event Handlers
   //
+
   const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
       case 'cancel':
@@ -466,6 +476,7 @@ const PIAFormPage = () => {
       [...reset].forEach((el) => {
         el.classList.remove('is-invalid');
       });
+      setValidationMessages({});
     }
     const richText = document.getElementsByClassName('richText');
     if (richText) {
@@ -476,15 +487,30 @@ const PIAFormPage = () => {
     if (!pia?.title) {
       invalid = true;
       formId = 'title';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaTitle: 'Error: Please enter a title.',
+      }));
     }
     if (!pia?.ministry && !invalid) {
       invalid = true;
       formId = 'ministry-select';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaMinistry: 'Error: Please select a ministry.',
+      }));
     }
     if (!pia?.branch && !invalid) {
       invalid = true;
       formId = 'branch';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaBranch: 'Error: Please enter a branch.',
+      }));
     }
+
+    // comment out now, if got confirm we do not validation these fields, will remove later
+    /*
     if (!pia?.drafterName && !invalid) {
       invalid = true;
       formId = 'drafterName';
@@ -517,10 +543,17 @@ const PIAFormPage = () => {
       invalid = true;
       formId = 'mpoEmail';
     }
+    */
     if (!pia?.initiativeDescription && !invalid) {
       invalid = true;
       formId = 'initiativeDescription';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaInitialDescription: 'Error: Please describe your initiative.',
+      }));
     }
+    // comment out now, if got confirm we do not validation these fields, will remove later
+    /* 
     if (!pia?.initiativeScope && !invalid) {
       invalid = true;
       formId = 'initiativeScope';
@@ -529,13 +562,14 @@ const PIAFormPage = () => {
       invalid = true;
       formId = 'dataElementsInvolved';
     }
+
     if (pia?.hasAddedPiToDataElements === false) {
       if (!pia?.riskMitigation && !invalid) {
         invalid = true;
         formId = 'riskMitigation';
       }
     }
-
+    */
     if (invalid) {
       const ele = document.getElementById(formId);
       if (ele) {
@@ -665,6 +699,7 @@ const PIAFormPage = () => {
                   piaStateChangeHandler,
                   formReadOnly,
                   accessControl,
+                  validationMessages,
                 ]}
               />
             ) : (

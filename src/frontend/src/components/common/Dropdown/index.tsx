@@ -3,6 +3,7 @@ const Dropdown = ({
   id,
   value,
   label,
+  fieldMandatoryLabel,
   optionalClass,
   options,
   placeholder,
@@ -12,7 +13,11 @@ const Dropdown = ({
 }: IDropdown) => {
   return (
     <div className={`form-group ${optionalClass}`}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label htmlFor={id}>
+          {label} <span className="text-danger"> {fieldMandatoryLabel}</span>
+        </label>
+      )}
       <div className="dropdown">
         {!readOnly ? (
           <select
