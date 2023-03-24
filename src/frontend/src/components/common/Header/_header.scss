@@ -19,12 +19,6 @@
     padding: 0;
   }
 
-  .other {
-    @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
-      display: none;
-    }
-  }
-
   p {
     margin: 0px;
   }
@@ -51,18 +45,3 @@ header .banner {
   border-color: lightgrey; */
 }
 
-header .other {
-  display: flex;
-  flex-grow: 1;
-
-  /* border-style: dotted;
-  border-width: 1px;
-  border-color: lightgrey; */
-  flex-direction: row-reverse;
-  align-items: center;
-
-  a {
-    color: white;
-    font-weight: bold;
-  }
-}
