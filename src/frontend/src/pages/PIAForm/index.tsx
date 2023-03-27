@@ -492,7 +492,7 @@ const PIAFormPage = () => {
         piaTitle: 'Error: Please enter a title.',
       }));
     }
-    if (!pia?.ministry && !invalid) {
+    if (!pia?.ministry) {
       invalid = true;
       formId = 'ministry-select';
       setValidationMessages((prevState) => ({
@@ -500,7 +500,7 @@ const PIAFormPage = () => {
         piaMinistry: 'Error: Please select a ministry.',
       }));
     }
-    if (!pia?.branch && !invalid) {
+    if (!pia?.branch) {
       invalid = true;
       formId = 'branch';
       setValidationMessages((prevState) => ({
@@ -544,7 +544,7 @@ const PIAFormPage = () => {
       formId = 'mpoEmail';
     }
     */
-    if (!pia?.initiativeDescription && !invalid) {
+    if (!pia?.initiativeDescription) {
       invalid = true;
       formId = 'initiativeDescription';
       setValidationMessages((prevState) => ({
