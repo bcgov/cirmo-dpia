@@ -11,7 +11,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserInfo';
 import { AuthContext } from '../../../hooks/useAuth';
 import {
-  authLogoutHandler,
+  logMeOut,
   ConfigStorageKeys,
   isAuthenticated,
   storeAuthTokens,
@@ -103,10 +103,7 @@ function Header({ user }: Props) {
   const logout = async () => {
     setAuthenticated(false);
 
-    authLogoutHandler((pathUrl) => {
-      setAccessToken(null);
-      navigate(pathUrl);
-    });
+    logMeOut();
   };
 
   const hideModalDialog = async () => {
