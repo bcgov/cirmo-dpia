@@ -76,7 +76,7 @@ export const PIAFormIntake = () => {
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
         {isReadOnly ? (
-          <PIAIntakeGeneralInformation pia={pia} />
+          <PIAIntakeGeneralInformation pia={pia} z />
         ) : (
           <div className="drop-shadow card p-4 p-md-5">
             <div className="row">
@@ -265,7 +265,7 @@ export const PIAFormIntake = () => {
                 }
               />
             )}
-            {validationMessage.piaInitialDescription && (
+            {!isReadOnly && validationMessage.piaInitialDescription && (
               <p className="text-danger">
                 {validationMessage.piaInitialDescription}
               </p>

@@ -578,6 +578,12 @@ const PIAFormPage = () => {
       }
       event.preventDefault();
       event.stopPropagation();
+
+      navigate(
+        buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+          id: pia?.id,
+        }),
+      );
     } else {
       handleSubmit(event);
     }
