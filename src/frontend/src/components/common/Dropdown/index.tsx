@@ -3,7 +3,6 @@ const Dropdown = ({
   id,
   value,
   label,
-  fieldMandatoryLabel,
   optionalClass,
   options,
   placeholder,
@@ -15,7 +14,7 @@ const Dropdown = ({
     <div className={`form-group ${optionalClass}`}>
       {label && (
         <label htmlFor={id}>
-          {label} <span className="text-danger"> {fieldMandatoryLabel}</span>
+          {label} {required && <span className="error-text ">(required)</span>}
         </label>
       )}
       <div className="dropdown">

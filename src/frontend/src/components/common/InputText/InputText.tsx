@@ -56,7 +56,7 @@ const InputText = ({
       {label && (
         <label className={labelSide === 'left' ? 'mt-0' : ''} htmlFor={inputId}>
           {label}
-          <span className="text-danger"> {fieldMandatoryLabel}</span>
+          {required && <span className="error-text "> (required)</span>}
         </label>
       )}
       {helperText !== '' && (
