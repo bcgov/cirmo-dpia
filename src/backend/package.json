@@ -33,7 +33,7 @@
     "@nestjs/axios": "1.0.1",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/common": "9.2.1",
-    "@nestjs/core": "9.2.1",
+    "@nestjs/core": "9.3.12",
     "@nestjs/platform-express": "9.2.1",
     "@nestjs/swagger": "6.1.4",
     "@nestjs/typeorm": "9.0.1",
