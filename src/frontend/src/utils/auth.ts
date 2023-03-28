@@ -77,7 +77,7 @@ export const logMeOut = async (cb?: () => void) => {
   }
 
   clearStorage();
-  window.location.href = `/`;
+  window.location.href = `/not-authorized`;
 
   cb?.();
 };
