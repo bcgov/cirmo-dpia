@@ -21,7 +21,9 @@ const Modal = ({
         <span className="modal-title"> {titleText}</span>
         <div className="modal-horizontal-divider"></div>
         {children}
-        <div className={`modalbtn__container ${reversed ? 'reversed' : ''}`}>
+        <div
+          className={`modalbtn__container ${reversed ? 'reversed' : ''} mt-4`}
+        >
           <button
             className="bcgovbtn bcgovbtn__primary "
             type="button"
