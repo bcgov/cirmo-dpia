@@ -18,3 +18,8 @@ export interface ListPageNumberProps {
   pageSize: number;
   changePage: (page: number) => void;
 }
+
+export interface RowsPerPageProps {
+  pageSize: number;
+  changePageSize: (pageSize: number) => void;
+}

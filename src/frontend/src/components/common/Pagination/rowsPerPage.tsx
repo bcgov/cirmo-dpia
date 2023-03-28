@@ -1,12 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { RowsPerPageProps } from './interfaces';
 
-export interface rowsPerPageProps {
-  pageSize: number;
-  changePageSize: (pageSize: number) => void;
-}
-
-const RowsPerPage = (props: rowsPerPageProps) => {
+const RowsPerPage = (props: RowsPerPageProps) => {
   const PageSizeOptions = [10, 20, 30, 50, 100];
   return (
     <span className="rows-per-page">

@@ -7,7 +7,7 @@ const ShowingText = (props: ListPageNumberProps) => {
         Showing {(props.currentPage - 1) * props.pageSize + 1} to{' '}
         {props.totalEntries < props.pageSize * props.currentPage
           ? props.totalEntries
-          : props.currentPage * props.pageSize}{' '}
+          : props.currentPage * props.pageSize}&nbsp;
         of {props.totalEntries} entries
       </span>
     </>

@@ -1,11 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronDown,
-  faAngleLeft,
-  faAngleRight,
-} from '@fortawesome/free-solid-svg-icons';
-import PaginationButton from './button';
-import { Direction } from './interfaces';
 import ListPageNumber from './listPageNumber';
 import ShowingText from './showingText';
 import RowsPerPage from './rowsPerPage';
