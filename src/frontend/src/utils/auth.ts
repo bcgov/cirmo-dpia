@@ -70,16 +70,16 @@ export const getAuthTokens = () => {
   };
 };
 
-export const authLogoutHandler = async (
-  navigateCallback: (pathUrl: string) => void,
-) => {
+export const logMeOut = async (cb?: () => void) => {
   // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
   if (isAuthenticated()) {
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, getAuthTokens());
   }
 
   clearStorage();
-  navigateCallback('/');
+  window.location.href = `/not-authorized`;
+
+  cb?.();
 };
 
 export const refreshAuthTokens = async () => {

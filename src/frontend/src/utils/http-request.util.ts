@@ -1,4 +1,4 @@
-import { TokenStorageKeys } from './auth';
+import { logMeOut, TokenStorageKeys } from './auth';
 import { AppStorage } from './storage';
 
 interface IHttpRequestOptions {
@@ -50,6 +50,25 @@ export class HttpRequest {
       url = url + queryString(options.query);
     }
     const response = await fetch(url, config);
+
+    // handle unauthorized or session not active scenarios
+    if (response?.status === 401) {
+      const error = new Error(
+        'Authentication Error or Session no longer active',
+        {
+          cause: {
+            status: response.status,
+          } as any,
+        },
+      );
+
+      console.error(error.message);
+
+      // log the user out if the authentication token is no longer valid
+      logMeOut();
+
+      throw error;
+    }
 
     if (!response.ok) {
       throw new Error('Something went wrong', {
