@@ -58,7 +58,7 @@ export class HttpRequest {
         {
           cause: {
             status: response.status,
-          },
+          } as any,
         },
       );
 
