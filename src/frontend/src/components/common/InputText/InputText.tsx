@@ -8,7 +8,6 @@ type SupportedInputTypes = 'text' | 'email';
 interface InputTextProps {
   id?: string;
   label?: string;
-  fieldMandatoryLabel?: string;
   helperText?: string;
   linkText?: string;
   linkHref?: string;
@@ -27,7 +26,6 @@ interface InputTextProps {
 const InputText = ({
   id = '',
   label = '',
-  fieldMandatoryLabel = '',
   helperText = '',
   linkText = '',
   linkHref = '',
