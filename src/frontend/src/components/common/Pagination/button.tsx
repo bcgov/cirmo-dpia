@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PaginationButtonProps, Direction } from './interfaces';
+import { PaginationButtonProps } from './interfaces';
+import { PaginationDirection } from './enums';
 
 const PaginationButton = (props: PaginationButtonProps) => {
   let classValue = 'bcgovbtn__primary';
-  if (props.direction == Direction.left && props.currentPage == 1) {
+  if (props.direction == PaginationDirection.left && props.currentPage == 1) {
     classValue = 'bcgovbtn__primary--disabled';
   }
   if (
-    props.direction == Direction.right &&
+    props.direction == PaginationDirection.right &&
     props.currentPage == Math.ceil(props.totalEntries / props.pageSize)
   ) {
     classValue = 'bcgovbtn__primary--disabled';

@@ -1,4 +1,5 @@
-import { ListPageNumberProps, Direction } from './interfaces';
+import { ListPageNumberProps } from './interfaces';
+import { PaginationDirection } from './enums';
 import PaginationButton from './button';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,7 +12,7 @@ const ListPageNumber = (props: ListPageNumberProps) => {
         pageSize={props.pageSize}
         changePage={props.changePage}
         icon={faAngleLeft}
-        direction={Direction.left}
+        direction={PaginationDirection.left}
       />
       {props.totalEntries > props.pageSize ? (
         Array.from(
@@ -41,7 +42,7 @@ const ListPageNumber = (props: ListPageNumberProps) => {
         pageSize={props.pageSize}
         changePage={props.changePage}
         icon={faAngleRight}
-        direction={Direction.right}
+        direction={PaginationDirection.right}
       />
     </ul>
   );

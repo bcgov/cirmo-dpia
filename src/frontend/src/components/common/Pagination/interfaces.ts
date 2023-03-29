@@ -1,15 +1,12 @@
+import { PaginationDirection } from './enums';
+
 export interface PaginationButtonProps {
   currentPage: number;
   totalEntries: number;
   pageSize: number;
   changePage: (page: number) => void;
   icon: any;
-  direction: Direction;
-}
-
-export const enum Direction {
-  left = -1,
-  right = +1,
+  direction: PaginationDirection;
 }
 
 export interface ListPageNumberProps {
