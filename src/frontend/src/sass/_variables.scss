@@ -24,22 +24,22 @@ $text-lightgray: #f2f2f2;
 $link-blue: #1a5a96;
 
 /* Banner Status text colours */
-$text-errorBanner: #A12622; 
-$text-successBanner: #2D4821; 
-$text-warningBanner: #6C4A00; 
-$text-infoBanner: #1A5A96; 
+$text-errorBanner: #a12622;
+$text-successBanner: #2d4821;
+$text-warningBanner: #6c4a00;
+$text-infoBanner: #1a5a96;
 
 /* Background Colours */
 $bg-white: #fff;
 $bg-blue: #38598a;
 $bg-lightgray: #f2f2f2;
-$bg-disabled:#cfcfcf;
+$bg-disabled: #cfcfcf;
 
 /* Banner Status Background colours */
-$bg-successBanner:#Dff0D8;
-$bg-infoBanner:#D9EAF7;
-$bg-warningBanner:#F9F1C6;
-$bg-errorBanner:#F2DEDE;
+$bg-successBanner: #dff0d8;
+$bg-infoBanner: #d9eaf7;
+$bg-warningBanner: #f9f1c6;
+$bg-errorBanner: #f2dede;
 
 /* Semantic colours */
 $error: #d8292f;
@@ -94,8 +94,6 @@ $container-padding-inline: 7em;
 $section-padding-block: 2em;
 $section-padding-inline: 2em;
 $section-margin-block: 2em;
-
 $max-sidenav-width: 300px;
 $sidenav-width: 300px;
-
-$drop-shadow: 0px 17px 29px 0px #DCE2EE99;
+$drop-shadow: 0 17px 29px 0 #dce2ee99;

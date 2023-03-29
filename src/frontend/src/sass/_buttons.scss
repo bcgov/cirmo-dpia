@@ -85,7 +85,6 @@ a:hover {
     background-color: $bg-blue;
     border: 2px solid $bg-blue;
   }
-
 }
 
 .bcgovbtn__primary-search {
@@ -99,7 +98,9 @@ a:hover {
 
 .bcgovbtn__primary--disabled {
   background-color: $bg-disabled;
+
   --text-color: white;
+
   border: 2px solid $bg-disabled;
   cursor: auto;
 }

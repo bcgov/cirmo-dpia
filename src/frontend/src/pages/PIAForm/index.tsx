@@ -108,6 +108,7 @@ const PIAFormPage = () => {
 
   const [validationMessages, setValidationMessages] =
     useState<PiaValidationMessage>({});
+
   useEffect(() => {
     if (
       pia?.isNextStepsSeenForDelegatedFlow ||
@@ -151,6 +152,22 @@ const PIAFormPage = () => {
   }, [mode, navigate, pia?.id, pia?.status]);
 
   const [message, setMessage] = useState<string>('');
+  const [validationFailedMessage, setValidationFailedMessage] =
+    useState<string>('');
+  const isValidationFailed =
+    pia.branch === null ||
+    pia.branch === '' ||
+    pia.ministry === null ||
+    pia.title === null ||
+    pia.title === '' ||
+    pia.initiativeDescription === null ||
+    pia.initiativeDescription === '';
+  useEffect(() => {
+    if (isValidationFailed)
+      setValidationFailedMessage(
+        'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
+      );
+  }, [isValidationFailed]);
   //
   // Modal State
   //
@@ -509,41 +526,6 @@ const PIAFormPage = () => {
       }));
     }
 
-    // comment out now, if got confirm we do not validation these fields, will remove later
-    /*
-    if (!pia?.drafterName && !invalid) {
-      invalid = true;
-      formId = 'drafterName';
-    }
-    if (!pia?.drafterTitle && !invalid) {
-      invalid = true;
-      formId = 'drafterTitle';
-    }
-    if ((!pia?.drafterEmail || pia.drafterEmail === undefined) && !invalid) {
-      invalid = true;
-      formId = 'drafterEmail';
-    }
-    if (!pia?.leadName && !invalid) {
-      invalid = true;
-      formId = 'leadName';
-    }
-    if (!pia?.leadTitle && !invalid) {
-      invalid = true;
-      formId = 'leadTitle';
-    }
-    if (!pia?.leadEmail && !invalid) {
-      invalid = true;
-      formId = 'leadEmail';
-    }
-    if (!pia?.mpoName && !invalid) {
-      invalid = true;
-      formId = 'mpoName';
-    }
-    if (!pia?.mpoEmail && !invalid) {
-      invalid = true;
-      formId = 'mpoEmail';
-    }
-    */
     if (!pia?.initiativeDescription) {
       invalid = true;
       formId = 'initiativeDescription';
@@ -552,24 +534,7 @@ const PIAFormPage = () => {
         piaInitialDescription: 'Error: Please describe your initiative.',
       }));
     }
-    // comment out now, if got confirm we do not validation these fields, will remove later
-    /* 
-    if (!pia?.initiativeScope && !invalid) {
-      invalid = true;
-      formId = 'initiativeScope';
-    }
-    if (!pia?.dataElementsInvolved && !invalid) {
-      invalid = true;
-      formId = 'dataElementsInvolved';
-    }
 
-    if (pia?.hasAddedPiToDataElements === false) {
-      if (!pia?.riskMitigation && !invalid) {
-        invalid = true;
-        formId = 'riskMitigation';
-      }
-    }
-    */
     if (invalid) {
       const ele = document.getElementById(formId);
       if (ele) {
@@ -578,12 +543,6 @@ const PIAFormPage = () => {
       }
       event.preventDefault();
       event.stopPropagation();
-
-      navigate(
-        buildDynamicPath(routes.PIA_INTAKE_EDIT, {
-          id: pia?.id,
-        }),
-      );
     } else {
       handleSubmit(event);
     }
@@ -672,6 +631,7 @@ const PIAFormPage = () => {
         pia={pia}
         lastSaveAlertInfo={lastSaveAlertInfo}
         primaryButtonText={submitButtonText}
+        isValidationFailed={isValidationFailed}
         mode={mode}
         onSaveChangeClick={handleSaveChanges}
         handleStatusChange={handleStatusChange}
@@ -696,7 +656,17 @@ const PIAFormPage = () => {
               isReadOnly={formReadOnly}
             ></PIASideNav>
           </section>
+
           <section className="ms-md-3 ms-lg-4 ms-xl-5 content__container">
+            {validationFailedMessage && (
+              <Alert
+                type="danger"
+                message={validationFailedMessage}
+                className="mt-0 mb-4"
+                showCloseIcon={true}
+                showInitialIcon={true}
+              />
+            )}
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet

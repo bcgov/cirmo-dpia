@@ -23,6 +23,7 @@ function PIASubHeader({
   handleStatusChange,
   mode = 'edit',
   lastSaveAlertInfo,
+  isValidationFailed,
   onSaveChangeClick = () => {},
   onEditClick = () => {},
   onSubmitClick = () => {},
@@ -59,6 +60,7 @@ function PIASubHeader({
   const handleAlertClose = () => {
     setDownloadError('');
   };
+
   //
   // Modal State
   //
@@ -169,7 +171,12 @@ function PIASubHeader({
           {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
-              className="mx-1 bcgovbtn bcgovbtn__primary"
+              className={`mx-1 bcgovbtn 
+              ${
+                isValidationFailed
+                  ? 'bcgovbtn__primary--disabled'
+                  : 'bcgovbtn__primary '
+              }`}
             >
               {primaryButtonText}
             </button>

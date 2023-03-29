@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EmptyPIAList from '../../components/public/EmptyPIAList';
 import PIAListTable from '../../components/public/PIAListTable';
 import { usePIALookup } from '../../hooks/usePIALookup';

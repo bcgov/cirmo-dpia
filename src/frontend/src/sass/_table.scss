@@ -11,6 +11,7 @@
 
     & > thead > tr {
       border-bottom: 2px solid $accent-colour;
+
       & > th {
         & > div.no-bold {
           font-weight: normal;
@@ -40,8 +41,9 @@
 
     .enableSorting {
       cursor: pointer;
+
       img {
-        padding: 0px 7px;
+        padding: 0 7px;
       }
     }
   }

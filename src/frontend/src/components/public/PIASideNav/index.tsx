@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import NavBar from '../../common/Navbar';
 import { PiaFormSideNavPages } from './pia-form-sideNav-pages';
