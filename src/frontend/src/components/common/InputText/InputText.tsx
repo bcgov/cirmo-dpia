@@ -54,6 +54,7 @@ const InputText = ({
       {label && (
         <label className={labelSide === 'left' ? 'mt-0' : ''} htmlFor={inputId}>
           {label}
+          {required && <span className="error-text "> (required)</span>}
         </label>
       )}
       {helperText !== '' && (

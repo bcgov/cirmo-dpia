@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import { MinistryList } from '../../../../constant/constant';
-import { dateToString } from '../../../../utils/date';
 import { ITextInputProps } from './AgreementsAndInformationBanks';
 
 const PIBInputText = ({ pia }: ITextInputProps) => {

@@ -8,6 +8,7 @@ export interface PIASubHeaderProps {
   primaryButtonText?: string;
   mode: PiaFormOpenMode;
   lastSaveAlertInfo?: ILastSaveAlterInfo;
+  isValidationFailed?: boolean;
   handleStatusChange: (updatedStatus: string) => void;
   onSaveChangeClick?: MouseEventHandler<HTMLButtonElement>;
   onSubmitClick?: MouseEventHandler<HTMLButtonElement>;

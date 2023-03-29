@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {
   OtherFactor,
   MinistryList,
@@ -20,7 +19,6 @@ import { IPPQResult } from '../../types/interfaces/ppq-result.interface';
 import InputText from '../../components/common/InputText/InputText';
 import CustomInputDate from '../../components/common/CustomInputDate';
 import Alert from '../../components/common/Alert';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PiaTypesEnum } from '../../types/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../types/enums/delegated-review-types.enum';
 import Dropdown from '../../components/common/Dropdown';

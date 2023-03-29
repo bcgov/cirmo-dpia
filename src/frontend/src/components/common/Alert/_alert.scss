@@ -1,7 +1,6 @@
 .alert-wrapper {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -38,12 +37,12 @@
   }
 
   .alert-close {
-    position: relative;
+    position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
     font-size: 1.25rem;
-    padding: 0.1rem 0.25rem;
+    padding: 0.25rem 1rem;
     color: inherit;
   }
 }

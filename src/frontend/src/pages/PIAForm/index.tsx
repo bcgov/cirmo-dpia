@@ -27,6 +27,13 @@ export type PiaStateChangeHandlerType = (
 
 export type PiaFormOpenMode = 'edit' | 'view';
 
+export interface PiaValidationMessage {
+  piaTitle?: string | null;
+  piaMinistry?: string | null;
+  piaBranch?: string | null;
+  piaInitialDescription?: string | null;
+}
+
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
@@ -99,6 +106,9 @@ const PIAFormPage = () => {
 
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
 
+  const [validationMessages, setValidationMessages] =
+    useState<PiaValidationMessage>({});
+
   useEffect(() => {
     if (
       pia?.isNextStepsSeenForDelegatedFlow ||
@@ -142,6 +152,16 @@ const PIAFormPage = () => {
   }, [mode, navigate, pia?.id, pia?.status]);
 
   const [message, setMessage] = useState<string>('');
+  const [validationFailedMessage, setValidationFailedMessage] =
+    useState<string>('');
+  const [isValidationFailed, setIsValidationFailed] = useState(false);
+
+  useEffect(() => {
+    if (isValidationFailed)
+      setValidationFailedMessage(
+        'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
+      );
+  }, [isValidationFailed]);
   //
   // Modal State
   //
@@ -154,6 +174,7 @@ const PIAFormPage = () => {
   //
   // Event Handlers
   //
+
   const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
       case 'cancel':
@@ -229,7 +250,15 @@ const PIAFormPage = () => {
     ).data;
     setStalePia(pia);
     setPia(updatedPia);
-
+    setIsValidationFailed(
+      updatedPia.branch === null ||
+        updatedPia.branch === '' ||
+        updatedPia.ministry === null ||
+        updatedPia.title === null ||
+        updatedPia.title === '' ||
+        updatedPia.initiativeDescription === null ||
+        updatedPia.initiativeDescription === '',
+    );
     return updatedPia;
   };
 
@@ -466,6 +495,7 @@ const PIAFormPage = () => {
       [...reset].forEach((el) => {
         el.classList.remove('is-invalid');
       });
+      setValidationMessages({});
     }
     const richText = document.getElementsByClassName('richText');
     if (richText) {
@@ -476,66 +506,41 @@ const PIAFormPage = () => {
     if (!pia?.title) {
       invalid = true;
       formId = 'title';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaTitle: 'Error: Please enter a title.',
+      }));
     }
-    if (!pia?.ministry && !invalid) {
+    if (!pia?.ministry) {
       invalid = true;
       formId = 'ministry-select';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaMinistry: 'Error: Please select a ministry.',
+      }));
     }
-    if (!pia?.branch && !invalid) {
+    if (!pia?.branch) {
       invalid = true;
       formId = 'branch';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaBranch: 'Error: Please enter a branch.',
+      }));
     }
-    if (!pia?.drafterName && !invalid) {
-      invalid = true;
-      formId = 'drafterName';
-    }
-    if (!pia?.drafterTitle && !invalid) {
-      invalid = true;
-      formId = 'drafterTitle';
-    }
-    if ((!pia?.drafterEmail || pia.drafterEmail === undefined) && !invalid) {
-      invalid = true;
-      formId = 'drafterEmail';
-    }
-    if (!pia?.leadName && !invalid) {
-      invalid = true;
-      formId = 'leadName';
-    }
-    if (!pia?.leadTitle && !invalid) {
-      invalid = true;
-      formId = 'leadTitle';
-    }
-    if (!pia?.leadEmail && !invalid) {
-      invalid = true;
-      formId = 'leadEmail';
-    }
-    if (!pia?.mpoName && !invalid) {
-      invalid = true;
-      formId = 'mpoName';
-    }
-    if (!pia?.mpoEmail && !invalid) {
-      invalid = true;
-      formId = 'mpoEmail';
-    }
-    if (!pia?.initiativeDescription && !invalid) {
+
+    if (!pia?.initiativeDescription) {
       invalid = true;
       formId = 'initiativeDescription';
+      setValidationMessages((prevState) => ({
+        ...prevState,
+        piaInitialDescription: 'Error: Please describe your initiative.',
+      }));
     }
-    if (!pia?.initiativeScope && !invalid) {
-      invalid = true;
-      formId = 'initiativeScope';
-    }
+
     if (!pia?.dataElementsInvolved && !invalid) {
       invalid = true;
       formId = 'dataElementsInvolved';
     }
-    if (pia?.hasAddedPiToDataElements === false) {
-      if (!pia?.riskMitigation && !invalid) {
-        invalid = true;
-        formId = 'riskMitigation';
-      }
-    }
-
     if (invalid) {
       const ele = document.getElementById(formId);
       if (ele) {
@@ -585,6 +590,7 @@ const PIAFormPage = () => {
     fetchAndUpdatePia(id).then((updatedPia) => {
       setStalePia(updatedPia);
       setPia(updatedPia);
+
       setInitialPiaStateFetched(true); // no further fetch PIA unless requested
     });
   });
@@ -632,6 +638,7 @@ const PIAFormPage = () => {
         pia={pia}
         lastSaveAlertInfo={lastSaveAlertInfo}
         primaryButtonText={submitButtonText}
+        isValidationFailed={isValidationFailed}
         mode={mode}
         onSaveChangeClick={handleSaveChanges}
         handleStatusChange={handleStatusChange}
@@ -656,7 +663,17 @@ const PIAFormPage = () => {
               isReadOnly={formReadOnly}
             ></PIASideNav>
           </section>
+
           <section className="ms-md-3 ms-lg-4 ms-xl-5 content__container">
+            {mode === 'view' && validationFailedMessage && (
+              <Alert
+                type="danger"
+                message={validationFailedMessage}
+                className="mt-0 mb-4"
+                showCloseIcon={false}
+                showInitialIcon={true}
+              />
+            )}
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet
@@ -665,6 +682,7 @@ const PIAFormPage = () => {
                   piaStateChangeHandler,
                   formReadOnly,
                   accessControl,
+                  validationMessages,
                 ]}
               />
             ) : (

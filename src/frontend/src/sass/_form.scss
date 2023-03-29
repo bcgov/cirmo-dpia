@@ -38,7 +38,7 @@
 }
 
 .form__section-drop-shadow {
-  box-shadow: 0px 17px 29px 0px rgba(220, 226, 238, 0.6);
+  box-shadow: 0 17px 29px 0 rgba(220, 226, 238, 0.6);
 }
 
 .form__h2 {
@@ -86,8 +86,8 @@
 
 .search-container {
   input {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
@@ -98,8 +98,8 @@
 
   .search-icon-container {
     height: 2.4rem;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
 
@@ -107,10 +107,10 @@
   a {
     font-weight: normal;
     cursor: text;
-    -webkit-user-select: text;
+    user-select: text;
     -webkit-touch-callout: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
+    user-select: text;
+    user-select: text;
     user-select: text;
   }
 }

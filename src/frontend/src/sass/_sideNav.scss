@@ -1,84 +1,86 @@
 .sidenav {
-    height: 100%;
-    z-index: 1;
-    background-color: transparent;
-    overflow-x: hidden;
-    transition: 0.5s;
-    
-    ul,li {
-        list-style-type: none;
-        padding:0;
-    }
+  height: 100%;
+  z-index: 1;
+  background-color: transparent;
+  overflow-x: hidden;
+  transition: 0.5s;
 
-    li {
-        margin-bottom: 0.75rem;
-    }
+  ul,
+  li {
+    list-style-type: none;
+    padding: 0;
+  }
 
-    .sidenav__link--blue {
-        color: $link-blue;
-    }
+  li {
+    margin-bottom: 0.75rem;
+  }
 
-    .active {
-        color: $link-blue;
-        font-weight:bold;
-        padding-left: 30px;
-    }
-    li {
-        width:100%;
-        overflow:hidden;
-    }
-    a {
-        width: 100%;
-        word-break: break-all;
-        position:relative;
-    }
+  .sidenav__link--blue {
+    color: $link-blue;
+  }
 
-    .active:before {
-        position:absolute;
-        content:"";
-        background-image: url("/src/assets/active-menu-arrow.svg");
-        background-position:  left 0% bottom 50%;
-        background-repeat: no-repeat;
-        left:0px;
-        height:20px;
-        width:20px;
-        top:19px; /* Eye balling to align the arrow with the text */
-        transform:translateY(-50%);
+  .active {
+    color: $link-blue;
+    font-weight: bold;
+    padding-left: 30px;
+  }
 
-    }
+  li {
+    width: 100%;
+    overflow: hidden;
+  }
 
-    .navbar {
-        display: block;
+  a {
+    width: 100%;
+    word-break: break-all;
+    position: relative;
+  }
 
-        hr {
-            width: 80%;
-        }
-    }
+  .active::before {
+    position: absolute;
+    content: '';
+    background-image: url('/src/assets/active-menu-arrow.svg');
+    background-position: left 0% bottom 50%;
+    background-repeat: no-repeat;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    top: 19px; /* Eye balling to align the arrow with the text */
+    transform: translateY(-50%);
+  }
 
-    a {
-        text-decoration:none;
-        color: $link-blue;
-    }
-    a:hover {
-        color: $link-blue;
-        text-decoration:underline;
-    }
+  .navbar {
+    display: block;
 
-    .sidenav__icon--active {
-        margin-right:1em;
+    hr {
+      width: 80%;
     }
+  }
 
-    .cursor-pointer {
-        cursor:pointer;
-    }
+  a {
+    text-decoration: none;
+    color: $link-blue;
+  }
 
-    .bcgovbtn {
-        max-height: inherit;
-        white-space: pre-wrap;
-        align-items: flex-start;
-        text-align: start;
-        word-break: break-word;
-        justify-content:start;
-    }
+  a:hover {
+    color: $link-blue;
+    text-decoration: underline;
+  }
+
+  .sidenav__icon--active {
+    margin-right: 1em;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .bcgovbtn {
+    max-height: inherit;
+    white-space: pre-wrap;
+    align-items: flex-start;
+    text-align: start;
+    word-break: break-word;
+    justify-content: start;
+  }
 }
-

@@ -2,7 +2,10 @@ import MDEditor from '@uiw/react-md-editor';
 import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { MinistryList, PIOptions } from '../../../../constant/constant';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
+import {
+  PiaStateChangeHandlerType,
+  PiaValidationMessage,
+} from '../../../../pages/PIAForm';
 import Dropdown from '../../../common/Dropdown';
 import InputText from '../../../common/InputText/InputText';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -14,9 +17,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export const PIAFormIntake = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
+  const [
+    pia,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+    validationMessage,
+  ] =
     useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
+      [
+        IPiaForm,
+        PiaStateChangeHandlerType,
+        boolean,
+        () => void,
+        PiaValidationMessage,
+      ]
     >();
 
   if (accessControl) accessControl();
@@ -71,19 +86,26 @@ export const PIAFormIntake = () => {
                 onChange={(e) => stateChangeHandler(e.target.value, 'title')}
                 required={true}
               />
+              {validationMessage.piaTitle && (
+                <p className="error-text "> {validationMessage.piaTitle}</p>
+              )}
             </div>
             <div className="row">
-              <Dropdown
-                id="ministry-select"
-                value={intakeForm?.ministry || ''}
-                label="Ministry"
-                optionalClass="col-md-6"
-                options={MinistryList}
-                changeHandler={(e) =>
-                  stateChangeHandler(e.target.value, 'ministry')
-                }
-                required={true}
-              />
+              <div className="col col-md-6">
+                <Dropdown
+                  id="ministry-select"
+                  value={intakeForm?.ministry || ''}
+                  label="Ministry"
+                  options={MinistryList}
+                  changeHandler={(e) =>
+                    stateChangeHandler(e.target.value, 'ministry')
+                  }
+                  required={true}
+                />
+                {validationMessage.piaMinistry && (
+                  <p className="error-text ">{validationMessage.piaMinistry}</p>
+                )}
+              </div>
               <div className="col">
                 <InputText
                   label="Branch"
@@ -91,6 +113,9 @@ export const PIAFormIntake = () => {
                   required={true}
                   onChange={(e) => stateChangeHandler(e.target.value, 'branch')}
                 />
+                {validationMessage.piaBranch && (
+                  <p className="error-text "> {validationMessage.piaBranch}</p>
+                )}
               </div>
             </div>
             <div className="row">
@@ -102,7 +127,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'drafterName')
                   }
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="col">
@@ -113,7 +138,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'drafterEmail')
                   }
-                  required={true}
+                  required={false}
                   type="email"
                 />
               </div>
@@ -127,7 +152,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'drafterTitle')
                   }
-                  required={true}
+                  required={false}
                 />
               </div>
             </div>
@@ -140,7 +165,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'leadName')
                   }
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="col">
@@ -151,7 +176,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'leadEmail')
                   }
-                  required={true}
+                  required={false}
                   type="email"
                 />
               </div>
@@ -165,7 +190,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'leadTitle')
                   }
-                  required={true}
+                  required={false}
                 />
               </div>
             </div>
@@ -176,13 +201,13 @@ export const PIAFormIntake = () => {
                   helperText={Messages.GeneralInfoSection.MPOHelperText.en}
                   linkText={Messages.GeneralInfoSection.MPOLinkText.en}
                   linkHref={Messages.GeneralInfoSection.MPOLinkHref}
-                  hasIcon={true}
+                  hasIcon={false}
                   id="mpoName"
                   value={intakeForm?.mpoName}
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'mpoName')
                   }
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="col">
@@ -193,7 +218,7 @@ export const PIAFormIntake = () => {
                   onChange={(e) =>
                     stateChangeHandler(e.target.value, 'mpoEmail')
                   }
-                  required={true}
+                  required={false}
                   type="email"
                 />
               </div>
@@ -209,6 +234,7 @@ export const PIAFormIntake = () => {
             <p>
               <strong>
                 {Messages.InitiativeDescriptionSection.Question.en}
+                <span className="error-text "> (required)</span>
               </strong>
             </p>
           ) : (
@@ -235,6 +261,11 @@ export const PIAFormIntake = () => {
                   stateChangeHandler(value, 'initiativeDescription')
                 }
               />
+            )}
+            {!isReadOnly && validationMessage.piaInitialDescription && (
+              <p className="error-text ">
+                {validationMessage.piaInitialDescription}
+              </p>
             )}
           </div>
         </div>
