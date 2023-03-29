@@ -32,7 +32,7 @@ export async function createNestApp(): Promise<{
     );
 
   // append request logs
-  app.use(morgan('tiny'));
+  app.use(morgan('default'));
 
   // Transform types during DTO Validation
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
