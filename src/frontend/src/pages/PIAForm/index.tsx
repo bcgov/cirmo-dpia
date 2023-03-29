@@ -154,14 +154,8 @@ const PIAFormPage = () => {
   const [message, setMessage] = useState<string>('');
   const [validationFailedMessage, setValidationFailedMessage] =
     useState<string>('');
-  const isValidationFailed =
-    pia.branch === null ||
-    pia.branch === '' ||
-    pia.ministry === null ||
-    pia.title === null ||
-    pia.title === '' ||
-    pia.initiativeDescription === null ||
-    pia.initiativeDescription === '';
+  const [isValidationFailed, setIsValidationFailed] = useState(false);
+
   useEffect(() => {
     if (isValidationFailed)
       setValidationFailedMessage(
@@ -256,7 +250,15 @@ const PIAFormPage = () => {
     ).data;
     setStalePia(pia);
     setPia(updatedPia);
-
+    setIsValidationFailed(
+      updatedPia.branch === null ||
+        updatedPia.branch === '' ||
+        updatedPia.ministry === null ||
+        updatedPia.title === null ||
+        updatedPia.title === '' ||
+        updatedPia.initiativeDescription === null ||
+        updatedPia.initiativeDescription === '',
+    );
     return updatedPia;
   };
 
@@ -584,6 +586,7 @@ const PIAFormPage = () => {
     fetchAndUpdatePia(id).then((updatedPia) => {
       setStalePia(updatedPia);
       setPia(updatedPia);
+
       setInitialPiaStateFetched(true); // no further fetch PIA unless requested
     });
   });
@@ -663,7 +666,7 @@ const PIAFormPage = () => {
                 type="danger"
                 message={validationFailedMessage}
                 className="mt-0 mb-4"
-                showCloseIcon={true}
+                showCloseIcon={false}
                 showInitialIcon={true}
               />
             )}
