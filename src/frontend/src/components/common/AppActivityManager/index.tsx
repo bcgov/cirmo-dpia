@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  authLogoutHandler,
+  logMeOut,
   isAuthenticated,
   refreshAuthTokens,
   TokenStorageKeys,
@@ -66,12 +66,6 @@ const AppActivityManager = (): React.ReactElement => {
       setTimeout(() => {
         updateIsWarningModalOpen(true);
       }, config.inactivityTimeout * 1000);
-
-    const logMeOut = () => {
-      authLogoutHandler((urlPath: string) => {
-        navigate(urlPath);
-      });
-    };
 
     /**
      * Timeout and auto log the user out if user does not respond to the warning modal
@@ -162,9 +156,7 @@ const AppActivityManager = (): React.ReactElement => {
   }, [isWarningModalOpen, navigate]);
 
   const onLogOffCall = () => {
-    authLogoutHandler((urlPath: string) => {
-      navigate(urlPath);
-    });
+    logMeOut();
   };
 
   return (

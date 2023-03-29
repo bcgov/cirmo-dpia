@@ -1,16 +1,16 @@
-name: DPIA Frontend - Deploy DEV
+name: DPIA API - Deploy DEV
 
 on:
   push:
     branches: [ main ]
     paths:
-      - "src/frontend/**"
+      - "src/backend/**"
   workflow_dispatch:
   
 jobs:
-  DPIA-App-Build-Tag-Push:
+  DPIA-API-Build-Tag-Push:
+    environment: API-Dev
     runs-on: ubuntu-latest
-    environment: APP-Dev
     steps:
     
       # Checkout CIRMO-DPIA Github Repository
@@ -33,41 +33,79 @@ jobs:
       - name: Login to Openshift Docker
         run : |
           docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
+          
+      # Setup environment variables
+      - name: Setup environment
+        run: |
+          make api-setup-env
       
-      # Build the DPIA Frontend Application Image via docker-compose
+      # Build the DPIA API Application Image via docker-compose
       - name: Build the Docker image
         run: |
-          sudo docker-compose build dpia-webapp
+          docker-compose build dpia-api
       
       # TROUBLESHOOTING - view images present in github action run
       - name: Docker List Images
         run: |
           docker image ls 
       
-      # Tag Docker Image built with latest commit hash (ex// $HASH-dev)
+      # Tag Docker Image built with latest
       - name: Docker Tag Version
         run: |
-          docker tag cirmo-dpia_dpia-webapp image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/app-dev:latest
-      
-      # TROUBLESHOOTING - view images present in github action run
-      - name: Docker List Images
-        run: |
-          docker image ls 
-          
-      # Push docker image to BC Gov Repository
+          docker tag cirmo-dpia_dpia-api image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/api-dev:latest
+
+      # Push docker image to BC Gov Repository  
       - name: Docker Push Version
         run: |
-          docker push image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/app-dev:latest
-
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b996e6-tools/api-dev:latest
+          
   DEV-deploy:
     runs-on: ubuntu-latest
-    environment: APP-Dev
-    needs: [DPIA-App-Build-Tag-Push]
+    environment: API-Dev
+    needs: [ DPIA-API-Build-Tag-Push ]
     steps:
     
       # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Login to Openshift Silver Cluster
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: github-actions
+          OPENSHIFT_NAMESPACE: b996e6-dev
+        with: 
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
+          namespace: b996e6-dev
+
+      # Use deploy helper script to process and apply DPIA API Application template into DEV namespace
+      - name: Process and Apply API DeploymentConfig, Service, Route templates
+        env:
+          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
+          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
+          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
+          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
+          DC_TEMPLATE: "api-dc-template.yaml"
+          SERVICE_TEMPLATE: "api-service-template.yaml"
+          ROUTE_TEMPLATE: "api-route-template.yaml"
+          DIR: "api/silver"
+          IMAGESTREAM: "api-dev"
+        run: |
+          ./.github/helpers/deploy.sh 
+    
+  DEV-health-check:
+    runs-on: ubuntu-latest
+    environment:
+      name: API-Dev
+      url: https://dev.pia.gov.bc.ca/api/api-docs
+    needs: [ DEV-deploy ]
+    steps:
+    
+      # Checkout Repository
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -81,45 +119,6 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
           namespace: b996e6-dev
             
-      # Use deploy helper script to process and apply DPIA Frontend Application template into DEV namespace
-      - name: Process and Apply APP DeploymentConfig, Service, Route templates
-        env:
-          NAMESPACE: "${{ secrets.OPENSHIFT_DEV_NAMESPACE }}"
-          APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
-          LICENSE_PLATE: "${{ secrets.LICENSE_PLATE }}"
-          ENVIRONMENT: "${{ secrets.ENVIRONMENT }}"
-          DC_TEMPLATE: "app-dc-template-v2.yaml"
-          SERVICE_TEMPLATE: "app-service-template-v2.yaml"
-          ROUTE_TEMPLATE: "app-route-template-v2.yaml"
-          DIR: "app"
-          IMAGESTREAM: "app-dev"
-        run: |
-          ./.github/helpers/deploy.sh 
-
-  DEV-health-check:
-    runs-on: ubuntu-latest
-    environment:
-      name: APP-Dev
-      url: https://dev.pia.gov.bc.ca
-    needs: [DEV-deploy]
-    steps:
-    
-      # Checkout Repository
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-    
-      - name: Login to Openshift Silver Cluster
-        uses: redhat-actions/oc-login@v1
-        env:
-          OPENSHIFT_USER: github-actions
-          OPENSHIFT_NAMESPACE: b996e6-dev
-        with: 
-          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
-          openshift_token: ${{ secrets.OPENSHIFT4_DEV_SA_PASSWORD }}
-          namespace: b996e6-dev
-
       # Use application health helper script to monitor readiness/liveness probe response post deployment  
       - name: Health Check DEV deployment
         env:
@@ -127,16 +126,15 @@ jobs:
           APPLICATION_NAME: "${{ secrets.APPLICATION_NAME }}-v2"
         run: |
           ./.github/helpers/application-health.sh
-  
+
   DEV-cleanup:
     runs-on: ubuntu-latest
-    environment: APP-Dev
+    environment: API-Dev
     needs: [ DEV-health-check ]
     steps:
 
       # Checkout Repository
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -164,29 +162,10 @@ jobs:
         run: |
           ./.github/helpers/cleanup-rc.sh
 
-  DEV-e2e:
-    runs-on: ubuntu-latest
-    environment: APP-Dev
-    needs: [ DEV-cleanup ]
-    steps:
-
-    # Checkout Repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    # Navigate to frontend dir, install dependencies, execute cypress command
-    - name: Setup and Execute Cypress e2e test suite
-      run: |
-        cd ./src/frontend
-        npm install
-        npm run cy:e2e-dev
-
   DEV-Success-Notify:
     runs-on: ubuntu-latest
-    environment: APP-Dev
-    needs: [ DEV-e2e ]
+    environment: API-Dev
+    needs: [ DEV-cleanup ]
     steps:
       - name: Message Teams Channel on Success
         run: |
@@ -196,13 +175,13 @@ jobs:
             "@context": "https://schema.org/extensions",
             "@type": "MessageCard",
             "themeColor": "0072C6",
-            "title": "SUCCESS! WebApp Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished!.",
-            "text": "The PIA WebApp has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n End-to-end test suite has passed \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca).",
+            "title": "SUCCESS! API Deployment to PIA ${{ secrets.ENVIRONMENT }} Environment has finished.",
+            "text": "The PIA API has been built and deployed to the ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca/api/api-docs).",
           }'
 
   DEV-Failure-Notify:
     runs-on: ubuntu-latest
-    environment: APP-Dev
+    environment: API-Dev
     if: failure()
     steps:
       - name: Message Teams Channel on Failure
@@ -213,6 +192,6 @@ jobs:
             "@context": "https://schema.org/extensions",
             "@type": "MessageCard",
             "themeColor": "0072C6",
-            "title": "FAILURE! WebApp Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
-            "text": "The PIA WebApp has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
+            "title": "FAILURE! API Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
+            "text": "The PIA API has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
           }'

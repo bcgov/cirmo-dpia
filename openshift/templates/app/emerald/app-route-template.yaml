@@ -8,21 +8,26 @@ objects:
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:
-    name: dpia-${ENVIRONMENT}-route
+    name: ${APPLICATION_NAME}-route
     namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
     labels:
       hash: latest
+      template: ${APPLICATION_NAME}-template
+    annotations:
+      ako.vmware.com/controller-cluster-uuid: cluster-10d3d65b-aa10-4eac-bd40-3777bfd2f4a9
+      ako.vmware.com/host-fqdn-vs-uuid-map: >-
+        {"pia.apps.emerald.devops.gov.bc.ca":"virtualservice-d6c35c27-abca-4d00-b0b7-f3be50001210"}
   spec:
-    host: dpia-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+    host: ${ROUTE}
     to:
       kind: Service
-      name: dpia-webapp-v2
+      name: ${APPLICATION_NAME}-service
       weight: 100
     port:
       targetPort: 8080
     tls:
       termination: edge
-      insecureEdgeTerminationPolicy: None
+      insecureEdgeTerminationPolicy: Redirect
     wildcardPolicy: None
 
 parameters:
@@ -40,8 +45,19 @@ parameters:
     displayName: License Plate
     name: LICENSE_PLATE
     required: true
-    value: b996e6
+    value: aa77ab
   - description: Imagestream
     displayName: Imagestream
     name: IMAGESTREAM
-    required: false
+    required: true
+    value: 'app-dev'
+  - description: DataClass
+    displayName: Dataclass
+    name: DATACLASS
+    required: true
+    value: low
+  - description: Route
+    displayName: Route
+    name: ROUTE
+    required: true
+    value: 'pia.apps.emerald.devops.gov.bc.ca'

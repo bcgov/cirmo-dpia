@@ -2,19 +2,21 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: aa77ab-network-policy-app-egress
+  name: allow-from-nginx-build-to-proxy
   namespace: aa77ab-dev
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/name: dpia-webapp
+      build: 'true'
   egress:
     - ports:
         - protocol: TCP
           port: 8080
       to:
-        - podSelector:
-            matchLabels:
-              strimzi.io/name: dpia-api
+        - ipBlock:
+            cidr: 142.34.229.249/32
+        - ipBlock:
+            cidr: 142.34.94.249/32
   policyTypes:
     - Egress
+---
