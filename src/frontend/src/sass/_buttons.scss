@@ -103,6 +103,7 @@ a:hover {
 
   border: 2px solid $bg-disabled;
   cursor: auto;
+  pointer-events: none;
 }
 
 .bcgovbtn__secondary {

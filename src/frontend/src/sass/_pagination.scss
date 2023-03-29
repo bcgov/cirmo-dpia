@@ -14,8 +14,9 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+
     @include breakpoint(map-get($grid-breakpoints, 'lg')) {
-      align-items:center;
+      align-items: center;
     }
   }
 
@@ -23,27 +24,32 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
     @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
       align-items: baseline;
     }
+
     gap: 0.5em;
   }
 
   .pagination__container__right__buttons {
     display: flex;
     gap: 0.5em;
+
     @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
-      margin-left:2rem;
+      margin-left: 2rem;
     }
   }
+
   .pagination__container__left {
     @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
-      width:50%;
+      width: 50%;
     }
   }
+
   .pagination__container__left__text {
     @include breakpoint(0 map-get($grid-breakpoints, 'lg')) {
-      margin-bottom:2rem;
+      margin-bottom: 2rem;
     }
   }
 
@@ -99,10 +105,10 @@
     display: flex;
     gap: 0.5em;
     align-items: center;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     flex-wrap: wrap;
-    
+
     .page__enumeration {
       list-style: none;
       cursor: pointer;
