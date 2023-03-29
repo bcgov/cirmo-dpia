@@ -537,6 +537,10 @@ const PIAFormPage = () => {
       }));
     }
 
+    if (!pia?.dataElementsInvolved && !invalid) {
+      invalid = true;
+      formId = 'dataElementsInvolved';
+    }
     if (invalid) {
       const ele = document.getElementById(formId);
       if (ele) {
