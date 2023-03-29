@@ -173,7 +173,7 @@ function PIASubHeader({
               onClick={onSubmitClick}
               className={`mx-1 bcgovbtn 
               ${
-                isValidationFailed
+                mode === 'view' && isValidationFailed
                   ? 'bcgovbtn__primary--disabled'
                   : 'bcgovbtn__primary '
               }`}

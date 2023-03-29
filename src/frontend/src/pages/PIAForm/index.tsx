@@ -661,7 +661,7 @@ const PIAFormPage = () => {
           </section>
 
           <section className="ms-md-3 ms-lg-4 ms-xl-5 content__container">
-            {validationFailedMessage && (
+            {mode === 'view' && validationFailedMessage && (
               <Alert
                 type="danger"
                 message={validationFailedMessage}
