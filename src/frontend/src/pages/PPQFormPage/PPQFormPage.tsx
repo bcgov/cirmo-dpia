@@ -293,6 +293,7 @@ const PPQFormPage = () => {
               </h2>
               <MDEditor
                 preview="edit"
+                defaultTabEnable={true}
                 value={description}
                 onChange={handleDescriptionChange}
               />
