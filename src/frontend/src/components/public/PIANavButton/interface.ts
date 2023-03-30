@@ -1,5 +1,5 @@
-import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
+import { INavbarItem } from '../../common/Navbar/interfaces';
 
 export interface INavButton {
-  pia: IPiaForm;
+  pages: INavbarItem[];
 }

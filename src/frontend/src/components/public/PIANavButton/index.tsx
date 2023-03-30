@@ -1,42 +1,48 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PiaFormSideNavPages } from '../PIASideNav/pia-form-sideNav-pages';
+import { INavbarItem } from '../../common/Navbar/interfaces';
 import { INavButton } from './interface';
 
-const PIANavButton = ({ pia }: INavButton) => {
+const PIANavButton = ({ pages }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const handleNavBtn = (direction: string) => {
+    const currentTabObj = pages.filter((page) => page.link === pathname);
+    let resultTab: INavbarItem[] = [];
+    if (direction === 'next') {
+      resultTab = pages.filter((page) => page.id === currentTabObj[0].id + 1);
+    } else if (direction === 'back') {
+      resultTab = pages.filter((page) => page.id === currentTabObj[0].id - 1);
+    }
+    return resultTab;
+  };
+
   const handleBack = () => {
-    navigate(-1);
+    const prevTab = handleNavBtn('back');
+    navigate(prevTab[0].link);
   };
   const handleNext = () => {
-    const editMode = pathname.split('/')[4];
-    const pages = PiaFormSideNavPages(
-      pia,
-      editMode === 'edit' ? true : false,
-      false,
-    );
-    const currentTabObj = pages.filter((page) => page.link === pathname);
-    const nextTabObj = pages.filter(
-      (page) => page.id === currentTabObj[0].id + 1,
-    );
-    navigate(nextTabObj[0].link);
+    const nextTab = handleNavBtn('next');
+    navigate(nextTab[0].link);
   };
   return (
     <>
       {!pathname.includes('intake') && (
         <div>
           <div className="horizontal-divider"></div>
-          <div className="form-buttons">
-            <button
-              className="bcgovbtn bcgovbtn__secondary btn-back"
-              onClick={handleBack}
-            >
-              Back
-            </button>
+          <div className="form-buttons ">
+            {!pathname.includes('collectionUseAndDisclosure') && (
+              <button
+                className="bcgovbtn bcgovbtn__secondary btn-back"
+                onClick={handleBack}
+              >
+                Back
+              </button>
+            )}
             {!pathname.includes('additionalRisks') && (
               <button
                 type="submit"
-                className="bcgovbtn  bcgovbtn__secondary btn-next"
+                className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
                 onClick={handleNext}
               >
                 Next
