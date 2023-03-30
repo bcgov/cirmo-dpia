@@ -102,7 +102,8 @@ a:hover {
   --text-color: white;
 
   border: 2px solid $bg-disabled;
-  cursor: auto;
+  cursor: not-allowed;
+  text-decoration: none;
 }
 
 .bcgovbtn__secondary {
