@@ -391,6 +391,7 @@ export const SecurityPersonalInformation = () => {
                   {!isReadOnly ? (
                     <MDEditor
                       preview="edit"
+                      defaultTabEnable={true}
                       value={
                         securityPersonalInformationForm?.digitalToolsAndSystems
                           ?.storage?.whereDetails || ''
@@ -515,6 +516,7 @@ export const SecurityPersonalInformation = () => {
               {!isReadOnly ? (
                 <MDEditor
                   preview="edit"
+                  defaultTabEnable={true}
                   value={
                     securityPersonalInformationForm.accessToPersonalInformation
                       .additionalStrategies || ''

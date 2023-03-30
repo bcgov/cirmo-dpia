@@ -161,6 +161,7 @@ const PIAAgreementsAndInformationBanks = () => {
                   {!isReadOnly ? (
                     <MDEditor
                       id="isaDescription"
+                      defaultTabEnable={true}
                       preview="edit"
                       value={
                         agreementsAndInformationBanksForm
@@ -418,6 +419,7 @@ const PIAAgreementsAndInformationBanks = () => {
                     {!isReadOnly ? (
                       <MDEditor
                         id="pibDescriptionType"
+                        defaultTabEnable={true}
                         preview="edit"
                         value={
                           agreementsAndInformationBanksForm
