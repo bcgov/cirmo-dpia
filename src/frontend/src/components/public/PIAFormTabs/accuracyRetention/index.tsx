@@ -162,23 +162,9 @@ export const AccuracyCorrectionAndRetention = () => {
               </>
             ) : (
               <h4>
-                <a
-                  href={
-                    Messages.FormElements.RequestCorrection.haveProcessinPlace
-                      .HelperText.LinkHref
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {
-                    Messages.FormElements.RequestCorrection.haveProcessinPlace
-                      .HelperText.LinkText.en
-                  }
-                  <FontAwesomeIcon icon={faUpRightFromSquare} />
-                </a>
                 {
                   Messages.FormElements.RequestCorrection.haveProcessinPlace
-                    .HelperText.en
+                    .Question.en
                 }
               </h4>
             )}
