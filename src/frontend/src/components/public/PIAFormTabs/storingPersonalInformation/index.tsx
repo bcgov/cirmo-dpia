@@ -553,45 +553,48 @@ const StoringPersonalInformation = () => {
                     />
                   </div>
                 )}
-                <div className="pt-5">
-                  {!isReadOnly ? (
-                    <p className="text__font-weight--700">
-                      {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
-                    </p>
-                  ) : (
-                    <h4>
-                      {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
-                    </h4>
-                  )}
-                  {!isReadOnly ? (
-                    <MDEditor
-                      preview={isMPORole() ? 'edit' : 'preview'}
-                      value={
-                        storingPersonalInformationForm.disclosuresOutsideCanada
-                          .storage.disclosureDetails
-                      }
-                      defaultTabEnable={true}
-                      onChange={(value) =>
-                        stateChangeHandler(
-                          value || '',
-                          'disclosuresOutsideCanada.storage.disclosureDetails',
-                        )
-                      }
-                    />
-                  ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                      .storage.disclosureDetails ? (
-                    <MDEditor.Markdown
-                      source={
-                        storingPersonalInformationForm.disclosuresOutsideCanada
-                          .storage.disclosureDetails
-                      }
-                    />
-                  ) : (
-                    <p>
-                      <i>Not answered</i>
-                    </p>
-                  )}
-                </div>
+                {storingPersonalInformationForm.disclosuresOutsideCanada.storage
+                  .sensitiveInfoStoredByServiceProvider === YesNoInput.NO && (
+                  <div className="pt-5">
+                    {!isReadOnly ? (
+                      <p className="text__font-weight--700">
+                        {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
+                      </p>
+                    ) : (
+                      <h4>
+                        {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
+                      </h4>
+                    )}
+                    {!isReadOnly ? (
+                      <MDEditor
+                        preview={isMPORole() ? 'edit' : 'preview'}
+                        value={
+                          storingPersonalInformationForm
+                            .disclosuresOutsideCanada.storage.disclosureDetails
+                        }
+                        defaultTabEnable={true}
+                        onChange={(value) =>
+                          stateChangeHandler(
+                            value || '',
+                            'disclosuresOutsideCanada.storage.disclosureDetails',
+                          )
+                        }
+                      />
+                    ) : storingPersonalInformationForm.disclosuresOutsideCanada
+                        .storage.disclosureDetails ? (
+                      <MDEditor.Markdown
+                        source={
+                          storingPersonalInformationForm
+                            .disclosuresOutsideCanada.storage.disclosureDetails
+                        }
+                      />
+                    ) : (
+                      <p>
+                        <i>Not answered</i>
+                      </p>
+                    )}
+                  </div>
+                )}
                 <div className="pt-5">
                   {!isReadOnly ? (
                     <>
