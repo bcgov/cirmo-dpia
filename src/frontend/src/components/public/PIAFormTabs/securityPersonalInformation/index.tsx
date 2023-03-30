@@ -28,7 +28,7 @@ export const SecurityPersonalInformation = () => {
           haveSecurityAssessment: YesNoInput.YES,
         },
         storage: {
-          onGovServers: YesNoInput.NO,
+          onGovServers: YesNoInput.YES,
           whereDetails: '',
         },
       },
@@ -278,10 +278,11 @@ export const SecurityPersonalInformation = () => {
                       className="form-check-input"
                       type="radio"
                       name="SecurityAssessment"
-                      value="NO"
+                      value={YesNoInput.NO}
                       checked={
                         securityPersonalInformationForm?.digitalToolsAndSystems
-                          ?.toolsAndAssessment?.haveSecurityAssessment === 'NO'
+                          ?.toolsAndAssessment?.haveSecurityAssessment ===
+                        YesNoInput.NO
                       }
                       onChange={(e) =>
                         stateChangeHandler(
