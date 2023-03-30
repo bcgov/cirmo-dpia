@@ -31,7 +31,7 @@ export const AccuracyCorrectionAndRetention = () => {
       },
       retention: {
         usePIForDecision: YesNoInput.YES,
-        haveApprovedInfoSchedule: YesNoInput.NO,
+        haveApprovedInfoSchedule: YesNoInput.YES,
         describeRetention: '',
       },
     }),
