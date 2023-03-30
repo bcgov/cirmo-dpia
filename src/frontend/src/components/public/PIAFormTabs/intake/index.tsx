@@ -256,6 +256,7 @@ export const PIAFormIntake = () => {
             ) : (
               <MDEditor
                 preview="edit"
+                defaultTabEnable={true}
                 value={intakeForm?.initiativeDescription}
                 onChange={(value) =>
                   stateChangeHandler(value, 'initiativeDescription')

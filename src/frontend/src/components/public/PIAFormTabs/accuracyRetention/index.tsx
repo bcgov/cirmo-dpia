@@ -100,6 +100,7 @@ export const AccuracyCorrectionAndRetention = () => {
               {!isReadOnly ? (
                 <MDEditor
                   preview="edit"
+                  defaultTabEnable={true}
                   value={
                     accuracyCorrectionAndRetentionForm?.accuracy?.description ||
                     undefined
@@ -681,6 +682,7 @@ export const AccuracyCorrectionAndRetention = () => {
                   {!isReadOnly ? (
                     <MDEditor
                       preview="edit"
+                      defaultTabEnable={true}
                       value={
                         accuracyCorrectionAndRetentionForm?.retention
                           ?.describeRetention || undefined
