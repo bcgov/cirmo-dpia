@@ -23,7 +23,7 @@ const PiaSideNav = ({
     <NavBar
       pages={PiaFormSideNavPages(pia, isEditMode, isNewForm)}
       CSSclass="sidenav"
-      isMenu={true}
+      rovingTabIndex={true}
     />
   );
 };

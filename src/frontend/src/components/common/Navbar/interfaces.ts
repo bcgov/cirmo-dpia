@@ -1,7 +1,7 @@
 export interface INavbarPages {
   pages: INavbarItem[];
   CSSclass: string;
-  isMenu?: boolean;
+  rovingTabIndex?: boolean;
 }
 
 export interface INavbarItem {
