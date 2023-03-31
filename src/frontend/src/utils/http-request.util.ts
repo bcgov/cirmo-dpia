@@ -65,7 +65,7 @@ export class HttpRequest {
       console.error(error.message);
 
       // log the user out if the authentication token is no longer valid
-      logMeOut();
+      logMeOut(true);
 
       throw error;
     }
