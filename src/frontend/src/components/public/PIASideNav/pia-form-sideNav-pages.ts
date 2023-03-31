@@ -38,6 +38,11 @@ export const PiaFormSideNavPages = (
       return false;
     }
   };
+/* 
+* if null the states are not used
+if string then the state needs to find the label string
+if it is ++ or -- operater navigate to the previous or next tab
+*/
 
   return [
     {
@@ -45,12 +50,28 @@ export const PiaFormSideNavPages = (
       label: 'PIA Intake',
       link: buildDynamicPath(intakeLink, { id: pia?.id }),
       enable: true, // always show
+      state: {
+        next: {
+          condition: pia?.isNextStepsSeenForNonDelegatedFlow  && pia?.hasAddedPiToDataElements,
+          action:'Collection, use and disclosure',
+        }
+      }
     },
     {
       id: 2,
       label: 'Next steps',
       link: buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id }),
       enable: checkNextSteps(), // enable them in subsequent tickets
+      state: {
+        next: {
+          condition: pia?.hasAddedPiToDataElements, 
+          action:'Collection, use and disclosure',
+        },
+        prev: {
+          condition: true,
+          action:-1,
+        }
+      }
     },
     {
       id: 3,
@@ -73,6 +94,16 @@ export const PiaFormSideNavPages = (
         { id: pia?.id },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        next: {
+          condition: true,
+          action: +1,
+        },
+        prev: {
+          condition: true,
+          action: 'PIA Intake',
+        }
+      }
     },
     {
       id: 6,
@@ -86,6 +117,16 @@ export const PiaFormSideNavPages = (
         },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        next: {
+          condition: true,
+          action: +1,
+        },
+        prev: {
+          condition: true,
+          action: -1,
+        }
+      }
     },
     {
       id: 7,
@@ -99,6 +140,16 @@ export const PiaFormSideNavPages = (
         },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        next: {
+          condition: true,
+          action: +1,
+        },
+        prev: {
+          condition: true,
+          action: -1,
+        }
+      }
     },
     {
       id: 8,
@@ -112,6 +163,16 @@ export const PiaFormSideNavPages = (
         },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        next: {
+          condition: true,
+          action: +1,
+        },
+        prev: {
+          condition: true,
+          action: -1,
+        }
+      }
     },
     {
       id: 9,
@@ -125,6 +186,16 @@ export const PiaFormSideNavPages = (
         },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        next: {
+          condition: true,
+          action: +1,
+        },
+        prev: {
+          condition: true,
+          action: -1,
+        }
+      }
     },
     {
       id: 10,
@@ -138,6 +209,12 @@ export const PiaFormSideNavPages = (
         },
       ),
       enable: showPostIntakeTabs,
+      state: {
+        prev: {
+          condition: true,
+          action: -1,
+        }
+      }
     },
   ];
 };

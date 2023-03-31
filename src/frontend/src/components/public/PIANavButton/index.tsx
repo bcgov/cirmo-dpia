@@ -33,6 +33,23 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
     const nextLink = handleNavBtn('next');
     navigate(nextLink);
   };
+
+  const checkPreviousPageExist = (direction:string) => {
+    let currentPageObj = pages.find((page) => page.link === pathname);
+    if (currentPageObj !== undefined) {
+      if ('state' in currentPageObj) {
+        if (currentPageObj.state !== undefined) {
+          if (direction in currentPageObj.state) {
+            if (currentPageObj.state[direction] !== undefined) {
+            }
+            if (currentPageObj.state[direction].condition) {
+                return true;
+            }
+        }
+      }
+    }
+
+
   return (
     <>
       {!isDelegate && isIntakeSubmitted && (
