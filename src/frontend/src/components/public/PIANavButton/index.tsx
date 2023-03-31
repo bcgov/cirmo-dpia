@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { INavButton } from './interface';
 
 const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
@@ -6,76 +6,87 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
   const navigate = useNavigate();
 
   const handleNavBtn = (direction: string) => {
-    let currentIndex = pages.findIndex((page) => page.link === pathname);
-    if (currentIndex === undefined) currentIndex = 0;
+    const current = pages.find((page) => page.link === pathname);
+    const currentIndex = pages.findIndex((page) => page.link === pathname);
+    if (current === undefined) return;
     if (direction === 'next') {
-      if (currentIndex < pages.length - 1) {
-        // TODO refactor this part of code, this is a very hacky way to nav from intake page to disclosure page
-        // as we need to by pass next steps, faq(temporally), the divider line
-        // if it is in the intake page, the index will be 0, so the disclosure tab index will be 4
-        if (pages[currentIndex + 1].link.includes('nextSteps'))
-          return pages[currentIndex + 4].link;
-        else return pages[currentIndex + 1].link;
-      } else return pages[currentIndex].link;
+      if (current.state?.next?.condition) {
+        if (current.state?.next?.action === +1) {
+          return pages[currentIndex + 1].link;
+        } else if (typeof current.state?.next?.action === 'string') {
+          return pages.find(
+            (page) => page.label === current.state?.next?.action,
+          )?.link;
+        }
+      }
     } else if (direction === 'back') {
-      if (currentIndex > 0) return pages[currentIndex - 1].link;
-      else return pages[currentIndex].link;
-    } else {
-      return pages[currentIndex].link;
+      if (current.state?.prev?.condition) {
+        if (current.state?.prev?.action === -1) {
+          return pages[currentIndex - 1].link;
+        } else if (typeof current.state?.prev?.action === 'string') {
+          return pages.find(
+            (page) => page.label === current.state?.prev?.action,
+          )?.link;
+        }
+      }
     }
   };
 
   const handleBack = () => {
     const backLink = handleNavBtn('back');
-    navigate(backLink);
+    if (backLink !== undefined) navigate(backLink);
   };
   const handleNext = () => {
     const nextLink = handleNavBtn('next');
-    navigate(nextLink);
+    if (nextLink !== undefined) navigate(nextLink);
   };
-
-  const checkPreviousPageExist = (direction:string) => {
-    let currentPageObj = pages.find((page) => page.link === pathname);
-    if (currentPageObj !== undefined) {
-      if ('state' in currentPageObj) {
-        if (currentPageObj.state !== undefined) {
-          if (direction in currentPageObj.state) {
-            if (currentPageObj.state[direction] !== undefined) {
-            }
-            if (currentPageObj.state[direction].condition) {
-                return true;
-            }
-        }
-      }
-    }
-
 
   return (
     <>
-      {!isDelegate && isIntakeSubmitted && (
-        <div>
-          <div className="horizontal-divider"></div>
-          <div className="form-buttons ">
-            {!pathname.includes(pages[0].link) && (
-              <button
-                className="bcgovbtn bcgovbtn__secondary btn-back"
-                onClick={handleBack}
-              >
-                Back
-              </button>
-            )}
-            {!pathname.includes(pages[pages.length - 1].link) && (
-              <button
-                type="submit"
-                className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      {!isDelegate
+        ? isIntakeSubmitted && (
+            <div>
+              <div className="horizontal-divider"></div>
+              <div className="form-buttons ">
+                {!pathname.includes(pages[0].link) && (
+                  <button
+                    className="bcgovbtn bcgovbtn__secondary btn-back"
+                    onClick={handleBack}
+                  >
+                    Back
+                  </button>
+                )}
+                {!pathname.includes(pages[pages.length - 1].link) && (
+                  <button
+                    type="submit"
+                    className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </div>
+          )
+        : !pathname.includes(pages[0].link) && (
+            <div>
+              <div className="horizontal-divider"></div>
+              <div className="form-buttons ">
+                <button
+                  className="bcgovbtn bcgovbtn__secondary btn-back"
+                  onClick={handleBack}
+                >
+                  Back
+                </button>
+                <Link
+                  to="/pia/list"
+                  className="bcgovbtn bcgovbtn__primary btn-next ms-auto"
+                >
+                  View PIA list
+                </Link>
+              </div>
+            </div>
+          )}
     </>
   );
 };

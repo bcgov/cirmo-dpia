@@ -4,20 +4,19 @@ export interface INavbarPages {
 }
 
 export interface INavbarItem {
-  [name:string]: {
   id: number;
   label: string;
   link: string;
   enable?: boolean;
   onclick?: () => void;
   isDivider?: true;
-  state : {
-    [prev:string]: {
-      condition: boolean | null;
+  state?: {
+    prev?: {
+      condition: boolean | null | undefined;
       action: string | number;
     };
-    [next:string]?: {
-      condition: boolean | null;
+    next?: {
+      condition: boolean | null | undefined;
       action: string | number;
     };
   };

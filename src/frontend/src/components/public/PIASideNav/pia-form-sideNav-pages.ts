@@ -38,7 +38,7 @@ export const PiaFormSideNavPages = (
       return false;
     }
   };
-/* 
+  /* 
 * if null the states are not used
 if string then the state needs to find the label string
 if it is ++ or -- operater navigate to the previous or next tab
@@ -52,10 +52,12 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: true, // always show
       state: {
         next: {
-          condition: pia?.isNextStepsSeenForNonDelegatedFlow  && pia?.hasAddedPiToDataElements,
-          action:'Collection, use and disclosure',
-        }
-      }
+          condition:
+            pia?.isNextStepsSeenForNonDelegatedFlow &&
+            pia?.hasAddedPiToDataElements,
+          action: 'Collection, use and disclosure',
+        },
+      },
     },
     {
       id: 2,
@@ -64,14 +66,14 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: checkNextSteps(), // enable them in subsequent tickets
       state: {
         next: {
-          condition: pia?.hasAddedPiToDataElements, 
-          action:'Collection, use and disclosure',
+          condition: pia?.hasAddedPiToDataElements,
+          action: 'Collection, use and disclosure',
         },
         prev: {
           condition: true,
-          action:-1,
-        }
-      }
+          action: -1,
+        },
+      },
     },
     {
       id: 3,
@@ -102,8 +104,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: 'PIA Intake',
-        }
-      }
+        },
+      },
     },
     {
       id: 6,
@@ -125,8 +127,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: -1,
-        }
-      }
+        },
+      },
     },
     {
       id: 7,
@@ -148,8 +150,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: -1,
-        }
-      }
+        },
+      },
     },
     {
       id: 8,
@@ -171,8 +173,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: -1,
-        }
-      }
+        },
+      },
     },
     {
       id: 9,
@@ -194,8 +196,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: -1,
-        }
-      }
+        },
+      },
     },
     {
       id: 10,
@@ -213,8 +215,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         prev: {
           condition: true,
           action: -1,
-        }
-      }
+        },
+      },
     },
   ];
 };
