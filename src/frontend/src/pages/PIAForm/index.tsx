@@ -695,7 +695,11 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            <PIANavButton pages={pages} />
+            <PIANavButton
+              pages={pages}
+              isIntakeSubmitted={isIntakeSubmitted}
+              isDelegate={pia.hasAddedPiToDataElements === false}
+            />
           </section>
         </div>
 

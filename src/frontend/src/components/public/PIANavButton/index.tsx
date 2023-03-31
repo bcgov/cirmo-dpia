@@ -1,18 +1,22 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { INavbarItem } from '../../common/Navbar/interfaces';
 import { INavButton } from './interface';
 
-const PIANavButton = ({ pages }: INavButton) => {
+const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  console.log('page details', pages);
   const handleNavBtn = (direction: string) => {
     let currentIndex = pages.findIndex((page) => page.link === pathname);
     if (currentIndex === undefined) currentIndex = 0;
     if (direction === 'next') {
-      if (currentIndex < pages.length - 1) return pages[currentIndex + 1].link;
-      else return pages[currentIndex].link;
+      if (currentIndex < pages.length - 1) {
+        // TODO refactor this part of code, this is a very hacky way to nav from intake page to disclosure page
+        // as we need to by pass next steps, faq(temporally), the divider line
+        // if it is in the intake page, the index will be 0, so the disclosure tab index will be 4
+        if (pages[currentIndex + 1].link.includes('nextSteps'))
+          return pages[currentIndex + 4].link;
+        else return pages[currentIndex + 1].link;
+      } else return pages[currentIndex].link;
     } else if (direction === 'back') {
       if (currentIndex > 0) return pages[currentIndex - 1].link;
       else return pages[currentIndex].link;
@@ -31,11 +35,11 @@ const PIANavButton = ({ pages }: INavButton) => {
   };
   return (
     <>
-      {!pathname.includes('intake') && (
+      {!isDelegate && isIntakeSubmitted && (
         <div>
           <div className="horizontal-divider"></div>
           <div className="form-buttons ">
-            {!pathname.includes('collectionUseAndDisclosure') && (
+            {!pathname.includes(pages[0].link) && (
               <button
                 className="bcgovbtn bcgovbtn__secondary btn-back"
                 onClick={handleBack}
@@ -43,7 +47,7 @@ const PIANavButton = ({ pages }: INavButton) => {
                 Back
               </button>
             )}
-            {!pathname.includes('additionalRisks') && (
+            {!pathname.includes(pages[pages.length - 1].link) && (
               <button
                 type="submit"
                 className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
