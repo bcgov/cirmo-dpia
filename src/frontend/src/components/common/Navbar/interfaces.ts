@@ -11,13 +11,16 @@ export interface INavbarItem {
   onclick?: () => void;
   isDivider?: true;
   state?: {
-    prev?: {
+    [prev:string]: {
       condition: boolean | null | undefined;
-      action: string | number;
-    };
-    next?: {
-      condition: boolean | null | undefined;
-      action: string | number;
+      action?: {
+        link: string | null;
+        title: string | null;
+      } | number | string | null;
+      actionFalse?: {
+        link: string | null;
+        title: string | null;
+      } | number | string | null;
     };
   };
 }

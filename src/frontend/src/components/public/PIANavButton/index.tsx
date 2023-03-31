@@ -5,90 +5,98 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+const handleNavAction = (direction: string) => {
+
+}
+
   const handleNavBtn = (direction: string) => {
     const current = pages.find((page) => page.link === pathname);
     const currentIndex = pages.findIndex((page) => page.link === pathname);
     if (current === undefined) return;
-    if (direction === 'next') {
-      if (current.state?.next?.condition) {
-        if (current.state?.next?.action === +1) {
-          return pages[currentIndex + 1].link;
-        } else if (typeof current.state?.next?.action === 'string') {
-          return pages.find(
-            (page) => page.label === current.state?.next?.action,
-          )?.link;
+    let actionType = 'action';
+    if (!current.state?.[direction]?.condition) {
+      if ('actionFalse' in Object(current.state?.[direction])) {
+       actionType = 'actionFalse';
+      } else {
+        /* if there is no action for false, return null */
+          return;
+       } 
+    }
+    if (current.state?.[direction]?.condition) {
+      if (typeof Object(current.state?.[direction])?.[actionType] === 'number') {
+        let pageIndex =
+          currentIndex + Number(current.state?.[direction]?.action);
+        return pages[pageIndex].link;
+      } else if (typeof Object(current.state?.[direction])?.[actionType] === 'string') {
+        return pages.find(
+          (page) => page.label === Object(current.state?.[direction])?.[actionType],
+        )?.link;
+      } else { // object
+        let returnObj = {
+          link: '',
+          title: '',
+        };
+        if ('link' in (Object)(Object(current.state?.[direction])?.[actionType])) {
+          returnObj.link = Object(current.state?.[direction]?.action)?.link;
         }
-      }
-    } else if (direction === 'back') {
-      if (current.state?.prev?.condition) {
-        if (current.state?.prev?.action === -1) {
-          return pages[currentIndex - 1].link;
-        } else if (typeof current.state?.prev?.action === 'string') {
-          return pages.find(
-            (page) => page.label === current.state?.prev?.action,
-          )?.link;
+        if ('title' in (Object)(Object(current.state?.[direction])?.[actionType])) {
+          returnObj.title = Object(current.state?.[direction]?.action)?.title;
         }
+        return returnObj;
       }
+
     }
   };
 
   const handleBack = () => {
-    const backLink = handleNavBtn('back');
-    if (backLink !== undefined) navigate(backLink);
+    const backLink = handleNavBtn('prev');
+    if (backLink !== undefined && typeof backLink !== 'object') navigate(backLink);
+    else {
+      if (backLink !== undefined && typeof backLink === 'object') {
+        if (backLink.link !== undefined) navigate(backLink.link);
+      }
+    }
   };
+  
   const handleNext = () => {
     const nextLink = handleNavBtn('next');
-    if (nextLink !== undefined) navigate(nextLink);
+    if (nextLink !== undefined && typeof nextLink !== 'object') navigate(nextLink);
+    else {
+      if (nextLink !== undefined && typeof nextLink === 'object') {
+        if (nextLink.link !== undefined) navigate(nextLink.link);
+      }
+    }
   };
 
   return (
     <>
-      {!isDelegate
-        ? isIntakeSubmitted && (
-            <div>
-              <div className="horizontal-divider"></div>
-              <div className="form-buttons ">
-                {!pathname.includes(pages[0].link) && (
-                  <button
-                    className="bcgovbtn bcgovbtn__secondary btn-back"
-                    onClick={handleBack}
-                  >
-                    Back
-                  </button>
-                )}
-                {!pathname.includes(pages[pages.length - 1].link) && (
-                  <button
-                    type="submit"
-                    className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
-            </div>
-          )
-        : !pathname.includes(pages[0].link) && (
-            <div>
-              <div className="horizontal-divider"></div>
-              <div className="form-buttons ">
-                <button
-                  className="bcgovbtn bcgovbtn__secondary btn-back"
-                  onClick={handleBack}
-                >
-                  Back
-                </button>
-                <Link
-                  to="/pia/list"
-                  className="bcgovbtn bcgovbtn__primary btn-next ms-auto"
-                >
-                  View PIA list
-                </Link>
-              </div>
-            </div>
+      <div>
+        <div className="horizontal-divider"></div>
+        <div className="form-buttons ">
+          {handleNavBtn('prev') && (
+            <button
+              className="bcgovbtn bcgovbtn__secondary btn-back"
+              onClick={handleBack}
+            >
+              Back
+            </button>
           )}
+          {handleNavBtn('next') && (
+            <button
+              type="submit"
+              className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
+              onClick={handleNext}
+            >
+              Next
+            </button>
+          )}
+        </div>
+      </div>
     </>
   );
 };
 
 export default PIANavButton;
+function handleNavBtn(arg0: string) {
+  throw new Error('Function not implemented.');
+}

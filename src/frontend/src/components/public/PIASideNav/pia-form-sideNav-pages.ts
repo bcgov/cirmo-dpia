@@ -68,6 +68,10 @@ if it is ++ or -- operater navigate to the previous or next tab
         next: {
           condition: pia?.hasAddedPiToDataElements,
           action: 'Collection, use and disclosure',
+          actionFalse: {
+            link: '/pia/list',
+            title: 'View PIA List',
+          }
         },
         prev: {
           condition: true,
