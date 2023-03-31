@@ -6,24 +6,28 @@ const PIANavButton = ({ pages }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  console.log('page details', pages);
   const handleNavBtn = (direction: string) => {
-    const currentTabObj = pages.filter((page) => page.link === pathname);
-    let resultTab: INavbarItem[] = [];
+    let currentIndex = pages.findIndex((page) => page.link === pathname);
+    if (currentIndex === undefined) currentIndex = 0;
     if (direction === 'next') {
-      resultTab = pages.filter((page) => page.id === currentTabObj[0].id + 1);
+      if (currentIndex < pages.length - 1) return pages[currentIndex + 1].link;
+      else return pages[currentIndex].link;
     } else if (direction === 'back') {
-      resultTab = pages.filter((page) => page.id === currentTabObj[0].id - 1);
+      if (currentIndex > 0) return pages[currentIndex - 1].link;
+      else return pages[currentIndex].link;
+    } else {
+      return pages[currentIndex].link;
     }
-    return resultTab;
   };
 
   const handleBack = () => {
-    const prevTab = handleNavBtn('back');
-    navigate(prevTab[0].link);
+    const backLink = handleNavBtn('back');
+    navigate(backLink);
   };
   const handleNext = () => {
-    const nextTab = handleNavBtn('next');
-    navigate(nextTab[0].link);
+    const nextLink = handleNavBtn('next');
+    navigate(nextLink);
   };
   return (
     <>
