@@ -70,14 +70,18 @@ export const getAuthTokens = () => {
   };
 };
 
-export const logMeOut = async (cb?: () => void) => {
+export const logMeOut = async (unauthorized = false, cb?: () => void) => {
   // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
   if (isAuthenticated()) {
     await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, getAuthTokens());
   }
 
   clearStorage();
-  window.location.href = `/not-authorized`;
+
+  const unauthRedirectUrl = '/not-authorized';
+  const loginRedirectUrl = '/';
+  const redirectUrl = unauthorized ? unauthRedirectUrl : loginRedirectUrl;
+  window.location.href = redirectUrl;
 
   cb?.();
 };
