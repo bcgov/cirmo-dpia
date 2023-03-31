@@ -54,7 +54,8 @@ if it is ++ or -- operater navigate to the previous or next tab
         next: {
           condition:
             pia?.isNextStepsSeenForNonDelegatedFlow &&
-            pia?.hasAddedPiToDataElements,
+            (pia?.hasAddedPiToDataElements === true || 
+            pia?.hasAddedPiToDataElements === null), 
           action: 'Collection, use and disclosure',
         },
       },
