@@ -19,7 +19,7 @@ export default {
           en: `FOIPPA section 28 `,
         },
         LinkHref:
-          'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual/accuracy-personal-information',
+          'https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section28',
       },
     },
     RequestCorrection: {
@@ -36,7 +36,7 @@ export default {
             en: `FOIPPA `,
           },
           LinkHref:
-            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
+            'https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section29',
         },
       },
       willDocument: {
@@ -51,7 +51,7 @@ export default {
             en: `FOIPPA `,
           },
           LinkHref:
-            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
+            'https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section29',
         },
       },
       willConductNotifications: {
@@ -66,7 +66,7 @@ export default {
             en: `FOIPPA `,
           },
           LinkHref:
-            'https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/foippa-manual',
+            'https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section29',
         },
       },
     },
@@ -93,7 +93,7 @@ export default {
         FOIPPAText: { en: `FOIPPA` },
         IMAText: { en: `Information Management Act` },
         FOIPPALink: `https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_03#section31`,
-        IMALink: `https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/central-government-agencies/corporate-information-records-management-office/information-management-act`,
+        IMALink: `https://www2.gov.bc.ca/gov/content?id=EF2251FC065C485A8111A5CAB78DC952`,
       },
       describeRetention: {
         Question: {
