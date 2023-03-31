@@ -421,7 +421,7 @@ const PIAFormPage = () => {
         const newPia = await upsertAndUpdatePia();
         if (newPia?.id) {
           navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
+            buildDynamicPath(pathname.replace('edit', 'view'), {
               id: pia.id,
             }),
           );
