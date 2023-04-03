@@ -52,12 +52,12 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
           {pias.map((pia, index) => (
             <tr key={index}>
               <td
-                // tabIndex={0}
+                tabIndex={0}
                 role="button"
                 className="fw-bold"
                 onClick={() => onTitleClick(pia.id)}
                 onKeyDown={(event) => {
-                  if (event.code === 'Enter' || event.code === 'Space') {
+                  if (event.code === 'Enter') {
                     event.preventDefault();
                     onTitleClick(pia.id);
                   }
