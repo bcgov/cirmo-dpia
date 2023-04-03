@@ -1,50 +1,64 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PiaFormSideNavPages } from '../PIASideNav/pia-form-sideNav-pages';
 import { INavButton } from './interface';
+import HandleState from './handleState';
 
-const PIANavButton = ({ pia }: INavButton) => {
+const PIANavButton = ({ pages }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
   const handleBack = () => {
-    navigate(-1);
+    const backLink = HandleState(pages, pathname, 'prev');
+    if (backLink !== undefined && typeof backLink !== 'object')
+      navigate(backLink);
+    else {
+      if (backLink !== undefined && typeof backLink === 'object') {
+        if (Object(backLink).link !== undefined)
+          navigate(Object(backLink).link);
+      }
+    }
   };
+
   const handleNext = () => {
-    const editMode = pathname.split('/')[4];
-    const pages = PiaFormSideNavPages(
-      pia,
-      editMode === 'edit' ? true : false,
-      false,
-    );
-    const currentTabObj = pages.filter((page) => page.link === pathname);
-    const nextTabObj = pages.filter(
-      (page) => page.id === currentTabObj[0].id + 1,
-    );
-    navigate(nextTabObj[0].link);
+    const nextLink = HandleState(pages, pathname, 'next');
+    if (nextLink !== undefined && typeof nextLink !== 'object')
+      navigate(nextLink);
+    else {
+      if (nextLink !== undefined && typeof nextLink === 'object') {
+        if (Object(nextLink).link !== undefined)
+          navigate(Object(nextLink).link);
+      }
+    }
   };
+
   return (
     <>
-      {!pathname.includes('intake') && (
-        <div>
-          <div className="horizontal-divider"></div>
-          <div className="form-buttons">
-            <button
-              className="bcgovbtn bcgovbtn__secondary btn-back"
-              onClick={handleBack}
-            >
-              Back
-            </button>
-            {!pathname.includes('additionalRisks') && (
-              <button
-                type="submit"
-                className="bcgovbtn  bcgovbtn__secondary btn-next"
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            )}
-          </div>
-        </div>
+      {(HandleState(pages, pathname, 'prev') ||
+        HandleState(pages, pathname, 'next')) && (
+        <div className="horizontal-divider "></div>
       )}
+      <div className="form-buttons ">
+        {HandleState(pages, pathname, 'prev') && (
+          <button
+            className="bcgovbtn bcgovbtn__secondary btn-back"
+            onClick={handleBack}
+          >
+            {typeof HandleState(pages, pathname, 'prev') === 'object'
+              ? Object(HandleState(pages, pathname, 'next'))?.title
+              : 'Back'}
+          </button>
+        )}
+        {HandleState(pages, pathname, 'next') && (
+          <button
+            type="submit"
+            className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
+            onClick={handleNext}
+          >
+            {typeof HandleState(pages, pathname, 'next') === 'object'
+              ? Object(HandleState(pages, pathname, 'next'))?.title
+              : 'Next'}
+          </button>
+        )}
+      </div>
     </>
   );
 };

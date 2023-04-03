@@ -19,6 +19,7 @@ import {
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
+import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -595,6 +596,8 @@ const PIAFormPage = () => {
     });
   });
 
+  const pages = PiaFormSideNavPages(pia, mode === 'edit' ? true : false, false);
+
   useEffect(() => {
     const autoSave = async () => {
       if (isConflict) return; //noop if already a conflict
@@ -692,7 +695,11 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            <PIANavButton pia={pia} />
+            <PIANavButton
+              pages={pages}
+              isIntakeSubmitted={isIntakeSubmitted}
+              isDelegate={pia.hasAddedPiToDataElements === false}
+            />
           </section>
         </div>
 
