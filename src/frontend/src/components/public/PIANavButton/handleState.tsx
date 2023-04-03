@@ -1,6 +1,10 @@
 import { INavbarItem } from '../../common/Navbar/interfaces';
 
-const HandleState = (pages:INavbarItem[], pathname:string, direction:string) => {
+const HandleState = (
+  pages: INavbarItem[],
+  pathname: string,
+  direction: string,
+) => {
   const current = pages.find((page) => page.link === pathname);
   const currentIndex = pages.findIndex((page) => page.link === pathname);
   /* The firs part of this function is to check if the current page
@@ -29,34 +33,42 @@ const HandleState = (pages:INavbarItem[], pathname:string, direction:string) => 
     */
   let ret = null;
   if ('condition' in Object(current.state?.[direction])) {
-    if (typeof Object(current.state?.[direction])?.[actionType] === 'number') {
-      const pageIndex =
-        currentIndex + Number(current.state?.[direction]?.action);
-      ret = pages[pageIndex].link;
-    } else if (
-      typeof Object(current.state?.[direction])?.[actionType] === 'string'
-    ) {
-      ret = pages.find(
-        (page) =>
-          page.label === Object(current.state?.[direction])?.[actionType],
-      )?.link;
-    } else if (
-      typeof Object(current.state?.[direction])?.[actionType] === 'object'
-    ) {
-      // object
-      const returnObj = {
-        link: '',
-        title: '',
-      };
-      if ('link' in Object(Object(current.state?.[direction])?.[actionType])) {
-        returnObj.link = Object(current.state?.[direction])?.[actionType]?.link;
-      }
-      if ('title' in Object(Object(current.state?.[direction])?.[actionType])) {
-        returnObj.title = Object(current.state?.[direction])?.[
-          actionType
-        ]?.title;
-      }
-      ret = returnObj;
+    let type = typeof Object(current.state?.[direction])?.[actionType];
+    switch (type) {
+      case 'number':
+        const pageIndex =
+          currentIndex + Number(current.state?.[direction]?.action);
+        ret = pages[pageIndex].link;
+        break;
+      case 'string':
+        ret = pages.find(
+          (page) =>
+            page.label === Object(current.state?.[direction])?.[actionType],
+        )?.link;
+        break;
+      case 'object':
+        const returnObj = {
+          link: '',
+          title: '',
+        };
+        if (
+          'link' in Object(Object(current.state?.[direction])?.[actionType])
+        ) {
+          returnObj.link = Object(current.state?.[direction])?.[
+            actionType
+          ]?.link;
+        }
+        if (
+          'title' in Object(Object(current.state?.[direction])?.[actionType])
+        ) {
+          returnObj.title = Object(current.state?.[direction])?.[
+            actionType
+          ]?.title;
+        }
+        ret = returnObj;
+        break;
+      default:
+        break;
     }
   }
   return ret;
