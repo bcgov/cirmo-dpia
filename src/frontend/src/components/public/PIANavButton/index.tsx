@@ -5,7 +5,6 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-
   const handleNavBtn = (direction: string) => {
     const current = pages.find((page) => page.link === pathname);
     const currentIndex = pages.findIndex((page) => page.link === pathname);
@@ -25,7 +24,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
         return;
       }
     }
-    
+
     /* Now that this page has a state it is time to check the condition.
        If the condition has an action type either (true action or false action),
       check if the action is a number, string, or object.
@@ -82,7 +81,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
       navigate(backLink);
     else {
       if (backLink !== undefined && typeof backLink === 'object') {
-        if (backLink.link !== undefined) navigate(backLink.link);
+        if (Object(backLink).link !== undefined) navigate(Object(backLink).link);
       }
     }
   };
@@ -93,7 +92,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
       navigate(nextLink);
     else {
       if (nextLink !== undefined && typeof nextLink === 'object') {
-        if (nextLink.link !== undefined) navigate(nextLink.link);
+        if (Object(nextLink).link !== undefined) navigate(Object(nextLink).link);
       }
     }
   };
@@ -101,7 +100,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
   return (
     <>
       <div>
-        <div className="horizontal-divider"></div>
+        <div className="horizontal-divider "></div>
         <div className="form-buttons ">
           {handleNavBtn('prev') && (
             <button
@@ -131,6 +130,3 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
 };
 
 export default PIANavButton;
-function handleNavBtn(arg0: string) {
-  throw new Error('Function not implemented.');
-}
