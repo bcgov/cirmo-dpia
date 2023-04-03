@@ -24,6 +24,15 @@ export const useRovingTabIndex = ({
       const keyboardEvent = e as KeyboardEvent;
 
       switch (keyboardEvent.key) {
+        case 'Tab':
+          if (currentFocusIndex.current !== 0 && keyboardEvent.shiftKey) {
+            e.preventDefault();
+          }
+
+          currentFocusIndex.current = 0;
+
+          break;
+
         case 'ArrowUp':
         case 'ArrowLeft':
           e.preventDefault();
