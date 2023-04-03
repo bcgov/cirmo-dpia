@@ -92,13 +92,15 @@ export const PIAFormIntake = () => {
             </div>
             <div className="row">
               <div className="col col-md-6">
+                {/* Backend accept either null or valid ministry names. Empty string is not an accepted value. Hence conversions below */}
                 <Dropdown
                   id="ministry-select"
-                  value={intakeForm?.ministry || ''}
+                  value={intakeForm?.ministry || ''} // null to empty string conversion
                   label="Ministry"
                   options={MinistryList}
-                  changeHandler={(e) =>
-                    stateChangeHandler(e.target.value, 'ministry')
+                  changeHandler={
+                    (e) =>
+                      stateChangeHandler(e?.target?.value || null, 'ministry') // empty string to null conversion
                   }
                   required={true}
                 />
