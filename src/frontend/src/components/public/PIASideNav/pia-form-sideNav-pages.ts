@@ -23,6 +23,14 @@ export const PiaFormSideNavPages = (
       pia?.hasAddedPiToDataElements === null) &&
     pia?.isNextStepsSeenForNonDelegatedFlow === true;
 
+  const checkPIANonDelegateFlow = (): boolean => {
+    return (
+      pia?.isNextStepsSeenForNonDelegatedFlow === true &&
+      (pia?.hasAddedPiToDataElements === true ||
+        pia?.hasAddedPiToDataElements === null)
+    );
+  };
+
   const intakeLink = isNewForm
     ? routes.PIA_NEW
     : isEditMode
@@ -52,10 +60,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: true, // always show
       state: {
         next: {
-          condition:
-            pia?.isNextStepsSeenForNonDelegatedFlow &&
-            (pia?.hasAddedPiToDataElements === true || 
-            pia?.hasAddedPiToDataElements === null), 
+          condition: checkPIANonDelegateFlow(),
           action: 'Collection, use and disclosure',
         },
       },
@@ -67,12 +72,14 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: checkNextSteps(), // enable them in subsequent tickets
       state: {
         next: {
-          condition: pia?.hasAddedPiToDataElements,
+          condition:
+            pia?.hasAddedPiToDataElements == true ||
+            pia?.hasAddedPiToDataElements == null,
           action: 'Collection, use and disclosure',
           actionFalse: {
             link: '/pia/list',
             title: 'View PIA List',
-          }
+          },
         },
         prev: {
           condition: true,

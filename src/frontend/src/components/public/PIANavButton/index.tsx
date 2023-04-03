@@ -22,7 +22,7 @@ const handleNavAction = (direction: string) => {
           return;
        } 
     }
-    if (current.state?.[direction]?.condition) {
+    if ('condition' in Object(current.state?.[direction])) {
       if (typeof Object(current.state?.[direction])?.[actionType] === 'number') {
         let pageIndex =
           currentIndex + Number(current.state?.[direction]?.action);
@@ -31,16 +31,16 @@ const handleNavAction = (direction: string) => {
         return pages.find(
           (page) => page.label === Object(current.state?.[direction])?.[actionType],
         )?.link;
-      } else { // object
+      } else if (typeof Object(current.state?.[direction])?.[actionType] === 'object') { // object
         let returnObj = {
           link: '',
           title: '',
         };
         if ('link' in (Object)(Object(current.state?.[direction])?.[actionType])) {
-          returnObj.link = Object(current.state?.[direction]?.action)?.link;
+          returnObj.link =(Object(current.state?.[direction])?.[actionType])?.link;
         }
         if ('title' in (Object)(Object(current.state?.[direction])?.[actionType])) {
-          returnObj.title = Object(current.state?.[direction]?.action)?.title;
+          returnObj.title = (Object(current.state?.[direction])?.[actionType])?.title;
         }
         return returnObj;
       }
@@ -78,7 +78,9 @@ const handleNavAction = (direction: string) => {
               className="bcgovbtn bcgovbtn__secondary btn-back"
               onClick={handleBack}
             >
-              Back
+              {
+                typeof handleNavBtn('prev') === 'object' ? Object(handleNavBtn('next'))?.title : 'Back'
+              }
             </button>
           )}
           {handleNavBtn('next') && (
@@ -87,7 +89,9 @@ const handleNavAction = (direction: string) => {
               className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
               onClick={handleNext}
             >
-              Next
+              {
+                typeof handleNavBtn('next') === 'object' ? Object(handleNavBtn('next'))?.title : 'Next'
+              }
             </button>
           )}
         </div>
