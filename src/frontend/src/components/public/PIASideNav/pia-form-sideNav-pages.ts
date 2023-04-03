@@ -37,6 +37,12 @@ export const PiaFormSideNavPages = (
     ? routes.PIA_INTAKE_EDIT
     : routes.PIA_INTAKE_VIEW;
 
+  const NextStepsDefaultPage = () => {
+    if (checkPIANonDelegateFlow()) {
+      return 'Collection, use and disclosure';
+    }
+  };
+
   const checkNextSteps = (): boolean => {
     if (
       pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id })
@@ -61,7 +67,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       state: {
         next: {
           condition: checkPIANonDelegateFlow(),
-          action: 'Collection, use and disclosure',
+          action: NextStepsDefaultPage(),
         },
       },
     },
@@ -75,7 +81,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           condition:
             pia?.hasAddedPiToDataElements == true ||
             pia?.hasAddedPiToDataElements == null,
-          action: 'Collection, use and disclosure',
+          action: NextStepsDefaultPage(),
           actionFalse: {
             link: '/pia/list',
             title: 'View PIA List',
