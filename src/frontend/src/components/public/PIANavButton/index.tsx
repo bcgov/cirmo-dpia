@@ -101,8 +101,9 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
 
   return (
     <>
-      {handleNavBtn('prev') ||
-        (handleNavBtn('next') && <div className="horizontal-divider "></div>)}
+      {(handleNavBtn('prev') || handleNavBtn('next')) && (
+        <div className="horizontal-divider "></div>
+      )}
       <div className="form-buttons ">
         {handleNavBtn('prev') && (
           <button
