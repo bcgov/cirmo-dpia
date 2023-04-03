@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { INavButton } from './interface';
 
 const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
@@ -37,7 +37,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
       if (
         typeof Object(current.state?.[direction])?.[actionType] === 'number'
       ) {
-        let pageIndex =
+        const pageIndex =
           currentIndex + Number(current.state?.[direction]?.action);
         ret = pages[pageIndex].link;
       } else if (
@@ -51,7 +51,7 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
         typeof Object(current.state?.[direction])?.[actionType] === 'object'
       ) {
         // object
-        let returnObj = {
+        const returnObj = {
           link: '',
           title: '',
         };
@@ -81,7 +81,8 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
       navigate(backLink);
     else {
       if (backLink !== undefined && typeof backLink === 'object') {
-        if (Object(backLink).link !== undefined) navigate(Object(backLink).link);
+        if (Object(backLink).link !== undefined)
+          navigate(Object(backLink).link);
       }
     }
   };
@@ -92,38 +93,38 @@ const PIANavButton = ({ pages, isIntakeSubmitted, isDelegate }: INavButton) => {
       navigate(nextLink);
     else {
       if (nextLink !== undefined && typeof nextLink === 'object') {
-        if (Object(nextLink).link !== undefined) navigate(Object(nextLink).link);
+        if (Object(nextLink).link !== undefined)
+          navigate(Object(nextLink).link);
       }
     }
   };
 
   return (
     <>
-      <div>
-        <div className="horizontal-divider "></div>
-        <div className="form-buttons ">
-          {handleNavBtn('prev') && (
-            <button
-              className="bcgovbtn bcgovbtn__secondary btn-back"
-              onClick={handleBack}
-            >
-              {typeof handleNavBtn('prev') === 'object'
-                ? Object(handleNavBtn('next'))?.title
-                : 'Back'}
-            </button>
-          )}
-          {handleNavBtn('next') && (
-            <button
-              type="submit"
-              className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
-              onClick={handleNext}
-            >
-              {typeof handleNavBtn('next') === 'object'
-                ? Object(handleNavBtn('next'))?.title
-                : 'Next'}
-            </button>
-          )}
-        </div>
+      {handleNavBtn('prev') ||
+        (handleNavBtn('next') && <div className="horizontal-divider "></div>)}
+      <div className="form-buttons ">
+        {handleNavBtn('prev') && (
+          <button
+            className="bcgovbtn bcgovbtn__secondary btn-back"
+            onClick={handleBack}
+          >
+            {typeof handleNavBtn('prev') === 'object'
+              ? Object(handleNavBtn('next'))?.title
+              : 'Back'}
+          </button>
+        )}
+        {handleNavBtn('next') && (
+          <button
+            type="submit"
+            className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
+            onClick={handleNext}
+          >
+            {typeof handleNavBtn('next') === 'object'
+              ? Object(handleNavBtn('next'))?.title
+              : 'Next'}
+          </button>
+        )}
       </div>
     </>
   );
