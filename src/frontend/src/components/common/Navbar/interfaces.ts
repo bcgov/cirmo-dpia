@@ -62,5 +62,4 @@ export interface INavbarItem {
   navDown?: string;
   navUp?: string;
   navId?: string;
-
 }

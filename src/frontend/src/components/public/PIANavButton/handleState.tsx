@@ -33,11 +33,15 @@ const HandleState = (
     */
   let ret = null;
   if ('condition' in Object(current.state?.[direction])) {
-    let type = typeof Object(current.state?.[direction])?.[actionType];
+    const type = typeof Object(current.state?.[direction])?.[actionType];
+    const returnObj = {
+      link: '',
+      title: '',
+    };
+    let pageIndex;
     switch (type) {
       case 'number':
-        const pageIndex =
-          currentIndex + Number(current.state?.[direction]?.action);
+        pageIndex = currentIndex + Number(current.state?.[direction]?.action);
         ret = pages[pageIndex].link;
         break;
       case 'string':
@@ -47,10 +51,6 @@ const HandleState = (
         )?.link;
         break;
       case 'object':
-        const returnObj = {
-          link: '',
-          title: '',
-        };
         if (
           'link' in Object(Object(current.state?.[direction])?.[actionType])
         ) {
