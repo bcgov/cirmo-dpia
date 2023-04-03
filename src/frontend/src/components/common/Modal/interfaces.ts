@@ -9,5 +9,5 @@ export interface IModal {
   reversed?: boolean;
   value?: string;
   handleClose: MouseEventHandler<HTMLButtonElement>;
-  handleCancel: MouseEventHandler<HTMLButtonElement>;
+  handleCancel: any;
 }

@@ -72,6 +72,12 @@ p {
   line-height: $line-height;
 }
 
+a {
+  &:focus {
+    outline: auto;
+  }
+}
+
 .spacer {
   height: 105px;
 }
@@ -212,4 +218,32 @@ p {
 
 .error-text {
   color: $error;
+}
+
+.skip-to-main {
+  left: -999px;
+  position: absolute;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: -999;
+
+  &:focus,
+  &:active {
+    color: #f2f2f2;
+    background-color: $bg-blue;
+    left: auto;
+    min-width: max-content;
+    height: auto;
+    overflow: auto;
+    margin-block: 0.5em;
+    margin-inline: 40%;
+    padding-block: 0.3em;
+    padding-inline: 1.8em;
+    border-radius: 0.5em;
+    border: 0.3em solid $bg-white;
+    text-align: center;
+    z-index: 999;
+  }
 }

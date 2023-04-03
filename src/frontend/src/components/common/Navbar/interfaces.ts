@@ -1,6 +1,7 @@
 export interface INavbarPages {
   pages: INavbarItem[];
   CSSclass: string;
+  rovingTabIndex?: boolean;
 }
 
 /* 
@@ -35,6 +36,7 @@ export interface INavbarItem {
   enable?: boolean;
   onclick?: () => void;
   isDivider?: true;
+
   state?: {
     [prev: string]: {
       condition: boolean | null | undefined;
@@ -56,4 +58,9 @@ export interface INavbarItem {
         | null;
     };
   };
+
+  navDown?: string;
+  navUp?: string;
+  navId?: string;
+
 }
