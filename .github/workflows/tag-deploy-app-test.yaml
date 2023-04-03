@@ -63,7 +63,7 @@ jobs:
           TARGET_IMAGE_TAG: latest
         run: |
 
-          docker pull ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest
+          docker pull ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/app-dev:latest
 
           docker images
           
