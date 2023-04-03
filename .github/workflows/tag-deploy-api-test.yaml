@@ -62,6 +62,11 @@ jobs:
           TARGET_IMAGE_NAME: api-test
           TARGET_IMAGE_TAG: latest
         run: |
+
+          docker pull ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/api-dev:latest
+
+          docker images
+
           ./.github/helpers/tag-artifactory-image.sh
   
   TEST-deploy:
