@@ -358,41 +358,43 @@ const PIAFormPage = () => {
     const buttonValue = event.target.value;
     try {
       if (buttonValue === 'submitPiaIntake') {
-        await upsertAndUpdatePia({
+        const updatedPia = await upsertAndUpdatePia({
           status:
             pia?.hasAddedPiToDataElements === false
               ? PiaStatuses.MPO_REVIEW
               : PiaStatuses.INCOMPLETE,
         });
         if (
-          (pia?.id &&
-            pia?.isNextStepsSeenForNonDelegatedFlow === true &&
-            (pia?.hasAddedPiToDataElements === PIOptions[0].value ||
-              pia?.hasAddedPiToDataElements === PIOptions[2].value)) ||
-          (pia?.id &&
-            pia?.isNextStepsSeenForDelegatedFlow === true &&
-            pia?.hasAddedPiToDataElements === PIOptions[1].value)
+          (updatedPia?.id &&
+            updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
+            (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value ||
+              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) ||
+          (updatedPia?.id &&
+            updatedPia?.isNextStepsSeenForDelegatedFlow === true &&
+            updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
         ) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
-              id: pia.id,
+              id: updatedPia.id,
             }),
           );
         } else {
           navigate(
             buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
-              id: pia.id,
-              title: pia.title,
+              id: updatedPia.id,
+              title: updatedPia.title,
             }),
           );
         }
       } else if (buttonValue === 'submitPiaForm') {
-        await upsertAndUpdatePia({ status: PiaStatuses.MPO_REVIEW });
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.MPO_REVIEW,
+        });
 
-        if (pia?.id) {
+        if (updatedPia?.id) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
-              id: pia.id,
+              id: updatedPia.id,
             }),
           );
         }
