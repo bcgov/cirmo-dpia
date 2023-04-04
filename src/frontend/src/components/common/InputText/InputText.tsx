@@ -1,4 +1,10 @@
-import { ChangeEventHandler } from 'react';
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +23,7 @@ interface InputTextProps {
   value?: string | null;
   placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onEnter?: MouseEventHandler<HTMLInputElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
@@ -35,6 +42,7 @@ const InputText = ({
   value = '',
   placeholder = '',
   onChange = () => {},
+  onEnter = () => {},
   required = false,
   labelSide = 'top',
   isDisabled = false,
@@ -46,6 +54,27 @@ const InputText = ({
   let labelSideClasses = ' ';
   labelSideClasses += labelSide === 'top' ? 'flex-column ' : 'flex-row ';
   labelSideClasses += labelSide === 'left' ? 'align-items-center ' : ' ';
+
+  const inputRef = useRef(null);
+  const keydownListener = useCallback(
+    (e: any) => {
+      if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+        onEnter?.(e);
+      }
+    },
+    [onEnter],
+  );
+
+  useEffect(() => {
+    const inputRefCurrent = inputRef?.current as unknown as HTMLInputElement;
+
+    if (!inputRefCurrent) return;
+
+    inputRefCurrent.addEventListener('keydown', keydownListener);
+
+    return () =>
+      inputRefCurrent.removeEventListener('keydown', keydownListener);
+  }, [keydownListener]);
 
   return (
     <div
@@ -81,6 +110,7 @@ const InputText = ({
           className="form-control"
           required={required}
           disabled={isDisabled}
+          ref={inputRef}
         />
       ) : value ? (
         <p>{value}</p>
