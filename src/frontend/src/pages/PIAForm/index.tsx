@@ -100,8 +100,6 @@ const PIAFormPage = () => {
     // DO NOT allow state changes in the view mode
     if (mode === 'view') return;
 
-    setStalePia(pia);
-
     setPia((latest) => ({
       ...latest,
       [key]: value,
