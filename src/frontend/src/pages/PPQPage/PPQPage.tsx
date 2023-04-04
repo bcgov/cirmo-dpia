@@ -9,7 +9,7 @@ import messages from './messages';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import { routes } from '../../constant/routes';
 
-interface IComponentProps {
+export interface IComponentProps {
   showMPOContents: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {

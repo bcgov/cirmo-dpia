@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/named': 'off',
     'jest/no-export': 'off',
+    'jest/expect-expect': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-child-element-spacing': 'off',
     'import/no-extraneous-dependencies': [

@@ -1,5 +1,5 @@
 describe('callout.cy.ts', () => {
-    it('playground', () => {
-      // cy.mount()
-    })
-  })
+  it('playground', () => {
+    // cy.mount()
+  });
+});
