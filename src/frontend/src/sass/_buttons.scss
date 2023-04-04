@@ -30,7 +30,7 @@ a:hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   cursor: pointer;
   transition: border-color 0.25s;
-
+  
   :focus {
     outline: none;
   }
@@ -101,7 +101,7 @@ a:hover {
   --text-color: white;
 
   border: 2px solid $bg-disabled;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   text-decoration: none;
 }
 

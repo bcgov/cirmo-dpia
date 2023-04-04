@@ -177,6 +177,7 @@ function PIASubHeader({
                   ? 'bcgovbtn__primary--disabled'
                   : 'bcgovbtn__primary '
               }`}
+              disabled={mode === 'view' && isValidationFailed}
             >
               {primaryButtonText}
             </button>
