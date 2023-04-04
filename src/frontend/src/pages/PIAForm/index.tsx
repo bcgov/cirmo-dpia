@@ -97,6 +97,9 @@ const PIAFormPage = () => {
     });
 
   const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
+    // DO NOT allow state changes in the view mode
+    if (mode === 'view') return;
+
     setStalePia(pia);
 
     setPia((latest) => ({
