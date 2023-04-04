@@ -4,14 +4,12 @@ import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
 
 const PIAList = () => {
-  const navigate = useNavigate();
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
@@ -44,19 +42,6 @@ const PIAList = () => {
   const updateSearchUrl = () => {
     setSearchParamsForSearchText();
   };
-
-  useEffect(() => {
-    const listener = (event: any) => {
-      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        event.preventDefault();
-        setSearchParamsForSearchText();
-      }
-    };
-    document.addEventListener('keydown', listener);
-    return () => {
-      document.removeEventListener('keydown', listener);
-    };
-  }, [navigate, setSearchParamsForSearchText]);
 
   const handleClearSearchText = () => {
     setSearchText('');
@@ -114,6 +99,7 @@ const PIAList = () => {
             <SearchBox
               searchText={searchText}
               onChange={handleSearchTextChange}
+              onEnter={() => setSearchParamsForSearchText()}
               onSearchClick={updateSearchUrl}
               onClearSearchClick={handleClearSearchText}
             />
