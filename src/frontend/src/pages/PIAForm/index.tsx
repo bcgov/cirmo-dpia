@@ -503,6 +503,8 @@ const PIAFormPage = () => {
         el.classList.remove('is-invalid');
       });
       setValidationMessages({});
+      setIsValidationFailed(false);
+      setValidationFailedMessage('');
     }
     const richText = document.getElementsByClassName('richText');
     if (richText) {
