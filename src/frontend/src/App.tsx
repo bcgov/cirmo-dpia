@@ -18,30 +18,21 @@ function App() {
   );
 
   const mainContentRef = useRef<HTMLDivElement>(null); // Create a reference for the main content container
-  const skipToContentRef = useRef<HTMLButtonElement>(null);
-  const skipToContent = () => {
-    if (mainContentRef.current) {
-      mainContentRef.current.focus();
-    }
-  };
 
+  // remove once react-router accessibility issue is fixed
+  // https://github.com/ReactTraining/react-router/issues/5210
   useEffect(() => {
-    if (skipToContentRef.current) {
-      skipToContentRef.current.focus(); // Set focus to the main content container when the route changes
-    }
+    mainContentRef.current?.focus();
   }, [pathname]);
+
   return (
     <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <div>
-          <button
-            onClick={skipToContent}
-            ref={skipToContentRef}
-            tabIndex={0}
-            className="skip-to-main"
-          >
+          <span ref={mainContentRef} tabIndex={-1} />
+          <a href="#main-content" className="skip-to-main">
             Skip to main content
-          </button>
+          </a>
         </div>
         <Header user="" />
 
@@ -51,7 +42,7 @@ function App() {
             <AppActivityManager />
           </>
         )}
-        <div id="main-content" ref={mainContentRef} tabIndex={-1}>
+        <div id="main-content">
           <Router />
         </div>
       </AuthContext.Provider>
