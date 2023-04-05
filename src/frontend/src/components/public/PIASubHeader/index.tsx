@@ -171,12 +171,7 @@ function PIASubHeader({
           {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
             <button
               onClick={onSubmitClick}
-              className={`mx-1 bcgovbtn 
-              ${
-                mode === 'view' && isValidationFailed
-                  ? 'bcgovbtn__primary--disabled'
-                  : 'bcgovbtn__primary '
-              }`}
+              className={`mx-1 bcgovbtn bcgovbtn__primary`}
               disabled={mode === 'view' && isValidationFailed}
             >
               {primaryButtonText}
