@@ -470,9 +470,12 @@ const PIAFormPage = () => {
     event.preventDefault();
 
     // if the user is in pia intake tab, then show submit pia intake; else submit full form
-    if (submitButtonText === SubmitButtonTextEnum.INTAKE) {
+    if (
+      pia?.isNextStepsSeenForDelegatedFlow === false &&
+      pia?.isNextStepsSeenForNonDelegatedFlow === false
+    ) {
       handleShowModal('submitPiaIntake');
-    } else if (submitButtonText === SubmitButtonTextEnum.FORM) {
+    } else {
       handleShowModal('submitPiaForm');
     }
   };
@@ -541,10 +544,6 @@ const PIAFormPage = () => {
       }));
     }
 
-    if (!pia?.dataElementsInvolved && !invalid) {
-      invalid = true;
-      formId = 'dataElementsInvolved';
-    }
     if (invalid) {
       const ele = document.getElementById(formId);
       if (ele) {
