@@ -1,4 +1,3 @@
-import React from 'react';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -8,6 +7,7 @@ import { SearchBoxProps } from './interfaces';
 const SearchBox = ({
   searchText = '',
   onChange = () => {},
+  onEnter = () => {},
   onSearchClick = () => {},
   onClearSearchClick = () => {},
 }: SearchBoxProps) => {
@@ -19,6 +19,7 @@ const SearchBox = ({
         className="search_input"
         required={false}
         onChange={onChange}
+        onEnter={onEnter}
       />
 
       <button
