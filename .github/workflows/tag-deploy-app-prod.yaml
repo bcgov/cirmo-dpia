@@ -45,24 +45,24 @@ jobs:
           docker logout ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }}
 
       # Login to Artifactory
-      - name: Docker Login to Artifactory
-        uses: redhat-actions/podman-login@v1
-        with:
-          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
-          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
-          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
+      #- name: Docker Login to Artifactory
+      #  uses: redhat-actions/podman-login@v1
+      #  with:
+      #    registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+      #    username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+      #    password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
 
       # Tag dev image with test tag in ARTIFACTORY to promote deployment
-      - name: Update tag for Artifactory
-        env: 
-          ARTPROJ_PROJECT_URL: "${{ secrets.ARTPROJ_PROJECT_URL }}"
-          ARTPROJ_REPOSITORY: "daa7-dpia-image-repository"
-          SOURCE_IMAGE_NAME: app-test
-          SOURCE_IMAGE_TAG: latest
-          TARGET_IMAGE_NAME: app-prod
-          TARGET_IMAGE_TAG: latest
-        run: |
-          ./.github/helpers/tag-artifactory-image.sh
+      #- name: Update tag for Artifactory
+      #  env: 
+      #    ARTPROJ_PROJECT_URL: "${{ secrets.ARTPROJ_PROJECT_URL }}"
+      #    ARTPROJ_REPOSITORY: "daa7-dpia-image-repository"
+      #    SOURCE_IMAGE_NAME: app-test
+      #    SOURCE_IMAGE_TAG: latest
+      #    TARGET_IMAGE_NAME: app-prod
+      #    TARGET_IMAGE_TAG: latest
+      #  run: |
+      #    ./.github/helpers/tag-artifactory-image.sh
 
   PROD-deploy:
     runs-on: ubuntu-latest
