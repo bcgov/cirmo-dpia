@@ -8,7 +8,7 @@ import Router from './routes/router';
 import { useLocation } from 'react-router-dom';
 
 import { AuthContext } from './hooks/useAuth';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isAuthenticated } from './utils/auth';
 import AppActivityManager from './components/common/AppActivityManager';
 function App() {
@@ -17,13 +17,31 @@ function App() {
     isAuthenticated(),
   );
 
+  const mainContentRef = useRef<HTMLDivElement>(null); // Create a reference for the main content container
+  const skipToContentRef = useRef<HTMLButtonElement>(null);
+  const skipToContent = () => {
+    if (mainContentRef.current) {
+      mainContentRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (skipToContentRef.current) {
+      skipToContentRef.current.focus(); // Set focus to the main content container when the route changes
+    }
+  }, [pathname]);
   return (
     <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <div>
-          <a href="#main-content" className="skip-to-main">
+          <button
+            onClick={skipToContent}
+            ref={skipToContentRef}
+            tabIndex={0}
+            className="skip-to-main"
+          >
             Skip to main content
-          </a>
+          </button>
         </div>
         <Header user="" />
 
@@ -33,7 +51,7 @@ function App() {
             <AppActivityManager />
           </>
         )}
-        <div id="main-content">
+        <div id="main-content" ref={mainContentRef} tabIndex={-1}>
           <Router />
         </div>
       </AuthContext.Provider>
