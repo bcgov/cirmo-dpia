@@ -8,7 +8,7 @@ import Router from './routes/router';
 import { useLocation } from 'react-router-dom';
 
 import { AuthContext } from './hooks/useAuth';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isAuthenticated } from './utils/auth';
 import AppActivityManager from './components/common/AppActivityManager';
 function App() {
@@ -17,10 +17,19 @@ function App() {
     isAuthenticated(),
   );
 
+  const mainContentRef = useRef<HTMLDivElement>(null); // Create a reference for the main content container
+
+  // remove once react-router accessibility issue is fixed
+  // https://github.com/ReactTraining/react-router/issues/5210
+  useEffect(() => {
+    mainContentRef.current?.focus();
+  }, [pathname]);
+
   return (
     <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <div>
+          <span ref={mainContentRef} tabIndex={-1} />
           <a href="#main-content" className="skip-to-main">
             Skip to main content
           </a>
