@@ -106,11 +106,6 @@ objects:
                   secretKeyRef:
                     name: keycloak-api-values
                     key: KEYCLOAK_SSL_REQUIRED
-              - name: KEYCLOAK_RESOURCE
-                valueFrom:
-                  secretKeyRef:
-                    name: keycloak-api-values
-                    key: KEYCLOAK_RESOURCE
               - name: KEYCLOAK_CLIENT_SECRET
                 valueFrom:
                   secretKeyRef:
