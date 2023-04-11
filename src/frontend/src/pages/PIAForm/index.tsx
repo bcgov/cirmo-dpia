@@ -20,6 +20,8 @@ import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
+import Collapsible from '../../components/common/Collapsible';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -663,13 +665,15 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <section className="side-nav__container">
-            <PIASideNav
-              pia={pia}
-              isNewForm={!id}
-              isReadOnly={formReadOnly}
-            ></PIASideNav>
-          </section>
+          <Collapsible icon={faBars} alignment="left">
+            <section className="side-nav__container">
+              <PIASideNav
+                pia={pia}
+                isNewForm={!id}
+                isReadOnly={formReadOnly}
+              ></PIASideNav>
+            </section>
+          </Collapsible>
 
           <section className="ms-md-3 ms-lg-4 ms-xl-5 content__container">
             {mode === 'view' && validationFailedMessage && (
