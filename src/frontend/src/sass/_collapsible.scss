@@ -1,0 +1,35 @@
+.collapsible {
+  &.collapsible__border-right {
+    border-right: 1px solid lightgray;
+  }
+
+  &.collapsible__border-left {
+    border-left: 1px solid lightgray;
+  }
+
+  .collapsible__header {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    cursor: pointer;
+    background-color: #f1f1f1;
+  }
+
+  .collapsible__icon--closed {
+    font-size: x-large;
+    padding-inline-end: 1rem;
+    padding-block-start: 0.6rem;
+  }
+
+  .collapsible__icon--open {
+    font-size: large;
+    padding-inline: 0.3rem;
+    padding-block: 0.8rem;
+    border: 1px solid lightgray;
+    border-right: none;
+  }
+
+  .collapsible__content {
+    margin-top: 10px;
+  }
+}
