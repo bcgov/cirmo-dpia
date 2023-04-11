@@ -2,8 +2,8 @@
 . "$(dirname -- "$0")/_/husky.sh"
 echo "lint code"
 cd ./src/backend
-npm run precommit
+npm run lint && npx lint-staged
 
 cd ../frontend
 
-npm run precommit
+npm run lint && npx lint-staged && npm run lint:styles

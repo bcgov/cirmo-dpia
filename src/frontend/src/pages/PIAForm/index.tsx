@@ -168,7 +168,6 @@ const PIAFormPage = () => {
       );
   }, [isValidationFailed]);
 
- 
   //
   // Modal State
   //
@@ -686,9 +685,7 @@ const PIAFormPage = () => {
                 showInitialIcon={true}
               />
             )}
-            {mode === 'view'  && (
-               <BannerStatus pia={pia} />
-            )}
+            {mode === 'view' && <BannerStatus pia={pia} />}
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet
