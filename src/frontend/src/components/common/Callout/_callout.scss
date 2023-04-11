@@ -1,23 +1,11 @@
 .callout-section {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
 
   &.results-callout-section {
     justify-content: start;
     height: auto;
     margin-block: 1.5em 3em;
   }
-  &.pia-callout-section {
-    justify-content: start;
-    height: auto;
-    margin-block: 1.5em 3em;
-    border-radius: 5px;
-    gap: 0.5rem;
-    height: 40px;
-  }
+  
 }
 
 .callout {
@@ -26,20 +14,15 @@
   justify-content: start;
   background-color: $ntrl-lightgray;
   border-left: 10px solid $primary-colour;
-  width: 1088px;
-  height: 76px;
-  padding: 25px;
+  height: 2.5rem;
+  padding: 40px 25px;
+
+  &.bg-white {
+    background-color: $bg-white; 
+  }
 
   &.results-callout {
     padding-block: 5px;
     width: 100%;
-  }
-
-  &.pia-callout {
-    padding-block: 5px;
-    width: 100%; 
-    height: 4rem;
-    padding: 0.5rem 1rem;
-    background-color: $bg-white;
   }
 }

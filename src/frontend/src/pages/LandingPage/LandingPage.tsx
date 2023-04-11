@@ -67,7 +67,9 @@ function LandingPage() {
           Learn about the current PIA process
         </a>
       </section>
-      <Callout text="These are draft statements and may change and evolve with feedback from interested parties." />
+      <section className="landing-page-callout-container">
+        <Callout text="These are draft statements and may change and evolve with feedback from interested parties." />
+      </section>
       <section className="info-section wrapper">
         <div className="problem-subsec">
           <img src={problem} alt="Web Search" />
