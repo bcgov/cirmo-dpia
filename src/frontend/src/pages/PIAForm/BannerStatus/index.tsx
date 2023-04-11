@@ -24,11 +24,11 @@ const BannerStatus = ({ pia }: IBannerStatusProps) => {
     }
   }, [pia.status]);
 
-  return (
+  return pia.status !== PiaStatuses.EDIT_IN_PROGRESS ? (
     <div className="mb-5">
       <Callout text={bannerMessage} bgWhite />
     </div>
-  );
+  ) : null;
 };
 
 export default BannerStatus;
