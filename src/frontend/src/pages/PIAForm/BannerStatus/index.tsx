@@ -25,7 +25,7 @@ const BannerStatus = ({ pia }: IBannerStatusProps) => {
   }, [pia.status]);
 
   return (
-    <div className='mb-5'>
+    <div className="mb-5">
       <Callout text={bannerMessage} bgWhite />
     </div>
   );
