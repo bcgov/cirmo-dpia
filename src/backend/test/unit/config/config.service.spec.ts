@@ -136,7 +136,7 @@ describe('ConfigServiceClass', () => {
         KEYCLOAK_AUTH_SERVER_URI: 'test_value',
         KEYCLOAK_CLIENT_SECRET: 'test_value',
         KEYCLOAK_REALM: 'test_value',
-        KEYCLOAK_RESOURCE: 'test_value',
+        KEYCLOAK_CLIENT_ID: 'test_value',
         KEYCLOAK_SSL_REQUIRED: 'test_value',
         KEYCLOAK_CONFIDENTIAL_PORT: 'test_value',
       };
@@ -152,7 +152,7 @@ describe('ConfigServiceClass', () => {
         // KEYCLOAK_AUTH_SERVER_URI: 'test_value', --> Removing explicitly for getTypeOrmConfig method to fail
         KEYCLOAK_CLIENT_SECRET: 'test_value',
         KEYCLOAK_REALM: 'test_value',
-        KEYCLOAK_RESOURCE: 'test_value',
+        KEYCLOAK_CLIENT_ID: 'test_value',
         KEYCLOAK_SSL_REQUIRED: 'test_value',
         KEYCLOAK_CONFIDENTIAL_PORT: 'test_value',
       };

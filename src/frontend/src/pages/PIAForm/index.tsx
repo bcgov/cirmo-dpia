@@ -20,6 +20,7 @@ import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
+import BannerStatus from './BannerStatus';
 import Collapsible from '../../components/common/Collapsible';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -156,6 +157,7 @@ const PIAFormPage = () => {
   }, [mode, navigate, pia?.id, pia?.status]);
 
   const [message, setMessage] = useState<string>('');
+
   const [validationFailedMessage, setValidationFailedMessage] =
     useState<string>('');
   const [isValidationFailed, setIsValidationFailed] = useState(false);
@@ -166,6 +168,7 @@ const PIAFormPage = () => {
         'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
       );
   }, [isValidationFailed]);
+
   //
   // Modal State
   //
@@ -685,6 +688,7 @@ const PIAFormPage = () => {
                 showInitialIcon={true}
               />
             )}
+            {mode === 'view' && <BannerStatus pia={pia} />}
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
               <Outlet
