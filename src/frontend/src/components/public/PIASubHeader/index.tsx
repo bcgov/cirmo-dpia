@@ -5,16 +5,12 @@ import { statusList } from '../../../utils/status';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useState } from 'react';
-import {
-  FileDownload,
-  FileDownloadTypeEnum,
-} from '../../../utils/file-download.util';
-import { API_ROUTES } from '../../../constant/apiRoutes';
-import Spinner from '../../common/Spinner';
 import { useLocation } from 'react-router-dom';
 import { PiaStatuses } from '../../../constant/constant';
 import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
+import { buildDynamicPath } from '../../../utils/path';
+import { routes } from '../../../constant/routes';
 
 function PIASubHeader({
   pia,
@@ -28,38 +24,10 @@ function PIASubHeader({
   onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState('');
   const { pathname } = useLocation();
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
-  const handleDownload = async () => {
-    setDownloadError('');
-
-    if (!pia.id) {
-      console.error(
-        'Something went wrong. Result Id not available for download',
-      );
-      setDownloadError('Something went wrong. Please try again.');
-      return;
-    }
-
-    setIsDownloading(true);
-    try {
-      await FileDownload.download(
-        API_ROUTES.PIA_INTAKE_RESULT_DOWNLOAD.replace(':id', `${pia.id}`),
-        FileDownloadTypeEnum.PDF,
-      );
-    } catch (e) {
-      setDownloadError('Something went wrong. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-  const handleAlertClose = () => {
-    setDownloadError('');
-  };
 
   //
   // Modal State
@@ -101,14 +69,6 @@ function PIASubHeader({
             : 'other__elements-container'
         }
       >
-        {downloadError && (
-          <Alert
-            type="danger"
-            message="Something went wrong. Please try again."
-            onClose={handleAlertClose}
-            className="mt-2 mx-1"
-          />
-        )}
         <div className="mx-1">
           <StatusChangeDropDown
             pia={pia}
@@ -144,18 +104,20 @@ function PIASubHeader({
             aria-expanded={false}
           >
             <FontAwesomeIcon icon={faEllipsisH} />
-            {isDownloading && <Spinner />}
           </button>
 
           <ul className="dropdown-menu">
             <li role="button">
-              <button
-                disabled={!pia?.id}
-                className="dropdown-item"
-                onClick={() => handleDownload()}
+              <a
+                className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={buildDynamicPath(routes.PIA_PRINT_PREVIEW, {
+                  id: pia.id,
+                })}
               >
                 Download
-              </button>
+              </a>
             </li>
             <li role="button">
               {/* Save or Edit button */}
