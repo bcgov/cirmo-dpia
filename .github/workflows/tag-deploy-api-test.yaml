@@ -66,8 +66,6 @@ jobs:
           ./.github/helpers/tag-artifactory-image.sh
 
           docker images
-
-        
   
   TEST-deploy:
     runs-on: ubuntu-latest
