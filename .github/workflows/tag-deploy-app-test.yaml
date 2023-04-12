@@ -63,11 +63,9 @@ jobs:
           TARGET_IMAGE_TAG: latest
         run: |
 
-          docker pull ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/app-dev:latest
+          ./.github/helpers/tag-artifactory-image.sh
 
           docker images
-          
-          ./.github/helpers/tag-artifactory-image.sh
 
   TEST-deploy:
     runs-on: ubuntu-latest
