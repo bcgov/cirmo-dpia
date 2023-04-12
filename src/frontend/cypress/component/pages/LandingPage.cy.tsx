@@ -16,6 +16,6 @@ describe('landingpage.cy.tsx', () => {
     cy.get('[data-cy="landing"]')
       .find('img')
       .should('have.attr', 'src')
-      .and('match', /hero-img.svg/);
+      .and('match', /hero.svg/);
   });
 });

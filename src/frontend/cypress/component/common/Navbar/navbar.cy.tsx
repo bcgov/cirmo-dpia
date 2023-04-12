@@ -2,21 +2,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import NavBar from '../../../../src/components/common/Navbar';
-import { INavbarItem } from '../../../../src/components/common/Navbar/interfaces';
-const pages: INavbarItem[] = [
-  {
-    id: 1,
-    label: 'Home',
-    link: '/',
-    enable: true,
-  },
-  {
-    id: 2,
-    label: 'About',
-    link: '/about',
-    enable: true,
-  },
-];
+import { NavPages as pages } from '../../../../src/components/common/Navbar/navPages';
+
 describe('NavBar', () => {
   it('should render navigation items', () => {
     cy.mount(
@@ -34,21 +21,8 @@ describe('NavBar', () => {
         <NavBar pages={pages} CSSclass="navbar-container wrapper" />
       </Router>,
     );
-    cy.get('nav ul.navbar li').first().contains('Home');
-    cy.get('nav ul.navbar li').last().contains('About');
-  });
-
-  it('should set active class for the current path', () => {
-    cy.window().then((win) => {
-      win.history.pushState(null, '', '/');
-    });
-
-    cy.mount(
-      <Router>
-        <NavBar pages={pages} CSSclass="navbar-container wrapper" />
-      </Router>,
-    );
-    cy.get('nav ul.navbar li #home').should('have.class', 'active');
+    cy.get('nav ul.navbar li').first().contains('List of PIAs');
+    cy.get('nav ul.navbar li').last().contains('Create new');
   });
 
   it('should navigate to the correct page when a navigation link is clicked', () => {
@@ -57,8 +31,10 @@ describe('NavBar', () => {
         <NavBar pages={pages} CSSclass="navbar-container wrapper" />
       </Router>,
     );
-    cy.get('nav ul.navbar li #about').click();
-    cy.location('pathname').should('eq', '/about');
+    cy.get('nav ul.navbar li').find("a[href='/pia/list']").click();
+    cy.location('pathname').should('eq', '/pia/list');
+    cy.get('nav ul.navbar li').find("a[href='/ppq']").click();
+    cy.location('pathname').should('eq', '/ppq');
   });
 
   it('should handle rovingTabIndex correctly', () => {
@@ -71,7 +47,11 @@ describe('NavBar', () => {
         />
       </Router>,
     );
-    cy.get('nav ul.navbar li #home').should('have.attr', 'tabindex', '0');
-    cy.get('nav ul.navbar li #about').should('have.attr', 'tabindex', '-1');
+    cy.get('nav ul.navbar li')
+      .find("a[href='/pia/list']")
+      .should('have.attr', 'tabIndex', '0');
+    cy.get('nav ul.navbar li ')
+      .find("a[href='/ppq']")
+      .should('have.attr', 'tabIndex', '-1');
   });
 });

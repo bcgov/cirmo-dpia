@@ -44,7 +44,10 @@ function PPQLandingPage(props: IComponentProps) {
                 <b>Estimated time:</b> 20 minutes
               </span>
             </div>
-            <div className="col col-md-4 rounded float-end order-first order-md-last">
+            <div
+              data-cy="pia-img"
+              className="col col-md-4 rounded float-end order-first order-md-last"
+            >
               <img src={piaImg} alt="Fill form image" />
             </div>
           </div>
