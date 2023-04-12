@@ -1,10 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { useOutletContext } from 'react-router-dom';
 import { isMPORole } from '../../../../utils/helper.util';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 
 import { ICollectionUseAndDisclosure } from './CollectionUseAndDisclosure';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -13,12 +10,14 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Table } from '../../../common/Table';
 import { ColumnMetaData } from '../../../common/Table/interfaces';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 const PIACollectionUseAndDisclosure = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
-    useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
-    >();
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 

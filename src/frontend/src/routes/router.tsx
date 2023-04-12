@@ -19,7 +19,7 @@ import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/coll
 import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/securityPersonalInformation';
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/accuracyRetention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
-import { PiaPrintPreview } from '../pages/PiaPrintPreview';
+import { PiaFormPrintPreview } from '../pages/PiaFormPrintPreview';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -64,22 +64,7 @@ const Router = () => {
             <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
-          <Route path=":id/preview" element={<PiaPrintPreview />}>
-            <Route
-              index
-              element={
-                <>
-                  <PIAFormIntake />
-                  <PIACollectionUseAndDisclosure />
-                  <StoringPersonalInformation />
-                  <SecurityPersonalInformation />
-                  <AccuracyCorrectionAndRetention />
-                  <PIAAgreementsAndInformationBanks />
-                  <PIAAdditionalRisks />
-                </>
-              }
-            />
-          </Route>
+          <Route path=":id/preview" element={<PiaFormPrintPreview />} />
 
           <Route path=":id" element={<PIAIntakeFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
