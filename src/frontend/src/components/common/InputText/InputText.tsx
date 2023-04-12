@@ -88,7 +88,7 @@ const InputText = ({
       )}
       {helperText !== '' && (
         <p className="form-group__p--margin-zero">
-          {helperText}
+          {helperText}&nbsp;
           <a href={linkHref} rel="noreferrer external" target="_blank">
             {linkText}
             {!!hasIcon && (
