@@ -8,7 +8,9 @@ describe('Card Component', () => {
     const title = 'Sample Card Title';
     const text = 'Sample Card Text';
 
-    cy.mount(<Card icon={faCheck} title={title} text={text} />);
+    cy.mount(
+      <Card icon={faCheck} title={title} text={text} id={0} button={false} />,
+    );
 
     cy.get('.card-wrapper').within(() => {
       cy.get('.card-icon .fa-check');
@@ -29,6 +31,7 @@ describe('Card Component', () => {
         button={true}
         buttonText={buttonText}
         buttonUrl={buttonUrl}
+        id={0}
       />,
     );
 
@@ -49,6 +52,7 @@ describe('Card Component', () => {
         buttonText="Button Text"
         buttonIcon={faCheck}
         buttonUrl="/sample-url"
+        id={0}
       />,
     );
 

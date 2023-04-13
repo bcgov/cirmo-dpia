@@ -2,8 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "target": "es5",
-    "lib": ["dom", "es5"],
+    "target": "ES6",
+    "lib": ["dom", "ES6"],
     "types": ["cypress", "node"],
     "noEmit": false,
     "isolatedModules": false,
