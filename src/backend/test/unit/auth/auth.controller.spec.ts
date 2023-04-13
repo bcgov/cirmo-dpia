@@ -1,9 +1,13 @@
 import { HttpModule } from '@nestjs/axios';
+import { HttpException, InternalServerErrorException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from 'src/modules/auth/auth.controller';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { AppTokensDto } from 'src/modules/auth/dto/app-tokens.dto';
-import { appTokensDtoMock } from 'test/util/mocks/data/auth.mock';
+import {
+  appTokensDtoMock,
+  keycloakUserMock,
+} from 'test/util/mocks/data/auth.mock';
 import { authServiceMock } from 'test/util/mocks/services/auth.service.mock';
 
 describe('AuthController', () => {
@@ -56,7 +60,7 @@ describe('AuthController', () => {
   describe('getUserInfo', () => {
     it('should call the getUserInfo method of the AuthService', async () => {
       const accessToken = 'sample_access_token';
-      const kcUserInfo = { id: 'user_id', username: 'username' };
+      const kcUserInfo = { ...keycloakUserMock };
 
       service.getUserInfo = jest.fn().mockResolvedValue(kcUserInfo);
       const req = { headers: { authorization: `Bearer ${accessToken}` } };
@@ -91,6 +95,26 @@ describe('AuthController', () => {
       service.logout = jest.fn().mockResolvedValue(undefined);
 
       await controller.logout(appTokensDto);
+      expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
+    });
+
+    it('should throw HttpException when authService.logout() throws HttpException', async () => {
+      const appTokensDto: AppTokensDto = { ...appTokensDtoMock };
+      const httpException = new HttpException('Logout failed', 400);
+      service.logout = jest.fn().mockRejectedValue(httpException);
+      await expect(controller.logout(appTokensDto)).rejects.toThrowError(
+        httpException,
+      );
+      expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
+    });
+    it('should throw InternalServerErrorException when authService.logout() throws other errors', async () => {
+      service.logout = jest
+        .fn()
+        .mockRejectedValue(new Error('Some other error'));
+      const appTokensDto: AppTokensDto = { ...appTokensDtoMock };
+      await expect(controller.logout(appTokensDto)).rejects.toThrowError(
+        InternalServerErrorException,
+      );
       expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
     });
   });

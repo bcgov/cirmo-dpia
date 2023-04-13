@@ -1,6 +1,7 @@
 import { HttpModule, HttpService } from '@nestjs/axios';
+import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AuthController } from 'src/modules/auth/auth.controller';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { KeycloakToken } from 'src/modules/auth/keycloack-token.model';
@@ -10,6 +11,7 @@ import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 describe('AuthService', () => {
   let service: AuthService;
   let httpService: HttpService;
+  let consoleErrorSpy: jest.SpyInstance;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
@@ -19,6 +21,7 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     httpService = module.get<HttpService>(HttpService);
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
   });
 
   it('should be defined', () => {
@@ -119,6 +122,32 @@ describe('AuthService', () => {
         .mockImplementationOnce(() => of(response));
 
       await expect(service.logout(refreshToken)).resolves.toBeNull();
+    });
+
+    it('should throw HttpException with 500 status when httpService.post throws other errors', async () => {
+      const error: any = {
+        message: JSON.stringify(new Error('Some other error')),
+        AxiosError: true,
+      };
+      const mockRefreshToken = 'sample_refresh_token';
+      jest
+        .spyOn(httpService, 'post')
+        .mockReturnValueOnce(throwError(() => error));
+
+      await expect(service.logout(mockRefreshToken)).rejects.toThrowError(
+        HttpException,
+      );
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'auth.service.ts:logout:data',
+        'Error data unknown, Something Went wrong',
+        500,
+      );
+      expect(httpService.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringContaining(`refresh_token=${mockRefreshToken}`),
+        expect.any(Object),
+      );
     });
   });
 });
