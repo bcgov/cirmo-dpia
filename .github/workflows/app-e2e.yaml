@@ -19,4 +19,5 @@ jobs:
           cd ./src/frontend
           npm install
           echo '{"CYPRESS_PASSWORD":"${{ secrets.TEST_IDIR_PASSWORD }}"}' >> cypress.env.json
+          cat cypress.env.json
           npm run cy:e2e-test
