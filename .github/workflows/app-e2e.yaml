@@ -20,4 +20,4 @@ jobs:
         run: |
           cd ./src/frontend
           npm install
-          npm run cy:e2e-test
+          CYPRESS_PASSWORD=$CYPRESS_PASSWORD npm run cy:e2e-test
