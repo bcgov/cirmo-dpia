@@ -5,6 +5,7 @@
     "**/*.tsx",
     ".eslintrc.cjs",
     "*.config.cjs",
-    "vite.config.ts"
+    "vite.config.ts",
+    "public/snowplow.js"
   ]
 }
