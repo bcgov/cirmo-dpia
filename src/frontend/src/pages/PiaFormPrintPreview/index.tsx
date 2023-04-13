@@ -10,6 +10,8 @@ import { SecurityPersonalInformation } from '../../components/public/PIAFormTabs
 import StoringPersonalInformation from '../../components/public/PIAFormTabs/storingPersonalInformation';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
+import PrintHeader from './PrintHeader';
+import SignaturesFullPIA from './SignaturesFull';
 import {
   IPiaForm,
   IPiaFormResponse,
@@ -22,6 +24,8 @@ export const PiaFormPrintPreview = () => {
   const [pia, setPia] = useState<IPiaForm>();
 
   useEffect(() => {
+    const htmlTag = document.getElementsByTagName('HTML')[0];
+    htmlTag.classList.add('print-preview');
     if (!id) return;
     // This key is to ignore and counter the double useEffect called in React Dev environment in the Strict mode
     let ignoreDuplicateFetch = false;
@@ -46,22 +50,31 @@ export const PiaFormPrintPreview = () => {
       {(!id || !pia) && <Spinner />}
 
       {id && pia && (
-        <PiaFormContext.Provider
-          value={{
-            pia: pia,
-            isReadOnly: true,
-            piaStateChangeHandler: () => null,
-            validationMessage: {},
-          }}
-        >
-          <PIAFormIntake />
-          <PIACollectionUseAndDisclosure />
-          <StoringPersonalInformation />
-          <SecurityPersonalInformation />
-          <AccuracyCorrectionAndRetention />
-          <PIAAgreementsAndInformationBanks />
-          <PIAAdditionalRisks />
-        </PiaFormContext.Provider>
+        <>
+          <PrintHeader pia={pia} />
+          <h1>{pia?.title}</h1>
+          <PiaFormContext.Provider
+            value={{
+              pia: pia,
+              isReadOnly: true,
+              piaStateChangeHandler: () => null,
+              validationMessage: {},
+            }}
+          >
+            <PIAFormIntake />
+            {pia?.hasAddedPiToDataElements && (
+              <>
+                <PIACollectionUseAndDisclosure />
+                <StoringPersonalInformation />
+                <SecurityPersonalInformation />
+                <AccuracyCorrectionAndRetention />
+                <PIAAgreementsAndInformationBanks />
+                <PIAAdditionalRisks />
+              </>
+            )}
+          </PiaFormContext.Provider>
+          <SignaturesFullPIA />
+        </>
       )}
     </>
   );

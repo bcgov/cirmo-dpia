@@ -49,7 +49,9 @@ const PIAAdditionalRisks = () => {
 
   return (
     <>
-      <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
+      <h2 className="results-header pb-4">
+        <b>{Messages.Headings.Title.en}</b>
+      </h2>
 
       <section className="drop-shadow card p-4 p-md-5">
         <Table

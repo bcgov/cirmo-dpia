@@ -1,0 +1,136 @@
+@media print {
+  @page {
+    size: auto; /* auto is the initial value */
+    margin: 12px auto;
+  }
+  body {
+    margin: 0px;
+    padding: 0px;
+    color: #333333;
+    font-family: $font-family;
+  }
+}
+html.print-preview {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+  & {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  body {
+    margin: 0 auto !important;
+    border: 0;
+    padding: 0 !important;
+    float: none !important;
+    overflow: visible;
+  }
+
+  h1 {
+    font-size: 50pt;
+  }
+  h2 {
+    text-decoration: underline;
+  }
+  h3 {
+    font-size: 11pt;
+    color: #808080;
+  }
+  h4 {
+    font-size: 18pt;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    /* identical to box height */
+    letter-spacing: -0.0531272px;
+    color: #808080;
+  }
+  p {
+    color: #333333;
+    font-size: 10pt;
+  }
+  .p-4,
+  .header,
+  .navbar-container,
+  .footer {
+    display: none;
+  }
+
+  .print-header-container {
+    padding-top: 75px;
+    justify-content: space-between;
+    img {
+      width: 150px;
+    }
+    .last-modified {
+      text-transform: uppercase;
+    }
+    margin-bottom: 3rem;
+  }
+
+  .card {
+    border: 0px;
+  }
+  .drop-shadow {
+    box-shadow: none;
+  }
+  @page {
+    size: auto; /* auto is the initial value */
+  }
+
+  body {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  a[href]:after {
+    content: none !important;
+  }
+
+  @page :footer {
+    display: none;
+  }
+
+  @page :header {
+    display: none;
+  }
+
+  .p-md-5 {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .signatures {
+    page-break-before: always;
+    padding-top: 90px;
+  }
+  .signature-section {
+    .signature-container {
+      justify-content: space-between;
+    }
+    .signature-title {
+      font-size: 18pt;
+      color: #333333;
+    }
+    .signature-wrapper {
+      padding-bottom: 90px;
+    }
+    .signature-block {
+      text-align: center;
+      width: 30%;
+      .text-line {
+        height: 75px;
+        border-bottom: 1pt solid black;
+      }
+    }
+    .comment-box {
+      width: 100%;
+      height: 300px;
+      border: 1pt solid #606060;
+      margin-top: 1rem;
+      margin-bottom: 90px;
+    }
+  }
+}
