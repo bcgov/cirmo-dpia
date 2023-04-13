@@ -14,17 +14,13 @@ describe('Test DPIA Login Page', () => {
     // Then, we use `should` to assert that there are two matched items,
     // which are the two default items.
 
-    const password = Cypress.env('PASSWORD');
+    const password = Cypress.env('CYPRESS_PASSWORD');
 
     cy.get('.d-none').click();
     cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
   });
-
-
-  
-  
 });
 
 export {};
