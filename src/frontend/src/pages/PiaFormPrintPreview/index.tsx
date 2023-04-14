@@ -54,7 +54,7 @@ export const PiaFormPrintPreview = () => {
       setPia(data);
 
       // Allowing react to render the page before print preview begins
-      window.setTimeout(() => window.print(), 0);
+      window.setTimeout(() => window.print(), 100);
     });
     return () => {
       ignoreDuplicateFetch = true;

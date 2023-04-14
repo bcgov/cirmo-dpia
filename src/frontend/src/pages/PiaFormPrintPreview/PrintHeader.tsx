@@ -9,14 +9,16 @@
  * a BC Header.
  */
 import BC_logo_Horizontal from '../../assets/BC_logo_Horizontal.png';
+import { IPiaForm } from '../../types/interfaces/pia-form.interface';
+import { dateToString } from '../../utils/date';
 
-const PrintHeader = (pia: any) => {
+const PrintHeader = (pia: IPiaForm) => {
   return (
     <div className="print-header-container d-flex">
       <img src={BC_logo_Horizontal} alt="BC Gov Logo" />
       <div className="last-modified">
         Last modified:
-        <div>{pia?.updatedAt}</div>
+        <div>{dateToString(pia?.updatedAt)}</div>
       </div>
     </div>
   );
