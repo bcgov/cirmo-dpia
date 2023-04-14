@@ -1,3 +1,12 @@
+/*
+ * This stylesheet is used to override the default styles for the print preview
+ * page. It is only used when the user clicks the print button on the page.
+ * For print, the header, footer, nav bar and other fixed elements are hidden.
+ * The page is sent to print in portrait mode.
+ * For the signature section, the signatures will be printed after the form 
+ * on a new page.
+*/
+
 @media print {
   @page {
     size: auto; /* auto is the initial value */

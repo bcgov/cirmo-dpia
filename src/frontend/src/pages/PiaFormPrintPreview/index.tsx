@@ -1,3 +1,19 @@
+/*
+ * This function is for the print preview page.
+ * @param pia - the PIA object
+ * @returns - the print preview page
+ * @example
+ * <PiaFormPrintPreview pia={pia} />
+ *
+ * This page will automatically trigger the ctrl+p print dialog.
+ * The html elment will be set to print-preview mode by adding
+ * a class to the HTML tag.
+ * The print-preview class will hide the header, footer, nav and fixed
+ * elements.
+ *
+ * The styling for the print page can be found in the sass folder under
+ * _printPreview.scss
+ */
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../components/common/Spinner';

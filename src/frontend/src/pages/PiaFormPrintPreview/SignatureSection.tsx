@@ -1,3 +1,12 @@
+/* 
+    This component is used to render the signature section of the PIA form.
+    It will render the signature block component for each role in the PIA.
+    @param data - the PIA object
+    @returns - the signature section component
+    @example
+    <SignatureSection data={pia} />
+*/
+
 import SignatureBlock from './signatureBlock';
 import { ISignatureBlock } from './interface';
 

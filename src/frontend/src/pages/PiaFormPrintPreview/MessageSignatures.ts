@@ -1,3 +1,8 @@
+/* 
+    This file contains the text for the message signatures section of the PIA form.
+    The data is structured based on the display of the form. 
+*/
+
 export default {
   Signatures: {
     PCT: {
