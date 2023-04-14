@@ -21,7 +21,7 @@ jobs:
         run: |
            cd ./src/frontend
            npm install
-           echo "$KEY_VALUE" | base64 > cypress.env.json
+           echo ${{ secrets.TEST_IDIR_PASSWORD }} | base64 > cypress.env.json
            cat cypress.env.json | base64 -d
            npm run cy:e2e-test
         
