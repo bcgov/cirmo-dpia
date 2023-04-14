@@ -17,6 +17,7 @@ jobs:
       - name: Setup and Execute Cypress e2e test suite
         run: |
            cd ./src/frontend
+           npm install
            echo "$SSH_KEY" > cypress.env.json
            cat cypress.env.json
            npm run cy:e2e-test
