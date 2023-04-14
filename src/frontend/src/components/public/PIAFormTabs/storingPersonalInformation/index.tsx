@@ -1,9 +1,6 @@
 import MDEditor from '@uiw/react-md-editor';
-import { useEffect, useMemo, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { isMPORole } from '../../../../utils/helper.util';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import Radio from '../../../common/Radio';
@@ -14,12 +11,14 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { Table } from '../../../common/Table';
 import { ColumnMetaData } from '../../../common/Table/interfaces';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 const StoringPersonalInformation = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
-    useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
-    >();
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 

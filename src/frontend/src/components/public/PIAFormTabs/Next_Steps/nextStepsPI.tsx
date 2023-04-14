@@ -2,19 +2,20 @@ import messages from './helper/messages';
 import Modal from '../../../common/Modal';
 import { IModalObject } from './interfaces';
 import { PiaStatuses } from '../../../../constant/constant';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
+import { useContext, useState } from 'react';
 import { routes } from '../../../../constant/routes';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 interface PIFlow {
   navigateFn: (url: string) => void;
 }
 
 const NextStepsPI = (navigateFn: PIFlow) => {
-  const [pia, piaStateChangeHandler] =
-    useOutletContext<[IPiaForm, PiaStateChangeHandlerType]>();
+  const { pia, piaStateChangeHandler } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   const nextStepmodalObject: IModalObject = {
     modalShow: false,

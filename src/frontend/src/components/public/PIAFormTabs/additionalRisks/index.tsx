@@ -1,19 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import { useOutletContext } from 'react-router-dom';
 import { IAdditionalRisks } from './AdditionalRisks';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { Table } from '../../../common/Table';
 import { ColumnMetaData } from '../../../common/Table/interfaces';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 const PIAAdditionalRisks = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
-    useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
-    >();
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -50,7 +49,9 @@ const PIAAdditionalRisks = () => {
 
   return (
     <>
-      <h1 className="results-header pb-4">{Messages.Headings.Title.en}</h1>
+      <h2 className="results-header pb-4">
+        <b>{Messages.Headings.Title.en}</b>
+      </h2>
 
       <section className="drop-shadow card p-4 p-md-5">
         <Table
