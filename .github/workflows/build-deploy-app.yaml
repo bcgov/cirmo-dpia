@@ -179,12 +179,12 @@ jobs:
     # Navigate to frontend dir, install dependencies, execute cypress command
     - name: Setup and Execute Cypress e2e test suite
       shell: bash
-        env:
-          TEST_IDIR_PASSWORD : ${{ secrets.TEST_IDIR_PASSWORD }}
-        run: |
-           cd ./src/frontend
-           npm install
-           CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-testv
+      env:
+        TEST_IDIR_PASSWORD : ${{ secrets.TEST_IDIR_PASSWORD }}
+      run: |
+          cd ./src/frontend
+          npm install
+          CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-test
 
   DEV-Success-Notify:
     runs-on: ubuntu-latest
