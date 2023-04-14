@@ -5,8 +5,6 @@ import { ISignatureBlock } from './interface';
 const SignaturesFullPIA = () => {
   function getSignatureSection(key: string): ISignatureBlock | null {
     if (key in MessageSignatures.Signatures) {
-      console.log('at parent');
-      console.log(Object(MessageSignatures.Signatures)[key]);
       return Object(Object(MessageSignatures.Signatures)[key]);
     }
     return null;

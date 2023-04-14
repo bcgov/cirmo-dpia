@@ -3,12 +3,6 @@ import { ISignatureBlock } from './interface';
 
 const SignatureSection = (data: ISignatureBlock | null) => {
   const signatureType: string[] = ['name', 'signature', 'date signed'];
-  function printdata() {
-    console.log(data);
-    console.log('not nested');
-    console.log(data);
-  }
-  printdata();
   return (
     data && (
       <div className="signature-section">
