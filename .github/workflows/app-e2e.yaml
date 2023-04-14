@@ -16,8 +16,10 @@ jobs:
       # Navigate to frontend dir, install dependencies, execute cypress command
       - name: Setup and Execute Cypress e2e test suite
         run: |
-          cd ./src/frontend
-          npm install
-          echo '{"CYPRESS_PASSWORD":"${{ secrets.TEST_IDIR_PASSWORD }}"}' >> cypress.env.json
-          cat cypress.env.json
-          npm run cy:e2e-test
+           cd ./src/frontend
+           echo "$SSH_KEY" > cypress.env.json
+           cat cypress.env.json
+           npm run cy:e2e-test
+        shell: bash
+        env:
+          SSH_KEY: ${{ secrets.TEST_IDIR_PASSWORD }}
