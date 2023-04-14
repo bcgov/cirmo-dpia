@@ -5,6 +5,8 @@ export const routes = {
   PIA_NEW: '/pia/new/intake',
   PIA_VIEW: '/pia/:id',
 
+  PIA_PRINT_PREVIEW: '/pia/:id/preview',
+
   PIA_INTAKE_EDIT: '/pia/:id/intake/edit',
   PIA_INTAKE_VIEW: '/pia/:id/intake/view',
 
