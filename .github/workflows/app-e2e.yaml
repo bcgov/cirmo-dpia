@@ -5,6 +5,7 @@ on:
 
 jobs:
   frontend-e2e:
+    environment: APP-Test
     runs-on: ubuntu-latest
     steps:
       # Checkout Repository
@@ -21,7 +22,7 @@ jobs:
         run: |
            cd ./src/frontend
            npm install
-           echo ${{ secrets.TEST_IDIR_PASSWORD }} | base64 > cypress.env.json
-           cat cypress.env.json | base64 -d
+           echo '{"CYPRESS_PASSWORD":"$KEY_VALUE"}' >> cypress.env.json
+           cat cypress.env.json
            npm run cy:e2e-test
         
