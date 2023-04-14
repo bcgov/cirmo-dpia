@@ -80,7 +80,7 @@ export const PiaFormPrintPreview = () => {
             }}
           >
             <PIAFormIntake />
-            {pia?.hasAddedPiToDataElements && (
+            {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <PIACollectionUseAndDisclosure />
                 <StoringPersonalInformation />
