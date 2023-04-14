@@ -46,11 +46,11 @@ jobs:
 
       #Login to Artifactory
       - name: Docker Login to Artifactory
-       uses: redhat-actions/podman-login@v1
-       with:
-         registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
-         username: ${{ secrets.ARTPROJ_SA_USERNAME }}
-         password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ secrets.ARTPROJ_PROJECT_URL }}
+          username: ${{ secrets.ARTPROJ_SA_USERNAME }}
+          password: ${{ secrets.ARTPROJ_SA_PASSWORD }}
 
       #Tag dev image with test tag in ARTIFACTORY to promote deployment
       - name: Update tag for Artifactory
