@@ -42,6 +42,7 @@ export const PiaFormPrintPreview = () => {
   useEffect(() => {
     const htmlTag = document.getElementsByTagName('HTML')[0];
     htmlTag.classList.add('print-preview');
+
     if (!id) return;
     // This key is to ignore and counter the double useEffect called in React Dev environment in the Strict mode
     let ignoreDuplicateFetch = false;
@@ -58,6 +59,7 @@ export const PiaFormPrintPreview = () => {
     });
     return () => {
       ignoreDuplicateFetch = true;
+      htmlTag.classList.remove('print-preview');
     };
   }, [id]);
 
