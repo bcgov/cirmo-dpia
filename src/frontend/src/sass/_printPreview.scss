@@ -74,6 +74,7 @@ html.print-preview {
     color: #333333;
     font-size: 10pt;
   }
+
   .header,
   .navbar-container,
   .footer {
@@ -127,6 +128,9 @@ html.print-preview {
   .signatures {
     page-break-before: always;
     padding-top: 90px;
+  }
+  .signature-section:not(:nth-child(2)) {
+    page-break-before: always;
   }
   .signature-section {
     .signature-container {
