@@ -29,6 +29,21 @@ html.print-preview {
     overflow: visible;
   }
 
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    background: $ntrl-lightgray;
+    .App {
+        width: 1024px;
+        background: white;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 25px 25px;
+        box-shadow: $drop-shadow;
+    }
+  }
+
+
   body {
     margin: 0 auto !important;
     border: 0;
