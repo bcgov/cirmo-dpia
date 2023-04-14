@@ -18,7 +18,7 @@ jobs:
         run: |
            cd ./src/frontend
            npm install
-           echo "$SSH_KEY" > cypress.env.json
+           echo '{"CYPRESS_PASSWORD":"$SSH_KEY"}' >> cypress.env.json
            cat cypress.env.json
            npm run cy:e2e-test
         shell: bash
