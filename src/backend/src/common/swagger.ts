@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from 'src/app.module';
 import { HealthModule } from 'src/health/health.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
+import { CommentsModule } from 'src/modules/comments/comments.module';
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 import { GCNotifyModule } from 'src/modules/gcnotify/gcnotify.module';
 import { PiaIntakeModule } from 'src/modules/pia-intake/pia-intake.module';
@@ -34,6 +35,7 @@ export const SwaggerDocs = (app: INestApplication) => {
       ConfigurationModule,
       PiaIntakeModule,
       GCNotifyModule,
+      CommentsModule,
     ],
   });
 

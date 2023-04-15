@@ -11,6 +11,7 @@ export interface IPiaForm extends IPiaFormIntake {
   createdAt?: Date;
   updatedAt?: Date;
   status?: string;
+  isActive?: boolean;
   saveId?: number;
   submittedAt?: Date | null;
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention;
