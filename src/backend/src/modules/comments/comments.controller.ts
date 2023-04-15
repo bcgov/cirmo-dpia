@@ -10,6 +10,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -86,6 +87,9 @@ export class CommentsController {
   })
   @ApiOkResponse({
     description: 'Successfully deleted a comment',
+  })
+  @ApiBadRequestResponse({
+    description: 'Failed to delete comment: Invalid request',
   })
   @ApiForbiddenResponse({
     description:

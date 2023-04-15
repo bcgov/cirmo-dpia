@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -105,6 +106,11 @@ export class CommentsService {
 
     // validate access to PIA. Throw error if not
     await this.validatePiaAccess(comment.piaId, user, userRoles);
+
+    // throw error if comment already deleted
+    if (comment.isActive === false) {
+      throw new BadRequestException('Comment already deleted');
+    }
 
     // soft delete
     const updatedComment = await this.commentRepository.save({
