@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesEnum } from 'src/common/enums/roles.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
@@ -93,6 +97,11 @@ export class CommentsService {
   async remove(id: number, user: KeycloakUser, userRoles: Array<RolesEnum>) {
     // fetch comment
     const comment = await this.findOneBy({ id });
+
+    // if the comment person who created the comment is not the one deleting, throw error
+    if (user.idir_user_guid !== comment.createdByGuid) {
+      throw new ForbiddenException();
+    }
 
     // validate access to PIA. Throw error if not
     await this.validatePiaAccess(comment.piaId, user, userRoles);
