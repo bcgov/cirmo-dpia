@@ -184,7 +184,7 @@ jobs:
       run: |
           cd ./src/frontend
           npm install
-          CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-test
+          CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-dev
 
   DEV-Success-Notify:
     runs-on: ubuntu-latest
