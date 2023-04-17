@@ -63,11 +63,9 @@ jobs:
           TARGET_IMAGE_TAG: latest
         run: |
 
-          docker pull ${{ secrets.ARTPROJ_PROJECT_URL }}/daa7-dpia-image-repository/app-dev:latest
+          ./.github/helpers/tag-artifactory-image.sh
 
           docker images
-          
-          ./.github/helpers/tag-artifactory-image.sh
 
   TEST-deploy:
     runs-on: ubuntu-latest
@@ -188,10 +186,13 @@ jobs:
 
     # Navigate to frontend dir, install dependencies, execute cypress command
     - name: Setup and Execute Cypress e2e test suite
+      shell: bash
+      env:
+        TEST_IDIR_PASSWORD : ${{ secrets.TEST_IDIR_PASSWORD }}
       run: |
-        cd ./src/frontend
-        npm install
-        npm run cy:e2e-test
+          cd ./src/frontend
+          npm install
+          CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-test
 
   TEST-Success-Notify:
     runs-on: ubuntu-latest

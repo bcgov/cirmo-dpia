@@ -1,11 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
-
-import { useOutletContext } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
 import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';
@@ -14,12 +10,14 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import PIBInputText from './viewPIBTextInput';
 import ISAInputText from './viewISATextInput';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 const PIAAgreementsAndInformationBanks = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
-    useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
-    >();
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 

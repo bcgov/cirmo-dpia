@@ -54,7 +54,7 @@ objects:
         containers:
           - name: ${APPLICATION_NAME}
             image: >-
-              artifacts.developer.gov.bc.ca/daa7-dpia-image-repository/app-dev:latest
+              artifacts.developer.gov.bc.ca/daa7-dpia-image-repository/app-${ENVIRONMENT}:latest
             ports:
               - containerPort: 80
                 protocol: TCP

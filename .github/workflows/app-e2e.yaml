@@ -1,0 +1,26 @@
+name: "Frontend e2e Test Suite"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  frontend-e2e:
+    environment: APP-Test
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Navigate to frontend dir, install dependencies, execute cypress command
+      - name: Setup and Execute Cypress e2e test suite
+        shell: bash
+        env:
+          TEST_IDIR_PASSWORD : ${{ secrets.TEST_IDIR_PASSWORD }}
+        run: |
+           cd ./src/frontend
+           npm install
+           CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-test
+        

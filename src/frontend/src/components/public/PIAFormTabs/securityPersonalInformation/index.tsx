@@ -1,8 +1,5 @@
 import MDEditor from '@uiw/react-md-editor';
-import { useEffect, useMemo, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { PiaStateChangeHandlerType } from '../../../../pages/PIAForm';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helper/messages';
 import { ISecurityPersonalInformation } from './security-personal-info-interface';
 import Checkbox from '../../../common/Checkbox';
@@ -11,12 +8,14 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 export const SecurityPersonalInformation = () => {
-  const [pia, piaStateChangeHandler, isReadOnly, accessControl] =
-    useOutletContext<
-      [IPiaForm, PiaStateChangeHandlerType, boolean, () => void]
-    >();
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 

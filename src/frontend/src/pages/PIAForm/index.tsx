@@ -23,6 +23,7 @@ import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form
 import BannerStatus from './BannerStatus';
 import Collapsible from '../../components/common/Collapsible';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { PiaFormContext } from '../../contexts/PiaFormContext';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -691,15 +692,17 @@ const PIAFormPage = () => {
             {mode === 'view' && <BannerStatus pia={pia} />}
             {/* Only show the nested routes if it is a NEW Form (no ID) OR if existing form with PIA data is fetched */}
             {!id || initialPiaStateFetched ? (
-              <Outlet
-                context={[
+              <PiaFormContext.Provider
+                value={{
                   pia,
                   piaStateChangeHandler,
-                  formReadOnly,
+                  isReadOnly: formReadOnly,
                   accessControl,
-                  validationMessages,
-                ]}
-              />
+                  validationMessage: validationMessages,
+                }}
+              >
+                <Outlet />
+              </PiaFormContext.Provider>
             ) : (
               <div className="w-100">
                 <div className="d-flex justify-content-center">

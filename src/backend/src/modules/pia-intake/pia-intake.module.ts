@@ -8,5 +8,6 @@ import { PiaIntakeEntity } from './entities/pia-intake.entity';
   imports: [TypeOrmModule.forFeature([PiaIntakeEntity])],
   controllers: [PiaIntakeController],
   providers: [PiaIntakeService],
+  exports: [PiaIntakeService],
 })
 export class PiaIntakeModule {}

@@ -1,38 +1,27 @@
 import MDEditor from '@uiw/react-md-editor';
-import { ChangeEvent, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { ChangeEvent, useContext, useState } from 'react';
 import { MinistryList, PIOptions } from '../../../../constant/constant';
-import {
-  PiaStateChangeHandlerType,
-  PiaValidationMessage,
-} from '../../../../pages/PIAForm';
 import Dropdown from '../../../common/Dropdown';
 import InputText from '../../../common/InputText/InputText';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import Messages from './helper/messages';
 import { IPiaFormIntake } from './pia-form-intake.interface';
 import PIAIntakeGeneralInformation from './viewGeneralInformation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
 
 export const PIAFormIntake = () => {
-  const [
+  const {
     pia,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
     validationMessage,
-  ] =
-    useOutletContext<
-      [
-        IPiaForm,
-        PiaStateChangeHandlerType,
-        boolean,
-        () => void,
-        PiaValidationMessage,
-      ]
-    >();
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 

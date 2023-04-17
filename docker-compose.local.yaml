@@ -43,6 +43,7 @@ services:
   ###                                       Database                                        ###
   #############################################################################################
   dpia-db:
+    container_name: dpia-db
     image: postgres:10.21-alpine3.16
     restart: always
     env_file: ./src/backend/.env
