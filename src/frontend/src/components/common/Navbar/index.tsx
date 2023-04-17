@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useRovingTabIndex } from '../../../hooks/useRovingTabIndex';
 import { INavbarPages } from './interfaces';
@@ -9,8 +9,21 @@ function NavBar({
   rovingTabIndex = false,
 }: INavbarPages): ReactElement {
   const menuBar = useRef(null);
+  const [menuBarCurrentRefState, setMenuBarCurrentRefState] = useState(
+    menuBar.current,
+  );
 
-  useRovingTabIndex({ ref: menuBar, disabled: !rovingTabIndex });
+  // This change came up when the Sidebar was collapsed and not visible by default.
+  // So, every time you change the reference - a new value and current element value be sent to the react hook
+  // Tech comment - change state value triggers hook to re-render, useRovingTabIndex in this case
+  useEffect(() => {
+    setMenuBarCurrentRefState(menuBar.current);
+  }, [menuBar]);
+
+  useRovingTabIndex({
+    currentRef: menuBarCurrentRefState,
+    disabled: !rovingTabIndex,
+  });
 
   const currentPath = window.location.pathname;
   return (

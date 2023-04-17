@@ -13,6 +13,13 @@ const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
     setIsOpen(!isOpen);
   };
 
+  const handleKeyDown = (event: any) => {
+    if (event.code === 'Enter') {
+      event.preventDefault();
+      handleToggle();
+    }
+  };
+
   return (
     <div
       className={`collapsible ${
@@ -21,7 +28,12 @@ const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
           : 'collapsible__border-left'
       }`}
     >
-      <div className="collapsible__header" onClick={handleToggle} tabIndex={0}>
+      <div
+        className="collapsible__header"
+        tabIndex={0}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+      >
         <FontAwesomeIcon
           icon={
             isOpen && alignment === 'left'
