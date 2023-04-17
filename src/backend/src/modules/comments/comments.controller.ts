@@ -22,7 +22,7 @@ import {
 import { IRequest } from 'src/common/interfaces/request.interface';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { AllowedCommentPaths } from './enums/allowed-comment-paths.enum';
+import { FindCommentsDto } from './dto/find-comments.dto';
 
 @Controller('comments')
 @ApiTags('Comments')
@@ -68,14 +68,10 @@ export class CommentsController {
   @ApiGoneResponse({
     description: 'Failed to fetch comments: The PIA is not active',
   })
-  find(
-    @Query('id') id: string,
-    @Query('path') path: AllowedCommentPaths,
-    @Req() req: IRequest,
-  ) {
+  find(@Query() findCommentsDto: FindCommentsDto, @Req() req: IRequest) {
     return this.commentsService.findByPiaAndPath(
-      +id,
-      path,
+      findCommentsDto.piaId,
+      findCommentsDto.path,
       req.user,
       req.userRoles,
     );
