@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 interface UseRovingTabIndexProps {
-  ref: any;
+  currentRef: any;
   disabled: boolean;
 }
 
 export const useRovingTabIndex = ({
-  ref,
+  currentRef,
   disabled,
 }: UseRovingTabIndexProps) => {
   const setFocusOnElement = (el: Element | HTMLElement | null) => {
@@ -15,8 +15,8 @@ export const useRovingTabIndex = ({
     (el as HTMLElement).focus();
   };
 
-  const current = ref?.current as HTMLElement;
-  const navItems = current?.querySelectorAll('[role=navItem]');
+  const navItems: NodeListOf<HTMLElement> =
+    currentRef?.querySelectorAll('[role=navItem]');
   const currentFocusIndex = useRef(0);
 
   const keydownEventHandler = useCallback(
@@ -25,9 +25,10 @@ export const useRovingTabIndex = ({
 
       switch (keyboardEvent.key) {
         case 'Tab':
-          if (currentFocusIndex.current !== 0 && keyboardEvent.shiftKey) {
-            e.preventDefault();
-          }
+          // Temp removing this - before we get feedback
+          // if (currentFocusIndex.current !== 0 && keyboardEvent.shiftKey) {
+          //   e.preventDefault();
+          // }
 
           currentFocusIndex.current = 0;
 
@@ -61,7 +62,7 @@ export const useRovingTabIndex = ({
 
   useEffect(() => {
     // if disabled, do not add event handlers
-    if (!current || disabled) {
+    if (!currentRef || disabled) {
       return;
     }
 
@@ -76,5 +77,5 @@ export const useRovingTabIndex = ({
         navItem.removeEventListener('keydown', keydownEventHandler),
       );
     };
-  }, [current, disabled, keydownEventHandler, navItems]);
+  }, [currentRef, disabled, keydownEventHandler, navItems]);
 };
