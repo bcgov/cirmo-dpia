@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ${APPLICATION_NAME}
+  namespace: ${LICENSE_PLATE}-${ENVIRONMENT}
+  labels:
+    template: ${APPLICATION_NAME}-template
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"template":"dpia-api-template"},"name":"dpia-api","namespace":"aa77ab-dev"},"spec":{"internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"name":"3000-tcp","port":3000,"protocol":"TCP","targetPort":3000}],"selector":{"app":"dpia-api"},"sessionAffinity":"None","type":"ClusterIP"}}
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 3000-tcp
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: dpia-api
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-api
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
+    required: true
+    value: aa77ab
