@@ -1,4 +1,5 @@
-import LandingPage from '../../../src/pages/LandingPage';
+import React from 'react';
+import LandingPage from '../../../src/pages/LandingPage/LandingPage';
 
 describe('landingpage.cy.tsx', () => {
   it('should mount landing page content', () => {
@@ -12,9 +13,9 @@ describe('landingpage.cy.tsx', () => {
     cy.get('[data-cy="email"]')
       .should('have.attr', 'href')
       .and('match', /pia.intake@gov.bc.ca/);
-    cy.get('[data-cy="landing-img"]')
+    cy.get('[data-cy="landing"]')
       .find('img')
       .should('have.attr', 'src')
-      .and('match', /hero-img.svg/);
+      .and('match', /hero.svg/);
   });
 });

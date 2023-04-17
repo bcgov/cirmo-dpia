@@ -1,4 +1,4 @@
-import Footer from '../../../src/components/common/Footer';
+import Footer from '../../../src/components/common/Footer/Footer';
 
 describe('Footer component', () => {
   it('render footer component', () => {

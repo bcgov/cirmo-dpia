@@ -1,10 +1,21 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "es5"],
-    "types": ["cypress", "cypress-wait-until", "node"],
+    "jsx": "react",
+    "target": "ES6",
+    "lib": ["dom", "ES6"],
+    "types": ["cypress", "node"],
+    "noEmit": false,
+    "isolatedModules": false,
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": [
+    "../node_modules/cypress",
+    "fixtures/**/*",
+    "integration/**/*",
+    "plugins/**/*",
+    "support/**/*"
+  ],
+  "exclude": ["../node_modules"]
 }
