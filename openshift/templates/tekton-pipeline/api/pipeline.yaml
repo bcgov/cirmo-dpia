@@ -1,0 +1,44 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-template
+labels:
+  template: ${APPLICATION_NAME}-template
+objects:
+- kind: Pipeline
+  apiVersion: tekton.dev/v1beta1
+  metadata:
+    name: ${APPLICATION_NAME}-deploy-${ENVIRONMENT}
+    namespace: ${LICENSE_PLATE}-tools
+    labels:
+      DataClass: ${DATACLASS}
+      name: dpia-deploy
+  spec:
+    tasks:
+    - name: process-${APPLICATION_NAME}-template-${ENVIRONMENT}
+      taskRef:
+        name: process-${APPLICATION_NAME}-template-${ENVIRONMENT}
+        kind: Task
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-api
+  - description: Environment
+    displayName: Environment
+    name: ENVIRONMENT
+    required: true
+    value: dev
+  - description: License Plate
+    displayName: License Plate
+    name: LICENSE_PLATE
+    required: true
+    value: aa77ab
+  - description: DataClass
+    displayName: DataClass
+    name: DATACLASS
+    required: true
+    value: low
+  
