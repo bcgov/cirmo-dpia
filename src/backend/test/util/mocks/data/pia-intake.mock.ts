@@ -35,6 +35,7 @@ const piaIntakeDataMock = {
   status: PiaIntakeStatusEnum.MPO_REVIEW,
   saveId: 1,
   submittedAt: new Date(),
+  isActive: true,
   isNextStepsSeenForDelegatedFlow: false,
   isNextStepsSeenForNonDelegatedFlow: false,
   collectionUseAndDisclosure: {
