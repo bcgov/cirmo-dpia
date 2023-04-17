@@ -9,7 +9,7 @@ export default {
   },
   InCompleteStatusCalloutText: {
     Drafter: {
-      en: `Your PIA is in Incomplete status. Your Ministry Privacy Office (MPO) will only be able to view and help you with this PIA after you click “Submit”`,
+      en: `Your PIA is in Incomplete status. Your Ministry Privacy Office (MPO) will only be able to view and help you with this PIA after you click “Submit”.`,
     },
   },
 };
