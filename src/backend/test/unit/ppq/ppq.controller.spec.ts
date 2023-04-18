@@ -43,11 +43,26 @@ describe('PpqController', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+  /**
+   * @Description
+   * Dummy test to check if the controller and service is defined
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
   });
   describe('postForm', () => {
+    /**
+     * @Description
+     * This test validates the happy flow if the method `Service.create` is called with correct mock data
+     *
+     * @Input
+     *   - API data mock for ppq create form submission
+     *   - Mock user req
+     *
+     * @Output 201
+     * Test pass and all methods called with correct data
+     */
     const ppqPostDTO: PpqPostDTO = { ...createPpqMock };
 
     const ppqResultRO: PpqResultRO = {
@@ -72,15 +87,15 @@ describe('PpqController', () => {
      * @Description
      * This test validates the authenticated user getting 404 when
      * no ppq form result for the provided id is available in the database
-     * and returns 500 when unable to create buffer for that record
+     * and returns 404 when unable to create buffer for that record
      *
      * @Input
      *  - ppq id
      *  - Request
      *  - Response
      *
-     * @Output 500
-     * Internal Server exception is shown to the user
+     * @Output 404
+     * Not Found Exception is shown to the user
      *
      */
     it('fails and throws not found exception when the service did not return any buffer', async () => {
@@ -99,7 +114,20 @@ describe('PpqController', () => {
 
       expect(mockRes.send).not.toHaveBeenCalled();
     });
-
+    /**
+     * @Description
+     * This test demonstrates the happy flow. It validates that
+     *  - the service did not errored out, and returned the correct buffer
+     *  - the user is got the received buffer
+     *
+     * @Input
+     *  - ppq id
+     *  - Request
+     *  - Response
+     *
+     * @Output
+     *  - pdf buffer
+     */
     it('should call the downloadPpqResultPdf method and return the result', async () => {
       const pdfBuffer = Buffer.from('test pdf buffer');
       service.downloadPpqResultPdf = jest.fn().mockResolvedValue(pdfBuffer);
