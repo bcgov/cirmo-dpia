@@ -7,7 +7,7 @@ import { AuthService } from 'src/modules/auth/auth.service';
 import { KeycloakToken } from 'src/modules/auth/keycloack-token.model';
 import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
-
+import { configService, ConfigServiceClass } from 'src/config/config.service';
 /**
  * @Description
  * This file tests the contents of auth.service.ts
@@ -16,7 +16,25 @@ describe('AuthService', () => {
   let service: AuthService;
   let httpService: HttpService;
   let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(async () => {
+    const configServiceMock = new ConfigServiceClass({
+      KEYCLOAK_CLIENT_ID: 'myclientid',
+      KEYCLOAK_CLIENT_SECRET: 'myclientsecret',
+      KEYCLOAK_REDIRECT_URI: 'https://app.example.com/callback',
+      KEYCLOAK_TOKEN_URI:
+        'https://auth.example.com/realms/myrealm/protocol/openid-connect/token',
+
+      KEYCLOAK_AUTH_SERVER_URI: 'https://app.example.com/oauth',
+      KEYCLOAK_RESPONSE_TYPE: 'idir',
+      KEYCLOAK_SCOPE: 'scope',
+      KEYCLOAK_REALM: 'realm',
+      KEYCLOAK_USER_INFO_URI: 'https://app.example.com/user',
+      KEYCLOAK_LOGOUT_URI: 'https://app.example.com/logout',
+    });
+    jest
+      .spyOn(configService, 'getValue')
+      .mockImplementation((key) => configServiceMock.getValue(key));
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
       controllers: [AuthController],
@@ -28,6 +46,9 @@ describe('AuthService', () => {
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   /**
    * @Description
    * Dummy test to check if the service is defined
@@ -49,8 +70,8 @@ describe('AuthService', () => {
      *   - an object containing url
      */
     it('should return the correct login URL', () => {
-      // due to we initialize the url when we construct the auth service, so I do not mock this value
-      const expectedUrl = `https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth?client_id=digital-privacy-impact-assessment-modernization-3937&response_type=code&scope=openid idir&redirect_uri=http://localhost:8080/ppq`;
+      const expectedUrl = `https://app.example.com/oauth/realms/realm/protocol/openid-connect/auth?client_id=myclientid&response_type=idir&scope=scope&redirect_uri=https://app.example.com/callback`;
+      expect(configService.getValue).toHaveBeenCalledTimes(10);
       const result = service.getUrlLogin();
       expect(result.url).toEqual(expectedUrl);
     });
