@@ -30,7 +30,7 @@
     "migration:create": "npm run typeorm -- migration:create"
   },
   "dependencies": {
-    "@nestjs/axios": "1.0.1",
+    "@nestjs/axios": "2.0.0",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/common": "9.2.1",
     "@nestjs/core": "9.2.1",
