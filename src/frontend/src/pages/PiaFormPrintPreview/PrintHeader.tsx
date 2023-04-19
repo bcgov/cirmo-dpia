@@ -12,10 +12,16 @@ import BC_logo_Horizontal from '../../assets/BC_logo_Horizontal.png';
 import { IPiaForm } from '../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../utils/date';
 
-const PrintHeader = ({ pia }: { pia: IPiaForm }) => {
+const PrintHeader = ({
+  pia,
+  onImageLoad,
+}: {
+  pia: IPiaForm;
+  onImageLoad: () => void;
+}) => {
   return (
     <div className="print-header-container d-flex">
-      <img src={BC_logo_Horizontal} alt="BC Gov Logo" />
+      <img src={BC_logo_Horizontal} alt="BC Gov Logo" onLoad={onImageLoad} />
       <div className="last-modified">
         Last modified:
         <div>{dateToString(pia?.updatedAt)}</div>
