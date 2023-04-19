@@ -15,6 +15,7 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiGoneResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -41,6 +42,9 @@ export class CommentsController {
   @ApiForbiddenResponse({
     description:
       'Failed to create comment: User lacks permission to create comment to this PIA',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to create comment: PIA for the id provided not found',
   })
   @ApiGoneResponse({
     description: 'Failed to create comment: The PIA is not active',
@@ -90,6 +94,9 @@ export class CommentsController {
   @ApiForbiddenResponse({
     description:
       'Failed to delete comment: User lacks permission to delete comment of this PIA',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to delete comment: Comment not found',
   })
   @ApiGoneResponse({
     description: 'Failed to delete comment: The PIA is not active',
