@@ -86,14 +86,12 @@ const PIAFormPage = () => {
   /**
    * Comments State
    */
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<Comment[]>();
 
   /**
    * This variable is used to determine which section to show comments for.
    */
-  const [selectedSection, setSelectedSection] = useState<PiaSections>(
-    PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS,
-  );
+  const [selectedSection, setSelectedSection] = useState<PiaSections>();
 
   /**
    * Async callback for getting comments within a useEffect hook

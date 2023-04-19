@@ -7,11 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const CommentSidebar = ({ comments }: CommentSidebarProps) => {
   const [newCommentContent, setNewCommentContent] = useState('');
   return (
-    <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100 overflow-y-auto">
       <h3 className="ps-3">Comments</h3>
-      <div className="flex-grow-1 overflow-auto">
+      <div className="">
         {comments &&
-          comments.map((comment) => (
+          comments?.map((comment) => (
             <div className="p-3" key={comment.id}>
               <div className="position-relative">
                 <p className="fw-bold">
@@ -56,11 +56,17 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
               )}
             </div>
           ))}
-        {comments.length === 0 && <div className="p-3">No comments yet.</div>}
+        {!comments && (
+          <p className="ms-3">
+            Select &ldquo;View comments&rdquo; on any question to add comment or
+            view comments.
+          </p>
+        )}
+        {comments?.length === 0 && <p className="p-3">No comments yet.</p>}
       </div>
-      {comments.length !== 0 && (
+      {comments && (
         <>
-          <div className="d-flex flex-column p-3 gap-3">
+          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning">
             <input
               type="text"
               className="form-control mr-3"
