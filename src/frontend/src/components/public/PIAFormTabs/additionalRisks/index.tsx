@@ -9,9 +9,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 const PIAAdditionalRisks = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -65,6 +66,7 @@ const PIAAdditionalRisks = () => {
           format="row"
           readOnly={isReadOnly}
         />
+        <ViewComments comments={comments} />
       </section>
     </>
   );

@@ -12,9 +12,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 export const SecurityPersonalInformation = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -304,6 +305,7 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
+            <ViewComments comments={comments} />
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
@@ -418,6 +420,7 @@ export const SecurityPersonalInformation = () => {
                   )}
                 </div>
               )}
+              <ViewComments comments={comments} />
             </div>
           )}
         </section>
@@ -542,6 +545,7 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
+            <ViewComments comments={comments} />
           </div>
         </section>
       </div>

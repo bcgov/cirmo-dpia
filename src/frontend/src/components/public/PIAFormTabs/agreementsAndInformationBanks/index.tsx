@@ -14,9 +14,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 const PIAAgreementsAndInformationBanks = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -324,6 +325,7 @@ const PIAAgreementsAndInformationBanks = () => {
               </div>
             )}
           </div>
+          <ViewComments comments={comments} />
         </section>
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
@@ -528,6 +530,7 @@ const PIAAgreementsAndInformationBanks = () => {
               )}
             </div>
           </div>
+          <ViewComments comments={comments} />
         </section>
       </div>
     </>

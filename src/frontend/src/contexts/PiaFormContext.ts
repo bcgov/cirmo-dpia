@@ -4,10 +4,12 @@ import {
   PiaValidationMessage,
 } from '../pages/PIAForm';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
-
+import { Comment } from '../components/public/CommentsSidebar/interfaces';
 export interface IPiaFormContext {
   pia: IPiaForm;
+  comments: Comment[];
   piaStateChangeHandler: PiaStateChangeHandlerType;
+  piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;
   accessControl?: () => void;
   validationMessage: PiaValidationMessage;
@@ -15,6 +17,8 @@ export interface IPiaFormContext {
 
 export const PiaFormContext = createContext<IPiaFormContext>({
   pia: {},
+  comments: [],
+  piaCollapsibleChangeHandler: () => null,
   piaStateChangeHandler: () => null,
   isReadOnly: true,
   validationMessage: {},

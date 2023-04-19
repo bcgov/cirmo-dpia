@@ -11,9 +11,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 export const AccuracyCorrectionAndRetention = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -120,6 +121,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
+            <ViewComments comments={comments} />
           </div>
         </section>
 
@@ -438,6 +440,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
+            <ViewComments comments={comments} />
           </div>
         </section>
 
@@ -692,6 +695,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 </div>
               ) : null
             ) : null}
+            <ViewComments comments={comments} />
           </div>
         </section>
       </form>

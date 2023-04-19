@@ -15,9 +15,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 const StoringPersonalInformation = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -371,6 +372,7 @@ const StoringPersonalInformation = () => {
               )}
             </div>
           )}
+          <ViewComments comments={comments} />
         </div>
       </section>
       {storingPersonalInformationForm.personalInformation
@@ -473,6 +475,7 @@ const StoringPersonalInformation = () => {
                 )}
               </div>
             )}
+            <ViewComments comments={comments} />
           </div>
         </section>
       )}
@@ -696,6 +699,7 @@ const StoringPersonalInformation = () => {
                     </p>
                   )}
                 </div>
+                <ViewComments comments={comments} />
               </div>
             </section>
             <section className="form__section my-4">
@@ -766,6 +770,7 @@ const StoringPersonalInformation = () => {
                         <i>Not answered</i>
                       </p>
                     )}
+                    <ViewComments comments={comments} />
                   </div>
                 )}
               </div>
@@ -807,6 +812,7 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
+                <ViewComments comments={comments} />
               </div>
             </section>
             <section className="form__section my-4">
@@ -846,6 +852,7 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
+                <ViewComments comments={comments} />
               </div>
             </section>
             <section className="form__section my-4">
@@ -881,6 +888,7 @@ const StoringPersonalInformation = () => {
                     readOnly={isReadOnly}
                   />
                 </div>
+                <ViewComments comments={comments} />
               </div>
             </section>
           </>

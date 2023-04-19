@@ -86,12 +86,15 @@ const PIAFormPage = () => {
   /**
    * Comments State
    */
-  const [comments, setComments] = useState<Comment[]>();
-
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   /**
    * This variable is used to determine which section to show comments for.
+   * by default give it a value
    */
-  const [selectedSection, setSelectedSection] = useState<PiaSections>();
+  const [selectedSection, setSelectedSection] = useState<PiaSections>(
+    PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY,
+  );
 
   /**
    * Async callback for getting comments within a useEffect hook
@@ -152,6 +155,10 @@ const PIAFormPage = () => {
     }));
   };
 
+  const piaCollapsibleChangeHandler = (isOpen: boolean) => {
+    console.log('call this function to set value', isOpen);
+    setIsRightOpen(!isOpen);
+  };
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
 
   const [validationMessages, setValidationMessages] =
@@ -686,7 +693,6 @@ const PIAFormPage = () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
   }, [alertUserLeave, hasFormChanged]);
-
   return (
     <>
       <PIASubHeader
@@ -737,6 +743,8 @@ const PIAFormPage = () => {
               <PiaFormContext.Provider
                 value={{
                   pia,
+                  comments,
+                  piaCollapsibleChangeHandler,
                   piaStateChangeHandler,
                   isReadOnly: formReadOnly,
                   accessControl,
@@ -758,8 +766,12 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
-          <Collapsible icon={faCommentDots} alignment="right">
-            <CommentSidebar comments={comments} />
+          <Collapsible
+            icon={faCommentDots}
+            alignment="right"
+            isRightOpen={isRightOpen}
+          >
+            <CommentSidebar isRightOpen={isRightOpen} />
           </Collapsible>
         </div>
 

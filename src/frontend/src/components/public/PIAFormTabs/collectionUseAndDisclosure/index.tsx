@@ -14,9 +14,10 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
 
 const PIACollectionUseAndDisclosure = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -94,6 +95,7 @@ const PIACollectionUseAndDisclosure = () => {
           addRowBtnLabel="Add more steps"
           format="row"
         />
+        <ViewComments comments={comments} />
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
@@ -198,6 +200,7 @@ const PIACollectionUseAndDisclosure = () => {
             )}
           </div>
         </div>
+        <ViewComments comments={comments} />
       </section>
     </>
   );

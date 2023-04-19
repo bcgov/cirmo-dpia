@@ -1,14 +1,27 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CollapsibleProps from './interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const Collapsible = ({
+  icon,
+  alignment,
+  children,
+  isRightOpen,
+  isLeftOpen,
+}: CollapsibleProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(
+    (alignment === 'left' ? isLeftOpen : isRightOpen) || false,
+  );
 
+  useEffect(
+    () => setIsOpen(isRightOpen ? isRightOpen : isOpen),
+    [isOpen, isRightOpen],
+  );
+  console.log('test col parents', isRightOpen);
   const handleToggle = (): void => {
     setIsOpen(!isOpen);
   };

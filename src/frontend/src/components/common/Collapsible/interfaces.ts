@@ -5,4 +5,6 @@ export default interface CollapsibleProps {
   icon: IconProp;
   children: ReactNode;
   alignment: string;
+  isRightOpen?: boolean;
+  isLeftOpen?: boolean;
 }
