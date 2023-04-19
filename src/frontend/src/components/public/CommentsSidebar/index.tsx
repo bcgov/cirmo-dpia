@@ -9,7 +9,7 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
   return (
     <div className="d-flex flex-column h-100 overflow-y-auto">
       <h3 className="ps-3">Comments</h3>
-      <div className="">
+      <div className="flex-grow-1">
         {comments &&
           comments?.map((comment) => (
             <div className="p-3" key={comment.id}>
