@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import CommentSidebarProps from './interfaces';
 import { formatDate } from '../../../utils/date';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CommentSidebar = ({ comments }: CommentSidebarProps) => {
   const [newCommentContent, setNewCommentContent] = useState('');
@@ -11,11 +13,30 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
         {comments &&
           comments.map((comment) => (
             <div className="p-3" key={comment.id}>
-              <div className="fw-bold">
-                {comment.createdByDisplayName}
-                <span className="ps-1 text-muted fw-normal">
-                  {formatDate(comment.updatedAt)}
-                </span>
+              <div className="position-relative">
+                <p className="fw-bold">
+                  {comment.createdByDisplayName}
+                  <span className="ps-1 text-muted fw-normal">
+                    {formatDate(comment.updatedAt)}
+                  </span>
+                </p>
+                <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
+                  <button
+                    className="mx-2 bcgovbtn bcgovbtn__tertiary"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded={false}
+                  >
+                    <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
+                  </button>
+                  <ul className="dropdown-menu border-1 shadow-sm">
+                    <li role="button">
+                      <button onClick={() => {}} className="dropdown-item">
+                        Delete
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div>{comment.text}</div>
               {comment.replies && comment.replies.length > 0 && (
