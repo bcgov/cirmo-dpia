@@ -58,9 +58,17 @@ export class CommentsService {
     // validate access to PIA. Throw error if not
     await this.validatePiaAccess(createCommentDto.piaId, user, userRoles);
 
+    // extract user input dto
+    const { piaId, path, text } = createCommentDto;
+
+    // fetch pia entity
+    const pia = await this.piaService.findOneBy({ id: piaId });
+
     // create resource
     const comment: CommentEntity = await this.commentRepository.save({
-      ...createCommentDto,
+      pia,
+      path,
+      text,
       isResolved: false,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
@@ -85,7 +93,9 @@ export class CommentsService {
     // fetch comments for the pia
     const comments: CommentEntity[] = await this.commentRepository.find({
       where: {
-        piaId,
+        pia: {
+          id: piaId,
+        },
         path,
       },
       order: { createdAt: 1 },
