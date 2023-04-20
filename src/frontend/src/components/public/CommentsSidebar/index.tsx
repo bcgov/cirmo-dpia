@@ -124,7 +124,11 @@ const CommentSidebar = ({
                   </ul>
                 </div>
               </div>
-              <div>{comment.text}</div>
+              <div>
+                {comment.text !== null
+                  ? comment.text
+                  : `[this comment has been deleted] `}
+              </div>
               {comment.replies && comment.replies.length > 0 && (
                 <div className="ml-3">
                   {comment.replies.map((reply) => (
