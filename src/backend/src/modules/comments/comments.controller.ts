@@ -23,6 +23,7 @@ import {
 import { IRequest } from 'src/common/interfaces/request.interface';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { FindCommentsCountDto } from './dto/find-comments-count.dto';
 import { FindCommentsDto } from './dto/find-comments.dto';
 
 @Controller('comments')
@@ -69,6 +70,9 @@ export class CommentsController {
     description:
       'Failed to fetch comments: User lacks permission to create fetch comments of this PIA',
   })
+  @ApiNotFoundResponse({
+    description: 'Failed to fetch comments: PIA for the id provided not found',
+  })
   @ApiGoneResponse({
     description: 'Failed to fetch comments: The PIA is not active',
   })
@@ -76,6 +80,33 @@ export class CommentsController {
     return this.commentsService.findByPiaAndPath(
       findCommentsDto.piaId,
       findCommentsDto.path,
+      req.user,
+      req.userRoles,
+    );
+  }
+
+  @Get('/count')
+  @HttpCode(200)
+  @ApiOkResponse({
+    description: 'Successfully fetched the count of comments for PIA',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to fetch count of comments: User lacks permission to create fetch comments of this PIA',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Failed to fetch count of comments: PIA for the id provided not found',
+  })
+  @ApiGoneResponse({
+    description: 'Failed to fetch count of comments: The PIA is not active',
+  })
+  findCommentsCount(
+    @Query() findCommentsCount: FindCommentsCountDto,
+    @Req() req: IRequest,
+  ) {
+    return this.commentsService.findCountByPia(
+      findCommentsCount.piaId,
       req.user,
       req.userRoles,
     );

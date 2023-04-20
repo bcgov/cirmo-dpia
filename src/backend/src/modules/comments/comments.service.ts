@@ -13,6 +13,11 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { AllowedCommentPaths } from './enums/allowed-comment-paths.enum';
 import {
+  CommentsCountDbRO,
+  CommentsCountRO,
+  getFormattedCommentsCount,
+} from './ro/comments-count-ro';
+import {
   CommentRO,
   getFormattedComment,
   getFormattedComments,
@@ -103,6 +108,27 @@ export class CommentsService {
 
     // return formatted objects
     return getFormattedComments(comments);
+  }
+
+  async findCountByPia(
+    piaId: number,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ): Promise<Partial<CommentsCountRO>> {
+    // validate access to PIA. Throw error if not
+    await this.validatePiaAccess(piaId, user, userRoles);
+
+    // fetch comments for the pia grouped by path
+    const commentsCount: Array<CommentsCountDbRO> = await this.commentRepository
+      .createQueryBuilder()
+      .select('count(*)', 'count')
+      .addSelect('path', 'path')
+      .where('pia_id=:piaId', { piaId })
+      .groupBy('path')
+      .getRawMany();
+
+    // format return object
+    return getFormattedCommentsCount(commentsCount);
   }
 
   async remove(id: number, user: KeycloakUser, userRoles: Array<RolesEnum>) {
