@@ -28,6 +28,7 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import PrintHeader from './PrintHeader';
 import SignaturesFullPIA from './SignaturesFull';
+import IntakePrintPreivew from '../../components/public/PIAFormTabs/intake/printPreview';
 import {
   IPiaForm,
   IPiaFormResponse,
@@ -79,15 +80,27 @@ export const PiaFormPrintPreview = () => {
               validationMessage: {},
             }}
           >
-            <PIAFormIntake />
+            <IntakePrintPreivew {...pia} />
             {pia?.hasAddedPiToDataElements !== false && (
               <>
-                <PIACollectionUseAndDisclosure />
-                <StoringPersonalInformation />
-                <SecurityPersonalInformation />
-                <AccuracyCorrectionAndRetention />
-                <PIAAgreementsAndInformationBanks />
-                <PIAAdditionalRisks />
+                <div className="pageBreak">
+                  <PIACollectionUseAndDisclosure />
+                </div>
+                <div className="pageBreak">
+                  <StoringPersonalInformation />
+                </div>
+                <div className="pageBreak">
+                  <SecurityPersonalInformation />
+                </div>
+                <div className="pageBreak">
+                  <AccuracyCorrectionAndRetention />
+                </div>
+                <div className="pageBreak">
+                  <PIAAgreementsAndInformationBanks />
+                </div>
+                <div className="pageBreak">
+                  <PIAAdditionalRisks />
+                </div>
               </>
             )}
           </PiaFormContext.Provider>
