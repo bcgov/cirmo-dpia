@@ -5,14 +5,25 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { HttpRequest } from '../../../utils/http-request.util';
-
+import Modal from '../../../components/common/Modal';
+import Messages from './messages';
 const CommentSidebar = ({
   piaId,
   path,
   handleStatusChange,
 }: CommentSidebarProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
-
+  const [deleteCommentId, setDeleteCommentId] = useState<number>(0);
+  //
+  // Modal State
+  //
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [statusLocal, setStatusLocal] = useState<string>('');
+  const [modalButtonValue, setModalButtonValue] = useState<string>('');
   /**
    * Async callback for getting comments within a useEffect hook
    */
@@ -29,6 +40,24 @@ const CommentSidebar = ({
     );
     setComments(commentArr);
   }, [piaId, path]);
+  const deleteComment = async (commentId: number) => {
+    await HttpRequest.delete(
+      API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
+      {},
+      {},
+      true,
+    );
+    getComments();
+    handleStatusChange();
+  };
+  const handleModalClose = async (event: any) => {
+    event.preventDefault();
+    setShowModal(false);
+    await deleteComment(deleteCommentId);
+  };
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
 
   const [newCommentContent, setNewCommentContent] = useState('');
 
@@ -44,15 +73,14 @@ const CommentSidebar = ({
     handleStatusChange();
   };
 
-  const deleteComment = async (commentId: number) => {
-    await HttpRequest.delete(
-      API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
-      {},
-      {},
-      true,
-    );
-    getComments();
-    handleStatusChange();
+  const handleDeleteComment = (commentId: number) => {
+    setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
+    setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
+    setModalTitleText(Messages.Modal.Delete.TitleText.en);
+    setModalParagraph(Messages.Modal.Delete.ParagraphText.en);
+    setModalButtonValue('deleteComments');
+    setDeleteCommentId(commentId);
+    setShowModal(true);
   };
   useEffect(() => {
     try {
@@ -87,7 +115,7 @@ const CommentSidebar = ({
                   <ul className="dropdown-menu border-1 shadow-sm">
                     <li role="button">
                       <button
-                        onClick={() => deleteComment(comment.id)}
+                        onClick={() => handleDeleteComment(comment.id)}
                         className="dropdown-item"
                       >
                         Delete
@@ -161,6 +189,17 @@ const CommentSidebar = ({
           </div>
         </>
       )}
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showModal}
+        value={modalButtonValue}
+        handleClose={(e) => handleModalClose(e)}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </div>
   );
 };
