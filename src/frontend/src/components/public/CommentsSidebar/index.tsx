@@ -10,50 +10,23 @@ import {
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const CommentSidebar = ({ isRightOpen }: CommentSidebarProps) => {
-  const {
-    pia,
-    comments,
-    piaStateChangeHandler,
-    isReadOnly,
-    accessControl,
-    validationMessage,
-  } = useContext<IPiaFormContext>(PiaFormContext);
+const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
+  const { pia, comments } = useContext<IPiaFormContext>(PiaFormContext);
 
-  console.log('test isrightOpen', isRightOpen);
   const [newCommentContent, setNewCommentContent] = useState('');
-  const [isOpen, setIsOpen] = useState<boolean>(isRightOpen || false);
 
   const addComment = async () => {
     await HttpRequest.post(
       API_ROUTES.PIA_COMMENTS,
-      { piaId: pia.id, path: comments[0].path, text: `${newCommentContent}` },
+      { piaId: piaId, path: path, text: `${newCommentContent}` },
       {},
       {},
       true,
     );
   };
-  useEffect(
-    () => setIsOpen(isRightOpen ? isRightOpen : isOpen),
-    [isOpen, isRightOpen],
-  );
-  const handleToggle = (): void => {
-    setIsOpen(!isOpen);
-  };
 
-  const handleKeyDown = (event: any) => {
-    if (event.code === 'Enter') {
-      event.preventDefault();
-      handleToggle();
-    }
-  };
   return (
-    <div
-      className="d-flex flex-column h-100 overflow-y-auto"
-      onClick={handleToggle}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
+    <div className="d-flex flex-column h-100 overflow-y-auto">
       <h3 className="ps-3">Comments</h3>
       <div className="flex-grow-1">
         {comments &&

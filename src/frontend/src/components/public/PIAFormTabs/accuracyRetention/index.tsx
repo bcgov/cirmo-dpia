@@ -12,6 +12,7 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export const AccuracyCorrectionAndRetention = () => {
   const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
@@ -121,7 +122,10 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
+            />
           </div>
         </section>
 
@@ -440,7 +444,10 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
+            />
           </div>
         </section>
 
@@ -695,7 +702,10 @@ export const AccuracyCorrectionAndRetention = () => {
                 </div>
               ) : null
             ) : null}
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
+            />
           </div>
         </section>
       </form>

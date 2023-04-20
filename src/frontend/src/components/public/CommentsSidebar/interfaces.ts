@@ -11,5 +11,6 @@ export interface Comment {
 
 export default interface CommentSidebarProps {
   comments?: Comment[];
-  isRightOpen?: boolean;
+  piaId?: number;
+  path: string;
 }

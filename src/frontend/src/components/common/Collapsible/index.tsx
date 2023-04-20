@@ -10,22 +10,16 @@ const Collapsible = ({
   icon,
   alignment,
   children,
-  isRightOpen,
-  isLeftOpen,
+  isVisible = false,
 }: CollapsibleProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(
-    (alignment === 'left' ? isLeftOpen : isRightOpen) || false,
-  );
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  useEffect(
-    () => setIsOpen(isRightOpen ? isRightOpen : isOpen),
-    [isOpen, isRightOpen],
-  );
-  console.log('test col parents', isRightOpen);
   const handleToggle = (): void => {
     setIsOpen(!isOpen);
   };
-
+  useEffect(() => {
+    setIsOpen(isVisible);
+  }, [isVisible]);
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
       event.preventDefault();

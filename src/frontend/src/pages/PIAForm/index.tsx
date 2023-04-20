@@ -88,6 +88,8 @@ const PIAFormPage = () => {
    */
   const [comments, setComments] = useState<Comment[]>([]);
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
+  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
+  const [commentPath, setCommentPath] = useState<string>('');
   /**
    * This variable is used to determine which section to show comments for.
    * by default give it a value
@@ -156,8 +158,10 @@ const PIAFormPage = () => {
   };
 
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
-    console.log('call this function to set value', isOpen);
-    setIsRightOpen(!isOpen);
+    setIsRightOpen(isOpen);
+  };
+  const piaCommentPathHandler = (path: string) => {
+    setCommentPath(path);
   };
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
 
@@ -717,7 +721,7 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <Collapsible icon={faBars} alignment="left">
+          <Collapsible icon={faBars} alignment="left" isVisible={isLeftOpen}>
             <section className="side-nav__container">
               <PIASideNav
                 pia={pia}
@@ -745,6 +749,7 @@ const PIAFormPage = () => {
                   pia,
                   comments,
                   piaCollapsibleChangeHandler,
+                  piaCommentPathHandler,
                   piaStateChangeHandler,
                   isReadOnly: formReadOnly,
                   accessControl,
@@ -769,9 +774,9 @@ const PIAFormPage = () => {
           <Collapsible
             icon={faCommentDots}
             alignment="right"
-            isRightOpen={isRightOpen}
+            isVisible={isRightOpen}
           >
-            <CommentSidebar isRightOpen={isRightOpen} />
+            <CommentSidebar path={commentPath} piaId={pia.id} />
           </Collapsible>
         </div>
 

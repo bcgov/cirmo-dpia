@@ -16,6 +16,7 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const StoringPersonalInformation = () => {
   const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
@@ -372,7 +373,10 @@ const StoringPersonalInformation = () => {
               )}
             </div>
           )}
-          <ViewComments comments={comments} />
+          <ViewComments
+            comments={comments}
+            path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
+          />
         </div>
       </section>
       {storingPersonalInformationForm.personalInformation
@@ -475,7 +479,12 @@ const StoringPersonalInformation = () => {
                 )}
               </div>
             )}
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={
+                PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+              }
+            />
           </div>
         </section>
       )}
@@ -699,7 +708,12 @@ const StoringPersonalInformation = () => {
                     </p>
                   )}
                 </div>
-                <ViewComments comments={comments} />
+                <ViewComments
+                  comments={comments}
+                  path={
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                  }
+                />
               </div>
             </section>
             <section className="form__section my-4">
@@ -770,7 +784,12 @@ const StoringPersonalInformation = () => {
                         <i>Not answered</i>
                       </p>
                     )}
-                    <ViewComments comments={comments} />
+                    <ViewComments
+                      comments={comments}
+                      path={
+                        PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                      }
+                    />
                   </div>
                 )}
               </div>
@@ -812,7 +831,12 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments comments={comments} />
+                <ViewComments
+                  comments={comments}
+                  path={
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                  }
+                />
               </div>
             </section>
             <section className="form__section my-4">
@@ -852,7 +876,12 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments comments={comments} />
+                <ViewComments
+                  comments={comments}
+                  path={
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                  }
+                />
               </div>
             </section>
             <section className="form__section my-4">
@@ -888,7 +917,12 @@ const StoringPersonalInformation = () => {
                     readOnly={isReadOnly}
                   />
                 </div>
-                <ViewComments comments={comments} />
+                <ViewComments
+                  comments={comments}
+                  path={
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                  }
+                />
               </div>
             </section>
           </>

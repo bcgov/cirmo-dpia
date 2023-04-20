@@ -1,26 +1,22 @@
 import CommentsSidebar from '../../public/CommentsSidebar';
 import { useContext, useEffect, useState } from 'react';
 import { PiaSections } from '../../../types/enums/pia-sections.enum';
-import ReactDOM from 'react-dom';
-import CommentSidebarProps from '../../public/CommentsSidebar/interfaces';
+
+import ViewCommentProps from './interfaces';
 import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const ViewComments = () => {
-  const {
-    pia,
-    comments,
-    piaCollapsibleChangeHandler,
-    isReadOnly,
-    accessControl,
-    validationMessage,
-  } = useContext<IPiaFormContext>(PiaFormContext);
+const ViewComments = ({ comments, path }: ViewCommentProps) => {
+  const { piaCollapsibleChangeHandler, piaCommentPathHandler } =
+    useContext<IPiaFormContext>(PiaFormContext);
   const [isRightOpen, setIsRightOpen] = useState(false);
 
   const toggleSidebar = () => {
-    if (piaCollapsibleChangeHandler) piaCollapsibleChangeHandler(!isRightOpen);
+    if (piaCollapsibleChangeHandler)
+      piaCollapsibleChangeHandler(isRightOpen ? false : true);
+    if (piaCommentPathHandler) piaCommentPathHandler(path);
     setIsRightOpen(!isRightOpen);
   };
 

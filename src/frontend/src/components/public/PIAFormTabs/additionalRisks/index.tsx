@@ -10,6 +10,7 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIAAdditionalRisks = () => {
   const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
@@ -66,7 +67,10 @@ const PIAAdditionalRisks = () => {
           format="row"
           readOnly={isReadOnly}
         />
-        <ViewComments comments={comments} />
+        <ViewComments
+          comments={comments}
+          path={PiaSections.ADDITIONAL_RISKS_RISKS}
+        />
       </section>
     </>
   );

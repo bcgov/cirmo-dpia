@@ -13,6 +13,7 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export const SecurityPersonalInformation = () => {
   const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
@@ -305,7 +306,12 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={
+                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+              }
+            />
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
@@ -420,7 +426,12 @@ export const SecurityPersonalInformation = () => {
                   )}
                 </div>
               )}
-              <ViewComments comments={comments} />
+              <ViewComments
+                comments={comments}
+                path={
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                }
+              />
             </div>
           )}
         </section>
@@ -545,7 +556,12 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments comments={comments} />
+            <ViewComments
+              comments={comments}
+              path={
+                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+              }
+            />
           </div>
         </section>
       </div>
