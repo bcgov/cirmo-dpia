@@ -31,7 +31,6 @@ const IntakeDetails = (pia: IPiaForm) => {
       <div>
         <h4>Contains personal information?</h4>
         <p>
-          {' '}
           {PIOptions.find(
             (item) => item.value === pia?.hasAddedPiToDataElements,
           )?.key || ''}

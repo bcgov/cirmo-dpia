@@ -2,7 +2,6 @@ import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import IntakeDetails from './intakedetails';
 
 const IntakePrintPreivew = (pia: IPiaForm) => {
-  console.log(pia);
   return (
     <>
       <h2>PIA Intake</h2>

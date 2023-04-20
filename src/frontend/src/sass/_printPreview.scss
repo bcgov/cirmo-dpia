@@ -11,7 +11,7 @@
   @page {
     size: auto; /* auto is the initial value */
     margin: 12px auto;
-    margin-bottom: 25px;
+    margin-bottom:25px;
     padding: 25pt 50px;
   }
   body {
@@ -191,8 +191,7 @@ html.print-preview {
       list-style: none;
       margin-bottom: 18px;
     }
-    p,
-    h4 {
+    p, h4 {
       margin: 0px;
       line-height: 1.6;
     }
@@ -205,8 +204,7 @@ html.print-preview {
     }
   }
 
-  .signatures,
-  .pageBreak {
+  .signatures, .pageBreak {
     page-break-before: always;
     padding-top: 90px;
   }
