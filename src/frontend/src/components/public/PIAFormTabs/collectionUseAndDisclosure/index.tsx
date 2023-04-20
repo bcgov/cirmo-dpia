@@ -18,8 +18,14 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIACollectionUseAndDisclosure = () => {
-  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    comments,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -97,6 +103,7 @@ const PIACollectionUseAndDisclosure = () => {
           format="row"
         />
         <ViewComments
+          count={commentCount[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]}
           comments={comments}
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
         />
@@ -205,6 +212,11 @@ const PIACollectionUseAndDisclosure = () => {
           </div>
         </div>
         <ViewComments
+          count={
+            commentCount[
+              PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+            ]
+          }
           comments={comments}
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
         />

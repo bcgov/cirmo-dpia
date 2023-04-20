@@ -8,7 +8,7 @@ import {
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const ViewComments = ({ comments, path }: ViewCommentProps) => {
+const ViewComments = ({ comments, path, count }: ViewCommentProps) => {
   const { piaCollapsibleChangeHandler, piaCommentPathHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const [isRightOpen, setIsRightOpen] = useState(false);
@@ -23,7 +23,7 @@ const ViewComments = ({ comments, path }: ViewCommentProps) => {
   return (
     <div className="d-flex justify-content-center mt-4">
       <a href="#" onClick={toggleSidebar}>
-        View comments ({comments ? comments.length : 0})
+        View comments ({count ? +count : 0})
       </a>
     </div>
   );

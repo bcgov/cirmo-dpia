@@ -19,8 +19,14 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const StoringPersonalInformation = () => {
-  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    comments,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -374,6 +380,11 @@ const StoringPersonalInformation = () => {
             </div>
           )}
           <ViewComments
+            count={
+              commentCount[
+                PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
+              ]
+            }
             comments={comments}
             path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
           />
@@ -480,6 +491,12 @@ const StoringPersonalInformation = () => {
               </div>
             )}
             <ViewComments
+              count={
+                commentCount[
+                  PiaSections
+                    .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                ]
+              }
               comments={comments}
               path={
                 PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
@@ -709,6 +726,12 @@ const StoringPersonalInformation = () => {
                   )}
                 </div>
                 <ViewComments
+                  count={
+                    commentCount[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                    ]
+                  }
                   comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
@@ -785,6 +808,12 @@ const StoringPersonalInformation = () => {
                       </p>
                     )}
                     <ViewComments
+                      count={
+                        commentCount[
+                          PiaSections
+                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                        ]
+                      }
                       comments={comments}
                       path={
                         PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
@@ -832,6 +861,12 @@ const StoringPersonalInformation = () => {
                   </p>
                 )}
                 <ViewComments
+                  count={
+                    commentCount[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                    ]
+                  }
                   comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
@@ -877,6 +912,12 @@ const StoringPersonalInformation = () => {
                   </p>
                 )}
                 <ViewComments
+                  count={
+                    commentCount[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                    ]
+                  }
                   comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
@@ -918,6 +959,12 @@ const StoringPersonalInformation = () => {
                   />
                 </div>
                 <ViewComments
+                  count={
+                    commentCount[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                    ]
+                  }
                   comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS

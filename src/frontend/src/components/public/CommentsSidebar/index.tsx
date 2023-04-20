@@ -1,21 +1,34 @@
-import { useContext, useEffect, useState } from 'react';
-import CommentSidebarProps from './interfaces';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import CommentSidebarProps, { Comment } from './interfaces';
 import { formatDate } from '../../../utils/date';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { HttpRequest } from '../../../utils/http-request.util';
-import {
-  IPiaFormContext,
-  PiaFormContext,
-} from '../../../contexts/PiaFormContext';
 
 const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
-  const { pia, comments } = useContext<IPiaFormContext>(PiaFormContext);
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  /**
+   * Async callback for getting comments within a useEffect hook
+   */
+  const getComments = useCallback(async () => {
+    const commentArr: Comment[] = await HttpRequest.get(
+      API_ROUTES.GET_PIA_COMMENTS,
+      {},
+      {},
+      true,
+      {
+        piaId: piaId,
+        path: path,
+      },
+    );
+    setComments(commentArr);
+  }, [piaId, path]);
 
   const [newCommentContent, setNewCommentContent] = useState('');
 
-  const addComment = async () => {
+  const addComment = useCallback(async () => {
     await HttpRequest.post(
       API_ROUTES.PIA_COMMENTS,
       { piaId: piaId, path: path, text: `${newCommentContent}` },
@@ -23,8 +36,14 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
       {},
       true,
     );
-  };
-
+  }, [newCommentContent, path, piaId]);
+  useEffect(() => {
+    try {
+      getComments();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [piaId, path, getComments, addComment]);
   return (
     <div className="d-flex flex-column h-100 overflow-y-auto">
       <h3 className="ps-3">Comments</h3>
@@ -109,7 +128,10 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
               <button
                 type="button"
                 className="bcgovbtn bcgovbtn__secondary"
-                onClick={() => addComment()}
+                onClick={() => {
+                  addComment();
+                  setNewCommentContent('');
+                }}
               >
                 Add
               </button>

@@ -5,9 +5,11 @@ import {
 } from '../pages/PIAForm';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { Comment } from '../components/public/CommentsSidebar/interfaces';
+import { CommentCount } from '../components/common/ViewComment/interfaces';
 export interface IPiaFormContext {
   pia: IPiaForm;
   comments?: Comment[];
+  commentCount: CommentCount;
   piaStateChangeHandler: PiaStateChangeHandlerType;
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;
@@ -19,6 +21,7 @@ export interface IPiaFormContext {
 export const PiaFormContext = createContext<IPiaFormContext>({
   pia: {},
   comments: [],
+  commentCount: {},
   piaCollapsibleChangeHandler: () => null,
   piaStateChangeHandler: () => null,
   piaCommentPathHandler: () => null,

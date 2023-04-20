@@ -16,8 +16,14 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export const SecurityPersonalInformation = () => {
-  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    comments,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -307,6 +313,12 @@ export const SecurityPersonalInformation = () => {
               )}
             </div>
             <ViewComments
+              count={
+                commentCount[
+                  PiaSections
+                    .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                ]
+              }
               comments={comments}
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
@@ -427,6 +439,12 @@ export const SecurityPersonalInformation = () => {
                 </div>
               )}
               <ViewComments
+                count={
+                  commentCount[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                  ]
+                }
                 comments={comments}
                 path={
                   PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
@@ -557,6 +575,12 @@ export const SecurityPersonalInformation = () => {
               )}
             </div>
             <ViewComments
+              count={
+                commentCount[
+                  PiaSections
+                    .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                ]
+              }
               comments={comments}
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION

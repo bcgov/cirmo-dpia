@@ -27,6 +27,7 @@ import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
 import { Comment } from '../../components/public/CommentsSidebar/interfaces';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
+import { CommentCount } from '../../components/common/ViewComment/interfaces';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -90,6 +91,7 @@ const PIAFormPage = () => {
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
   const [commentPath, setCommentPath] = useState<string>('');
+  const [commentCount, setCommentCount] = useState<CommentCount>({});
   /**
    * This variable is used to determine which section to show comments for.
    * by default give it a value
@@ -116,15 +118,31 @@ const PIAFormPage = () => {
   }, [id, selectedSection]);
 
   /**
+   * Async callback for getting commentCount within a useEffect hook
+   */
+  const getCommentCount = useCallback(async () => {
+    const count: CommentCount = await HttpRequest.get(
+      API_ROUTES.GET_COMMENTS_COUNT,
+      {},
+      {},
+      true,
+      {
+        piaId: id,
+      },
+    );
+    setCommentCount(count);
+  }, [id]);
+  /**
    * Update the comments array to pass into the CommentSidebar
    */
   useEffect(() => {
     try {
       getComments();
+      getCommentCount();
     } catch (err) {
       console.error(err);
     }
-  }, [getComments]);
+  }, [getCommentCount, getComments]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -748,6 +766,7 @@ const PIAFormPage = () => {
                 value={{
                   pia,
                   comments,
+                  commentCount,
                   piaCollapsibleChangeHandler,
                   piaCommentPathHandler,
                   piaStateChangeHandler,

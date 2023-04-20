@@ -18,8 +18,14 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIAAgreementsAndInformationBanks = () => {
-  const { pia, comments, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    comments,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -327,6 +333,12 @@ const PIAAgreementsAndInformationBanks = () => {
             )}
           </div>
           <ViewComments
+            count={
+              commentCount[
+                PiaSections
+                  .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+              ]
+            }
             comments={comments}
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
@@ -537,6 +549,12 @@ const PIAAgreementsAndInformationBanks = () => {
             </div>
           </div>
           <ViewComments
+            count={
+              commentCount[
+                PiaSections
+                  .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+              ]
+            }
             comments={comments}
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS

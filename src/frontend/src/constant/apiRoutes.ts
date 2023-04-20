@@ -13,4 +13,5 @@ export const API_ROUTES = {
   PATCH_PIA_INTAKE: '/api/pia-intake/:id',
   GET_PIA_COMMENTS: '/api/comments',
   PIA_COMMENTS: '/api/comments',
+  GET_COMMENTS_COUNT: '/api/comments/count',
 };
