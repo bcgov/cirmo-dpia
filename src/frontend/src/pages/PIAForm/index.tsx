@@ -96,9 +96,7 @@ const PIAFormPage = () => {
    * This variable is used to determine which section to show comments for.
    * by default give it a value
    */
-  const [selectedSection, setSelectedSection] = useState<PiaSections>(
-    PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY,
-  );
+  const [selectedSection, setSelectedSection] = useState<PiaSections>();
 
   /**
    * Async callback for getting comments within a useEffect hook

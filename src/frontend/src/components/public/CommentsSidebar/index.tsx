@@ -28,7 +28,7 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
 
   const [newCommentContent, setNewCommentContent] = useState('');
 
-  const addComment = useCallback(async () => {
+  const addComment = async () => {
     await HttpRequest.post(
       API_ROUTES.PIA_COMMENTS,
       { piaId: piaId, path: path, text: `${newCommentContent}` },
@@ -36,14 +36,25 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
       {},
       true,
     );
-  }, [newCommentContent, path, piaId]);
+    getComments();
+  };
+
+  const deleteComment = async (commentId: string) => {
+    await HttpRequest.delete(
+      API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
+      {},
+      {},
+      true,
+    );
+    getComments();
+  };
   useEffect(() => {
     try {
       getComments();
     } catch (err) {
       console.error(err);
     }
-  }, [piaId, path, getComments, addComment]);
+  }, [piaId, path, getComments]);
   return (
     <div className="d-flex flex-column h-100 overflow-y-auto">
       <h3 className="ps-3">Comments</h3>
@@ -69,7 +80,10 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
                   </button>
                   <ul className="dropdown-menu border-1 shadow-sm">
                     <li role="button">
-                      <button onClick={() => {}} className="dropdown-item">
+                      <button
+                        onClick={() => deleteComment(comment.id)}
+                        className="dropdown-item"
+                      >
                         Delete
                       </button>
                     </li>
@@ -94,15 +108,17 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
               )}
             </div>
           ))}
-        {!comments && (
+        {!path && (
           <p className="ms-3">
             Select &ldquo;View comments&rdquo; on any question to add comment or
             view comments.
           </p>
         )}
-        {comments?.length === 0 && <p className="p-3">No comments yet.</p>}
+        {path && comments?.length === 0 && (
+          <p className="p-3">No comments yet.</p>
+        )}
       </div>
-      {comments && (
+      {path && comments && (
         <>
           <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning">
             <input
