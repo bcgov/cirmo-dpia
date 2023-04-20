@@ -38,6 +38,11 @@ import { HttpRequest } from '../../utils/http-request.util';
 export const PiaFormPrintPreview = () => {
   const { id } = useParams();
 
+  const handlePrintTrigger = () => {
+    // Allowing react to render the page before print preview begins
+    window.setTimeout(() => window.print(), 100);
+  };
+
   const [pia, setPia] = useState<IPiaForm>();
 
   useEffect(() => {
@@ -54,9 +59,6 @@ export const PiaFormPrintPreview = () => {
       if (ignoreDuplicateFetch) return;
 
       setPia(data);
-
-      // Allowing react to render the page before print preview begins
-      window.setTimeout(() => window.print(), 100);
     });
     return () => {
       ignoreDuplicateFetch = true;
@@ -70,7 +72,7 @@ export const PiaFormPrintPreview = () => {
 
       {id && pia && (
         <>
-          <PrintHeader pia={pia} />
+          <PrintHeader pia={pia} onImageLoad={handlePrintTrigger} />
           <h1>{pia?.title}</h1>
           <PiaFormContext.Provider
             value={{

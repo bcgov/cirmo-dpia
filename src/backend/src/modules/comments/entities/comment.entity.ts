@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 
 @Entity('comments')
 export class CommentEntity extends BaseEntity {
@@ -10,9 +10,11 @@ export class CommentEntity extends BaseEntity {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({
-    name: 'pia_id',
-  })
+  @JoinColumn({ name: 'pia_id' })
+  pia: PiaIntakeEntity;
+
+  // Loads id of PIA relation into a new property
+  @RelationId((comment: CommentEntity) => comment.pia)
   piaId: number;
 
   // Section Paths
