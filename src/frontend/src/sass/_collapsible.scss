@@ -1,24 +1,45 @@
 .collapsible {
-  &.collapsible__border-right {
+  &.collapsible__left {
     border-right: 1px solid lightgray;
   }
 
-  &.collapsible__border-left {
-    border-left: 1px solid lightgray;
+  &.collapsible__right {
+    background-color: $bg-white;
+    position: relative;
+
+    &::before {
+      content: '';
+      height: 100%;
+      width: 100%;
+      background-color: inherit;
+      position: absolute;
+      right: -100%;
+      top: 0;
+      z-index: 0;
+    }
+    &--open {
+      width: clamp(20%, 25vw, 35vw);
+    }
   }
 
   .collapsible__header {
     display: flex;
     align-items: center;
-    justify-content: end;
     cursor: pointer;
-    background-color: #f1f1f1;
+    justify-content: end;
+    &-right {
+      justify-content: start;
+    }
   }
 
   .collapsible__icon--closed {
     font-size: x-large;
     padding-inline-end: 1rem;
     padding-block-start: 0.6rem;
+    &-right {
+      padding-inline-end: 0;
+      padding-inline-start: 1rem;
+    }
   }
 
   .collapsible__icon--open {
@@ -26,7 +47,12 @@
     padding-inline: 0.3rem;
     padding-block: 0.8rem;
     border: 1px solid lightgray;
-    border-right: none;
+    &-left {
+      border-right: none;
+    }
+    &-right {
+      border-left: none;
+    }
   }
 
   .collapsible__content {

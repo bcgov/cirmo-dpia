@@ -22,8 +22,11 @@ import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
 import BannerStatus from './BannerStatus';
 import Collapsible from '../../components/common/Collapsible';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
+import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import CommentSidebar from '../../components/public/CommentsSidebar';
+import { Comment } from '../../components/public/CommentsSidebar/interfaces';
+import { PiaSections } from '../../types/enums/pia-sections.enum';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -65,6 +68,7 @@ const PIAFormPage = () => {
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
+
   const mode: PiaFormOpenMode = pathname?.split('/').includes('view')
     ? 'view'
     : 'edit';
@@ -78,6 +82,44 @@ const PIAFormPage = () => {
       setFormReadOnly(false);
     }
   }, [mode]);
+
+  /**
+   * Comments State
+   */
+  const [comments, setComments] = useState<Comment[]>();
+
+  /**
+   * This variable is used to determine which section to show comments for.
+   */
+  const [selectedSection, setSelectedSection] = useState<PiaSections>();
+
+  /**
+   * Async callback for getting comments within a useEffect hook
+   */
+  const getComments = useCallback(async () => {
+    const commentArr: Comment[] = await HttpRequest.get(
+      API_ROUTES.GET_PIA_COMMENTS,
+      {},
+      {},
+      true,
+      {
+        piaId: id,
+        path: selectedSection,
+      },
+    );
+    setComments(commentArr);
+  }, [id, selectedSection]);
+
+  /**
+   * Update the comments array to pass into the CommentSidebar
+   */
+  useEffect(() => {
+    try {
+      getComments();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [getComments]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -716,6 +758,9 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
+          <Collapsible icon={faCommentDots} alignment="right">
+            <CommentSidebar comments={comments} />
+          </Collapsible>
         </div>
 
         <Modal

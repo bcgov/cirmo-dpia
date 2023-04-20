@@ -11,4 +11,5 @@ export const API_ROUTES = {
   CONFIG_FILE: '/api/configuration',
   GET_PIA_INTAKE: '/api/pia-intake/:id',
   PATCH_PIA_INTAKE: '/api/pia-intake/:id',
+  GET_PIA_COMMENTS: '/api/comments',
 };

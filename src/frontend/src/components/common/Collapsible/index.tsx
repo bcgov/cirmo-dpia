@@ -23,13 +23,15 @@ const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
   return (
     <div
       className={`collapsible ${
-        alignment === 'left'
-          ? 'collapsible__border-right'
-          : 'collapsible__border-left'
-      }`}
+        alignment === 'left' ? 'collapsible__left' : ''
+      } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
+      ${isOpen && alignment === 'right' ? 'collapsible__right--open' : ''}`}
     >
       <div
-        className="collapsible__header"
+        className={`collapsible__header ${
+          alignment === 'right' ? 'collapsible__right' : ''
+        }
+        ${isOpen && alignment === 'right' ? 'collapsible__header-right' : ''}`}
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
@@ -42,9 +44,20 @@ const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
               ? faChevronRight
               : icon
           }
-          className={
-            !isOpen ? 'collapsible__icon--closed' : 'collapsible__icon--open'
-          }
+          className={`
+            text-muted 
+            ${!isOpen ? 'collapsible__icon--closed' : 'collapsible__icon--open'}
+            ${
+              !isOpen && alignment === 'right'
+                ? 'collapsible__icon--closed-right'
+                : ''
+            }
+            ${
+              isOpen && alignment === 'right'
+                ? 'collapsible__icon--open-right'
+                : 'collapsible__icon--open-left'
+            }
+          `}
         />
       </div>
       {isOpen && <div className="collapsible__content">{children}</div>}
