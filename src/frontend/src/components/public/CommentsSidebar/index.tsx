@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CommentSidebarProps, { Comment } from './interfaces';
 import { formatDate } from '../../../utils/date';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import { HttpRequest } from '../../../utils/http-request.util';
 
-const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
+const CommentSidebar = ({
+  piaId,
+  path,
+  handleStatusChange,
+}: CommentSidebarProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   /**
@@ -37,9 +41,10 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
       true,
     );
     getComments();
+    handleStatusChange();
   };
 
-  const deleteComment = async (commentId: string) => {
+  const deleteComment = async (commentId: number) => {
     await HttpRequest.delete(
       API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
       {},
@@ -47,6 +52,7 @@ const CommentSidebar = ({ piaId, path }: CommentSidebarProps) => {
       true,
     );
     getComments();
+    handleStatusChange();
   };
   useEffect(() => {
     try {

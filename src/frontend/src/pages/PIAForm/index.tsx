@@ -179,6 +179,10 @@ const PIAFormPage = () => {
   const piaCommentPathHandler = (path: string) => {
     setCommentPath(path);
   };
+  const commentChangeHandler = () => {
+    getCommentCount();
+  };
+
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
 
   const [validationMessages, setValidationMessages] =
@@ -633,7 +637,6 @@ const PIAFormPage = () => {
       handleSubmit(event);
     }
   };
-
   const alertUserLeave = useCallback(
     (e: any) => {
       // if no changes in the form recently, do not show warning leaving the page
@@ -793,7 +796,11 @@ const PIAFormPage = () => {
             alignment="right"
             isVisible={isRightOpen}
           >
-            <CommentSidebar path={commentPath} piaId={pia.id} />
+            <CommentSidebar
+              path={commentPath}
+              piaId={pia.id}
+              handleStatusChange={commentChangeHandler}
+            />
           </Collapsible>
         </div>
 

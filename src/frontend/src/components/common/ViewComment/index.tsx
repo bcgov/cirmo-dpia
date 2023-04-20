@@ -1,14 +1,11 @@
-import CommentsSidebar from '../../public/CommentsSidebar';
-import { useContext, useEffect, useState } from 'react';
-import { PiaSections } from '../../../types/enums/pia-sections.enum';
-
+import { useContext, useState } from 'react';
 import ViewCommentProps from './interfaces';
 import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const ViewComments = ({ comments, path, count }: ViewCommentProps) => {
+const ViewComments = ({ path, count }: ViewCommentProps) => {
   const { piaCollapsibleChangeHandler, piaCommentPathHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const [isRightOpen, setIsRightOpen] = useState(false);

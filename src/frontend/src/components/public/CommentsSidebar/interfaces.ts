@@ -13,4 +13,5 @@ export default interface CommentSidebarProps {
   comments?: Comment[];
   piaId?: number;
   path: string;
+  handleStatusChange: () => void;
 }
