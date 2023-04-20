@@ -334,10 +334,12 @@ const PIAAgreementsAndInformationBanks = () => {
           </div>
           <ViewComments
             count={
-              commentCount[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
-              ]
+              commentCount
+                ? commentCount[
+                    PiaSections
+                      .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+                  ]
+                : 0
             }
             comments={comments}
             path={
@@ -550,10 +552,12 @@ const PIAAgreementsAndInformationBanks = () => {
           </div>
           <ViewComments
             count={
-              commentCount[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
-              ]
+              commentCount
+                ? commentCount[
+                    PiaSections
+                      .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+                  ]
+                : 0
             }
             comments={comments}
             path={

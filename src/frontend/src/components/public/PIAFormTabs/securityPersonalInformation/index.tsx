@@ -314,10 +314,12 @@ export const SecurityPersonalInformation = () => {
             </div>
             <ViewComments
               count={
-                commentCount[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-                ]
+                commentCount
+                  ? commentCount[
+                      PiaSections
+                        .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                    ]
+                  : 0
               }
               comments={comments}
               path={
@@ -440,10 +442,12 @@ export const SecurityPersonalInformation = () => {
               )}
               <ViewComments
                 count={
-                  commentCount[
-                    PiaSections
-                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                  ]
+                  commentCount
+                    ? commentCount[
+                        PiaSections
+                          .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                      ]
+                    : 0
                 }
                 comments={comments}
                 path={
@@ -576,10 +580,12 @@ export const SecurityPersonalInformation = () => {
             </div>
             <ViewComments
               count={
-                commentCount[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-                ]
+                commentCount
+                  ? commentCount[
+                      PiaSections
+                        .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                    ]
+                  : 0
               }
               comments={comments}
               path={

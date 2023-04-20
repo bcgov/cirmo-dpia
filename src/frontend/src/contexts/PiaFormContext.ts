@@ -9,7 +9,7 @@ import { CommentCount } from '../components/common/ViewComment/interfaces';
 export interface IPiaFormContext {
   pia: IPiaForm;
   comments?: Comment[];
-  commentCount: CommentCount;
+  commentCount?: CommentCount;
   piaStateChangeHandler: PiaStateChangeHandlerType;
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;
