@@ -1,18 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CollapsibleProps from './interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
+const Collapsible = ({
+  icon,
+  alignment,
+  children,
+  isVisible = false,
+}: CollapsibleProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleToggle = (): void => {
     setIsOpen(!isOpen);
   };
-
+  useEffect(() => {
+    setIsOpen(isVisible);
+  }, [isVisible]);
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
       event.preventDefault();
