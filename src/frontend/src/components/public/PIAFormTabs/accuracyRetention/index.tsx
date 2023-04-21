@@ -11,10 +11,17 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export const AccuracyCorrectionAndRetention = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -120,6 +127,14 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
+                ]
+              }
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
+            />
           </div>
         </section>
 
@@ -438,6 +453,14 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+                ]
+              }
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
+            />
           </div>
         </section>
 
@@ -692,6 +715,14 @@ export const AccuracyCorrectionAndRetention = () => {
                 </div>
               ) : null
             ) : null}
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
+                ]
+              }
+              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
+            />
           </div>
         </section>
       </form>

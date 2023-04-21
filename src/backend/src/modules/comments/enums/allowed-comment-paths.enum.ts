@@ -12,7 +12,7 @@ export enum AllowedCommentPaths {
 
   'securityPersonalInformation.digitalToolsAndSystems.toolsAndAssessment' = 'securityPersonalInformation.digitalToolsAndSystems.toolsAndAssessment',
   'securityPersonalInformation.digitalToolsAndSystems.storage' = 'securityPersonalInformation.digitalToolsAndSystems.storage',
-  'securityPersonalInformation.accessToPersonalInformation' = 'securityPersonalInformation.digitalToolsAndSystems',
+  'securityPersonalInformation.accessToPersonalInformation' = 'securityPersonalInformation.accessToPersonalInformation',
 
   'accuracyCorrectionAndRetention.accuracy' = 'accuracyCorrectionAndRetention.accuracy',
   'accuracyCorrectionAndRetention.correction' = 'accuracyCorrectionAndRetention.correction',

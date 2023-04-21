@@ -124,6 +124,23 @@ export class HttpRequest {
     });
   }
 
+  public static async delete<T>(
+    endpoint: string,
+    headers: Record<string, string> = {},
+    additionalConfig: Record<string, any> = {},
+    addLocalAuth = true,
+    query: Record<string, any> = {},
+  ) {
+    return this.request<T>({
+      method: 'DELETE',
+      endpoint,
+      headers,
+      additionalConfig,
+      addLocalAuth,
+      query,
+    });
+  }
+
   public static async patch<T>(
     endpoint: string,
     body: Record<string, any>,

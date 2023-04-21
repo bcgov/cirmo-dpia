@@ -11,15 +11,41 @@
   @page {
     size: auto; /* auto is the initial value */
     margin: 12px auto;
-    padding: 50px;
+    margin-bottom:25px;
+    padding: 25pt 50px;
   }
   body {
-    margin: 0px;
+    margin: 12px auto;
     padding: 0px;
     color: #333333;
     font-family: $font-family;
   }
+  p,
+  h1,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  table,
+  ul,
+  li,
+  div,
+  td,
+  th,
+  tr,
+  a,
+  input,
+  textarea,
+  select,
+  button,
+  label,
+  ol {
+    widows: 15; /* ensure at least 3 lines appear at the top of a page */
+    orphans: 15; /* ensure at least 3 lines appear at the bottom of a page */
+  }
 }
+
 html.print-preview {
   * {
     -webkit-print-color-adjust: exact;
@@ -51,11 +77,43 @@ html.print-preview {
     overflow: visible;
   }
 
+  p,
+  h1,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  table,
+  ul,
+  li,
+  div,
+  td,
+  th,
+  tr,
+  a,
+  input,
+  textarea,
+  select,
+  button,
+  label,
+  ol {
+    widows: 5; /* ensure at least 3 lines appear at the top of a page */
+    orphans: 5; /* ensure at least 3 lines appear at the bottom of a page */
+  }
+
   h1 {
-    font-size: 50pt;
+    font-size: 45pt;
+    line-height: 1.2;
+    word-spacing: normal;
+    margin-bottom: 60px;
   }
   h2 {
+    font-size: 30pt;
     text-decoration: underline;
+    padding-bottom: 5px;
+    //display:inline-block;
+    //border-bottom:1.5px solid #333333;
   }
   h3 {
     font-size: 16pt;
@@ -72,7 +130,8 @@ html.print-preview {
   }
   p {
     color: #333333;
-    font-size: 10pt;
+    font-size: 12pt;
+    line-height: 1.6;
   }
 
   .header,
@@ -125,12 +184,33 @@ html.print-preview {
     padding: 0px !important;
   }
 
-  .signatures {
+  .PIAInfoList-container {
+    margin: 0px;
+    padding: 0px;
+    li {
+      list-style: none;
+      margin-bottom: 18px;
+    }
+    p, h4 {
+      margin: 0px;
+      line-height: 1.6;
+    }
+    .PIAInfoName {
+      font-size: 11pt;
+    }
+    .PIAInfoEmail {
+      font-size: 10pt;
+      color: $text-gray;
+    }
+  }
+
+  .signatures, .pageBreak {
     page-break-before: always;
     padding-top: 90px;
   }
   .signature-section:not(:nth-child(2)) {
     page-break-before: always;
+    padding-top: 90px;
   }
   .signature-section {
     .signature-container {
