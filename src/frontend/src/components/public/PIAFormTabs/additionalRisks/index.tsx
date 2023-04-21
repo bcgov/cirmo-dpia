@@ -15,7 +15,6 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 const PIAAdditionalRisks = () => {
   const {
     pia,
-    comments,
     commentCount,
     piaStateChangeHandler,
     isReadOnly,

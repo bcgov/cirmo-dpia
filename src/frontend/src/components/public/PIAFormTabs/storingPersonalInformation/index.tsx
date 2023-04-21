@@ -21,7 +21,6 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 const StoringPersonalInformation = () => {
   const {
     pia,
-    comments,
     commentCount,
     piaStateChangeHandler,
     isReadOnly,

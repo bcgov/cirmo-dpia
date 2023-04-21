@@ -137,7 +137,7 @@ const CommentSidebar = ({
               <div>
                 {comment.text !== null
                   ? comment.text
-                  : `[this comment has been deleted] `}
+                  : `[this comment has been deleted]`}
               </div>
               {comment.replies && comment.replies.length > 0 && (
                 <div className="ml-3">

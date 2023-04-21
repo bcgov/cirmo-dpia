@@ -87,7 +87,6 @@ const PIAFormPage = () => {
   /**
    * Comments State
    */
-  const [comments, setComments] = useState<Comment[]>([]);
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
@@ -96,23 +95,6 @@ const PIAFormPage = () => {
    * by default give it a value
    */
   const [selectedSection, setSelectedSection] = useState<PiaSections>();
-
-  /**
-   * Async callback for getting comments within a useEffect hook
-   */
-  const getComments = useCallback(async () => {
-    const commentArr: Comment[] = await HttpRequest.get(
-      API_ROUTES.GET_PIA_COMMENTS,
-      {},
-      {},
-      true,
-      {
-        piaId: id,
-        path: selectedSection,
-      },
-    );
-    setComments(commentArr);
-  }, [id, selectedSection]);
 
   /**
    * Async callback for getting commentCount within a useEffect hook
@@ -139,15 +121,11 @@ const PIAFormPage = () => {
    */
   useEffect(() => {
     try {
-      if (selectedSection !== undefined) {
-        getComments();
-      }
-
       getCommentCount();
     } catch (err) {
       console.error(err);
     }
-  }, [getCommentCount, getComments, selectedSection]);
+  }, [getCommentCount, selectedSection]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -183,7 +161,7 @@ const PIAFormPage = () => {
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
   };
-  const piaCommentPathHandler = (path: PiaSections) => {
+  const piaCommentPathHandler = (path: PiaSections | undefined) => {
     setSelectedSection(path);
   };
   const commentChangeHandler = () => {
@@ -773,7 +751,6 @@ const PIAFormPage = () => {
               <PiaFormContext.Provider
                 value={{
                   pia,
-                  comments,
                   commentCount,
                   piaCollapsibleChangeHandler,
                   piaCommentPathHandler,

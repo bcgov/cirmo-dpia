@@ -9,7 +9,6 @@ import { CommentCount } from '../components/common/ViewComment/interfaces';
 import { PiaSections } from '../types/enums/pia-sections.enum';
 export interface IPiaFormContext {
   pia: IPiaForm;
-  comments?: Comment[];
   commentCount?: CommentCount;
   piaStateChangeHandler: PiaStateChangeHandlerType;
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
@@ -21,7 +20,6 @@ export interface IPiaFormContext {
 
 export const PiaFormContext = createContext<IPiaFormContext>({
   pia: {},
-  comments: [],
   commentCount: {},
   piaCollapsibleChangeHandler: () => null,
   piaStateChangeHandler: () => null,

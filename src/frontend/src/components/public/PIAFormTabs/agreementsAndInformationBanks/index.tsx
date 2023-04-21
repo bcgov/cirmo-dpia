@@ -20,7 +20,6 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 const PIAAgreementsAndInformationBanks = () => {
   const {
     pia,
-    comments,
     commentCount,
     piaStateChangeHandler,
     isReadOnly,

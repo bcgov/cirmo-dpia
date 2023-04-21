@@ -17,7 +17,6 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 export const AccuracyCorrectionAndRetention = () => {
   const {
     pia,
-    comments,
     commentCount,
     piaStateChangeHandler,
     isReadOnly,
