@@ -82,7 +82,7 @@ describe('AuthController', () => {
      * @Input
      *   - Authorization code
      *
-     * @Output 200
+     * @Output 201
      * it should return the access token (that from Oauth server bc gov keycloak server) to the user
      */
     it('should call the getAccessToken method of the AuthService', async () => {
