@@ -13,6 +13,9 @@
 
   li {
     margin-bottom: 0.75rem;
+    width: 100%;
+    overflow: hidden;
+    padding: 0.2em;
   }
 
   .sidenav__link--blue {
@@ -22,18 +25,24 @@
   .active {
     color: $link-blue;
     font-weight: bold;
-    padding-left: 30px;
-  }
-
-  li {
-    width: 100%;
-    overflow: hidden;
+    padding-inline-start: 2em;
   }
 
   a {
     width: 100%;
     word-break: break-all;
     position: relative;
+    text-decoration: none;
+    color: $link-blue;
+  }
+
+  a:hover {
+    color: $link-blue;
+    text-decoration: underline;
+  }
+
+  a:focus-within {
+    outline: 2px solid $focus;
   }
 
   .active::before {
@@ -55,16 +64,6 @@
     hr {
       width: 80%;
     }
-  }
-
-  a {
-    text-decoration: none;
-    color: $link-blue;
-  }
-
-  a:hover {
-    color: $link-blue;
-    text-decoration: underline;
   }
 
   .sidenav__icon--active {
