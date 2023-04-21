@@ -6,6 +6,7 @@ import {
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { Comment } from '../components/public/CommentsSidebar/interfaces';
 import { CommentCount } from '../components/common/ViewComment/interfaces';
+import { PiaSections } from '../types/enums/pia-sections.enum';
 export interface IPiaFormContext {
   pia: IPiaForm;
   comments?: Comment[];
@@ -14,7 +15,7 @@ export interface IPiaFormContext {
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;
   accessControl?: () => void;
-  piaCommentPathHandler?: (path: string) => void;
+  piaCommentPathHandler?: (path: PiaSections | undefined) => void;
   validationMessage: PiaValidationMessage;
 }
 

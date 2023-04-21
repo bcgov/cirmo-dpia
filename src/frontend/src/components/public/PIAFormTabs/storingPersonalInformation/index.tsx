@@ -381,14 +381,10 @@ const StoringPersonalInformation = () => {
           )}
           <ViewComments
             count={
-              commentCount
-                ? commentCount[
-                    PiaSections
-                      .STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
-                  ]
-                : 0
+              commentCount?.[
+                PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
+              ]
             }
-            comments={comments}
             path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
           />
         </div>
@@ -495,14 +491,11 @@ const StoringPersonalInformation = () => {
             )}
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections
+                    .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                ]
               }
-              comments={comments}
               path={
                 PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
               }
@@ -732,14 +725,11 @@ const StoringPersonalInformation = () => {
                 </div>
                 <ViewComments
                   count={
-                    commentCount
-                      ? commentCount[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
-                        ]
-                      : 0
+                    commentCount?.[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                    ]
                   }
-                  comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
                   }
@@ -816,14 +806,11 @@ const StoringPersonalInformation = () => {
                     )}
                     <ViewComments
                       count={
-                        commentCount
-                          ? commentCount[
-                              PiaSections
-                                .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
-                            ]
-                          : 0
+                        commentCount?.[
+                          PiaSections
+                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                        ]
                       }
-                      comments={comments}
                       path={
                         PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
                       }
@@ -871,14 +858,11 @@ const StoringPersonalInformation = () => {
                 )}
                 <ViewComments
                   count={
-                    commentCount
-                      ? commentCount[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
-                        ]
-                      : 0
+                    commentCount?.[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                    ]
                   }
-                  comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
                   }
@@ -924,14 +908,11 @@ const StoringPersonalInformation = () => {
                 )}
                 <ViewComments
                   count={
-                    commentCount
-                      ? commentCount[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
-                        ]
-                      : 0
+                    commentCount?.[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                    ]
                   }
-                  comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
                   }
@@ -973,14 +954,11 @@ const StoringPersonalInformation = () => {
                 </div>
                 <ViewComments
                   count={
-                    commentCount
-                      ? commentCount[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
-                        ]
-                      : 0
+                    commentCount?.[
+                      PiaSections
+                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                    ]
                   }
-                  comments={comments}
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
                   }

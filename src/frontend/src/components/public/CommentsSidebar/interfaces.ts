@@ -1,3 +1,5 @@
+import { PiaSections } from '../../../types/enums/pia-sections.enum';
+
 export interface Comment {
   id: number;
   piaId: number;
@@ -12,6 +14,6 @@ export interface Comment {
 export default interface CommentSidebarProps {
   comments?: Comment[];
   piaId?: number;
-  path: string;
+  path: PiaSections | undefined;
   handleStatusChange: () => void;
 }

@@ -7,11 +7,14 @@ import { API_ROUTES } from '../../../constant/apiRoutes';
 import { HttpRequest } from '../../../utils/http-request.util';
 import Modal from '../../../components/common/Modal';
 import Messages from './messages';
+import { useLocation } from 'react-router-dom';
+import { AppStorage } from '../../../utils/storage';
 const CommentSidebar = ({
   piaId,
   path,
   handleStatusChange,
 }: CommentSidebarProps) => {
+  const { pathname } = useLocation();
   const [comments, setComments] = useState<Comment[]>([]);
   const [deleteCommentId, setDeleteCommentId] = useState<number>(0);
   //
@@ -22,7 +25,6 @@ const CommentSidebar = ({
   const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
-  const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
   /**
    * Async callback for getting comments within a useEffect hook
@@ -50,6 +52,9 @@ const CommentSidebar = ({
     getComments();
     handleStatusChange();
   };
+  useEffect(() => {
+    setComments([]);
+  }, [pathname]);
   const handleModalClose = async (event: any) => {
     event.preventDefault();
     setShowModal(false);
@@ -72,6 +77,8 @@ const CommentSidebar = ({
     getComments();
     handleStatusChange();
   };
+
+  const loginUserName = AppStorage.getItem<string>('username');
 
   const handleDeleteComment = (commentId: number) => {
     setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
@@ -117,6 +124,9 @@ const CommentSidebar = ({
                       <button
                         onClick={() => handleDeleteComment(comment.id)}
                         className="dropdown-item"
+                        disabled={
+                          comment.createdByDisplayName !== loginUserName
+                        }
                       >
                         Delete
                       </button>

@@ -90,7 +90,6 @@ const PIAFormPage = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
-  const [commentPath, setCommentPath] = useState<string>('');
   const [commentCount, setCommentCount] = useState<CommentCount>({});
   /**
    * This variable is used to determine which section to show comments for.
@@ -130,17 +129,25 @@ const PIAFormPage = () => {
     );
     setCommentCount(count);
   }, [id]);
+
+  useEffect(() => {
+    setSelectedSection(undefined);
+  }, [pathname]);
+  console.log('setSelectedSection', selectedSection);
   /**
    * Update the comments array to pass into the CommentSidebar
    */
   useEffect(() => {
     try {
-      getComments();
+      if (selectedSection !== undefined) {
+        getComments();
+      }
+
       getCommentCount();
     } catch (err) {
       console.error(err);
     }
-  }, [getCommentCount, getComments]);
+  }, [getCommentCount, getComments, selectedSection]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -176,8 +183,8 @@ const PIAFormPage = () => {
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
   };
-  const piaCommentPathHandler = (path: string) => {
-    setCommentPath(path);
+  const piaCommentPathHandler = (path: PiaSections) => {
+    setSelectedSection(path);
   };
   const commentChangeHandler = () => {
     getCommentCount();
@@ -797,7 +804,7 @@ const PIAFormPage = () => {
             isVisible={isRightOpen}
           >
             <CommentSidebar
-              path={commentPath}
+              path={selectedSection}
               piaId={pia.id}
               handleStatusChange={commentChangeHandler}
             />

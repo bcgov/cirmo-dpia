@@ -130,13 +130,10 @@ export const AccuracyCorrectionAndRetention = () => {
             </div>
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
+                ]
               }
-              comments={comments}
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
             />
           </div>
@@ -459,13 +456,10 @@ export const AccuracyCorrectionAndRetention = () => {
             </div>
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+                ]
               }
-              comments={comments}
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
             />
           </div>
@@ -724,13 +718,10 @@ export const AccuracyCorrectionAndRetention = () => {
             ) : null}
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
+                ]
               }
-              comments={comments}
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
             />
           </div>

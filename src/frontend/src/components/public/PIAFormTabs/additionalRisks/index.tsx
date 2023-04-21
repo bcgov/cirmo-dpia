@@ -74,10 +74,7 @@ const PIAAdditionalRisks = () => {
           readOnly={isReadOnly}
         />
         <ViewComments
-          count={
-            commentCount ? commentCount[PiaSections.ADDITIONAL_RISKS_RISKS] : 0
-          }
-          comments={comments}
+          count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
           path={PiaSections.ADDITIONAL_RISKS_RISKS}
         />
       </section>

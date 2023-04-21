@@ -314,14 +314,11 @@ export const SecurityPersonalInformation = () => {
             </div>
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections
-                        .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections
+                    .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                ]
               }
-              comments={comments}
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
               }
@@ -442,14 +439,11 @@ export const SecurityPersonalInformation = () => {
               )}
               <ViewComments
                 count={
-                  commentCount
-                    ? commentCount[
-                        PiaSections
-                          .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                      ]
-                    : 0
+                  commentCount?.[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                  ]
                 }
-                comments={comments}
                 path={
                   PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
                 }
@@ -580,14 +574,11 @@ export const SecurityPersonalInformation = () => {
             </div>
             <ViewComments
               count={
-                commentCount
-                  ? commentCount[
-                      PiaSections
-                        .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-                    ]
-                  : 0
+                commentCount?.[
+                  PiaSections
+                    .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                ]
               }
-              comments={comments}
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
               }

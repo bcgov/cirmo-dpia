@@ -104,11 +104,8 @@ const PIACollectionUseAndDisclosure = () => {
         />
         <ViewComments
           count={
-            commentCount
-              ? commentCount[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
-              : 0
+            commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
           }
-          comments={comments}
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
         />
       </section>
@@ -217,13 +214,10 @@ const PIACollectionUseAndDisclosure = () => {
         </div>
         <ViewComments
           count={
-            commentCount
-              ? commentCount[
-                  PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
-                ]
-              : 0
+            commentCount?.[
+              PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+            ]
           }
-          comments={comments}
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
         />
       </section>
