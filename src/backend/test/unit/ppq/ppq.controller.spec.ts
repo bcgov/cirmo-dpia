@@ -51,7 +51,7 @@ describe('PpqController', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
   });
-  describe('postForm', () => {
+  describe('ppqForm', () => {
     /**
      * @Description
      * This test validates the happy flow if the method `Service.create` is called with correct mock data
@@ -125,7 +125,7 @@ describe('PpqController', () => {
      *  - Request
      *  - Response
      *
-     * @Output
+     * @Output 200
      *  - pdf buffer
      */
     it('should call the downloadPpqResultPdf method and return the result', async () => {

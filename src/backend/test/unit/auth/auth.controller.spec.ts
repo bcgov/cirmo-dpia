@@ -62,7 +62,7 @@ describe('AuthController', () => {
      * @Input
      *   - empty input
      *
-     * @Output 201
+     * @Output 200
      * it should return the OAuth server URL
      */
     it('should call the getUrlLogin method of the AuthService', () => {
@@ -82,7 +82,7 @@ describe('AuthController', () => {
      * @Input
      *   - Authorization code
      *
-     * @Output 201
+     * @Output 200
      * it should return the access token (that from Oauth server bc gov keycloak server) to the user
      */
     it('should call the getAccessToken method of the AuthService', async () => {
@@ -102,7 +102,7 @@ describe('AuthController', () => {
      * @Input
      *   - empty input
      *
-     * @Output 201
+     * @Output 200
      * it should return without any data
      */
     it('should return if no code provide from request', async () => {
@@ -121,7 +121,7 @@ describe('AuthController', () => {
      *   - accessToken
      *   - request
      *
-     * @Output 201
+     * @Output 200
      * it should return without any data
      */
     it('should return if authorization does not use bearer ', async () => {
@@ -138,7 +138,7 @@ describe('AuthController', () => {
      * @Input
      *   -Request
      *
-     * @Output 201
+     * @Output 200
      * it should return kcUserInfo
      */
     it('should call the getUserInfo method of the AuthService', async () => {
@@ -164,7 +164,7 @@ describe('AuthController', () => {
      * @Input
      *   - AppTokensDto
      *
-     * @Output 201
+     * @Output 200
      * it should return the new access token
      */
     it('should call the refreshAccessToken method of the AuthService', async () => {
@@ -245,7 +245,7 @@ describe('AuthController', () => {
      * @Input
      *   - AppTokensDto
      *
-     * @Output 201
+     * @Output 200
      *   - no output
      */
     it('should call the logout method of the AuthService', async () => {
