@@ -31,7 +31,7 @@ const CommentSidebar = ({
    */
   const getComments = useCallback(async () => {
     const commentArr: Comment[] = await HttpRequest.get(
-      API_ROUTES.GET_PIA_COMMENTS,
+      API_ROUTES.PIA_COMMENTS,
       {},
       {},
       true,
