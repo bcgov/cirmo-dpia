@@ -115,7 +115,6 @@ const PIAFormPage = () => {
   useEffect(() => {
     setSelectedSection(undefined);
   }, [pathname]);
-  console.log('setSelectedSection', selectedSection);
   /**
    * Update the comments array to pass into the CommentSidebar
    */

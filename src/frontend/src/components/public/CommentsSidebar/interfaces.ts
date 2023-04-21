@@ -6,6 +6,7 @@ export interface Comment {
   path: string;
   text: string;
   isResolved: boolean;
+  isActive: boolean;
   createdByDisplayName: string;
   updatedAt: string;
   replies?: Comment[];
