@@ -90,6 +90,7 @@ const PIAFormPage = () => {
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
+
   /**
    * This variable is used to determine which section to show comments for.
    * by default give it a value
@@ -116,7 +117,7 @@ const PIAFormPage = () => {
     setSelectedSection(undefined);
   }, [pathname]);
   /**
-   * Update the comments array to pass into the CommentSidebar
+   * Update the comment count object to pass into the every tab
    */
   useEffect(() => {
     try {
@@ -159,6 +160,21 @@ const PIAFormPage = () => {
 
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
+    if (isOpen === true && isLeftOpen === true) {
+      setIsLeftOpen(false);
+    }
+  };
+  const handleVisibleChange = (isLeft: boolean, isRight: boolean) => {
+    if (isLeft === true && isRightOpen === false) setIsLeftOpen(true);
+    else if (isLeft === true && isRightOpen === true) {
+      setIsRightOpen(false);
+      setIsLeftOpen(true);
+    }
+    if (isRight === true && isLeftOpen === false) setIsRightOpen(true);
+    else if (isRight === true && isLeftOpen === true) {
+      setIsRightOpen(true);
+      setIsLeftOpen(false);
+    }
   };
   const piaCommentPathHandler = (path: PiaSections | undefined) => {
     setSelectedSection(path);
@@ -724,7 +740,12 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <Collapsible icon={faBars} alignment="left" isVisible={isLeftOpen}>
+          <Collapsible
+            icon={faBars}
+            alignment="left"
+            isVisible={isLeftOpen}
+            onVisibleChange={handleVisibleChange}
+          >
             <section className="side-nav__container">
               <PIASideNav
                 pia={pia}
@@ -778,6 +799,7 @@ const PIAFormPage = () => {
             icon={faCommentDots}
             alignment="right"
             isVisible={isRightOpen}
+            onVisibleChange={handleVisibleChange}
           >
             <CommentSidebar
               path={selectedSection}

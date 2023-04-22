@@ -11,15 +11,24 @@ const Collapsible = ({
   alignment,
   children,
   isVisible = false,
+  onVisibleChange,
 }: CollapsibleProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const handleToggle = (): void => {
     setIsOpen(!isOpen);
+
+    if (alignment === 'left') {
+      onVisibleChange(!isOpen, undefined);
+    }
+    if (alignment === 'right') {
+      onVisibleChange(undefined, !isOpen);
+    }
   };
+
   useEffect(() => {
     setIsOpen(isVisible);
   }, [isVisible]);
+
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
       event.preventDefault();
