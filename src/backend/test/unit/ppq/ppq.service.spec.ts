@@ -40,12 +40,20 @@ describe('PpqService', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
+  /**
+   * @Description
+   * Dummy test to check if the service is defined
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(ppqRepository).toBeDefined();
   });
-
+  /**
+   * @Description
+   * These set of tests validates that getPpqById method returns the data pertaining to user's permissions.
+   *
+   * @method getPpqById
+   */
   describe('getPpqById', () => {
     it('should call the findOneBy method of the repository', async () => {
       const ppqForm = new PpqEntity();
@@ -56,7 +64,13 @@ describe('PpqService', () => {
       expect(result).toEqual(ppqForm);
     });
   });
-
+  /**
+   * @Description
+   * These set of tests validates that the method passes the correct values to the repository,
+   * mocking the database save operation.
+   *
+   * @method createPpq
+   */
   describe('createPpq', () => {
     it('should call the save method of the repository and return the result', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -83,7 +97,13 @@ describe('PpqService', () => {
       expect(result).toEqual({ id: createPpqResultRo.id });
     });
   });
-
+  /**
+   * @Description
+   * These set of tests validates that the pugToPdf method is only when the ppq id is valid
+   * and the method returns the correct pdf buffer value back.
+   *
+   * @method downloadPpqResultPdf
+   */
   describe('downloadPpqResultPdf', () => {
     const pugToPdfBufferSpy = jest
       .spyOn(pdfHelper, 'pugToPdfBuffer')
@@ -102,6 +122,29 @@ describe('PpqService', () => {
       markedParseSpy.mockClear();
       shortDateSpy.mockClear();
     });
+    /**
+     * This test validates that the method returns null if the provided ppq id does not exist
+     *
+     * @Input
+     *   - ppq id
+     *
+     * @Output
+     *   - empty return(null)
+     */
+    it('should return null when ppqForm does not exist', async () => {
+      jest.spyOn(service, 'getPpqById').mockResolvedValue(null);
+      const result = await service.downloadPpqResultPdf(1);
+      expect(result).toBeNull();
+    });
+    /**
+     * This test validates that the method returns the pdf buffer of the provided ppq id
+     *
+     * @Input
+     *   - ppq id
+     *
+     * @Output
+     *   - pdf buffer content
+     */
     it('should call the getPpqById method', async () => {
       const getPpqEntity = { ...ppqEntityMock };
       const mockPdfBuffer: Buffer = Buffer.from('Test Buffer');

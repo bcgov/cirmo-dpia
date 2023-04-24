@@ -44,6 +44,7 @@ const CommentSidebar = ({
       setComments(commentArr);
     }
   }, [piaId, path]);
+
   const deleteComment = async (commentId: number) => {
     await HttpRequest.delete(
       API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
@@ -54,14 +55,17 @@ const CommentSidebar = ({
     getComments();
     handleStatusChange();
   };
+
   useEffect(() => {
     setComments([]);
   }, [pathname]);
+
   const handleModalClose = async (event: any) => {
     event.preventDefault();
     setShowModal(false);
     await deleteComment(deleteCommentId);
   };
+
   const handleModalCancel = () => {
     setShowModal(false);
   };
@@ -91,6 +95,7 @@ const CommentSidebar = ({
     setDeleteCommentId(commentId);
     setShowModal(true);
   };
+
   useEffect(() => {
     try {
       getComments();
@@ -98,8 +103,9 @@ const CommentSidebar = ({
       console.error(err);
     }
   }, [piaId, path, getComments]);
+
   return (
-    <div className="d-flex flex-column h-100 overflow-y-auto">
+    <div className="d-flex flex-column h-100 overflow-y-auto position-relative">
       <h3 className="ps-3">Comments</h3>
       <div className="flex-grow-1">
         {comments &&
@@ -172,7 +178,7 @@ const CommentSidebar = ({
       </div>
       {path && comments && (
         <>
-          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning">
+          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning position-fixed w-25 bottom-0 start-75 me-5 bg-white">
             <input
               type="text"
               className="form-control mr-3"
