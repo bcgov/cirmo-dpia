@@ -103,9 +103,9 @@ const CommentSidebar = ({
   }, [piaId, path, getComments]);
 
   return (
-    <div className="d-flex flex-column h-100 overflow-y-auto position-relative">
+    <div className="d-flex flex-column justify-content-end bg-white overflow-y-auto position-relative">
       <h3 className="ps-3">Comments</h3>
-      <div className="flex-grow-1">
+      <div className="flex-grow-1 mb-5">
         {comments &&
           comments?.map((comment) => (
             <div className="p-3" key={comment.id}>
@@ -176,7 +176,7 @@ const CommentSidebar = ({
       </div>
       {path && comments && (
         <>
-          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning position-fixed w-25 bottom-0 start-75 me-5 bg-white">
+          <div className="d-flex flex-column ms-3 mt-auto p-3 gap-3 border-top border-3 border-warning w-100 justify-self-end">
             <input
               type="text"
               className="form-control mr-3"

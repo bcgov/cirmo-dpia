@@ -29,7 +29,7 @@ const Collapsible = ({
 
   return (
     <div
-      className={`collapsible ${
+      className={`collapsible vh-100 ${
         alignment === 'left' ? 'collapsible__left' : ''
       } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
       ${isOpen && alignment === 'right' ? 'collapsible__right--open' : ''}`}
