@@ -11,15 +11,14 @@ const Collapsible = ({
   alignment,
   children,
   isVisible = false,
+  onOpenHandler,
+  setIsVisible,
 }: CollapsibleProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const handleToggle = (): void => {
-    setIsOpen(!isOpen);
+    setIsVisible?.(!isVisible);
+    onOpenHandler?.();
   };
-  useEffect(() => {
-    setIsOpen(isVisible);
-  }, [isVisible]);
+
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
       event.preventDefault();
@@ -32,42 +31,48 @@ const Collapsible = ({
       className={`collapsible ${
         alignment === 'left' ? 'collapsible__left' : ''
       } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
-      ${isOpen && alignment === 'right' ? 'collapsible__right--open' : ''}`}
+      ${isVisible && alignment === 'right' ? 'collapsible__right--open' : ''}`}
     >
       <div
         className={`collapsible__header ${
           alignment === 'right' ? 'collapsible__right' : ''
         }
-        ${isOpen && alignment === 'right' ? 'collapsible__header-right' : ''}`}
+        ${
+          isVisible && alignment === 'right' ? 'collapsible__header-right' : ''
+        }`}
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
       >
         <FontAwesomeIcon
           icon={
-            isOpen && alignment === 'left'
+            isVisible && alignment === 'left'
               ? faChevronLeft
-              : isOpen && alignment === 'right'
+              : isVisible && alignment === 'right'
               ? faChevronRight
               : icon
           }
           className={`
             text-muted 
-            ${!isOpen ? 'collapsible__icon--closed' : 'collapsible__icon--open'}
             ${
-              !isOpen && alignment === 'right'
+              !isVisible
+                ? 'collapsible__icon--closed'
+                : 'collapsible__icon--open'
+            }
+            ${
+              !isVisible && alignment === 'right'
                 ? 'collapsible__icon--closed-right'
                 : ''
             }
             ${
-              isOpen && alignment === 'right'
+              isVisible && alignment === 'right'
                 ? 'collapsible__icon--open-right'
                 : 'collapsible__icon--open-left'
             }
           `}
         />
       </div>
-      {isOpen && <div className="collapsible__content">{children}</div>}
+      {isVisible && <div className="collapsible__content">{children}</div>}
     </div>
   );
 };

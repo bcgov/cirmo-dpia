@@ -30,17 +30,19 @@ const CommentSidebar = ({
    * Async callback for getting comments within a useEffect hook
    */
   const getComments = useCallback(async () => {
-    const commentArr: Comment[] = await HttpRequest.get(
-      API_ROUTES.PIA_COMMENTS,
-      {},
-      {},
-      true,
-      {
-        piaId: piaId,
-        path: path,
-      },
-    );
-    setComments(commentArr);
+    if (path !== undefined) {
+      const commentArr: Comment[] = await HttpRequest.get(
+        API_ROUTES.PIA_COMMENTS,
+        {},
+        {},
+        true,
+        {
+          piaId: piaId,
+          path: path,
+        },
+      );
+      setComments(commentArr);
+    }
   }, [piaId, path]);
 
   const deleteComment = async (commentId: number) => {
