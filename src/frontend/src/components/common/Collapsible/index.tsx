@@ -11,6 +11,7 @@ const Collapsible = ({
   alignment,
   children,
   isVisible = false,
+  fullHeight = false,
 }: CollapsibleProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -29,16 +30,14 @@ const Collapsible = ({
 
   return (
     <div
-      className={`collapsible vh-100 ${
+      className={`collapsible ${fullHeight ? 'h-100' : ''} ${
         alignment === 'left' ? 'collapsible__left' : ''
-      } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
-      ${isOpen && alignment === 'right' ? 'collapsible__right--open' : ''}`}
+      }`}
     >
       <div
         className={`collapsible__header ${
-          alignment === 'right' ? 'collapsible__right' : ''
-        }
-        ${isOpen && alignment === 'right' ? 'collapsible__header-right' : ''}`}
+          isOpen && alignment === 'right' ? 'collapsible__header-right' : ''
+        }`}
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}

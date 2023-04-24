@@ -6,4 +6,5 @@ export default interface CollapsibleProps {
   children: ReactNode;
   alignment: string;
   isVisible?: boolean;
+  fullHeight?: boolean;
 }

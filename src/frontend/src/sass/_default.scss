@@ -247,3 +247,7 @@ a {
     z-index: 999;
   }
 }
+
+.container__side--form {
+  height: calc(100vh - $header-height - $navbar-height - 9rem);
+}
