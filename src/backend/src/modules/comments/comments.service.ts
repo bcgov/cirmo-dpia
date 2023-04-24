@@ -131,7 +131,11 @@ export class CommentsService {
     return getFormattedCommentsCount(commentsCount);
   }
 
-  async remove(id: number, user: KeycloakUser, userRoles: Array<RolesEnum>) {
+  async remove(
+    id: number,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ): Promise<CommentRO> {
     // fetch comment
     const comment = await this.findOneBy({ id });
 
