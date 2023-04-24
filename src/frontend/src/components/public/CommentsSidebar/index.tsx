@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import CommentSidebarProps, { Comment } from './interfaces';
-import { formatDate } from '../../../utils/date';
+import { getDateTime, stringToDate } from '../../../utils/date';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_ROUTES } from '../../../constant/apiRoutes';
@@ -113,7 +113,7 @@ const CommentSidebar = ({
                 <p className="fw-bold">
                   {comment.createdByDisplayName}
                   <span className="ps-1 text-muted fw-normal">
-                    {formatDate(comment.updatedAt)}
+                    {getDateTime(stringToDate(comment.updatedAt))}
                   </span>
                 </p>
                 <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
@@ -154,7 +154,7 @@ const CommentSidebar = ({
                       <div className="font-weight-bold">
                         {reply.createdByDisplayName}
                         <span className="ps-1 text-muted">
-                          {formatDate(reply.updatedAt)}
+                          {getDateTime(stringToDate(reply.updatedAt))}
                         </span>
                       </div>
                       <div>{reply.text}</div>
