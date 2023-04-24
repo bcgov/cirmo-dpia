@@ -160,21 +160,6 @@ const PIAFormPage = () => {
 
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
-    if (isOpen === true && isLeftOpen === true) {
-      setIsLeftOpen(false);
-    }
-  };
-  const handleVisibleChange = (isLeft: boolean, isRight: boolean) => {
-    if (isLeft === true && isRightOpen === false) setIsLeftOpen(true);
-    else if (isLeft === true && isRightOpen === true) {
-      setIsRightOpen(false);
-      setIsLeftOpen(true);
-    }
-    if (isRight === true && isLeftOpen === false) setIsRightOpen(true);
-    else if (isRight === true && isLeftOpen === true) {
-      setIsRightOpen(true);
-      setIsLeftOpen(false);
-    }
   };
   const piaCommentPathHandler = (path: PiaSections | undefined) => {
     setSelectedSection(path);
@@ -744,7 +729,10 @@ const PIAFormPage = () => {
             icon={faBars}
             alignment="left"
             isVisible={isLeftOpen}
-            onVisibleChange={handleVisibleChange}
+            onOpenHandler={() => {
+              setIsRightOpen(false);
+            }}
+            setIsVisible={setIsLeftOpen}
           >
             <section className="side-nav__container">
               <PIASideNav
@@ -799,7 +787,10 @@ const PIAFormPage = () => {
             icon={faCommentDots}
             alignment="right"
             isVisible={isRightOpen}
-            onVisibleChange={handleVisibleChange}
+            onOpenHandler={() => {
+              setIsLeftOpen(false);
+            }}
+            setIsVisible={setIsRightOpen}
           >
             <CommentSidebar
               path={selectedSection}
