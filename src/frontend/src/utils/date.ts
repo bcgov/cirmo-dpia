@@ -36,21 +36,54 @@ export const formatDate = (dateString: string) => {
   if (!match) {
     throw new Error('Invalid date string');
   }
-  const year = match[1];
-  const month = match[2];
-  const day = match[3];
-  const hour = parseInt(match[4], 10);
-  const minute = match[5];
-  const offset = match[6];
+  // Parse the input datetime string into a Date object
+  const inputDate = new Date(dateString);
+
+  // Create a new Date object with the current local time
+  const currentDate = new Date();
+
+  // Calculate the local timezone offset in minutes
+  const localOffset = currentDate.getTimezoneOffset() * 60 * 1000;
+
+  // Vancouver is in the Pacific Time Zone (PT), which is -7 hours or -8 hours from UTC
+  // depending on daylight saving time (DST)
+  const standardOffset = -8 * 60 * 60 * 1000;
+  const DSTOffset = -7 * 60 * 60 * 1000;
+
+  // Get the current year to check for daylight saving time in Vancouver
+  const currentYear = currentDate.getFullYear();
+
+  // Vancouver's daylight saving time starts on the second Sunday in March at 2 AM
+  const dstStart = new Date(
+    currentYear,
+    2,
+    14 - (new Date(currentYear, 2, 1).getDay() || 7) + 1,
+    2,
+  );
+  // and ends on the first Sunday in November at 2 AM
+  const dstEnd = new Date(
+    currentYear,
+    10,
+    7 - (new Date(currentYear, 10, 1).getDay() || 7) + 1,
+    2,
+  );
+
+  // Determine if the current local time is within Vancouver's daylight saving time
+  const isDST = currentDate >= dstStart && currentDate < dstEnd;
+
+  // Calculate the Vancouver timezone offset based on daylight saving time
+  const calculatedOffset = isDST ? DSTOffset : standardOffset;
+
+  // Calculate the Vancouver local time by applying the offsets
+  const localDate = new Date(
+    inputDate.getTime() - calculatedOffset - localOffset,
+  );
+
+  // Format the Vancouver local time as the desired string format
+  const hour = localDate.getHours();
   const period = hour < 12 ? 'AM' : 'PM';
   const formattedHour = hour % 12 || 12;
-  const utcDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:00.000Z`);
-  const localDate = new Date(
-    utcDate.getTime() + (parseInt(offset, 10) / 60) * 60 * 1000,
-  );
-  return `${localDate.getFullYear()}/${formatNumber(
-    localDate.getMonth() + 1,
-  )}/${formatNumber(localDate.getDate())} ${formattedHour}:${formatNumber(
+  return ` ${dateToString(inputDate)} ${formattedHour}:${formatNumber(
     localDate.getMinutes(),
   )} ${period}`;
 };
