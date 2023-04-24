@@ -25,7 +25,6 @@ import Collapsible from '../../components/common/Collapsible';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
-import { Comment } from '../../components/public/CommentsSidebar/interfaces';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 
@@ -160,6 +159,9 @@ const PIAFormPage = () => {
 
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
+    if (isOpen === true && isLeftOpen === true) {
+      setIsLeftOpen(false);
+    }
   };
   const piaCommentPathHandler = (path: PiaSections | undefined) => {
     setSelectedSection(path);

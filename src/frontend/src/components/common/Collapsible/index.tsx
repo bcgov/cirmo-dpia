@@ -15,15 +15,9 @@ const Collapsible = ({
   setIsVisible,
 }: CollapsibleProps) => {
   const handleToggle = (): void => {
-    console.log('isvisible value', isVisible);
     setIsVisible?.(!isVisible);
+    onOpenHandler?.();
   };
-
-  useEffect(() => {
-    if (isVisible) {
-      onOpenHandler?.();
-    }
-  }, [isVisible, onOpenHandler]);
 
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
