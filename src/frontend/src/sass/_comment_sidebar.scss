@@ -1,0 +1,11 @@
+.comment-sidebar__comments-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 60vh;
+}
+
+.comment-sidebar__add-comment {
+  padding-block: 1.5rem;
+  border-top: 0.3em solid $warning;
+  background-color: $bg-white;
+}

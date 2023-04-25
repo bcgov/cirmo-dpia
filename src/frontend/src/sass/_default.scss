@@ -149,6 +149,7 @@ a {
 .component__container {
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
 }
 
@@ -249,5 +250,8 @@ a {
 }
 
 .container__side--form {
-  height: calc(100vh - $header-height - $navbar-height - 9rem);
+  height: 80vh;
+  max-width: 30%;
+  position: sticky;
+  top: 0;
 }

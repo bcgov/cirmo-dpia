@@ -774,7 +774,7 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
-          <div className="container__side--form bg-white ms-3">
+          <div className="container__side--form bg-white ms-3 justify-self-start position-sticky top-0 overflow-y-scroll pe-4">
             <Collapsible
               icon={faCommentDots}
               alignment="right"

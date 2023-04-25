@@ -103,9 +103,9 @@ const CommentSidebar = ({
   }, [piaId, path, getComments]);
 
   return (
-    <div className="d-flex flex-column justify-content-end bg-white overflow-y-auto position-relative">
+    <div className="d-flex flex-column bg-white comment-sidebar">
       <h3 className="ps-3">Comments</h3>
-      <div className="flex-grow-1 mb-5">
+      <div className="comment-sidebar__comments-container">
         {comments &&
           comments?.map((comment) => (
             <div className="p-3" key={comment.id}>
@@ -175,41 +175,39 @@ const CommentSidebar = ({
         )}
       </div>
       {path && comments && (
-        <>
-          <div className="d-flex flex-column ms-3 mt-auto p-3 gap-3 border-top border-3 border-warning w-100 justify-self-end">
-            <input
-              type="text"
-              className="form-control mr-3"
-              placeholder="Write a comment..."
-              value={newCommentContent}
-              onChange={(e) => setNewCommentContent(e.target.value)}
-              aria-label="New comment text input"
-            />
-            <div
-              className="d-flex gap-2 btn-group justify-content-end"
-              role="group"
-              aria-label="New comment button group"
+        <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
+          <input
+            type="text"
+            className="form-control mr-3"
+            placeholder="Write a comment..."
+            value={newCommentContent}
+            onChange={(e) => setNewCommentContent(e.target.value)}
+            aria-label="New comment text input"
+          />
+          <div
+            className="d-flex gap-2 btn-group justify-content-end"
+            role="group"
+            aria-label="New comment button group"
+          >
+            <button
+              type="button"
+              className="bcgovbtn bcgovbtn__tertiary mr-2"
+              onClick={() => setNewCommentContent('')}
             >
-              <button
-                type="button"
-                className="bcgovbtn bcgovbtn__tertiary mr-2"
-                onClick={() => setNewCommentContent('')}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="bcgovbtn bcgovbtn__secondary"
-                onClick={() => {
-                  addComment();
-                  setNewCommentContent('');
-                }}
-              >
-                Add
-              </button>
-            </div>
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="bcgovbtn bcgovbtn__secondary"
+              onClick={() => {
+                addComment();
+                setNewCommentContent('');
+              }}
+            >
+              Add
+            </button>
           </div>
-        </>
+        </div>
       )}
       <Modal
         confirmLabel={modalConfirmLabel}

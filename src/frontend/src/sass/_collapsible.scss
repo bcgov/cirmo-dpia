@@ -3,31 +3,6 @@
     border-right: 1px solid lightgray;
   }
 
-  &.collapsible__right {
-    background-color: $bg-white;
-    position: relative;
-
-    // This allows the background color to extend to the edge of the browser window
-    &::before {
-      content: '';
-      height: 100%;
-      width: 120%;
-      background-color: inherit;
-      position: absolute;
-      right: -120%;
-      top: 0;
-      z-index: 0;
-    }
-
-    &--open {
-      width: clamp(20%, 25vw, 35vw);
-
-      &::before {
-        height: 112.6%; // Magic number to make the background color extend to the bottom of the content
-      }
-    }
-  }
-
   .collapsible__header {
     display: flex;
     align-items: center;
