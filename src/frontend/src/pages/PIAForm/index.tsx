@@ -25,7 +25,6 @@ import Collapsible from '../../components/common/Collapsible';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
-import { Comment } from '../../components/public/CommentsSidebar/interfaces';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 
@@ -90,6 +89,7 @@ const PIAFormPage = () => {
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
   const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
+
   /**
    * This variable is used to determine which section to show comments for.
    * by default give it a value
@@ -116,7 +116,7 @@ const PIAFormPage = () => {
     setSelectedSection(undefined);
   }, [pathname]);
   /**
-   * Update the comments array to pass into the CommentSidebar
+   * Update the comment count object to pass into the every tab
    */
   useEffect(() => {
     try {
@@ -159,6 +159,9 @@ const PIAFormPage = () => {
 
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
+    if (isOpen === true && isLeftOpen === true) {
+      setIsLeftOpen(false);
+    }
   };
   const piaCommentPathHandler = (path: PiaSections | undefined) => {
     setSelectedSection(path);
@@ -724,7 +727,15 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <Collapsible icon={faBars} alignment="left" isVisible={isLeftOpen}>
+          <Collapsible
+            icon={faBars}
+            alignment="left"
+            isVisible={isLeftOpen}
+            onOpenHandler={() => {
+              setIsRightOpen(false);
+            }}
+            setIsVisible={setIsLeftOpen}
+          >
             <section className="side-nav__container">
               <PIASideNav
                 pia={pia}

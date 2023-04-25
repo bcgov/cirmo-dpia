@@ -11,16 +11,14 @@ const Collapsible = ({
   alignment,
   children,
   isVisible = false,
+
   fullHeight = false,
 }: CollapsibleProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const handleToggle = (): void => {
-    setIsOpen(!isOpen);
+    setIsVisible?.(!isVisible);
+    onOpenHandler?.();
   };
-  useEffect(() => {
-    setIsOpen(isVisible);
-  }, [isVisible]);
+
   const handleKeyDown = (event: any) => {
     if (event.code === 'Enter') {
       event.preventDefault();
@@ -44,29 +42,33 @@ const Collapsible = ({
       >
         <FontAwesomeIcon
           icon={
-            isOpen && alignment === 'left'
+            isVisible && alignment === 'left'
               ? faChevronLeft
-              : isOpen && alignment === 'right'
+              : isVisible && alignment === 'right'
               ? faChevronRight
               : icon
           }
           className={`
             text-muted 
-            ${!isOpen ? 'collapsible__icon--closed' : 'collapsible__icon--open'}
             ${
-              !isOpen && alignment === 'right'
+              !isVisible
+                ? 'collapsible__icon--closed'
+                : 'collapsible__icon--open'
+            }
+            ${
+              !isVisible && alignment === 'right'
                 ? 'collapsible__icon--closed-right'
                 : ''
             }
             ${
-              isOpen && alignment === 'right'
+              isVisible && alignment === 'right'
                 ? 'collapsible__icon--open-right'
                 : 'collapsible__icon--open-left'
             }
           `}
         />
       </div>
-      {isOpen && <div className="collapsible__content">{children}</div>}
+      {isVisible && <div className="collapsible__content">{children}</div>}
     </div>
   );
 };
