@@ -283,9 +283,9 @@ export const PIAFormIntake = () => {
 
           <ViewComments
             count={
-              commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTIONS]
+              commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
             }
-            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTIONS}
+            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION}
           />
         </div>
       </section>
