@@ -134,6 +134,7 @@ describe('PiaIntakeService', () => {
         updatedByUsername: user.idir_username,
         updatedByDisplayName: user.display_name,
         drafterEmail: user.email,
+        drafterName: user.display_name,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
@@ -207,6 +208,7 @@ describe('PiaIntakeService', () => {
         updatedByUsername: user.idir_username,
         updatedByDisplayName: user.display_name,
         drafterEmail: user.email,
+        drafterName: user.display_name,
       });
 
       expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntity, [
