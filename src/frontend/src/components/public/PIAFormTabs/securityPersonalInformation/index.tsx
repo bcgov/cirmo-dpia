@@ -25,7 +25,22 @@ export const SecurityPersonalInformation = () => {
   } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
+  const [sectionClickState, setSectionClickState] = useState({
+    digitalTools: false,
+    storage: false,
+    accessToPI: false,
+  });
 
+  const handleCommentClick = (
+    section: 'digitalTools' | 'storage' | 'accessToPI',
+  ) => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      digitalTools: section === 'digitalTools',
+      storage: section === 'storage',
+      accessToPI: section === 'accessToPI',
+    }));
+  };
   const defaultState: ISecurityPersonalInformation = useMemo(
     () => ({
       digitalToolsAndSystems: {
@@ -83,7 +98,11 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.DigitalTools.SectionTitle.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              sectionClickState.digitalTools ? 'section-focus' : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p>
                 <strong>
@@ -321,12 +340,17 @@ export const SecurityPersonalInformation = () => {
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
               }
+              onCommentClick={() => handleCommentClick('digitalTools')}
             />
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
             .toolsAndAssessment.haveSecurityAssessment === YesNoInput.NO && (
-            <div className="section__margin-block drop-shadow card p-4 p-md-5">
+            <div
+              className={`section__margin-block drop-shadow card p-4 p-md-5 ${
+                sectionClickState.storage ? 'section-focus' : ''
+              }`}
+            >
               {!isReadOnly ? (
                 <p>
                   <strong>
@@ -446,6 +470,7 @@ export const SecurityPersonalInformation = () => {
                 path={
                   PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
                 }
+                onCommentClick={() => handleCommentClick('storage')}
               />
             </div>
           )}
@@ -455,7 +480,11 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.AccessPI.SectionTitle.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              sectionClickState.accessToPI ? 'section-focus' : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>
@@ -581,6 +610,7 @@ export const SecurityPersonalInformation = () => {
               path={
                 PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
               }
+              onCommentClick={() => handleCommentClick('accessToPI')}
             />
           </div>
         </section>

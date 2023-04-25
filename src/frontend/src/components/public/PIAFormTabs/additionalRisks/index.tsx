@@ -38,9 +38,14 @@ const PIAAdditionalRisks = () => {
   const [additionalRisksForm, setAdditionalRisksForm] =
     useState<IAdditionalRisks>(initialFormState);
 
-  const [isViewCommentClicked, setIsViewCommentClicked] = useState(false);
-  const handleCommentClick = () => {
-    setIsViewCommentClicked(true);
+  const [sectionClickState, setSectionClickState] = useState({
+    additionalRisk: false,
+  });
+  const handleCommentClick = (section: 'additionalRisk') => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      additionalRisk: section === 'additionalRisk',
+    }));
   };
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
@@ -66,7 +71,7 @@ const PIAAdditionalRisks = () => {
 
       <section
         className={`drop-shadow card p-4 p-md-5 ${
-          isViewCommentClicked ? 'section--focus' : ''
+          sectionClickState.additionalRisk ? 'section-focus' : ''
         }`}
       >
         <Table
@@ -83,7 +88,7 @@ const PIAAdditionalRisks = () => {
         <ViewComments
           count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
           path={PiaSections.ADDITIONAL_RISKS_RISKS}
-          onCommentClick={handleCommentClick}
+          onCommentClick={() => handleCommentClick('additionalRisk')}
         />
       </section>
     </>

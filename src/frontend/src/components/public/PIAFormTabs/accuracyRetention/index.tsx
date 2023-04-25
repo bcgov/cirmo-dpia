@@ -70,6 +70,22 @@ export const AccuracyCorrectionAndRetention = () => {
     accuracyCorrectionAndRetentionForm,
     initialFormState,
   ]);
+  const [sectionClickState, setSectionClickState] = useState({
+    accuracy: false,
+    correction: false,
+    retention: false,
+  });
+
+  const handleCommentClick = (
+    section: 'accuracy' | 'correction' | 'retention',
+  ) => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      accuracy: section === 'accuracy',
+      correction: section === 'correction',
+      retention: section === 'retention',
+    }));
+  };
 
   return (
     <>
@@ -77,11 +93,15 @@ export const AccuracyCorrectionAndRetention = () => {
         <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
-        <section className="section__padding-block">
+        <section className="section__padding-block ">
           <h3 className="form__h2">
             {Messages.FormElements.Accuracy.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              sectionClickState.accuracy ? 'section-focus' : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>
@@ -134,6 +154,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
+              onCommentClick={() => handleCommentClick('accuracy')}
             />
           </div>
         </section>
@@ -142,7 +163,11 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.RequestCorrection.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              sectionClickState.correction ? 'section-focus' : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>
@@ -460,6 +485,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
+              onCommentClick={() => handleCommentClick('correction')}
             />
           </div>
         </section>
@@ -468,7 +494,11 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.PersonalInformationDecision.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5  ${
+              sectionClickState.retention ? 'section-focus' : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p>
                 <strong>
@@ -722,6 +752,7 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
+              onCommentClick={() => handleCommentClick('retention')}
             />
           </div>
         </section>

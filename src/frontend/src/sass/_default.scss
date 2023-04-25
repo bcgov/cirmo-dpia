@@ -221,6 +221,10 @@ a {
   color: $error;
 }
 
+.section-focus {
+  border: 4px solid $focus;
+}
+
 .skip-to-main {
   left: -999px;
   position: absolute;
@@ -248,9 +252,6 @@ a {
     z-index: 999;
   }
 
-  .section--focus {
-    border: 4px solid $focus;
-  }
 }
 
 .container__side--form {

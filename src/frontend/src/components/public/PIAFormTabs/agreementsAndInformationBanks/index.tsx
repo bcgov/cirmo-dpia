@@ -26,6 +26,18 @@ const PIAAgreementsAndInformationBanks = () => {
     accessControl,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
+  const [sectionClickState, setSectionClickState] = useState({
+    ISA: false,
+    PIB: false,
+  });
+
+  const handleCommentClick = (section: 'ISA' | 'PIB') => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      ISA: section === 'ISA',
+      PIB: section === 'PIB',
+    }));
+  };
   if (accessControl) accessControl();
 
   const defaultState: IAgreementsAndInformationBanks = useMemo(
@@ -87,7 +99,11 @@ const PIAAgreementsAndInformationBanks = () => {
           <b>{Messages.Headings.Title.en}</b>
         </h2>
         <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
-        <section className="drop-shadow card p-4 p-md-5">
+        <section
+          className={`drop-shadow card p-4 p-md-5 ${
+            sectionClickState.ISA ? 'section-focus' : ''
+          }`}
+        >
           <div className="form-group">
             {!isReadOnly ? (
               <label htmlFor="pibQuestionWillResultInPIB">
@@ -341,12 +357,17 @@ const PIAAgreementsAndInformationBanks = () => {
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
             }
+            onCommentClick={() => handleCommentClick('ISA')}
           />
         </section>
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
         <p> {Messages.ResultingPIB.Headings.Description.en}</p>
-        <section className="drop-shadow card p-4 p-md-5">
+        <section
+          className={`drop-shadow card p-4 p-md-5 ${
+            sectionClickState.PIB ? 'section-focus' : ''
+          }`}
+        >
           <div className="form-group">
             {!isReadOnly ? (
               <label htmlFor="pibQuestionWillResultInPIB">
@@ -556,6 +577,7 @@ const PIAAgreementsAndInformationBanks = () => {
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
             }
+            onCommentClick={() => handleCommentClick('PIB')}
           />
         </section>
       </div>

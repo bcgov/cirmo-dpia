@@ -28,7 +28,37 @@ const StoringPersonalInformation = () => {
   } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
+  const [sectionClickState, setSectionClickState] = useState({
+    personalInformation: false,
+    sensitivePersonalInformation: false,
+    storage: false,
+    contract: false,
+    controls: false,
+    trackAccess: false,
+    risks: false,
+  });
 
+  const handleCommentClick = (
+    section:
+      | 'personalInformation'
+      | 'sensitivePersonalInformation'
+      | 'risks'
+      | 'trackAccess'
+      | 'storage'
+      | 'contract'
+      | 'controls',
+  ) => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      personalInformation: section === 'personalInformation',
+      sensitivePersonalInformation: section === 'sensitivePersonalInformation',
+      risks: section === 'risks',
+      trackAccess: section === 'trackAccess',
+      storage: section === 'storage',
+      contract: section === 'contract',
+      controls: section === 'controls',
+    }));
+  };
   const personalInformation = useMemo(
     () => ({
       storedOutsideCanada: YesNoInput.YES,
@@ -316,7 +346,11 @@ const StoringPersonalInformation = () => {
       <p>{Messages.Heading.PText.en}</p>
       <section className="form__section">
         <h3 className="py-3">{Messages.PersonalInformation.H3Text.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5 ${
+            sectionClickState.personalInformation ? 'section-focus' : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="text__font-weight--700">
               {Messages.PersonalInformation.StoredOutsideCanada.en}
@@ -385,6 +419,7 @@ const StoringPersonalInformation = () => {
               ]
             }
             path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
+            onCommentClick={() => handleCommentClick('personalInformation')}
           />
         </div>
       </section>
@@ -394,7 +429,13 @@ const StoringPersonalInformation = () => {
           <h3 className="py-3">
             {Messages.SensitivePersonalInformation.H3Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5  ${
+              sectionClickState.sensitivePersonalInformation
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p className="text__font-weight--700">
                 {Messages.SensitivePersonalInformation.DoesInvolve.en}
@@ -498,6 +539,9 @@ const StoringPersonalInformation = () => {
               path={
                 PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
               }
+              onCommentClick={() =>
+                handleCommentClick('sensitivePersonalInformation')
+              }
             />
           </div>
         </section>
@@ -526,7 +570,11 @@ const StoringPersonalInformation = () => {
                 </a>
                 .
               </div>
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  sectionClickState.storage ? 'section-focus' : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {
@@ -732,11 +780,16 @@ const StoringPersonalInformation = () => {
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
                   }
+                  onCommentClick={() => handleCommentClick('storage')}
                 />
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  sectionClickState.contract ? 'section-focus' : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.Contract.RelyingOnExistingContract.en}
@@ -813,13 +866,18 @@ const StoringPersonalInformation = () => {
                       path={
                         PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
                       }
+                      onCommentClick={() => handleCommentClick('contract')}
                     />
                   </div>
                 )}
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  sectionClickState.controls ? 'section-focus' : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.Controls.WhatControlsAreInPlace.en}
@@ -865,11 +923,16 @@ const StoringPersonalInformation = () => {
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
                   }
+                  onCommentClick={() => handleCommentClick('controls')}
                 />
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5  ${
+                  sectionClickState.trackAccess ? 'section-focus' : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.TrackAccess.TrackAccessDetails.en}
@@ -915,11 +978,16 @@ const StoringPersonalInformation = () => {
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
                   }
+                  onCommentClick={() => handleCommentClick('trackAccess')}
                 />
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  sectionClickState.risks ? 'section-focus' : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <>
                     <p className="text__font-weight--700">
@@ -961,6 +1029,7 @@ const StoringPersonalInformation = () => {
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
                   }
+                  onCommentClick={() => handleCommentClick('risks')}
                 />
               </div>
             </section>

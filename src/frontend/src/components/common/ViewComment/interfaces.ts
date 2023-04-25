@@ -4,7 +4,7 @@ export default interface ViewCommentProps {
   comments?: Comment[];
   path: PiaSections | undefined;
   count?: number;
-  onCommentClick: () => void;
+  onCommentClick?: () => void;
 }
 
 export interface CommentCount {

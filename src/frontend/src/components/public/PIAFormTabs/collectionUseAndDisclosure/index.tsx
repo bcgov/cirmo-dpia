@@ -28,6 +28,18 @@ const PIACollectionUseAndDisclosure = () => {
 
   if (accessControl) accessControl();
 
+  const [sectionClickState, setSectionClickState] = useState({
+    steps: false,
+    collectionNotice: false,
+  });
+
+  const handleCommentClick = (section: 'steps' | 'collectionNotice') => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      steps: section === 'steps',
+      collectionNotice: section === 'collectionNotice',
+    }));
+  };
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
       steps: [
@@ -89,7 +101,11 @@ const PIACollectionUseAndDisclosure = () => {
       <span>{Messages.Headings.Subtitle.en}</span>
       <h3 className="pt-4 pb-2">{Messages.WorkThroughDetails.Title.en}</h3>
       <p> {Messages.WorkThroughDetails.SubTitle.en}</p>
-      <section className="drop-shadow card p-4 p-md-5">
+      <section
+        className={`drop-shadow card p-4 p-md-5  ${
+          sectionClickState.steps ? 'section-focus' : ''
+        }`}
+      >
         <Table
           data={collectionUseAndDisclosureForm.steps}
           columnsMeta={columns}
@@ -106,12 +122,17 @@ const PIACollectionUseAndDisclosure = () => {
             commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
           }
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
+          onCommentClick={() => handleCommentClick('steps')}
         />
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
 
-      <section className="drop-shadow card p-4 p-md-5">
+      <section
+        className={`drop-shadow card p-4 p-md-5  ${
+          sectionClickState.collectionNotice ? 'section-focus' : ''
+        }`}
+      >
         <div className="form-group">
           {!isReadOnly ? (
             <label htmlFor="collectionNoticeDrafter">
@@ -218,6 +239,7 @@ const PIACollectionUseAndDisclosure = () => {
             ]
           }
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
+          onCommentClick={() => handleCommentClick('collectionNotice')}
         />
       </section>
     </>

@@ -16,7 +16,7 @@ const ViewComments = ({
   const openSidebar = () => {
     if (piaCollapsibleChangeHandler) piaCollapsibleChangeHandler(true);
     if (piaCommentPathHandler) piaCommentPathHandler(path);
-    onCommentClick(); // Call the parent callback
+    onCommentClick?.(); // Call the parent callback
   };
 
   return (
