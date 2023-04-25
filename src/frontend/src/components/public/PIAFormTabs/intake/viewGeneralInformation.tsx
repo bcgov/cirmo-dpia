@@ -1,13 +1,20 @@
+import ViewComments from '../../../common/ViewComment';
+import { CommentCount } from '../../../common/ViewComment/interfaces';
 import { useState } from 'react';
 import { MinistryList } from '../../../../constant/constant';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../../../utils/date';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 interface IGeneralInformationProps {
   pia: IPiaForm;
+  commentCount?: CommentCount;
 }
 
-const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
+const PIAIntakeGeneralInformation = ({
+  pia,
+  commentCount,
+}: IGeneralInformationProps) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
@@ -53,6 +60,11 @@ const PIAIntakeGeneralInformation = ({ pia }: IGeneralInformationProps) => {
             </div>
           </div>
         </div>
+
+        <ViewComments
+          count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
+          path={PiaSections.INTAKE_GENERAL_INFORMATION}
+        />
       </div>
     </>
   );
