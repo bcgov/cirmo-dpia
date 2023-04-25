@@ -103,112 +103,114 @@ const CommentSidebar = ({
   }, [piaId, path, getComments]);
 
   return (
-    <div className="d-flex flex-column bg-white comment-sidebar">
-      <h3 className="ps-3">Comments</h3>
-      <div className="comment-sidebar__comments-container">
-        {comments &&
-          comments?.map((comment) => (
-            <div className="p-3" key={comment.id}>
-              <div className="position-relative">
-                <p className="fw-bold">
-                  {comment.createdByDisplayName}
-                  <span className="ps-1 pe-2 text-muted fw-normal">
-                    {getDateTime(stringToDate(comment.updatedAt))}
-                  </span>
-                </p>
-                <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
-                  <button
-                    className="mx-2 bcgovbtn bcgovbtn__tertiary"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded={false}
-                  >
-                    <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
-                  </button>
-                  <ul className="dropdown-menu border-1 shadow-sm">
-                    <li role="button">
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="dropdown-item"
-                        disabled={
-                          comment.createdByDisplayName !== loginUserName
-                        }
-                      >
-                        Delete
-                      </button>
-                    </li>
-                  </ul>
+    <>
+      <div className="bg-white comment-sidebar">
+        <h3 className="ps-3">Comments</h3>
+        <div className="comment-sidebar__comments-container">
+          {comments &&
+            comments?.map((comment) => (
+              <div className="p-3" key={comment.id}>
+                <div className="position-relative">
+                  <p className="fw-bold">
+                    {comment.createdByDisplayName}
+                    <span className="ps-1 pe-2 text-muted fw-normal">
+                      {getDateTime(stringToDate(comment.updatedAt))}
+                    </span>
+                  </p>
+                  <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
+                    <button
+                      className="mx-2 bcgovbtn bcgovbtn__tertiary"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded={false}
+                    >
+                      <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
+                    </button>
+                    <ul className="dropdown-menu border-1 shadow-sm">
+                      <li role="button">
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="dropdown-item"
+                          disabled={
+                            comment.createdByDisplayName !== loginUserName
+                          }
+                        >
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div>
-                {comment.isActive ? (
-                  comment.text
-                ) : (
-                  <i>[this comment has been deleted]</i>
+                <div>
+                  {comment.isActive ? (
+                    comment.text
+                  ) : (
+                    <i>[this comment has been deleted]</i>
+                  )}
+                </div>
+                {comment.replies && comment.replies.length > 0 && (
+                  <div className="ml-3">
+                    {comment.replies.map((reply) => (
+                      <div className="p-2" key={reply.id}>
+                        <div className="font-weight-bold">
+                          {reply.createdByDisplayName}
+                          <span className="ps-1 text-muted">
+                            {getDateTime(stringToDate(reply.updatedAt))}
+                          </span>
+                        </div>
+                        <div>{reply.text}</div>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
-              {comment.replies && comment.replies.length > 0 && (
-                <div className="ml-3">
-                  {comment.replies.map((reply) => (
-                    <div className="p-2" key={reply.id}>
-                      <div className="font-weight-bold">
-                        {reply.createdByDisplayName}
-                        <span className="ps-1 text-muted">
-                          {getDateTime(stringToDate(reply.updatedAt))}
-                        </span>
-                      </div>
-                      <div>{reply.text}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            ))}
+          {!path && (
+            <p className="ms-3">
+              Select &ldquo;View comments&rdquo; on any question to add comment
+              or view comments.
+            </p>
+          )}
+          {path && comments?.length === 0 && (
+            <p className="p-3">No comments yet.</p>
+          )}
+        </div>
+        {path && comments && (
+          <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
+            <input
+              type="text"
+              className="form-control mr-3"
+              placeholder="Write a comment..."
+              value={newCommentContent}
+              onChange={(e) => setNewCommentContent(e.target.value)}
+              aria-label="New comment text input"
+            />
+            <div
+              className="d-flex gap-2 btn-group justify-content-end"
+              role="group"
+              aria-label="New comment button group"
+            >
+              <button
+                type="button"
+                className="bcgovbtn bcgovbtn__tertiary mr-2"
+                onClick={() => setNewCommentContent('')}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="bcgovbtn bcgovbtn__secondary"
+                onClick={() => {
+                  addComment();
+                  setNewCommentContent('');
+                }}
+              >
+                Add
+              </button>
             </div>
-          ))}
-        {!path && (
-          <p className="ms-3">
-            Select &ldquo;View comments&rdquo; on any question to add comment or
-            view comments.
-          </p>
-        )}
-        {path && comments?.length === 0 && (
-          <p className="p-3">No comments yet.</p>
+          </div>
         )}
       </div>
-      {path && comments && (
-        <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
-          <input
-            type="text"
-            className="form-control mr-3"
-            placeholder="Write a comment..."
-            value={newCommentContent}
-            onChange={(e) => setNewCommentContent(e.target.value)}
-            aria-label="New comment text input"
-          />
-          <div
-            className="d-flex gap-2 btn-group justify-content-end"
-            role="group"
-            aria-label="New comment button group"
-          >
-            <button
-              type="button"
-              className="bcgovbtn bcgovbtn__tertiary mr-2"
-              onClick={() => setNewCommentContent('')}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="bcgovbtn bcgovbtn__secondary"
-              onClick={() => {
-                addComment();
-                setNewCommentContent('');
-              }}
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      )}
       <Modal
         confirmLabel={modalConfirmLabel}
         cancelLabel={modalCancelLabel}
@@ -220,7 +222,7 @@ const CommentSidebar = ({
       >
         <p className="modal-text">{modalParagraph}</p>
       </Modal>
-    </div>
+    </>
   );
 };
 

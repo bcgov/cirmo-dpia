@@ -250,7 +250,7 @@ a {
 }
 
 .container__side--form {
-  height: 80vh;
+  height: calc(100vh - $header-height - $navbar-height - 9rem);
   max-width: 30%;
   position: sticky;
   top: 0;

@@ -1,10 +1,16 @@
+.comment-sidebar {
+  display: grid;
+  grid-template-rows: auto 5fr 1fr;
+  height: 65svh;
+}
+
 .comment-sidebar__comments-container {
   overflow-y: auto;
   overflow-x: hidden;
-  height: 60vh;
 }
 
 .comment-sidebar__add-comment {
+  height: fit-content;
   padding-block: 1.5rem;
   border-top: 0.3em solid $warning;
   background-color: $bg-white;
