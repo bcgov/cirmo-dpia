@@ -14,7 +14,6 @@ const Collapsible = ({
   onOpenHandler,
   fullHeight = false,
 }: CollapsibleProps) => {
-
   const handleToggle = (): void => {
     setIsVisible?.(!isVisible);
     onOpenHandler?.();
