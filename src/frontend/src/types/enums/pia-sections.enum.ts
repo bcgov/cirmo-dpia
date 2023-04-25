@@ -1,4 +1,11 @@
 export enum PiaSections {
+  // Intake
+  INTAKE_GENERAL_INFORMATION = 'intake.generalInformation',
+  INTAKE_INITIATIVE_DETAILS_DESCRIPTIONS = 'intake.initiativeDetails.description',
+  INTAKE_INITIATIVE_DETAILS_SCOPE = 'intake.initiativeDetails.scope',
+  INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED = 'intake.initiativeDetails.dataElementsInvolved',
+  INTAKE_PERSONAL_INFORMATION = 'intake.personalInformation',
+
   // Collection use and disclosure
   COLLECTION_USE_AND_DISCLOSURE_STEPS = 'collectionUseAndDisclosure.steps',
   COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE = 'collectionUseAndDisclosure.collectionNotice',
