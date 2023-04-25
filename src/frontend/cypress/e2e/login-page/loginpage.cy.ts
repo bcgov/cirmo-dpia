@@ -27,7 +27,20 @@ describe('Test DPIA Login Page', () => {
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
     //cy.get('h1').contains('List of PIAs');
-    cy.url().should('include','https://test.pia.gov.bc.ca/pia/list')
+    const url = Cypress.config().baseUrl; 
+    if(url?.includes('test'))
+    {
+      cy.url().should('include','https://test.pia.gov.bc.ca/pia/list')
+    }
+    else if(url?.includes('dev'))
+    {
+      cy.url().should('include','https://dev.pia.gov.bc.ca/pia/list')
+    }
+    else
+    {
+      console.log('The URL is neither test nor dev environment');
+    }
+    
   });
 
   it('Check Log in Title', () => {
