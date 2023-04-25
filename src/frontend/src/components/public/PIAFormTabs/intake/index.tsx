@@ -104,7 +104,12 @@ export const PIAFormIntake = () => {
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
         {isReadOnly ? (
-          <PIAIntakeGeneralInformation commentCount={commentCount} pia={pia} />
+          <PIAIntakeGeneralInformation
+            commentCount={commentCount}
+            pia={pia}
+            handleCommentClick={handleCommentClick}
+            sectionClickState={sectionClickState}
+          />
         ) : (
           <div
             className={`drop-shadow card p-4 p-md-5 ${

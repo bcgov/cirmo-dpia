@@ -9,28 +9,27 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 interface IGeneralInformationProps {
   pia: IPiaForm;
   commentCount?: CommentCount;
+  handleCommentClick?: (
+    section:
+      | 'generalInformation'
+      | 'description'
+      | 'scope'
+      | 'dataElementsInvolved'
+      | 'personalInformation',
+  ) => void;
+  sectionClickState: Record<string, unknown>;
 }
 
 const PIAIntakeGeneralInformation = ({
   pia,
   commentCount,
+  handleCommentClick,
+  sectionClickState,
 }: IGeneralInformationProps) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
-  const [sectionClickState, setSectionClickState] = useState({
-    generalInformation: false,
-    description: false,
-    scope: false,
-    dataElementsInvolved: false,
-    personalInformation: false,
-  });
-  const handleCommentClick = (section: 'generalInformation') => {
-    setSectionClickState((prevState) => ({
-      ...prevState,
-      generalInformation: section === 'generalInformation',
-    }));
-  };
+
   return (
     <>
       <div
