@@ -107,24 +107,6 @@ export class CreatePiaIntakeDto {
   @ApiProperty({
     type: String,
     required: false,
-    example: piaIntakeEntityMock.mpoName,
-  })
-  mpoName: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    type: String,
-    required: false,
-    example: piaIntakeEntityMock.mpoEmail,
-  })
-  mpoEmail: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    type: String,
-    required: false,
     example: piaIntakeEntityMock.initiativeDescription,
   })
   initiativeDescription: string;
