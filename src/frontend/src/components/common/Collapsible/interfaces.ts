@@ -6,5 +6,7 @@ export default interface CollapsibleProps {
   children: ReactNode;
   alignment: string;
   isVisible?: boolean;
+  setIsVisible?: Dispatch<SetStateAction<boolean>>;
+  onOpenHandler?: () => void;
   fullHeight?: boolean;
 }
