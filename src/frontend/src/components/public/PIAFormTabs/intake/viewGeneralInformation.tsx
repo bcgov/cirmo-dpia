@@ -18,9 +18,26 @@ const PIAIntakeGeneralInformation = ({
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
+  const [sectionClickState, setSectionClickState] = useState({
+    generalInformation: false,
+    description: false,
+    scope: false,
+    dataElementsInvolved: false,
+    personalInformation: false,
+  });
+  const handleCommentClick = (section: 'generalInformation') => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      generalInformation: section === 'generalInformation',
+    }));
+  };
   return (
     <>
-      <div className="card p-4 p-md-5">
+      <div
+        className={`card p-4 p-md-5 ${
+          sectionClickState.generalInformation ? 'section-focus' : ''
+        }`}
+      >
         <div className="d-grid gap-3">
           <div className="row">
             <div className="col col-md-3">
@@ -64,6 +81,7 @@ const PIAIntakeGeneralInformation = ({
         <ViewComments
           count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
           path={PiaSections.INTAKE_GENERAL_INFORMATION}
+          onCommentClick={() => handleCommentClick('generalInformation')}
         />
       </div>
     </>

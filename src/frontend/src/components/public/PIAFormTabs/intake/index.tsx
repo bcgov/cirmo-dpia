@@ -28,6 +28,30 @@ export const PIAFormIntake = () => {
 
   if (accessControl) accessControl();
 
+  const [sectionClickState, setSectionClickState] = useState({
+    generalInformation: false,
+    description: false,
+    scope: false,
+    dataElementsInvolved: false,
+    personalInformation: false,
+  });
+  const handleCommentClick = (
+    section:
+      | 'generalInformation'
+      | 'description'
+      | 'scope'
+      | 'dataElementsInvolved'
+      | 'personalInformation',
+  ) => {
+    setSectionClickState((prevState) => ({
+      ...prevState,
+      generalInformation: section === 'generalInformation',
+      description: section === 'description',
+      scope: section === 'scope',
+      dataElementsInvolved: section === 'dataElementsInvolved',
+      personalInformation: section === 'personalInformation',
+    }));
+  };
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),
   );
@@ -82,7 +106,11 @@ export const PIAFormIntake = () => {
         {isReadOnly ? (
           <PIAIntakeGeneralInformation commentCount={commentCount} pia={pia} />
         ) : (
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              sectionClickState.generalInformation ? 'section-focus' : ''
+            }`}
+          >
             <div className="row">
               <InputText
                 label="Title"
@@ -233,6 +261,7 @@ export const PIAFormIntake = () => {
             <ViewComments
               count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
               path={PiaSections.INTAKE_GENERAL_INFORMATION}
+              onCommentClick={() => handleCommentClick('generalInformation')}
             />
           </div>
         )}
@@ -240,7 +269,11 @@ export const PIAFormIntake = () => {
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5 ${
+            sectionClickState.description ? 'section-focus' : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p>
               <strong>
@@ -286,12 +319,17 @@ export const PIAFormIntake = () => {
               commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
             }
             path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION}
+            onCommentClick={() => handleCommentClick('description')}
           />
         </div>
       </section>
 
       <section className="section__padding-block">
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            sectionClickState.scope ? 'section-focus' : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="form__h2">
               <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
@@ -327,12 +365,17 @@ export const PIAFormIntake = () => {
           <ViewComments
             count={commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE]}
             path={PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE}
+            onCommentClick={() => handleCommentClick('scope')}
           />
         </div>
       </section>
 
       <section className="section__padding-block">
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            sectionClickState.dataElementsInvolved ? 'section-focus' : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="form__h2">
               <strong>
@@ -374,13 +417,18 @@ export const PIAFormIntake = () => {
               ]
             }
             path={PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED}
+            onCommentClick={() => handleCommentClick('dataElementsInvolved')}
           />
         </div>
       </section>
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            sectionClickState.personalInformation ? 'section-focus' : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p>
               <strong>{Messages.InitiativePISection.Question.en}</strong>
@@ -466,6 +514,7 @@ export const PIAFormIntake = () => {
           <ViewComments
             count={commentCount?.[PiaSections.INTAKE_PERSONAL_INFORMATION]}
             path={PiaSections.INTAKE_PERSONAL_INFORMATION}
+            onCommentClick={() => handleCommentClick('personalInformation')}
           />
         </div>
       </section>
