@@ -5,13 +5,18 @@ import {
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
+const ViewComments = ({
+  path,
+  onCommentClick,
+  count = 0,
+}: ViewCommentProps) => {
   const { piaCollapsibleChangeHandler, piaCommentPathHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
 
   const openSidebar = () => {
     if (piaCollapsibleChangeHandler) piaCollapsibleChangeHandler(true);
     if (piaCommentPathHandler) piaCommentPathHandler(path);
+    onCommentClick(); // Call the parent callback
   };
 
   return (

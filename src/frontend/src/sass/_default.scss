@@ -247,6 +247,10 @@ a {
     text-align: center;
     z-index: 999;
   }
+
+  .section--focus {
+    border: 4px solid $focus;
+  }
 }
 
 .container__side--form {

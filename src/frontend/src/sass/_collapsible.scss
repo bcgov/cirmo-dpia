@@ -8,6 +8,7 @@
     align-items: center;
     cursor: pointer;
     justify-content: end;
+
     &-right {
       justify-content: start;
     }
@@ -17,6 +18,7 @@
     font-size: x-large;
     padding-inline-end: 1rem;
     padding-block-start: 0.6rem;
+
     &-right {
       padding-inline-end: 0;
       padding-inline-start: 1rem;
@@ -28,9 +30,11 @@
     padding-inline: 0.3rem;
     padding-block: 0.8rem;
     border: 1px solid lightgray;
+
     &-left {
       border-right: none;
     }
+
     &-right {
       border-left: none;
     }
