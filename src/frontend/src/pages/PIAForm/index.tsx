@@ -790,6 +790,10 @@ const PIAFormPage = () => {
               icon={faCommentDots}
               alignment="right"
               isVisible={isRightOpen}
+              setIsVisible={setIsRightOpen}
+              onOpenHandler={() => {
+                setIsLeftOpen(false);
+              }}
               fullHeight
             >
               <CommentSidebar
