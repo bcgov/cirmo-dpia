@@ -25,8 +25,8 @@ import Collapsible from '../../components/common/Collapsible';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
-import { Comment } from '../../components/public/CommentsSidebar/interfaces';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
+import { CommentCount } from '../../components/common/ViewComment/interfaces';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -86,40 +86,45 @@ const PIAFormPage = () => {
   /**
    * Comments State
    */
-  const [comments, setComments] = useState<Comment[]>();
+  const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
+  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
+  const [commentCount, setCommentCount] = useState<CommentCount>({});
 
   /**
    * This variable is used to determine which section to show comments for.
+   * by default give it a value
    */
   const [selectedSection, setSelectedSection] = useState<PiaSections>();
 
   /**
-   * Async callback for getting comments within a useEffect hook
+   * Async callback for getting commentCount within a useEffect hook
    */
-  const getComments = useCallback(async () => {
-    const commentArr: Comment[] = await HttpRequest.get(
-      API_ROUTES.GET_PIA_COMMENTS,
+  const getCommentCount = useCallback(async () => {
+    const count: CommentCount = await HttpRequest.get(
+      API_ROUTES.GET_COMMENTS_COUNT,
       {},
       {},
       true,
       {
         piaId: id,
-        path: selectedSection,
       },
     );
-    setComments(commentArr);
-  }, [id, selectedSection]);
+    setCommentCount(count);
+  }, [id]);
 
+  useEffect(() => {
+    setSelectedSection(undefined);
+  }, [pathname]);
   /**
-   * Update the comments array to pass into the CommentSidebar
+   * Update the comment count object to pass into the every tab
    */
   useEffect(() => {
     try {
-      getComments();
+      getCommentCount();
     } catch (err) {
       console.error(err);
     }
-  }, [getComments]);
+  }, [getCommentCount, selectedSection]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -150,6 +155,19 @@ const PIAFormPage = () => {
       ...latest,
       [key]: value,
     }));
+  };
+
+  const piaCollapsibleChangeHandler = (isOpen: boolean) => {
+    setIsRightOpen(isOpen);
+    if (isOpen === true && isLeftOpen === true) {
+      setIsLeftOpen(false);
+    }
+  };
+  const piaCommentPathHandler = (path: PiaSections | undefined) => {
+    setSelectedSection(path);
+  };
+  const commentChangeHandler = () => {
+    getCommentCount();
   };
 
   const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
@@ -606,7 +624,6 @@ const PIAFormPage = () => {
       handleSubmit(event);
     }
   };
-
   const alertUserLeave = useCallback(
     (e: any) => {
       // if no changes in the form recently, do not show warning leaving the page
@@ -686,7 +703,6 @@ const PIAFormPage = () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
   }, [alertUserLeave, hasFormChanged]);
-
   return (
     <>
       <PIASubHeader
@@ -711,7 +727,15 @@ const PIAFormPage = () => {
         )}
 
         <div className="component__container">
-          <Collapsible icon={faBars} alignment="left">
+          <Collapsible
+            icon={faBars}
+            alignment="left"
+            isVisible={isLeftOpen}
+            onOpenHandler={() => {
+              setIsRightOpen(false);
+            }}
+            setIsVisible={setIsLeftOpen}
+          >
             <section className="side-nav__container">
               <PIASideNav
                 pia={pia}
@@ -737,6 +761,9 @@ const PIAFormPage = () => {
               <PiaFormContext.Provider
                 value={{
                   pia,
+                  commentCount,
+                  piaCollapsibleChangeHandler,
+                  piaCommentPathHandler,
                   piaStateChangeHandler,
                   isReadOnly: formReadOnly,
                   accessControl,
@@ -758,8 +785,20 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
-          <Collapsible icon={faCommentDots} alignment="right">
-            <CommentSidebar comments={comments} />
+          <Collapsible
+            icon={faCommentDots}
+            alignment="right"
+            isVisible={isRightOpen}
+            onOpenHandler={() => {
+              setIsLeftOpen(false);
+            }}
+            setIsVisible={setIsRightOpen}
+          >
+            <CommentSidebar
+              path={selectedSection}
+              piaId={pia.id}
+              handleStatusChange={commentChangeHandler}
+            />
           </Collapsible>
         </div>
 

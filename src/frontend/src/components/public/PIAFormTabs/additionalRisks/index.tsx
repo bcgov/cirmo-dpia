@@ -9,10 +9,17 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIAAdditionalRisks = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -64,6 +71,10 @@ const PIAAdditionalRisks = () => {
           addRowBtnLabel="Add more risks"
           format="row"
           readOnly={isReadOnly}
+        />
+        <ViewComments
+          count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
+          path={PiaSections.ADDITIONAL_RISKS_RISKS}
         />
       </section>
     </>

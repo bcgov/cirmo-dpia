@@ -1,16 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CollapsibleProps from './interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
+const Collapsible = ({
+  icon,
+  alignment,
+  children,
+  isVisible = false,
+  onOpenHandler,
+  setIsVisible,
+}: CollapsibleProps) => {
   const handleToggle = (): void => {
-    setIsOpen(!isOpen);
+    setIsVisible?.(!isVisible);
+    onOpenHandler?.();
   };
 
   const handleKeyDown = (event: any) => {
@@ -25,42 +31,48 @@ const Collapsible = ({ icon, alignment, children }: CollapsibleProps) => {
       className={`collapsible ${
         alignment === 'left' ? 'collapsible__left' : ''
       } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
-      ${isOpen && alignment === 'right' ? 'collapsible__right--open' : ''}`}
+      ${isVisible && alignment === 'right' ? 'collapsible__right--open' : ''}`}
     >
       <div
         className={`collapsible__header ${
           alignment === 'right' ? 'collapsible__right' : ''
         }
-        ${isOpen && alignment === 'right' ? 'collapsible__header-right' : ''}`}
+        ${
+          isVisible && alignment === 'right' ? 'collapsible__header-right' : ''
+        }`}
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
       >
         <FontAwesomeIcon
           icon={
-            isOpen && alignment === 'left'
+            isVisible && alignment === 'left'
               ? faChevronLeft
-              : isOpen && alignment === 'right'
+              : isVisible && alignment === 'right'
               ? faChevronRight
               : icon
           }
           className={`
             text-muted 
-            ${!isOpen ? 'collapsible__icon--closed' : 'collapsible__icon--open'}
             ${
-              !isOpen && alignment === 'right'
+              !isVisible
+                ? 'collapsible__icon--closed'
+                : 'collapsible__icon--open'
+            }
+            ${
+              !isVisible && alignment === 'right'
                 ? 'collapsible__icon--closed-right'
                 : ''
             }
             ${
-              isOpen && alignment === 'right'
+              isVisible && alignment === 'right'
                 ? 'collapsible__icon--open-right'
                 : 'collapsible__icon--open-left'
             }
           `}
         />
       </div>
-      {isOpen && <div className="collapsible__content">{children}</div>}
+      {isVisible && <div className="collapsible__content">{children}</div>}
     </div>
   );
 };

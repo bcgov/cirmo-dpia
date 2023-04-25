@@ -1,15 +1,113 @@
-import { useState } from 'react';
-import CommentSidebarProps from './interfaces';
-import { formatDate } from '../../../utils/date';
+import { useCallback, useEffect, useState } from 'react';
+import CommentSidebarProps, { Comment } from './interfaces';
+import { getDateTime, stringToDate } from '../../../utils/date';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { API_ROUTES } from '../../../constant/apiRoutes';
+import { HttpRequest } from '../../../utils/http-request.util';
+import Modal from '../../../components/common/Modal';
+import Messages from './messages';
+import { useLocation } from 'react-router-dom';
+import { AppStorage } from '../../../utils/storage';
+const CommentSidebar = ({
+  piaId,
+  path,
+  handleStatusChange,
+}: CommentSidebarProps) => {
+  const { pathname } = useLocation();
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [deleteCommentId, setDeleteCommentId] = useState<number>(0);
+  //
+  // Modal State
+  //
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [modalButtonValue, setModalButtonValue] = useState<string>('');
+  /**
+   * Async callback for getting comments within a useEffect hook
+   */
+  const getComments = useCallback(async () => {
+    if (path !== undefined) {
+      const commentArr: Comment[] = await HttpRequest.get(
+        API_ROUTES.PIA_COMMENTS,
+        {},
+        {},
+        true,
+        {
+          piaId: piaId,
+          path: path,
+        },
+      );
+      setComments(commentArr);
+    }
+  }, [piaId, path]);
 
-const CommentSidebar = ({ comments }: CommentSidebarProps) => {
+  const deleteComment = async (commentId: number) => {
+    await HttpRequest.delete(
+      API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
+      {},
+      {},
+      true,
+    );
+    getComments();
+    handleStatusChange();
+  };
+
+  useEffect(() => {
+    setComments([]);
+  }, [pathname]);
+
+  const handleModalClose = async (event: any) => {
+    event.preventDefault();
+    setShowModal(false);
+    await deleteComment(deleteCommentId);
+  };
+
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
+
   const [newCommentContent, setNewCommentContent] = useState('');
+
+  const addComment = async () => {
+    await HttpRequest.post(
+      API_ROUTES.PIA_COMMENTS,
+      { piaId: piaId, path: path, text: `${newCommentContent}` },
+      {},
+      {},
+      true,
+    );
+    getComments();
+    handleStatusChange();
+  };
+
+  const loginUserName = AppStorage.getItem<string>('username');
+
+  const handleDeleteComment = (commentId: number) => {
+    setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
+    setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
+    setModalTitleText(Messages.Modal.Delete.TitleText.en);
+    setModalParagraph(Messages.Modal.Delete.ParagraphText.en);
+    setModalButtonValue('deleteComments');
+    setDeleteCommentId(commentId);
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    try {
+      getComments();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [piaId, path, getComments]);
+
   return (
-    <div className="d-flex flex-column h-100 overflow-y-auto">
+    <div className="d-flex flex-column h-100 overflow-y-auto position-relative">
       <h3 className="ps-3">Comments</h3>
-      <div className="">
+      <div className="flex-grow-1">
         {comments &&
           comments?.map((comment) => (
             <div className="p-3" key={comment.id}>
@@ -17,7 +115,7 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
                 <p className="fw-bold">
                   {comment.createdByDisplayName}
                   <span className="ps-1 text-muted fw-normal">
-                    {formatDate(comment.updatedAt)}
+                    {getDateTime(stringToDate(comment.updatedAt))}
                   </span>
                 </p>
                 <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
@@ -31,14 +129,26 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
                   </button>
                   <ul className="dropdown-menu border-1 shadow-sm">
                     <li role="button">
-                      <button onClick={() => {}} className="dropdown-item">
+                      <button
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="dropdown-item"
+                        disabled={
+                          comment.createdByDisplayName !== loginUserName
+                        }
+                      >
                         Delete
                       </button>
                     </li>
                   </ul>
                 </div>
               </div>
-              <div>{comment.text}</div>
+              <div>
+                {comment.isActive ? (
+                  comment.text
+                ) : (
+                  <i>[this comment has been deleted]</i>
+                )}
+              </div>
               {comment.replies && comment.replies.length > 0 && (
                 <div className="ml-3">
                   {comment.replies.map((reply) => (
@@ -46,7 +156,7 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
                       <div className="font-weight-bold">
                         {reply.createdByDisplayName}
                         <span className="ps-1 text-muted">
-                          {formatDate(reply.updatedAt)}
+                          {getDateTime(stringToDate(reply.updatedAt))}
                         </span>
                       </div>
                       <div>{reply.text}</div>
@@ -56,17 +166,19 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
               )}
             </div>
           ))}
-        {!comments && (
+        {!path && (
           <p className="ms-3">
             Select &ldquo;View comments&rdquo; on any question to add comment or
             view comments.
           </p>
         )}
-        {comments?.length === 0 && <p className="p-3">No comments yet.</p>}
+        {path && comments?.length === 0 && (
+          <p className="p-3">No comments yet.</p>
+        )}
       </div>
-      {comments && (
+      {path && comments && (
         <>
-          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning">
+          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning position-fixed w-25 bottom-0 start-75 me-5 bg-white">
             <input
               type="text"
               className="form-control mr-3"
@@ -90,7 +202,10 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
               <button
                 type="button"
                 className="bcgovbtn bcgovbtn__secondary"
-                onClick={() => {}}
+                onClick={() => {
+                  addComment();
+                  setNewCommentContent('');
+                }}
               >
                 Add
               </button>
@@ -98,6 +213,17 @@ const CommentSidebar = ({ comments }: CommentSidebarProps) => {
           </div>
         </>
       )}
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showModal}
+        value={modalButtonValue}
+        handleClose={(e) => handleModalClose(e)}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </div>
   );
 };
