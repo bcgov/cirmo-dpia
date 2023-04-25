@@ -8,4 +8,5 @@ export default interface CollapsibleProps {
   isVisible?: boolean;
   setIsVisible?: Dispatch<SetStateAction<boolean>>;
   onOpenHandler?: () => void;
+  fullHeight?: boolean;
 }

@@ -716,7 +716,7 @@ const PIAFormPage = () => {
         onEditClick={handleEdit}
         onSubmitClick={handleValidation}
       />
-      <div className="bcgovPageContainer background background__form wrapper">
+      <div className="bcgovPageContainer background background__form wrapper pe-0">
         {message && (
           <Alert
             type="danger"
@@ -785,21 +785,24 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
-          <Collapsible
-            icon={faCommentDots}
-            alignment="right"
-            isVisible={isRightOpen}
-            onOpenHandler={() => {
-              setIsLeftOpen(false);
-            }}
-            setIsVisible={setIsRightOpen}
-          >
-            <CommentSidebar
-              path={selectedSection}
-              piaId={pia.id}
-              handleStatusChange={commentChangeHandler}
-            />
-          </Collapsible>
+          <div className="container__side--form bg-white ms-3 justify-self-start position-sticky top-0 overflow-y-scroll pe-4">
+            <Collapsible
+              icon={faCommentDots}
+              alignment="right"
+              isVisible={isRightOpen}
+              setIsVisible={setIsRightOpen}
+              onOpenHandler={() => {
+                setIsLeftOpen(false);
+              }}
+              fullHeight
+            >
+              <CommentSidebar
+                path={selectedSection}
+                piaId={pia.id}
+                handleStatusChange={commentChangeHandler}
+              />
+            </Collapsible>
+          </div>
         </div>
 
         <Modal

@@ -30,19 +30,17 @@ const CommentSidebar = ({
    * Async callback for getting comments within a useEffect hook
    */
   const getComments = useCallback(async () => {
-    if (path !== undefined) {
-      const commentArr: Comment[] = await HttpRequest.get(
-        API_ROUTES.PIA_COMMENTS,
-        {},
-        {},
-        true,
-        {
-          piaId: piaId,
-          path: path,
-        },
-      );
-      setComments(commentArr);
-    }
+    const commentArr: Comment[] = await HttpRequest.get(
+      API_ROUTES.PIA_COMMENTS,
+      {},
+      {},
+      true,
+      {
+        piaId: piaId,
+        path: path,
+      },
+    );
+    setComments(commentArr);
   }, [piaId, path]);
 
   const deleteComment = async (commentId: number) => {
@@ -105,80 +103,80 @@ const CommentSidebar = ({
   }, [piaId, path, getComments]);
 
   return (
-    <div className="d-flex flex-column h-100 overflow-y-auto position-relative">
-      <h3 className="ps-3">Comments</h3>
-      <div className="flex-grow-1">
-        {comments &&
-          comments?.map((comment) => (
-            <div className="p-3" key={comment.id}>
-              <div className="position-relative">
-                <p className="fw-bold">
-                  {comment.createdByDisplayName}
-                  <span className="ps-1 text-muted fw-normal">
-                    {getDateTime(stringToDate(comment.updatedAt))}
-                  </span>
-                </p>
-                <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
-                  <button
-                    className="mx-2 bcgovbtn bcgovbtn__tertiary"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded={false}
-                  >
-                    <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
-                  </button>
-                  <ul className="dropdown-menu border-1 shadow-sm">
-                    <li role="button">
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="dropdown-item"
-                        disabled={
-                          comment.createdByDisplayName !== loginUserName
-                        }
-                      >
-                        Delete
-                      </button>
-                    </li>
-                  </ul>
+    <>
+      <div className="bg-white comment-sidebar">
+        <h3 className="ps-3">Comments</h3>
+        <div className="comment-sidebar__comments-container">
+          {comments &&
+            comments?.map((comment) => (
+              <div className="p-3" key={comment.id}>
+                <div className="position-relative">
+                  <p className="fw-bold">
+                    {comment.createdByDisplayName}
+                    <span className="ps-1 pe-2 text-muted fw-normal">
+                      {getDateTime(stringToDate(comment.updatedAt))}
+                    </span>
+                  </p>
+                  <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
+                    <button
+                      className="mx-2 bcgovbtn bcgovbtn__tertiary"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded={false}
+                    >
+                      <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
+                    </button>
+                    <ul className="dropdown-menu border-1 shadow-sm">
+                      <li role="button">
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="dropdown-item"
+                          disabled={
+                            comment.createdByDisplayName !== loginUserName
+                          }
+                        >
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div>
-                {comment.isActive ? (
-                  comment.text
-                ) : (
-                  <i>[this comment has been deleted]</i>
+                <div>
+                  {comment.isActive ? (
+                    comment.text
+                  ) : (
+                    <i>[this comment has been deleted]</i>
+                  )}
+                </div>
+                {comment.replies && comment.replies.length > 0 && (
+                  <div className="ml-3">
+                    {comment.replies.map((reply) => (
+                      <div className="p-2" key={reply.id}>
+                        <div className="font-weight-bold">
+                          {reply.createdByDisplayName}
+                          <span className="ps-1 text-muted">
+                            {getDateTime(stringToDate(reply.updatedAt))}
+                          </span>
+                        </div>
+                        <div>{reply.text}</div>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
-              {comment.replies && comment.replies.length > 0 && (
-                <div className="ml-3">
-                  {comment.replies.map((reply) => (
-                    <div className="p-2" key={reply.id}>
-                      <div className="font-weight-bold">
-                        {reply.createdByDisplayName}
-                        <span className="ps-1 text-muted">
-                          {getDateTime(stringToDate(reply.updatedAt))}
-                        </span>
-                      </div>
-                      <div>{reply.text}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        {!path && (
-          <p className="ms-3">
-            Select &ldquo;View comments&rdquo; on any question to add comment or
-            view comments.
-          </p>
-        )}
-        {path && comments?.length === 0 && (
-          <p className="p-3">No comments yet.</p>
-        )}
-      </div>
-      {path && comments && (
-        <>
-          <div className="d-flex flex-column ms-3 mt-4 p-3 gap-3 border-top border-3 border-warning position-fixed w-25 bottom-0 start-75 me-5 bg-white">
+            ))}
+          {!path && (
+            <p className="ms-3">
+              Select &ldquo;View comments&rdquo; on any question to add comment
+              or view comments.
+            </p>
+          )}
+          {path && comments?.length === 0 && (
+            <p className="p-3">No comments yet.</p>
+          )}
+        </div>
+        {path && comments && (
+          <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
             <input
               type="text"
               className="form-control mr-3"
@@ -211,8 +209,8 @@ const CommentSidebar = ({
               </button>
             </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
       <Modal
         confirmLabel={modalConfirmLabel}
         cancelLabel={modalCancelLabel}
@@ -224,7 +222,7 @@ const CommentSidebar = ({
       >
         <p className="modal-text">{modalParagraph}</p>
       </Modal>
-    </div>
+    </>
   );
 };
 

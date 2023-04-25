@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CollapsibleProps from './interfaces';
-import { useEffect, useState } from 'react';
 import {
   faChevronLeft,
   faChevronRight,
@@ -11,8 +10,9 @@ const Collapsible = ({
   alignment,
   children,
   isVisible = false,
-  onOpenHandler,
   setIsVisible,
+  onOpenHandler,
+  fullHeight = false,
 }: CollapsibleProps) => {
   const handleToggle = (): void => {
     setIsVisible?.(!isVisible);
@@ -28,16 +28,12 @@ const Collapsible = ({
 
   return (
     <div
-      className={`collapsible ${
+      className={`collapsible ${fullHeight ? 'h-100' : ''} ${
         alignment === 'left' ? 'collapsible__left' : ''
-      } ${alignment === 'right' ? 'collapsible__right ms-3' : ''}
-      ${isVisible && alignment === 'right' ? 'collapsible__right--open' : ''}`}
+      }`}
     >
       <div
         className={`collapsible__header ${
-          alignment === 'right' ? 'collapsible__right' : ''
-        }
-        ${
           isVisible && alignment === 'right' ? 'collapsible__header-right' : ''
         }`}
         tabIndex={0}
