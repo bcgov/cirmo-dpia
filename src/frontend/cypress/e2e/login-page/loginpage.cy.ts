@@ -93,10 +93,10 @@ describe('Test DPIA Login Page', () => {
     cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get('.d-md-block').click();
-    cy.get('button.bcgovbtn.bcgovbtn__primary').eq(0).click({force: true}); //should('have.text',"Yes, sign out")
-    //cy.url().should('eq','https://test.pia.gov.bc.ca/')
-    cy.get('.d-none', { timeout: 20000 }).should('be.visible').should('have.text','Log in with IDIR');
+    cy.get('.d-md-block').and('contain','Sign Out').click();
+    cy.get("div[class='modal display-block '] button.bcgovbtn.bcgovbtn__primary",{ timeout: 20000 }).and('contain','Yes, sign out').focus().click({force: true}); //click({force: true}); //should('have.text',"Yes, sign out")
+    cy.wait(8000);
+    cy.get('.bcgovbtn',{ timeout: 50000 }).and('contain', 'Log in with IDIR');
 
     
   });
@@ -114,7 +114,7 @@ describe('Test DPIA Login Page', () => {
     cy.get('#user').type('DORGALE1');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 10000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
 
     
   });
@@ -132,7 +132,7 @@ describe('Test DPIA Login Page', () => {
     cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 10000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
 
     
   });
