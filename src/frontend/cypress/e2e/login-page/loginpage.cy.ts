@@ -22,8 +22,8 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
     //cy.get('h1').contains('List of PIAs');
@@ -53,8 +53,8 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
     cy.title().should('eq', 'Digital Privacy Impact Assessment (DPIA)')
@@ -71,8 +71,8 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
     cy.get('img[class="logo"]').should('be.visible');
@@ -89,11 +89,11 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get('.d-md-block',{ timeout: 10000 }).and('contain','Sign Out').click();
+    cy.get('.d-md-block').and('contain','Sign Out').click();
     cy.get("div[class='modal display-block '] button.bcgovbtn.bcgovbtn__primary",{ timeout: 20000 }).and('contain','Yes, sign out').focus().click({force: true}); //click({force: true}); //should('have.text',"Yes, sign out")
     cy.wait(8000);
     cy.get('.bcgovbtn',{ timeout: 50000 }).and('contain', 'Log in with IDIR');
@@ -110,11 +110,11 @@ describe('Test DPIA Login Page', () => {
       });
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE1');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE1');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 10000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
 
     
   });
@@ -128,11 +128,11 @@ describe('Test DPIA Login Page', () => {
       });
     const password = Cypress.env('WRONGPASSWORD');
 
-    cy.get('.d-none',{ timeout: 10000 }).click();
-    cy.get('#user',{ timeout: 10000 }).type('DORGALE');
+    cy.get('.d-none').click();
+    cy.get('#user').type('DORGALE');
     cy.get('#password').type(password);
     cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 10000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
 
     
   });
