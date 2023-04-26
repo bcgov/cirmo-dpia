@@ -1,4 +1,10 @@
 export enum AllowedCommentPaths {
+  'intake.generalInformation' = 'intake.generalInformation',
+  'intake.initiativeDetails.description' = 'intake.initiativeDetails.description',
+  'intake.initiativeDetails.scope' = 'intake.initiativeDetails.scope',
+  'intake.initiativeDetails.dataElementsInvolved' = 'intake.initiativeDetails.dataElementsInvolved',
+  'intake.personalInformation' = 'intake.personalInformation',
+
   'collectionUseAndDisclosure.steps' = 'collectionUseAndDisclosure.steps',
   'collectionUseAndDisclosure.collectionNotice' = 'collectionUseAndDisclosure.collectionNotice',
 

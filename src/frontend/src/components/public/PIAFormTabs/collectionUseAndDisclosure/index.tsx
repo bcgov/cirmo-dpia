@@ -14,10 +14,17 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIACollectionUseAndDisclosure = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -93,6 +100,12 @@ const PIACollectionUseAndDisclosure = () => {
           numberedLabelPrefix="Step"
           addRowBtnLabel="Add more steps"
           format="row"
+        />
+        <ViewComments
+          count={
+            commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
+          }
+          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
         />
       </section>
 
@@ -198,6 +211,14 @@ const PIACollectionUseAndDisclosure = () => {
             )}
           </div>
         </div>
+        <ViewComments
+          count={
+            commentCount?.[
+              PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+            ]
+          }
+          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
+        />
       </section>
     </>
   );

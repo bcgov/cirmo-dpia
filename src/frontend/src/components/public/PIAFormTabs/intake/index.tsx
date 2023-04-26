@@ -13,6 +13,8 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export const PIAFormIntake = () => {
   const {
@@ -21,6 +23,7 @@ export const PIAFormIntake = () => {
     isReadOnly,
     accessControl,
     validationMessage,
+    commentCount,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
@@ -77,7 +80,7 @@ export const PIAFormIntake = () => {
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
         {isReadOnly ? (
-          <PIAIntakeGeneralInformation pia={pia} />
+          <PIAIntakeGeneralInformation commentCount={commentCount} pia={pia} />
         ) : (
           <div className="drop-shadow card p-4 p-md-5">
             <div className="row">
@@ -226,6 +229,11 @@ export const PIAFormIntake = () => {
                 />
               </div>
             </div>
+
+            <ViewComments
+              count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
+              path={PiaSections.INTAKE_GENERAL_INFORMATION}
+            />
           </div>
         )}
       </section>
@@ -272,6 +280,13 @@ export const PIAFormIntake = () => {
               </p>
             )}
           </div>
+
+          <ViewComments
+            count={
+              commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
+            }
+            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION}
+          />
         </div>
       </section>
 
@@ -308,6 +323,11 @@ export const PIAFormIntake = () => {
               />
             )}
           </div>
+
+          <ViewComments
+            count={commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE]}
+            path={PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE}
+          />
         </div>
       </section>
 
@@ -346,6 +366,15 @@ export const PIAFormIntake = () => {
               />
             )}
           </div>
+
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED
+              ]
+            }
+            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED}
+          />
         </div>
       </section>
 
@@ -433,6 +462,11 @@ export const PIAFormIntake = () => {
               </div>
             </div>
           )}
+
+          <ViewComments
+            count={commentCount?.[PiaSections.INTAKE_PERSONAL_INFORMATION]}
+            path={PiaSections.INTAKE_PERSONAL_INFORMATION}
+          />
         </div>
       </section>
     </>

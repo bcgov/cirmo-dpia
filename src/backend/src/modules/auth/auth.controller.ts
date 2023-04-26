@@ -45,7 +45,7 @@ export class AuthController {
 
   @Get('user')
   async getUserInfo(@Req() req) {
-    if (req.headers.authorization === 'Bearer') return;
+    if (!req.headers.authorization.startsWith('Bearer')) return;
     const accessToken = req.headers.authorization.replace('Bearer ', '');
     const kcUserInfo = await this.authService.getUserInfo(accessToken);
     return kcUserInfo;

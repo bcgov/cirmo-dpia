@@ -25,6 +25,8 @@ import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { FindCommentsCountDto } from './dto/find-comments-count.dto';
 import { FindCommentsDto } from './dto/find-comments.dto';
+import { CommentsCountRO } from './ro/comments-count-ro';
+import { CommentRO } from './ro/get-comment.ro';
 
 @Controller('comments')
 @ApiTags('Comments')
@@ -50,7 +52,10 @@ export class CommentsController {
   @ApiGoneResponse({
     description: 'Failed to create comment: The PIA is not active',
   })
-  create(@Body() createCommentDto: CreateCommentDto, @Req() req: IRequest) {
+  create(
+    @Body() createCommentDto: CreateCommentDto,
+    @Req() req: IRequest,
+  ): Promise<CommentRO> {
     return this.commentsService.create(
       createCommentDto,
       req.user,
@@ -76,7 +81,10 @@ export class CommentsController {
   @ApiGoneResponse({
     description: 'Failed to fetch comments: The PIA is not active',
   })
-  find(@Query() findCommentsDto: FindCommentsDto, @Req() req: IRequest) {
+  find(
+    @Query() findCommentsDto: FindCommentsDto,
+    @Req() req: IRequest,
+  ): Promise<CommentRO[]> {
     return this.commentsService.findByPiaAndPath(
       findCommentsDto.piaId,
       findCommentsDto.path,
@@ -104,7 +112,7 @@ export class CommentsController {
   findCommentsCount(
     @Query() findCommentsCount: FindCommentsCountDto,
     @Req() req: IRequest,
-  ) {
+  ): Promise<Partial<CommentsCountRO>> {
     return this.commentsService.findCountByPia(
       findCommentsCount.piaId,
       req.user,
@@ -132,7 +140,7 @@ export class CommentsController {
   @ApiGoneResponse({
     description: 'Failed to delete comment: The PIA is not active',
   })
-  remove(@Param('id') id: string, @Req() req: IRequest) {
+  remove(@Param('id') id: string, @Req() req: IRequest): Promise<CommentRO> {
     return this.commentsService.remove(+id, req.user, req.userRoles);
   }
 

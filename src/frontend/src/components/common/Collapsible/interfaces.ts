@@ -1,8 +1,12 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { ReactNode } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export default interface CollapsibleProps {
   icon: IconProp;
   children: ReactNode;
   alignment: string;
+  isVisible?: boolean;
+  setIsVisible?: Dispatch<SetStateAction<boolean>>;
+  onOpenHandler?: () => void;
+  fullHeight?: boolean;
 }

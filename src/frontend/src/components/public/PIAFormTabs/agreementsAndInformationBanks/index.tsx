@@ -14,10 +14,17 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import ViewComments from '../../../common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 const PIAAgreementsAndInformationBanks = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    commentCount,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
 
@@ -324,6 +331,17 @@ const PIAAgreementsAndInformationBanks = () => {
               </div>
             )}
           </div>
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections
+                  .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+              ]
+            }
+            path={
+              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+            }
+          />
         </section>
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
@@ -528,6 +546,17 @@ const PIAAgreementsAndInformationBanks = () => {
               )}
             </div>
           </div>
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections
+                  .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+              ]
+            }
+            path={
+              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+            }
+          />
         </section>
       </div>
     </>

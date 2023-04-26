@@ -3,25 +3,6 @@
     border-right: 1px solid lightgray;
   }
 
-  &.collapsible__right {
-    background-color: $bg-white;
-    position: relative;
-
-    &::before {
-      content: '';
-      height: 100%;
-      width: 100%;
-      background-color: inherit;
-      position: absolute;
-      right: -100%;
-      top: 0;
-      z-index: 0;
-    }
-    &--open {
-      width: clamp(20%, 25vw, 35vw);
-    }
-  }
-
   .collapsible__header {
     display: flex;
     align-items: center;
