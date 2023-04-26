@@ -148,9 +148,15 @@ a {
 
 .component__container {
   position: relative;
-  width: 100%;
+  width: 93%;
   height: 100%;
   display: flex;
+  align-self: start;
+}
+
+.component__container--comments-open {
+  flex: 3;
+  width: 67%;
 }
 
 .component__wrapper {
@@ -250,8 +256,12 @@ a {
 }
 
 .container__side--form {
-  height: calc(100vh - $header-height - $navbar-height - 9rem);
-  max-width: 30%;
-  position: sticky;
-  top: 0;
+  height: 100%;
+  width: 30%;
+  top: calc($header-height + $navbar-height + $piaSubheader-height);
+  right: 0;
+}
+
+.container__side--form--closed {
+  width: fit-content;
 }
