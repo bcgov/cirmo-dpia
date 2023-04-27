@@ -8,6 +8,11 @@ a:hover {
   color: $primary-colour;
 }
 
+.link-primary {
+  color: $link-blue !important;
+  cursor: pointer;
+}
+
 /* Every button element must contain this class */
 .bcgovbtn {
   border-radius: 4px;
