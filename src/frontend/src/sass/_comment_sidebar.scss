@@ -2,7 +2,9 @@
   display: grid;
   grid-template-rows: auto 5fr 1fr;
   height: 65svh;
+  padding-block-end: $footer-height;
 }
+
 
 .comment-sidebar__comments-container {
   overflow-y: auto;
