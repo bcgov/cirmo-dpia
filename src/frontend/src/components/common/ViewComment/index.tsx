@@ -21,9 +21,12 @@ const ViewComments = ({
 
   return (
     <div className="d-flex justify-content-center mt-4">
-      <a className="link-primary" onClick={openSidebar}>
+      <button
+        className="bcgovbtn bcgovbtn__tertiary bold"
+        onClick={openSidebar}
+      >
         View comments ({count ? +count : 0})
-      </a>
+      </button>
     </div>
   );
 };
