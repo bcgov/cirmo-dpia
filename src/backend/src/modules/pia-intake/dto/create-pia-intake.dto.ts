@@ -53,33 +53,6 @@ export class CreatePiaIntakeDto {
   @ApiProperty({
     type: String,
     required: false,
-    example: piaIntakeEntityMock.drafterName,
-  })
-  drafterName: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: piaIntakeEntityMock.drafterTitle,
-  })
-  drafterTitle: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    type: String,
-    required: false,
-    example: piaIntakeEntityMock.drafterEmail,
-  })
-  drafterEmail: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    type: String,
-    required: false,
     example: piaIntakeEntityMock.leadName,
   })
   leadName: string;
