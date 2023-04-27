@@ -16,7 +16,10 @@ const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
 
   return (
     <div className="d-flex justify-content-center mt-4">
-      <button className="bcgovbtn bcgovbtn__tertiary bold" onClick={openSidebar}>
+      <button
+        className="bcgovbtn bcgovbtn__tertiary bold"
+        onClick={openSidebar}
+      >
         View comments ({count ? +count : 0})
       </button>
     </div>
