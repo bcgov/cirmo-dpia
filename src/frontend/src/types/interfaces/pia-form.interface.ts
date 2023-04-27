@@ -16,6 +16,7 @@ export interface IPiaForm extends IPiaFormIntake {
   submittedAt?: Date | null;
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention;
   additionalRisks?: IAdditionalRisks;
+  ppq?: any;
   securityPersonalInformation?: ISecurityPersonalInformation;
   agreementsAndInformationBanks?: IAgreementsAndInformationBanks;
   collectionUseAndDisclosure?: ICollectionUseAndDisclosure;
