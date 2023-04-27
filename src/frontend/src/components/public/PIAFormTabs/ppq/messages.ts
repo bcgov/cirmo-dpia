@@ -10,10 +10,13 @@ export default {
   InitiativeFactorsHeading: {
     en: `Does the initiative involve any of the following? Check all that apply.`,
   },
-  StartDateHeading: {
-    en: `Is there a proposed start date for the initiative?`,
+  DeadlineDateHeading: {
+    en: `Is there a proposed deadline for this review?`,
+  },
+  DeadlineReasonHeading: {
+    en: ` Reason for the proposed deadline`,
   },
   AdditionalInfoHeading: {
-    en: `Is there anything else PCT should consider when reviewing this PIA?`,
+    en: `Are there any related PIAs, or anything else CPO should consider when reviewing this PIA?`,
   },
 };
