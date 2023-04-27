@@ -58,7 +58,8 @@ export class PiaIntakeService {
       updatedByGuid: user.idir_user_guid,
       updatedByUsername: user.idir_username,
       updatedByDisplayName: user.display_name,
-      drafterEmail: user.email, // although the email will come filled in to the form, this is an added check to ensure user did not modify it
+      drafterEmail: user.email,
+      drafterName: user.display_name,
     });
 
     const formattedPiaInfoForm: GetPiaIntakeRO =

@@ -157,10 +157,16 @@ const PIAFormPage = () => {
     }));
   };
 
+  const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
+    useState(0);
+
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
     if (isOpen === true && isLeftOpen === true) {
       setIsLeftOpen(false);
+    }
+    if (isOpen) {
+      setBringCommentsSidebarToFocus((prev) => prev + 1);
     }
   };
   const piaCommentPathHandler = (path: PiaSections | undefined) => {
@@ -804,6 +810,7 @@ const PIAFormPage = () => {
                 setIsLeftOpen(false);
               }}
               fullHeight
+              bringToFocus={bringCommentsSidebarToFocus}
             >
               <CommentSidebar
                 path={selectedSection}

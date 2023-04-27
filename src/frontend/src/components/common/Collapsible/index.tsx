@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CollapsibleProps from './interfaces';
 import {
@@ -13,7 +14,10 @@ const Collapsible = ({
   setIsVisible,
   onOpenHandler,
   fullHeight = false,
+  bringToFocus = 0, // a hacky way to bring focus to this collapsible bar [parent to child communication]
 }: CollapsibleProps) => {
+  const toggleButtonRef = useRef<HTMLDivElement>(null);
+
   const handleToggle = (): void => {
     setIsVisible?.(!isVisible);
     onOpenHandler?.();
@@ -25,6 +29,15 @@ const Collapsible = ({
       handleToggle();
     }
   };
+
+  // The intent of this useEffect is to bring Toggle button to focus. This can happen under two circumstances:
+  // 1. when the collapsible bar is made visible
+  // 2. when bringToFocus is changed :: changing this number is a hack to retrigger useEffect, bringing the collapsible bar to focus when required by the parent
+  useEffect(() => {
+    if (isVisible) {
+      (toggleButtonRef?.current as HTMLDivElement)?.focus();
+    }
+  }, [bringToFocus, isVisible]);
 
   return (
     <div
@@ -39,6 +52,7 @@ const Collapsible = ({
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
+        ref={toggleButtonRef}
       >
         <FontAwesomeIcon
           icon={

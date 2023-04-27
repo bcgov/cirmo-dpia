@@ -37,12 +37,6 @@ export class PiaIntakeEntity extends BaseEntity {
   drafterName: string;
 
   @Column({
-    name: 'drafter_title',
-    nullable: true,
-  })
-  drafterTitle: string;
-
-  @Column({
     name: 'drafter_email',
     nullable: true,
   })
