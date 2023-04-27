@@ -703,6 +703,7 @@ const PIAFormPage = () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
   }, [alertUserLeave, hasFormChanged]);
+
   return (
     <>
       <PIASubHeader
@@ -726,7 +727,11 @@ const PIAFormPage = () => {
           />
         )}
 
-        <div className="component__container">
+        <div
+          className={`component__container ${
+            isRightOpen ? 'component__container--comments-open' : ''
+          }`}
+        >
           <Collapsible
             icon={faBars}
             alignment="left"
@@ -785,7 +790,11 @@ const PIAFormPage = () => {
               isDelegate={pia.hasAddedPiToDataElements === false}
             />
           </section>
-          <div className="container__side--form bg-white ms-3 justify-self-start position-sticky top-0 overflow-y-scroll pe-4">
+          <div
+            className={`container__side--form bg-white ms-3 justify-self-start position-fixed overflow-y-scroll pe-4 ${
+              !isRightOpen ? 'container__side--form--closed' : ''
+            }`}
+          >
             <Collapsible
               icon={faCommentDots}
               alignment="right"

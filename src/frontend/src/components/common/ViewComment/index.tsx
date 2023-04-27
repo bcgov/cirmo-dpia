@@ -21,7 +21,7 @@ const ViewComments = ({
 
   return (
     <div className="d-flex justify-content-center mt-4">
-      <a href="#" onClick={openSidebar}>
+      <a className="link-primary" onClick={openSidebar}>
         View comments ({count ? +count : 0})
       </a>
     </div>

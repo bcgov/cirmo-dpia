@@ -68,7 +68,7 @@ const PIAAdditionalRisks = () => {
       <h2 className="results-header pb-4">
         <b>{Messages.Headings.Title.en}</b>
       </h2>
-
+      <p> {Messages.Headings.Description.en}</p>
       <section
         className={`drop-shadow card p-4 p-md-5 ${
           sectionClickState.additionalRisk ? 'section-focus' : ''
