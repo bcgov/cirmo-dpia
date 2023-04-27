@@ -5,7 +5,6 @@ export interface IPiaFormIntake {
   ministry?: GovMinistriesEnum | string;
   branch?: string;
   drafterName?: string;
-  drafterTitle?: string;
   drafterEmail?: string;
   leadName?: string;
   leadTitle?: string;
