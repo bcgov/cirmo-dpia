@@ -9,4 +9,5 @@ export default interface CollapsibleProps {
   setIsVisible?: Dispatch<SetStateAction<boolean>>;
   onOpenHandler?: () => void;
   fullHeight?: boolean;
+  bringToFocus?: number; // change this number to retrigger useEffect, bringing the collapsible bar to focus
 }
