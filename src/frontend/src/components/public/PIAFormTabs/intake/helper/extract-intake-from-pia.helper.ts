@@ -9,7 +9,6 @@ export const exportIntakeFromPia = (pia: IPiaForm): IPiaFormIntake => {
     ministry: pia.ministry,
     branch: pia.branch,
     drafterName: pia.drafterName,
-    drafterTitle: pia.drafterTitle,
     drafterEmail: pia.drafterEmail,
     leadName: pia.leadName,
     leadTitle: pia.leadTitle,

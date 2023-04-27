@@ -160,44 +160,6 @@ export const PIAFormIntake = () => {
             <div className="row">
               <div className="col">
                 <InputText
-                  label="Your name"
-                  id="drafterName"
-                  value={intakeForm?.drafterName}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'drafterName')
-                  }
-                  required={false}
-                />
-              </div>
-              <div className="col">
-                <InputText
-                  label="Your email"
-                  id="drafterEmail"
-                  value={intakeForm?.drafterEmail}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'drafterEmail')
-                  }
-                  required={false}
-                  type="email"
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <InputText
-                  label="Your title"
-                  id="drafterTitle"
-                  value={intakeForm?.drafterTitle}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'drafterTitle')
-                  }
-                  required={false}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <InputText
                   label="Initiative lead name"
                   id="leadName"
                   value={intakeForm?.leadName}

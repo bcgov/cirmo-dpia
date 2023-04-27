@@ -42,7 +42,6 @@ const PIAIntakeGeneralInformation = ({
             <div className="col col-md-3">
               <b>Drafter</b>
               <div>{pia.drafterName}</div>
-              <div>{pia.drafterTitle}</div>
               <div>{pia.drafterEmail}</div>
             </div>
             <div className="col col-md-3">

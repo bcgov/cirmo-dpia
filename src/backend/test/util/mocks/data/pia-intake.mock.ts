@@ -5,14 +5,12 @@ import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.enti
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
 import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { baseEntityMock } from 'test/util/mocks/data/base.mock';
+import { keycloakUserMock } from './auth.mock';
 
 const piaIntakeDataMock = {
   title: 'Test PIA for screening King Richard',
   ministry: GovMinistriesEnum.TOURISM_ARTS_CULTURE_AND_SPORT,
   branch: 'Entertainment',
-  drafterName: 'Will Smith',
-  drafterTitle: 'Actor',
-  drafterEmail: 'will@test.bc.gov.in',
   leadName: 'King Richard',
   leadTitle: 'Chief Guiding Officer',
   leadEmail: 'king@test.bc.gov.in',
@@ -193,7 +191,11 @@ const collectionUseAndDisclosureWithDrafterPermissions = {
 export const piaIntakeEntityMock: PiaIntakeEntity = {
   ...baseEntityMock,
   ...piaIntakeDataMock,
-  ...{ updatedByDisplayName: 'Richard, King CITZ:EX' },
+  ...{
+    updatedByDisplayName: 'Richard, King CITZ:EX',
+    drafterName: keycloakUserMock.display_name,
+    drafterEmail: keycloakUserMock.email,
+  },
   ...collectionUseAndDisclosureWithDrafterPermissions,
 };
 
@@ -208,6 +210,8 @@ export const getPiaIntakeROMock: GetPiaIntakeRO = {
     id: baseEntityMock.id,
     createdAt: baseEntityMock.createdAt,
     updatedAt: baseEntityMock.updatedAt,
+    drafterName: keycloakUserMock.display_name,
+    drafterEmail: keycloakUserMock.email,
   },
   ...collectionUseAndDisclosureWithDrafterPermissions,
 };
