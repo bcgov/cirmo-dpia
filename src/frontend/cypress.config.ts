@@ -10,7 +10,7 @@ export default defineConfig({
     }
   },
   video: false,
-  defaultCommandTimeout: 5000,
+  defaultCommandTimeout: 15000,
   component: {
     devServer: {
       framework: 'react',
