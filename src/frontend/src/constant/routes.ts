@@ -38,6 +38,9 @@ export const routes = {
   PIA_ADDITIONAL_RISKS_EDIT: '/pia/:id/additionalRisks/edit',
   PIA_ADDITIONAL_RISKS_VIEW: '/pia/:id/additionalRisks/view',
 
+  PIA_PPQ_EDIT: '/pia/:id/ppq/edit',
+  PIA_PPQ_VIEW: '/pia/:id/ppq/view',
+
   PIA_RESULT: '/pia/result',
   PIA_LIST: '/pia/list',
   NOT_FOUND: '/not-found',
