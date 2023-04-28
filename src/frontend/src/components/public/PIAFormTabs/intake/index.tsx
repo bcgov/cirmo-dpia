@@ -174,36 +174,6 @@ export const PIAFormIntake = () => {
                 />
               </div>
             </div>
-            <div className="row form__row--flex-end">
-              <div className="col">
-                <InputText
-                  label="Ministry Privacy Officer"
-                  helperText={Messages.GeneralInfoSection.MPOHelperText.en}
-                  linkText={Messages.GeneralInfoSection.MPOLinkText.en}
-                  linkHref={Messages.GeneralInfoSection.MPOLinkHref}
-                  hasIcon={false}
-                  id="mpoName"
-                  value={intakeForm?.mpoName}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'mpoName')
-                  }
-                  required={false}
-                />
-              </div>
-              <div className="col">
-                <InputText
-                  label="MPO email"
-                  id="mpoEmail"
-                  value={intakeForm?.mpoEmail}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'mpoEmail')
-                  }
-                  required={false}
-                  type="email"
-                />
-              </div>
-            </div>
-
             <ViewComments
               count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
               path={PiaSections.INTAKE_GENERAL_INFORMATION}
