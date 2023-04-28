@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import ViewCommentProps from './interfaces';
 import {
   IPiaFormContext,
@@ -17,6 +17,7 @@ const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
   return (
     <div className="d-flex justify-content-center mt-4">
       <button
+        type="button"
         className="bcgovbtn bcgovbtn__tertiary bold"
         onClick={openSidebar}
       >

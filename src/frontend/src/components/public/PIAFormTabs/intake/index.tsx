@@ -19,6 +19,7 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 export const PIAFormIntake = () => {
   const {
     pia,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -80,9 +81,20 @@ export const PIAFormIntake = () => {
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
         {isReadOnly ? (
-          <PIAIntakeGeneralInformation commentCount={commentCount} pia={pia} />
+          <PIAIntakeGeneralInformation
+            commentCount={commentCount}
+            pia={pia}
+            path={selectedSection}
+          />
         ) : (
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              selectedSection &&
+              selectedSection === PiaSections.INTAKE_GENERAL_INFORMATION
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             <div className="row">
               <InputText
                 label="Title"
@@ -172,7 +184,15 @@ export const PIAFormIntake = () => {
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5 ${
+            selectedSection &&
+            selectedSection ===
+              PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION
+              ? 'section-focus'
+              : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p>
               <strong>
@@ -223,7 +243,14 @@ export const PIAFormIntake = () => {
       </section>
 
       <section className="section__padding-block">
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            selectedSection &&
+            selectedSection === PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE
+              ? 'section-focus'
+              : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="form__h2">
               <strong>{Messages.InitiativeScopeSection.H2Text.en}</strong>
@@ -264,7 +291,15 @@ export const PIAFormIntake = () => {
       </section>
 
       <section className="section__padding-block">
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            selectedSection &&
+            selectedSection ===
+              PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED
+              ? 'section-focus'
+              : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="form__h2">
               <strong>
@@ -312,7 +347,14 @@ export const PIAFormIntake = () => {
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5  ${
+            selectedSection &&
+            selectedSection === PiaSections.INTAKE_PERSONAL_INFORMATION
+              ? 'section-focus'
+              : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p>
               <strong>{Messages.InitiativePISection.Question.en}</strong>

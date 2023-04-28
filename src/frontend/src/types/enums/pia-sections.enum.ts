@@ -22,7 +22,7 @@ export enum PiaSections {
   // Security of personal information
   SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT = 'securityPersonalInformation.digitalToolsAndSystems.toolsAndAssessment',
   SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE = 'securityPersonalInformation.digitalToolsAndSystems.storage',
-  SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION = 'securityPersonalInformation.digitalToolsAndSystems',
+  SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION = 'securityPersonalInformation.accessToPersonalInformation',
 
   // Accuracy, correction, and retention
   ACCURACY_CORRECTION_AND_RETENTION_ACCURACY = 'accuracyCorrectionAndRetention.accuracy',
