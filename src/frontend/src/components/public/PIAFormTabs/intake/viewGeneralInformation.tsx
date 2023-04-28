@@ -9,18 +9,27 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 interface IGeneralInformationProps {
   pia: IPiaForm;
   commentCount?: CommentCount;
+  path: PiaSections | undefined;
 }
 
 const PIAIntakeGeneralInformation = ({
   pia,
   commentCount,
+  path,
 }: IGeneralInformationProps) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
+
   return (
     <>
-      <div className="card p-4 p-md-5">
+      <div
+        className={`card p-4 p-md-5 ${
+          path && path === PiaSections.INTAKE_GENERAL_INFORMATION
+            ? 'section-focus'
+            : ''
+        }`}
+      >
         <div className="d-grid gap-3">
           <div className="row">
             <div className="col col-md-3">

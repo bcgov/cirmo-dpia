@@ -19,6 +19,7 @@ export const SecurityPersonalInformation = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -83,7 +84,15 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.DigitalTools.SectionTitle.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p>
                 <strong>
@@ -326,7 +335,15 @@ export const SecurityPersonalInformation = () => {
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
             .toolsAndAssessment.haveSecurityAssessment === YesNoInput.NO && (
-            <div className="section__margin-block drop-shadow card p-4 p-md-5">
+            <div
+              className={`section__margin-block drop-shadow card p-4 p-md-5 ${
+                selectedSection &&
+                selectedSection ===
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                  ? 'section-focus'
+                  : ''
+              }`}
+            >
               {!isReadOnly ? (
                 <p>
                   <strong>
@@ -455,7 +472,15 @@ export const SecurityPersonalInformation = () => {
           <h3 className="form__h2">
             {Messages.FormElements.AccessPI.SectionTitle.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>

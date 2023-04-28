@@ -18,6 +18,7 @@ export const AccuracyCorrectionAndRetention = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -77,11 +78,19 @@ export const AccuracyCorrectionAndRetention = () => {
         <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
-        <section className="section__padding-block">
+        <section className="section__padding-block ">
           <h3 className="form__h2">
             {Messages.FormElements.Accuracy.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>
@@ -142,7 +151,15 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.RequestCorrection.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5 ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <>
                 <p>
@@ -468,7 +485,15 @@ export const AccuracyCorrectionAndRetention = () => {
           <h3 className="form__h2">
             {Messages.FormElements.PersonalInformationDecision.H2Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5  ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p>
                 <strong>

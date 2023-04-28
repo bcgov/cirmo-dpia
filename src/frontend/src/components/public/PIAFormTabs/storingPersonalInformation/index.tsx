@@ -22,6 +22,7 @@ const StoringPersonalInformation = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -316,7 +317,15 @@ const StoringPersonalInformation = () => {
       <p>{Messages.Heading.PText.en}</p>
       <section className="form__section">
         <h3 className="py-3">{Messages.PersonalInformation.H3Text.en}</h3>
-        <div className="drop-shadow card p-4 p-md-5">
+        <div
+          className={`drop-shadow card p-4 p-md-5 ${
+            selectedSection &&
+            selectedSection ===
+              PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
+              ? 'section-focus'
+              : ''
+          }`}
+        >
           {!isReadOnly ? (
             <p className="text__font-weight--700">
               {Messages.PersonalInformation.StoredOutsideCanada.en}
@@ -394,7 +403,15 @@ const StoringPersonalInformation = () => {
           <h3 className="py-3">
             {Messages.SensitivePersonalInformation.H3Text.en}
           </h3>
-          <div className="drop-shadow card p-4 p-md-5">
+          <div
+            className={`drop-shadow card p-4 p-md-5  ${
+              selectedSection &&
+              selectedSection ===
+                PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                ? 'section-focus'
+                : ''
+            }`}
+          >
             {!isReadOnly ? (
               <p className="text__font-weight--700">
                 {Messages.SensitivePersonalInformation.DoesInvolve.en}
@@ -526,7 +543,15 @@ const StoringPersonalInformation = () => {
                 </a>
                 .
               </div>
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  selectedSection &&
+                  selectedSection ===
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                    ? 'section-focus'
+                    : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {
@@ -736,7 +761,15 @@ const StoringPersonalInformation = () => {
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  selectedSection &&
+                  selectedSection ===
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                    ? 'section-focus'
+                    : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.Contract.RelyingOnExistingContract.en}
@@ -819,7 +852,15 @@ const StoringPersonalInformation = () => {
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  selectedSection &&
+                  selectedSection ===
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                    ? 'section-focus'
+                    : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.Controls.WhatControlsAreInPlace.en}
@@ -869,7 +910,15 @@ const StoringPersonalInformation = () => {
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5  ${
+                  selectedSection &&
+                  selectedSection ===
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                    ? 'section-focus'
+                    : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <p className="text__font-weight--700">
                     {Messages.TrackAccess.TrackAccessDetails.en}
@@ -919,7 +968,15 @@ const StoringPersonalInformation = () => {
               </div>
             </section>
             <section className="form__section my-4">
-              <div className="drop-shadow card p-4 p-md-5">
+              <div
+                className={`drop-shadow card p-4 p-md-5 ${
+                  selectedSection &&
+                  selectedSection ===
+                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                    ? 'section-focus'
+                    : ''
+                }`}
+              >
                 {!isReadOnly ? (
                   <>
                     <p className="text__font-weight--700">

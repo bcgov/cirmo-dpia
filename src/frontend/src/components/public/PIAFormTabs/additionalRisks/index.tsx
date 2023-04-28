@@ -16,6 +16,7 @@ const PIAAdditionalRisks = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -60,7 +61,14 @@ const PIAAdditionalRisks = () => {
         <b>{Messages.Headings.Title.en}</b>
       </h2>
       <p> {Messages.Headings.Description.en}</p>
-      <section className="drop-shadow card p-4 p-md-5">
+      <section
+        className={`drop-shadow card p-4 p-md-5 ${
+          selectedSection &&
+          selectedSection === PiaSections.ADDITIONAL_RISKS_RISKS
+            ? 'section-focus'
+            : ''
+        }`}
+      >
         <Table
           data={additionalRisksForm.risks}
           columnsMeta={columns}
