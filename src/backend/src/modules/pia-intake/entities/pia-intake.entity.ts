@@ -61,18 +61,6 @@ export class PiaIntakeEntity extends BaseEntity {
   leadEmail: string;
 
   @Column({
-    name: 'mpo_name',
-    nullable: true,
-  })
-  mpoName: string;
-
-  @Column({
-    name: 'mpo_email',
-    nullable: true,
-  })
-  mpoEmail: string;
-
-  @Column({
     name: 'initiative_description',
     nullable: true,
   })
