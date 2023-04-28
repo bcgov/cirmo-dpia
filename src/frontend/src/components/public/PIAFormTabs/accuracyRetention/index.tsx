@@ -18,6 +18,7 @@ export const AccuracyCorrectionAndRetention = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -70,22 +71,6 @@ export const AccuracyCorrectionAndRetention = () => {
     accuracyCorrectionAndRetentionForm,
     initialFormState,
   ]);
-  const [sectionClickState, setSectionClickState] = useState({
-    accuracy: false,
-    correction: false,
-    retention: false,
-  });
-
-  const handleCommentClick = (
-    section: 'accuracy' | 'correction' | 'retention',
-  ) => {
-    setSectionClickState((prevState) => ({
-      ...prevState,
-      accuracy: section === 'accuracy',
-      correction: section === 'correction',
-      retention: section === 'retention',
-    }));
-  };
 
   return (
     <>
@@ -99,7 +84,11 @@ export const AccuracyCorrectionAndRetention = () => {
           </h3>
           <div
             className={`drop-shadow card p-4 p-md-5 ${
-              sectionClickState.accuracy ? 'section-focus' : ''
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
+                ? 'section-focus'
+                : ''
             }`}
           >
             {!isReadOnly ? (
@@ -154,7 +143,6 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
-              onCommentClick={() => handleCommentClick('accuracy')}
             />
           </div>
         </section>
@@ -165,7 +153,11 @@ export const AccuracyCorrectionAndRetention = () => {
           </h3>
           <div
             className={`drop-shadow card p-4 p-md-5 ${
-              sectionClickState.correction ? 'section-focus' : ''
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+                ? 'section-focus'
+                : ''
             }`}
           >
             {!isReadOnly ? (
@@ -485,7 +477,6 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
-              onCommentClick={() => handleCommentClick('correction')}
             />
           </div>
         </section>
@@ -496,7 +487,11 @@ export const AccuracyCorrectionAndRetention = () => {
           </h3>
           <div
             className={`drop-shadow card p-4 p-md-5  ${
-              sectionClickState.retention ? 'section-focus' : ''
+              selectedSection &&
+              selectedSection ===
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
+                ? 'section-focus'
+                : ''
             }`}
           >
             {!isReadOnly ? (
@@ -752,7 +747,6 @@ export const AccuracyCorrectionAndRetention = () => {
                 ]
               }
               path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
-              onCommentClick={() => handleCommentClick('retention')}
             />
           </div>
         </section>

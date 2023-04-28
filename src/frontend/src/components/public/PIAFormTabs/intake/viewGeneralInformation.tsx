@@ -9,22 +9,13 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 interface IGeneralInformationProps {
   pia: IPiaForm;
   commentCount?: CommentCount;
-  handleCommentClick?: (
-    section:
-      | 'generalInformation'
-      | 'description'
-      | 'scope'
-      | 'dataElementsInvolved'
-      | 'personalInformation',
-  ) => void;
-  sectionClickState: Record<string, unknown>;
+  path: PiaSections | undefined;
 }
 
 const PIAIntakeGeneralInformation = ({
   pia,
   commentCount,
-  handleCommentClick,
-  sectionClickState,
+  path,
 }: IGeneralInformationProps) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
@@ -34,7 +25,9 @@ const PIAIntakeGeneralInformation = ({
     <>
       <div
         className={`card p-4 p-md-5 ${
-          sectionClickState.generalInformation ? 'section-focus' : ''
+          path && path === PiaSections.INTAKE_GENERAL_INFORMATION
+            ? 'section-focus'
+            : ''
         }`}
       >
         <div className="d-grid gap-3">
@@ -79,7 +72,6 @@ const PIAIntakeGeneralInformation = ({
         <ViewComments
           count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
           path={PiaSections.INTAKE_GENERAL_INFORMATION}
-          onCommentClick={() => handleCommentClick('generalInformation')}
         />
       </div>
     </>

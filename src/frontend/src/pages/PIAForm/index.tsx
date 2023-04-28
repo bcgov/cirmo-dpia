@@ -124,7 +124,7 @@ const PIAFormPage = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [getCommentCount, selectedSection]);
+  }, [getCommentCount]);
 
   const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
   const [pia, setPia] = useState<IPiaForm>(emptyState);
@@ -773,6 +773,7 @@ const PIAFormPage = () => {
                 value={{
                   pia,
                   commentCount,
+                  selectedSection,
                   piaCollapsibleChangeHandler,
                   piaCommentPathHandler,
                   piaStateChangeHandler,

@@ -21,23 +21,12 @@ const PIAAgreementsAndInformationBanks = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
-  const [sectionClickState, setSectionClickState] = useState({
-    ISA: false,
-    PIB: false,
-  });
-
-  const handleCommentClick = (section: 'ISA' | 'PIB') => {
-    setSectionClickState((prevState) => ({
-      ...prevState,
-      ISA: section === 'ISA',
-      PIB: section === 'PIB',
-    }));
-  };
   if (accessControl) accessControl();
 
   const defaultState: IAgreementsAndInformationBanks = useMemo(
@@ -101,7 +90,11 @@ const PIAAgreementsAndInformationBanks = () => {
         <h3 className="pt-4 pb-3">{Messages.InvolveISA.Headings.Title.en}</h3>
         <section
           className={`drop-shadow card p-4 p-md-5 ${
-            sectionClickState.ISA ? 'section-focus' : ''
+            selectedSection &&
+            selectedSection ===
+              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+              ? 'section-focus'
+              : ''
           }`}
         >
           <div className="form-group">
@@ -357,7 +350,6 @@ const PIAAgreementsAndInformationBanks = () => {
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
             }
-            onCommentClick={() => handleCommentClick('ISA')}
           />
         </section>
 
@@ -365,7 +357,11 @@ const PIAAgreementsAndInformationBanks = () => {
         <p> {Messages.ResultingPIB.Headings.Description.en}</p>
         <section
           className={`drop-shadow card p-4 p-md-5 ${
-            sectionClickState.PIB ? 'section-focus' : ''
+            selectedSection &&
+            selectedSection ===
+              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+              ? 'section-focus'
+              : ''
           }`}
         >
           <div className="form-group">
@@ -577,7 +573,6 @@ const PIAAgreementsAndInformationBanks = () => {
             path={
               PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
             }
-            onCommentClick={() => handleCommentClick('PIB')}
           />
         </section>
       </div>

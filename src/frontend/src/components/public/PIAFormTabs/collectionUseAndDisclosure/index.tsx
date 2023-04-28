@@ -21,6 +21,7 @@ const PIACollectionUseAndDisclosure = () => {
   const {
     pia,
     commentCount,
+    selectedSection,
     piaStateChangeHandler,
     isReadOnly,
     accessControl,
@@ -28,18 +29,6 @@ const PIACollectionUseAndDisclosure = () => {
 
   if (accessControl) accessControl();
 
-  const [sectionClickState, setSectionClickState] = useState({
-    steps: false,
-    collectionNotice: false,
-  });
-
-  const handleCommentClick = (section: 'steps' | 'collectionNotice') => {
-    setSectionClickState((prevState) => ({
-      ...prevState,
-      steps: section === 'steps',
-      collectionNotice: section === 'collectionNotice',
-    }));
-  };
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
       steps: [
@@ -103,7 +92,10 @@ const PIACollectionUseAndDisclosure = () => {
       <p> {Messages.WorkThroughDetails.SubTitle.en}</p>
       <section
         className={`drop-shadow card p-4 p-md-5  ${
-          sectionClickState.steps ? 'section-focus' : ''
+          selectedSection &&
+          selectedSection === PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS
+            ? 'section-focus'
+            : ''
         }`}
       >
         <Table
@@ -122,7 +114,6 @@ const PIACollectionUseAndDisclosure = () => {
             commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
           }
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
-          onCommentClick={() => handleCommentClick('steps')}
         />
       </section>
 
@@ -130,7 +121,11 @@ const PIACollectionUseAndDisclosure = () => {
 
       <section
         className={`drop-shadow card p-4 p-md-5  ${
-          sectionClickState.collectionNotice ? 'section-focus' : ''
+          selectedSection &&
+          selectedSection ===
+            PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+            ? 'section-focus'
+            : ''
         }`}
       >
         <div className="form-group">
@@ -239,7 +234,6 @@ const PIACollectionUseAndDisclosure = () => {
             ]
           }
           path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
-          onCommentClick={() => handleCommentClick('collectionNotice')}
         />
       </section>
     </>
