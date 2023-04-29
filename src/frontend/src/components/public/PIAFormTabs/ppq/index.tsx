@@ -243,9 +243,9 @@ const PPQ = () => {
 
         <div className="form-group mt-4">
           {!isReadOnly ? (
-            <p>
-              <strong>{Messages.AdditionalInfoHeading.en}</strong>
-            </p>
+            <label id="additionalInformation">
+              {Messages.AdditionalInfoHeading.en}
+            </label>
           ) : (
             <h4> {Messages.AdditionalInfoHeading.en}</h4>
           )}
