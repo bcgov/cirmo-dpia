@@ -30,6 +30,7 @@ import { PiaIntakeStatusEnum } from './enums/pia-intake-status.enum';
 import { PiaIntakeAllowedSortFieldsType } from './constants/pia-intake-allowed-sort-fields';
 import { validateRoleForCollectionUseAndDisclosure } from './jsonb-classes/collection-use-and-disclosure';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
+import { validateRoleForPPq } from './jsonb-classes/ppq';
 
 @Injectable()
 export class PiaIntakeService {
@@ -477,6 +478,7 @@ export class PiaIntakeService {
    * 4. accuracyCorrectionAndRetention
    * 5. personalInformationBanks
    * 6. additionalRisks
+   * 7. ppq
    */
   validateJsonbFields(
     updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
@@ -488,6 +490,9 @@ export class PiaIntakeService {
       storedValue?.collectionUseAndDisclosure,
       userType,
     );
-    // space for future validators, as needed
+
+    validateRoleForPPq(updatedValue?.ppq, storedValue?.ppq, userType);
+
+    // ... space for future validators, as needed
   }
 }
