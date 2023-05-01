@@ -54,11 +54,6 @@ const PIAIntakeGeneralInformation = ({
           </div>
           <div className="row mt-4">
             <div className="col col-md-3">
-              <b>Ministry Privacy Officer </b>
-              <div>{pia.mpoName}</div>
-              <div>{pia.mpoEmail}</div>
-            </div>
-            <div className="col col-md-3">
               <strong>Submitted on</strong>
               <div>{pia.submittedAt ? dateToString(pia.submittedAt) : ''}</div>
             </div>
