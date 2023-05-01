@@ -94,6 +94,7 @@ const PPQ = () => {
                   <Checkbox
                     key={index}
                     checked={false}
+                    isLink={false}
                     value={factor.value}
                     label={factor.label}
                     tooltip={factor.tooltip}
@@ -112,6 +113,7 @@ const PPQ = () => {
                     label={factor.label}
                     tooltip={factor.tooltip}
                     tooltipText={factor.tooltipText}
+                    isLink={false}
                     readOnly={true}
                   />
                 );
