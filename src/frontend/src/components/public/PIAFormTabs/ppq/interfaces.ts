@@ -1,24 +1,23 @@
 export interface IPPQ {
-  checkedPIItems: {
-    hasOtherRelatedPIAInformation: boolean;
-    hasProgramAgreement: boolean;
-    hasDataLinking: boolean;
-    hasCloudTechnology: boolean;
-    hasPotentialPublicInterest: boolean;
-    hasAssociatedContractOrLicenseAgreementReview: boolean;
-    hasBcServicesCardOnboarding: boolean;
-    hasAiOrMl: boolean;
-  };
-  willProposeDeadlineForReview?: string;
-  proposedDeadlineDate?: string | null;
-  proposeDeadlineReason?: string;
-  anyRelatedPIAInformation?: string;
+  hasCommonProgram: boolean;
+  hasDataLinking: boolean;
+  hasCloudTechnology: boolean;
+  hasPotentialPublicInterest: boolean;
+  hasContactOrLicenseReview: boolean;
+  hasBcServicesCardOnboarding: boolean;
+  hasAiOrMl: boolean;
+  hasInitiativeOther: boolean;
+  initiativeOtherDetails?: string;
+  proposedDeadlineAvailable?: string;
+  proposedDeadline?: string | null;
+  proposedDeadlineReason?: string;
+  otherCpoConsideration?: string;
 }
 
 export const OtherFactor = [
   {
     label: 'Common or integrated program agreement',
-    value: 'hasProgramAgreement',
+    value: 'hasCommonProgram',
     tooltip: false,
     tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
     for the purpose of providing a service.`,
@@ -57,10 +56,10 @@ export const OtherFactor = [
   },
   {
     label: 'Associated contract or license agreement review',
-    value: 'hasAssociatedContractOrLicenseAgreementReview',
+    value: 'hasContactOrLicenseReview',
   },
   {
     label: 'Other (Please provide additional details below)',
-    value: 'hasOtherRelatedPIAInformation',
+    value: 'hasInitiativeOther',
   },
 ];

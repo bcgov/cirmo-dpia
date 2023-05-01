@@ -17,40 +17,21 @@ const PPQ = () => {
     useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
-
-  const [checkedPIItems, setCheckedPIItems] = useState({
-    hasOtherRelatedPIAInformation: false,
-    hasProgramAgreement: false,
-    hasDataLinking: false,
-    hasCloudTechnology: false,
-    hasPotentialPublicInterest: false,
-    hasAssociatedContractOrLicenseAgreementReview: false,
-    hasBcServicesCardOnboarding: false,
-    hasAiOrMl: false,
-  });
-
-  const handlePIItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedPIItems({
-      ...checkedPIItems,
-      [event.target.value]: event.target.checked,
-    });
-  };
   const defaultState: IPPQ = useMemo(
     () => ({
-      checkedPIItems: {
-        hasOtherRelatedPIAInformation: false,
-        hasProgramAgreement: false,
-        hasDataLinking: false,
-        hasCloudTechnology: false,
-        hasPotentialPublicInterest: false,
-        hasAssociatedContractOrLicenseAgreementReview: false,
-        hasBcServicesCardOnboarding: false,
-        hasAiOrMl: false,
-      },
-      willProposeDeadlineForReview: YesNoInput.YES,
-      proposedDeadlineDate: '',
-      proposeDeadlineReason: '',
-      anyRelatedPIAInformation: '',
+      hasCommonProgram: false,
+      hasDataLinking: false,
+      hasCloudTechnology: false,
+      hasPotentialPublicInterest: false,
+      hasContactOrLicenseReview: false,
+      hasBcServicesCardOnboarding: false,
+      hasAiOrMl: false,
+      hasInitiativeOther: false,
+      initiativeOtherDetails: '',
+      proposedDeadlineAvailable: YesNoInput.YES,
+      proposedDeadline: '',
+      proposedDeadlineReason: '',
+      otherCpoConsideration: '',
     }),
     [],
   );
@@ -99,16 +80,21 @@ const PPQ = () => {
                     label={factor.label}
                     tooltip={factor.tooltip}
                     tooltipText={factor.tooltipText}
-                    onChange={handlePIItemsChange}
+                    onChange={(event) => {
+                      stateChangeHandler(
+                        event.target.checked,
+                        factor.value as keyof IPPQ,
+                      );
+                    }}
                   />
                 );
               })
             : OtherFactor.map((factor, index) => {
-                const typedKey = factor.value as keyof IPPQ['checkedPIItems'];
+                const typedKey = factor.value as keyof IPPQ;
                 return (
                   <Checkbox
                     key={index}
-                    checked={ppqForm?.checkedPIItems?.[typedKey]}
+                    checked={!!ppqForm?.[typedKey]}
                     value={factor.value}
                     label={factor.label}
                     tooltip={factor.tooltip}
@@ -118,6 +104,26 @@ const PPQ = () => {
                   />
                 );
               })}
+          {!isReadOnly ? (
+            ppqForm?.hasInitiativeOther && (
+              <MDEditor
+                preview="edit"
+                defaultTabEnable={true}
+                value={ppqForm?.initiativeOtherDetails || ''}
+                onChange={(value) =>
+                  stateChangeHandler(value, 'initiativeOtherDetails')
+                }
+              />
+            )
+          ) : ppqForm.initiativeOtherDetails ? (
+            <div className="px-4">
+              <MDEditor.Markdown source={ppqForm.initiativeOtherDetails} />
+            </div>
+          ) : ppqForm?.hasInitiativeOther ? (
+            <p>
+              <i>Not answered</i>
+            </p>
+          ) : null}
         </div>
 
         <div className="form-group ">
@@ -137,12 +143,12 @@ const PPQ = () => {
                   name="proposed-deadline-radio"
                   value={YesNoInput.YES}
                   checked={
-                    ppqForm?.willProposeDeadlineForReview === YesNoInput.YES
+                    ppqForm?.proposedDeadlineAvailable === YesNoInput.YES
                   }
                   onChange={(e) =>
                     stateChangeHandler(
                       e.target.value,
-                      'willProposeDeadlineForReview',
+                      'proposedDeadlineAvailable',
                     )
                   }
                 />
@@ -155,11 +161,11 @@ const PPQ = () => {
                   type="radio"
                   name="proposed-deadline-radio"
                   value={YesNoInput.NO}
-                  checked={ppqForm?.willProposeDeadlineForReview === 'NO'}
+                  checked={ppqForm?.proposedDeadlineAvailable === 'NO'}
                   onChange={(e) =>
                     stateChangeHandler(
                       e.target.value,
-                      'willProposeDeadlineForReview',
+                      'proposedDeadlineAvailable',
                     )
                   }
                 />
@@ -168,13 +174,13 @@ const PPQ = () => {
             </div>
           ) : (
             <p>
-              {ppqForm?.willProposeDeadlineForReview?.charAt(0)}
-              {ppqForm?.willProposeDeadlineForReview?.slice(1).toLowerCase()}
+              {ppqForm?.proposedDeadlineAvailable?.charAt(0)}
+              {ppqForm?.proposedDeadlineAvailable?.slice(1).toLowerCase()}
             </p>
           )}
         </div>
 
-        {ppqForm?.willProposeDeadlineForReview === YesNoInput.YES && (
+        {ppqForm?.proposedDeadlineAvailable === YesNoInput.YES && (
           <>
             <div className="form-group mt-4 col-md-3">
               {!isReadOnly ? (
@@ -189,23 +195,20 @@ const PPQ = () => {
                 <CustomInputDate
                   key="proposedDeadlineDate"
                   selected={
-                    ppqForm?.proposedDeadlineDate
-                      ? stringToDate(ppqForm.proposedDeadlineDate)
+                    ppqForm?.proposedDeadline
+                      ? stringToDate(ppqForm.proposedDeadline)
                       : null
                   }
                   onChange={(date: any) => {
-                    stateChangeHandler(
-                      dateToString(date),
-                      'proposedDeadlineDate',
-                    );
+                    stateChangeHandler(dateToString(date), 'proposedDeadline');
                   }}
                   required
                 />
               ) : (
                 <div>
-                  {pia.ppq?.proposedDeadlineDate &&
-                  pia.ppq?.proposedDeadlineDate !== '' ? (
-                    pia.ppq?.proposedDeadlineDate
+                  {pia.ppq?.proposedDeadline &&
+                  pia.ppq?.proposedDeadline !== '' ? (
+                    pia.ppq?.proposedDeadline
                   ) : (
                     <p>
                       <i>Not answered</i>
@@ -227,13 +230,13 @@ const PPQ = () => {
                 <MDEditor
                   preview="edit"
                   defaultTabEnable={true}
-                  value={ppqForm?.proposeDeadlineReason || ''}
+                  value={ppqForm?.proposedDeadlineReason || ''}
                   onChange={(value) =>
-                    stateChangeHandler(value, 'proposeDeadlineReason')
+                    stateChangeHandler(value, 'proposedDeadlineReason')
                   }
                 />
-              ) : ppqForm.proposeDeadlineReason ? (
-                <MDEditor.Markdown source={ppqForm.proposeDeadlineReason} />
+              ) : ppqForm.proposedDeadlineReason ? (
+                <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
               ) : (
                 <p>
                   <i>Not answered</i>
@@ -255,13 +258,13 @@ const PPQ = () => {
             <MDEditor
               preview="edit"
               defaultTabEnable={true}
-              value={ppqForm?.anyRelatedPIAInformation || ''}
+              value={ppqForm?.otherCpoConsideration || ''}
               onChange={(value) =>
-                stateChangeHandler(value, 'anyRelatedPIAInformation')
+                stateChangeHandler(value, 'otherCpoConsideration')
               }
             />
-          ) : ppqForm.anyRelatedPIAInformation ? (
-            <MDEditor.Markdown source={ppqForm.anyRelatedPIAInformation} />
+          ) : ppqForm.otherCpoConsideration ? (
+            <MDEditor.Markdown source={ppqForm.otherCpoConsideration} />
           ) : (
             <p>
               <i>Not answered</i>
