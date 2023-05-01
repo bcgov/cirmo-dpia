@@ -286,6 +286,19 @@ const PIAFormPage = () => {
         setPiaModalParagraph(Messages.Modal.SubmitPiaForm.ParagraphText.en);
         setPiaModalButtonValue('submitPiaForm');
         break;
+      case 'SubmitForPCTReview':
+        setPiaModalConfirmLabel(
+          Messages.Modal.SubmitForPCTReview.ConfirmLabel.en,
+        );
+        setPiaModalCancelLabel(
+          Messages.Modal.SubmitForPCTReview.CancelLabel.en,
+        );
+        setPiaModalTitleText(Messages.Modal.SubmitForPCTReview.TitleText.en);
+        setPiaModalParagraph(
+          Messages.Modal.SubmitForPCTReview.ParagraphText.en,
+        );
+        setPiaModalButtonValue('SubmitForPCTReview');
+        break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
         setPiaModalTitleText(
@@ -502,6 +515,18 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'SubmitForPCTReview') {
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.PCT_REVIEW,
+        });
+
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -548,7 +573,11 @@ const PIAFormPage = () => {
     ) {
       handleShowModal('submitPiaIntake');
     } else {
-      handleShowModal('submitPiaForm');
+      if (pia?.status === PiaStatuses.MPO_REVIEW) {
+        handleShowModal('SubmitForPCTReview');
+      } else {
+        handleShowModal('submitPiaForm');
+      }
     }
   };
   /*
