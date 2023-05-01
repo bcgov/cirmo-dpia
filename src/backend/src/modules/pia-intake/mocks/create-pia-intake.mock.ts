@@ -155,4 +155,20 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       },
     ],
   },
+  ppq: {
+    hasCommonProgram: false,
+    hasCloudTechnology: false,
+    hasPotentialPublicInterest: false,
+    hasDataLinking: false,
+    hasBcServicesCardOnboarding: true,
+    hasAiOrMl: true,
+    hasContactOrLicenseReview: false,
+    hasInitiativeOther: true,
+    initiativeOtherDetails: 'Extra details goes here...',
+    proposedDeadlineAvailable: YesNoInput.YES,
+    proposedDeadline: '2022/06/20',
+    proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
+    otherCpoConsideration:
+      'Any related PIAs or CPO considerations goes here...',
+  },
 };

@@ -15,9 +15,18 @@ export const validateRoleForFormField = <T>(
   userType: UserTypesEnum,
   path: string,
 ) => {
-  if (!updatedValue) return; // if value not edited - no need to validate permissions
+  metadata = { isRichText: false, type: 'text', ...metadata }; // assigning defaults; gets overridden if provided with metadata
 
-  if (typeof updatedValue === 'string' && updatedValue === storedValue) return; // if value is not updated by the current user;
+  // Fist save checks
+  if (storedValue === undefined) {
+    if (metadata.type === 'text' && updatedValue === '') return; // Allow empty strings on first save
+
+    if (updatedValue === null) return; // Allow nulls for other types
+  }
+
+  // Checking primitives matching;
+  // TO introduce object matching, if needed
+  if (updatedValue === storedValue) return; // if value is not updated by the current user;
 
   if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
 
