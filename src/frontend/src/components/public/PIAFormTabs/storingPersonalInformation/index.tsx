@@ -17,6 +17,7 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import Callout from '../../../common/Callout';
 
 const StoringPersonalInformation = () => {
   const {
@@ -440,19 +441,19 @@ const StoringPersonalInformation = () => {
                   <p className="text__font-weight--700">
                     {
                       Messages.SensitivePersonalInformation
-                        .SensitivePersonalInformationDislosedUnderFOIPPA.en
+                        .SensitivePersonalInformationDisclosedUnderFOIPPA.en
                     }
                     <a
                       href={
                         Messages.SensitivePersonalInformation
-                          .SensitivePersonalInformationDislosedUnderFOIPPA.Link
+                          .SensitivePersonalInformationDisclosedUnderFOIPPA.Link
                       }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {
                         Messages.SensitivePersonalInformation
-                          .SensitivePersonalInformationDislosedUnderFOIPPA
+                          .SensitivePersonalInformationDisclosedUnderFOIPPA
                           .LinkText.en
                       }
                       <FontAwesomeIcon
@@ -466,19 +467,19 @@ const StoringPersonalInformation = () => {
                   <h4>
                     {
                       Messages.SensitivePersonalInformation
-                        .SensitivePersonalInformationDislosedUnderFOIPPA.en
+                        .SensitivePersonalInformationDisclosedUnderFOIPPA.en
                     }
                     <a
                       href={
                         Messages.SensitivePersonalInformation
-                          .SensitivePersonalInformationDislosedUnderFOIPPA.Link
+                          .SensitivePersonalInformationDisclosedUnderFOIPPA.Link
                       }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {
                         Messages.SensitivePersonalInformation
-                          .SensitivePersonalInformationDislosedUnderFOIPPA
+                          .SensitivePersonalInformationDisclosedUnderFOIPPA
                           .LinkText.en
                       }
                       <FontAwesomeIcon
@@ -1018,6 +1019,12 @@ const StoringPersonalInformation = () => {
                   path={
                     PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
                   }
+                />
+              </div>
+              <div className="mt-5">
+                <Callout
+                  text={Messages.AssessmentOfDisclosures.CallOutText.en}
+                  bgWhite
                 />
               </div>
             </section>

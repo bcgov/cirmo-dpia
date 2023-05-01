@@ -21,14 +21,13 @@ import { AccuracyCorrectionAndRetention } from '../../components/public/PIAFormT
 import PIAAdditionalRisks from '../../components/public/PIAFormTabs/additionalRisks';
 import PIAAgreementsAndInformationBanks from '../../components/public/PIAFormTabs/agreementsAndInformationBanks';
 import PIACollectionUseAndDisclosure from '../../components/public/PIAFormTabs/collectionUseAndDisclosure';
-import { PIAFormIntake } from '../../components/public/PIAFormTabs/intake';
 import { SecurityPersonalInformation } from '../../components/public/PIAFormTabs/securityPersonalInformation';
 import StoringPersonalInformation from '../../components/public/PIAFormTabs/storingPersonalInformation';
 import { API_ROUTES } from '../../constant/apiRoutes';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import PrintHeader from './PrintHeader';
 import SignaturesFullPIA from './SignaturesFull';
-import IntakePrintPreivew from '../../components/public/PIAFormTabs/intake/printPreview';
+import IntakePrintPreview from '../../components/public/PIAFormTabs/intake/printPreview';
 import {
   IPiaForm,
   IPiaFormResponse,
@@ -82,7 +81,7 @@ export const PiaFormPrintPreview = () => {
               validationMessage: {},
             }}
           >
-            <IntakePrintPreivew {...pia} />
+            <IntakePrintPreview {...pia} />
             {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <div className="pageBreak">
