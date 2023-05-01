@@ -161,6 +161,22 @@ const piaIntakeDataMock = {
       },
     ],
   },
+  ppq: {
+    hasCommonProgram: false,
+    hasCloudTechnology: false,
+    hasPotentialPublicInterest: false,
+    hasDataLinking: false,
+    hasBcServicesCardOnboarding: true,
+    hasAiOrMl: true,
+    hasContactOrLicenseReview: false,
+    hasInitiativeOther: true,
+    initiativeOtherDetails: 'Extra details goes here...',
+    proposedDeadlineAvailable: YesNoInput.YES,
+    proposedDeadline: '2022/06/20',
+    proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
+    otherCpoConsideration:
+      'Any related PIAs or CPO considerations goes here...',
+  },
 };
 
 const collectionUseAndDisclosureWithDrafterPermissions = {
@@ -186,6 +202,10 @@ const collectionUseAndDisclosureWithDrafterPermissions = {
   },
 };
 
+const ppqWithDrafterPermissions = {
+  ppq: null,
+};
+
 export const piaIntakeEntityMock: PiaIntakeEntity = {
   ...baseEntityMock,
   ...piaIntakeDataMock,
@@ -195,11 +215,13 @@ export const piaIntakeEntityMock: PiaIntakeEntity = {
     drafterEmail: keycloakUserMock.email,
   },
   ...collectionUseAndDisclosureWithDrafterPermissions,
+  ...ppqWithDrafterPermissions,
 };
 
 export const createPiaIntakeMock: CreatePiaIntakeDto = {
   ...piaIntakeDataMock,
   ...collectionUseAndDisclosureWithDrafterPermissions,
+  ...ppqWithDrafterPermissions,
 };
 
 export const getPiaIntakeROMock: GetPiaIntakeRO = {
@@ -212,4 +234,5 @@ export const getPiaIntakeROMock: GetPiaIntakeRO = {
     drafterEmail: keycloakUserMock.email,
   },
   ...collectionUseAndDisclosureWithDrafterPermissions,
+  ...ppqWithDrafterPermissions,
 };

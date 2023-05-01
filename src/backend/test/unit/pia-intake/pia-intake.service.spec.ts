@@ -42,6 +42,7 @@ import { Not } from 'typeorm/find-options/operator/Not';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
+import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 
 /**
  * @Description
@@ -219,7 +220,7 @@ describe('PiaIntakeService', () => {
     });
 
     // Scenario 4
-    it('fails when a drafter tries to create fields they do not have permissions to ', async () => {
+    it('fails when a drafter tries to create fields [collectionUseAndDisclosure] they do not have permissions to', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = {
         ...createPiaIntakeMock,
         collectionUseAndDisclosure: {
@@ -252,21 +253,21 @@ describe('PiaIntakeService', () => {
     });
 
     // Scenario 5
-    it('passes when an MPO of any ministry tries to update the same fields [mentioned in the above scenario]', async () => {
+    it('passes and does not throw error when an MPO of any ministry tries to update the restricted fields [collectionUseAndDisclosure]', async () => {
       const createPiaIntakeDto: CreatePiaIntakeDto = {
         ...createPiaIntakeMock,
         collectionUseAndDisclosure: {
           steps: [
             {
               drafterInput: 'Make a Checklist.',
-              mpoInput: 'I do not have privilege to edit this',
-              foippaInput: 'I do not have privilege to edit this',
-              OtherInput: 'I do not have privilege to edit this',
+              mpoInput: 'I now have privilege to edit this',
+              foippaInput: 'I now have have privilege to edit this',
+              OtherInput: 'I now have privilege to edit this',
             },
           ],
           collectionNotice: {
             drafterInput: 'Test Input',
-            mpoInput: 'I do not have privilege to edit this',
+            mpoInput: 'I now have privilege to edit this',
           },
         },
       };
@@ -274,14 +275,72 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles: Array<RolesEnum> = [RolesEnum.MPO_HLTH];
 
+      await expect(service.create(createPiaIntakeDto, user, userRoles))
+        .resolves;
+    });
+
+    // Scenario 6
+    it('fails when a drafter tries to create fields [ppq] they do not have permissions to', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        ppq: {
+          hasCommonProgram: false,
+          hasCloudTechnology: false,
+          hasPotentialPublicInterest: false,
+          hasDataLinking: false,
+          hasBcServicesCardOnboarding: true,
+          hasAiOrMl: true,
+          hasContactOrLicenseReview: false,
+          hasInitiativeOther: true,
+          initiativeOtherDetails: 'Extra details goes here...',
+          proposedDeadlineAvailable: YesNoInput.YES,
+          proposedDeadline: '2022/06/20',
+          proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
+          otherCpoConsideration:
+            'Any related PIAs or CPO considerations goes here...',
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
       await expect(
         service.create(createPiaIntakeDto, user, userRoles),
-      ).resolves.not.toThrow(
+      ).rejects.toThrow(
         new ForbiddenException({
-          path: 'steps.mpoInput',
+          path: 'steps.ppq',
           message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
         }),
       );
+    });
+
+    // Scenario 7
+    it('passes and does not throw error when an MPO of any ministry tries to update the restricted fields [ppq]', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        ppq: {
+          hasCommonProgram: false,
+          hasCloudTechnology: false,
+          hasPotentialPublicInterest: false,
+          hasDataLinking: false,
+          hasBcServicesCardOnboarding: true,
+          hasAiOrMl: true,
+          hasContactOrLicenseReview: false,
+          hasInitiativeOther: true,
+          initiativeOtherDetails: 'Extra details goes here...',
+          proposedDeadlineAvailable: YesNoInput.YES,
+          proposedDeadline: '2022/06/20',
+          proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
+          otherCpoConsideration:
+            'Any related PIAs or CPO considerations goes here...',
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_AG];
+
+      await expect(service.create(createPiaIntakeDto, user, userRoles))
+        .resolves;
     });
   });
 
