@@ -19,6 +19,7 @@ import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-i
 import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-information';
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
+import { Ppq } from '../jsonb-classes/ppq';
 
 export class CreatePiaIntakeDto {
   @IsString()
@@ -227,4 +228,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.additionalRisks,
   })
   additionalRisks: AdditionalRisks;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => Ppq)
+  @ApiProperty({
+    type: Ppq,
+    required: false,
+    example: piaIntakeEntityMock.ppq,
+  })
+  ppq: Ppq;
 }
