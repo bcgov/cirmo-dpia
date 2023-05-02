@@ -22,7 +22,8 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
       <div className="dropdownSatusContainer">
         {isMPO() &&
         props.mode === 'view' &&
-        props.pia.status !== PiaStatuses.PCT_REVIEW ? (
+        statusList[props.pia.status || 'Completed'].Priviliges.MPO.changeStatus
+          .length !== 0 ? (
           <div className="dropdown">
             <button
               className="dropdown-toggles form-control"
