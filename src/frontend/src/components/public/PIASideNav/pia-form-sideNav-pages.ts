@@ -4,11 +4,13 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
+import { isMPORole } from '../../../utils/helper.util';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
@@ -52,6 +54,9 @@ export const PiaFormSideNavPages = (
       return false;
     }
   };
+
+  const userIsMpo = useMemo(() => isMPORole(), []);
+
   /* 
 * if null the states are not used
 if string then the state needs to find the label string
@@ -230,11 +235,47 @@ if it is ++ or -- operater navigate to the previous or next tab
       ),
       enable: showPostIntakeTabs,
       state: {
+        ...(userIsMpo
+          ? {
+              next: {
+                condition: true,
+                action: 'PIA Pathway Questionnaire',
+              },
+            }
+          : {}),
         prev: {
           condition: true,
           action: -1,
         },
       },
     },
+    {
+      id: 11,
+      isDivider: true, // divider
+      label: '',
+      link: '',
+      enable: userIsMpo && showPostIntakeTabs,
+    },
+    ...(userIsMpo
+      ? [
+          {
+            id: 12,
+            label: 'PIA Pathway Questionnaire',
+            link: buildDynamicPath(
+              isEditMode ? routes.PIA_PPQ_EDIT : routes.PIA_PPQ_VIEW,
+              {
+                id: pia?.id,
+              },
+            ),
+            enable: showPostIntakeTabs,
+            state: {
+              prev: {
+                condition: true,
+                action: 'Additional risks',
+              },
+            },
+          },
+        ]
+      : []),
   ];
 };
