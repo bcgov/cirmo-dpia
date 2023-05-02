@@ -20,7 +20,9 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     <>
       <div>Status</div>
       <div className="dropdownSatusContainer">
-        {isMPO() && props.mode === 'view' ? (
+        {isMPO() &&
+        props.mode === 'view' &&
+        props.pia.status !== PiaStatuses.PCT_REVIEW ? (
           <div className="dropdown">
             <button
               className="dropdown-toggles form-control"
