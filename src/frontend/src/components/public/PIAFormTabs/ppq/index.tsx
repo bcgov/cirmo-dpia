@@ -29,7 +29,7 @@ const PPQ = () => {
       hasInitiativeOther: false,
       initiativeOtherDetails: '',
       proposedDeadlineAvailable: YesNoInput.YES,
-      proposedDeadline: '',
+      proposedDeadline: null,
       proposedDeadlineReason: '',
       otherCpoConsideration: '',
     }),
@@ -74,7 +74,7 @@ const PPQ = () => {
                 return (
                   <Checkbox
                     key={index}
-                    checked={false}
+                    checked={!!ppqForm?.[factor.value as keyof IPPQ] || false}
                     isLink={false}
                     value={factor.value}
                     label={factor.label}
@@ -126,7 +126,7 @@ const PPQ = () => {
           ) : null}
         </div>
 
-        <div className="form-group ">
+        <div className="form-group mt-4">
           {!isReadOnly ? (
             <p>
               <strong> {Messages.DeadlineDateHeading.en}</strong>
