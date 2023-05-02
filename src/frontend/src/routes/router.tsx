@@ -20,6 +20,7 @@ import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/se
 import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs/accuracyRetention';
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
 import { PiaFormPrintPreview } from '../pages/PiaFormPrintPreview';
+import PPQ from '../components/public/PIAFormTabs/ppq';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -125,6 +126,11 @@ const Router = () => {
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PIAAdditionalRisks />} />
               <Route path="view" element={<PIAAdditionalRisks />} />
+            </Route>
+            <Route path="ppq">
+              <Route index element={<Navigate relative="path" to="view" />} />
+              <Route path="edit" element={<PPQ />} />
+              <Route path="view" element={<PPQ />} />
             </Route>
           </Route>
         </Route>
