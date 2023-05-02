@@ -27,7 +27,6 @@ import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
-import { YesNoInput } from '../../types/enums/yes-no.enum';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -238,23 +237,6 @@ const PIAFormPage = () => {
         'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
       );
   }, [isValidationFailed]);
-
-  const ppqTabValidationCheck = () => {
-    if (pia?.ppq?.proposedDeadlineAvailable === YesNoInput.YES) {
-      if (pia?.ppq?.proposedDeadline === null) {
-        setValidationMessages((prevState) => ({
-          ...prevState,
-          ppqProposeDeadline: 'Error: Please enter a proposed deadline.',
-        }));
-      }
-    } else if (pia?.ppq?.proposedDeadlineReason === '') {
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        ppqProposeDeadlineReason:
-          'Error: Please enter a reason for the proposed deadline.',
-      }));
-    }
-  };
   //
   // Modal State
   //
@@ -535,21 +517,6 @@ const PIAFormPage = () => {
           );
         }
       } else if (buttonValue === 'SubmitForPCTReview') {
-        // do validation here first
-        ppqTabValidationCheck();
-        if (
-          validationMessages.ppqProposeDeadline ||
-          validationMessages.ppqProposeDeadlineReason
-        ) {
-          navigate(
-            buildDynamicPath(
-              mode === 'view' ? routes.PIA_INTAKE_VIEW : routes.PIA_INTAKE_EDIT,
-              {
-                id: pia.id,
-              },
-            ),
-          );
-        }
         const updatedPia = await upsertAndUpdatePia({
           status: PiaStatuses.PCT_REVIEW,
         });

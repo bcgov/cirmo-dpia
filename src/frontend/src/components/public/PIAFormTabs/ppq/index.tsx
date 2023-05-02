@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import { IPPQ, OtherFactor } from './interfaces';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
@@ -13,13 +13,8 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 const PPQ = () => {
-  const {
-    pia,
-    piaStateChangeHandler,
-    isReadOnly,
-    accessControl,
-    validationMessage,
-  } = useContext<IPiaFormContext>(PiaFormContext);
+  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
+    useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
   const defaultState: IPPQ = useMemo(
@@ -199,11 +194,6 @@ const PPQ = () => {
                     }}
                     required
                   />
-                  {validationMessage.ppqProposeDeadline && (
-                    <p className="error-text ">
-                      {validationMessage.ppqProposeDeadline}
-                    </p>
-                  )}
                 </>
               ) : (
                 <div>
@@ -237,11 +227,6 @@ const PPQ = () => {
                       stateChangeHandler(value, 'proposedDeadlineReason')
                     }
                   />
-                  {validationMessage.ppqProposeDeadlineReason && (
-                    <p className="error-text ">
-                      {validationMessage.ppqProposeDeadlineReason}
-                    </p>
-                  )}
                 </>
               ) : ppqForm.proposedDeadlineReason ? (
                 <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
