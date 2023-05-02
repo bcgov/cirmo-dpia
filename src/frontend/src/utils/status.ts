@@ -12,6 +12,9 @@ interface StatusList {
       MPO: {
         changeStatus: Array<string>;
       };
+      CPO?: {
+        changeStatus: Array<string>;
+      };
     };
   };
 }
@@ -92,7 +95,10 @@ export const statusList: StatusList = {
     },
     Priviliges: {
       MPO: {
-        changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS', 'MPO_REVIEW'],
+        changeStatus: [],
+      },
+      CPO: {
+        changeStatus: ['MPO_REVIEW'],
       },
     },
   },
