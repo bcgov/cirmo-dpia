@@ -56,7 +56,6 @@ export const PiaFormSideNavPages = (
   };
 
   const userIsMpo = useMemo(() => isMPORole(), []);
-  console.log('userIsMpo', userIsMpo);
 
   /* 
 * if null the states are not used
