@@ -272,7 +272,7 @@ if it is ++ or -- operater navigate to the previous or next tab
             state: {
               prev: {
                 condition: true,
-                action: -1,
+                action: 'Additional risks',
               },
             },
           },
