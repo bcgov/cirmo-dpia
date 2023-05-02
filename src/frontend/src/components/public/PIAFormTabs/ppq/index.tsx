@@ -56,10 +56,10 @@ const PPQ = () => {
 
   return (
     <>
-      <h2 className="results-header pb-4">
+      <h2 className="results-header">
         <b>{Messages.Headings.Title.en}</b>
       </h2>
-      <p> {Messages.Headings.Description.en}</p>
+      <p className="pb-4"> {Messages.Headings.Description.en}</p>
       <section className="drop-shadow card p-4 p-md-5">
         {!isReadOnly ? (
           <p>
@@ -69,41 +69,27 @@ const PPQ = () => {
           <h4>{Messages.InitiativeFactorsHeading.en}</h4>
         )}
         <div className="row">
-          {!isReadOnly
-            ? OtherFactor.map((factor, index) => {
-                return (
-                  <Checkbox
-                    key={index}
-                    checked={!!ppqForm?.[factor.value as keyof IPPQ] || false}
-                    isLink={false}
-                    value={factor.value}
-                    label={factor.label}
-                    tooltip={factor.tooltip}
-                    tooltipText={factor.tooltipText}
-                    onChange={(event) => {
-                      stateChangeHandler(
-                        event.target.checked,
-                        factor.value as keyof IPPQ,
-                      );
-                    }}
-                  />
-                );
-              })
-            : OtherFactor.map((factor, index) => {
-                const typedKey = factor.value as keyof IPPQ;
-                return (
-                  <Checkbox
-                    key={index}
-                    checked={!!ppqForm?.[typedKey]}
-                    value={factor.value}
-                    label={factor.label}
-                    tooltip={factor.tooltip}
-                    tooltipText={factor.tooltipText}
-                    isLink={false}
-                    readOnly={true}
-                  />
-                );
-              })}
+          {OtherFactor.map((factor, index) => {
+            return (
+              <Checkbox
+                key={index}
+                checked={!!ppqForm?.[factor.value as keyof IPPQ] || false}
+                isLink={false}
+                value={factor.value}
+                label={factor.label}
+                tooltip={factor.tooltip}
+                tooltipText={factor.tooltipText}
+                onChange={(event) => {
+                  if (isReadOnly) return;
+                  stateChangeHandler(
+                    event.target.checked,
+                    factor.value as keyof IPPQ,
+                  );
+                }}
+                readOnly={isReadOnly}
+              />
+            );
+          })}
           {!isReadOnly ? (
             ppqForm?.hasInitiativeOther && (
               <MDEditor
@@ -182,7 +168,7 @@ const PPQ = () => {
 
         {ppqForm?.proposedDeadlineAvailable === YesNoInput.YES && (
           <>
-            <div className="form-group mt-4 col-md-3">
+            <div className="form-group mt-4 mb-4 col-md-3">
               {!isReadOnly ? (
                 <label id="deadline-date-label">
                   {Messages.ProposedDeadLineHeading.en}
@@ -217,7 +203,7 @@ const PPQ = () => {
                 </div>
               )}
             </div>
-            <div className="form-group mt-4 ">
+            <div className="form-group mt-4 mb-4">
               {!isReadOnly ? (
                 <label id="start-date-label">
                   {Messages.DeadlineReasonHeading.en}
