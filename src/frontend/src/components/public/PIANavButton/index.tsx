@@ -41,6 +41,7 @@ const PIANavButton = ({ pages }: INavButton) => {
           <button
             className="bcgovbtn bcgovbtn__secondary btn-back"
             onClick={handleBack}
+            type="button"
           >
             {typeof HandleState(pages, pathname, 'prev') === 'object'
               ? Object(HandleState(pages, pathname, 'next'))?.title
@@ -49,9 +50,9 @@ const PIANavButton = ({ pages }: INavButton) => {
         )}
         {HandleState(pages, pathname, 'next') && (
           <button
-            type="submit"
-            className="bcgovbtn  bcgovbtn__secondary btn-next ms-auto"
+            className="bcgovbtn bcgovbtn__secondary btn-next ms-auto"
             onClick={handleNext}
+            type="button"
           >
             {typeof HandleState(pages, pathname, 'next') === 'object'
               ? Object(HandleState(pages, pathname, 'next'))?.title
