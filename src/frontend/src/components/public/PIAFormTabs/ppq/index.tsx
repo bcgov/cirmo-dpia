@@ -13,8 +13,13 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 const PPQ = () => {
-  const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const {
+    pia,
+    piaStateChangeHandler,
+    isReadOnly,
+    accessControl,
+    validationMessage,
+  } = useContext<IPiaFormContext>(PiaFormContext);
 
   if (accessControl) accessControl();
   const defaultState: IPPQ = useMemo(
@@ -178,18 +183,28 @@ const PPQ = () => {
                 <h4> {Messages.ProposedDeadLineHeading.en}</h4>
               )}
               {!isReadOnly ? (
-                <CustomInputDate
-                  key="proposedDeadlineDate"
-                  selected={
-                    ppqForm?.proposedDeadline
-                      ? stringToDate(ppqForm.proposedDeadline)
-                      : null
-                  }
-                  onChange={(date: any) => {
-                    stateChangeHandler(dateToString(date), 'proposedDeadline');
-                  }}
-                  required
-                />
+                <>
+                  <CustomInputDate
+                    key="proposedDeadlineDate"
+                    selected={
+                      ppqForm?.proposedDeadline
+                        ? stringToDate(ppqForm.proposedDeadline)
+                        : null
+                    }
+                    onChange={(date: any) => {
+                      stateChangeHandler(
+                        dateToString(date),
+                        'proposedDeadline',
+                      );
+                    }}
+                    required
+                  />
+                  {validationMessage.ppqProposeDeadline && (
+                    <p className="error-text ">
+                      {validationMessage.ppqProposeDeadline}
+                    </p>
+                  )}
+                </>
               ) : (
                 <div>
                   {pia.ppq?.proposedDeadline &&
@@ -213,14 +228,21 @@ const PPQ = () => {
                 <h4> {Messages.DeadlineReasonHeading.en}</h4>
               )}
               {!isReadOnly ? (
-                <MDEditor
-                  preview="edit"
-                  defaultTabEnable={true}
-                  value={ppqForm?.proposedDeadlineReason || ''}
-                  onChange={(value) =>
-                    stateChangeHandler(value, 'proposedDeadlineReason')
-                  }
-                />
+                <>
+                  <MDEditor
+                    preview="edit"
+                    defaultTabEnable={true}
+                    value={ppqForm?.proposedDeadlineReason || ''}
+                    onChange={(value) =>
+                      stateChangeHandler(value, 'proposedDeadlineReason')
+                    }
+                  />
+                  {validationMessage.ppqProposeDeadlineReason && (
+                    <p className="error-text ">
+                      {validationMessage.ppqProposeDeadlineReason}
+                    </p>
+                  )}
+                </>
               ) : ppqForm.proposedDeadlineReason ? (
                 <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
               ) : (
