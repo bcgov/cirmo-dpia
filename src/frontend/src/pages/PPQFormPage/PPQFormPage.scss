@@ -65,6 +65,13 @@
   columns: 4 auto;
 }
 
+.print-ppq-section-focus {
+  border: 2px solid $accent-colour;
+  border-radius: 4px;
+  margin: 25px 50px 75px 50px;
+  padding: 25px 25px;
+}
+
 .review-type {
   columns: 2 auto;
 }

@@ -33,6 +33,7 @@ import {
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
 import { HttpRequest } from '../../utils/http-request.util';
+import PPQ from '../../components/public/PIAFormTabs/ppq';
 
 export const PiaFormPrintPreview = () => {
   const { id } = useParams();
@@ -81,7 +82,12 @@ export const PiaFormPrintPreview = () => {
               validationMessage: {},
             }}
           >
-            <IntakePrintPreview {...pia} />
+            <div className="print-ppq-section-focus">
+              <PPQ printPreview />
+            </div>
+            <div className="pageBreak">
+              <IntakePrintPreview {...pia} />
+            </div>
             {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <div className="pageBreak">
