@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import { IPPQ, OtherFactor } from './interfaces';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
@@ -178,18 +178,23 @@ const PPQ = () => {
                 <h4> {Messages.ProposedDeadLineHeading.en}</h4>
               )}
               {!isReadOnly ? (
-                <CustomInputDate
-                  key="proposedDeadlineDate"
-                  selected={
-                    ppqForm?.proposedDeadline
-                      ? stringToDate(ppqForm.proposedDeadline)
-                      : null
-                  }
-                  onChange={(date: any) => {
-                    stateChangeHandler(dateToString(date), 'proposedDeadline');
-                  }}
-                  required
-                />
+                <>
+                  <CustomInputDate
+                    key="proposedDeadlineDate"
+                    selected={
+                      ppqForm?.proposedDeadline
+                        ? stringToDate(ppqForm.proposedDeadline)
+                        : null
+                    }
+                    onChange={(date: any) => {
+                      stateChangeHandler(
+                        dateToString(date),
+                        'proposedDeadline',
+                      );
+                    }}
+                    required
+                  />
+                </>
               ) : (
                 <div>
                   {pia.ppq?.proposedDeadline &&
@@ -213,14 +218,16 @@ const PPQ = () => {
                 <h4> {Messages.DeadlineReasonHeading.en}</h4>
               )}
               {!isReadOnly ? (
-                <MDEditor
-                  preview="edit"
-                  defaultTabEnable={true}
-                  value={ppqForm?.proposedDeadlineReason || ''}
-                  onChange={(value) =>
-                    stateChangeHandler(value, 'proposedDeadlineReason')
-                  }
-                />
+                <>
+                  <MDEditor
+                    preview="edit"
+                    defaultTabEnable={true}
+                    value={ppqForm?.proposedDeadlineReason || ''}
+                    onChange={(value) =>
+                      stateChangeHandler(value, 'proposedDeadlineReason')
+                    }
+                  />
+                </>
               ) : ppqForm.proposedDeadlineReason ? (
                 <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
               ) : (

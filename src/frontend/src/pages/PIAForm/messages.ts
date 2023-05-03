@@ -73,6 +73,21 @@ export default {
         en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
       },
     },
+    SubmitForPCTReview: {
+      ConfirmLabel: {
+        en: `Yes, submit`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Submit for PCT review??`,
+      },
+
+      ParagraphText: {
+        en: `Your status will be changed to PCT review. A PCT analyst will be able to review your PIA.`,
+      },
+    },
     AutoSaveFailed: {
       ConfirmLabel: {
         en: 'Okay',

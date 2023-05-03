@@ -130,7 +130,7 @@ function PIASubHeader({
           </ul>
 
           {/* Submission button */}
-          {!nextStepAction && pia.status !== PiaStatuses.MPO_REVIEW && (
+          {!nextStepAction && pia.status !== PiaStatuses.PCT_REVIEW && (
             <button
               onClick={onSubmitClick}
               className={`mx-1 bcgovbtn bcgovbtn__primary`}
