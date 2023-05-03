@@ -82,12 +82,19 @@ export const PiaFormPrintPreview = () => {
               validationMessage: {},
             }}
           >
-            <div className="print-ppq-section-focus">
-              <PPQ printPreview />
-            </div>
-            <div className="pageBreak">
+            {pia?.hasAddedPiToDataElements !== false ? (
+              <>
+                <div className="print-ppq-section-focus">
+                  <PPQ printPreview />
+                </div>
+                <div className="pageBreak">
+                  <IntakePrintPreview {...pia} />
+                </div>
+              </>
+            ) : (
               <IntakePrintPreview {...pia} />
-            </div>
+            )}
+
             {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <div className="pageBreak">
