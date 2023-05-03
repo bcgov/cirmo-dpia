@@ -13,7 +13,9 @@ export interface IPPQ {
   proposedDeadlineReason?: string;
   otherCpoConsideration?: string;
 }
-
+export interface IPPQProps {
+  printPreview?: boolean;
+}
 export const OtherFactor = [
   {
     label: 'Common or integrated program agreement',

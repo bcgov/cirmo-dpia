@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import { IPPQ, OtherFactor } from './interfaces';
+import { IPPQ, IPPQProps, OtherFactor } from './interfaces';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import {
   IPiaFormContext,
@@ -12,7 +12,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
-const PPQ = () => {
+const PPQ = ({ printPreview }: IPPQProps) => {
   const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
@@ -101,71 +101,74 @@ const PPQ = () => {
                 }
               />
             )
-          ) : ppqForm.initiativeOtherDetails ? (
-            <div className="px-4">
-              <MDEditor.Markdown source={ppqForm.initiativeOtherDetails} />
-            </div>
           ) : ppqForm?.hasInitiativeOther ? (
-            <p>
-              <i>Not answered</i>
-            </p>
+            ppqForm?.initiativeOtherDetails &&
+            ppqForm?.initiativeOtherDetails !== '' ? (
+              <div className="px-4">
+                <MDEditor.Markdown source={ppqForm.initiativeOtherDetails} />
+              </div>
+            ) : (
+              <p>
+                <i>Not answered</i>
+              </p>
+            )
           ) : null}
         </div>
+        {!printPreview && (
+          <div className="form-group mt-4">
+            {!isReadOnly ? (
+              <p>
+                <strong> {Messages.DeadlineDateHeading.en}</strong>
+              </p>
+            ) : (
+              <h4>{Messages.DeadlineDateHeading.en}</h4>
+            )}
+            {!isReadOnly ? (
+              <div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="proposed-deadline-radio"
+                    value={YesNoInput.YES}
+                    checked={
+                      ppqForm?.proposedDeadlineAvailable === YesNoInput.YES
+                    }
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'proposedDeadlineAvailable',
+                      )
+                    }
+                  />
+                  Yes
+                </div>
 
-        <div className="form-group mt-4">
-          {!isReadOnly ? (
-            <p>
-              <strong> {Messages.DeadlineDateHeading.en}</strong>
-            </p>
-          ) : (
-            <h4>{Messages.DeadlineDateHeading.en}</h4>
-          )}
-          {!isReadOnly ? (
-            <div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="proposed-deadline-radio"
-                  value={YesNoInput.YES}
-                  checked={
-                    ppqForm?.proposedDeadlineAvailable === YesNoInput.YES
-                  }
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'proposedDeadlineAvailable',
-                    )
-                  }
-                />
-                Yes
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="proposed-deadline-radio"
+                    value={YesNoInput.NO}
+                    checked={ppqForm?.proposedDeadlineAvailable === 'NO'}
+                    onChange={(e) =>
+                      stateChangeHandler(
+                        e.target.value,
+                        'proposedDeadlineAvailable',
+                      )
+                    }
+                  />
+                  No
+                </div>
               </div>
-
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="proposed-deadline-radio"
-                  value={YesNoInput.NO}
-                  checked={ppqForm?.proposedDeadlineAvailable === 'NO'}
-                  onChange={(e) =>
-                    stateChangeHandler(
-                      e.target.value,
-                      'proposedDeadlineAvailable',
-                    )
-                  }
-                />
-                No
-              </div>
-            </div>
-          ) : (
-            <p>
-              {ppqForm?.proposedDeadlineAvailable?.charAt(0)}
-              {ppqForm?.proposedDeadlineAvailable?.slice(1).toLowerCase()}
-            </p>
-          )}
-        </div>
-
+            ) : (
+              <p>
+                {ppqForm?.proposedDeadlineAvailable?.charAt(0)}
+                {ppqForm?.proposedDeadlineAvailable?.slice(1).toLowerCase()}
+              </p>
+            )}
+          </div>
+        )}
         {ppqForm?.proposedDeadlineAvailable === YesNoInput.YES && (
           <>
             <div className="form-group mt-4 mb-4 col-md-3">
