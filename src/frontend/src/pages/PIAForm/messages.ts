@@ -73,7 +73,7 @@ export default {
         en: `Your PIA status will be changed to MPO review. Your MPO will be notified that your edits are complete and your PIA is ready for review.`,
       },
     },
-    SubmitForPCTReview: {
+    SubmitForCPOReview: {
       ConfirmLabel: {
         en: `Yes, submit`,
       },
@@ -81,11 +81,11 @@ export default {
         en: `Cancel`,
       },
       TitleText: {
-        en: `Submit for PCT review??`,
+        en: `Submit for CPO review?`,
       },
 
       ParagraphText: {
-        en: `Your status will be changed to PCT review. A PCT analyst will be able to review your PIA.`,
+        en: `Your status will be changed to CPO review. A CPO analyst will be able to review your PIA.`,
       },
     },
     AutoSaveFailed: {

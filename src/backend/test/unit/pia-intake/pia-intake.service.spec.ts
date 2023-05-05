@@ -648,6 +648,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 5-2 : user is MPO; filter by PIA status(non-incomplete) with Sort
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -706,6 +707,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 6: user is not MPO; filter by PIA status, drafter only can filter by status
     it('succeeds calling the database repository with correct data for non MPO role [filter by pia status]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -753,8 +755,8 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
-    // scenario 7-1: user is MPO ; filter by PIA status (incomplete) and ministry
 
+    // scenario 7-1: user is MPO ; filter by PIA status (incomplete) and ministry
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status(incomplete) and ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -865,6 +867,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 8: user is MPO; filter by PIA status and ministry and only current user's pia
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status and ministry and only current user pia]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -1135,6 +1138,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 11-2 MPO user searchText and filter by status (except incomplete)
     it('succeeds when user is an MPO and [searchText is provided and filter by status(Non-incomplete)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -1206,6 +1210,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 12-1  MPO user can not filter other ministry pia
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status and not their ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -1257,6 +1262,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
     // scenario 12 -2 MPO user can not filter other ministry pia but can see their PIA submit to this ministry
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete) and not their ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -1304,6 +1310,115 @@ describe('PiaIntakeService', () => {
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
         data: [],
         page: 5,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 13 User is a CPO
+    it('succeeds when the user is a CPO', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 14 User is a CPO and an MPO of a ministry
+    it('succeeds when the user is a CPO', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO, RolesEnum.MPO_AG];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).toHaveBeenCalledWith([
+        GovMinistriesEnum.ATTORNEY_GENERAL,
+      ]);
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            ministry: null, // from spy
+            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+          },
+          {
+            isActive: true,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
         pageSize: 12,
         total: 100,
       };

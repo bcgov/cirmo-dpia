@@ -11,7 +11,7 @@ export const PiaIntakeStatus: IConstant = {
   [PiaIntakeStatusEnum.MPO_REVIEW]: {
     label: 'MPO review',
   },
-  [PiaIntakeStatusEnum.PCT_REVIEW]: {
+  [PiaIntakeStatusEnum.CPO_REVIEW]: {
     label: 'PCT review',
   },
 };

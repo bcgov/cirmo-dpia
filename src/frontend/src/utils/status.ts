@@ -83,13 +83,13 @@ export const statusList: StatusList = {
       },
     },
   },
-  PCT_REVIEW: {
-    title: 'PCT REVIEW',
-    class: 'statusBlock__PCTReview',
+  CPO_REVIEW: {
+    title: 'CPO REVIEW',
+    class: 'statusBlock__CPOReview',
     modal: {
-      title: 'Submit for PCT review?',
+      title: 'Submit for CPO review?',
       description:
-        'An analyst from the Privacy, Compliance and Training branch will be able to review and edit your PIA.',
+        'An analyst from the Corporate Privacy Office branch will be able to review and edit your PIA.',
       confirmLabel: 'Yes, submit',
       cancelLabel: 'Cancel',
     },

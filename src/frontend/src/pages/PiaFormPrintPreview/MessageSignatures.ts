@@ -5,9 +5,9 @@
 
 export default {
   Signatures: {
-    PCT: {
+    CPO: {
       title: {
-        en: 'PCT Signatures',
+        en: 'CPO Signatures',
       },
       roles: {
         PrivacyAdvisor: {
@@ -17,7 +17,7 @@ export default {
         },
         Manager: {
           title: {
-            en: 'PCT Manager or Diretor',
+            en: 'CPO Manager or Director',
           },
           subtitle: {
             en: '(Only required if personal information is involved)',
@@ -26,7 +26,7 @@ export default {
       },
       comments: {
         title: {
-          en: 'PCT Comment',
+          en: 'CPO Comment',
         },
       },
     },
