@@ -4,7 +4,7 @@ import { UserTypesEnum } from '../enums/users.enum';
 
 export interface IRoleInfo {
   user: UserTypesEnum;
-  ministry: GovMinistriesEnum;
+  ministry?: GovMinistriesEnum;
 }
 
 export const Roles: Record<RolesEnum, IRoleInfo> = {
@@ -115,5 +115,8 @@ export const Roles: Record<RolesEnum, IRoleInfo> = {
   [RolesEnum.MPO_EMCR]: {
     user: UserTypesEnum.MPO,
     ministry: GovMinistriesEnum.EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS,
+  },
+  [RolesEnum.CPO]: {
+    user: UserTypesEnum.CPO,
   },
 };

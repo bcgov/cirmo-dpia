@@ -26,4 +26,5 @@ export enum RolesEnum {
   MPO_TACS = 'MPO-TACS',
   MPO_TRAN = 'MPO-TRAN',
   MPO_WLRS = 'MPO-WLRS',
+  CPO = 'CPO',
 }
