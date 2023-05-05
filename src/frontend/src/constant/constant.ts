@@ -186,7 +186,7 @@ export const PiaStatusList = [
   { label: 'Incomplete', value: 'INCOMPLETE' },
   { label: 'Edit_In_Progress', value: 'EDIT_IN_PROGRESS' },
   { label: 'MPO_Review', value: 'MPO_REVIEW' },
-  { label: 'PCT_Review', value: 'PCT_REVIEW' },
+  { label: 'CPO_Review', value: 'CPO_REVIEW' },
 ];
 export const PiaDrafterFilterList = [
   {
@@ -251,7 +251,7 @@ export enum PiaStatuses {
   INCOMPLETE = 'INCOMPLETE',
   EDIT_IN_PROGRESS = 'EDIT_IN_PROGRESS',
   MPO_REVIEW = 'MPO_REVIEW',
-  PCT_REVIEW = 'PCT_REVIEW',
+  CPO_REVIEW = 'CPO_REVIEW',
   COMPLETED = 'COMPLETED',
   WITHDRAWN = 'WITHDRAWN',
 }
