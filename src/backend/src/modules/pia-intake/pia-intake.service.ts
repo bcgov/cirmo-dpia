@@ -52,6 +52,8 @@ export class PiaIntakeService {
 
     this.validateJsonbFields(createPiaIntakeDto, null, accessType);
 
+    // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be incomplete / Edits in progress only]
+
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
       createdByGuid: user.idir_user_guid,
@@ -174,6 +176,7 @@ export class PiaIntakeService {
   ): Promise<PaginatedRO<GetPiaIntakeRO>> {
     // Get the ministries for which the user is an MPO based on their roles
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
+    const isCPO = this.isCPO(userRoles);
 
     /* ********** CONDITIONAL WHERE CLAUSE BEGINS ********** */
     // common clause for all possible OR conditions
@@ -199,6 +202,15 @@ export class PiaIntakeService {
         status: Not(PiaIntakeStatusEnum.INCOMPLETE),
       });
     }
+
+    // Scenario 3: As a CPO, retrieve all pia-intakes in CPO_Review
+    if (isCPO) {
+      whereClause.push({
+        ...commonWhereClause,
+        status: PiaIntakeStatusEnum.PCT_REVIEW,
+      });
+    }
+
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
       const searchOperator = ILike(`%${query.searchText}%`);
@@ -379,6 +391,11 @@ export class PiaIntakeService {
     return piaIntakeForm;
   }
 
+  isCPO(userRoles: RolesEnum[]): boolean {
+    if (userRoles.includes(RolesEnum.CPO)) return true;
+    return false;
+  }
+
   getMpoMinistriesByRoles(roles: RolesEnum[]) {
     let hasAnyMpoRole = false;
 
@@ -422,6 +439,12 @@ export class PiaIntakeService {
       return true;
     }
 
+    // Scenario 3: PIA is in CPO_REVIEW status
+    const isCPO = this.isCPO(userRoles);
+    if (isCPO && piaIntake.status === PiaIntakeStatusEnum.PCT_REVIEW) {
+      return true;
+    }
+
     // Throw Forbidden user access if none of the above scenarios are met
     throw new ForbiddenException();
   }
@@ -441,11 +464,16 @@ export class PiaIntakeService {
      * Else You're a DRAFTER Role
      * Note: Reversing to check MPO first and then Drafter also enables MPOs who are drafting a PIA for a different ministry to edit MPO specific fields
      *
+     * -- May 5 '23 -- included CPO role check
      */
 
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
     if (mpoMinistries.length > 0) {
       return UserTypesEnum.MPO;
+    }
+
+    if (this.isCPO(userRoles)) {
+      return UserTypesEnum.CPO;
     }
 
     return UserTypesEnum.DRAFTER;
