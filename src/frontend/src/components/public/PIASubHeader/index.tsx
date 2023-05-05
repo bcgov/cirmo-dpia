@@ -86,7 +86,7 @@ function PIASubHeader({
             />
           </div>
         )}
-        {mode === 'view' && (
+        {mode === 'view' && pia.status !== PiaStatuses.CPO_REVIEW && (
           <div className="mx-1">
             <button
               onClick={onEditClick}

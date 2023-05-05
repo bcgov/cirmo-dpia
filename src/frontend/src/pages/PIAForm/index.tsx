@@ -71,9 +71,42 @@ const PIAFormPage = () => {
     isNextStepsSeenForNonDelegatedFlow: false,
   };
 
-  const mode: PiaFormOpenMode = pathname?.split('/').includes('view')
-    ? 'view'
-    : 'edit';
+  const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
+  const [pia, setPia] = useState<IPiaForm>(emptyState);
+
+  // if id is provided, fetch initial and updated state from db
+  const [initialPiaStateFetched, setInitialPiaStateFetched] =
+    useState<boolean>(false);
+
+  // if id not provided, keep default empty state; and track first save
+  const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
+
+  const [isConflict, setIsConflict] = useState<boolean>(false);
+  const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
+    useState<boolean>(false);
+
+  const [lastSaveAlertInfo, setLastSaveAlertInfo] =
+    useState<ILastSaveAlterInfo>({
+      message: '',
+      type: 'success',
+      show: false,
+    });
+
+  const mode: PiaFormOpenMode =
+    pathname?.split('/').includes('view') ||
+    pia.status === PiaStatuses.CPO_REVIEW
+      ? 'view'
+      : 'edit';
+
+  const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
+    // DO NOT allow state changes in the view mode
+    if (mode === 'view') return;
+
+    setPia((latest) => ({
+      ...latest,
+      [key]: value,
+    }));
+  };
 
   const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
 
@@ -117,6 +150,7 @@ const PIAFormPage = () => {
   useEffect(() => {
     setSelectedSection(undefined);
   }, [pathname]);
+
   /**
    * Update the comment count object to pass into the every tab
    */
@@ -127,37 +161,6 @@ const PIAFormPage = () => {
       console.error(err);
     }
   }, [getCommentCount]);
-
-  const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
-  const [pia, setPia] = useState<IPiaForm>(emptyState);
-
-  // if id is provided, fetch initial and updated state from db
-  const [initialPiaStateFetched, setInitialPiaStateFetched] =
-    useState<boolean>(false);
-
-  // if id not provided, keep default empty state; and track first save
-  const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
-
-  const [isConflict, setIsConflict] = useState<boolean>(false);
-  const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
-    useState<boolean>(false);
-
-  const [lastSaveAlertInfo, setLastSaveAlertInfo] =
-    useState<ILastSaveAlterInfo>({
-      message: '',
-      type: 'success',
-      show: false,
-    });
-
-  const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
-    // DO NOT allow state changes in the view mode
-    if (mode === 'view') return;
-
-    setPia((latest) => ({
-      ...latest,
-      [key]: value,
-    }));
-  };
 
   const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
     useState(0);
@@ -237,6 +240,7 @@ const PIAFormPage = () => {
         'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
       );
   }, [isValidationFailed]);
+
   //
   // Modal State
   //
@@ -246,10 +250,10 @@ const PIAFormPage = () => {
   const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
   const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
   const [piaModalButtonValue, setPiaModalButtonValue] = useState<string>('');
+
   //
   // Event Handlers
   //
-
   const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
       case 'cancel':
@@ -732,6 +736,20 @@ const PIAFormPage = () => {
 
     return () => clearTimeout(autoSaveTimer);
   });
+
+  /**
+   * On load, check if the pia status is CPO_REVIEW
+   * If it is, make sure the form is readonly
+   */
+  useEffect(() => {
+    try {
+      if (pia?.status === PiaStatuses.CPO_REVIEW) {
+        setFormReadOnly(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [pia.status]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
