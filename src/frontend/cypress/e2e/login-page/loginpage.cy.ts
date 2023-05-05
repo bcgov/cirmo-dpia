@@ -7,10 +7,28 @@ describe('Test DPIA Login Page', () => {
     cy.on('uncaught:exception', (err, runnable) => {    
       return false
     });
+    
+    
     const url = Cypress.config().baseUrl; //accessing baseUrl
     if (!url) throw Error('can not find base URL, test stop');
     cy.visit(url);
   });
+
+  afterEach(() => {
+    // Cypress starts out with a blank slate for each test
+    // so we must tell it to visit our website with the `cy.visit()` command.
+    // Since we want to visit the same URL at the start of all our tests,
+    // we include qit in our beforeEach function so that it runs before each test
+    cy.on('uncaught:exception', (err, runnable) => {    
+      return false
+    });
+    
+    cy.clearLocalStorage();
+    cy.clearCookies();
+    cy.reload(true);
+
+  });
+
 
   it('Check Log in URL', () => {
     // We use the `cy.get()` command to get all elements that match the selector.
@@ -22,24 +40,26 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
     //cy.get('h1').contains('List of PIAs');
     const url = Cypress.config().baseUrl; 
     if(url?.includes('test'))
     {
-      cy.url().should('include','https://test.pia.gov.bc.ca/pia/list')
+      cy.url().should('include','https://test.pia.gov.bc.ca/pia/list').end();
     }
     else if(url?.includes('dev'))
     {
-      cy.url().should('include','https://dev.pia.gov.bc.ca/pia/list')
+      cy.url().should('include','https://dev.pia.gov.bc.ca/pia/list').end();
     }
     else
     {
       console.log('The URL is neither test nor dev environment');
     }
+    
     
   });
 
@@ -53,11 +73,13 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
-    cy.title().should('eq', 'Digital Privacy Impact Assessment (DPIA)')
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
+    cy.title().should('eq', 'Digital Privacy Impact Assessment (DPIA)').end();
+  
     
   });
 
@@ -71,11 +93,12 @@ describe('Test DPIA Login Page', () => {
 
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
-    cy.get('img[class="logo"]').should('be.visible');
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
+    cy.get('img[class="logo"]').should('be.visible').end();
     
   });
 
@@ -88,15 +111,16 @@ describe('Test DPIA Login Page', () => {
     });
 
     const password = Cypress.env('PASSWORD');
-
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
-    cy.get('.d-md-block').and('contain','Sign Out').click();
+    
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
+    cy.get('.d-md-block').should('be.visible').and('contain','Sign Out').click();
     cy.get("div[class='modal display-block '] button.bcgovbtn.bcgovbtn__primary",{ timeout: 20000 }).and('contain','Yes, sign out').focus().click({force: true}); //click({force: true}); //should('have.text',"Yes, sign out")
-    cy.wait(8000);
-    cy.get('.bcgovbtn',{ timeout: 50000 }).and('contain', 'Log in with IDIR');
+    cy.wait(4000);
+    cy.get('.bcgovbtn',{ timeout: 50000 }).and('contain', 'Log in with IDIR').end();
 
     
   });
@@ -110,11 +134,12 @@ describe('Test DPIA Login Page', () => {
       });
     const password = Cypress.env('PASSWORD');
 
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE1');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE1');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect").end();
 
     
   });
@@ -128,11 +153,12 @@ describe('Test DPIA Login Page', () => {
       });
     const password = Cypress.env('WRONGPASSWORD');
 
-    cy.get('.d-none').click();
-    cy.get('#user').type('DORGALE');
-    cy.get('#password').type(password);
-    cy.get('.btn-primary').click();
-    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect");
+    cy.get('.d-none',{ timeout: 50000 }).should('be.visible').and('contain','Log in with IDIR').click({force: true});
+    cy.wait(3000);
+    cy.get("div[class='form-element form-group'] input[name='user']").should('be.visible').type('DORGALE');
+    cy.get("div[class='form-element form-group'] input[name='password']").should('be.visible').type(password);
+    cy.get('.btn-primary').should('be.visible').click({force: true});
+    cy.get("span[class='field-help-text']",{ timeout: 20000 }).should('be.visible').should('have.text',"The username or password you entered is incorrect").end();
 
     
   });
