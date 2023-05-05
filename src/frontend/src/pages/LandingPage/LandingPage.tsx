@@ -76,11 +76,11 @@ function LandingPage() {
           <div className="info-subsec-text">
             <h2>Problem</h2>
             <p>
-              The Corporate Privacy Office (CPO) has the mandate to review all PIAs
-              for BC government ministries. The CPO has seen a 686% increase in PIAs
-              submitted for review in within a 10 year period. While the
-              increase in volume is exponential, the statistics do not reflect
-              the pressures that result from increased complexity of PIA
+              The Corporate Privacy Office (CPO) has the mandate to review all
+              PIAs for BC government ministries. The CPO has seen a 686%
+              increase in PIAs submitted for review in within a 10 year period.
+              While the increase in volume is exponential, the statistics do not
+              reflect the pressures that result from increased complexity of PIA
               submissions.{' '}
             </p>
           </div>

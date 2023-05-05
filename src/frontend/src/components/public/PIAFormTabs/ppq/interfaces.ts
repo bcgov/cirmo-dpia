@@ -25,7 +25,8 @@ export const OtherFactor = [
     for the purpose of providing a service.`,
   },
   {
-    label: 'Cloud technology (if no corporate PIA has been completed by the CPO)',
+    label:
+      'Cloud technology (if no corporate PIA has been completed by the CPO)',
     value: 'hasCloudTechnology',
     tooltip: false,
     tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
