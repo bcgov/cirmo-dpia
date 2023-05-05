@@ -207,7 +207,7 @@ export class PiaIntakeService {
     if (isCPO) {
       whereClause.push({
         ...commonWhereClause,
-        status: PiaIntakeStatusEnum.PCT_REVIEW,
+        status: PiaIntakeStatusEnum.CPO_REVIEW,
       });
     }
 
@@ -441,7 +441,7 @@ export class PiaIntakeService {
 
     // Scenario 3: PIA is in CPO_REVIEW status
     const isCPO = this.isCPO(userRoles);
-    if (isCPO && piaIntake.status === PiaIntakeStatusEnum.PCT_REVIEW) {
+    if (isCPO && piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW) {
       return true;
     }
 

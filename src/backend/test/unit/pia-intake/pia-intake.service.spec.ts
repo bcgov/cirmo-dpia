@@ -1346,7 +1346,7 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            status: PiaIntakeStatusEnum.PCT_REVIEW,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
           },
         ],
         order: {
@@ -1404,7 +1404,7 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            status: PiaIntakeStatusEnum.PCT_REVIEW,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
           },
         ],
         order: {
