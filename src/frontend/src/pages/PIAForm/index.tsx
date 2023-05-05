@@ -287,18 +287,18 @@ const PIAFormPage = () => {
         setPiaModalParagraph(Messages.Modal.SubmitPiaForm.ParagraphText.en);
         setPiaModalButtonValue('submitPiaForm');
         break;
-      case 'SubmitForPCTReview':
+      case 'SubmitForCPOReview':
         setPiaModalConfirmLabel(
-          Messages.Modal.SubmitForPCTReview.ConfirmLabel.en,
+          Messages.Modal.SubmitForCPOReview.ConfirmLabel.en,
         );
         setPiaModalCancelLabel(
-          Messages.Modal.SubmitForPCTReview.CancelLabel.en,
+          Messages.Modal.SubmitForCPOReview.CancelLabel.en,
         );
-        setPiaModalTitleText(Messages.Modal.SubmitForPCTReview.TitleText.en);
+        setPiaModalTitleText(Messages.Modal.SubmitForCPOReview.TitleText.en);
         setPiaModalParagraph(
-          Messages.Modal.SubmitForPCTReview.ParagraphText.en,
+          Messages.Modal.SubmitForCPOReview.ParagraphText.en,
         );
-        setPiaModalButtonValue('SubmitForPCTReview');
+        setPiaModalButtonValue('SubmitForCPOReview');
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
@@ -516,9 +516,9 @@ const PIAFormPage = () => {
             }),
           );
         }
-      } else if (buttonValue === 'SubmitForPCTReview') {
+      } else if (buttonValue === 'SubmitForCPOReview') {
         const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.PCT_REVIEW,
+          status: PiaStatuses.CPO_REVIEW,
         });
 
         if (updatedPia?.id) {
@@ -575,7 +575,7 @@ const PIAFormPage = () => {
       handleShowModal('submitPiaIntake');
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        handleShowModal('SubmitForPCTReview');
+        handleShowModal('SubmitForCPOReview');
       } else {
         handleShowModal('submitPiaForm');
       }

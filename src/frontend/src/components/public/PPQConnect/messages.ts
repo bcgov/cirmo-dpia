@@ -11,7 +11,7 @@ export default {
       en: `1. Download your results`,
     },
     StepTwo: {
-      en: `2. Connect with PCT`,
+      en: `2. Connect with the CPO`,
     },
     StepThree: {
       en: `3. Wait`,
@@ -19,10 +19,10 @@ export default {
   },
   StepDetails: {
     StepTwo: {
-      en: `Email the PPQ and PIA intake form (if applicable) to Privacy, Compliance and Training (PCT) at [PIA.Intake@gov.bc.ca](mailto:pia.intake@gov.bc.ca)`,
+      en: `Email the PPQ and PIA intake form (if applicable) to the Corporate Privacy Office (CPO) at [PIA.Intake@gov.bc.ca](mailto:pia.intake@gov.bc.ca)`,
     },
     StepThree: {
-      en: `PCT will send you a file number, and a PIA analyst will contact you with any questions.`,
+      en: `The CPO will send you a file number, and a PIA analyst will contact you with any questions.`,
     },
   },
   DownloadButtonText: {
