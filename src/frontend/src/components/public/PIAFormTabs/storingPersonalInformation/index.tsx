@@ -360,7 +360,7 @@ const StoringPersonalInformation = () => {
               )}
               {!isReadOnly ? (
                 <MDEditor
-                  preview={isMPORole() ? 'edit' : 'preview'}
+                  preview="edit"
                   value={
                     storingPersonalInformationForm.personalInformation
                       .whereDetails
