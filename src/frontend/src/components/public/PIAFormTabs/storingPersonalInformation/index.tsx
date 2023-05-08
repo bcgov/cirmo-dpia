@@ -721,7 +721,7 @@ const StoringPersonalInformation = () => {
                   )}
                   {!isReadOnly ? (
                     <MDEditor
-                      preview={isMPORole() ? 'edit' : 'preview'}
+                      preview="edit"
                       value={
                         storingPersonalInformationForm.disclosuresOutsideCanada
                           .storage.contractualTerms
