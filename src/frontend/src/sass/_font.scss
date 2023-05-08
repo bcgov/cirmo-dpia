@@ -17,3 +17,9 @@
 .section__question-hint {
   color: $text-gray;
 }
+
+.w-md-editor,
+.code-line,
+.wmde-markdown {
+  font-family: 'BCSans', sans-serif !important;
+}
