@@ -809,7 +809,7 @@ const StoringPersonalInformation = () => {
                     )}
                     {!isReadOnly ? (
                       <MDEditor
-                        preview={isMPORole() ? 'edit' : 'preview'}
+                        preview={'edit'}
                         value={
                           storingPersonalInformationForm
                             .disclosuresOutsideCanada.contract
@@ -871,7 +871,7 @@ const StoringPersonalInformation = () => {
                 )}
                 {!isReadOnly ? (
                   <MDEditor
-                    preview={isMPORole() ? 'edit' : 'preview'}
+                    preview={'edit'}
                     value={
                       storingPersonalInformationForm.disclosuresOutsideCanada
                         .controls.unauthorizedAccessMeasures
@@ -929,7 +929,7 @@ const StoringPersonalInformation = () => {
                 )}
                 {!isReadOnly ? (
                   <MDEditor
-                    preview={isMPORole() ? 'edit' : 'preview'}
+                    preview={'edit'}
                     value={
                       storingPersonalInformationForm.disclosuresOutsideCanada
                         .trackAccess.trackAccessDetails
