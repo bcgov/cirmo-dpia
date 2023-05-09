@@ -26,11 +26,11 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
       <div className="dropdownSatusContainer">
         {(isMPO() &&
           props.mode === 'view' &&
-          statusList[props.pia.status || 'Completed'].Priviliges.MPO
+          statusList[props.pia.status || 'Completed'].Privileges.MPO
             .changeStatus.length !== 0) ||
         (isCPO() &&
           props.mode === 'view' &&
-          statusList[props.pia.status || 'Completed'].Priviliges.CPO
+          statusList[props.pia.status || 'Completed'].Privileges.CPO
             ?.changeStatus) ? (
           <div className="dropdown">
             <button
@@ -57,10 +57,11 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
                 >
-                  {isCPO() &&
+                  {statusList[props.pia.status].Privileges.CPO?.changeStatus
+                    .length !== 0 &&
                     statusList[
                       props.pia.status
-                    ].Priviliges.CPO?.changeStatus.map((statuskey, index) => (
+                    ].Privileges.CPO?.changeStatus.map((statuskey, index) => (
                       <li key={index} className="dropdown-item-container">
                         <div
                           className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
@@ -72,10 +73,11 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                         </div>
                       </li>
                     ))}
-                  {isMPO() &&
+                  {statusList[props.pia.status].Privileges.MPO.changeStatus
+                    .length !== 0 &&
                     statusList[
                       props.pia.status
-                    ].Priviliges.MPO.changeStatus.map((statuskey, index) =>
+                    ].Privileges.MPO.changeStatus.map((statuskey, index) =>
                       props.pia.status !== statuskey &&
                       statuskey !== PiaStatuses.COMPLETED ? (
                         <li
