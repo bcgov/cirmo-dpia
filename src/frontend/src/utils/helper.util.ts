@@ -15,3 +15,10 @@ export const isMPORole = () => {
 
   return item.some((x: string) => x.includes('MPO-'));
 };
+
+export const isCPORole = () => {
+  const item = AppStorage.getItem(ConfigStorageKeys.ROLES);
+  if (!item) return false;
+
+  return item.some((x: string) => x.includes('CPO'));
+};

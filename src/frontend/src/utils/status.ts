@@ -8,7 +8,7 @@ interface StatusList {
       confirmLabel: string;
       cancelLabel: string;
     };
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: Array<string>;
       };
@@ -30,7 +30,7 @@ export const statusList: StatusList = {
       confirmLabel: 'Yes, submit',
       cancelLabel: 'Cancel',
     },
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS'],
       },
@@ -46,7 +46,7 @@ export const statusList: StatusList = {
       confirmLabel: 'Yes, continue',
       cancelLabel: 'Cancel',
     },
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: ['MPO_REVIEW'],
       },
@@ -61,7 +61,7 @@ export const statusList: StatusList = {
       confirmLabel: '',
       cancelLabel: '',
     },
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS'],
       },
@@ -77,7 +77,7 @@ export const statusList: StatusList = {
       confirmLabel: 'Yes, continue',
       cancelLabel: 'Cancel',
     },
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: ['INCOMPLETE', 'MPO_REVIEW'],
       },
@@ -93,7 +93,7 @@ export const statusList: StatusList = {
       confirmLabel: 'Yes, submit',
       cancelLabel: 'Cancel',
     },
-    Priviliges: {
+    Privileges: {
       MPO: {
         changeStatus: [],
       },
