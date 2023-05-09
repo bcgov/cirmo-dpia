@@ -91,7 +91,7 @@ export default {
       },
     },
     CallOutText: {
-      en: `The outcome of the Assessment for Disclosure Outside of Canada will be a risk-based decision made by the ministry on whether to proceed with the initiative, with consideration of the risks and risk responses, including consideration of outstanding risks detailed above.`,
+      en: `The outcome of the Assessment for Disclosures Outside of Canada will be a risk-based decision made by the ministry on whether to proceed with the initiative, with consideration of the risks and risk responses, including consideration of outstanding risks detailed above.`,
     },
   },
   Contract: {
