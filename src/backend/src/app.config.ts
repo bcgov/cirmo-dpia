@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { IRequest } from 'src/common/interfaces/request.interface';
 import {
   ExpressAdapter,
   NestExpressApplication,
@@ -14,6 +15,11 @@ export async function createNestApp(): Promise<{
   app: NestExpressApplication;
   expressApp: express.Application;
 }> {
+  /* This function adds uuid to the morgan log */
+  morgan.token('uuid', function getId(req: IRequest) {
+    return 'uuid: ' + req?.user?.idir_user_guid;
+  });
+
   // Express App
   const expressApp = express();
   expressApp.disable('x-powered-by');
@@ -32,7 +38,15 @@ export async function createNestApp(): Promise<{
     );
 
   // append request logs
-  app.use(morgan('default'));
+  /*
+   * Enhancing the default morgan log to include uuid
+   * app.use(morgan('default'));
+   */
+  app.use(
+    morgan(
+      ':uuid :remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"',
+    ),
+  );
 
   // Transform types during DTO Validation
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
