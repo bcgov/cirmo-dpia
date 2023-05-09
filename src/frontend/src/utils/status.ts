@@ -32,7 +32,7 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
-        changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS'],
+        changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS', 'CPO_REVIEW'],
       },
     },
   },
