@@ -1,4 +1,4 @@
-import { isMPORole } from '../../../utils/helper.util';
+import { isCPORole, isMPORole } from '../../../utils/helper.util';
 import { statusList } from '../../../utils/status';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
@@ -16,14 +16,22 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     return isMPORole();
   };
 
+  const isCPO = () => {
+    return isCPORole();
+  };
+
   return (
     <>
       <div>Status</div>
       <div className="dropdownSatusContainer">
-        {isMPO() &&
-        props.mode === 'view' &&
-        statusList[props.pia.status || 'Completed'].Priviliges.MPO.changeStatus
-          .length !== 0 ? (
+        {(isMPO() &&
+          props.mode === 'view' &&
+          statusList[props.pia.status || 'Completed'].Priviliges.MPO
+            .changeStatus.length !== 0) ||
+        (isCPO() &&
+          props.mode === 'view' &&
+          statusList[props.pia.status || 'Completed'].Priviliges.CPO
+            ?.changeStatus) ? (
           <div className="dropdown">
             <button
               className="dropdown-toggles form-control"
@@ -49,8 +57,25 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
                 >
-                  {statusList[props.pia.status].Priviliges.MPO.changeStatus.map(
-                    (statuskey, index) =>
+                  {isCPO() &&
+                    statusList[
+                      props.pia.status
+                    ].Priviliges.CPO?.changeStatus.map((statuskey, index) => (
+                      <li key={index} className="dropdown-item-container">
+                        <div
+                          className={`dropdown-item statusBlock ${statusList[statuskey].class}`}
+                          onClick={() => {
+                            props.changeStatusFn(statuskey);
+                          }}
+                        >
+                          {statusList[statuskey].title}
+                        </div>
+                      </li>
+                    ))}
+                  {isMPO() &&
+                    statusList[
+                      props.pia.status
+                    ].Priviliges.MPO.changeStatus.map((statuskey, index) =>
                       props.pia.status !== statuskey &&
                       statuskey !== PiaStatuses.COMPLETED ? (
                         <li
@@ -69,7 +94,7 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                       ) : (
                         ''
                       ),
-                  )}
+                    )}
                 </ul>
               ) : (
                 ''
