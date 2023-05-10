@@ -11,6 +11,7 @@ import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
+import { isMPORole, isCPORole } from '../../../utils/helper.util';
 
 function PIASubHeader({
   pia,
@@ -57,6 +58,19 @@ function PIASubHeader({
   };
   const handleModalCancel = () => {
     setShowModal(false);
+  };
+
+  const showSubmitButton = () => {
+    if (
+      !isMPORole() &&
+      !isCPORole() &&
+      (pia.status === PiaStatuses.INCOMPLETE ||
+        pia.status === PiaStatuses.EDIT_IN_PROGRESS)
+    )
+      return true;
+    if (isMPORole() && pia.status !== PiaStatuses.CPO_REVIEW) return true;
+    // TODO will add cpo check when we go to nest step
+    return false;
   };
 
   return (
@@ -130,7 +144,7 @@ function PIASubHeader({
           </ul>
 
           {/* Submission button */}
-          {!nextStepAction && pia.status !== PiaStatuses.CPO_REVIEW && (
+          {!nextStepAction && showSubmitButton() && (
             <button
               onClick={onSubmitClick}
               className={`mx-1 bcgovbtn bcgovbtn__primary`}
