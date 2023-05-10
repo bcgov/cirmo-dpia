@@ -48,7 +48,7 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
-        changeStatus: ['MPO_REVIEW'],
+        changeStatus: ['MPO_REVIEW', 'CPO_REVIEW'],
       },
     },
   },
@@ -63,7 +63,7 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
-        changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS'],
+        changeStatus: ['INCOMPLETE', 'EDIT_IN_PROGRESS', 'CPO_REVIEW'],
       },
     },
   },
@@ -79,7 +79,7 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
-        changeStatus: ['INCOMPLETE', 'MPO_REVIEW'],
+        changeStatus: ['INCOMPLETE', 'MPO_REVIEW', 'CPO_REVIEW'],
       },
     },
   },
