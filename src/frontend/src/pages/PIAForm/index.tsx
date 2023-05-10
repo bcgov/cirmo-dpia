@@ -27,6 +27,7 @@ import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
+import { isCPORole } from '../../utils/helper.util';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -436,6 +437,12 @@ const PIAFormPage = () => {
       await upsertAndUpdatePia(
         requestBody,
       ); /* PIA will be set after data is updated in backend */
+      // Temp fix, as we do not know the future requirement yet
+      // if a CPO move a PIA from CPO_Review to MPO_Review
+      // it can not access the PIA anymore, current it throw a 403 error
+      // this fix by move the page to pia list table instead of stay in pia view page.
+
+      if (isCPORole()) navigate(routes.PIA_LIST, { replace: true });
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
