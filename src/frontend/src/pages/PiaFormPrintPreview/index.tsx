@@ -40,7 +40,7 @@ export const PiaFormPrintPreview = () => {
 
   const handlePrintTrigger = () => {
     // Allowing react to render the page before print preview begins
-    window.setTimeout(() => window.print(), 100);
+    window.setTimeout(() => window.print(), 500);
   };
 
   const [pia, setPia] = useState<IPiaForm>();
