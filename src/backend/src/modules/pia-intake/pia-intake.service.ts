@@ -440,8 +440,13 @@ export class PiaIntakeService {
     }
 
     // Scenario 3: PIA is in CPO_REVIEW status
+    // CPO can change a pia from CPO_REVIEW to MPO_Review
     const isCPO = this.isCPO(userRoles);
-    if (isCPO && piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW) {
+    if (
+      isCPO &&
+      (piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW ||
+        piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW)
+    ) {
       return true;
     }
 
