@@ -62,6 +62,11 @@ describe('Test DPIA Login Page', () => {
       const ExpUrl = 'https://dev.pia.gov.bc.ca/pia/list';
       await expect(browser).toHaveUrl(ExpUrl);
     }
+    else if(browser.options.baseUrl?.includes('local'))
+    {
+      const ExpUrl = 'http://localhost:8080/pia/list';
+      await expect(browser).toHaveUrl(ExpUrl);
+    }
     else
     {
       await expect("URL not equal to dev or test").toEqual("URL should be dev or test");
