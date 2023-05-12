@@ -181,10 +181,10 @@ jobs:
       shell: bash
       env:
           mpoPass : ${{ secrets.TEST_IDIR_PASSWORD }}
-        run: |
-           cd ./src/frontend
-           npm install
-           mpoPass=$mpoPass npm run wdio-dev
+      run: |
+          cd ./src/frontend
+          npm install
+          mpoPass=$mpoPass npm run wdio-dev
 
   DEV-Success-Notify:
     runs-on: ubuntu-latest
