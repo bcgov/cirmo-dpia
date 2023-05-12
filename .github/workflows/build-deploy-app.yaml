@@ -177,14 +177,14 @@ jobs:
         fetch-depth: 0
 
     # Navigate to frontend dir, install dependencies, execute cypress command
-    - name: Setup and Execute Cypress e2e test suite
+    - name: Setup and Execute WebDriverIO e2e test suite
       shell: bash
       env:
-        TEST_IDIR_PASSWORD : ${{ secrets.TEST_IDIR_PASSWORD }}
-      run: |
-          cd ./src/frontend
-          npm install
-          CYPRESS_PASSWORD=$TEST_IDIR_PASSWORD npm run cy:e2e-dev
+          mpoPass : ${{ secrets.TEST_IDIR_PASSWORD }}
+        run: |
+           cd ./src/frontend
+           npm install
+           mpoPass=$mpoPass npm run wdio-dev
 
   DEV-Success-Notify:
     runs-on: ubuntu-latest
