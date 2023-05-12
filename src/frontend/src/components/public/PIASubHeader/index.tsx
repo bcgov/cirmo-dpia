@@ -1,7 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-
-import { statusList } from '../../../utils/status';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useState } from 'react';
@@ -11,7 +9,7 @@ import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
-import { isMPORole, isCPORole } from '../../../utils/helper.util';
+import { roleCheck } from '../../../utils/helper.util';
 
 function PIASubHeader({
   pia,
@@ -30,6 +28,8 @@ function PIASubHeader({
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
+  const userRoles = roleCheck();
+
   //
   // Modal State
   //
@@ -41,12 +41,12 @@ function PIASubHeader({
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
 
-  const changeStatusFn = (status: string) => {
+  const changeStatusFn = (modal: object, status: string) => {
+    setModalTitleText(Object(modal).title);
+    setModalParagraph(Object(modal).description);
+    setModalConfirmLabel(Object(modal).confirmLabel);
+    setModalCancelLabel(Object(modal).cancelLabel);
     setStatusLocal(status);
-    setModalConfirmLabel(statusList[status].modal.confirmLabel);
-    setModalCancelLabel(statusList[status].modal.cancelLabel);
-    setModalTitleText(statusList[status].modal.title);
-    setModalParagraph(statusList[status].modal.description);
     setShowModal(true);
   };
 
@@ -54,7 +54,6 @@ function PIASubHeader({
     event.preventDefault();
     handleStatusChange(statusLocal);
     setShowModal(false);
-    // navigate(buildDynamicPath(routes.PIA_VIEW, { id: pia.id }));
   };
   const handleModalCancel = () => {
     setShowModal(false);
@@ -62,14 +61,18 @@ function PIASubHeader({
 
   const showSubmitButton = () => {
     if (
-      !isMPORole() &&
-      !isCPORole() &&
+      !userRoles.roles.includes('MPO') &&
+      !userRoles.roles.includes('CPO') &&
       (pia.status === PiaStatuses.INCOMPLETE ||
         pia.status === PiaStatuses.EDIT_IN_PROGRESS)
     )
       return true;
-    if (isMPORole() && pia.status !== PiaStatuses.CPO_REVIEW) return true;
-    // TODO will add cpo check when we go to nest step
+    if (
+      userRoles.roles.includes('MPO') &&
+      pia.status !== PiaStatuses.CPO_REVIEW
+    )
+      return true;
+    // TODO will add cpo check when we go to next step
     return false;
   };
 
