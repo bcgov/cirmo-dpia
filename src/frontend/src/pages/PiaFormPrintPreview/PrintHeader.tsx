@@ -8,20 +8,25 @@
  * This function must be added to any page that needs to print with
  * a BC Header.
  */
+import { useEffect, useState } from 'react';
 import BC_logo_Horizontal from '../../assets/BC_logo_Horizontal.png';
 import { IPiaForm } from '../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../utils/date';
 
-const PrintHeader = ({
-  pia,
-  onImageLoad,
-}: {
-  pia: IPiaForm;
-  onImageLoad: () => void;
-}) => {
+const PrintHeader = ({ pia }: { pia: IPiaForm }) => {
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  useEffect(() => {
+    if (pia && isImgLoaded) {
+      window.print();
+    }
+  }, [pia, isImgLoaded]);
   return (
     <div className="print-header-container d-flex">
-      <img src={BC_logo_Horizontal} alt="BC Gov Logo" onLoad={onImageLoad} />
+      <img
+        src={BC_logo_Horizontal}
+        alt="BC Gov Logo"
+        onLoad={() => setIsImgLoaded(true)}
+      />
       <div className="last-modified">
         Last modified:
         <div>{dateToString(pia?.updatedAt)}</div>
