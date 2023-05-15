@@ -1,6 +1,7 @@
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { MinistryList, PIOptions } from '../../../../../constant/constant';
 import { useState } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 
 const IntakeDetails = (pia: IPiaForm) => {
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
@@ -18,7 +19,9 @@ const IntakeDetails = (pia: IPiaForm) => {
       </div>
       <div>
         <h4>What is the initiative</h4>
-        <p>{pia?.initiativeDescription}</p>
+        <p>
+          <MDEditor.Markdown source={pia?.initiativeDescription} />
+        </p>
       </div>
       <div>
         <h4>PIA Scope</h4>
@@ -26,7 +29,9 @@ const IntakeDetails = (pia: IPiaForm) => {
       </div>
       <div>
         <h4>Data or information elements invovled in the initiative</h4>
-        <p>{pia?.dataElementsInvolved}</p>
+        <p>
+          <MDEditor.Markdown source={pia?.dataElementsInvolved} />
+        </p>
       </div>
       <div>
         <h4>Contains personal information?</h4>
@@ -41,7 +46,9 @@ const IntakeDetails = (pia: IPiaForm) => {
           How will the risk of unintentionally collecting personal information
           be reduced
         </h4>
-        <p>{pia?.riskMitigation}</p>
+        <p>
+          <MDEditor.Markdown source={pia?.riskMitigation} />
+        </p>
       </div>
     </>
   );
