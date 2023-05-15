@@ -38,11 +38,6 @@ import PPQ from '../../components/public/PIAFormTabs/ppq';
 export const PiaFormPrintPreview = () => {
   const { id } = useParams();
 
-  const handlePrintTrigger = () => {
-    // Allowing react to render the page before print preview begins
-    window.setTimeout(() => window.print(), 500);
-  };
-
   const [pia, setPia] = useState<IPiaForm>();
 
   useEffect(() => {
@@ -72,7 +67,7 @@ export const PiaFormPrintPreview = () => {
 
       {id && pia && (
         <>
-          <PrintHeader pia={pia} onImageLoad={handlePrintTrigger} />
+          <PrintHeader pia={pia} />
           <h1>{pia?.title}</h1>
           <PiaFormContext.Provider
             value={{
