@@ -15,9 +15,27 @@ export async function createNestApp(): Promise<{
   app: NestExpressApplication;
   expressApp: express.Application;
 }> {
+  /*
+   * To help with incident response, we are adding uuid
+   * IDIR username and roles to the morgan log.
+   * As this information is deemed non PI we are
+   * allowed to log it.
+   * This information can be useful in case of an incident
+   * to help identify the user and the roles they have.
+   */
   /* This function adds uuid to the morgan log */
   morgan.token('uuid', function getId(req: IRequest) {
     return 'uuid: ' + req?.user?.idir_user_guid;
+  });
+
+  /* This function adds IDIR username to the morgan log */
+  morgan.token('IDIR', function getId(req: IRequest) {
+    return 'IDIR: ' + req?.user?.idir_username;
+  });
+
+  /* This function adds all the roles of the user to the morgan log */
+  morgan.token('roles', function getId(req: IRequest) {
+    return 'roles: ' + req?.userRoles?.join(',');
   });
 
   // Express App
@@ -44,7 +62,7 @@ export async function createNestApp(): Promise<{
    */
   app.use(
     morgan(
-      ':uuid :remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"',
+      ':uuid :IDIR :roles :remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"',
     ),
   );
 
