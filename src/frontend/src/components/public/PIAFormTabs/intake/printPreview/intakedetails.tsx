@@ -25,7 +25,9 @@ const IntakeDetails = (pia: IPiaForm) => {
       </div>
       <div>
         <h4>PIA Scope</h4>
-        <p>{pia?.initiativeScope}</p>
+        <p>
+          <MDEditor.Markdown source={pia?.initiativeScope} />
+        </p>
       </div>
       <div>
         <h4>Data or information elements invovled in the initiative</h4>
