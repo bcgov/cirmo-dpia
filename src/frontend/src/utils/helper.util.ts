@@ -26,7 +26,7 @@ export const isCPORole = () => {
 export const getGUID = () => {
   const guid = AppStorage.getItem(ConfigStorageKeys.GUID);
   return guid;
-}
+};
 
 export const roleCheck = () => {
   const roleOjb: Record<string, Array<string>> = {

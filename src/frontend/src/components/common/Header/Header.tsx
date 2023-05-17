@@ -59,7 +59,6 @@ function Header({ user }: Props) {
           didAuthRef.current = true;
           const keycloakToken = await getAccessToken(code);
           if (keycloakToken !== undefined) {
-            console.log('keycloakToken', keycloakToken);
             storeAuthTokens(keycloakToken);
             setAuthenticated(true);
             setAccessToken(keycloakToken.access_token);
@@ -94,7 +93,10 @@ function Header({ user }: Props) {
         ConfigStorageKeys.ROLES,
         keycloakUserDetail.client_roles,
       );
-      AppStorage.setItem(ConfigStorageKeys.GUID, keycloakUserDetail.idir_user_guid);
+      AppStorage.setItem(
+        ConfigStorageKeys.GUID,
+        keycloakUserDetail.idir_user_guid,
+      );
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 

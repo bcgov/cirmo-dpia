@@ -59,29 +59,23 @@ function PIASubHeader({
   const handleModalCancel = () => {
     setShowModal(false);
   };
-  
-  const showSubmitButton = () => {
-     const owner  = getGUID() === pia.createdByGuid ? true : false;
-     return statusList[pia.status || 'Completed'].showSubmit(owner);
-/*
-    if (
-      !userRoles.roles.includes('MPO') &&
-      !userRoles.roles.includes('CPO') &&
-      (pia.status === PiaStatuses.INCOMPLETE ||
-        pia.status === PiaStatuses.EDIT_IN_PROGRESS)
-    )
-      return true;
-    if (
-      userRoles.roles.includes('MPO') &&
-      pia.status !== PiaStatuses.CPO_REVIEW
-    )
-      return true;
-    // TODO will add cpo check when we go to next step
-    return false;
-    */
-  };
 
-  console.log('pia', pia);
+  const showSubmitButton = () => {
+    const owner = getGUID() === pia.createdByGuid ? true : false;
+
+    if (
+      owner &&
+      pia.status !== PiaStatuses.CPO_REVIEW &&
+      pia.status !== PiaStatuses.MPO_REVIEW
+    )
+      return true;
+    else if (
+      userRoles.roles[0].includes('MPO') &&
+      pia.status === PiaStatuses.MPO_REVIEW
+    )
+      return true;
+    else return false;
+  };
 
   return (
     <div className="subheader-container wrapper">
