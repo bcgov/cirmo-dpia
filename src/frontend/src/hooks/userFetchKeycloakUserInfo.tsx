@@ -22,6 +22,7 @@ export const useFetchKeycloakUserInfo = (accessToken: string | null) => {
         if (data.error != null) {
           setError(data);
         } else {
+          console.log('keycloack data', data);
           setKeycloakUserDetail(data);
         }
       })

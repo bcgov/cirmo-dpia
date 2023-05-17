@@ -23,6 +23,11 @@ export const isCPORole = () => {
   return item.some((x: string) => x.includes('CPO'));
 };
 
+export const getGUID = () => {
+  const guid = AppStorage.getItem(ConfigStorageKeys.GUID);
+  return guid;
+}
+
 export const roleCheck = () => {
   const roleOjb: Record<string, Array<string>> = {
     roles: [],

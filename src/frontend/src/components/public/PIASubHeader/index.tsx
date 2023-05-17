@@ -9,7 +9,8 @@ import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
-import { roleCheck } from '../../../utils/helper.util';
+import { getGUID, roleCheck } from '../../../utils/helper.util';
+import { statusList } from '../../../utils/status';
 
 function PIASubHeader({
   pia,
@@ -58,8 +59,11 @@ function PIASubHeader({
   const handleModalCancel = () => {
     setShowModal(false);
   };
-
+  
   const showSubmitButton = () => {
+     const owner  = getGUID() === pia.createdByGuid ? true : false;
+     return statusList[pia.status || 'Completed'].showSubmit(owner);
+/*
     if (
       !userRoles.roles.includes('MPO') &&
       !userRoles.roles.includes('CPO') &&
@@ -74,7 +78,10 @@ function PIASubHeader({
       return true;
     // TODO will add cpo check when we go to next step
     return false;
+    */
   };
+
+  console.log('pia', pia);
 
   return (
     <div className="subheader-container wrapper">

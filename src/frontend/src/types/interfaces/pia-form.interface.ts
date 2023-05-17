@@ -10,6 +10,7 @@ import { IPPQ } from '../../components/public/PIAFormTabs/ppq/interfaces';
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;
   createdAt?: Date;
+  createdByGuid?: string;
   updatedAt?: Date;
   status?: string;
   isActive?: boolean;

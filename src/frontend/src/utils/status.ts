@@ -1,9 +1,11 @@
 export type Privileges = {
-  MPO: {
+  MPO?: {
     changeStatus: Array<ChangeStatus>;
+    showSubmit?: boolean;
   };
   CPO?: {
     changeStatus: Array<ChangeStatus>;
+    showSubmit?: boolean;
   };
 };
 
@@ -88,6 +90,7 @@ export const statusList: StatusList = {
             modal: defaultCPOReviewModal,
           },
         ],
+        showSubmit: getGUID() === pia.createdByGuid,
       },
     },
   },
@@ -107,9 +110,11 @@ export const statusList: StatusList = {
             modal: defaultCPOReviewModal,
           },
         ],
+        showSubmit: 'onlyifOwner',
       },
       CPO: {
         changeStatus: [],
+        showSubmit: 'onlyifOwner',
       },
     },
   },
