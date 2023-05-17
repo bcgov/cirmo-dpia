@@ -22,3 +22,18 @@ export const isCPORole = () => {
 
   return item.some((x: string) => x.includes('CPO'));
 };
+
+export const roleCheck = () => {
+  const roleOjb: Record<string, Array<string>> = {
+    roles: [],
+  };
+
+  const item = AppStorage.getItem(ConfigStorageKeys.ROLES);
+  if (!item) return {};
+
+  item.forEach((x: string) => {
+    roleOjb.roles.push(x.substring(0, 3));
+  });
+
+  return roleOjb;
+};
