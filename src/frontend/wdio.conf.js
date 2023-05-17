@@ -65,8 +65,8 @@ exports.config = {
     capabilities: [{
         // capabilities for local browser web tests
         browserName: 'chrome' ,
-          'goog:chromeOptions': {
-            args: ['headless', 'disable-gpu', ]
+        'goog:chromeOptions': {
+           args: ['headless', 'disable-gpu']
          }
     }],
     //
