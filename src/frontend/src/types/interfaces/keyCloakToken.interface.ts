@@ -6,4 +6,6 @@ export interface IKeycloakToken {
   expires_in: string;
 
   refresh_expires_in: string;
+
+  uuid: string;
 }

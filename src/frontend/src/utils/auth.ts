@@ -17,6 +17,7 @@ export enum ConfigStorageKeys {
   USERNAME = 'username',
   CONFIG = 'config',
   ROLES = 'roles',
+  GUID = 'guid',
 }
 
 export const isAuthenticated = () => {

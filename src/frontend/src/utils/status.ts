@@ -1,5 +1,5 @@
 export type Privileges = {
-  MPO: {
+  MPO?: {
     changeStatus: Array<ChangeStatus>;
   };
   CPO?: {

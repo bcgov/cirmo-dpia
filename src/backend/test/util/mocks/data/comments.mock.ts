@@ -20,6 +20,7 @@ export const commentROMock: CommentRO = {
   isActive: true,
   isResolved: false,
   createdByDisplayName: 'Test User',
+  createdByGuid: 'AAA00001B22C333DD4EEEEE55F6666G77',
   piaId: 101,
   path: AllowedCommentPaths['accuracyCorrectionAndRetention.accuracy'],
   text: 'Test Comment 0',

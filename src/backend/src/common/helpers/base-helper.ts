@@ -4,7 +4,6 @@ import { omit } from './utils';
 
 /**
  * This class is meant to list the excluded base class properties to be sent to the user
- * - createdByGuid
  * - createdByUsername
  * - updatedByGuid
  * - updatedByUsername
@@ -14,27 +13,20 @@ export class ExcludeBaseSelection
     Partial<
       Pick<
         BaseEntity,
-        | 'createdByGuid'
-        | 'createdByUsername'
-        | 'updatedByGuid'
-        | 'updatedByUsername'
+        'createdByUsername' | 'updatedByGuid' | 'updatedByUsername'
       >
     >
 {
   // It is useful for creating property names explicitly via constructor so that Object.getOwnPropertyNames works correctly
   constructor(
-    createdByGuid?: string,
     createdByUsername?: string,
     updatedByGuid?: string,
     updatedByUsername?: string,
   ) {
-    this.createdByGuid = createdByGuid;
     this.createdByUsername = createdByUsername;
     this.updatedByGuid = updatedByGuid;
     this.updatedByUsername = updatedByUsername;
   }
-
-  createdByGuid: string;
 
   createdByUsername: string;
 

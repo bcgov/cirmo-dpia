@@ -93,6 +93,10 @@ function Header({ user }: Props) {
         ConfigStorageKeys.ROLES,
         keycloakUserDetail.client_roles,
       );
+      AppStorage.setItem(
+        ConfigStorageKeys.GUID,
+        keycloakUserDetail.idir_user_guid,
+      );
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
 

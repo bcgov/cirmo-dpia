@@ -9,7 +9,8 @@ import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
-import { roleCheck } from '../../../utils/helper.util';
+import { getGUID, roleCheck } from '../../../utils/helper.util';
+import { statusList } from '../../../utils/status';
 
 function PIASubHeader({
   pia,
@@ -60,20 +61,20 @@ function PIASubHeader({
   };
 
   const showSubmitButton = () => {
+    const owner = getGUID() === pia.createdByGuid ? true : false;
+
     if (
-      !userRoles.roles.includes('MPO') &&
-      !userRoles.roles.includes('CPO') &&
-      (pia.status === PiaStatuses.INCOMPLETE ||
-        pia.status === PiaStatuses.EDIT_IN_PROGRESS)
+      owner &&
+      pia.status !== PiaStatuses.CPO_REVIEW &&
+      pia.status !== PiaStatuses.MPO_REVIEW
     )
       return true;
-    if (
-      userRoles.roles.includes('MPO') &&
-      pia.status !== PiaStatuses.CPO_REVIEW
+    else if (
+      userRoles.roles[0].includes('MPO') &&
+      pia.status === PiaStatuses.MPO_REVIEW
     )
       return true;
-    // TODO will add cpo check when we go to next step
-    return false;
+    else return false;
   };
 
   return (
