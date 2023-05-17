@@ -29,6 +29,17 @@ exports.config = {
     exclude: [
         // 'path/to/excluded/files'
     ],
+    suites: {
+        sanity: [
+            './test/specs/sanity/*.js'
+        ],
+        acceptance: [
+            './test/specs/acceptance/*.js'
+        ],
+        e2e: [
+            './test/specs/**/*.js',
+        ]
+    },
     //
     // ============
     // Capabilities
@@ -55,8 +66,8 @@ exports.config = {
         // capabilities for local browser web tests
         browserName: 'chrome' ,
         'goog:chromeOptions': {
-            args: ['headless', 'disable-gpu']
-        }
+           args: ['headless', 'disable-gpu']
+         }
     }],
     //
     // ===================
