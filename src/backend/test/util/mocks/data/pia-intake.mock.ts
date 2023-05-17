@@ -229,6 +229,7 @@ export const getPiaIntakeROMock: GetPiaIntakeRO = {
   ...{
     id: baseEntityMock.id,
     createdAt: baseEntityMock.createdAt,
+    createdByGuid: baseEntityMock.createdByGuid,
     updatedAt: baseEntityMock.updatedAt,
     drafterName: keycloakUserMock.display_name,
     drafterEmail: keycloakUserMock.email,

@@ -4,7 +4,6 @@ import { omit } from './utils';
 
 /**
  * This class is meant to list the excluded base class properties to be sent to the user
- * - createdByGuid
  * - createdByUsername
  * - updatedByGuid
  * - updatedByUsername
@@ -14,9 +13,7 @@ export class ExcludeBaseSelection
     Partial<
       Pick<
         BaseEntity,
-        | 'createdByUsername'
-        | 'updatedByGuid'
-        | 'updatedByUsername'
+        'createdByUsername' | 'updatedByGuid' | 'updatedByUsername'
       >
     >
 {
