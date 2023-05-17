@@ -4,6 +4,7 @@ describe('Test DPIA HomePage', () => {
     await browser.maximizeWindow();
     await browser.url('/');
     const loginButton = await $( "//button/div[contains(text(),'Log in with IDIR')]");
+    await loginButton.waitForClickable();
     await loginButton.click();
     const mpoPass= process.env.mpoPass;
     const usernameButton = await $("//input[@name='user']");
@@ -11,6 +12,7 @@ describe('Test DPIA HomePage', () => {
     const ContinueButton = await $("//input[@value='Continue']");
     await usernameButton.setValue('DORGALE');
     await passwordButton.setValue(mpoPass);
+    await ContinueButton.waitForClickable();
     await ContinueButton.click();
     
     
@@ -19,7 +21,9 @@ describe('Test DPIA HomePage', () => {
   afterEach(async () => {
     const signOutButton = await $("//button/div[contains(text(),'Sign Out')]");
     const YessignOutButton = await $("//div/button[contains(text(),'Yes, sign out')]");
+    await signOutButton.waitForClickable();
     await signOutButton.click();
+    await YessignOutButton.waitForClickable();
     await YessignOutButton.click();
     await browser.pause(2000);
     const loginButton = await $( "//button/div[contains(text(),'Log in with IDIR')]");
@@ -33,6 +37,7 @@ describe('Test DPIA HomePage', () => {
     
     const listTab = await $("//a[contains(text(),'List of PIAs')]");
     const listHeader = await $("//h1[contains(text(),'List of PIAs')]");
+    await listTab.waitForClickable();
     await listTab.click();
     await expect(listHeader).toBeDisplayed();
     
@@ -42,6 +47,7 @@ describe('Test DPIA HomePage', () => {
     
     const createTab = await $("//a[contains(text(),'Create new')]");
     const createHeader = await $("//h1[contains(text(),'Create New')]");
+    await createTab.waitForClickable();
     await createTab.click();
     await expect(createHeader).toBeDisplayed();
     
@@ -50,6 +56,7 @@ describe('Test DPIA HomePage', () => {
   it('Check List of PIA Pagination', async () => {
     
     const listTab = await $("//a[contains(text(),'List of PIAs')]");
+    await listTab.waitForClickable();
     await listTab.click();
     const Footer = await $("//footer"); 
     await Footer.scrollIntoView();
@@ -64,6 +71,7 @@ describe('Test DPIA HomePage', () => {
   it.skip('Verify page numbers', async () => {
     
     const listTab = await $("//a[contains(text(),'List of PIAs')]");
+    await listTab.waitForClickable();
     await listTab.click();
     const Footer = await $("//footer"); 
     await Footer.scrollIntoView();
@@ -72,6 +80,7 @@ describe('Test DPIA HomePage', () => {
     await rows.moveTo();
     browser.waitUntil(EC.elementToBeSelected(rows));
     browser.execute("arguments[0].click();", rows);
+    await rows.waitForClickable();
     await rows.click();
     await browser.pause(2000);
 

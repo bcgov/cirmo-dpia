@@ -16,6 +16,7 @@ describe('Test DPIA Login Page', () => {
     const loginButton = await $(
       "//button/div[contains(text(),'Log in with IDIR')]",
     );
+    await loginButton.waitForClickable();
     await loginButton.click();
     //const pwd = config.mpoPass;
     const mpoPass= process.env.mpoPass;
@@ -26,11 +27,14 @@ describe('Test DPIA Login Page', () => {
     const YessignOutButton = await $("//div/button[contains(text(),'Yes, sign out')]");
     await usernameButton.setValue(user);
     await passwordButton.setValue(mpoPass);
+    await ContinueButton.waitForClickable();
     await ContinueButton.click();
     console.log('Title is ' + (await browser.getTitle()));
     const ExpTitle = 'Digital Privacy Impact Assessment (DPIA)';
     await expect(browser).toHaveTitle(ExpTitle);
+    await signOutButton.waitForClickable();
     await signOutButton.click();
+    await YessignOutButton.waitForClickable();
     await YessignOutButton.click();
     await browser.pause(2000);
     await loginButton.waitForDisplayed({ timeout: 2000 });
@@ -43,6 +47,7 @@ describe('Test DPIA Login Page', () => {
     const loginButton = await $(
       "//button/div[contains(text(),'Log in with IDIR')]",
     );
+    await loginButton.waitForClickable();
     await loginButton.click();
     //const pwd = config.mpoPass;
     const mpoPass= process.env.mpoPass;
@@ -53,6 +58,7 @@ describe('Test DPIA Login Page', () => {
     const YessignOutButton = await $("//div/button[contains(text(),'Yes, sign out')]");
     await usernameButton.setValue(user);
     await passwordButton.setValue(mpoPass);
+    await ContinueButton.waitForClickable();
     await ContinueButton.click();
     await browser.pause(2000);
     console.log('URL is ' + (await browser.getUrl()));
@@ -77,7 +83,9 @@ describe('Test DPIA Login Page', () => {
     {
       await expect("URL not equal to dev or test").toEqual("URL should be dev or test");
     }
+    await signOutButton.waitForClickable();
     await signOutButton.click();
+    await YessignOutButton.waitForClickable();
     await YessignOutButton.click();
     await browser.pause(2000);
     await loginButton.waitForDisplayed({ timeout: 2000 });
@@ -89,6 +97,7 @@ describe('Test DPIA Login Page', () => {
     const loginButton = await $(
         "//button/div[contains(text(),'Log in with IDIR')]",
       );
+      await loginButton.waitForClickable();
       await loginButton.click();
       //const pwd = config.mpoPass;
       const mpoPass= process.env.mpoPass;
@@ -100,11 +109,14 @@ describe('Test DPIA Login Page', () => {
       
       await usernameButton.setValue(user);
       await passwordButton.setValue(mpoPass);
+      await ContinueButton.waitForClickable();
       await ContinueButton.click();
       await browser.pause(2000);
       var BCLogo = await $("//img[@alt='Go to the Government of British Columbia website']").isExisting();
       console.log(BCLogo);
+      await signOutButton.waitForClickable();
       await signOutButton.click();
+      await YessignOutButton.waitForClickable();
       await YessignOutButton.click();
       await browser.pause(2000);
       await loginButton.waitForDisplayed({ timeout: 2000 });
@@ -125,6 +137,7 @@ describe('Test DPIA Login Page', () => {
       const ContinueButton = await $("//input[@value='Continue']");
       await usernameButton.setValue(user+'ss');
       await passwordButton.setValue(mpoPass);
+      await ContinueButton.waitForClickable();
       await ContinueButton.click();
       await browser.pause(2000);
       const IDIR = await $("//span[contains(text(),'The username or password you entered is incorrect')]");
@@ -143,6 +156,7 @@ describe('Test DPIA Login Page', () => {
       const ContinueButton = await $("//input[@value='Continue']");
       await usernameButton.setValue(user);
       await passwordButton.setValue('WrongPass');
+      await ContinueButton.waitForClickable();
       await ContinueButton.click();
       await browser.pause(2000);
       const IDIR = await $("//span[contains(text(),'The username or password you entered is incorrect')]");
