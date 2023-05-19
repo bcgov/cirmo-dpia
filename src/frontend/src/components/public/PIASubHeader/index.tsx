@@ -70,6 +70,7 @@ function PIASubHeader({
     )
       return true;
     else if (
+      userRoles.roles !== undefined &&
       userRoles.roles[0].includes('MPO') &&
       pia.status === PiaStatuses.MPO_REVIEW
     )
