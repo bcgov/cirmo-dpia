@@ -23,29 +23,32 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     const statuses: ChangeStatus[] = [];
 
     let hasStatusDropdown = false;
-    roles.roles.forEach((role: string) => {
-      /* check if the role is in the statusList */
-      if (role in statusList[props.pia.status || 'Completed'].Privileges) {
-        /* check if the role has changeStatus */
-        if (
-          'changeStatus' in
-          Object(statusList[props.pia.status || 'Completed'].Privileges)[role]
-        ) {
-          /* check if the changeStatus is not empty */
+    if (roles !== undefined && roles.roles !== undefined) {
+      roles.roles.forEach((role: string) => {
+        /* check if the role is in the statusList */
+        if (role in statusList[props.pia.status || 'Completed'].Privileges) {
+          /* check if the role has changeStatus */
           if (
+            'changeStatus' in
             Object(statusList[props.pia.status || 'Completed'].Privileges)[role]
-              .changeStatus.length !== 0
           ) {
-            hasStatusDropdown = true;
-            statuses.push(
-              ...Object(statusList[props.pia.status || 'Completed'].Privileges)[
+            /* check if the changeStatus is not empty */
+            if (
+              Object(statusList[props.pia.status || 'Completed'].Privileges)[
                 role
-              ].changeStatus,
-            );
+              ].changeStatus.length !== 0
+            ) {
+              hasStatusDropdown = true;
+              statuses.push(
+                ...Object(
+                  statusList[props.pia.status || 'Completed'].Privileges,
+                )[role].changeStatus,
+              );
+            }
           }
         }
-      }
-    });
+      });
+    }
     return {
       hasStatusDropdown,
       statuses,
