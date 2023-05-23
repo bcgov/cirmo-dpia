@@ -105,6 +105,7 @@ export const statusList: StatusList = {
     modal: defaultIncompleteModal,
     Privileges: {
       MPO: {
+        banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
         changeStatus: [
           {
             status: 'EDIT_IN_PROGRESS',
