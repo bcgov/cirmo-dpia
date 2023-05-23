@@ -1,33 +1,23 @@
-import { useState, useEffect } from 'react';
 import { IBannerStatusProps } from './interfaces';
 import Callout from '../../../components/common/Callout';
 import { PiaStatuses } from '../../../constant/constant';
-import { isMPORole, getGUID } from '../../../utils/helper.util';
-import Messages from './messages';
+import { roleCheck } from '../../../utils/helper.util';
+import { statusList } from '../../../utils/status';
 const BannerStatus = ({ pia }: IBannerStatusProps) => {
-  const [bannerMessage, setBannerMessage] = useState<string>('');
-  const owner = getGUID() === pia.createdByGuid ? true : false;
-  useEffect(() => {
-    if (pia.status === PiaStatuses.INCOMPLETE) {
-      setBannerMessage(Messages.InCompleteStatusCalloutText.Drafter.en);
-    } else if (pia.status === PiaStatuses.MPO_REVIEW) {
-      if (isMPORole()) {
-        setBannerMessage(Messages.MPOReviewStatusCalloutText.MPO.en);
-      } else if (owner) {
-        setBannerMessage(Messages.MPOReviewStatusCalloutText.Drafter.en);
-      }
-    } else if (pia.status === PiaStatuses.CPO_REVIEW) {
-      if (isMPORole()) {
-        setBannerMessage(Messages.CPOReviewStatusCalloutText.MPO.en);
-      } else if (owner) {
-        setBannerMessage(Messages.CPOReviewStatusCalloutText.Drafter.en);
-      }
+  const populateBanner = () => {
+    const userRoles = roleCheck();
+    const role = userRoles.roles[0];
+    const currentStatus = pia.status || 'Completed';
+    if (role in statusList[currentStatus].Privileges) {
+      return Object(statusList[currentStatus].Privileges)[role].banner;
+    } else {
+      return statusList[currentStatus].banner;
     }
-  }, [owner, pia.status]);
+  };
 
   return pia.status !== PiaStatuses.EDIT_IN_PROGRESS ? (
     <div className="mb-5">
-      <Callout text={bannerMessage} bgWhite />
+      <Callout text={populateBanner()} bgWhite />
     </div>
   ) : null;
 };

@@ -1,9 +1,13 @@
+import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
+
 export type Privileges = {
   MPO?: {
     changeStatus: Array<ChangeStatus>;
+    banner?: string;
   };
   CPO?: {
     changeStatus: Array<ChangeStatus>;
+    banner?: string;
   };
 };
 
@@ -23,6 +27,7 @@ interface StatusList {
   [name: string]: {
     title: string;
     class: string;
+    banner?: string;
     modal: Modal;
     Privileges: Privileges;
   };
@@ -71,9 +76,11 @@ export const statusList: StatusList = {
   MPO_REVIEW: {
     title: 'MPO REVIEW',
     class: 'statusBlock__MPOReview',
+    banner: BannerText.MPOReviewStatusCalloutText.Drafter.en,
     modal: defaultMPOReviewModal,
     Privileges: {
       MPO: {
+        banner: BannerText.MPOReviewStatusCalloutText.MPO.en,
         changeStatus: [
           {
             status: 'INCOMPLETE',
@@ -94,6 +101,7 @@ export const statusList: StatusList = {
   INCOMPLETE: {
     title: 'INCOMPLETE',
     class: 'statusBlock__incomplete',
+    banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
     modal: defaultIncompleteModal,
     Privileges: {
       MPO: {
@@ -139,6 +147,7 @@ export const statusList: StatusList = {
   EDIT_IN_PROGRESS: {
     title: 'EDIT IN PROGRESS',
     class: 'statusBlock__edit',
+    banner: 'test drafter',
     modal: {
       title: 'Change status to “Edit in progress”?',
       description:
@@ -148,6 +157,7 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
+        banner: 'test mpo',
         changeStatus: [
           {
             status: 'INCOMPLETE',
@@ -167,10 +177,12 @@ export const statusList: StatusList = {
   },
   CPO_REVIEW: {
     title: 'CPO REVIEW',
+    banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
     class: 'statusBlock__CPOReview',
     modal: defaultCPOReviewModal,
     Privileges: {
       MPO: {
+        banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
         changeStatus: [],
       },
       CPO: {

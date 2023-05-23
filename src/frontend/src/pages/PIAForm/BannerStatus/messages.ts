@@ -1,4 +1,4 @@
-export default {
+export const BannerText = {
   MPOReviewStatusCalloutText: {
     Drafter: {
       en: `Your PIA is being reviewed by your Ministry Privacy Office (MPO). Your MPO will contact you once it is reviewed.`,
