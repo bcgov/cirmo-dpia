@@ -9,10 +9,10 @@ export const BannerText = {
   },
   CPOReviewStatusCalloutText: {
     Drafter: {
-      en: `Your PIA is being reviewed by the Corporate Privacy Office (CPO). CPO or your MPO will contact you with any questions.`,
+      en: `Your PIA is being reviewed by the Corporate Privacy Office (CPO). A CPO analyst or your MPO will contact you with any questions.`,
     },
     MPO: {
-      en: `This PIA is being reviewed by the Corporate Privacy Office (CPO). CPO will contact you with any questions.`,
+      en: `This PIA is being reviewed by the Corporate Privacy Office (CPO). A CPO analyst will contact you with any questions.`,
     },
   },
   InCompleteStatusCalloutText: {
