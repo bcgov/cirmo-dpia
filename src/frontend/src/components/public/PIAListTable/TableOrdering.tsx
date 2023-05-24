@@ -37,7 +37,7 @@ const TableOrdering = (props: ITableOrderingProps) => {
   return (
     <img
       src={sortingState(currentState)}
-      aria-label={title}
+      aria-label={title + ' ' + sortingLabel}
       aria-sort={sortingLabel}
     ></img>
   );
