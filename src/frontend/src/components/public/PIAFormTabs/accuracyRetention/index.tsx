@@ -123,12 +123,14 @@ export const AccuracyCorrectionAndRetention = () => {
                   onChange={(value) =>
                     stateChangeHandler(value, 'accuracy.description')
                   }
+                  aria-label="Accuracy Description Textarea Input"
                 />
               ) : accuracyCorrectionAndRetentionForm.accuracy?.description ? (
                 <MDEditor.Markdown
                   source={
                     accuracyCorrectionAndRetentionForm.accuracy?.description
                   }
+                  aria-label="Accuracy Description Textarea Input Preview"
                 />
               ) : (
                 <p>
@@ -723,6 +725,7 @@ export const AccuracyCorrectionAndRetention = () => {
                       onChange={(value) =>
                         stateChangeHandler(value, 'retention.describeRetention')
                       }
+                      aria-label="Describe Retention Textarea Input"
                     />
                   ) : accuracyCorrectionAndRetentionForm.retention
                       .describeRetention ? (
@@ -731,6 +734,7 @@ export const AccuracyCorrectionAndRetention = () => {
                         accuracyCorrectionAndRetentionForm.retention
                           .describeRetention
                       }
+                      aria-label="Describe Retention Textarea Input Preview"
                     />
                   ) : (
                     <p>

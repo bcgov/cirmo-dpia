@@ -437,6 +437,7 @@ export const SecurityPersonalInformation = () => {
                           'digitalToolsAndSystems.storage.whereDetails',
                         )
                       }
+                      aria-label="Digital Tools and Systems Storage Where Details Input"
                     />
                   ) : securityPersonalInformationForm.digitalToolsAndSystems
                       .storage.whereDetails ? (
@@ -445,6 +446,7 @@ export const SecurityPersonalInformation = () => {
                         securityPersonalInformationForm?.digitalToolsAndSystems
                           ?.storage?.whereDetails
                       }
+                      aria-label="Digital Tools and Systems Storage Where Details Input Preview"
                     />
                   ) : (
                     <p>
@@ -581,6 +583,7 @@ export const SecurityPersonalInformation = () => {
                       'accessToPersonalInformation.additionalStrategies',
                     )
                   }
+                  aria-label="Access to Personal Information Additional Strategies Input"
                 />
               ) : securityPersonalInformationForm.accessToPersonalInformation
                   .additionalStrategies ? (
@@ -589,6 +592,7 @@ export const SecurityPersonalInformation = () => {
                     securityPersonalInformationForm.accessToPersonalInformation
                       .additionalStrategies
                   }
+                  aria-label="Access to Personal Information Additional Strategies Input Preview"
                 />
               ) : (
                 <p>

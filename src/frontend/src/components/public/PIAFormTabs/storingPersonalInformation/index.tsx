@@ -372,6 +372,7 @@ const StoringPersonalInformation = () => {
                       'personalInformation.whereDetails',
                     )
                   }
+                  aria-label="Personal Information storage location details"
                 />
               ) : storingPersonalInformationForm.personalInformation
                   .whereDetails ? (
@@ -380,6 +381,7 @@ const StoringPersonalInformation = () => {
                     storingPersonalInformationForm.personalInformation
                       .whereDetails
                   }
+                  aria-label="Personal Information storage location details"
                 />
               ) : (
                 <p>
@@ -630,6 +632,7 @@ const StoringPersonalInformation = () => {
                             'disclosuresOutsideCanada.storage.disclosureDetails',
                           )
                         }
+                        aria-label="Disclosures Details Textarea Input"
                       />
                     ) : storingPersonalInformationForm.disclosuresOutsideCanada
                         .storage.disclosureDetails ? (
@@ -638,6 +641,7 @@ const StoringPersonalInformation = () => {
                           storingPersonalInformationForm
                             .disclosuresOutsideCanada.storage.disclosureDetails
                         }
+                        aria-label="Disclosures Details Input Preview"
                       />
                     ) : (
                       <p>
@@ -733,6 +737,7 @@ const StoringPersonalInformation = () => {
                           'disclosuresOutsideCanada.storage.contractualTerms',
                         )
                       }
+                      aria-label="Contractual Terms Textarea Input"
                     />
                   ) : storingPersonalInformationForm.disclosuresOutsideCanada
                       .storage.contractualTerms ? (
@@ -741,6 +746,7 @@ const StoringPersonalInformation = () => {
                         storingPersonalInformationForm.disclosuresOutsideCanada
                           .storage.contractualTerms
                       }
+                      aria-label="Contractual Terms Input Preview"
                     />
                   ) : (
                     <p>
@@ -822,6 +828,7 @@ const StoringPersonalInformation = () => {
                             'disclosuresOutsideCanada.contract.enterpriseServiceAccessDetails',
                           )
                         }
+                        aria-label="Enterprise Service Access Details Textarea Input"
                       />
                     ) : storingPersonalInformationForm.disclosuresOutsideCanada
                         .contract.enterpriseServiceAccessDetails ? (
@@ -831,6 +838,7 @@ const StoringPersonalInformation = () => {
                             .disclosuresOutsideCanada.contract
                             .enterpriseServiceAccessDetails || ''
                         }
+                        aria-label="Enterprise Service Access Details Preview"
                       />
                     ) : (
                       <p>
@@ -883,6 +891,7 @@ const StoringPersonalInformation = () => {
                         'disclosuresOutsideCanada.controls.unauthorizedAccessMeasures',
                       )
                     }
+                    aria-label="Unauthorized Access Measures Textarea Input"
                   />
                 ) : storingPersonalInformationForm.disclosuresOutsideCanada
                     .controls.unauthorizedAccessMeasures ? (
@@ -891,6 +900,7 @@ const StoringPersonalInformation = () => {
                       storingPersonalInformationForm.disclosuresOutsideCanada
                         .controls.unauthorizedAccessMeasures
                     }
+                    aria-label="Unauthorized Access Measures Preview"
                   />
                 ) : (
                   <p>
@@ -941,6 +951,7 @@ const StoringPersonalInformation = () => {
                         'disclosuresOutsideCanada.trackAccess.trackAccessDetails',
                       )
                     }
+                    aria-label="Track Access Details Textarea Input"
                   />
                 ) : storingPersonalInformationForm.disclosuresOutsideCanada
                     .trackAccess.trackAccessDetails ? (
@@ -949,6 +960,7 @@ const StoringPersonalInformation = () => {
                       storingPersonalInformationForm.disclosuresOutsideCanada
                         .trackAccess.trackAccessDetails
                     }
+                    aria-label="Track Access Details Preview"
                   />
                 ) : (
                   <p>

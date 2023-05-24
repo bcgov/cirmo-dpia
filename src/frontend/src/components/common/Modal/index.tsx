@@ -87,6 +87,7 @@ const Modal = ({
             type="button"
             value={value}
             onClick={handleClose}
+            aria-label={confirmLabel}
           >
             {confirmLabel}
           </button>
@@ -96,6 +97,7 @@ const Modal = ({
               type="button"
               className="bcgovbtn bcgovbtn__secondary"
               onClick={handleCancel}
+              aria-label={cancelLabel}
             >
               {cancelLabel}
             </button>

@@ -111,6 +111,7 @@ const InputText = ({
           required={required}
           disabled={isDisabled}
           ref={inputRef}
+          aria-label={inputId}
         />
       ) : value ? (
         <p>{value}</p>

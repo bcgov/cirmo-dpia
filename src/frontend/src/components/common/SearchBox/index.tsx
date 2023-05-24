@@ -26,6 +26,7 @@ const SearchBox = ({
         onClick={onSearchClick}
         aria-label="Submit search button"
         className="search-icon-container bcgovbtn bcgovbtn__primary bcgovbtn__primary-search search-icon-container"
+        aria-label="Search button"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </button>
@@ -33,6 +34,7 @@ const SearchBox = ({
       <button
         onClick={onClearSearchClick}
         className="bcgovbtn bcgovbtn__tertiary ps-3 pe-0 fw-bold"
+        aria-label="Clear search button"
       >
         Clear search
       </button>

@@ -187,6 +187,7 @@ const PIAAgreementsAndInformationBanks = () => {
                           'informationSharingAgreement.description',
                         )
                       }
+                      aria-label="Information Sharing Agreement Textarea Input"
                     />
                   ) : agreementsAndInformationBanksForm
                       .informationSharingAgreement.description ? (
@@ -195,6 +196,7 @@ const PIAAgreementsAndInformationBanks = () => {
                         agreementsAndInformationBanksForm
                           .informationSharingAgreement.description
                       }
+                      aria-label="Information Sharing Agreement Textarea Input Preview"
                     />
                   ) : (
                     <p>
@@ -286,50 +288,54 @@ const PIAAgreementsAndInformationBanks = () => {
                     <div className="row mt-2 form__row--flex-end">
                       <div className="col">
                         <div className="form-group">
-                          <label>ISA start date</label>
-                          <CustomInputDate
-                            key="isaStartDate"
-                            selected={
-                              agreementsAndInformationBanksForm
-                                ?.informationSharingAgreement?.startDate
-                                ? stringToDate(
-                                    agreementsAndInformationBanksForm
-                                      .informationSharingAgreement.startDate,
-                                  )
-                                : null
-                            }
-                            onChange={(date: any) => {
-                              stateChangeHandler(
-                                dateToString(date),
-                                'informationSharingAgreement.startDate',
-                              );
-                            }}
-                            required
-                          />
+                          <label>
+                            ISA start date
+                            <CustomInputDate
+                              key="isaStartDate"
+                              selected={
+                                agreementsAndInformationBanksForm
+                                  ?.informationSharingAgreement?.startDate
+                                  ? stringToDate(
+                                      agreementsAndInformationBanksForm
+                                        .informationSharingAgreement.startDate,
+                                    )
+                                  : null
+                              }
+                              onChange={(date: any) => {
+                                stateChangeHandler(
+                                  dateToString(date),
+                                  'informationSharingAgreement.startDate',
+                                );
+                              }}
+                              required
+                            />
+                          </label>
                         </div>
                       </div>
                       <div className="col">
                         <div className=" form-group ">
-                          <label>ISA end date</label>
-                          <CustomInputDate
-                            key="isaEndDate"
-                            selected={
-                              agreementsAndInformationBanksForm
-                                ?.informationSharingAgreement?.endDate
-                                ? stringToDate(
-                                    agreementsAndInformationBanksForm
-                                      .informationSharingAgreement.endDate,
-                                  )
-                                : null
-                            }
-                            onChange={(date: any) => {
-                              stateChangeHandler(
-                                dateToString(date),
-                                'informationSharingAgreement.endDate',
-                              );
-                            }}
-                            required
-                          />
+                          <label>
+                            ISA end date
+                            <CustomInputDate
+                              key="isaEndDate"
+                              selected={
+                                agreementsAndInformationBanksForm
+                                  ?.informationSharingAgreement?.endDate
+                                  ? stringToDate(
+                                      agreementsAndInformationBanksForm
+                                        .informationSharingAgreement.endDate,
+                                    )
+                                  : null
+                              }
+                              onChange={(date: any) => {
+                                stateChangeHandler(
+                                  dateToString(date),
+                                  'informationSharingAgreement.endDate',
+                                );
+                              }}
+                              required
+                            />
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -464,6 +470,7 @@ const PIAAgreementsAndInformationBanks = () => {
                             'personalInformationBanks.description',
                           )
                         }
+                        aria-label="Personal Information Bank Textarea Input"
                       />
                     ) : agreementsAndInformationBanksForm
                         .personalInformationBanks.description ? (
@@ -472,6 +479,7 @@ const PIAAgreementsAndInformationBanks = () => {
                           agreementsAndInformationBanksForm
                             ?.personalInformationBanks?.description
                         }
+                        aria-label="Personal Information Bank Textarea Input Preview"
                       />
                     ) : (
                       <p>

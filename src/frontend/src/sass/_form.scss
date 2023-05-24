@@ -113,6 +113,12 @@
   }
 }
 
+.wmde-markdown-var {
+  &:focus-within {
+    outline: 2px solid $focus !important;
+  }
+}
+
 .wmde-markdown {
   & > p {
     font-weight: 400;

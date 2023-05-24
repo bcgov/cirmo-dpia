@@ -102,8 +102,8 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
 
   return (
     <>
-      <div>Status</div>
-      <div className="dropdownSatusContainer">
+      <label htmlFor="status-dropdown">Status</label>
+      <div id="status-dropdown" className="dropdownSatusContainer">
         {hasStatusDropdown ? (
           <div className="dropdown">
             <button

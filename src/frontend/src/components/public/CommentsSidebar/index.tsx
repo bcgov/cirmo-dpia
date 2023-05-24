@@ -122,10 +122,14 @@ const CommentSidebar = ({
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded={false}
+                      aria-label="Comment Options Button"
                     >
                       <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
                     </button>
-                    <ul className="dropdown-menu border-1 shadow-sm">
+                    <ul
+                      aria-label="Comment Options Menu"
+                      className="dropdown-menu border-1 shadow-sm"
+                    >
                       <li role="button">
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
@@ -191,6 +195,7 @@ const CommentSidebar = ({
                 type="button"
                 className="bcgovbtn bcgovbtn__tertiary mr-2"
                 onClick={() => setNewCommentContent('')}
+                aria-label="Cancel New Comment Button"
               >
                 Cancel
               </button>
@@ -201,6 +206,7 @@ const CommentSidebar = ({
                   addComment();
                   setNewCommentContent('');
                 }}
+                aria-label="Add New Comment Button"
               >
                 Add
               </button>

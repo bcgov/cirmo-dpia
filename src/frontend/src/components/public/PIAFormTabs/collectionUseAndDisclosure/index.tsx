@@ -171,6 +171,7 @@ const PIACollectionUseAndDisclosure = () => {
                 source={
                   collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
                 }
+                aria-label="Collection Notice Drafter Textarea Input Preview"
               />
             ) : (
               <MDEditor
@@ -183,6 +184,7 @@ const PIACollectionUseAndDisclosure = () => {
                 onChange={(value) => {
                   stateChangeHandler(value, 'collectionNotice.drafterInput');
                 }}
+                aria-label="Collection Notice Drafter Textarea Input"
               />
             )}
           </div>
@@ -211,6 +213,7 @@ const PIACollectionUseAndDisclosure = () => {
                 source={
                   collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
                 }
+                aria-label="Collection Notice MPO Textarea Input Preview"
               />
             ) : (
               <MDEditor
@@ -223,6 +226,7 @@ const PIACollectionUseAndDisclosure = () => {
                 onChange={(value) => {
                   stateChangeHandler(value, 'collectionNotice.mpoInput');
                 }}
+                aria-label="Collection Notice MPO Textarea Input"
               />
             )}
           </div>

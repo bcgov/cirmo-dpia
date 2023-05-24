@@ -52,6 +52,7 @@ const Collapsible = ({
         tabIndex={0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
+        role="button"
         ref={toggleButtonRef}
       >
         <FontAwesomeIcon
@@ -80,6 +81,7 @@ const Collapsible = ({
                 : 'collapsible__icon--open-left'
             }
           `}
+          aria-label="Sidebar Menu Toggle"
         />
       </div>
       {isVisible && <div className="collapsible__content">{children}</div>}

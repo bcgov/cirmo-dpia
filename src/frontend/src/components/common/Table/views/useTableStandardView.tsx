@@ -72,6 +72,7 @@ export const UseTableStandardView = (props: UseTableStandardViewProps) => {
                           e.preventDefault();
                           props.removeRow(index);
                         }}
+                        aria-label="Delete row button"
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
