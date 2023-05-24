@@ -4,7 +4,7 @@ import { usePIALookup } from '../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
 import { PiaSorting } from '../../constant/constant';
 import Pagination from '../../components/common/Pagination';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchBox from '../../components/common/SearchBox';
 import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
@@ -23,6 +23,9 @@ const PIAList = () => {
     currentPage,
     PageSizedefault,
   );
+  useEffect(() => {
+    document.title = 'List of PIAs - Digital Privacy Impact Assessment (DPIA)';
+  }, []); // Empty array ensures this runs once on mount and unmount
 
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
