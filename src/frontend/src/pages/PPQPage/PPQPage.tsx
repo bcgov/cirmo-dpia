@@ -8,12 +8,16 @@ import { Link } from 'react-router-dom';
 import messages from './messages';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import { routes } from '../../constant/routes';
+import { useEffect } from 'react';
 
 export interface IComponentProps {
   showMPOContents: boolean;
 }
 function PPQLandingPage(props: IComponentProps) {
   const { showMPOContents } = props;
+  useEffect(() => {
+    document.title = 'Create new - Digital Privacy Impact Assessment (DPIA)';
+  }, []); // Empty array ensures this runs once on mount and unmount
   return (
     <div className="bcgovPageContainer wrapper">
       <Breadcrumbs />

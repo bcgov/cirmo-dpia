@@ -89,6 +89,22 @@ export const statusList: StatusList = {
           },
         ],
       },
+      CPO: {
+        changeStatus: [
+          {
+            status: 'CPO_REVIEW',
+            modal: defaultCPOReviewModal,
+          },
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: defaultEditInProgressModal,
+          },
+        ],
+      },
     },
   },
   INCOMPLETE: {
@@ -109,7 +125,20 @@ export const statusList: StatusList = {
         ],
       },
       CPO: {
-        changeStatus: [],
+        changeStatus: [
+          {
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: defaultEditInProgressModal,
+          },
+          {
+            status: 'CPO_REVIEW',
+            modal: defaultCPOReviewModal,
+          },
+        ],
       },
     },
   },
@@ -163,6 +192,22 @@ export const statusList: StatusList = {
           },
         ],
       },
+      CPO: {
+        changeStatus: [
+          {
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+          },
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+          },
+          {
+            status: 'CPO_REVIEW',
+            modal: defaultCPOReviewModal,
+          },
+        ],
+      },
     },
   },
   CPO_REVIEW: {
@@ -184,6 +229,14 @@ export const statusList: StatusList = {
               confirmLabel: 'Yes, continue',
               cancelLabel: 'Cancel',
             },
+          },
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: defaultEditInProgressModal,
           },
         ],
       },
