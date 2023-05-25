@@ -27,8 +27,9 @@ const ListPageNumber = (props: ListPageNumberProps) => {
                   onClick={() => {
                     props.changePage(i + 1);
                   }}
+                  aria-current={i + 1 === props.currentPage}
                   className={`page__enumeration ${
-                    i + 1 == props.currentPage ? 'pageActive' : ' '
+                    i + 1 === props.currentPage ? 'pageActive' : ' '
                   }`}
                 >
                   {i + 1}

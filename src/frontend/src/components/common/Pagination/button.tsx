@@ -13,7 +13,7 @@ const PaginationButton = (props: PaginationButtonProps) => {
     if (props.direction == PaginationDirection.right) {
       setButtonLabel('Pagination Right Button');
     }
-  }, [props.direction]); // Empty array ensures this runs once on mount and unmount
+  }, [props.direction]);
   let classValue = 'bcgovbtn__primary';
   if (props.direction == PaginationDirection.left && props.currentPage == 1) {
     classValue = 'bcgovbtn__primary--disabled';
