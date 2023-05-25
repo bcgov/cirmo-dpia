@@ -24,10 +24,13 @@ const RowsPerPage = (props: RowsPerPageProps) => {
           {props.pageSize}
           <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
         </button>
+
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           {PageSizeOptions.map((option) => {
             return (
               <li
+                tabIndex={0}
+                aria-label={option + 'rows per page '}
                 className="dropdown-item"
                 key={option}
                 onClick={() => {
@@ -39,6 +42,7 @@ const RowsPerPage = (props: RowsPerPageProps) => {
             );
           })}
         </ul>
+
         <div className="dropdown__content"></div>
       </div>
     </span>
