@@ -5,7 +5,7 @@ import {
   PiaDrafterFilterList,
   PiaStatusList,
 } from '../../../constant/constant';
-import { isMPORole } from '../../../utils/helper.util';
+import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 
 const PIAIntakeFilter = () => {
@@ -18,7 +18,13 @@ const PIAIntakeFilter = () => {
   );
   const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
     useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
-
+  const isAdminRole = () => {
+    const userRoles = roleCheck();
+    if (userRoles !== undefined && userRoles.roles !== undefined) {
+      if (userRoles.roles.length > 0) return true;
+    }
+    return false;
+  };
   const setSearchParamsForFilter = (field: string, newValue: any) => {
     const params: any = {};
     switch (field) {
@@ -97,7 +103,7 @@ const PIAIntakeFilter = () => {
             />
           </div>
 
-          {isMPORole() && (
+          {isAdminRole() && (
             <div className="col-sm-6 col-md-3 pt-4 pt-sm-0 pe-md-0">
               <Dropdown
                 id="ministry-select"
@@ -110,7 +116,7 @@ const PIAIntakeFilter = () => {
             </div>
           )}
 
-          {isMPORole() && (
+          {isAdminRole() && (
             <div className="col-sm-6 col-md-3 pt-4 pt-md-0 pe-sm-0">
               <Dropdown
                 id="drafter-filter-select"
