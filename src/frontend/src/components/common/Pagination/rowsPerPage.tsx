@@ -9,6 +9,7 @@ const RowsPerPage = (props: RowsPerPageProps) => {
       Rows per page
       <div className="dropdown">
         <button
+          aria-label="select rows per page button"
           className="dropdown-toggles form-control"
           type="button"
           id="dropdownMenuButton1"

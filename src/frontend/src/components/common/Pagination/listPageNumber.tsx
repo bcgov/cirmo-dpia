@@ -20,6 +20,7 @@ const ListPageNumber = (props: ListPageNumberProps) => {
           (e, i) => {
             return (
               <li
+                tabIndex={0}
                 key={i}
                 onClick={() => {
                   props.changePage(i + 1);
