@@ -5,7 +5,7 @@ import {
   PiaDrafterFilterList,
   PiaStatusList,
 } from '../../../constant/constant';
-import { isMPORole, roleCheck } from '../../../utils/helper.util';
+import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 
 const PIAIntakeFilter = () => {
