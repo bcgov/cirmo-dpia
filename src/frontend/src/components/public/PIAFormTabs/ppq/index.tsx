@@ -99,13 +99,17 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 onChange={(value) =>
                   stateChangeHandler(value, 'initiativeOtherDetails')
                 }
+                aria-label="Initiative Other Details Input"
               />
             )
           ) : ppqForm?.hasInitiativeOther ? (
             ppqForm?.initiativeOtherDetails &&
             ppqForm?.initiativeOtherDetails !== '' ? (
               <div className="px-4">
-                <MDEditor.Markdown source={ppqForm.initiativeOtherDetails} />
+                <MDEditor.Markdown
+                  source={ppqForm.initiativeOtherDetails}
+                  aria-label="Initiative Other Details Input Preview"
+                />
               </div>
             ) : (
               <p>
@@ -258,9 +262,13 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               onChange={(value) =>
                 stateChangeHandler(value, 'otherCpoConsideration')
               }
+              aria-label="Other CPO Consideration Textarea Input"
             />
           ) : ppqForm.otherCpoConsideration ? (
-            <MDEditor.Markdown source={ppqForm.otherCpoConsideration} />
+            <MDEditor.Markdown
+              source={ppqForm.otherCpoConsideration}
+              aria-label="Other CPO Consideration Textarea Input Preview"
+            />
           ) : (
             <p>
               <i>Not answered</i>

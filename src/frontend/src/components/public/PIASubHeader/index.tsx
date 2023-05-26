@@ -10,7 +10,6 @@ import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
 import { getGUID, roleCheck } from '../../../utils/helper.util';
-import { statusList } from '../../../utils/status';
 
 function PIASubHeader({
   pia,
@@ -110,6 +109,7 @@ function PIASubHeader({
             <button
               onClick={onEditClick}
               className="mx-1 bcgovbtn bcgovbtn__secondary"
+              aria-label="Edit Button"
             >
               {secondaryButtonText}
             </button>
@@ -121,6 +121,7 @@ function PIASubHeader({
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded={false}
+            aria-label="More options"
           >
             <FontAwesomeIcon icon={faEllipsisH} />
           </button>
@@ -134,6 +135,7 @@ function PIASubHeader({
                 href={buildDynamicPath(routes.PIA_PRINT_PREVIEW, {
                   id: pia.id,
                 })}
+                aria-label="Print Preview Link"
               >
                 Print Preview
               </a>
@@ -141,7 +143,11 @@ function PIASubHeader({
             <li role="button">
               {/* Save or Edit button */}
               {!nextStepAction && mode === 'edit' && (
-                <button onClick={onSaveChangeClick} className="dropdown-item">
+                <button
+                  onClick={onSaveChangeClick}
+                  className="dropdown-item"
+                  aria-label="Save Change Button"
+                >
                   {secondaryButtonText}
                 </button>
               )}
@@ -154,6 +160,7 @@ function PIASubHeader({
               onClick={onSubmitClick}
               className={`mx-1 bcgovbtn bcgovbtn__primary`}
               disabled={mode === 'view' && isValidationFailed}
+              aria-label="Submit Button"
             >
               {primaryButtonText}
             </button>

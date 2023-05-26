@@ -42,6 +42,7 @@ const PIANavButton = ({ pages }: INavButton) => {
             className="bcgovbtn bcgovbtn__secondary btn-back"
             onClick={handleBack}
             type="button"
+            aria-label="Back Button"
           >
             {typeof HandleState(pages, pathname, 'prev') === 'object'
               ? Object(HandleState(pages, pathname, 'next'))?.title
@@ -53,6 +54,7 @@ const PIANavButton = ({ pages }: INavButton) => {
             className="bcgovbtn bcgovbtn__secondary btn-next ms-auto"
             onClick={handleNext}
             type="button"
+            aria-label="Next Button"
           >
             {typeof HandleState(pages, pathname, 'next') === 'object'
               ? Object(HandleState(pages, pathname, 'next'))?.title

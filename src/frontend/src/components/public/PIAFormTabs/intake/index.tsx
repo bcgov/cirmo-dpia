@@ -215,7 +215,10 @@ export const PIAFormIntake = () => {
                 <i>Not answered</i>
               </p>
             ) : isReadOnly ? (
-              <MDEditor.Markdown source={intakeForm.initiativeDescription} />
+              <MDEditor.Markdown
+                source={intakeForm.initiativeDescription}
+                aria-label="Initiative Description Textarea Input Preview"
+              />
             ) : (
               <MDEditor
                 preview="edit"
@@ -224,6 +227,7 @@ export const PIAFormIntake = () => {
                 onChange={(value) =>
                   stateChangeHandler(value, 'initiativeDescription')
                 }
+                aria-label="Initiative Description Textarea Input"
               />
             )}
             {!isReadOnly && validationMessage.piaInitialDescription && (
@@ -270,7 +274,10 @@ export const PIAFormIntake = () => {
                 <i>Not answered</i>
               </p>
             ) : isReadOnly ? (
-              <MDEditor.Markdown source={intakeForm.initiativeScope} />
+              <MDEditor.Markdown
+                source={intakeForm.initiativeScope}
+                aria-label="Initiative Scope Textarea Input Preview"
+              />
             ) : (
               <MDEditor
                 preview="edit"
@@ -279,6 +286,7 @@ export const PIAFormIntake = () => {
                 onChange={(value) =>
                   stateChangeHandler(value, 'initiativeScope')
                 }
+                aria-label="Initiative Scope Textarea Input"
               />
             )}
           </div>
@@ -321,7 +329,10 @@ export const PIAFormIntake = () => {
                 <i>Not answered</i>
               </p>
             ) : isReadOnly ? (
-              <MDEditor.Markdown source={intakeForm.dataElementsInvolved} />
+              <MDEditor.Markdown
+                source={intakeForm.dataElementsInvolved}
+                aria-label="Data Elements Involved Textarea Input Preview"
+              />
             ) : (
               <MDEditor
                 preview="edit"
@@ -330,6 +341,7 @@ export const PIAFormIntake = () => {
                 onChange={(value) =>
                   stateChangeHandler(value, 'dataElementsInvolved')
                 }
+                aria-label="Data Elements Involved Textarea Input"
               />
             )}
           </div>
@@ -422,7 +434,10 @@ export const PIAFormIntake = () => {
                     <i>Not answered</i>
                   </p>
                 ) : isReadOnly ? (
-                  <MDEditor.Markdown source={intakeForm.riskMitigation} />
+                  <MDEditor.Markdown
+                    source={intakeForm.riskMitigation}
+                    aria-label="Risk Mitigation Textarea Input Preview"
+                  />
                 ) : (
                   <MDEditor
                     preview="edit"
@@ -431,6 +446,7 @@ export const PIAFormIntake = () => {
                     onChange={(value) =>
                       stateChangeHandler(value, 'riskMitigation')
                     }
+                    aria-label="Risk Mitigation Textarea Input"
                   />
                 )}
               </div>
