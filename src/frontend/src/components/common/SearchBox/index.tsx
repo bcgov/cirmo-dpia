@@ -24,9 +24,8 @@ const SearchBox = ({
 
       <button
         onClick={onSearchClick}
-        aria-label="Submit search button"
         className="search-icon-container bcgovbtn bcgovbtn__primary bcgovbtn__primary-search search-icon-container"
-        aria-label="Search button"
+        aria-label="Search submit button"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </button>
