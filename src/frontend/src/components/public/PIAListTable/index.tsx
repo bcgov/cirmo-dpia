@@ -53,7 +53,9 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
           {pias.map((pia, index) => (
             <tr key={index}>
               <td
+                aria-label="pia title"
                 tabIndex={0}
+                aria-expanded="true"
                 role="button"
                 className="fw-bold"
                 onClick={() => onTitleClick(pia.id)}
@@ -66,9 +68,16 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
               >
                 {pia.title}
               </td>
-              <td>{dateToString(pia.updatedAt)}</td>
-              <td className="d-none d-md-table-cell">{pia.drafterName}</td>
-              <td>
+              <td aria-label="pia last modified">
+                {dateToString(pia.updatedAt)}
+              </td>
+              <td
+                aria-label="pia drafter name"
+                className="d-none d-md-table-cell"
+              >
+                {pia.drafterName}
+              </td>
+              <td aria-label="pia status">
                 {pia.status ? (
                   pia.status in statusList ? (
                     <div
