@@ -5,7 +5,7 @@ import {
   PiaDrafterFilterList,
   PiaStatusList,
 } from '../../../constant/constant';
-import { isMPORole } from '../../../utils/helper.util';
+import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 
 const PIAIntakeFilter = () => {
@@ -18,7 +18,13 @@ const PIAIntakeFilter = () => {
   );
   const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
     useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
-
+  const isAdminRole = () => {
+    const userRoles = roleCheck();
+    if (userRoles !== undefined && userRoles.roles !== undefined) {
+      if (userRoles.roles.length > 0) return true;
+    }
+    return false;
+  };
   const setSearchParamsForFilter = (field: string, newValue: any) => {
     const params: any = {};
     switch (field) {
@@ -84,9 +90,9 @@ const PIAIntakeFilter = () => {
     <div className="w-100 d-lg-inline-flex text-nowrap align-items-center">
       <label>Filter by</label>
 
-      <div className="ms-lg-2 ms-xl-4">
+      <div className="ms-lg-2 ms-xl-4 w-100">
         <div className="row">
-          <div className="col-sm-6 col-md-3 pe-sm-0">
+          <div className="col-sm-6 col-md-3 pe-sm-0 pe-md-0">
             <Dropdown
               id="pia-status-select"
               value={filterByStatus}
@@ -97,8 +103,8 @@ const PIAIntakeFilter = () => {
             />
           </div>
 
-          <div className="col-sm-6 col-md-3 pt-4 pt-sm-0 pe-md-0">
-            {isMPORole() && (
+          {isAdminRole() && (
+            <div className="col-sm-6 col-md-3 pt-4 pt-sm-0 pe-md-0">
               <Dropdown
                 id="ministry-select"
                 value={filterByMinistry}
@@ -107,11 +113,11 @@ const PIAIntakeFilter = () => {
                 changeHandler={handleMinistryChange}
                 required={false}
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="col-sm-6 col-md-3 pt-4 pt-md-0 pe-sm-0">
-            {isMPORole() && (
+          {isAdminRole() && (
+            <div className="col-sm-6 col-md-3 pt-4 pt-md-0 pe-sm-0">
               <Dropdown
                 id="drafter-filter-select"
                 value={filterPiaDrafterByCurrentUser}
@@ -120,9 +126,8 @@ const PIAIntakeFilter = () => {
                 changeHandler={handleDrafterFilterChange}
                 required={false}
               />
-            )}
-          </div>
-
+            </div>
+          )}
           <div className="col-sm-6 col-md-3 pt-4 pt-md-0 d-flex justify-content-start">
             <button
               className="bcgovbtn bcgovbtn__tertiary p-0 fw-bold"

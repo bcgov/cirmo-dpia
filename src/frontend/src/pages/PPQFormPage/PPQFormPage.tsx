@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import {
@@ -32,6 +32,10 @@ const PPQFormPage = () => {
   const [piaType, setPiaType] = useState<PiaTypesEnum | string>(
     PIATypes[0].value,
   );
+  useEffect(() => {
+    document.title =
+      'Create new PPQ - Digital Privacy Impact Assessment (DPIA)';
+  }, []); // Empty array ensures this runs once on mount and unmount
   const [isDelegatedReview, setIsDelegatedReview] = useState(false);
   const [delegatedReviewType, setDelegatedReviewType] = useState<
     DelegatedReviewTypesEnum | string | null

@@ -9,6 +9,7 @@ import Modal from '../../../components/common/Modal';
 import Messages from './messages';
 import { useLocation } from 'react-router-dom';
 import { AppStorage } from '../../../utils/storage';
+import { getGUID } from '../../../utils/helper.util';
 const CommentSidebar = ({
   piaId,
   path,
@@ -82,8 +83,6 @@ const CommentSidebar = ({
     handleStatusChange();
   };
 
-  const loginUserName = AppStorage.getItem<string>('username');
-
   const handleDeleteComment = (commentId: number) => {
     setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
     setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
@@ -131,9 +130,7 @@ const CommentSidebar = ({
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
                           className="dropdown-item"
-                          disabled={
-                            comment.createdByDisplayName !== loginUserName
-                          }
+                          disabled={comment.createdByGuid !== getGUID()}
                         >
                           Delete
                         </button>

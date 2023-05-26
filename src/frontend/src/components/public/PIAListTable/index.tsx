@@ -40,6 +40,7 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                 {headings[heading].sorting ? (
                   <TableOrdering
                     currentState={headings[heading].sortValue}
+                    title={headings[heading].title}
                   ></TableOrdering>
                 ) : (
                   ''

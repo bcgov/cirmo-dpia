@@ -152,6 +152,11 @@ const PIAFormPage = () => {
     setSelectedSection(undefined);
   }, [pathname]);
 
+  useEffect(() => {
+    document.title = `${
+      mode === 'view' ? 'View PIA' : 'Edit PIA'
+    } - Digital Privacy Impact Assessment (DPIA)`;
+  }, [mode]); // Empty array ensures this runs once on mount and unmount
   /**
    * Update the comment count object to pass into the every tab
    */
