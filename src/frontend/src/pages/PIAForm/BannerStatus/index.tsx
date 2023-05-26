@@ -16,11 +16,13 @@ const BannerStatus = ({ pia }: IBannerStatusProps) => {
     return statusList[currentStatus].banner;
   };
 
-  return pia.status !== PiaStatuses.EDIT_IN_PROGRESS ? (
-    <div className="mb-5">
-      <Callout text={populateBanner()} bgWhite />
-    </div>
-  ) : null;
+  return (
+    populateBanner() && (
+      <div className="mb-5">
+        <Callout text={populateBanner()} bgWhite />
+      </div>
+    )
+  );
 };
 
 export default BannerStatus;
