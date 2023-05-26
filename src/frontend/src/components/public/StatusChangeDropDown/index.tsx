@@ -11,6 +11,19 @@ interface StatusChangeDropDownProps {
   mode?: 'view' | 'edit';
 }
 
+/* create a function to push unique status object into an array */
+function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
+  let isUnique = true;
+  statuses.forEach((statusObj) => {
+    if (statusObj.status === status.status) {
+      isUnique = false;
+    }
+  });
+  if (isUnique) {
+    statuses.push(status);
+  }
+}
+
 function StatusChangeDropDown(props: StatusChangeDropDownProps) {
   /* This function checks if the user has the privilege to change the status
    * of the PIA. It checks the user's role against the statusList and the
@@ -39,11 +52,14 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
               ].changeStatus.length !== 0
             ) {
               hasStatusDropdown = true;
-              statuses.push(
-                ...Object(
-                  statusList[props.pia.status || 'Completed'].Privileges,
-                )[role].changeStatus,
-              );
+              const statusObj = Object(
+                statusList[props.pia.status || 'Completed'].Privileges,
+              )[role].changeStatus;
+
+              /* This function will push unique status object into the statuses array */
+              statusObj.forEach((status: ChangeStatus) => {
+                pushUniqueStatus(statuses, status);
+              });
             }
           }
         }
