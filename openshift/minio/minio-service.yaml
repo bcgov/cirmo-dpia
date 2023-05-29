@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APPLICATION_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    app: ${APPLICATION_NAME}
+  ports:
+    - port: 9090
+      name: console
+    - port: 9000
+      name: s3
+  type: ClusterIP
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-minio
+  - description: Namespace
+    displayName: Namespace
+    name: NAMESPACE
+    required: true

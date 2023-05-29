@@ -1,0 +1,86 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APPLICATION_NAME}-template
+labels:
+  template: ${APPLICATION_NAME}-template
+objects:
+- kind: Deployment
+  metadata:
+    name: ${APPLICATION_NAME}
+    namespace: ${NAMESPACE}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        volumes:
+          - name: data
+            emptyDir:
+              sizeLimit: 500Mi
+        containers:
+          - name: minio
+            image: quay.io/minio/minio:latest
+            imagePullPolicy: IfNotPresent
+            livenessProbe:
+              httpGet:
+                path: /minio/health/live
+                port: 9000
+              initialDelaySeconds: 120
+              periodSeconds: 20
+            readinessProbe:
+              httpGet:
+                path: /minio/health/ready
+                port: 9000
+              initialDelaySeconds: 120
+              periodSeconds: 20
+            env:
+              - name: MINIO_ROOT_USER
+                value: ${MINIO_ROOT_USER}
+              - name: MINIO_ROOT_PASSWORD
+                value: ${MINIO_ROOT_PASSWORD}
+            resources:
+              requests:
+                memory: 2Gi
+                cpu: '1'
+              limits:
+                memory: 3Gi
+                cpu: '2'
+            volumeMounts:
+              - mountPath: /data
+                name: data
+            command:
+              - /bin/bash
+              - -c
+            args:
+                - minio server /data --console-address :9090
+        restartPolicy: Always
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+
+parameters:
+  - description: Application Name
+    displayName: AppName
+    name: APPLICATION_NAME
+    required: true
+    value: dpia-minio
+  - description: Minio Root User Name
+    displayName: Minio Root User Name
+    name: MINIO_ROOT_USER
+    required: true
+  - description: Minio Root User Password
+    displayName: Minio Root User Password
+    name: MINIO_ROOT_PASSWORD
+    required: true
+  - description: Namespace
+    displayName: Namespace
+    name: NAMESPACE
+    required: true
+  
+
