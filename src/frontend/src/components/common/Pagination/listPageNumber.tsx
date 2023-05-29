@@ -22,7 +22,7 @@ const ListPageNumber = (props: ListPageNumberProps) => {
               return (
                 <li
                   tabIndex={0}
-                  aria-label={'Goto Page ' + (i + 1)}
+                  aria-label={'Go to Page ' + (i + 1)}
                   key={i}
                   onClick={() => {
                     props.changePage(i + 1);
