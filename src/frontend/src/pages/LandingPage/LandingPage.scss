@@ -2,13 +2,13 @@
   display: flex;
   margin-top: calc($header-height);
   min-height: calc(100vh - $header-height);
-  @include breakpoint(0 map-get($grid-breakpoints, 'xl')) {
+  @include breakpoint(0 map-get($grid-breakpoints, 'xxl')) {
      flex-direction: column;
      justify-content: center;
      align-items: center;
     }
 
-  @include breakpoint(map-get($grid-breakpoints, 'xl')) {
+  @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
     background-repeat: no-repeat;
     background-image: url(/src/assets/public_homepage/hero.svg);
     background-position: 90% 100%;
