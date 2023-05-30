@@ -8,19 +8,18 @@ interface ITableOrderingProps {
   currentState: number;
   title: string;
 }
-type SortOrder = 'none' | 'ascending' | 'descending' | 'other' | undefined;
 
 const TableOrdering = (props: ITableOrderingProps) => {
   const { currentState, title } = props;
-  const [sortingLabel, setSortingLabel] = useState<SortOrder>('none');
+  const [sortingLabel, setSortingLabel] = useState<string>('none');
 
   useEffect(() => {
     setSortingLabel(
       currentState === PiaSorting.INACTIVE
-        ? 'none'
+        ? 'sort by'
         : currentState === PiaSorting.DESCENDING
-        ? 'descending'
-        : 'ascending',
+        ? 'sort descending'
+        : 'sort ascending',
     );
   }, [currentState]);
   function sortingState(sortOrder: number) {
@@ -37,8 +36,7 @@ const TableOrdering = (props: ITableOrderingProps) => {
   return (
     <img
       src={sortingState(currentState)}
-      aria-label={title + ' ' + sortingLabel}
-      aria-sort={sortingLabel}
+      aria-label={title + ' ' + sortingLabel + ' ' + 'button'}
     ></img>
   );
 };
