@@ -177,7 +177,6 @@ export const statusList: StatusList = {
   EDIT_IN_PROGRESS: {
     title: 'EDIT IN PROGRESS',
     class: 'statusBlock__edit',
-    banner: 'test drafter',
     modal: {
       title: 'Change status to “Edit in progress”?',
       description:
@@ -187,7 +186,6 @@ export const statusList: StatusList = {
     },
     Privileges: {
       MPO: {
-        banner: 'test mpo',
         changeStatus: [
           {
             status: 'INCOMPLETE',
