@@ -396,9 +396,7 @@ const PIAFormPage = () => {
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
-      if (pia?.id) {
-        navigate(pathname);
-      } else {
+      if (!pia?.id) {
         navigate(
           buildDynamicPath(routes.PIA_INTAKE_EDIT, {
             id: updatedPia.id,
