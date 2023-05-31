@@ -396,11 +396,13 @@ const PIAFormPage = () => {
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
-      navigate(
-        buildDynamicPath(routes.PIA_INTAKE_EDIT, {
-          id: updatedPia.id,
-        }),
-      );
+      if (!pia?.id) {
+        navigate(
+          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+            id: updatedPia.id,
+          }),
+        );
+      }
     } else {
       setStalePia(pia);
     }
