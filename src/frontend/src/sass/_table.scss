@@ -27,6 +27,11 @@
         }
 
         & > td {
+          &.clickable {
+            font-weight: 700;
+            cursor: pointer;
+          }
+
           &.no-padding {
             padding: 0;
           }
