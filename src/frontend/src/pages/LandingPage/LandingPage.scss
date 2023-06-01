@@ -2,6 +2,7 @@
   display: flex;
   margin-top: calc($header-height);
   min-height: calc(100vh - $header-height);
+
   @include breakpoint(0 map-get($grid-breakpoints, 'xxl')) {
      flex-direction: column;
      justify-content: center;
@@ -13,6 +14,15 @@
     background-image: url(/src/assets/public_homepage/hero.svg);
     background-position: 90% 100%;
   }
+  
+  @include breakpoint(map-get($grid-breakpoints, 'xxl') map-get($grid-breakpoints, 'tv')) {
+     flex-direction: row;
+     justify-content: left;
+     align-items: center;
+     .hero-content {
+      max-width: 50ch;
+    }
+  }
 }
 
 .hero-content {
@@ -21,7 +31,7 @@
   flex-direction: column;
   max-width: 90%;
   
-  @include breakpoint(map-get($grid-breakpoints, 'md')) {
+  @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
     max-width: 80ch;
   }
 }
