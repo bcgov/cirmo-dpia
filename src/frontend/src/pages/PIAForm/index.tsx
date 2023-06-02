@@ -123,7 +123,7 @@ const PIAFormPage = () => {
    * Comments State
    */
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
-  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
+  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(true);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
 
   /**
