@@ -7,10 +7,12 @@ import { PiaSorting } from '../../../constant/constant';
 interface ITableOrderingProps {
   currentState: number;
   title: string;
+  heading: string;
+  sorting: (key: string) => void;
 }
 
 const TableOrdering = (props: ITableOrderingProps) => {
-  const { currentState, title } = props;
+  const { currentState, title, heading, sorting } = props;
   const [sortingLabel, setSortingLabel] = useState<string>('none');
 
   useEffect(() => {
@@ -35,8 +37,17 @@ const TableOrdering = (props: ITableOrderingProps) => {
 
   return (
     <img
+      tabIndex={0}
+      role="button"
       src={sortingState(currentState)}
       aria-label={title + ' ' + sortingLabel + ' ' + 'button'}
+      onClick={() => sorting(heading)}
+      onKeyDown={(event) => {
+        if (event.code === 'Enter') {
+          event.preventDefault();
+          sorting(heading);
+        }
+      }}
     ></img>
   );
 };
