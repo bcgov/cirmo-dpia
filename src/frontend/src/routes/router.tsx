@@ -28,7 +28,7 @@ export const ProtectedRoute = () => {
   return auth ? (
     <Outlet />
   ) : (
-    <Navigate to="/" replace state={{ from: location }} />
+    <Navigate to="/not-authorized" replace state={{ from: location }} />
   );
 };
 
