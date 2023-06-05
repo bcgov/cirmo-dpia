@@ -3,4 +3,5 @@ export const piaIntakeServiceMock = {
   findAll: jest.fn(),
   findOneById: jest.fn(),
   downloadPiaIntakeResultPdf: jest.fn(),
+  validatePiaAccess: jest.fn(),
 };

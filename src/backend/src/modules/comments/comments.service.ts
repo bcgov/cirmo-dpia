@@ -31,15 +31,6 @@ export class CommentsService {
     private readonly piaService: PiaIntakeService,
   ) {}
 
-  async validatePiaAccess(
-    piaId: number,
-    user: KeycloakUser,
-    userRoles: Array<RolesEnum>,
-  ) {
-    // this service method will fetch pia and validate user access
-    await this.piaService.findOneById(piaId, user, userRoles);
-  }
-
   async findOneBy(
     where: FindOptionsWhere<CommentEntity>,
   ): Promise<CommentEntity> {
@@ -61,7 +52,11 @@ export class CommentsService {
     userRoles: Array<RolesEnum>,
   ): Promise<CommentRO> {
     // validate access to PIA. Throw error if not
-    await this.validatePiaAccess(createCommentDto.piaId, user, userRoles);
+    await this.piaService.validatePiaAccess(
+      createCommentDto.piaId,
+      user,
+      userRoles,
+    );
 
     // extract user input dto
     const { piaId, path, text } = createCommentDto;
@@ -93,7 +88,7 @@ export class CommentsService {
     userRoles: Array<RolesEnum>,
   ): Promise<Array<CommentRO>> {
     // validate access to PIA. Throw error if not
-    await this.validatePiaAccess(piaId, user, userRoles);
+    await this.piaService.validatePiaAccess(piaId, user, userRoles);
 
     // fetch comments for the pia
     const comments: CommentEntity[] = await this.commentRepository.find({
@@ -116,7 +111,7 @@ export class CommentsService {
     userRoles: Array<RolesEnum>,
   ): Promise<Partial<CommentsCountRO>> {
     // validate access to PIA. Throw error if not
-    await this.validatePiaAccess(piaId, user, userRoles);
+    await this.piaService.validatePiaAccess(piaId, user, userRoles);
 
     // fetch comments for the pia grouped by path
     const commentsCount: Array<CommentsCountDbRO> = await this.commentRepository
@@ -145,7 +140,7 @@ export class CommentsService {
     }
 
     // validate access to PIA. Throw error if not
-    await this.validatePiaAccess(comment.piaId, user, userRoles);
+    await this.piaService.validatePiaAccess(comment.piaId, user, userRoles);
 
     // throw error if comment already deleted
     if (comment.isActive === false) {
