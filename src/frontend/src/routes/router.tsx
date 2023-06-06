@@ -3,6 +3,7 @@ import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
+import { AppStorage } from '../utils/storage';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAIntakeFormPage from '../pages/PIAForm';
@@ -21,14 +22,18 @@ import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
 import { PiaFormPrintPreview } from '../pages/PiaFormPrintPreview';
 import PPQ from '../components/public/PIAFormTabs/ppq';
+import { routes } from '../constant/routes';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
   const auth = isAuthenticated();
+
+  location.pathname && AppStorage.setItem('location', location.pathname);
+
   return auth ? (
     <Outlet />
   ) : (
-    <Navigate to="/not-authorized" replace state={{ from: location }} />
+    <Navigate to={routes.NOT_AUTHORIZED} replace />
   );
 };
 
@@ -42,6 +47,7 @@ const Router = () => {
       </div>
     </div>
   );
+
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
