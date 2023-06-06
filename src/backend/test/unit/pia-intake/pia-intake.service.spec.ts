@@ -1862,7 +1862,7 @@ describe('PiaIntakeService', () => {
       };
 
       expect(shortDateSpy).toHaveBeenCalledTimes(1);
-      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.createdAt);
+      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.updatedAt);
 
       expect(markedParseSpy).toHaveBeenCalledTimes(4);
 
