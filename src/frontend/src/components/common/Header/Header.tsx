@@ -39,35 +39,30 @@ function Header({ user }: Props) {
     accessToken || null,
   );
 
-  const startFetching = useCallback(
-    async () => {
-      if (didAuthRef.current === false) {
-        try {
-          didAuthRef.current = true;
+  const startFetching = useCallback(async () => {
+    if (didAuthRef.current === false) {
+      try {
+        didAuthRef.current = true;
 
-          const keycloakToken = await getAccessToken(code);
+        const keycloakToken = await getAccessToken(code);
 
-          if (keycloakToken !== undefined) {
-            storeAuthTokens(keycloakToken);
-            setAuthenticated(true);
-            setAccessToken(keycloakToken.access_token);
-            const config = await HttpRequest.get<IConfig>(
-              API_ROUTES.CONFIG_FILE,
-            );
-            AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
+        if (keycloakToken !== undefined) {
+          storeAuthTokens(keycloakToken);
+          setAuthenticated(true);
+          setAccessToken(keycloakToken.access_token);
+          const config = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
+          AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
 
-            navigate(AppStorage.getItem('location') || routes.PIA_LIST);
-          } else {
-            throw new Error('Invalid Token Information found');
-          }
-        } catch (e) {
-          setMessage('login failed');
-          console.log(e);
+          navigate(AppStorage.getItem('returnUri') || routes.PIA_LIST);
+        } else {
+          throw new Error('Invalid Token Information found');
         }
+      } catch (e) {
+        setMessage('login failed');
+        console.log(e);
       }
-    },
-    [code, navigate, setAuthenticated],
-  )
+    }
+  }, [code, navigate, setAuthenticated]);
 
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
@@ -85,7 +80,7 @@ function Header({ user }: Props) {
   useEffect(() => {
     if (!code) return;
     startFetching();
-  }, [code, navigate, setAuthenticated]);
+  }, [code, navigate, setAuthenticated, startFetching]);
 
   useEffect(() => {
     if (!accessToken) return;

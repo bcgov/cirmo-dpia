@@ -2,6 +2,7 @@ import { API_ROUTES } from '../constant/apiRoutes';
 import { IKeycloakToken } from '../types/interfaces/keyCloakToken.interface';
 import { HttpRequest } from './http-request.util';
 import { AppStorage } from './storage';
+import { useLocation } from 'react-router-dom';
 
 export enum TokenStorageKeys {
   ACCESS_TOKEN = 'accessToken',
@@ -79,8 +80,14 @@ export const logMeOut = async (unauthorized = false, cb?: () => void) => {
 
   clearStorage();
 
+  // If you're logged out due to timeout, you'll be redirected to the last page you were on
+  if (unauthorized) {
+    AppStorage.setItem('returnUri', window.location.pathname);
+  }
+
   const unauthRedirectUrl = '/not-authorized';
   const loginRedirectUrl = '/';
+
   const redirectUrl = unauthorized ? unauthRedirectUrl : loginRedirectUrl;
   window.location.href = redirectUrl;
 
