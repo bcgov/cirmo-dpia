@@ -7,6 +7,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { CommentsModule } from 'src/modules/comments/comments.module';
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 import { GCNotifyModule } from 'src/modules/gcnotify/gcnotify.module';
+import { InvitesModule } from 'src/modules/invites/invites.module';
 import { PiaIntakeModule } from 'src/modules/pia-intake/pia-intake.module';
 import { PpqModule } from 'src/modules/ppq/ppq.module';
 
@@ -36,6 +37,7 @@ export const SwaggerDocs = (app: INestApplication) => {
       PiaIntakeModule,
       GCNotifyModule,
       CommentsModule,
+      InvitesModule,
     ],
   });
 

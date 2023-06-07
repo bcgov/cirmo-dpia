@@ -528,4 +528,14 @@ export class PiaIntakeService {
 
     // ... space for future validators, as needed
   }
+
+  // wrapper | convenient method that validates PIA access
+  async validatePiaAccess(
+    piaId: number,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ) {
+    // this method will fetch pia and validate user access
+    await this.findOneById(piaId, user, userRoles);
+  }
 }

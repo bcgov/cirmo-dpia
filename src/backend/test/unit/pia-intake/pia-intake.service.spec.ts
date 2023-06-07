@@ -1862,7 +1862,7 @@ describe('PiaIntakeService', () => {
       };
 
       expect(shortDateSpy).toHaveBeenCalledTimes(1);
-      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.createdAt);
+      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.updatedAt);
 
       expect(markedParseSpy).toHaveBeenCalledTimes(4);
 
@@ -2015,6 +2015,36 @@ describe('PiaIntakeService', () => {
 
       expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
       expect(result).toEqual(piaIntakeEntityMock);
+    });
+  });
+
+  /**
+   * @method validatePiaAccess
+   */
+  describe('`validatePiaAccess', () => {
+    /**
+     * This test validates that the method calls the findOneById method to validate access
+     *
+     * @Input
+     *   - piaId: number
+     *   - user info mock
+     *
+     * @Output
+     *   - void
+     */
+    it('succeeds calling findOneById method', async () => {
+      const piaId = 101;
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeEntityMock };
+      });
+
+      await service.validatePiaAccess(piaId, user, userRoles);
+
+      expect(service.findOneById).toBeCalledWith(piaId, user, userRoles);
     });
   });
 });

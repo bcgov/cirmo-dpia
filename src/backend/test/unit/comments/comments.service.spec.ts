@@ -102,7 +102,7 @@ describe('CommentsService', () => {
 
       const expectedResult = { ...commentROMock };
 
-      commentsService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => null);
 
       piaService.findOneBy = jest.fn(async () => {
         delay(10);
@@ -120,7 +120,7 @@ describe('CommentsService', () => {
         userRoles,
       );
 
-      expect(commentsService.validatePiaAccess).toHaveBeenCalledWith(
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
         createCommentDto.piaId,
         user,
         userRoles,
@@ -175,7 +175,7 @@ describe('CommentsService', () => {
 
       const expectedResult = [...findCommentsROMock];
 
-      commentsService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => null);
 
       commentRepository.find = jest.fn(async () => {
         delay(10);
@@ -189,7 +189,7 @@ describe('CommentsService', () => {
         userRoles,
       );
 
-      expect(commentsService.validatePiaAccess).toHaveBeenCalledWith(
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
         piaId,
         user,
         userRoles,
@@ -235,7 +235,7 @@ describe('CommentsService', () => {
 
       const expectedResult = { ...commentsCountROMock };
 
-      commentsService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => null);
 
       commentRepository.createQueryBuilder = jest.fn(() => {
         return {
@@ -267,7 +267,7 @@ describe('CommentsService', () => {
         userRoles,
       );
 
-      expect(commentsService.validatePiaAccess).toHaveBeenCalledWith(
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
         piaId,
         user,
         userRoles,
@@ -325,14 +325,14 @@ describe('CommentsService', () => {
         isActive: false,
       }));
 
-      commentsService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => null);
 
       await expect(commentsService.remove(id, user, userRoles)).rejects.toThrow(
         new BadRequestException('Comment already deleted'),
       );
 
       expect(commentsService.findOneBy).toHaveBeenCalledWith({ id });
-      expect(commentsService.validatePiaAccess).toHaveBeenCalledWith(
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
         commentEntityMock.piaId,
         user,
         userRoles,
@@ -349,7 +349,7 @@ describe('CommentsService', () => {
         ...commentEntityMock,
       }));
 
-      commentsService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => null);
 
       commentRepository.save = jest.fn(async () => {
         delay(10);
@@ -359,7 +359,7 @@ describe('CommentsService', () => {
       const result = await commentsService.remove(id, user, userRoles);
 
       expect(commentsService.findOneBy).toHaveBeenCalledWith({ id });
-      expect(commentsService.validatePiaAccess).toHaveBeenCalledWith(
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
         commentEntityMock.piaId,
         user,
         userRoles,
@@ -405,36 +405,6 @@ describe('CommentsService', () => {
       expect(result).toBe(
         `This is a resolve method yet to be developed for comment ${id}`,
       );
-    });
-  });
-
-  /**
-   * @method validatePiaAccess
-   */
-  describe('`validatePiaAccess', () => {
-    /**
-     * This test validates that the method forwards the correct data to the piaService method
-     *
-     * @Input
-     *   - piaId: number
-     *   - user info mock
-     *
-     * @Output
-     *   - void
-     */
-    it('succeeds forwarding correct data to the pia-service method', async () => {
-      const piaId = 101;
-      const user: KeycloakUser = { ...keycloakUserMock };
-      const userRoles: Array<RolesEnum> = [];
-
-      piaService.findOneById = jest.fn(async () => {
-        delay(10);
-        return { ...piaIntakeEntityMock };
-      });
-
-      await commentsService.validatePiaAccess(piaId, user, userRoles);
-
-      expect(piaService.findOneById).toBeCalledWith(piaId, user, userRoles);
     });
   });
 
