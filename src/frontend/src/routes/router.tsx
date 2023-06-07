@@ -28,12 +28,14 @@ export const ProtectedRoute = () => {
   const location = useLocation();
   const auth = isAuthenticated();
 
-  location.pathname && AppStorage.setItem('returnUri', location.pathname);
+  if (location.pathname) {
+    AppStorage.setItem('returnUri', location.pathname);
+  }
 
   return auth ? (
     <Outlet />
   ) : (
-    <Navigate to={routes.NOT_AUTHORIZED} replace state={{ from: location }}/>
+    <Navigate to={routes.NOT_AUTHORIZED} replace state={{ from: location }} />
   );
 };
 
