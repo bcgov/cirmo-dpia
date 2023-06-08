@@ -43,7 +43,11 @@ const Unauthorized = () => {
             Log in with IDIR
             <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
-          <Link className="bcgovbtn bcgovbtn__secondary" to="/" onClick={clearReturnUri}>
+          <Link
+            className="bcgovbtn bcgovbtn__secondary"
+            to="/"
+            onClick={clearReturnUri}
+          >
             Go to Home
           </Link>
         </div>
