@@ -2,7 +2,9 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  forwardRef,
   GoneException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -31,13 +33,19 @@ import { PiaIntakeAllowedSortFieldsType } from './constants/pia-intake-allowed-s
 import { validateRoleForCollectionUseAndDisclosure } from './jsonb-classes/collection-use-and-disclosure';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { validateRoleForPPq } from './jsonb-classes/ppq';
+import { InvitesService } from '../invites/invites.service';
+import { InviteesService } from '../invitees/invitees.service';
 
 @Injectable()
 export class PiaIntakeService {
-  constructor(
-    @InjectRepository(PiaIntakeEntity)
-    private piaIntakeRepository: Repository<PiaIntakeEntity>,
-  ) {}
+  @InjectRepository(PiaIntakeEntity)
+  private piaIntakeRepository: Repository<PiaIntakeEntity>;
+
+  @Inject(forwardRef(() => InvitesService))
+  private readonly invitesService: InvitesService;
+
+  @Inject(InviteesService)
+  private readonly inviteesService: InviteesService;
 
   async create(
     createPiaIntakeDto: CreatePiaIntakeDto,
@@ -85,7 +93,7 @@ export class PiaIntakeService {
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
-    this.validateUserAccess(user, userRoles, existingRecord);
+    await this.validateUserAccess(user, userRoles, existingRecord);
 
     // If the user has access, get the role access type of the user
     const accessType = this.getRoleAccess(userRoles);
@@ -140,12 +148,13 @@ export class PiaIntakeService {
     id: number,
     user: KeycloakUser,
     userRoles: RolesEnum[],
+    inviteCode?: string,
   ): Promise<GetPiaIntakeRO> {
     // Fetch the record by ID
     const piaIntakeForm = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form
-    this.validateUserAccess(user, userRoles, piaIntakeForm);
+    await this.validateUserAccess(user, userRoles, piaIntakeForm, inviteCode);
 
     // Remove keys from the user's view that are not required
     const formattedRecords: GetPiaIntakeRO = getFormattedRecords(piaIntakeForm);
@@ -419,10 +428,11 @@ export class PiaIntakeService {
     };
   }
 
-  validateUserAccess(
+  async validateUserAccess(
     user: KeycloakUser,
     userRoles: RolesEnum[],
     piaIntake: PiaIntakeEntity,
+    inviteCode?: string,
   ) {
     if (!piaIntake.isActive) {
       throw new GoneException();
@@ -448,6 +458,34 @@ export class PiaIntakeService {
         piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW)
     ) {
       return true;
+    }
+
+    // Scenario 4: PIA is accessed by an invitee [once added by an invite code]
+    const inviteeToPia = await this.inviteesService.findOneByUserAndPia(
+      user,
+      piaIntake.id,
+    );
+
+    // if invitee exists for the pia, allow access
+    if (inviteeToPia) {
+      return true;
+    }
+
+    // Scenario 5: PIA is accessed by a valid invite code
+    if (inviteCode) {
+      // validate the invite code
+      const invite = await this.invitesService.findOne(
+        piaIntake.id,
+        inviteCode,
+      );
+
+      // if valid, add the user to the invitee list of the PIA
+      if (invite) {
+        await this.inviteesService.create(piaIntake, invite, user);
+
+        // provide access
+        return true;
+      }
     }
 
     // Throw Forbidden user access if none of the above scenarios are met

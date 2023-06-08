@@ -24,6 +24,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -116,14 +117,21 @@ export class PiaIntakeController {
     description:
       'Failed to fetch the PIA: The record is marked inactive in our system',
   })
+  @ApiQuery({
+    name: 'invite_code',
+    required: false,
+    type: String,
+  })
   async findOneById(
     @Param('id') id: number,
     @Req() req: IRequest,
+    @Query('invite_code') inviteCode?: string,
   ): Promise<{ data: GetPiaIntakeRO }> {
     const data = await this.piaIntakeService.findOneById(
       id,
       req.user,
       req.userRoles,
+      inviteCode,
     );
 
     return { data };
