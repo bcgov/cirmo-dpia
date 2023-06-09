@@ -205,20 +205,44 @@ export class PiaIntakeService {
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
     // MPO only can see all the non-incomplete PIAs per requirement
     if (mpoMinistries?.length) {
-      whereClause.push({
-        ...commonWhereClause,
-        ministry: In(mpoMinistries),
-        status: Not(PiaIntakeStatusEnum.INCOMPLETE),
-      });
+      if (
+        (query.filterByStatus &&
+          query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) ||
+        (query.filterByMinistry &&
+          !mpoMinistries.includes(query.filterByMinistry))
+      ) {
+        // skip this where clause
+      } else {
+        whereClause.push({
+          ...commonWhereClause,
+          ministry: In(mpoMinistries),
+          status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+        });
+      }
     }
 
     // Scenario 3: As a CPO, retrieve all pia-intakes in CPO_Review
     if (isCPO) {
-      whereClause.push({
-        ...commonWhereClause,
-        status: PiaIntakeStatusEnum.CPO_REVIEW,
-      });
+      if (
+        query.filterByStatus &&
+        query.filterByStatus !== PiaIntakeStatusEnum.CPO_REVIEW
+      ) {
+        // skip this where clause
+      } else {
+        whereClause.push({
+          ...commonWhereClause,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        });
+      }
     }
+
+    // Scenario 4: Return PIAs where user have gained access via the invite_code
+    whereClause.push({
+      ...commonWhereClause,
+      invitee: {
+        createdByGuid: user.idir_user_guid,
+      },
+    });
 
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
@@ -244,29 +268,16 @@ export class PiaIntakeService {
 
     /** filter logic here */
     if (query.filterByStatus) {
-      if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) {
-        // remove scenario 2 -- you can only see your own incomplete PIAs
-        whereClause = whereClause.filter(
-          (clause) => clause.createdByGuid === user.idir_user_guid,
-        );
-      }
-
-      // by default, add filter to all where clauses as expected
+      // by default, add status filter to all applicable where clauses
+      // exception added in scenarios 2 and 3 above
       whereClause.forEach((clause) => {
         clause.status = query.filterByStatus;
       });
     }
 
     if (query.filterByMinistry) {
-      if (!mpoMinistries.includes(query.filterByMinistry)) {
-        // remove scenario 2 - you can only see PIAs of ministries you're MPO of
-        // if not, you only see what you drafted to that ministry
-        whereClause = whereClause.filter(
-          (clause) => clause.createdByGuid === user.idir_user_guid,
-        );
-      }
-
-      // by default, add filter to all where clauses as expected
+      // by default, add filter to all applicable where clauses
+      // exception added in scenario 2 above
       whereClause.forEach((clause) => {
         clause.ministry = query.filterByMinistry;
       });
@@ -301,7 +312,8 @@ export class PiaIntakeService {
 
     // if whereClauses are empty after all the filtering, that means NO records can be shown
     // all records should at-least be filtered by role based
-    // possibly some weird combination selected; scenario-9 in pia-intake.service.spec.ts covers this
+    // possibly some weird combinations of filters and roles selected;
+    // one user can't access everything. NO super user yet.
     if (whereClause.length === 0) {
       return new PaginatedRO([], query.page, query.pageSize, 0);
     }

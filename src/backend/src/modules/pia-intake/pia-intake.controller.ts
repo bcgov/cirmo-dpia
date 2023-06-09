@@ -118,14 +118,14 @@ export class PiaIntakeController {
       'Failed to fetch the PIA: The record is marked inactive in our system',
   })
   @ApiQuery({
-    name: 'invite_code',
+    name: 'invite',
     required: false,
     type: String,
   })
   async findOneById(
     @Param('id') id: number,
     @Req() req: IRequest,
-    @Query('invite_code') inviteCode?: string,
+    @Query('invite') inviteCode?: string,
   ): Promise<{ data: GetPiaIntakeRO }> {
     const data = await this.piaIntakeService.findOneById(
       id,

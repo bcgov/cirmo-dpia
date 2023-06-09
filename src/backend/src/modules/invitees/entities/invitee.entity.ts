@@ -16,7 +16,7 @@ export class InviteeEntity extends BaseEntity {
   @RelationId((invitee: InviteeEntity) => invitee.invite)
   inviteId: number;
 
-  @ManyToOne(() => PiaIntakeEntity, {
+  @ManyToOne(() => PiaIntakeEntity, (pia) => pia.invitee, {
     nullable: false,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
