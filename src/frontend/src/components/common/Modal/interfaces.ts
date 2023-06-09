@@ -8,6 +8,7 @@ export interface IModal {
   children: any;
   reversed?: boolean;
   value?: string;
+  accessLink?: string;
   handleClose: MouseEventHandler<HTMLButtonElement>;
   handleCancel: any;
 }

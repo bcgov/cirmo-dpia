@@ -687,9 +687,9 @@ const PIAFormPage = () => {
 
       e.preventDefault();
 
-      /* 
+      /*
       For cross-browser support
-      
+
       This function uses e.returnValue, which has been deprecated for 9+ years.
       The reason for this usage is to support Chrome which only behaves as expected when using this value.
 
