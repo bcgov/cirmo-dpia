@@ -30,6 +30,7 @@ import {
 } from 'test/util/mocks/data/comments.mock';
 import { CreateCommentDto } from 'src/modules/comments/dto/create-comment.dto';
 import { AllowedCommentPaths } from 'src/modules/comments/enums/allowed-comment-paths.enum';
+import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
 
 /**
  * @Description
@@ -46,7 +47,10 @@ describe('CommentsService', () => {
       controllers: [CommentsController],
       providers: [
         CommentsService,
-        PiaIntakeService,
+        {
+          provide: PiaIntakeService,
+          useValue: piaIntakeServiceMock,
+        },
         {
           provide: getRepositoryToken(CommentEntity),
           useValue: { ...repositoryMock },
