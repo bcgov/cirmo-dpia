@@ -24,3 +24,9 @@ jobs:
            npm install
            mpoPass=$mpoPass npm run wdio-test
         
+      #Generate Cucumber report and upload artifact  
+      - name: Generate Cucumber report and upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-artifact
+          path: ./src/frontend/test/reporter/htmlreport/
