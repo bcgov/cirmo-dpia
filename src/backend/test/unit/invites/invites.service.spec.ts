@@ -11,16 +11,22 @@ import { keycloakUserMock } from 'test/util/mocks/data/auth.mock';
 import {
   generateInviteDtoMock,
   generateInviteROMock,
+  inviteCodeMock,
   inviteEntityMock,
 } from 'test/util/mocks/data/invites.mock';
 import { piaIntakeEntityMock } from 'test/util/mocks/data/pia-intake.mock';
 import { repositoryMock } from 'test/util/mocks/repository/repository.mock';
 import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
+import * as crypto from 'crypto';
 
 describe('InvitesService', () => {
   let invitesService: InvitesService;
   let piaService: PiaIntakeService;
   let inviteRepository;
+
+  const randomUUIDSpy = jest
+    .spyOn(crypto, 'randomUUID')
+    .mockImplementation(() => inviteCodeMock);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -42,6 +48,8 @@ describe('InvitesService', () => {
     invitesService = module.get<InvitesService>(InvitesService);
     piaService = module.get<PiaIntakeService>(PiaIntakeService);
     inviteRepository = module.get(getRepositoryToken(InviteEntity));
+
+    randomUUIDSpy.mockClear();
   });
 
   it('should be defined', () => {
@@ -86,6 +94,7 @@ describe('InvitesService', () => {
     });
 
     expect(piaService.findOneBy).not.toHaveBeenCalled();
+    expect(randomUUIDSpy).not.toHaveBeenCalled();
     expect(inviteRepository.save).not.toHaveBeenCalled();
     expect(result).toEqual(expectedResult);
   });
@@ -137,8 +146,12 @@ describe('InvitesService', () => {
     expect(piaService.findOneBy).toHaveBeenCalledWith({
       id: generateInviteDto.piaId,
     });
+
+    expect(randomUUIDSpy).toHaveBeenCalled();
+
     expect(inviteRepository.save).toHaveBeenCalledWith({
       pia: { ...piaIntakeEntityMock },
+      code: inviteCodeMock,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
       updatedByGuid: user.idir_user_guid,
