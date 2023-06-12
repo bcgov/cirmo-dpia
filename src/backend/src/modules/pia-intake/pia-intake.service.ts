@@ -2,7 +2,9 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  forwardRef,
   GoneException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -31,13 +33,19 @@ import { PiaIntakeAllowedSortFieldsType } from './constants/pia-intake-allowed-s
 import { validateRoleForCollectionUseAndDisclosure } from './jsonb-classes/collection-use-and-disclosure';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { validateRoleForPPq } from './jsonb-classes/ppq';
+import { InvitesService } from '../invites/invites.service';
+import { InviteesService } from '../invitees/invitees.service';
 
 @Injectable()
 export class PiaIntakeService {
-  constructor(
-    @InjectRepository(PiaIntakeEntity)
-    private piaIntakeRepository: Repository<PiaIntakeEntity>,
-  ) {}
+  @InjectRepository(PiaIntakeEntity)
+  private piaIntakeRepository: Repository<PiaIntakeEntity>;
+
+  @Inject(forwardRef(() => InvitesService))
+  private readonly invitesService: InvitesService;
+
+  @Inject(InviteesService)
+  private readonly inviteesService: InviteesService;
 
   async create(
     createPiaIntakeDto: CreatePiaIntakeDto,
@@ -85,7 +93,7 @@ export class PiaIntakeService {
     const existingRecord = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form. Throw appropriate exceptions if not
-    this.validateUserAccess(user, userRoles, existingRecord);
+    await this.validateUserAccess(user, userRoles, existingRecord);
 
     // If the user has access, get the role access type of the user
     const accessType = this.getRoleAccess(userRoles);
@@ -140,12 +148,13 @@ export class PiaIntakeService {
     id: number,
     user: KeycloakUser,
     userRoles: RolesEnum[],
+    inviteCode?: string,
   ): Promise<GetPiaIntakeRO> {
     // Fetch the record by ID
     const piaIntakeForm = await this.findOneBy({ id });
 
     // Validate if the user has access to the pia-intake form
-    this.validateUserAccess(user, userRoles, piaIntakeForm);
+    await this.validateUserAccess(user, userRoles, piaIntakeForm, inviteCode);
 
     // Remove keys from the user's view that are not required
     const formattedRecords: GetPiaIntakeRO = getFormattedRecords(piaIntakeForm);
@@ -196,20 +205,44 @@ export class PiaIntakeService {
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
     // MPO only can see all the non-incomplete PIAs per requirement
     if (mpoMinistries?.length) {
-      whereClause.push({
-        ...commonWhereClause,
-        ministry: In(mpoMinistries),
-        status: Not(PiaIntakeStatusEnum.INCOMPLETE),
-      });
+      if (
+        (query.filterByStatus &&
+          query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) ||
+        (query.filterByMinistry &&
+          !mpoMinistries.includes(query.filterByMinistry))
+      ) {
+        // skip this where clause
+      } else {
+        whereClause.push({
+          ...commonWhereClause,
+          ministry: In(mpoMinistries),
+          status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+        });
+      }
     }
 
     // Scenario 3: As a CPO, retrieve all pia-intakes in CPO_Review
     if (isCPO) {
-      whereClause.push({
-        ...commonWhereClause,
-        status: PiaIntakeStatusEnum.CPO_REVIEW,
-      });
+      if (
+        query.filterByStatus &&
+        query.filterByStatus !== PiaIntakeStatusEnum.CPO_REVIEW
+      ) {
+        // skip this where clause
+      } else {
+        whereClause.push({
+          ...commonWhereClause,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        });
+      }
     }
+
+    // Scenario 4: Return PIAs where user have gained access via the invite_code
+    whereClause.push({
+      ...commonWhereClause,
+      invitee: {
+        createdByGuid: user.idir_user_guid,
+      },
+    });
 
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
@@ -235,29 +268,16 @@ export class PiaIntakeService {
 
     /** filter logic here */
     if (query.filterByStatus) {
-      if (query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) {
-        // remove scenario 2 -- you can only see your own incomplete PIAs
-        whereClause = whereClause.filter(
-          (clause) => clause.createdByGuid === user.idir_user_guid,
-        );
-      }
-
-      // by default, add filter to all where clauses as expected
+      // by default, add status filter to all applicable where clauses
+      // exception added in scenarios 2 and 3 above
       whereClause.forEach((clause) => {
         clause.status = query.filterByStatus;
       });
     }
 
     if (query.filterByMinistry) {
-      if (!mpoMinistries.includes(query.filterByMinistry)) {
-        // remove scenario 2 - you can only see PIAs of ministries you're MPO of
-        // if not, you only see what you drafted to that ministry
-        whereClause = whereClause.filter(
-          (clause) => clause.createdByGuid === user.idir_user_guid,
-        );
-      }
-
-      // by default, add filter to all where clauses as expected
+      // by default, add filter to all applicable where clauses
+      // exception added in scenario 2 above
       whereClause.forEach((clause) => {
         clause.ministry = query.filterByMinistry;
       });
@@ -292,7 +312,8 @@ export class PiaIntakeService {
 
     // if whereClauses are empty after all the filtering, that means NO records can be shown
     // all records should at-least be filtered by role based
-    // possibly some weird combination selected; scenario-9 in pia-intake.service.spec.ts covers this
+    // possibly some weird combinations of filters and roles selected;
+    // one user can't access everything. NO super user yet.
     if (whereClause.length === 0) {
       return new PaginatedRO([], query.page, query.pageSize, 0);
     }
@@ -419,10 +440,11 @@ export class PiaIntakeService {
     };
   }
 
-  validateUserAccess(
+  async validateUserAccess(
     user: KeycloakUser,
     userRoles: RolesEnum[],
     piaIntake: PiaIntakeEntity,
+    inviteCode?: string,
   ) {
     if (!piaIntake.isActive) {
       throw new GoneException();
@@ -448,6 +470,34 @@ export class PiaIntakeService {
         piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW)
     ) {
       return true;
+    }
+
+    // Scenario 4: PIA is accessed by an invitee [once added by an invite code]
+    const inviteeToPia = await this.inviteesService.findOneByUserAndPia(
+      user,
+      piaIntake.id,
+    );
+
+    // if invitee exists for the pia, allow access
+    if (inviteeToPia) {
+      return true;
+    }
+
+    // Scenario 5: PIA is accessed by a valid invite code
+    if (inviteCode) {
+      // validate the invite code
+      const invite = await this.invitesService.findOne(
+        piaIntake.id,
+        inviteCode,
+      );
+
+      // if valid, add the user to the invitee list of the PIA
+      if (invite) {
+        await this.inviteesService.create(piaIntake, invite, user);
+
+        // provide access
+        return true;
+      }
     }
 
     // Throw Forbidden user access if none of the above scenarios are met

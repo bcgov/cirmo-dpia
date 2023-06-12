@@ -6,6 +6,7 @@ import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-sta
 import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { baseEntityMock } from 'test/util/mocks/data/base.mock';
 import { keycloakUserMock } from './auth.mock';
+import { inviteeEntityMock } from './invitee.mock';
 
 const piaIntakeDataMock = {
   title: 'Test PIA for screening King Richard',
@@ -177,6 +178,7 @@ const piaIntakeDataMock = {
     otherCpoConsideration:
       'Any related PIAs or CPO considerations goes here...',
   },
+  invitee: { ...inviteeEntityMock },
 };
 
 const collectionUseAndDisclosureWithDrafterPermissions = {

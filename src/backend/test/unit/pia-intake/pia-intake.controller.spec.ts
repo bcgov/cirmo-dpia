@@ -175,18 +175,24 @@ describe('PiaIntakeController', () => {
         user: { ...keycloakUserMock },
         userRoles: [RolesEnum.MPO_CITZ],
       };
+      const inviteCode = 'ABCD_TEST_CODE'; // optional invite code
 
       piaIntakeService.findOneById = jest.fn(async () => {
         delay(10);
         return getPiaIntakeRO;
       });
 
-      const result = await controller.findOneById(getPiaIntakeRO.id, mockReq);
+      const result = await controller.findOneById(
+        getPiaIntakeRO.id,
+        mockReq,
+        inviteCode,
+      );
 
       expect(piaIntakeService.findOneById).toHaveBeenCalledWith(
         getPiaIntakeRO.id,
         mockReq.user,
         mockReq.userRoles,
+        inviteCode,
       );
 
       expect(result).toStrictEqual({
