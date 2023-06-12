@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  Generated,
   Index,
   JoinColumn,
   OneToOne,
@@ -27,9 +26,8 @@ export class InviteEntity extends BaseEntity {
   // invite code
   @Column({
     name: 'code',
-    type: 'uuid',
+    nullable: false,
   })
-  @Generated('uuid')
   code: string;
 
   @Column({

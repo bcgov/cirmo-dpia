@@ -3,13 +3,15 @@ import { InviteEntity } from 'src/modules/invites/entities/invite.entity';
 import { InviteRO } from 'src/modules/invites/ro/get-invite.ro';
 import { piaIntakeEntityMock } from './pia-intake.mock';
 
+export const inviteCodeMock = '39581485-6d75-4f31-a739-4919d6de0ec9';
+
 export const generateInviteDtoMock: GenerateInviteDto = {
   piaId: 101,
 };
 
 export const generateInviteROMock: InviteRO = {
   piaId: 101,
-  code: '39581485-6d75-4f31-a739-4919d6de0ec9',
+  code: inviteCodeMock,
 };
 
 export const inviteEntityMock: InviteEntity = {
