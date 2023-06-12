@@ -22,5 +22,6 @@ Feature: Login and check the HomePage
       | username | role    |
       | DORGALE  | MPO     | 
       | DOND     | Drafter | 
-      | ANDYA    | CPO     | 
+      | ANDYA    | CPO     |
+
       
