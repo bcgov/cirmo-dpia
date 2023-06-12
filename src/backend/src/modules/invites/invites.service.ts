@@ -7,6 +7,7 @@ import { PiaIntakeService } from '../pia-intake/pia-intake.service';
 import { GenerateInviteDto } from './dto/generate-invite.dto';
 import { InviteEntity } from './entities/invite.entity';
 import { getFormattedInvite, InviteRO } from './ro/get-invite.ro';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class InvitesService {
@@ -51,9 +52,13 @@ export class InvitesService {
     // else, fetch pia entity and create the invite code
     const pia = await this.piaService.findOneBy({ id: piaId });
 
+    // create Invite code using the inbuilt crypto module that uses a UUID v4 generator
+    const inviteCode = randomUUID();
+
     // create the invite resource
     const invite: InviteEntity = await this.inviteRepository.save({
       pia,
+      code: inviteCode,
       createdByGuid: user.idir_user_guid,
       createdByUsername: user.idir_username,
       updatedByGuid: user.idir_user_guid,
