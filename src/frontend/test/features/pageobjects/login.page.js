@@ -87,10 +87,10 @@ class LoginPage extends Page {
           const ExpUrl = 'https://test.pia.gov.bc.ca/pia/list';
           await expect(browser).toHaveUrl(ExpUrl);
         }
-        else if(this.browser.options.baseUrl?.includes('dev'))
+        else if(browser.options.baseUrl?.includes('dev'))
         {
           const ExpUrl = 'https://dev.pia.gov.bc.ca/pia/list';
-          await this.expect(browser).toHaveUrl(ExpUrl);
+          await expect(browser).toHaveUrl(ExpUrl);
         }
         else if(browser.options.baseUrl?.includes('local'))
         {
@@ -111,8 +111,6 @@ class LoginPage extends Page {
         await this.YessignOutButton.click();
         await browser.pause(2000);
         await this.loginButton.waitForDisplayed({ timeout: 2000 });
-        await browser.deleteCookies();
-        await browser.reloadSession();
         
     }
 

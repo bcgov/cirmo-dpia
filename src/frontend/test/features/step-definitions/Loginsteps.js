@@ -21,7 +21,7 @@ Then(/^I am able to verify title$/, async () => {
 });
 
 Then(/^I am able to verify URL$/, async () => {
-    await LoginPage.title()
+    await LoginPage.URL()
 });
 
 Then(/^Exceptions should be thrown$/, async () => {

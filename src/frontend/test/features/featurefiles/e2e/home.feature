@@ -5,7 +5,6 @@ Feature: Login and check the HomePage
     Given I am on the login page
     When I login with user <username> having role <role>
     Then Check "List of PIAs" tab is displayed
-    And I sign out successfully
 
     Examples:
       | username | role    |
@@ -18,7 +17,6 @@ Feature: Login and check the HomePage
     Given I am on the login page
     When I login with user <username> having role <role>
     Then Check "Create new" tab is displayed
-    And I sign out successfully
 
     Examples:
       | username | role    |

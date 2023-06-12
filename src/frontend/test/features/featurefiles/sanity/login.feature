@@ -5,20 +5,18 @@ Feature: Log in to DPIA
     Given I am on the login page
     When I login with user <username> having role <role>
     Then I am able to verify title
-    And I sign out successfully
 
     Examples:
       | username | role    |
       | DORGALE  | MPO     |
       | DOND     | Drafter |
       | ANDYA    | CPO     |
-
+  
   Scenario Outline: As <role> user, I am able to login and verify HomePage URL
 
     Given I am on the login page
     When I login with user <username> having role <role>
     Then I am able to verify URL
-    And I sign out successfully
 
     Examples:
       | username | role    |
@@ -31,7 +29,6 @@ Feature: Log in to DPIA
     Given I am on the login page
     When I login with user <username> having role <role>
     Then I am able to verify BC Logo
-    And I sign out successfully
 
     Examples:
       | username | role    |
@@ -64,4 +61,15 @@ Feature: Log in to DPIA
       | DORGALE  | MPO     | Wrong1   |
       | DOND     | Drafter | Wrong2   |
       | ANDYA    | CPO     | Wrong3   |
+  
+  Scenario Outline: As <role> user, I am able to sign out successfully
 
+    Given I am on the login page
+    When I login with user <username> having role <role>
+    Then I sign out successfully
+
+    Examples:
+      | username | role    |
+      | DORGALE  | MPO     |
+      | DOND     | Drafter |
+      | ANDYA    | CPO     |
