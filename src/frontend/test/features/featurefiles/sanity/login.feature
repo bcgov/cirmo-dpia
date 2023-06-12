@@ -36,7 +36,6 @@ Feature: Log in to DPIA
       | DOND     | Drafter |
       | ANDYA    | CPO     |
 
-
   Scenario Outline: Login with Invalid <role> username
 
     Given I am on the login page
@@ -48,8 +47,7 @@ Feature: Log in to DPIA
       | DORGALEs | MPO     |
       | DOND123  | Drafter |
       | ANDYAAA1 | CPO     |
-
-  
+ 
   Scenario Outline: Login with Invalid <role> password
 
     Given I am on the login page
