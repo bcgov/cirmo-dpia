@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesEnum } from 'src/common/enums/roles.enum';
 import { Repository } from 'typeorm';
@@ -13,6 +13,8 @@ export class InvitesService {
   constructor(
     @InjectRepository(InviteEntity)
     private inviteRepository: Repository<InviteEntity>,
+
+    @Inject(forwardRef(() => PiaIntakeService))
     private readonly piaService: PiaIntakeService,
   ) {}
 
@@ -61,5 +63,19 @@ export class InvitesService {
 
     // return formatted object
     return getFormattedInvite(invite);
+  }
+
+  async findOne(piaId: number, code: string) {
+    const invite = await this.inviteRepository.findOne({
+      relations: [],
+      where: {
+        pia: {
+          id: piaId,
+        },
+        code,
+      },
+    });
+
+    return invite;
   }
 }

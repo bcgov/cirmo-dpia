@@ -17,6 +17,7 @@ import { PiaIntakeModule } from './modules/pia-intake/pia-intake.module';
 import { GCNotifyModule } from './modules/gcnotify/gcnotify.module';
 import { CommentsModule } from './modules/comments/comments.module';
 import { InvitesModule } from './modules/invites/invites.module';
+import { InviteesModule } from './modules/invitees/invitees.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { InvitesModule } from './modules/invites/invites.module';
     GCNotifyModule,
     CommentsModule,
     InvitesModule,
+    InviteesModule,
   ],
   controllers: [AppController],
   providers: [
