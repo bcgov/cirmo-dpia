@@ -285,8 +285,14 @@ exports.config = {
      * @param {number}                 result.duration  duration of scenario in milliseconds
      * @param {object}                 context          Cucumber World object
      */
-    // afterScenario: function (world, result, context) {
-    // },
+    afterScenario: async function (world, result, context) {
+        
+        await browser.deleteCookies();
+        console.log("Cookies deleted");
+        await browser.reloadSession();
+        console.log("Session Reloaded");
+
+    },
     /**
      *
      * Runs after a Cucumber Feature.
