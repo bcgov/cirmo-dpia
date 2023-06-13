@@ -11,7 +11,7 @@ Feature: Log in to DPIA
       | DORGALE  | MPO     |
       | DOND     | Drafter |
       | ANDYA    | CPO     |
-  
+
   Scenario Outline: As <role> user, I am able to login and verify HomePage URL
 
     Given I am on the login page
@@ -23,7 +23,7 @@ Feature: Log in to DPIA
       | DORGALE  | MPO     |
       | DOND     | Drafter |
       | ANDYA    | CPO     |
-  
+
   Scenario Outline: As <role> user, I am able to verify BC Logo
 
     Given I am on the login page
@@ -47,7 +47,7 @@ Feature: Log in to DPIA
       | DORGALEs | MPO     |
       | DOND123  | Drafter |
       | ANDYAAA1 | CPO     |
- 
+
   Scenario Outline: Login with Invalid <role> password
 
     Given I am on the login page
@@ -59,7 +59,7 @@ Feature: Log in to DPIA
       | DORGALE  | MPO     | Wrong1   |
       | DOND     | Drafter | Wrong2   |
       | ANDYA    | CPO     | Wrong3   |
-  
+
   Scenario Outline: As <role> user, I am able to sign out successfully
 
     Given I am on the login page
