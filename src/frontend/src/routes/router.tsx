@@ -29,7 +29,7 @@ export const ProtectedRoute = () => {
   const auth = isAuthenticated();
 
   if (location.pathname) {
-    AppStorage.setItem('returnUri', location.pathname);
+    AppStorage.setItem('returnUri', `${location.pathname}${location.search}`);
   }
 
   return auth ? (
