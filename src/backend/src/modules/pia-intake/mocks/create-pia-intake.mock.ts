@@ -171,4 +171,13 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     otherCpoConsideration:
       'Any related PIAs or CPO considerations goes here...',
   },
+  review: {
+    programArea: {
+      selectedRoles: [],
+    },
+    mpo: {
+      isAcknowledged: true,
+      reviewNote: 'Test Notes',
+    },
+  },
 };
