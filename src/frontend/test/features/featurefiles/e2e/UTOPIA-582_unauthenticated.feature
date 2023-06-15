@@ -16,4 +16,3 @@ Feature: UTOPIA-582 Unauthenticated user access
       | DORGALE  | MPO     |
       | DOND     | Drafter |
       | ANDYA    | CPO     |
- 
