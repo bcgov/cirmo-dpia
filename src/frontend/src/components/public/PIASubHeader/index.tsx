@@ -10,6 +10,9 @@ import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
 import { getGUID, roleCheck } from '../../../utils/helper.util';
+import { HttpRequest } from '../../../utils/http-request.util';
+import { API_ROUTES } from '../../../constant/apiRoutes';
+import Messages from './messages';
 
 function PIASubHeader({
   pia,
@@ -24,6 +27,8 @@ function PIASubHeader({
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {
   const { pathname } = useLocation();
+  const protocol = window.location.protocol;
+  const host = window.location.host;
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
@@ -40,6 +45,9 @@ function PIASubHeader({
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [statusLocal, setStatusLocal] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
+  const [accessCode, setAccessCode] = useState<string>('');
+
+  const accessLink = `${protocol}//${host}/pia/${pia.id}?invite=${accessCode}`;
 
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
@@ -50,13 +58,42 @@ function PIASubHeader({
     setShowModal(true);
   };
 
+  const copyToClipboard = (text: string) => {
+    try {
+      navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
   const handleModalClose = async (event: any) => {
     event.preventDefault();
-    handleStatusChange(statusLocal);
+
+    if (accessCode !== '' && accessCode !== undefined) {
+      copyToClipboard(accessLink);
+    } else handleStatusChange(statusLocal);
+
+    setAccessCode('');
     setShowModal(false);
   };
   const handleModalCancel = () => {
+    setAccessCode('');
     setShowModal(false);
+  };
+
+  const handleGenerateInviteCode = async () => {
+    const { code }: any = await HttpRequest.post(API_ROUTES.GET_INVITE_CODE, {
+      piaId: pia.id,
+    });
+
+    setAccessCode(code);
+  };
+
+  const populateGenerateInviteCodeModal = () => {
+    setModalTitleText(Messages.GenerateAccessLinkModal.title);
+    setModalParagraph(Messages.GenerateAccessLinkModal.paragraph);
+    setModalConfirmLabel(Messages.GenerateAccessLinkModal.confirmLabel);
+    setModalCancelLabel(Messages.GenerateAccessLinkModal.cancelLabel);
   };
 
   const showSubmitButton = () => {
@@ -141,6 +178,19 @@ function PIASubHeader({
               </a>
             </li>
             <li role="button">
+              <button
+                className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
+                aria-label="Generate access link button"
+                onClick={() => {
+                  handleGenerateInviteCode();
+                  populateGenerateInviteCodeModal();
+                  setShowModal(true);
+                }}
+              >
+                Generate access link
+              </button>
+            </li>
+            <li role="button">
               {/* Save or Edit button */}
               {!nextStepAction && mode === 'edit' && (
                 <button
@@ -157,7 +207,10 @@ function PIASubHeader({
           {/* Submission button */}
           {!nextStepAction && showSubmitButton() && (
             <button
-              onClick={onSubmitClick}
+              onClick={(e) => {
+                setAccessCode('');
+                onSubmitClick(e);
+              }}
               className={`mx-1 bcgovbtn bcgovbtn__primary`}
               disabled={mode === 'view' && isValidationFailed}
               aria-label="Submit Button"
@@ -175,6 +228,11 @@ function PIASubHeader({
         value={modalButtonValue}
         handleClose={(e) => handleModalClose(e)}
         handleCancel={handleModalCancel}
+        accessLink={
+          accessCode !== ''
+            ? `${protocol}//${host}/pia/${pia.id}?invite=${accessCode}`
+            : ''
+        }
       >
         <p className="modal-text">{modalParagraph}</p>
       </Modal>

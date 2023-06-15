@@ -64,7 +64,8 @@ export interface ILastSaveAlterInfo {
 const PIAFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
@@ -344,6 +345,12 @@ const PIAFormPage = () => {
     const updatedPia = (
       await HttpRequest.get<IPiaFormResponse>(
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
+        {},
+        {},
+        true,
+        {
+          invite: search.split('=')[1],
+        },
       )
     ).data;
     setStalePia(pia);

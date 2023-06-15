@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { IModal } from './interfaces';
+import InputText from '../InputText/InputText';
 
 const Modal = ({
   confirmLabel,
@@ -10,6 +11,7 @@ const Modal = ({
   show,
   reversed,
   value,
+  accessLink,
   children,
 }: IModal) => {
   const confirmButtonRef = useRef(null);
@@ -78,6 +80,17 @@ const Modal = ({
         <span className="modal-title"> {titleText}</span>
         <div className="modal-horizontal-divider"></div>
         {children}
+        {accessLink !== '' && accessLink !== undefined && (
+          <div className="d-flex w-100 justify-content-center">
+            <InputText
+              id="access-link-input"
+              type="text"
+              value={accessLink}
+              className="w-75"
+              isDisabled
+            />
+          </div>
+        )}
         <div
           className={`modalbtn__container ${reversed ? 'reversed' : ''} mt-4`}
         >
