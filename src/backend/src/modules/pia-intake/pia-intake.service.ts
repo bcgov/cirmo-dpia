@@ -35,7 +35,7 @@ import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { validateRoleForPPq } from './jsonb-classes/ppq';
 import { InvitesService } from '../invites/invites.service';
 import { InviteesService } from '../invitees/invitees.service';
-import { validateRoleForReview } from './jsonb-classes/review';
+import { Review, validateRoleForReview } from './jsonb-classes/review';
 
 @Injectable()
 export class PiaIntakeService {
@@ -60,6 +60,14 @@ export class PiaIntakeService {
     const accessType = this.getRoleAccess(userRoles);
 
     this.validateJsonbFields(createPiaIntakeDto, null, accessType);
+
+    // once validated, updated the review fields
+    this.updateReviewSubmissionFields(
+      createPiaIntakeDto?.review,
+      null,
+      user,
+      'mpo',
+    );
 
     // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be incomplete / Edits in progress only]
 
@@ -115,6 +123,14 @@ export class PiaIntakeService {
 
     // update submittedAt column if it is first time submit
     this.updateSubmittedAt(updatePiaIntakeDto);
+
+    // once validated, updated the review submission fields
+    this.updateReviewSubmissionFields(
+      updatePiaIntakeDto?.review,
+      existingRecord?.review,
+      user,
+      'mpo',
+    );
 
     // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
     await this.piaIntakeRepository.save({
@@ -554,6 +570,57 @@ export class PiaIntakeService {
   updateSubmittedAt = (dto: CreatePiaIntakeDto | UpdatePiaIntakeDto) => {
     if (!dto.submittedAt && dto.status === PiaIntakeStatusEnum.MPO_REVIEW)
       dto.submittedAt = new Date();
+  };
+
+  /**
+   * @method updateReviewSubmissionFields
+   * @description
+   * This method updates the dto with the submission related fields, which needs to be filled in by the server based on the user logged in
+   */
+  updateReviewSubmissionFields = (
+    updatedValue: Review, // add more types here
+    storedValue: Review,
+    user: KeycloakUser,
+    key: 'mpo',
+  ) => {
+    // overwrite the updated values to include the stored fields that may not be passed by the client
+    if (updatedValue?.[key]) {
+      updatedValue[key] = {
+        ...(storedValue?.[key] || {}),
+        ...updatedValue?.[key],
+      };
+    }
+
+    // Scenario 1: User is saving review information for the first time [First time save]
+    // Scenario 2: User is saving review information for the subsequent times [Editing]
+
+    // Either ways, if the value is changed from the stored one, update the submission fields
+    if (
+      storedValue?.[key]?.isAcknowledged !==
+        updatedValue?.[key]?.isAcknowledged ||
+      storedValue?.[key]?.reviewNote !== updatedValue?.[key]?.reviewNote
+    ) {
+      // if it is not the same person updating the fields, throw forbidden error
+      if (
+        storedValue?.[key]?.reviewedByGuid &&
+        storedValue?.[key]?.reviewedByGuid !== user.idir_user_guid
+      ) {
+        throw new ForbiddenException({
+          message: `You do not have permissions to edit this review.`,
+        });
+      }
+
+      // if first time reviewed
+      if (!storedValue?.[key]?.reviewedByGuid) {
+        updatedValue[key].reviewedAt = new Date();
+        updatedValue[key].reviewedByGuid = user.idir_user_guid;
+        updatedValue[key].reviewedByUsername = user.idir_username;
+        updatedValue[key].reviewedByDisplayName = user.display_name;
+      }
+
+      // update last review updated at
+      updatedValue[key].reviewLastUpdatedAt = new Date();
+    }
   };
 
   /**
