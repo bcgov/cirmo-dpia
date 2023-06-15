@@ -343,19 +343,15 @@ const PIAFormPage = () => {
 
   const fetchAndUpdatePia = async (piaId: string) => {
     const updatedPia = (
-      search && search.includes('invite')
-        ? await HttpRequest.get<IPiaFormResponse>(
-            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
-            {},
-            {},
-            true,
-            {
-              invite: search.split('=')[1],
-            },
-          )
-        : await HttpRequest.get<IPiaFormResponse>(
-            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
-          )
+      await HttpRequest.get<IPiaFormResponse>(
+        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
+        {},
+        {},
+        true,
+        {
+          invite: search.split('=')[1],
+        },
+      )
     ).data;
     setStalePia(pia);
     setPia(updatedPia);
