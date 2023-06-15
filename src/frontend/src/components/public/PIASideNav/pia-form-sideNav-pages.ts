@@ -46,7 +46,10 @@ export const PiaFormSideNavPages = (
   };
 
   const enableReview = (): boolean => {
-    if (pia?.hasAddedPiToDataElements === false && pia?.isNextStepsSeenForDelegatedFlow === true) {
+    if (
+      pia?.hasAddedPiToDataElements === false &&
+      pia?.isNextStepsSeenForDelegatedFlow === true
+    ) {
       return true;
     } else {
       return showPostIntakeTabs;
@@ -80,7 +83,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       state: {
         next: {
           condition: enableReview(),
-          action: (checkPIANonDelegateFlow()) ? NextStepsDefaultPage() : 'Review',
+          action: checkPIANonDelegateFlow() ? NextStepsDefaultPage() : 'Review',
         },
       },
     },
@@ -281,7 +284,7 @@ if it is ++ or -- operater navigate to the previous or next tab
               next: {
                 condition: true,
                 action: +1,
-              }
+              },
             },
           },
         ]
@@ -292,14 +295,17 @@ if it is ++ or -- operater navigate to the previous or next tab
       link: buildDynamicPath(routes.PIA_REVIEW, {
         id: pia?.id,
       }),
-      enable: enableReview(), 
+      enable: enableReview(),
       state: {
         prev: {
           condition: true,
-          action: (pia?.hasAddedPiToDataElements === true || 
-            pia?.hasAddedPiToDataElements === null) ? -1 : 'PIA Intake',
-        }
+          action:
+            pia?.hasAddedPiToDataElements === true ||
+            pia?.hasAddedPiToDataElements === null
+              ? -1
+              : 'PIA Intake',
+        },
       },
-    }
+    },
   ];
 };
