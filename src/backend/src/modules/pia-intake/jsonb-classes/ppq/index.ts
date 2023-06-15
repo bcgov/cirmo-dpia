@@ -139,7 +139,7 @@ export const PpqMetadata: Array<IFormField<Ppq>> = [
 export const validateRoleForPPq = (
   updatedValue: Ppq,
   storedValue: Ppq,
-  userType: UserTypesEnum,
+  userType: UserTypesEnum[],
 ) => {
   if (!updatedValue) return;
 

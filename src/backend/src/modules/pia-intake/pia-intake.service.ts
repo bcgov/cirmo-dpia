@@ -35,6 +35,7 @@ import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { validateRoleForPPq } from './jsonb-classes/ppq';
 import { InvitesService } from '../invites/invites.service';
 import { InviteesService } from '../invitees/invitees.service';
+import { validateRoleForReview } from './jsonb-classes/review';
 
 @Injectable()
 export class PiaIntakeService {
@@ -467,7 +468,9 @@ export class PiaIntakeService {
     if (
       isCPO &&
       (piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW ||
-        piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW)
+        piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW) // [UTOPIA-1112] fix cpo update pia status throw 403 error #1187;; WRONG FIX. If the status is changed other than CPO_Review.. user should be taken to a different page
+      // currently user sees CPO_Review in their list; but can access MPO_Review also, if given direct link
+      // TODO to be fixed
     ) {
       return true;
     }
@@ -505,7 +508,7 @@ export class PiaIntakeService {
   }
 
   /** PREREQUISITE - Always validate if the user has access to the PIA record */
-  getRoleAccess(userRoles: RolesEnum[]): UserTypesEnum {
+  getRoleAccess(userRoles: RolesEnum[]): UserTypesEnum[] {
     /**
      * WHo are Drafters and MPOs? And what roles can each access
      *
@@ -520,18 +523,26 @@ export class PiaIntakeService {
      * Note: Reversing to check MPO first and then Drafter also enables MPOs who are drafting a PIA for a different ministry to edit MPO specific fields
      *
      * -- May 5 '23 -- included CPO role check
+     *
+     * -- Jun 14 '23 -- user can have multiple accesses [like MPO and CPO]
      */
 
+    const accessTypes: UserTypesEnum[] = [];
     const { mpoMinistries } = this.getMpoMinistriesByRoles(userRoles);
+
     if (mpoMinistries.length > 0) {
-      return UserTypesEnum.MPO;
+      accessTypes.push(UserTypesEnum.MPO);
     }
 
     if (this.isCPO(userRoles)) {
-      return UserTypesEnum.CPO;
+      accessTypes.push(UserTypesEnum.CPO);
     }
 
-    return UserTypesEnum.DRAFTER;
+    if (accessTypes.length === 0) {
+      accessTypes.push(UserTypesEnum.DRAFTER);
+    }
+
+    return accessTypes;
   }
 
   /**
@@ -562,17 +573,20 @@ export class PiaIntakeService {
    * 5. personalInformationBanks
    * 6. additionalRisks
    * 7. ppq
+   * 8. review
    */
   validateJsonbFields(
     updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
     storedValue: PiaIntakeEntity,
-    userType: UserTypesEnum,
+    userType: UserTypesEnum[],
   ) {
     validateRoleForCollectionUseAndDisclosure(
       updatedValue?.collectionUseAndDisclosure,
       storedValue?.collectionUseAndDisclosure,
       userType,
     );
+
+    validateRoleForReview(updatedValue?.review, storedValue?.review, userType);
 
     validateRoleForPPq(updatedValue?.ppq, storedValue?.ppq, userType);
 

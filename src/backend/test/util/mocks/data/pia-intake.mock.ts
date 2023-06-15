@@ -179,6 +179,7 @@ const piaIntakeDataMock = {
       'Any related PIAs or CPO considerations goes here...',
   },
   invitee: { ...inviteeEntityMock },
+  review: null,
 };
 
 const collectionUseAndDisclosureWithDrafterPermissions = {

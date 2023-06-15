@@ -37,7 +37,7 @@ export const CollectionNoticeMetadata: Array<IFormField<CollectionNotice>> = [
 export const validateRoleForCollectionNotice = (
   updatedValue: CollectionNotice,
   storedValue: CollectionNotice,
-  userType: UserTypesEnum,
+  userType: UserTypesEnum[],
 ) => {
   if (!updatedValue) return;
 

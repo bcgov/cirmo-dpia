@@ -363,6 +363,76 @@ describe('PiaIntakeService', () => {
       await expect(service.create(createPiaIntakeDto, user, userRoles))
         .resolves;
     });
+
+    // Scenario 8
+    it("fails when drafter tries to create review section with fields they don't have access to", async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.programArea.selectedRoles',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
+
+    // Scenario 9
+    it('succeeds when an MPO tries to create review section', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_AG];
+
+      await expect(service.create(createPiaIntakeDto, user, userRoles))
+        .resolves;
+    });
+
+    // Scenario 10
+    it('fails when CPO tries to create review section with CPO details', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Test notes',
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.CPO];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.mpo.isAcknowledged',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
   });
 
   /**
