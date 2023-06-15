@@ -1,3 +1,4 @@
+import PIAIntakeResults from 'components/public/PIAIntakeResults';
 import { DelegatedReviewTypesEnum } from '../types/enums/delegated-review-types.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from '../types/enums/pia-filter-drafter-by-current-user.enum';
 import { PiaTypesEnum } from '../types/enums/pia-types.enum';
