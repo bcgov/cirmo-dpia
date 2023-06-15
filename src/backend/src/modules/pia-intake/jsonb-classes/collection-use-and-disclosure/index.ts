@@ -37,7 +37,7 @@ export class CollectionUseAndDisclosure {
 export const validateRoleForCollectionUseAndDisclosure = (
   updatedValue: CollectionUseAndDisclosure,
   storedValue: CollectionUseAndDisclosure,
-  userType: UserTypesEnum,
+  userType: UserTypesEnum[],
 ) => {
   if (!updatedValue) return;
 

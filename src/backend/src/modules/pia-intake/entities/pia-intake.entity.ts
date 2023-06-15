@@ -10,6 +10,7 @@ import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-information-banks';
 import { Ppq } from '../jsonb-classes/ppq';
 import { InviteeEntity } from 'src/modules/invitees/entities/invitee.entity';
+import { Review } from '../jsonb-classes/review';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -175,6 +176,13 @@ export class PiaIntakeEntity extends BaseEntity {
     nullable: true,
   })
   additionalRisks: AdditionalRisks;
+
+  @Column({
+    name: 'review',
+    type: 'jsonb',
+    nullable: true,
+  })
+  review: Review;
 
   @Column({
     name: 'ppq',

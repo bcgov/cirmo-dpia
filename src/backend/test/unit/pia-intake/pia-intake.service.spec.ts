@@ -47,6 +47,11 @@ import { InvitesService } from 'src/modules/invites/invites.service';
 import { invitesServiceMock } from 'test/util/mocks/services/invites.service.mock';
 import { InviteesService } from 'src/modules/invitees/invitees.service';
 import { inviteesServiceMock } from 'test/util/mocks/services/invitees.service.mock';
+import {
+  inviteCodeMock,
+  inviteEntityMock,
+} from 'test/util/mocks/data/invites.mock';
+import { inviteeEntityMock } from 'test/util/mocks/data/invitee.mock';
 
 /**
  * @Description
@@ -55,6 +60,8 @@ import { inviteesServiceMock } from 'test/util/mocks/services/invitees.service.m
 describe('PiaIntakeService', () => {
   let service: PiaIntakeService;
   let piaIntakeRepository;
+  let invitesService: InvitesService;
+  let inviteesService: InviteesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -79,6 +86,8 @@ describe('PiaIntakeService', () => {
 
     service = module.get<PiaIntakeService>(PiaIntakeService);
     piaIntakeRepository = module.get(getRepositoryToken(PiaIntakeEntity));
+    invitesService = module.get<InvitesService>(InvitesService);
+    inviteesService = module.get<InviteesService>(InviteesService);
   });
 
   afterEach(() => {
@@ -353,6 +362,76 @@ describe('PiaIntakeService', () => {
 
       await expect(service.create(createPiaIntakeDto, user, userRoles))
         .resolves;
+    });
+
+    // Scenario 8
+    it("fails when drafter tries to create review section with fields they don't have access to", async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.programArea.selectedRoles',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
+
+    // Scenario 9
+    it('succeeds when an MPO tries to create review section', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_AG];
+
+      await expect(service.create(createPiaIntakeDto, user, userRoles))
+        .resolves;
+    });
+
+    // Scenario 10
+    it('fails when CPO tries to create review section with CPO details', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Test notes',
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.CPO];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.mpo.isAcknowledged',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
     });
   });
 
@@ -2456,6 +2535,147 @@ describe('PiaIntakeService', () => {
         createdByGuid: 'USER_2',
         ministry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
+
+      try {
+        await service.validateUserAccess(user, userRoles, piaIntake);
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
+    });
+
+    // Scenario 6: Test succeeds when the user is an invitee to a PIA
+    it('succeeds when the user is an invitee to a PIA', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return { ...inviteeEntityMock };
+      });
+
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+      );
+
+      expect(inviteesService.findOneByUserAndPia).toHaveBeenCalledWith(
+        user,
+        piaIntake.id,
+      );
+      expect(invitesService.findOne).not.toHaveBeenCalled();
+      expect(inviteesService.create).not.toHaveBeenCalled();
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 7: Test succeeds when the user is not an invitee yet; but has a valid invite code
+    it('succeeds when the user is not an invitee yet; but has a valid invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      invitesService.findOne = jest.fn(async () => {
+        delay(10);
+        return { ...inviteEntityMock };
+      });
+
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+        inviteCodeMock,
+      );
+
+      expect(inviteesService.findOneByUserAndPia).toHaveBeenCalledWith(
+        user,
+        piaIntake.id,
+      );
+      expect(invitesService.findOne).toHaveBeenCalledWith(
+        piaIntake.id,
+        inviteCodeMock,
+      );
+      expect(inviteesService.create).toHaveBeenCalledWith(
+        piaIntake,
+        { ...inviteEntityMock },
+        user,
+      );
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 8: Test fails when the user is not an invitee yet; and has an INVALID invite code
+    it('fails when the user is not an invitee yet; and has an INVALID invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      invitesService.findOne = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      try {
+        await service.validateUserAccess(
+          user,
+          userRoles,
+          piaIntake,
+          inviteCodeMock,
+        );
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
+    });
+
+    // Scenario 9: Test fails when the user is neither of an invitee,drafter,mpo, or a cpo to the PIA and does not even have an invite code
+    it('fails when the user is neither of an invitee, drafter, mpo, or a cpo to the PIA and does not even have an invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
 
       try {
         await service.validateUserAccess(user, userRoles, piaIntake);

@@ -57,7 +57,7 @@ export const StepWalkthroughMetadata: Array<IFormField<StepWalkthrough>> = [
 export const validateRoleForStepWalkthrough = (
   updatedStep: StepWalkthrough,
   storedStep: StepWalkthrough,
-  userType: UserTypesEnum,
+  userType: UserTypesEnum[],
 ) => {
   if (!updatedStep) return;
 
