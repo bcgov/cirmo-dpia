@@ -343,9 +343,19 @@ const PIAFormPage = () => {
 
   const fetchAndUpdatePia = async (piaId: string) => {
     const updatedPia = (
-      await HttpRequest.get<IPiaFormResponse>(
-        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
-      )
+      search && search.includes('invite')
+        ? await HttpRequest.get<IPiaFormResponse>(
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
+            {},
+            {},
+            true,
+            {
+              invite: search.split('=')[1],
+            },
+          )
+        : await HttpRequest.get<IPiaFormResponse>(
+            API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
+          )
     ).data;
     setStalePia(pia);
     setPia(updatedPia);
@@ -785,31 +795,6 @@ const PIAFormPage = () => {
       pathname?.replace('edit', 'view');
     }
   }, [pia?.status, id, pathname]);
-
-  /**
-   * If a user is invited to a PIA, they will be redirected to the PIA page with a query param
-   * This function will check if the query param is present and if so, will add the user to the PIA
-   */
-  const addInvitedUser: any = useCallback(async () => {
-    await HttpRequest.get(
-      API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
-      {},
-      {},
-      true,
-      {
-        invite: search.split('=')[1],
-      },
-    );
-  }, [search, id]);
-
-  /**
-   * On load, check if the user was invited to the PIA
-   * If they were, add them to the PIA
-   * This is done to ensure that the user is added to the PIA before they are redirected to the PIA page
-   */
-  useEffect(() => {
-    if (search && search.includes('invite')) addInvitedUser();
-  }, [search, addInvitedUser]);
 
   return (
     <>
