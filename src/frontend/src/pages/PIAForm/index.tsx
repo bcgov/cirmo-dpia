@@ -123,7 +123,7 @@ const PIAFormPage = () => {
    * Comments State
    */
   const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
-  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(false);
+  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(true);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
 
   /**
@@ -396,11 +396,13 @@ const PIAFormPage = () => {
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
-      navigate(
-        buildDynamicPath(routes.PIA_INTAKE_EDIT, {
-          id: updatedPia.id,
-        }),
-      );
+      if (!pia?.id) {
+        navigate(
+          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+            id: updatedPia.id,
+          }),
+        );
+      }
     } else {
       setStalePia(pia);
     }
@@ -685,9 +687,9 @@ const PIAFormPage = () => {
 
       e.preventDefault();
 
-      /* 
+      /*
       For cross-browser support
-      
+
       This function uses e.returnValue, which has been deprecated for 9+ years.
       The reason for this usage is to support Chrome which only behaves as expected when using this value.
 
@@ -769,6 +771,19 @@ const PIAFormPage = () => {
       window.removeEventListener('beforeunload', alertUserLeave);
     };
   }, [alertUserLeave, hasFormChanged]);
+
+  // Prevent URL manipulation to edit a PIA
+  // if the PIA is not in INCOMPLETE or EDIT_IN_PROGRESS status
+  useEffect(() => {
+    if (
+      pia?.status !== PiaStatuses.INCOMPLETE &&
+      pia?.status !== PiaStatuses.EDIT_IN_PROGRESS &&
+      pathname?.split('/').includes('edit')
+    ) {
+      // change edit to view
+      pathname?.replace('edit', 'view');
+    }
+  }, [pia?.status, id, pathname]);
 
   return (
     <>

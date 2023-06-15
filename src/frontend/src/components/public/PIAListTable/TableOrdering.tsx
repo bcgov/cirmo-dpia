@@ -7,20 +7,21 @@ import { PiaSorting } from '../../../constant/constant';
 interface ITableOrderingProps {
   currentState: number;
   title: string;
+  heading: string;
+  sorting: (key: string) => void;
 }
-type SortOrder = 'none' | 'ascending' | 'descending' | 'other' | undefined;
 
 const TableOrdering = (props: ITableOrderingProps) => {
-  const { currentState, title } = props;
-  const [sortingLabel, setSortingLabel] = useState<SortOrder>('none');
+  const { currentState, title, heading, sorting } = props;
+  const [sortingLabel, setSortingLabel] = useState<string>('none');
 
   useEffect(() => {
     setSortingLabel(
       currentState === PiaSorting.INACTIVE
-        ? 'none'
+        ? 'sort by'
         : currentState === PiaSorting.DESCENDING
-        ? 'descending'
-        : 'ascending',
+        ? 'sort descending'
+        : 'sort ascending',
     );
   }, [currentState]);
   function sortingState(sortOrder: number) {
@@ -36,9 +37,17 @@ const TableOrdering = (props: ITableOrderingProps) => {
 
   return (
     <img
+      tabIndex={0}
+      role="button"
       src={sortingState(currentState)}
-      aria-label={title + ' ' + sortingLabel}
-      aria-sort={sortingLabel}
+      aria-label={title + ' ' + sortingLabel + ' ' + 'button'}
+      onClick={() => sorting(heading)}
+      onKeyDown={(event) => {
+        if (event.code === 'Enter') {
+          event.preventDefault();
+          sorting(heading);
+        }
+      }}
     ></img>
   );
 };

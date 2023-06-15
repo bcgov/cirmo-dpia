@@ -43,6 +43,15 @@ import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
+import { InvitesService } from 'src/modules/invites/invites.service';
+import { invitesServiceMock } from 'test/util/mocks/services/invites.service.mock';
+import { InviteesService } from 'src/modules/invitees/invitees.service';
+import { inviteesServiceMock } from 'test/util/mocks/services/invitees.service.mock';
+import {
+  inviteCodeMock,
+  inviteEntityMock,
+} from 'test/util/mocks/data/invites.mock';
+import { inviteeEntityMock } from 'test/util/mocks/data/invitee.mock';
 
 /**
  * @Description
@@ -51,6 +60,8 @@ import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 describe('PiaIntakeService', () => {
   let service: PiaIntakeService;
   let piaIntakeRepository;
+  let invitesService: InvitesService;
+  let inviteesService: InviteesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -58,6 +69,14 @@ describe('PiaIntakeService', () => {
       controllers: [PiaIntakeController],
       providers: [
         PiaIntakeService,
+        {
+          provide: InvitesService,
+          useValue: invitesServiceMock,
+        },
+        {
+          provide: InviteesService,
+          useValue: inviteesServiceMock,
+        },
         {
           provide: getRepositoryToken(PiaIntakeEntity),
           useValue: { ...repositoryMock },
@@ -67,6 +86,8 @@ describe('PiaIntakeService', () => {
 
     service = module.get<PiaIntakeService>(PiaIntakeService);
     piaIntakeRepository = module.get(getRepositoryToken(PiaIntakeEntity));
+    invitesService = module.get<InvitesService>(InvitesService);
+    inviteesService = module.get<InviteesService>(InviteesService);
   });
 
   afterEach(() => {
@@ -342,6 +363,76 @@ describe('PiaIntakeService', () => {
       await expect(service.create(createPiaIntakeDto, user, userRoles))
         .resolves;
     });
+
+    // Scenario 8
+    it("fails when drafter tries to create review section with fields they don't have access to", async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.programArea.selectedRoles',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
+
+    // Scenario 9
+    it('succeeds when an MPO tries to create review section', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.MPO_AG];
+
+      await expect(service.create(createPiaIntakeDto, user, userRoles))
+        .resolves;
+    });
+
+    // Scenario 10
+    it('fails when CPO tries to create review section with CPO details', async () => {
+      const createPiaIntakeDto: CreatePiaIntakeDto = {
+        ...createPiaIntakeMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Test notes',
+          },
+        },
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [RolesEnum.CPO];
+
+      await expect(
+        service.create(createPiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          path: 'review.mpo.isAcknowledged',
+          message: `You do not have permissions to edit certain section of this document. Please reach out to your MPO to proceed.`,
+        }),
+      );
+    });
   });
 
   /**
@@ -406,6 +497,12 @@ describe('PiaIntakeService', () => {
             ministry: null,
             status: Not(PiaIntakeStatusEnum.INCOMPLETE),
           },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+          },
         ],
         order: {
           createdAt: -1,
@@ -452,6 +549,12 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
           },
         ],
         order: {
@@ -513,6 +616,13 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            title: null,
+          },
+          {
+            isActive: true,
             createdByGuid: user.idir_user_guid,
             drafterName: null,
           },
@@ -521,6 +631,13 @@ describe('PiaIntakeService', () => {
             ministry: null,
             drafterName: null,
             status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            drafterName: null,
           },
         ],
         order: {
@@ -573,7 +690,21 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            title: null,
+          },
+          {
+            isActive: true,
             createdByGuid: user.idir_user_guid,
+            drafterName: null,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             drafterName: null,
           },
         ],
@@ -617,9 +748,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
@@ -628,6 +757,13 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             status: 'INCOMPLETE',
           },
         ],
@@ -689,6 +825,13 @@ describe('PiaIntakeService', () => {
             ministry: null,
             status: 'MPO_REVIEW',
           },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: 'MPO_REVIEW',
+          },
         ],
         order: {
           updatedAt: 1,
@@ -728,6 +871,8 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
@@ -735,6 +880,13 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             status: 'INCOMPLETE',
           },
         ],
@@ -777,9 +929,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
@@ -788,6 +938,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+            ministry: 'CITIZENS_SERVICES',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             status: 'INCOMPLETE',
             ministry: 'CITIZENS_SERVICES',
           },
@@ -809,7 +967,7 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
-    // scenario 7-2: user is MPO ; filter by PIA status (incomplete) and ministry
+    // scenario 7-2: user is MPO ; filter by PIA status (non-incomplete) and ministry
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status(except incomplete) and ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -848,6 +1006,14 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: 'CITIZENS_SERVICES',
             status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: 'MPO_REVIEW',
+            ministry: 'CITIZENS_SERVICES',
           },
         ],
         order: {
@@ -891,9 +1057,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
@@ -924,7 +1088,7 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 9: user is MPO; filter by PIA status and ministry and not current user's pia
+    // scenario 9: user is MPO; filter by PIA status[incomplete] and ministry[own] and not current user's pia -- only invited PIAs
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status and ministry and exclude current user pia]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -947,27 +1111,42 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
-      expect(piaIntakeRepository.findAndCount).not.toHaveBeenCalled();
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: 'INCOMPLETE',
+            ministry: 'CITIZENS_SERVICES',
+            createdByGuid: Not(user.idir_user_guid),
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 48,
+        take: 12,
+      });
 
-      expect(omitBaseKeysSpy).not.toHaveBeenCalled();
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
 
       const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
-        data: [],
+        data: [getPiaIntakeROMock],
         page: 5,
         pageSize: 12,
-        total: 0,
+        total: 100,
       };
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 9-1: user is MPO; filter by PIA status - MPO_REVIEW and ministry and not current user's pia
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status - MPO_REVIEW and ministry and exclude current user pia]', async () => {
+    // scenario 9-1: user is MPO; filter by PIA status - MPO_REVIEW and own ministry and not current user's pia
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status - MPO_REVIEW, own ministry and exclude current user pia]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -999,6 +1178,15 @@ describe('PiaIntakeService', () => {
         where: [
           {
             isActive: true,
+            createdByGuid: Not(user.idir_user_guid),
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             createdByGuid: Not(user.idir_user_guid),
             status: PiaIntakeStatusEnum.MPO_REVIEW,
             ministry: GovMinistriesEnum.CITIZENS_SERVICES,
@@ -1056,7 +1244,23 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            title: null,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
             createdByGuid: user.idir_user_guid,
+            drafterName: null,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             drafterName: null,
             status: 'INCOMPLETE',
           },
@@ -1100,9 +1304,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
 
@@ -1116,7 +1318,23 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            title: null,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
             createdByGuid: user.idir_user_guid,
+            drafterName: null,
+            status: 'INCOMPLETE',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             drafterName: null,
             status: 'INCOMPLETE',
           },
@@ -1182,6 +1400,14 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            title: null,
+            status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
             createdByGuid: user.idir_user_guid,
             drafterName: null,
             status: 'MPO_REVIEW',
@@ -1189,6 +1415,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             ministry: null,
+            drafterName: null,
+            status: 'MPO_REVIEW',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             drafterName: null,
             status: 'MPO_REVIEW',
           },
@@ -1231,9 +1465,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
@@ -1242,6 +1474,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: 'INCOMPLETE',
+            ministry: 'FORESTS',
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
             status: 'INCOMPLETE',
             ministry: 'FORESTS',
           },
@@ -1283,9 +1523,7 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
+      expect(typeormInSpy).not.toHaveBeenCalled();
 
       expect(typeormILikeSpy).not.toHaveBeenCalled();
 
@@ -1295,7 +1533,15 @@ describe('PiaIntakeService', () => {
             isActive: true,
             ministry: 'FORESTS',
             status: 'MPO_REVIEW',
-            createdByGuid: 'AAA00001B22C333DD4EEEEE55F6666G77',
+            createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            ministry: 'FORESTS',
+            status: 'MPO_REVIEW',
           },
         ],
         order: {
@@ -1347,6 +1593,12 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
           },
         ],
         order: {
@@ -1405,6 +1657,307 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 15: User is a CPO with filter status=INCOMPLETE
+    it('succeeds when the user is a CPO with filter status=INCOMPLETE', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 16: User is a CPO with filter status=CPO_REVIEW
+    it('succeeds when the user is a CPO with filter status=CPO_REVIEW', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.CPO_REVIEW,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+          {
+            isActive: true,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // scenario 17: User is a CPO with filter ministry=AG
+    it('succeeds when the user is a CPO with filter ministry=AG', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByMinistry: GovMinistriesEnum.ATTORNEY_GENERAL,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
+          },
+          {
+            isActive: true,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // Scenario 18: User is invited to PIAs;
+    // All other scenarios also cover invited user use cases
+    it('succeeds when the user is invited to PIAs', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // Scenario 19: User is invited to PIAs with filters;
+    it('succeeds when the user is invited to PIAs with filters', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.CPO_REVIEW,
+        filterByMinistry: GovMinistriesEnum.AGRICULTURE_AND_FOOD,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(typeormInSpy).not.toHaveBeenCalled();
+
+      expect(typeormILikeSpy).not.toHaveBeenCalled();
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            ministry: GovMinistriesEnum.AGRICULTURE_AND_FOOD,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            ministry: GovMinistriesEnum.AGRICULTURE_AND_FOOD,
           },
         ],
         order: {
@@ -1468,25 +2021,27 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 1;
+      const inviteCode = null;
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeEntityMock };
       });
 
-      service.validateUserAccess = jest.fn(() => {
+      service.validateUserAccess = jest.fn(async () => {
         throw new ForbiddenException(); // any exception
       });
 
-      await expect(service.findOneById(id, user, userRoles)).rejects.toThrow(
-        new ForbiddenException(),
-      );
+      await expect(
+        service.findOneById(id, user, userRoles, inviteCode),
+      ).rejects.toThrow(new ForbiddenException());
 
       expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
         user,
         userRoles,
         piaIntakeEntityMock,
+        inviteCode,
       );
       expect(omitBaseKeysSpy).not.toHaveBeenCalled();
     });
@@ -1496,23 +2051,25 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const id = 1;
+      const inviteCode = null;
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeEntityMock };
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(async () => true);
 
       omitBaseKeysSpy.mockImplementation(() => getPiaIntakeROMock);
 
-      const result = await service.findOneById(id, user, userRoles);
+      const result = await service.findOneById(id, user, userRoles, inviteCode);
 
       expect(service.findOneBy).toHaveBeenCalledWith({ id });
       expect(service.validateUserAccess).toHaveBeenCalledWith(
         user,
         userRoles,
         piaIntakeEntityMock,
+        inviteCode,
       );
 
       expect(omitBaseKeysSpy).toHaveBeenCalledWith(piaIntakeEntityMock, [
@@ -1545,7 +2102,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(async () => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1595,7 +2152,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(async () => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1646,7 +2203,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(async () => true);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1690,7 +2247,7 @@ describe('PiaIntakeService', () => {
         return piaIntakeROMock;
       });
 
-      service.validateUserAccess = jest.fn(() => true);
+      service.validateUserAccess = jest.fn(async () => true);
 
       piaIntakeRepository.save = jest.fn(async () => {
         delay(10);
@@ -1739,7 +2296,7 @@ describe('PiaIntakeService', () => {
       });
 
       // mock validated user access
-      service.validateUserAccess = jest.fn(() => null);
+      service.validateUserAccess = jest.fn(async () => null);
 
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
@@ -1782,7 +2339,7 @@ describe('PiaIntakeService', () => {
       };
 
       // mock validated user access
-      service.validateUserAccess = jest.fn(() => null);
+      service.validateUserAccess = jest.fn(async () => null);
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
@@ -1862,7 +2419,7 @@ describe('PiaIntakeService', () => {
       };
 
       expect(shortDateSpy).toHaveBeenCalledTimes(1);
-      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.createdAt);
+      expect(shortDateSpy).toHaveBeenCalledWith(getPiaIntakeRO.updatedAt);
 
       expect(markedParseSpy).toHaveBeenCalledTimes(4);
 
@@ -1897,14 +2454,14 @@ describe('PiaIntakeService', () => {
       };
 
       try {
-        service.validateUserAccess(user, userRoles, piaIntake);
+        await service.validateUserAccess(user, userRoles, piaIntake);
       } catch (e) {
         expect(e).toEqual(new GoneException());
       }
     });
 
     // Scenario 2: Test succeeds when the record is self submitted
-    it('succeeds and returns userType - drafter when the record is self submitted', () => {
+    it('succeeds and returns userType - drafter when the record is self submitted', async () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'TEST_USER',
@@ -1915,13 +2472,17 @@ describe('PiaIntakeService', () => {
         createdByGuid: 'TEST_USER',
       };
 
-      const result = service.validateUserAccess(user, userRoles, piaIntake);
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+      );
 
       expect(result).toBe(true);
     });
 
     // Scenario 3: succeeds when PIA is not self-submitted, but submitted to the ministry I belong and MPO of
-    it('succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', () => {
+    it('succeeds and returns userType - MPO when PIA is not self-submitted, but submitted to the ministry I belong and MPO of', async () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'USER_1',
@@ -1933,13 +2494,17 @@ describe('PiaIntakeService', () => {
         ministry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
 
-      const result = service.validateUserAccess(user, userRoles, piaIntake);
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+      );
 
       expect(result).toBe(true);
     });
 
     // Scenario 4: Test fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of
-    it('fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of', () => {
+    it('fails when the record is not self-submitted, but submitted to the ministry I belong and NOT MPO of', async () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'USER_1',
@@ -1952,14 +2517,14 @@ describe('PiaIntakeService', () => {
       };
 
       try {
-        service.validateUserAccess(user, userRoles, piaIntake);
+        await service.validateUserAccess(user, userRoles, piaIntake);
       } catch (e) {
         expect(e).toEqual(new ForbiddenException());
       }
     });
 
     // Scenario 5: Test fails when the record is neither self-submitted not submitted to the ministry I am MPO of
-    it('fails when the record is neither self-submitted not submitted to the ministry I am MPO of', () => {
+    it('fails when the record is neither self-submitted not submitted to the ministry I am MPO of', async () => {
       const user: KeycloakUser = {
         ...keycloakUserMock,
         idir_user_guid: 'USER_1',
@@ -1972,7 +2537,148 @@ describe('PiaIntakeService', () => {
       };
 
       try {
-        service.validateUserAccess(user, userRoles, piaIntake);
+        await service.validateUserAccess(user, userRoles, piaIntake);
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
+    });
+
+    // Scenario 6: Test succeeds when the user is an invitee to a PIA
+    it('succeeds when the user is an invitee to a PIA', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return { ...inviteeEntityMock };
+      });
+
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+      );
+
+      expect(inviteesService.findOneByUserAndPia).toHaveBeenCalledWith(
+        user,
+        piaIntake.id,
+      );
+      expect(invitesService.findOne).not.toHaveBeenCalled();
+      expect(inviteesService.create).not.toHaveBeenCalled();
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 7: Test succeeds when the user is not an invitee yet; but has a valid invite code
+    it('succeeds when the user is not an invitee yet; but has a valid invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      invitesService.findOne = jest.fn(async () => {
+        delay(10);
+        return { ...inviteEntityMock };
+      });
+
+      const result = await service.validateUserAccess(
+        user,
+        userRoles,
+        piaIntake,
+        inviteCodeMock,
+      );
+
+      expect(inviteesService.findOneByUserAndPia).toHaveBeenCalledWith(
+        user,
+        piaIntake.id,
+      );
+      expect(invitesService.findOne).toHaveBeenCalledWith(
+        piaIntake.id,
+        inviteCodeMock,
+      );
+      expect(inviteesService.create).toHaveBeenCalledWith(
+        piaIntake,
+        { ...inviteEntityMock },
+        user,
+      );
+
+      expect(result).toBe(true);
+    });
+
+    // Scenario 8: Test fails when the user is not an invitee yet; and has an INVALID invite code
+    it('fails when the user is not an invitee yet; and has an INVALID invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      invitesService.findOne = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      try {
+        await service.validateUserAccess(
+          user,
+          userRoles,
+          piaIntake,
+          inviteCodeMock,
+        );
+      } catch (e) {
+        expect(e).toEqual(new ForbiddenException());
+      }
+    });
+
+    // Scenario 9: Test fails when the user is neither of an invitee,drafter,mpo, or a cpo to the PIA and does not even have an invite code
+    it('fails when the user is neither of an invitee, drafter, mpo, or a cpo to the PIA and does not even have an invite code', async () => {
+      const user: KeycloakUser = {
+        ...keycloakUserMock,
+        idir_user_guid: 'USER_1',
+      };
+      const userRoles = []; // no MPO, neither a CPO
+      const piaIntake: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        createdByGuid: 'USER_2', // not self-drafted
+        ministry: GovMinistriesEnum.CITIZENS_SERVICES,
+      };
+
+      inviteesService.findOneByUserAndPia = jest.fn(async () => {
+        delay(10);
+        return null;
+      });
+
+      try {
+        await service.validateUserAccess(user, userRoles, piaIntake);
       } catch (e) {
         expect(e).toEqual(new ForbiddenException());
       }
@@ -2015,6 +2721,36 @@ describe('PiaIntakeService', () => {
 
       expect(piaIntakeRepository.findOneBy).toHaveBeenCalledWith({ id });
       expect(result).toEqual(piaIntakeEntityMock);
+    });
+  });
+
+  /**
+   * @method validatePiaAccess
+   */
+  describe('`validatePiaAccess', () => {
+    /**
+     * This test validates that the method calls the findOneById method to validate access
+     *
+     * @Input
+     *   - piaId: number
+     *   - user info mock
+     *
+     * @Output
+     *   - void
+     */
+    it('succeeds calling findOneById method', async () => {
+      const piaId = 101;
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return { ...piaIntakeEntityMock };
+      });
+
+      await service.validatePiaAccess(piaId, user, userRoles);
+
+      expect(service.findOneById).toBeCalledWith(piaId, user, userRoles);
     });
   });
 });

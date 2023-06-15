@@ -1,5 +1,5 @@
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { CollectionUseAndDisclosure } from '../jsonb-classes/collection-use-and-disclosure';
@@ -9,6 +9,8 @@ import { AccuracyCorrectionAndRetention } from '../jsonb-classes/accuracy-correc
 import { AdditionalRisks } from '../jsonb-classes/additional-risks';
 import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-information-banks';
 import { Ppq } from '../jsonb-classes/ppq';
+import { InviteeEntity } from 'src/modules/invitees/entities/invitee.entity';
+import { Review } from '../jsonb-classes/review';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -176,9 +178,19 @@ export class PiaIntakeEntity extends BaseEntity {
   additionalRisks: AdditionalRisks;
 
   @Column({
+    name: 'review',
+    type: 'jsonb',
+    nullable: true,
+  })
+  review: Review;
+
+  @Column({
     name: 'ppq',
     type: 'jsonb',
     nullable: true,
   })
   ppq: Ppq;
+
+  @OneToMany(() => InviteeEntity, (invitee) => invitee.pia)
+  invitee: InviteeEntity;
 }

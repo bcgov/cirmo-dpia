@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState, useCallback } from 'react';
 
 import BCGovLogo from '../../../assets/BCGovLogo_negative.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,6 +38,32 @@ function Header({ user }: Props) {
   const { keycloakUserDetail, error: userInfoError } = useFetchKeycloakUserInfo(
     accessToken || null,
   );
+
+  const startFetching = useCallback(async () => {
+    if (didAuthRef.current === false) {
+      try {
+        didAuthRef.current = true;
+
+        const keycloakToken = await getAccessToken(code);
+
+        if (keycloakToken !== undefined) {
+          storeAuthTokens(keycloakToken);
+          setAuthenticated(true);
+          setAccessToken(keycloakToken.access_token);
+          const config = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
+          AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
+
+          navigate(AppStorage.getItem('returnUri') || routes.PIA_LIST);
+        } else {
+          throw new Error('Invalid Token Information found');
+        }
+      } catch (e) {
+        setMessage('login failed');
+        console.log(e);
+      }
+    }
+  }, [code, navigate, setAuthenticated]);
+
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
   const win: Window = window;
@@ -53,33 +79,8 @@ function Header({ user }: Props) {
    */
   useEffect(() => {
     if (!code) return;
-    async function startFetching() {
-      if (didAuthRef.current === false) {
-        try {
-          didAuthRef.current = true;
-          const keycloakToken = await getAccessToken(code);
-          if (keycloakToken !== undefined) {
-            storeAuthTokens(keycloakToken);
-            setAuthenticated(true);
-            setAccessToken(keycloakToken.access_token);
-            const config = await HttpRequest.get<IConfig>(
-              API_ROUTES.CONFIG_FILE,
-            );
-            AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
-            // TODO: Refactor protected routing to allow for keycloak
-            // to use redirect URI instead of this value
-            navigate(routes.PIA_LIST);
-          } else {
-            throw new Error('Invalid Token Information found');
-          }
-        } catch (e) {
-          setMessage('login failed');
-          console.log(e);
-        }
-      }
-    }
     startFetching();
-  }, [code, navigate, setAuthenticated]);
+  }, [code, navigate, setAuthenticated, startFetching]);
 
   useEffect(() => {
     if (!accessToken) return;

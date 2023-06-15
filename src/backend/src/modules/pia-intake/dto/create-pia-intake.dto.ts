@@ -20,6 +20,7 @@ import { SecurityPersonalInformation } from '../jsonb-classes/security-personal-
 import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-information';
 import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
 import { Ppq } from '../jsonb-classes/ppq';
+import { Review } from '../jsonb-classes/review';
 
 export class CreatePiaIntakeDto {
   @IsString()
@@ -240,4 +241,16 @@ export class CreatePiaIntakeDto {
     example: piaIntakeEntityMock.ppq,
   })
   ppq: Ppq;
+
+  @IsObject()
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => Review)
+  @ApiProperty({
+    type: Review,
+    required: false,
+    example: piaIntakeEntityMock.review,
+  })
+  review: Review;
 }

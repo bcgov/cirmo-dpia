@@ -5,5 +5,4 @@ export const commentsServiceMock = {
   remove: jest.fn(),
   resolve: jest.fn(),
   findOneBy: jest.fn(),
-  validatePiaAccess: jest.fn(),
 };
