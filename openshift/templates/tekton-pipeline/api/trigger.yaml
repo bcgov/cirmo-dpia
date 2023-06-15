@@ -1,0 +1,10 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: Trigger
+metadata:
+  name: process-apply-dpia-service
+spec:
+  serviceAccountName: pipeline
+  bindings:
+    - ref: process-apply-dpia-service
+  template:
+    ref: process-apply-dpia-service

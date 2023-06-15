@@ -1,0 +1,28 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: process-apply-dpia-service
+spec:
+  params:
+  - name: environment
+    description: What environment is being targetted?
+  - name: application
+    description: blah
+  - name: image
+    description: tag or identifier of the image being deployed
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: build-deploy-$(tt.params.environment)-$(tt.params.application)
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: process-apply-dpia-service
+      params:
+      - name: environment
+        value: $(tt.params.environment)
+      - name: application
+        value: $(tt.params.application)
+      - name: image
+        value: $(tt.params.image)

@@ -1,0 +1,98 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: el-vanity
+  namespace: aa77ab-tools
+  labels:
+    DataClass: Low
+    Internet-Ingress: ALLOW
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: dpia-api-dev-deploy
+  annotations:
+    ako.vmware.com/controller-cluster-uuid: cluster-10d3d65b-aa10-4eac-bd40-3777bfd2f4a9
+    ako.vmware.com/host-fqdn-vs-uuid-map: >-
+      {"emerald.dev.pia.gov.bc.ca":"virtualservice-39524f91-e2f5-4874-96d2-22b375252d2a"}
+    aviinfrasetting.ako.vmware.com/name: dataclass-public
+spec:
+  host: emerald.dev.pia.gov.bc.ca
+  to:
+    kind: Service
+    name: process-apply-dpia-service
+    weight: 100
+  port:
+    targetPort: http-listener
+  tls:
+    termination: edge
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIHFTCCBf2gAwIBAgIQaqxx5nW6BwsZlifLb3n0wDANBgkqhkiG9w0BAQsFADCB
+      ujELMAkGA1UEBhMCVVMxFjAUBgNVBAoTDUVudHJ1c3QsIEluYy4xKDAmBgNVBAsT
+      H1NlZSB3d3cuZW50cnVzdC5uZXQvbGVnYWwtdGVybXMxOTA3BgNVBAsTMChjKSAy
+      MDEyIEVudHJ1c3QsIEluYy4gLSBmb3IgYXV0aG9yaXplZCB1c2Ugb25seTEuMCwG
+      A1UEAxMlRW50cnVzdCBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eSAtIEwxSzAeFw0y
+      MzA1MTkxODUwMDlaFw0yNDA1MTkxODUwMDlaMIGYMQswCQYDVQQGEwJDQTEZMBcG
+      A1UECBMQQnJpdGlzaCBDb2x1bWJpYTERMA8GA1UEBxMIVmljdG9yaWExNzA1BgNV
+      BAoTLkdvdmVybm1lbnQgb2YgdGhlIFByb3ZpbmNlIG9mIEJyaXRpc2ggQ29sdW1i
+      aWExIjAgBgNVBAMTGWVtZXJhbGQuZGV2LnBpYS5nb3YuYmMuY2EwggEiMA0GCSqG
+      SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDAIeP0/wSQevwc4Nx50RV3MhQbq/YGtIGR
+      FjGc8qqqF7uPP6QjAExmd75weLp2AGbtqdiR9fQ2fdWt8KUfoNfMw2hWXqZbuWMp
+      ZGxi7K9YTWgXc2pAKZf8QV7qKYAu6J8DfmRwGZuHijlG4yD3C/dFp5drqUlFlT3r
+      cgPtOujczOs4U5EiY0znAxiS3LHvFzXFep65PYEBNmpwWTEKnr2rnqslpoxC4pYd
+      rJ56krV8kr+C8kZ/k4eAwIiARvqv6uNVWG+BEHNQ7A+ZNLV0qPrCCRn+yKs6KvaC
+      9vJeejGbQ36XakUik1US9U3NJZOYBmCQ6gRb90hPRK+M2mKUSY3fAgMBAAGjggM1
+      MIIDMTAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBRiwyracy86pNf/xDSmdeXcuB8/
+      yDAfBgNVHSMEGDAWgBSConB03bxTP8971PfNf6dgxgpMvzBoBggrBgEFBQcBAQRc
+      MFowIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLmVudHJ1c3QubmV0MDMGCCsGAQUF
+      BzAChidodHRwOi8vYWlhLmVudHJ1c3QubmV0L2wxay1jaGFpbjI1Ni5jZXIwMwYD
+      VR0fBCwwKjAooCagJIYiaHR0cDovL2NybC5lbnRydXN0Lm5ldC9sZXZlbDFrLmNy
+      bDBDBgNVHREEPDA6ghllbWVyYWxkLmRldi5waWEuZ292LmJjLmNhgh13d3cuZW1l
+      cmFsZC5kZXYucGlhLmdvdi5iYy5jYTAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYw
+      FAYIKwYBBQUHAwEGCCsGAQUFBwMCMEwGA1UdIARFMEMwNwYKYIZIAYb6bAoBBTAp
+      MCcGCCsGAQUFBwIBFhtodHRwczovL3d3dy5lbnRydXN0Lm5ldC9ycGEwCAYGZ4EM
+      AQICMIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdwA7U3d1Pi25gE6LMFsG/kA7
+      Z9hPw/THvQANLXJv4frUFwAAAYg1WREdAAAEAwBIMEYCIQCwu/rnByU5ymC/S4bX
+      qtlfKs1PPM5MGhBNqetV9p2+awIhALNMTsHCUbJ2Vkg549lUiJq41xyZ2lOoneTO
+      R/XbqLzsAHUA7s3QZNXbGs7FXLedtM0TojKHRny87N7DUUhZRnEftZsAAAGINVkR
+      XwAABAMARjBEAiAb/HROMRiqv738kLx1la4H7mcgwDbDdwwZaJt4EYf0FgIgXanr
+      k8glN5yr0OtHHOTFR+7bn6XTAz0dNKw6IxTnUbMAdgBIsONr2qZHNA/lagL6nTDr
+      HFIBy1bdLIHZu7+rOdiEcwAAAYg1WRGbAAAEAwBHMEUCIQDmzkAp8Qr5edwhz6Iv
+      DAZJnzXpNUdhp+KZYqCcGN41FAIgapuFoOmTmsCho0tyBCayaUCLm4MdrtQBB2kg
+      /33ZIOcwDQYJKoZIhvcNAQELBQADggEBAHC+NBgEX6jkwdyDFDab+sWoRgaAzMNZ
+      wtnoIZEqoIKD2+yVzkQgT1m8QoylGFSGTJRrAnSMdk7GvpeEBXKmZZ1AyNqGDvoV
+      51g/oN+Fm1NhmppaYEkEbrnFm0rELOOdnormJMC8V68KL+3Kg0QCKZoWnQK4tEHh
+      WV6izbUYSctNjzRC3MK5/L+HKQgoiTE4TYyHphHd+Nkxaq8YU+qjDSOa9eYUZab7
+      qudsAz/P5yX0nxOxfGl37/W0zSTYqAzjIZx4L7QJEGN9HgOtt2yaGFmzdQJAoobv
+      KrPzI+HYxSaHJ2qX+q4N//V4qlXDhnHPTllzYrRsTXJ9ARKF0Jty7+k=
+      -----END CERTIFICATE-----
+    key: |-
+      -----BEGIN PRIVATE KEY-----
+      MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAIeP0/wSQevwc
+      4Nx50RV3MhQbq/YGtIGRFjGc8qqqF7uPP6QjAExmd75weLp2AGbtqdiR9fQ2fdWt
+      8KUfoNfMw2hWXqZbuWMpZGxi7K9YTWgXc2pAKZf8QV7qKYAu6J8DfmRwGZuHijlG
+      4yD3C/dFp5drqUlFlT3rcgPtOujczOs4U5EiY0znAxiS3LHvFzXFep65PYEBNmpw
+      WTEKnr2rnqslpoxC4pYdrJ56krV8kr+C8kZ/k4eAwIiARvqv6uNVWG+BEHNQ7A+Z
+      NLV0qPrCCRn+yKs6KvaC9vJeejGbQ36XakUik1US9U3NJZOYBmCQ6gRb90hPRK+M
+      2mKUSY3fAgMBAAECggEBAL9EfcS14vtaE4VELPhwNuhUSERL6j4+kAW5jGZsBY4S
+      1jsC5gmaEHSpnEInTaiPOeg6/0g/C4D7wC7Ks/dKjcpgdYwV6ZLCeX8JZAUPDnff
+      h1JhKVL6lT0gbra53cvU9AfsWVxngbdq2R5CmdyWYvFKp6kb+79zlRLAjDwsOwki
+      kYfPEdat39Ah9FvnF+xBsSVqZ0YXZU6p0bOV3/KWcY3QCSGZFEuA3dta4WxbvY2Z
+      ADPV/1aW9KNhBWN/Be8g3rOSWw8LGhkmY3y1nMaEDcmGQlVdYOhfbxP3tT77xTdf
+      PZgFaScW2qOGgBg6DTCXJBCu6j9+wVrOjDca7g/GKxECgYEA/C/LyjfFVvDHiE0i
+      kdh7I4OL7Mekch3xeEXdKvy3iSxQUI13gYWw57lF+AIlm4+Bz3ZghySq3DU3s66L
+      nvVBfpTrQIaaviY0YEFapjiX6szgYVWwrQo0Ea0pJOCExdo0xfPFVA71CLIFfgQT
+      R8fhaUeOv9I2rxGE9c+im7DqcBUCgYEAwwmgb5aTu7lX3kl29yI5y/4hR1iuxm3/
+      I6Hjk3HRj3+PDfSI5AgonJ3Dyqi/bpDuksifg/4l2FLppTyRpGP1A8Sa7OEmewm1
+      SfRQpfEECrOLUgmdIM/6UVD8e+ONE7jQzI9ChuEoVy73SL9C4jI1QVaTeCadvlzR
+      gSKPA+i/DyMCgYBHaE0/FC2noYQOPzEjtPWhJ7VuNVWGDp56HOY0LtzVVZvkQzps
+      jWt7IcYDJLB7bNYn5XANtD9BHTyJf0n/l5iU/Bvk6HhWkUDRZJADcxDpJlv+k6H0
+      TWhS/QIidASEdXXt+0mLtLSDYs0VUpgXAiz8f4uXGzHqvn40kDeN+DlZxQKBgCSD
+      L9rUGLIjH5UIsdHQQXu0BqzhqE6TlxknnIAk5bN0kOZu6hWuhVPUoSvWbYgYb+Fg
+      16QRNyqJUx5Q+X8KC3t6GfrQp7CO/7Zpm5OFTFlohWOFUzoqVVVV0P6seePATK6O
+      /0ha7H9t1nNzAuVvutKRj6gFqrBRlhMT0ixMLUB7AoGBANxSKKo1XF5qLBOHl6X+
+      4XHdx1lL4zdoy1FPFeW3m9vN24WD92bG3S7xjC24XGc8PbuxAxsiKp2lN0zl4ZPC
+      nPknvOGKTEpdME2tHPjKsyCA4jOkoKGsKi4YcivcFeKV5PLv1Y6K8ky4DArV82jw
+      r17GuL8zL9IgKKzgOxQZiyq1
+      -----END PRIVATE KEY-----
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None

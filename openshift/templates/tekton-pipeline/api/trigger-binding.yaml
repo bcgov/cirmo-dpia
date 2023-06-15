@@ -1,0 +1,12 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: process-apply-dpia-service
+spec:
+  params:
+  - name: environment
+    value: $(body.environment)
+  - name: application
+    value: $(body.application)
+  - name: image
+    value: $(body.image)

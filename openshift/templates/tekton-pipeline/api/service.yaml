@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: el-process-apply-dpia-service
+  namespace: aa77ab-tools
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: process-apply-dpia-service
+  ownerReferences:
+    - apiVersion: triggers.tekton.dev/v1beta1
+      kind: EventListener
+      name: process-apply-dpia-service
+      uid: a5fdbe6f-61a5-428a-9d0c-8af4428faee1
+      controller: true
+      blockOwnerDeletion: true
+spec:
+  clusterIP: 172.30.245.85
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: http-listener
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: http-metrics
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.245.85
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: dpia-deploy
+status:
+  loadBalancer: {}
