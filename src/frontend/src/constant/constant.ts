@@ -1,3 +1,4 @@
+import PIAIntakeResults from 'components/public/PIAIntakeResults';
 import { DelegatedReviewTypesEnum } from '../types/enums/delegated-review-types.enum';
 import { PiaFilterDrafterByCurrentUserEnum } from '../types/enums/pia-filter-drafter-by-current-user.enum';
 import { PiaTypesEnum } from '../types/enums/pia-types.enum';
@@ -260,4 +261,16 @@ export enum PiaSorting {
   INACTIVE = 0, // default state 0
   ASCENDING = 1,
   DESCENDING = -1,
+}
+
+interface ApprovalRoles {
+  [key: string]: string;
+}
+
+export const ApprovalRoles: ApprovalRoles = {
+  PROGRAM_MANAGER:'Program Manager / Product Owner',
+  DIRECTOR: 'Director',
+  EX_DIRECTOR: 'Executive Director',
+  MOIS: 'Ministry Chief Information Officer',
+  ADM: 'Assistant Deputy Minister'
 }

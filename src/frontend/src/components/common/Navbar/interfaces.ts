@@ -50,8 +50,9 @@ export interface INavbarItem {
         | null;
       actionFalse?:
         | {
-            link: string | null;
-            title: string | null;
+            action?: number | string | null;
+            link?: string | null;
+            title?: string | null;
           }
         | number
         | string

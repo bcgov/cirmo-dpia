@@ -45,6 +45,14 @@ export const PiaFormSideNavPages = (
     }
   };
 
+  const enableReview = (): boolean => {
+    if (pia?.hasAddedPiToDataElements === false && pia?.isNextStepsSeenForDelegatedFlow === true) {
+      return true;
+    } else {
+      return showPostIntakeTabs;
+    }
+  };
+
   const checkNextSteps = (): boolean => {
     if (
       pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id })
@@ -71,8 +79,8 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: true, // always show
       state: {
         next: {
-          condition: checkPIANonDelegateFlow(),
-          action: NextStepsDefaultPage(),
+          condition: enableReview(),
+          action: (checkPIANonDelegateFlow()) ? NextStepsDefaultPage() : 'Review',
         },
       },
     },
@@ -87,10 +95,7 @@ if it is ++ or -- operater navigate to the previous or next tab
             pia?.hasAddedPiToDataElements == true ||
             pia?.hasAddedPiToDataElements == null,
           action: NextStepsDefaultPage(),
-          actionFalse: {
-            link: '/pia/list',
-            title: 'View PIA List',
-          },
+          actionFalse: 'Review',
         },
         prev: {
           condition: true,
@@ -109,7 +114,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: showPostIntakeTabs,
+      enable: enableReview(),
     },
     {
       id: 5,
@@ -273,9 +278,28 @@ if it is ++ or -- operater navigate to the previous or next tab
                 condition: true,
                 action: 'Additional risks',
               },
+              next: {
+                condition: true,
+                action: +1,
+              }
             },
           },
         ]
       : []),
+    {
+      id: 13,
+      label: 'Review',
+      link: buildDynamicPath(routes.PIA_REVIEW, {
+        id: pia?.id,
+      }),
+      enable: enableReview(), 
+      state: {
+        prev: {
+          condition: true,
+          action: (pia?.hasAddedPiToDataElements === true || 
+            pia?.hasAddedPiToDataElements === null) ? -1 : 'PIA Intake',
+        }
+      },
+    }
   ];
 };

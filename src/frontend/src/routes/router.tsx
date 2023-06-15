@@ -22,7 +22,11 @@ import { AccuracyCorrectionAndRetention } from '../components/public/PIAFormTabs
 import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks';
 import { PiaFormPrintPreview } from '../pages/PiaFormPrintPreview';
 import PPQ from '../components/public/PIAFormTabs/ppq';
+<<<<<<< HEAD
 import { routes } from '../constant/routes';
+=======
+import PIAReview from '../components/public/PIAFormTabs/review';
+>>>>>>> d8535232 (Added review tab)
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -139,6 +143,10 @@ const Router = () => {
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PPQ />} />
               <Route path="view" element={<PPQ />} />
+            </Route>
+            <Route path="review">
+              <Route index element={<Navigate relative="path" to="view" />} />
+              <Route path="view" element={<PIAReview />} />
             </Route>
           </Route>
         </Route>

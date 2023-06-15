@@ -6,6 +6,7 @@ import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs
 import { IAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/AgreementsAndInformationBanks';
 import { IStoringPersonalInformation } from '../../components/public/PIAFormTabs/storingPersonalInformation/interfaces';
 import { IPPQ } from '../../components/public/PIAFormTabs/ppq/interfaces';
+import { IReview } from '../../components/public/PIAFormTabs/review/interfaces';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;
@@ -19,6 +20,7 @@ export interface IPiaForm extends IPiaFormIntake {
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention;
   additionalRisks?: IAdditionalRisks;
   ppq?: IPPQ;
+  review?: IReview;
   securityPersonalInformation?: ISecurityPersonalInformation;
   agreementsAndInformationBanks?: IAgreementsAndInformationBanks;
   collectionUseAndDisclosure?: ICollectionUseAndDisclosure;
