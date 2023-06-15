@@ -1,5 +1,6 @@
 const Page = require('./page');
 
+
 /**
  * sub page containing specific selectors and methods for a specific page
  */
@@ -40,8 +41,6 @@ class LoginPage extends Page {
 
     async login (username) {
         const mpoPass= process.env.mpoPass;
-        await this.loginButton.waitForClickable();
-        await this.loginButton.click();
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(mpoPass);
         await this.btnSubmit.waitForClickable();
@@ -69,8 +68,6 @@ class LoginPage extends Page {
     }
 
     async InvalidPassword (username,password) {
-        await this.loginButton.waitForClickable();
-        await this.loginButton.click();
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
         await this.btnSubmit.waitForClickable();

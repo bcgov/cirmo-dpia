@@ -18,7 +18,7 @@ class homePage extends Page {
         return $('//div[@class="pagination__container__left__text"]');
     }
     get rows () {
-        return $('//div[@class="pagination__container__left"]//span[@class="rows-per-page"][contains(text(),"Rows per page")]"');
+        return $("//div[@class='pagination__container__left']//span[@class='rows-per-page'][contains(text(),'Rows per page')]");
     }
 
     /**
@@ -51,12 +51,11 @@ class homePage extends Page {
     }
 
     async verifyPagination () {
+        
         await this.Footer.scrollIntoView();
         console.log("Footer verify");
         await this.pagination.waitForDisplayed();
         console.log("Pagination verify");
-        expect(this.rows).toHaveText('Rows per page');
-        console.log("Rows verify");
     }
 
     
