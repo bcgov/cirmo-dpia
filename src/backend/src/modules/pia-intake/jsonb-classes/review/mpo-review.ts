@@ -1,4 +1,9 @@
-import { IsBoolean, IsString } from '@nestjs/class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsOptional,
+  IsString,
+} from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
@@ -9,6 +14,26 @@ export class MpoReview {
 
   @IsString()
   reviewNote: string;
+
+  @IsString()
+  @IsOptional()
+  reviewedByDisplayName?: string;
+
+  @IsString()
+  @IsOptional()
+  reviewedByUsername?: string;
+
+  @IsString()
+  @IsOptional()
+  reviewedByGuid?: string;
+
+  @IsDateString()
+  @IsOptional()
+  reviewedAt?: Date;
+
+  @IsDateString()
+  @IsOptional()
+  reviewLastUpdatedAt?: Date;
 }
 
 export const mpoReviewMetadata: Array<IFormField<MpoReview>> = [
@@ -21,6 +46,31 @@ export const mpoReviewMetadata: Array<IFormField<MpoReview>> = [
     key: 'reviewNote',
     type: 'text',
     allowedUserTypesEdit: [UserTypesEnum.MPO],
+  },
+  {
+    key: 'reviewedByDisplayName',
+    type: 'text',
+    allowedUserTypesEdit: [], // empty array signifies that the client can't edit these fields
+  },
+  {
+    key: 'reviewedByUsername',
+    type: 'text',
+    allowedUserTypesEdit: [],
+  },
+  {
+    key: 'reviewedByGuid',
+    type: 'text',
+    allowedUserTypesEdit: [],
+  },
+  {
+    key: 'reviewedAt',
+    type: 'text',
+    allowedUserTypesEdit: [],
+  },
+  {
+    key: 'reviewLastUpdatedAt',
+    type: 'text',
+    allowedUserTypesEdit: [],
   },
 ];
 
