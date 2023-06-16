@@ -1,6 +1,7 @@
 import {
   ChangeEventHandler,
   MouseEventHandler,
+  FocusEventHandler,
   useCallback,
   useEffect,
   useRef,
@@ -23,11 +24,13 @@ interface InputTextProps {
   value?: string | null;
   placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
   onEnter?: MouseEventHandler<HTMLInputElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
   readOnly?: boolean;
+  isAccessLink?: boolean;
 }
 
 const InputText = ({
@@ -42,11 +45,13 @@ const InputText = ({
   value = '',
   placeholder = '',
   onChange = () => {},
+  onFocus = () => {},
   onEnter = () => {},
   required = false,
   labelSide = 'top',
   isDisabled = false,
   readOnly = false,
+  isAccessLink = false,
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -107,9 +112,11 @@ const InputText = ({
           value={value || ''}
           placeholder={placeholder}
           onChange={onChange}
+          onFocus={onFocus}
           className="form-control"
           required={required}
           disabled={isDisabled}
+          readOnly={isAccessLink}
           ref={inputRef}
           aria-label={inputId}
         />
