@@ -79,7 +79,7 @@ const Modal = ({
   return (
     <div className={showHideClassName} tabIndex={0} ref={modalRef}>
       <section className="modal-main">
-        <span className="modal-title"> {titleText}</span>
+        <h3 className="modal-title">{titleText}</h3>
         <div className="modal-horizontal-divider"></div>
         {children}
         {accessLink !== '' && accessLink !== undefined && (
