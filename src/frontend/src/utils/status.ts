@@ -65,6 +65,14 @@ const defaultCPOReviewModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
+const defaultFinalReviewModal: Modal = {
+  title: 'Finish review and lock PIA?',
+  description:
+    'The status will be changed to "Final Review" and this PIA will be locked. Program area roles you designated will be required to review the PIA.',
+  confirmLabel: 'Yes, finish',
+  cancelLabel: 'Cancel',
+};
+
 const defaultEmptyModal: Modal = {
   title: '',
   description: '',
@@ -256,7 +264,7 @@ export const statusList: StatusList = {
   FINAL_REVIEW: {
     title: 'Final Review',
     class: 'statusBlock__finalReview',
-    modal: defaultEmptyModal,
+    modal: defaultFinalReviewModal,
     Privileges: {
       MPO: {
         changeStatus: [
