@@ -1,6 +1,6 @@
 /* Variables
  * The variables here define the default branding of BC GOV. This includes properties like color, font, fontsize, spacing and more.
- * Varabiles naming must follow '$component-state-property-size' convention. 
+ * Varabiles naming must follow '$component-state-property-size' convention.
  * Ex: $nav-link-hover-color or $close-link-color-sm
  */
 
@@ -40,7 +40,19 @@ $bg-successBanner: #dff0d8;
 $bg-infoBanner: #d9eaf7;
 $bg-warningBanner: #f9f1c6;
 $bg-errorBanner: #f2dede;
+
+/* Status Block colours */
 $bg-cpoReview: #ece5ff;
+
+$fg-mpoReview: #1a5a96;
+
+$bg-finalReview: #cfd7ff;
+$fg-finalReview: #0020cb;
+
+$fg-editInProgress: #6c4a00;
+
+$bg-incomplete: #f2f2f2;
+$fg-incomplete: #606060;
 
 /* Semantic colours */
 $error: #d8292f;

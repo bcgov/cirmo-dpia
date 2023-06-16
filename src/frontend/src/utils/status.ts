@@ -74,7 +74,7 @@ const defaultEmptyModal: Modal = {
 
 export const statusList: StatusList = {
   MPO_REVIEW: {
-    title: 'MPO REVIEW',
+    title: 'MPO Review',
     class: 'statusBlock__MPOReview',
     banner: BannerText.MPOReviewStatusCalloutText.Drafter.en,
     modal: defaultMPOReviewModal,
@@ -115,7 +115,7 @@ export const statusList: StatusList = {
     },
   },
   INCOMPLETE: {
-    title: 'INCOMPLETE',
+    title: 'Incomplete',
     class: 'statusBlock__incomplete',
     banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
     modal: defaultIncompleteModal,
@@ -152,7 +152,7 @@ export const statusList: StatusList = {
     },
   },
   COMPLETED: {
-    title: 'COMPLETED',
+    title: 'Completed',
     class: 'statusBlock__success',
     modal: defaultEmptyModal,
     Privileges: {
@@ -175,7 +175,7 @@ export const statusList: StatusList = {
     },
   },
   EDIT_IN_PROGRESS: {
-    title: 'EDIT IN PROGRESS',
+    title: 'Edit in progress',
     class: 'statusBlock__edit',
     modal: {
       title: 'Change status to “Edit in progress”?',
@@ -220,7 +220,7 @@ export const statusList: StatusList = {
     },
   },
   CPO_REVIEW: {
-    title: 'CPO REVIEW',
+    title: 'CPO Review',
     banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
     class: 'statusBlock__CPOReview',
     modal: defaultCPOReviewModal,
@@ -248,6 +248,91 @@ export const statusList: StatusList = {
           {
             status: 'EDIT_IN_PROGRESS',
             modal: defaultEditInProgressModal,
+          },
+        ],
+      },
+    },
+  },
+  FINAL_REVIEW: {
+    title: 'Final Review',
+    class: 'statusBlock__finalReview',
+    modal: defaultEmptyModal,
+    Privileges: {
+      MPO: {
+        changeStatus: [
+          {
+            status: 'INCOMPLETE',
+            modal: {
+              title: 'Unlock PIA? Reviews will not be saved.',
+              description:
+                'Changing status to Incomplete will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: {
+              title: 'Unlock PIA? Reviews will not be saved.',
+              description:
+                'Changing status to Edit in progress will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+          {
+            status: 'MPO_REVIEW',
+            modal: {
+              title: 'Unlock PIA?',
+              description:
+                'The status will be changed to "MPO Review" and this PIA will be unlocked.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+        ],
+      },
+      CPO: {
+        changeStatus: [
+          {
+            status: 'CPO_REVIEW',
+            modal: {
+              title: 'Unlock PIA?',
+              description:
+                'The status will be changed to "CPO Review" and this PIA will be unlocked.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+          {
+            status: 'INCOMPLETE',
+            modal: {
+              title: 'Unlock PIA? Reviews will not be saved.',
+              description:
+                'Changing status to Incomplete will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: {
+              title: 'Unlock PIA? Reviews will not be saved.',
+              description:
+                'Changing status to Edit in progress will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
+          },
+          {
+            status: 'MPO_REVIEW',
+            modal: {
+              title: 'Unlock PIA?',
+              description:
+                'The status will be changed to "MPO Review" and this PIA will be unlocked.',
+              confirmLabel: 'Yes, unlock',
+              cancelLabel: 'Cancel',
+            },
           },
         ],
       },
