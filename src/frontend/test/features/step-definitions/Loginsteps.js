@@ -44,3 +44,19 @@ When(/^I login with user (\w+) and password (.+)$/, async (username, invalidpass
 Then(/^I am able to verify BC Logo$/, async () => {
 	await LoginPage.verifyBCLogo()
 });
+
+Then(/^I click on "([^"]*)" Button$/, async(button) => {
+    await LoginPage.clickButtonDiv(button)
+});
+
+Then(/^I click on "([^"]*)" button$/, async(button) => {
+	await LoginPage.clickButton(button)
+});
+
+Then(/^I see "([^"]*)" Button$/, async(button) => {
+	await LoginPage.clickButtonDiv(button)
+});
+
+When(/^I get the currentURL of the page$/, async() => {
+	await LoginPage.getURL();
+});

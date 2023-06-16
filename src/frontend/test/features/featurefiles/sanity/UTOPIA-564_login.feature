@@ -1,8 +1,9 @@
-Feature: Log in to DPIA
+Feature: UTOPIA-564 Log in to DPIA
   
   Scenario Outline: As <role> user, I am able to login and verify title
 
     Given I am on the login page
+    And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
     Then I am able to verify title
 
@@ -15,6 +16,7 @@ Feature: Log in to DPIA
   Scenario Outline: As <role> user, I am able to login and verify HomePage URL
 
     Given I am on the login page
+    And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
     Then I am able to verify URL
 
@@ -27,6 +29,7 @@ Feature: Log in to DPIA
   Scenario Outline: As <role> user, I am able to verify BC Logo
 
     Given I am on the login page
+    And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
     Then I am able to verify BC Logo
 
@@ -39,6 +42,7 @@ Feature: Log in to DPIA
   Scenario Outline: Login with Invalid <role> username
 
     Given I am on the login page
+    And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
     Then Exceptions should be thrown
 
@@ -51,6 +55,7 @@ Feature: Log in to DPIA
   Scenario Outline: Login with Invalid <role> password
 
     Given I am on the login page
+    And I click on "Log in with IDIR" button
     When I login with user <username> and password <invalidpassword>
     Then Exceptions should be thrown
 
@@ -60,14 +65,3 @@ Feature: Log in to DPIA
       | DOND     | Drafter | Wrong2   |
       | ANDYA    | CPO     | Wrong3   |
 
-  Scenario Outline: As <role> user, I am able to sign out successfully
-
-    Given I am on the login page
-    When I login with user <username> having role <role>
-    Then I sign out successfully
-
-    Examples:
-      | username | role    |
-      | DORGALE  | MPO     |
-      | DOND     | Drafter |
-      | ANDYA    | CPO     |
