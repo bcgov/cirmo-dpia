@@ -74,6 +74,8 @@ const Modal = ({
     ? 'modal display-block '
     : 'modal display-none';
 
+  const handleFocusSelect = (e: any) => e.target.select();
+
   return (
     <div className={showHideClassName} tabIndex={0} ref={modalRef}>
       <section className="modal-main">
@@ -87,7 +89,8 @@ const Modal = ({
               type="text"
               value={accessLink}
               className="w-75"
-              isDisabled
+              onFocus={handleFocusSelect}
+              isAccessLink
             />
           </div>
         )}
