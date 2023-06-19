@@ -52,6 +52,7 @@ import {
   inviteEntityMock,
 } from 'test/util/mocks/data/invites.mock';
 import { inviteeEntityMock } from 'test/util/mocks/data/invitee.mock';
+import { UserTypesEnum } from 'src/common/enums/users.enum';
 
 /**
  * @Description
@@ -2349,6 +2350,198 @@ describe('PiaIntakeService', () => {
       await expect(
         service.update(id, updatePiaIntakeDto, user, userRoles),
       ).resolves.not.toThrow();
+    });
+
+    describe(`validateStatusChange method`, () => {
+      it('succeeds to delete review section if CPO changes status from CPO_Review to INCOMPLETE', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+        const storedValue: PiaIntakeEntity = {
+          ...piaIntakeEntityMock,
+          review: {
+            // random review to be deleted
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD',
+            },
+            programArea: {
+              selectedRoles: ['Manager'],
+            },
+          },
+          saveId: 10,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        };
+
+        const updatedValue: UpdatePiaIntakeDto = {
+          status: PiaIntakeStatusEnum.INCOMPLETE,
+          saveId: 10,
+          review: {
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+            programArea: {
+              selectedRoles: ['Manager2'],
+            },
+          },
+        };
+
+        await service.validateStatusChange(updatedValue, storedValue, userType);
+
+        expect(updatedValue.review).toBe(null); // explicitly updating review field to null
+      });
+
+      it('succeeds to delete review section if CPO changes status from CPO_Review to EDIT_IN_PROGRESS', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+        const storedValue: PiaIntakeEntity = {
+          ...piaIntakeEntityMock,
+          review: {
+            // random review to be deleted
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD',
+            },
+            programArea: {
+              selectedRoles: ['Manager'],
+            },
+          },
+          saveId: 10,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        };
+
+        const updatedValue: UpdatePiaIntakeDto = {
+          status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+          saveId: 10,
+          review: {
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+            programArea: {
+              selectedRoles: ['Manager2'],
+            },
+          },
+        };
+
+        await service.validateStatusChange(updatedValue, storedValue, userType);
+
+        expect(updatedValue.review).toBe(null);
+      });
+
+      it('succeeds and DOES NOT delete review section if CPO changes status from CPO_Review to MPO_REVIEW', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+        const storedValue: PiaIntakeEntity = {
+          ...piaIntakeEntityMock,
+          review: {
+            // random review to be deleted
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD',
+            },
+            programArea: {
+              selectedRoles: ['Manager'],
+            },
+          },
+          saveId: 10,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        };
+
+        const updatedValue: UpdatePiaIntakeDto = {
+          status: PiaIntakeStatusEnum.MPO_REVIEW,
+          saveId: 10,
+          review: {
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+            programArea: {
+              selectedRoles: ['Manager2'],
+            },
+          },
+        };
+
+        await service.validateStatusChange(updatedValue, storedValue, userType);
+
+        expect(updatedValue.review).not.toBe(null);
+      });
+
+      it('succeeds and DOES NOT delete review section if user OTHER THAN CPO changes status from CPO_Review to INCOMPLETE', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
+
+        const storedValue: PiaIntakeEntity = {
+          ...piaIntakeEntityMock,
+          review: {
+            // random review to be deleted
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD',
+            },
+            programArea: {
+              selectedRoles: ['Manager'],
+            },
+          },
+          saveId: 10,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        };
+
+        const updatedValue: UpdatePiaIntakeDto = {
+          status: PiaIntakeStatusEnum.INCOMPLETE,
+          saveId: 10,
+          review: {
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+            programArea: {
+              selectedRoles: ['Manager2'],
+            },
+          },
+        };
+
+        await service.validateStatusChange(updatedValue, storedValue, userType);
+
+        expect(updatedValue.review).not.toBe(null);
+      });
+
+      it('succeeds and DOES NOT delete review section if user OTHER THAN CPO changes status from CPO_Review to EDIT_IN_PROGRESS', async () => {
+        const userType: Array<UserTypesEnum> = [];
+
+        const storedValue: PiaIntakeEntity = {
+          ...piaIntakeEntityMock,
+          review: {
+            // random review to be deleted
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD',
+            },
+            programArea: {
+              selectedRoles: ['Manager'],
+            },
+          },
+          saveId: 10,
+          status: PiaIntakeStatusEnum.CPO_REVIEW,
+        };
+
+        const updatedValue: UpdatePiaIntakeDto = {
+          status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+          saveId: 10,
+          review: {
+            mpo: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+            programArea: {
+              selectedRoles: ['Manager2'],
+            },
+          },
+        };
+
+        await service.validateStatusChange(updatedValue, storedValue, userType);
+
+        expect(updatedValue.review).not.toBe(null);
+      });
     });
   });
 
