@@ -2353,8 +2353,8 @@ describe('PiaIntakeService', () => {
     });
 
     describe(`validateStatusChange method`, () => {
-      it('succeeds to delete review section if CPO changes status from CPO_Review to INCOMPLETE', async () => {
-        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+      it('succeeds to delete review section if MPO changes status from FINAL_REVIEW to INCOMPLETE', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
 
         const storedValue: PiaIntakeEntity = {
           ...piaIntakeEntityMock,
@@ -2369,7 +2369,7 @@ describe('PiaIntakeService', () => {
             },
           },
           saveId: 10,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: PiaIntakeStatusEnum.FINAL_REVIEW,
         };
 
         const updatedValue: UpdatePiaIntakeDto = {
@@ -2391,8 +2391,8 @@ describe('PiaIntakeService', () => {
         expect(updatedValue.review).toBe(null); // explicitly updating review field to null
       });
 
-      it('succeeds to delete review section if CPO changes status from CPO_Review to EDIT_IN_PROGRESS', async () => {
-        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+      it('succeeds to delete review section if MPO changes status from FINAL_REVIEW to EDIT_IN_PROGRESS', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
 
         const storedValue: PiaIntakeEntity = {
           ...piaIntakeEntityMock,
@@ -2407,7 +2407,7 @@ describe('PiaIntakeService', () => {
             },
           },
           saveId: 10,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: PiaIntakeStatusEnum.FINAL_REVIEW,
         };
 
         const updatedValue: UpdatePiaIntakeDto = {
@@ -2429,8 +2429,8 @@ describe('PiaIntakeService', () => {
         expect(updatedValue.review).toBe(null);
       });
 
-      it('succeeds and DOES NOT delete review section if CPO changes status from CPO_Review to MPO_REVIEW', async () => {
-        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+      it('succeeds and DOES NOT delete review section if MPO changes status from FINAL_REVIEW to MPO_REVIEW', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
 
         const storedValue: PiaIntakeEntity = {
           ...piaIntakeEntityMock,
@@ -2445,7 +2445,7 @@ describe('PiaIntakeService', () => {
             },
           },
           saveId: 10,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: PiaIntakeStatusEnum.FINAL_REVIEW,
         };
 
         const updatedValue: UpdatePiaIntakeDto = {
@@ -2467,8 +2467,8 @@ describe('PiaIntakeService', () => {
         expect(updatedValue.review).not.toBe(null);
       });
 
-      it('succeeds and DOES NOT delete review section if user OTHER THAN CPO changes status from CPO_Review to INCOMPLETE', async () => {
-        const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
+      it('succeeds and DOES NOT delete review section if user OTHER THAN MPO changes status from FINAL_REVIEW to INCOMPLETE', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
 
         const storedValue: PiaIntakeEntity = {
           ...piaIntakeEntityMock,
@@ -2483,7 +2483,7 @@ describe('PiaIntakeService', () => {
             },
           },
           saveId: 10,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: PiaIntakeStatusEnum.FINAL_REVIEW,
         };
 
         const updatedValue: UpdatePiaIntakeDto = {
@@ -2505,8 +2505,8 @@ describe('PiaIntakeService', () => {
         expect(updatedValue.review).not.toBe(null);
       });
 
-      it('succeeds and DOES NOT delete review section if user OTHER THAN CPO changes status from CPO_Review to EDIT_IN_PROGRESS', async () => {
-        const userType: Array<UserTypesEnum> = [];
+      it('succeeds and DOES NOT delete review section if user OTHER THAN MPO changes status from FINAL_REVIEW to EDIT_IN_PROGRESS', async () => {
+        const userType: Array<UserTypesEnum> = [UserTypesEnum.DRAFTER];
 
         const storedValue: PiaIntakeEntity = {
           ...piaIntakeEntityMock,
@@ -2521,7 +2521,7 @@ describe('PiaIntakeService', () => {
             },
           },
           saveId: 10,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: PiaIntakeStatusEnum.FINAL_REVIEW,
         };
 
         const updatedValue: UpdatePiaIntakeDto = {

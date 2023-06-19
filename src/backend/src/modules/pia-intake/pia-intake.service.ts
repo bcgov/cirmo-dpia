@@ -638,8 +638,8 @@ export class PiaIntakeService {
     userType: UserTypesEnum[],
   ) {
     if (
-      userType.includes(UserTypesEnum.CPO) &&
-      storedValue?.status === PiaIntakeStatusEnum.CPO_REVIEW &&
+      userType.includes(UserTypesEnum.MPO) &&
+      storedValue?.status === PiaIntakeStatusEnum.FINAL_REVIEW &&
       (updatedValue?.status === PiaIntakeStatusEnum.INCOMPLETE ||
         updatedValue?.status === PiaIntakeStatusEnum.EDIT_IN_PROGRESS)
     ) {
