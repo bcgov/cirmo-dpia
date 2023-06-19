@@ -11,6 +11,7 @@ import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { is } from 'cypress/types/bluebird';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
