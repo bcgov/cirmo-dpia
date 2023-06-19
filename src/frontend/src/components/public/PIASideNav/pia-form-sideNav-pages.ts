@@ -11,6 +11,7 @@ import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { is } from 'cypress/types/bluebird';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
@@ -50,7 +51,16 @@ export const PiaFormSideNavPages = (
       pia?.hasAddedPiToDataElements === false &&
       pia?.isNextStepsSeenForDelegatedFlow === true
     ) {
-      return true;
+      if (isMPORole()) {
+        if (!isEditMode) {
+          /* check if the status has review priviliges */
+          return true;
+        } else return false;
+        /* only show in view mode */
+      } else {
+        /* not an MPO user */
+        return false;
+      }
     } else {
       return showPostIntakeTabs;
     }
