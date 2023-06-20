@@ -40,16 +40,23 @@
 }
 
 .statusBlock__incomplete {
-  background-color: $bg-white;
+  background-color: $bg-incomplete;
+  color: $fg-incomplete;
 }
 
 .statusBlock__MPOReview {
   background-color: $bg-infoBanner;
+  color: $fg-mpoReview;
 }
 
 .statusBlock__CPOReview {
   background-color: $bg-cpoReview;
   color: $review;
+}
+
+.statusBlock__finalReview {
+  background-color: $bg-finalReview;
+  color: $fg-finalReview;
 }
 
 .statusBlock__completed {
@@ -62,4 +69,5 @@
 
 .statusBlock__edit {
   background-color: $bg-warningBanner;
+  color: $fg-editInProgress;
 }
