@@ -270,6 +270,6 @@ export const ApprovalRoles: IapprovalRoles = {
   PROGRAM_MANAGER: 'Program Manager / Product Owner',
   DIRECTOR: 'Director',
   EX_DIRECTOR: 'Executive Director',
-  MOIS: 'Ministry Chief Information Officer',
+  MCIO: 'Ministry Chief Information Officer',
   ADM: 'Assistant Deputy Minister',
 };

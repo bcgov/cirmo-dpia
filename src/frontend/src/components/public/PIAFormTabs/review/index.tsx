@@ -23,7 +23,7 @@ const PIAReview = () => {
       mpo: {
         isAcknowledged: false,
         reviewNote: '',
-        ReviewedBy: '',
+        //reviewedBy: '',
         //ReviewedByGUID: '',
         //DateReviewed: '',
       },
@@ -57,7 +57,7 @@ const PIAReview = () => {
         saveId: data.saveId,
       });
       if (data.review) {
-          setReviewForm(Object(data).review);
+        setReviewForm(Object(data).review);
       }
     };
     getPIADATA();

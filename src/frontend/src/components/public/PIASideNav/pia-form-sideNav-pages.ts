@@ -49,7 +49,7 @@ export const PiaFormSideNavPages = (
     if (
       pia?.hasAddedPiToDataElements === false &&
       pia?.isNextStepsSeenForDelegatedFlow === true
-    ) {
+    ) { // This is for delegated review
       if (isMPORole()) {
         if (!isEditMode) {
           /* check if the status has review priviliges */
@@ -60,7 +60,7 @@ export const PiaFormSideNavPages = (
         /* not an MPO user */
         return false;
       }
-    } else {
+    } else { // This is for full PIA
       return showPostIntakeTabs;
     }
   };
