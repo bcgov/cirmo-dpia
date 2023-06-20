@@ -61,6 +61,8 @@ export class PiaIntakeService {
 
     this.validateJsonbFields(createPiaIntakeDto, null, accessType);
 
+    this.validateStatusChange(createPiaIntakeDto, null, accessType);
+
     // once validated, updated the review fields
     this.updateReviewSubmissionFields(
       createPiaIntakeDto?.review,
@@ -117,6 +119,9 @@ export class PiaIntakeService {
 
     // validate jsonb fields for role access
     this.validateJsonbFields(updatePiaIntakeDto, existingRecord, accessType);
+
+    // validate status changes and actions
+    this.validateStatusChange(updatePiaIntakeDto, existingRecord, accessType);
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
@@ -622,6 +627,25 @@ export class PiaIntakeService {
       updatedValue[key].reviewLastUpdatedAt = new Date();
     }
   };
+
+  /**
+   * @method validateStatusChange
+   * TODO: this is a temp method. The status transitions will be dealt properly in the subsequent tasks
+   */
+  validateStatusChange(
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
+    userType: UserTypesEnum[],
+  ) {
+    if (
+      userType.includes(UserTypesEnum.MPO) &&
+      storedValue?.status === PiaIntakeStatusEnum.FINAL_REVIEW &&
+      (updatedValue?.status === PiaIntakeStatusEnum.INCOMPLETE ||
+        updatedValue?.status === PiaIntakeStatusEnum.EDIT_IN_PROGRESS)
+    ) {
+      updatedValue.review = null;
+    }
+  }
 
   /**
    * @method validateJsonbFields
