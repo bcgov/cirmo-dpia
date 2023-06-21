@@ -36,7 +36,7 @@ import { validateRoleForPPq } from './jsonb-classes/ppq';
 import { InvitesService } from '../invites/invites.service';
 import { InviteesService } from '../invitees/invitees.service';
 import { Review, validateRoleForReview } from './jsonb-classes/review';
-import { handlePiaStatusChange } from './service-methods/handle-pia-status-change';
+import { handlePiaStatusChange } from './helper/handle-pia-status-change';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 
 @Injectable()

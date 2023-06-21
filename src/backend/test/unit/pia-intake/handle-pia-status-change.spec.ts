@@ -4,7 +4,7 @@ import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
-import { handlePiaStatusChange } from 'src/modules/pia-intake/service-methods/handle-pia-status-change';
+import { handlePiaStatusChange } from 'src/modules/pia-intake/helper/handle-pia-status-change';
 import { piaIntakeEntityMock } from 'test/util/mocks/data/pia-intake.mock';
 
 describe(`handlePiaStatusChange method`, () => {

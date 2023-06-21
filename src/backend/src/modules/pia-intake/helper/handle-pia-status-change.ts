@@ -10,7 +10,7 @@ import { CreatePiaIntakeDto } from '../dto/create-pia-intake.dto';
 import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
-import { statusMetadata } from './status-metadata';
+import { statusMetadata } from '../metadata/pia-status.metadata';
 
 const throwStatusChangeError = (errorMessage?: string) => {
   const message = errorMessage || 'Cannot change status of the PIA';
