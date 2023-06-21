@@ -36,6 +36,8 @@ import { validateRoleForPPq } from './jsonb-classes/ppq';
 import { InvitesService } from '../invites/invites.service';
 import { InviteesService } from '../invitees/invitees.service';
 import { Review, validateRoleForReview } from './jsonb-classes/review';
+import { handlePiaStatusChange } from './service-methods/handle-pia-status-change';
+import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 
 @Injectable()
 export class PiaIntakeService {
@@ -61,7 +63,11 @@ export class PiaIntakeService {
 
     this.validateJsonbFields(createPiaIntakeDto, null, accessType);
 
-    this.validateStatusChange(createPiaIntakeDto, null, accessType);
+    // fetch PIA TYPE
+    const piaType = this.getPiaType(createPiaIntakeDto, null);
+
+    // validate status changes and validations
+    handlePiaStatusChange(createPiaIntakeDto, null, accessType, piaType);
 
     // once validated, updated the review fields
     this.updateReviewSubmissionFields(
@@ -120,8 +126,16 @@ export class PiaIntakeService {
     // validate jsonb fields for role access
     this.validateJsonbFields(updatePiaIntakeDto, existingRecord, accessType);
 
-    // validate status changes and actions
-    this.validateStatusChange(updatePiaIntakeDto, existingRecord, accessType);
+    // fetch PIA TYPE
+    const piaType = this.getPiaType(updatePiaIntakeDto, existingRecord);
+
+    // validate status changes and validations
+    handlePiaStatusChange(
+      updatePiaIntakeDto,
+      existingRecord,
+      accessType,
+      piaType,
+    );
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
@@ -628,22 +642,16 @@ export class PiaIntakeService {
     }
   };
 
-  /**
-   * @method validateStatusChange
-   * TODO: this is a temp method. The status transitions will be dealt properly in the subsequent tasks
-   */
-  validateStatusChange(
+  getPiaType(
     updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
     storedValue: PiaIntakeEntity,
-    userType: UserTypesEnum[],
   ) {
-    if (
-      userType.includes(UserTypesEnum.MPO) &&
-      storedValue?.status === PiaIntakeStatusEnum.FINAL_REVIEW &&
-      (updatedValue?.status === PiaIntakeStatusEnum.INCOMPLETE ||
-        updatedValue?.status === PiaIntakeStatusEnum.EDIT_IN_PROGRESS)
-    ) {
-      updatedValue.review = null;
+    const updatedEntity: PiaIntakeEntity = { ...storedValue, ...updatedValue };
+
+    if (updatedEntity?.hasAddedPiToDataElements === false) {
+      return PiaTypesEnum.DELEGATE_REVIEW;
+    } else {
+      return PiaTypesEnum.STANDARD;
     }
   }
 
