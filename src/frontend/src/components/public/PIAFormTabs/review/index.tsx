@@ -64,20 +64,6 @@ const PIAReview = () => {
   }, [id]);
   // passing updated data to parent for auto-save to work efficiently only if there are changes
 
-  const submitData = async () => {
-    const updatePia: IPiaForm = await HttpRequest.patch(
-      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
-      { id: pia.id, review: reviewForm, saveId: pia.saveId },
-    );
-    setPia({
-      id: updatePia.id,
-      saveId: updatePia.saveId,
-    });
-    if (updatePia.review) {
-      setReviewForm(Object(updatePia).review);
-    }
-    // piaStateChangeHandler(reviewForm, 'review');
-  };
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
@@ -120,7 +106,6 @@ const PIAReview = () => {
                       reviewForm.programArea.selectedRoles,
                       'programArea.selectedRoles',
                     );
-                    // submitData();
                     piaStateChangeHandler(reviewForm, 'review');
                   }}
                 >
@@ -149,7 +134,6 @@ const PIAReview = () => {
                       reviewForm.programArea.selectedRoles,
                       'programArea.selectedRoles',
                     );
-                    // submitData();
                     piaStateChangeHandler(reviewForm, 'review');
                   }}
                 >
@@ -183,7 +167,6 @@ const PIAReview = () => {
                                 reviewForm.programArea.selectedRoles,
                                 'programArea.selectedRoles',
                               );
-                              // submitData();
                               piaStateChangeHandler(reviewForm, 'review');
                             }}
                           >
@@ -257,7 +240,6 @@ const PIAReview = () => {
                           reviewForm.mpo.reviewNote,
                           'mpo.reviewNote',
                         );
-                        // submitData();
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
@@ -270,7 +252,6 @@ const PIAReview = () => {
                           reviewForm.mpo.reviewNote,
                           'mpo.reviewNote',
                         );
-                        // submitData();
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
