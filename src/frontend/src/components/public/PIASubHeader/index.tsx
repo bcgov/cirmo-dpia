@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { PiaStatuses } from '../../../constant/constant';
 import Modal from '../../common/Modal';
@@ -13,6 +13,7 @@ import { getGUID, roleCheck } from '../../../utils/helper.util';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
+import { SubmitButtonTextEnum } from '../../../pages/PIAForm';
 
 function PIASubHeader({
   pia,
@@ -49,6 +50,9 @@ function PIASubHeader({
 
   const accessLink = `${protocol}//${host}/pia/${pia.id}?invite=${accessCode}`;
 
+  const [enableFinalReview, setEnableFinalReview] = useState<boolean>(false);
+  const [disableSubmitButton, setDisableSubmitButton] =
+    useState<boolean>(false);
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
     setModalParagraph(Object(modal).description);
@@ -95,6 +99,44 @@ function PIASubHeader({
     setModalConfirmLabel(Messages.GenerateAccessLinkModal.confirmLabel);
     setModalCancelLabel(Messages.GenerateAccessLinkModal.cancelLabel);
   };
+  useEffect(() => {
+    if (
+      pia?.status === PiaStatuses.MPO_REVIEW &&
+      pia?.hasAddedPiToDataElements === false &&
+      pia?.review?.programArea.selectedRoles &&
+      pia?.review?.programArea.selectedRoles.length > 0 &&
+      pia?.review?.mpo.isAcknowledged === true &&
+      pia?.review?.mpo.reviewNote !== ''
+    ) {
+      setEnableFinalReview(true);
+    } else {
+      setEnableFinalReview(false);
+    }
+  }, [
+    pia?.hasAddedPiToDataElements,
+    pia?.review?.mpo.isAcknowledged,
+    pia?.review?.mpo.reviewNote,
+    pia?.review?.programArea.selectedRoles,
+    pia?.review?.programArea.selectedRoles.length,
+    pia?.status,
+  ]);
+  useEffect(() => {
+    if (
+      mode === 'view' &&
+      isValidationFailed &&
+      primaryButtonText === SubmitButtonTextEnum.FORM
+    ) {
+      setDisableSubmitButton(true);
+    }
+    if (
+      enableFinalReview === false &&
+      primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINAL_REVIEW
+    ) {
+      setDisableSubmitButton(true);
+    } else {
+      setDisableSubmitButton(false);
+    }
+  }, [enableFinalReview, isValidationFailed, mode, primaryButtonText]);
 
   const showSubmitButton = () => {
     const owner = getGUID() === pia.createdByGuid ? true : false;
@@ -212,7 +254,7 @@ function PIASubHeader({
                 onSubmitClick(e);
               }}
               className={`mx-1 bcgovbtn bcgovbtn__primary`}
-              disabled={mode === 'view' && isValidationFailed}
+              disabled={disableSubmitButton}
               aria-label="Submit Button"
             >
               {primaryButtonText}

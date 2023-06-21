@@ -48,6 +48,7 @@ export interface PiaValidationMessage {
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
+  DELEGATE_FINAL_REVIEW = 'Final review',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -102,7 +103,7 @@ const PIAFormPage = () => {
 
   const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
     // DO NOT allow state changes in the view mode
-    if (mode === 'view') return;
+    if (mode === 'view' && !pathname?.split('/').includes('review')) return;
 
     setPia((latest) => ({
       ...latest,
@@ -221,12 +222,17 @@ const PIAFormPage = () => {
     const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
 
     // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (onIntakePage || onNewPiaPage) {
+    if (
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      pia.hasAddedPiToDataElements === false
+    ) {
+      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINAL_REVIEW);
+    } else if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
       setSubmitButtonText(SubmitButtonTextEnum.FORM);
     }
-  }, [mode, pathname, pia?.id]);
+  }, [mode, pathname, pia.hasAddedPiToDataElements, pia?.id, pia.status]);
 
   // DO NOT allow user to edit in the MPO review status.
   const accessControl = useCallback(() => {
