@@ -48,6 +48,7 @@ export interface PiaValidationMessage {
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
+  DELEGATE_FINAL_REVIEW = 'Final review',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -102,7 +103,7 @@ const PIAFormPage = () => {
 
   const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
     // DO NOT allow state changes in the view mode
-    if (mode === 'view') return;
+    if (mode === 'view' && !pathname?.split('/').includes('review')) return;
 
     setPia((latest) => ({
       ...latest,
@@ -221,12 +222,17 @@ const PIAFormPage = () => {
     const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
 
     // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (onIntakePage || onNewPiaPage) {
+    if (
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      pia.hasAddedPiToDataElements === false
+    ) {
+      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINAL_REVIEW);
+    } else if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
       setSubmitButtonText(SubmitButtonTextEnum.FORM);
     }
-  }, [mode, pathname, pia?.id]);
+  }, [mode, pathname, pia.hasAddedPiToDataElements, pia?.id, pia.status]);
 
   // DO NOT allow user to edit in the MPO review status.
   const accessControl = useCallback(() => {
@@ -310,6 +316,21 @@ const PIAFormPage = () => {
           Messages.Modal.SubmitForCPOReview.ParagraphText.en,
         );
         setPiaModalButtonValue('SubmitForCPOReview');
+        break;
+      case 'SubmitDelegateForFinalReview':
+        setPiaModalConfirmLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.ConfirmLabel.en,
+        );
+        setPiaModalCancelLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.CancelLabel.en,
+        );
+        setPiaModalTitleText(
+          Messages.Modal.SubmitDelegateForFinalReview.TitleText.en,
+        );
+        setPiaModalParagraph(
+          Messages.Modal.SubmitDelegateForFinalReview.ParagraphText.en,
+        );
+        setPiaModalButtonValue('SubmitDelegateForFinalReview');
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
@@ -553,6 +574,20 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'SubmitDelegateForFinalReview') {
+        const updatedPia = await upsertAndUpdatePia({
+          // here not sure what status for this one, need to discuss
+
+          status: PiaStatuses.FINAL_REVIEW,
+        });
+
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -600,7 +635,11 @@ const PIAFormPage = () => {
       handleShowModal('submitPiaIntake');
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        handleShowModal('SubmitForCPOReview');
+        if (pia?.hasAddedPiToDataElements === false) {
+          handleShowModal('SubmitDelegateForFinalReview');
+        } else {
+          handleShowModal('SubmitForCPOReview');
+        }
       } else {
         handleShowModal('submitPiaForm');
       }

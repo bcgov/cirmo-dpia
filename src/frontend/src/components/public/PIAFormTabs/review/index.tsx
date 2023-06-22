@@ -3,7 +3,7 @@ import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles } from '../../../../constant/constant';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -11,10 +11,21 @@ import { HttpRequest } from '../../../../utils/http-request.util';
 import { API_ROUTES } from '../../../../constant/apiRoutes';
 import { useParams } from 'react-router-dom';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
+import {
+  IPiaFormContext,
+  PiaFormContext,
+} from '../../../../contexts/PiaFormContext';
+import { setNestedReactState } from '../../../../utils/object-modification.util';
+import { getGUID } from '../../../../utils/helper.util';
+import { AppStorage } from '../../../../utils/storage';
 
 const PIAReview = () => {
   const { id } = useParams();
-
+  const { piaStateChangeHandler } = useContext<IPiaFormContext>(PiaFormContext);
+  const [pia, setPia] = useState<IPiaForm>({
+    id: Number(id),
+    saveId: 0,
+  });
   const initialFormState: IReview = useMemo(
     () => ({
       programArea: {
@@ -23,28 +34,18 @@ const PIAReview = () => {
       mpo: {
         isAcknowledged: false,
         reviewNote: '',
-        //reviewedBy: '',
-        //reviewedByGUID: '',
-        //dateReviewed: '',
+        reviewedBy: '',
+        reviewedByGUID: '',
+        dateReviewed: '',
       },
     }),
     [],
   );
 
   const [reviewForm, setReviewForm] = useState<IReview>(initialFormState);
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
-  const [pia, setPia] = useState<IPiaForm>({ id: Number(id), saveId: 0 });
-
-  const submitData = async () => {
-    const Updatepia: IPiaForm = await HttpRequest.patch(
-      API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${id}`),
-      { id: pia.id, review: reviewForm, saveId: pia.saveId },
-    );
-    setPia(Updatepia);
+  const stateChangeHandler = (value: any, path: string) => {
+    setNestedReactState(setReviewForm, path, value);
   };
-
-  // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     const getPIADATA = async () => {
       const piaData = await HttpRequest.get(
@@ -61,18 +62,13 @@ const PIAReview = () => {
     };
     getPIADATA();
   }, [id]);
+  // passing updated data to parent for auto-save to work efficiently only if there are changes
 
-  const addApprovalRole = (role: string) => {
-    if (role.trim() !== '') {
-      if (!reviewForm.programArea.selectedRoles) {
-        reviewForm.programArea.selectedRoles = [];
-      }
-      reviewForm.programArea.selectedRoles.push(role);
-      setReviewForm({ ...reviewForm });
-      submitData();
-    }
-  };
-
+  const [rolesSelect, setRolesSelect] = useState<string>('');
+  const [rolesInput, setRolesInput] = useState<string>('');
+  const [reviewNote, setReviewNote] = useState<string>(
+    reviewForm.mpo.reviewNote || '',
+  );
   return (
     <>
       <section>
@@ -102,7 +98,15 @@ const PIAReview = () => {
                 <button
                   className="bcgovbtn bcgovbtn__secondary mt-3"
                   onClick={() => {
-                    addApprovalRole(ApprovalRoles[rolesSelect]);
+                    reviewForm.programArea.selectedRoles.push(
+                      ApprovalRoles[rolesSelect],
+                    );
+                    setRolesSelect('');
+                    stateChangeHandler(
+                      reviewForm.programArea.selectedRoles,
+                      'programArea.selectedRoles',
+                    );
+                    piaStateChangeHandler(reviewForm, 'review');
                   }}
                 >
                   Add
@@ -124,7 +128,13 @@ const PIAReview = () => {
                 <button
                   className="bcgovbtn bcgovbtn__secondary mt-3"
                   onClick={() => {
-                    addApprovalRole(rolesInput);
+                    setRolesInput('');
+                    reviewForm.programArea.selectedRoles.push(rolesInput);
+                    stateChangeHandler(
+                      reviewForm.programArea.selectedRoles,
+                      'programArea.selectedRoles',
+                    );
+                    piaStateChangeHandler(reviewForm, 'review');
                   }}
                 >
                   Add
@@ -153,8 +163,11 @@ const PIAReview = () => {
                                 index,
                                 1,
                               );
-                              setReviewForm({ ...reviewForm });
-                              submitData();
+                              stateChangeHandler(
+                                reviewForm.programArea.selectedRoles,
+                                'programArea.selectedRoles',
+                              );
+                              piaStateChangeHandler(reviewForm, 'review');
                             }}
                           >
                             <FontAwesomeIcon
@@ -212,16 +225,17 @@ const PIAReview = () => {
                     <div className="d-block">
                       <textarea
                         className="w-50  h-200"
-                        value={reviewForm.mpo.reviewNote}
-                        onChange={(e) =>
+                        value={reviewNote || reviewForm.mpo.reviewNote}
+                        onChange={(e) => {
+                          setReviewNote(e.target.value);
                           setReviewForm({
                             ...reviewForm,
                             mpo: {
                               ...reviewForm.mpo,
-                              reviewNote: e.target.value,
+                              reviewNote: reviewNote,
                             },
-                          })
-                        }
+                          });
+                        }}
                       ></textarea>
                     </div>
                   </div>
@@ -229,14 +243,18 @@ const PIAReview = () => {
                     <button
                       className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
                       onClick={() => {
+                        setReviewNote('');
                         setReviewForm({
                           ...reviewForm,
                           mpo: {
                             ...reviewForm.mpo,
-                            isAcknowledged: false,
                             reviewNote: '',
+                            reviewedByGUID: '',
+                            dateReviewed: '',
+                            reviewedBy: '',
                           },
                         });
+                        piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
                       Clear
@@ -244,7 +262,17 @@ const PIAReview = () => {
                     <button
                       className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
                       onClick={() => {
-                        submitData();
+                        setReviewForm({
+                          ...reviewForm,
+                          mpo: {
+                            ...reviewForm.mpo,
+                            reviewNote: reviewNote,
+                            reviewedByGUID: getGUID(),
+                            dateReviewed: new Date().toISOString(),
+                            reviewedBy: AppStorage.getItem('username'),
+                          },
+                        });
+                        piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
                       Confirm
