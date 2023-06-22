@@ -18,6 +18,8 @@ import {
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import { getGUID } from '../../../../utils/helper.util';
+import { AppStorage } from '../../../../utils/storage';
 
 const PIAReview = () => {
   const { id } = useParams();
@@ -236,10 +238,10 @@ const PIAReview = () => {
                       onClick={() => {
                         setReviewNote('');
                         reviewForm.mpo.reviewNote = '';
-                        stateChangeHandler(
-                          reviewForm.mpo.reviewNote,
-                          'mpo.reviewNote',
-                        );
+                        reviewForm.mpo.reviewedByGUID = '';
+                        reviewForm.mpo.dateReviewed = '';
+                        reviewForm.mpo.reviewedBy = '';
+                        stateChangeHandler(reviewForm.mpo, 'mpo');
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
@@ -248,10 +250,11 @@ const PIAReview = () => {
                     <button
                       className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
                       onClick={() => {
-                        stateChangeHandler(
-                          reviewForm.mpo.reviewNote,
-                          'mpo.reviewNote',
-                        );
+                        reviewForm.mpo.reviewedByGUID = getGUID();
+                        reviewForm.mpo.dateReviewed = new Date().toISOString();
+                        reviewForm.mpo.reviewedBy =
+                          AppStorage.getItem('username');
+                        stateChangeHandler(reviewForm.mpo, 'mpo');
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
