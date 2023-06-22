@@ -16,8 +16,6 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
-import { deepEqual } from '../../../../utils/object-comparison.util';
-import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { getGUID } from '../../../../utils/helper.util';
 import { AppStorage } from '../../../../utils/storage';
 
@@ -36,9 +34,9 @@ const PIAReview = () => {
       mpo: {
         isAcknowledged: false,
         reviewNote: '',
-        //reviewedBy: '',
-        //reviewedByGUID: '',
-        //dateReviewed: '',
+        reviewedBy: '',
+        reviewedByGUID: '',
+        dateReviewed: '',
       },
     }),
     [],
@@ -203,10 +201,13 @@ const PIAReview = () => {
                     .AcceptAccountability.en
                 }
                 onChange={(e) => {
-                  stateChangeHandler(
-                    e.target.checked ? true : false,
-                    'mpo.isAcknowledged',
-                  );
+                  setReviewForm({
+                    ...reviewForm,
+                    mpo: {
+                      ...reviewForm.mpo,
+                      isAcknowledged: e.target.checked,
+                    },
+                  });
                 }}
               />
               {reviewForm.mpo.isAcknowledged && (
@@ -227,7 +228,13 @@ const PIAReview = () => {
                         value={reviewNote || reviewForm.mpo.reviewNote}
                         onChange={(e) => {
                           setReviewNote(e.target.value);
-                          reviewForm.mpo.reviewNote = reviewNote;
+                          setReviewForm({
+                            ...reviewForm,
+                            mpo: {
+                              ...reviewForm.mpo,
+                              reviewNote: reviewNote,
+                            },
+                          });
                         }}
                       ></textarea>
                     </div>
@@ -237,11 +244,16 @@ const PIAReview = () => {
                       className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
                       onClick={() => {
                         setReviewNote('');
-                        reviewForm.mpo.reviewNote = '';
-                        reviewForm.mpo.reviewedByGUID = '';
-                        reviewForm.mpo.dateReviewed = '';
-                        reviewForm.mpo.reviewedBy = '';
-                        stateChangeHandler(reviewForm.mpo, 'mpo');
+                        setReviewForm({
+                          ...reviewForm,
+                          mpo: {
+                            ...reviewForm.mpo,
+                            reviewNote: '',
+                            reviewedByGUID: '',
+                            dateReviewed: '',
+                            reviewedBy: '',
+                          },
+                        });
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
@@ -250,11 +262,16 @@ const PIAReview = () => {
                     <button
                       className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
                       onClick={() => {
-                        reviewForm.mpo.reviewedByGUID = getGUID();
-                        reviewForm.mpo.dateReviewed = new Date().toISOString();
-                        reviewForm.mpo.reviewedBy =
-                          AppStorage.getItem('username');
-                        stateChangeHandler(reviewForm.mpo, 'mpo');
+                        setReviewForm({
+                          ...reviewForm,
+                          mpo: {
+                            ...reviewForm.mpo,
+                            reviewNote: reviewNote,
+                            reviewedByGUID: getGUID(),
+                            dateReviewed: new Date().toISOString(),
+                            reviewedBy: AppStorage.getItem('username'),
+                          },
+                        });
                         piaStateChangeHandler(reviewForm, 'review');
                       }}
                     >
