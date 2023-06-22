@@ -317,6 +317,21 @@ const PIAFormPage = () => {
         );
         setPiaModalButtonValue('SubmitForCPOReview');
         break;
+      case 'SubmitDelegateForFinalReview':
+        setPiaModalConfirmLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.ConfirmLabel.en,
+        );
+        setPiaModalCancelLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.CancelLabel.en,
+        );
+        setPiaModalTitleText(
+          Messages.Modal.SubmitDelegateForFinalReview.TitleText.en,
+        );
+        setPiaModalParagraph(
+          Messages.Modal.SubmitDelegateForFinalReview.ParagraphText.en,
+        );
+        setPiaModalButtonValue('SubmitDelegateForFinalReview');
+        break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
         setPiaModalTitleText(
@@ -559,6 +574,20 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'SubmitDelegateForFinalReview') {
+        const updatedPia = await upsertAndUpdatePia({
+          // here not sure what status for this one, need to discuss
+
+          status: PiaStatuses.COMPLETED,
+        });
+
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -606,7 +635,11 @@ const PIAFormPage = () => {
       handleShowModal('submitPiaIntake');
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        handleShowModal('SubmitForCPOReview');
+        if (pia?.hasAddedPiToDataElements === false) {
+          handleShowModal('SubmitDelegateForFinalReview');
+        } else {
+          handleShowModal('SubmitForCPOReview');
+        }
       } else {
         handleShowModal('submitPiaForm');
       }

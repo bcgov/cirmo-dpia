@@ -254,6 +254,7 @@ export enum PiaStatuses {
   CPO_REVIEW = 'CPO_REVIEW',
   COMPLETED = 'COMPLETED',
   WITHDRAWN = 'WITHDRAWN',
+  DELEGATE_FINAL_REVIEW = 'DELEGATE_FINAL_REVIEW',
 }
 
 export enum PiaSorting {

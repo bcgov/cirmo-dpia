@@ -88,6 +88,21 @@ export default {
         en: `Your status will be changed to CPO review. A CPO analyst will be able to review your PIA.`,
       },
     },
+    SubmitDelegateForFinalReview: {
+      ConfirmLabel: {
+        en: `Yes, finish`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Finish review and lock PIA?`,
+      },
+
+      ParagraphText: {
+        en: `The status will be changed to “Final Review” and this PIA will be locked. Program area roles you designated wil be required to review the PIA.`,
+      },
+    },
     AutoSaveFailed: {
       ConfirmLabel: {
         en: 'Okay',
