@@ -578,7 +578,7 @@ const PIAFormPage = () => {
         const updatedPia = await upsertAndUpdatePia({
           // here not sure what status for this one, need to discuss
 
-          status: PiaStatuses.COMPLETED,
+          status: PiaStatuses.FINAL_REVIEW,
         });
 
         if (updatedPia?.id) {
