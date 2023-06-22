@@ -24,8 +24,8 @@ const PIAReview = () => {
         isAcknowledged: false,
         reviewNote: '',
         //reviewedBy: '',
-        //ReviewedByGUID: '',
-        //DateReviewed: '',
+        //reviewedByGUID: '',
+        //dateReviewed: '',
       },
     }),
     [],
@@ -51,7 +51,6 @@ const PIAReview = () => {
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
       );
       const data: IPiaForm = Object(piaData).data;
-      console.log(data);
       setPia({
         id: data.id,
         saveId: data.saveId,
