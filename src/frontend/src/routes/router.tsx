@@ -23,6 +23,7 @@ import PIAAdditionalRisks from '../components/public/PIAFormTabs/additionalRisks
 import { PiaFormPrintPreview } from '../pages/PiaFormPrintPreview';
 import PPQ from '../components/public/PIAFormTabs/ppq';
 import { routes } from '../constant/routes';
+import PIAReview from '../components/public/PIAFormTabs/review';
 
 export const ProtectedRoute = () => {
   const location = useLocation();
@@ -139,6 +140,10 @@ const Router = () => {
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route path="edit" element={<PPQ />} />
               <Route path="view" element={<PPQ />} />
+            </Route>
+            <Route path="review">
+              <Route index element={<Navigate relative="path" to="view" />} />
+              <Route path="view" element={<PIAReview />} />
             </Route>
           </Route>
         </Route>

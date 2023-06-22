@@ -261,3 +261,15 @@ export enum PiaSorting {
   ASCENDING = 1,
   DESCENDING = -1,
 }
+
+interface IapprovalRoles {
+  [key: string]: string;
+}
+
+export const ApprovalRoles: IapprovalRoles = {
+  PROGRAM_MANAGER: 'Program Manager / Product Owner',
+  DIRECTOR: 'Director',
+  EX_DIRECTOR: 'Executive Director',
+  MCIO: 'Ministry Chief Information Officer',
+  ADM: 'Assistant Deputy Minister',
+};
