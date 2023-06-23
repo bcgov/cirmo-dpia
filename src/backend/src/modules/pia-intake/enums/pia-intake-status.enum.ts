@@ -4,4 +4,5 @@ export enum PiaIntakeStatusEnum {
   MPO_REVIEW = 'MPO_REVIEW',
   CPO_REVIEW = 'CPO_REVIEW',
   FINAL_REVIEW = 'FINAL_REVIEW',
+  COMPLETE = 'COMPLETE',
 }
