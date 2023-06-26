@@ -608,12 +608,12 @@ export class PiaIntakeService {
     const updatedReview: Review = updatedValue?.review;
     const storedReview: Review = storedValue?.review;
 
-    if (!updatedReview) return;
-
     const updatedProgramAreaReviews = updatedReview?.programArea?.reviews || {};
     const storedProgramAreaReviews = storedReview?.programArea?.reviews || null;
 
-    if (Object.keys(updatedProgramAreaReviews).length === 0) return;
+    if (Object.keys(updatedProgramAreaReviews).length === 0) {
+      return;
+    }
 
     Object.keys(updatedProgramAreaReviews).forEach((key) => {
       if (!updatedReview?.programArea?.selectedRoles.includes(key)) {
