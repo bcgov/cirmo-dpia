@@ -2,7 +2,7 @@ import InputText from '../../../../components/common/InputText/InputText';
 import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
-import { ApprovalRoles } from '../../../../constant/constant';
+import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +18,7 @@ import {
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { getGUID } from '../../../../utils/helper.util';
 import { AppStorage } from '../../../../utils/storage';
+import ViewMPOReview from './viewMPOReview';
 
 const PIAReview = () => {
   const { id } = useParams();
@@ -25,6 +26,7 @@ const PIAReview = () => {
   const [pia, setPia] = useState<IPiaForm>({
     id: Number(id),
     saveId: 0,
+    status,
   });
   const initialFormState: IReview = useMemo(
     () => ({
@@ -34,15 +36,16 @@ const PIAReview = () => {
       mpo: {
         isAcknowledged: false,
         reviewNote: '',
-        reviewedBy: '',
+        reviewedByDisplayName: '',
         reviewedByGUID: '',
-        dateReviewed: '',
+        reviewedAt: '',
       },
     }),
     [],
   );
 
   const [reviewForm, setReviewForm] = useState<IReview>(initialFormState);
+  const [editReviewNote, setEditReviewNote] = useState(false);
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setReviewForm, path, value);
   };
@@ -55,6 +58,7 @@ const PIAReview = () => {
       setPia({
         id: data.id,
         saveId: data.saveId,
+        status: data.status,
       });
       if (data.review) {
         setReviewForm(Object(data).review);
@@ -193,92 +197,106 @@ const PIAReview = () => {
         <div className="drop-shadow card p-4 p-md-5">
           <div className="data-table__container">
             <div className="data-row">
-              <Checkbox
-                value=""
-                checked={reviewForm?.mpo.isAcknowledged ? true : false}
-                label={
-                  messages.PiaReviewHeader.MinistrySection.Input
-                    .AcceptAccountability.en
-                }
-                onChange={(e) => {
-                  setReviewForm({
-                    ...reviewForm,
-                    mpo: {
-                      ...reviewForm.mpo,
-                      isAcknowledged: e.target.checked,
-                    },
-                  });
-                }}
-              />
-              {reviewForm.mpo.isAcknowledged && (
-                <div className="d-block pb-3">
-                  <div>
+              {reviewForm.mpo.reviewNote !== '' && editReviewNote === false ? (
+                <ViewMPOReview
+                  pia={pia}
+                  reviewForm={reviewForm}
+                  editReviewNote={setEditReviewNote}
+                />
+              ) : (
+                <>
+                  <Checkbox
+                    value=""
+                    checked={reviewForm?.mpo.isAcknowledged ? true : false}
+                    label={
+                      messages.PiaReviewHeader.MinistrySection.Input
+                        .AcceptAccountability.en
+                    }
+                    onChange={(e) => {
+                      setReviewForm({
+                        ...reviewForm,
+                        mpo: {
+                          ...reviewForm.mpo,
+                          isAcknowledged: e.target.checked,
+                        },
+                      });
+                    }}
+                  />
+                  {reviewForm.mpo.isAcknowledged && (
                     <div className="d-block pb-3">
-                      <b>
-                        {
-                          messages.PiaReviewHeader.MinistrySection.Input
-                            .ReviewNote.en
-                        }
-                        <span className="error-text">( required )</span>
-                      </b>
+                      <div>
+                        <div className="d-block pb-3">
+                          <b>
+                            {
+                              messages.PiaReviewHeader.MinistrySection.Input
+                                .ReviewNote.en
+                            }
+                            <span className="error-text">( required )</span>
+                          </b>
+                        </div>
+                        <div className="d-block">
+                          <textarea
+                            className="w-50  h-200"
+                            value={reviewNote || reviewForm.mpo.reviewNote}
+                            onChange={(e) => {
+                              setReviewNote(e.target.value);
+                              setReviewForm({
+                                ...reviewForm,
+                                mpo: {
+                                  ...reviewForm.mpo,
+                                  reviewNote: e.target.value,
+                                },
+                              });
+                            }}
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="d-flex">
+                        <button
+                          className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
+                          onClick={() => {
+                            setReviewNote('');
+                            setReviewForm({
+                              ...reviewForm,
+                              mpo: {
+                                ...reviewForm.mpo,
+                                reviewNote: '',
+                                reviewedByGUID: '',
+                                reviewedAt: '',
+                                reviewedBy: '',
+                              },
+                            });
+                            stateChangeHandler(reviewForm.mpo, 'mpo');
+                            piaStateChangeHandler(reviewForm, 'review');
+                          }}
+                        >
+                          Clear
+                        </button>
+                        <button
+                          className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                          onClick={() => {
+                            setReviewForm({
+                              ...reviewForm,
+                              mpo: {
+                                ...reviewForm.mpo,
+                                reviewNote: reviewNote,
+                                reviewedByGUID: getGUID(),
+                                reviewedAt: new Date().toISOString(),
+                                reviewedByDisplayName:
+                                  AppStorage.getItem('username'),
+                              },
+                            });
+                            stateChangeHandler(reviewForm.mpo, 'mpo');
+                            piaStateChangeHandler(reviewForm, 'review');
+                            setEditReviewNote(false);
+                          }}
+                        >
+                          Confirm
+                        </button>
+                      </div>
                     </div>
-                    <div className="d-block">
-                      <textarea
-                        className="w-50  h-200"
-                        value={reviewNote || reviewForm.mpo.reviewNote}
-                        onChange={(e) => {
-                          setReviewNote(e.target.value);
-                          setReviewForm({
-                            ...reviewForm,
-                            mpo: {
-                              ...reviewForm.mpo,
-                              reviewNote: reviewNote,
-                            },
-                          });
-                        }}
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div className="d-flex">
-                    <button
-                      className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
-                      onClick={() => {
-                        setReviewNote('');
-                        setReviewForm({
-                          ...reviewForm,
-                          mpo: {
-                            ...reviewForm.mpo,
-                            reviewNote: '',
-                            reviewedByGUID: '',
-                            dateReviewed: '',
-                            reviewedBy: '',
-                          },
-                        });
-                        piaStateChangeHandler(reviewForm, 'review');
-                      }}
-                    >
-                      Clear
-                    </button>
-                    <button
-                      className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                      onClick={() => {
-                        setReviewForm({
-                          ...reviewForm,
-                          mpo: {
-                            ...reviewForm.mpo,
-                            reviewNote: reviewNote,
-                            reviewedByGUID: getGUID(),
-                            dateReviewed: new Date().toISOString(),
-                            reviewedBy: AppStorage.getItem('username'),
-                          },
-                        });
-                        piaStateChangeHandler(reviewForm, 'review');
-                      }}
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </div>
+                  )}
+                </>
               )}
             </div>
           </div>
