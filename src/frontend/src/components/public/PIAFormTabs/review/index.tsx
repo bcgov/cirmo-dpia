@@ -292,6 +292,7 @@ const PIAReview = () => {
                                   ...reviewForm.programArea,
                                 },
                                 mpo: {
+                                  isAcknowledged: true,
                                   reviewNote: '',
                                 },
                               },
