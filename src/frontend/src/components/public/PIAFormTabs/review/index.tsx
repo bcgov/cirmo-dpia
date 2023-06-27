@@ -161,7 +161,7 @@ const PIAReview = () => {
                         <div className="d-block mt-3">{role}</div>
                         <div className="d-block">
                           <button
-                            className="bcgovbtn bcgovbtn__secondary--negative mt-3 ms-3 bold min-gap delete__btn p-3"
+                            className="bcgovbtn bcgovbtn__tertiary bold min-gap delete__btn mt-3 p-3"
                             onClick={() => {
                               reviewForm.programArea.selectedRoles?.splice(
                                 index,
@@ -207,6 +207,7 @@ const PIAReview = () => {
                 <>
                   <Checkbox
                     value=""
+                    isLink={false}
                     checked={reviewForm?.mpo.isAcknowledged ? true : false}
                     label={
                       messages.PiaReviewHeader.MinistrySection.Input

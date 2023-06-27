@@ -30,7 +30,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
           reviewForm.mpo.reviewedByGUID === getGUID() && (
             <div className=" col d-flex justify-content-end">
               <button
-                className="bcgovbtn bcgovbtn__secondary p-3"
+                className="bcgovbtn bcgovbtn__tertiary p-3"
                 onClick={() => {
                   editReviewNote(true);
                 }}
@@ -40,7 +40,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
               </button>
             </div>
           )}
-        <div className="row mt-2 ">
+        <div className="row mt-4 ">
           <div className="col col-md-3">
             <b> Date received</b>
             <div className="mt-2">
@@ -48,16 +48,17 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
             </div>
           </div>
         </div>
-        <div className="row mt-2">
+        <div className="row mt-4">
           <div className="col col-md-3">
             <b> Review note</b>
             <div className="mt-2"> {reviewForm.mpo.reviewNote}</div>
           </div>
         </div>
-        <div className="row mt-2">
+        <div className="row mt-4">
           <Checkbox
             value=""
             checked={true}
+            isLink={false}
             label={
               messages.PiaReviewHeader.MinistrySection.Input
                 .AcceptAccountability.en
