@@ -5,7 +5,7 @@ export interface IReview {
   mpo: {
     isAcknowledged: boolean;
     reviewNote: string;
-    reviewedByDisplayName: string;
+    reviewedByDisplayName?: string;
     reviewedByGUID: string;
     reviewedAt: string;
   };

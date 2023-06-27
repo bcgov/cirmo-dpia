@@ -263,7 +263,7 @@ const PIAReview = () => {
                                 reviewNote: '',
                                 reviewedByGUID: '',
                                 reviewedAt: '',
-                                reviewedBy: '',
+                                reviewedByDisplayName: '',
                               },
                             });
                             stateChangeHandler(reviewForm.mpo, 'mpo');
