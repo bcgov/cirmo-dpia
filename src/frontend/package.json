@@ -48,7 +48,7 @@
     "@types/react-datepicker": "4.4.2",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.40.0",
-    "@typescript-eslint/parser": "5.40.0",
+    "@typescript-eslint/parser": "5.60.1",
     "@vitejs/plugin-react": "2.1.0",
     "@wdio/cli": "8.11.1",
     "@wdio/cucumber-framework": "8.11.0",
