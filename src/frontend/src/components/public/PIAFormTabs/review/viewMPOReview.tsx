@@ -18,16 +18,15 @@ interface IMPOReviewProps {
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
   const { pia, reviewForm, editReviewNote } = props;
-
   return (
     <div className="d-grid gap-3">
       <div className="row">
         <div className="col col-md-3">
           <b> Reviewed by</b>
-          <div className="mt-2"> {reviewForm.mpo.reviewedByDisplayName}</div>
+          <div className="mt-2"> {reviewForm.mpo?.reviewedByDisplayName}</div>
         </div>
         {pia.status !== PiaStatuses.FINAL_REVIEW &&
-          reviewForm.mpo.reviewedByGUID === getGUID() && (
+          reviewForm.mpo?.reviewedByGuid === getGUID() && (
             <div className=" col d-flex justify-content-end">
               <button
                 className="bcgovbtn bcgovbtn__tertiary p-3"
@@ -44,14 +43,16 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
           <div className="col col-md-3">
             <b> Date received</b>
             <div className="mt-2">
-              {dateToString(new Date(reviewForm.mpo.reviewedAt))}
+              {reviewForm.mpo?.reviewedAt
+                ? dateToString(new Date(reviewForm.mpo?.reviewedAt))
+                : 'N/A'}
             </div>
           </div>
         </div>
         <div className="row mt-4">
           <div className="col col-md-3">
             <b> Review note</b>
-            <div className="mt-2"> {reviewForm.mpo.reviewNote}</div>
+            <div className="mt-2"> {reviewForm.mpo?.reviewNote}</div>
           </div>
         </div>
         <div className="row mt-4">

@@ -6,7 +6,7 @@ export interface IReview {
     isAcknowledged: boolean;
     reviewNote: string;
     reviewedByDisplayName?: string;
-    reviewedByGUID: string;
-    reviewedAt: string;
+    reviewedByGuid?: string;
+    reviewedAt?: string;
   };
 }

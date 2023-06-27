@@ -103,10 +103,10 @@ function PIASubHeader({
     if (
       pia?.status === PiaStatuses.MPO_REVIEW &&
       pia?.hasAddedPiToDataElements === false &&
-      pia?.review?.programArea.selectedRoles &&
-      pia?.review?.programArea.selectedRoles.length > 0 &&
-      pia?.review?.mpo.isAcknowledged === true &&
-      pia?.review?.mpo.reviewNote !== ''
+      pia?.review?.programArea?.selectedRoles &&
+      pia?.review?.programArea?.selectedRoles?.length > 0 &&
+      pia?.review?.mpo?.isAcknowledged === true &&
+      pia?.review?.mpo?.reviewNote !== ''
     ) {
       setEnableFinalReview(true);
     } else {
@@ -114,10 +114,10 @@ function PIASubHeader({
     }
   }, [
     pia?.hasAddedPiToDataElements,
-    pia?.review?.mpo.isAcknowledged,
-    pia?.review?.mpo.reviewNote,
-    pia?.review?.programArea.selectedRoles,
-    pia?.review?.programArea.selectedRoles.length,
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.mpo?.reviewNote,
+    pia?.review?.programArea?.selectedRoles,
+    pia?.review?.programArea?.selectedRoles?.length,
     pia?.status,
   ]);
   useEffect(() => {

@@ -26,7 +26,6 @@ const PIAReview = () => {
   const [pia, setPia] = useState<IPiaForm>({
     id: Number(id),
     saveId: 0,
-    status,
   });
   const initialFormState: IReview = useMemo(
     () => ({
@@ -36,9 +35,6 @@ const PIAReview = () => {
       mpo: {
         isAcknowledged: false,
         reviewNote: '',
-        reviewedByDisplayName: '',
-        reviewedByGUID: '',
-        reviewedAt: '',
       },
     }),
     [],
@@ -71,7 +67,7 @@ const PIAReview = () => {
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
-    reviewForm.mpo.reviewNote || '',
+    reviewForm.mpo?.reviewNote || '',
   );
   return (
     <>
@@ -102,15 +98,25 @@ const PIAReview = () => {
                 <button
                   className="bcgovbtn bcgovbtn__secondary mt-3"
                   onClick={() => {
-                    reviewForm.programArea.selectedRoles.push(
+                    reviewForm.programArea?.selectedRoles.push(
                       ApprovalRoles[rolesSelect],
                     );
                     setRolesSelect('');
                     stateChangeHandler(
-                      reviewForm.programArea.selectedRoles,
+                      reviewForm.programArea?.selectedRoles,
                       'programArea.selectedRoles',
                     );
-                    piaStateChangeHandler(reviewForm, 'review');
+                    piaStateChangeHandler(
+                      {
+                        mpo: {
+                          ...reviewForm.mpo,
+                        },
+                        programArea: {
+                          selectedRoles: reviewForm.programArea.selectedRoles,
+                        },
+                      },
+                      'review',
+                    );
                   }}
                 >
                   Add
@@ -132,13 +138,23 @@ const PIAReview = () => {
                 <button
                   className="bcgovbtn bcgovbtn__secondary mt-3"
                   onClick={() => {
-                    setRolesInput('');
-                    reviewForm.programArea.selectedRoles.push(rolesInput);
+                    reviewForm.programArea?.selectedRoles.push(rolesInput);
                     stateChangeHandler(
                       reviewForm.programArea.selectedRoles,
                       'programArea.selectedRoles',
                     );
-                    piaStateChangeHandler(reviewForm, 'review');
+                    setRolesInput('');
+                    piaStateChangeHandler(
+                      {
+                        mpo: {
+                          ...reviewForm.mpo,
+                        },
+                        programArea: {
+                          selectedRoles: reviewForm.programArea.selectedRoles,
+                        },
+                      },
+                      'review',
+                    );
                   }}
                 >
                   Add
@@ -154,8 +170,8 @@ const PIAReview = () => {
                 }
               </h3>
               <div>
-                {reviewForm.programArea.selectedRoles &&
-                  reviewForm.programArea.selectedRoles.map(
+                {reviewForm.programArea?.selectedRoles &&
+                  reviewForm.programArea?.selectedRoles.map(
                     (role: string, index: number) => (
                       <div className="d-flex align-items-center" key={index}>
                         <div className="d-block mt-3">{role}</div>
@@ -171,7 +187,18 @@ const PIAReview = () => {
                                 reviewForm.programArea.selectedRoles,
                                 'programArea.selectedRoles',
                               );
-                              piaStateChangeHandler(reviewForm, 'review');
+                              piaStateChangeHandler(
+                                {
+                                  mpo: {
+                                    ...reviewForm.mpo,
+                                  },
+                                  programArea: {
+                                    selectedRoles:
+                                      reviewForm.programArea.selectedRoles,
+                                  },
+                                },
+                                'review',
+                              );
                             }}
                           >
                             <FontAwesomeIcon
@@ -197,7 +224,9 @@ const PIAReview = () => {
         <div className="drop-shadow card p-4 p-md-5">
           <div className="data-table__container">
             <div className="data-row">
-              {reviewForm.mpo.reviewNote !== '' && editReviewNote === false ? (
+              {reviewForm.mpo?.reviewNote &&
+              reviewForm.mpo?.reviewNote !== '' &&
+              editReviewNote === false ? (
                 <ViewMPOReview
                   pia={pia}
                   reviewForm={reviewForm}
@@ -208,7 +237,7 @@ const PIAReview = () => {
                   <Checkbox
                     value=""
                     isLink={false}
-                    checked={reviewForm?.mpo.isAcknowledged ? true : false}
+                    checked={reviewForm?.mpo?.isAcknowledged ? true : false}
                     label={
                       messages.PiaReviewHeader.MinistrySection.Input
                         .AcceptAccountability.en
@@ -223,7 +252,7 @@ const PIAReview = () => {
                       });
                     }}
                   />
-                  {reviewForm.mpo.isAcknowledged && (
+                  {reviewForm.mpo?.isAcknowledged && (
                     <div className="d-block pb-3">
                       <div>
                         <div className="d-block pb-3">
@@ -241,13 +270,6 @@ const PIAReview = () => {
                             value={reviewNote || reviewForm.mpo.reviewNote}
                             onChange={(e) => {
                               setReviewNote(e.target.value);
-                              setReviewForm({
-                                ...reviewForm,
-                                mpo: {
-                                  ...reviewForm.mpo,
-                                  reviewNote: e.target.value,
-                                },
-                              });
                             }}
                           ></textarea>
                         </div>
@@ -262,13 +284,19 @@ const PIAReview = () => {
                               mpo: {
                                 ...reviewForm.mpo,
                                 reviewNote: '',
-                                reviewedByGUID: '',
-                                reviewedAt: '',
-                                reviewedByDisplayName: '',
                               },
                             });
-                            stateChangeHandler(reviewForm.mpo, 'mpo');
-                            piaStateChangeHandler(reviewForm, 'review');
+                            piaStateChangeHandler(
+                              {
+                                programArea: {
+                                  ...reviewForm.programArea,
+                                },
+                                mpo: {
+                                  reviewNote: '',
+                                },
+                              },
+                              'review',
+                            );
                           }}
                         >
                           Clear
@@ -281,15 +309,21 @@ const PIAReview = () => {
                               mpo: {
                                 ...reviewForm.mpo,
                                 reviewNote: reviewNote,
-                                reviewedByGUID: getGUID(),
-                                reviewedAt: new Date().toISOString(),
-                                reviewedByDisplayName:
-                                  AppStorage.getItem('username'),
                               },
                             });
-                            stateChangeHandler(reviewForm.mpo, 'mpo');
-                            piaStateChangeHandler(reviewForm, 'review');
                             setEditReviewNote(false);
+                            piaStateChangeHandler(
+                              {
+                                programArea: {
+                                  ...reviewForm.programArea,
+                                },
+                                mpo: {
+                                  isAcknowledged: true,
+                                  reviewNote: reviewNote,
+                                },
+                              },
+                              'review',
+                            );
                           }}
                         >
                           Confirm
