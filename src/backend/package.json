@@ -38,7 +38,7 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/typeorm": "9.0.1",
     "class-transformer": "0.5.1",
-    "dotenv": "16.0.2",
+    "dotenv": "16.1.4",
     "express": "4.18.1",
     "keycloak-connect": "18.0.2",
     "marked": "5.0.1",
