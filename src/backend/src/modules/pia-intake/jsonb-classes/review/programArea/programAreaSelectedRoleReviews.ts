@@ -1,28 +1,27 @@
-import { IsBoolean, IsString } from '@nestjs/class-validator';
+import { IsBoolean } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
-import { RoleReview } from './role-review';
+import { RoleReview } from '../role-review';
 
-export class MpoReview extends RoleReview {
-  // overriding the mandatory fields
+export class ProgramAreaSelectedRolesReview extends RoleReview {
+  // override mandatory fields
   @IsBoolean()
   isAcknowledged: boolean;
-
-  @IsString()
-  reviewNote: string;
 }
 
-export const mpoReviewMetadata: Array<IFormField<MpoReview>> = [
+export const selectedRolesReviewMetadata: Array<
+  IFormField<ProgramAreaSelectedRolesReview>
+> = [
   {
     key: 'isAcknowledged',
     type: 'boolean',
-    allowedUserTypesEdit: [UserTypesEnum.MPO],
+    allowedUserTypesEdit: null, // null signifies that anyone can change this field
   },
   {
     key: 'reviewNote',
     type: 'text',
-    allowedUserTypesEdit: [UserTypesEnum.MPO],
+    allowedUserTypesEdit: null,
   },
   {
     key: 'reviewedByDisplayName',
@@ -51,26 +50,28 @@ export const mpoReviewMetadata: Array<IFormField<MpoReview>> = [
   },
 ];
 
-export const validateRoleForMpoReview = (
-  updatedValue: MpoReview,
-  storedValue: MpoReview,
+export const validateRoleForSelectedRoleReviews = (
+  updatedValue: ProgramAreaSelectedRolesReview,
+  storedValue: ProgramAreaSelectedRolesReview,
   userType: UserTypesEnum[],
+  path: string,
 ) => {
   if (!updatedValue) return;
 
-  const keys = Object.keys(updatedValue) as Array<keyof MpoReview>;
+  const keys = Object.keys(updatedValue) as Array<
+    keyof ProgramAreaSelectedRolesReview
+  >;
 
   keys.forEach((key) => {
     const updatedKeyValue = updatedValue?.[key];
     const storedKeyValue = storedValue?.[key];
-    const metadata = mpoReviewMetadata.find((m) => m.key === key);
-
+    const metadata = selectedRolesReviewMetadata.find((m) => m.key === key);
     validateRoleForFormField(
       metadata,
       updatedKeyValue,
       storedKeyValue,
       userType,
-      `review.mpo.${key}`,
+      `${path}.${key}`,
     );
   });
 };

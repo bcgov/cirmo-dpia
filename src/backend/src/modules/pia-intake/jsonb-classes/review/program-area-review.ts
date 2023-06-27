@@ -1,20 +1,26 @@
-import { IsArray } from '@nestjs/class-validator';
+import { IsArray, IsObject, IsOptional } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import {
+  ProgramAreaSelectedRolesReview,
+  validateRoleForSelectedRoleReviews,
+} from './programArea/programAreaSelectedRoleReviews';
 
 export class ProgramAreaReview {
   @IsArray()
   selectedRoles: string[];
+
+  @IsObject()
+  @IsOptional()
+  reviews?: Record<string, ProgramAreaSelectedRolesReview>;
 }
 
-export const programAreaReviewMetadata: Array<IFormField<ProgramAreaReview>> = [
-  {
-    key: 'selectedRoles',
-    type: 'text',
-    allowedUserTypesEdit: [UserTypesEnum.MPO, UserTypesEnum.CPO],
-  },
-];
+export const selectedRolesMetadata: IFormField<ProgramAreaReview> = {
+  key: 'selectedRoles',
+  type: 'text',
+  allowedUserTypesEdit: [UserTypesEnum.MPO, UserTypesEnum.CPO],
+};
 
 export const validateRoleForProgramAreaReview = (
   updatedValue: ProgramAreaReview,
@@ -23,22 +29,37 @@ export const validateRoleForProgramAreaReview = (
 ) => {
   if (!updatedValue) return;
 
-  const keys = Object.keys(updatedValue) as Array<keyof ProgramAreaReview>;
+  //
+  // selectedRoles
+  //
+  const updatedSelectedRolesKeyValue = updatedValue?.selectedRoles;
+  const storedSelectedRolesKeyValue = storedValue?.selectedRoles;
 
-  keys.forEach((key) => {
-    const updatedKeyValue = updatedValue?.[key];
-    const storedKeyValue = storedValue?.[key];
-    const metadata = programAreaReviewMetadata.find((m) => m.key === key);
+  // validate every role inside selectedRoles
+  updatedSelectedRolesKeyValue?.forEach((val, i) => {
+    validateRoleForFormField(
+      selectedRolesMetadata,
+      val,
+      storedSelectedRolesKeyValue?.[i],
+      userType,
+      `review.programArea.selectedRoles`,
+    );
+  });
 
-    // validate every role inside selectedRoles
-    updatedKeyValue.forEach((val, i) => {
-      validateRoleForFormField(
-        metadata,
-        updatedKeyValue?.[i],
-        storedKeyValue?.[i],
-        userType,
-        `review.programArea.${key}`,
-      );
-    });
+  //
+  // selectedRoleReviews
+  //
+  const updatedReviews = updatedValue?.reviews;
+  const storedReviews = storedValue?.reviews;
+
+  if (!updatedReviews) return;
+
+  Object.keys(updatedReviews).forEach((role) => {
+    validateRoleForSelectedRoleReviews(
+      updatedReviews?.[role],
+      storedReviews?.[role],
+      userType,
+      `review.programArea.reviews.${role}`,
+    );
   });
 };

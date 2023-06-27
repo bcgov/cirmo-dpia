@@ -38,6 +38,8 @@ import { InviteesService } from '../invitees/invitees.service';
 import { Review, validateRoleForReview } from './jsonb-classes/review';
 import { handlePiaStatusChange } from './helper/handle-pia-status-change';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
+import { handlePiaUpdates } from './helper/handle-pia-updates';
+import { ProgramAreaSelectedRolesReview } from './jsonb-classes/review/programArea/programAreaSelectedRoleReviews';
 
 @Injectable()
 export class PiaIntakeService {
@@ -76,6 +78,8 @@ export class PiaIntakeService {
       user,
       'mpo',
     );
+
+    this.updateProgramAreaReviews(createPiaIntakeDto, null, user);
 
     // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be incomplete / Edits in progress only]
 
@@ -137,6 +141,9 @@ export class PiaIntakeService {
       piaType,
     );
 
+    // handle field updates
+    handlePiaUpdates(updatePiaIntakeDto, existingRecord);
+
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
 
@@ -150,6 +157,8 @@ export class PiaIntakeService {
       user,
       'mpo',
     );
+
+    this.updateProgramAreaReviews(updatePiaIntakeDto, existingRecord, user);
 
     // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
     await this.piaIntakeRepository.save({
@@ -591,17 +600,55 @@ export class PiaIntakeService {
       dto.submittedAt = new Date();
   };
 
+  updateProgramAreaReviews = (
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
+    user: KeycloakUser,
+  ) => {
+    const updatedReview: Review = updatedValue?.review;
+    const storedReview: Review = storedValue?.review;
+
+    if (!updatedReview) return;
+
+    const updatedProgramAreaReviews = updatedReview?.programArea?.reviews || {};
+    const storedProgramAreaReviews = storedReview?.programArea?.reviews || null;
+
+    if (Object.keys(updatedProgramAreaReviews).length === 0) return;
+
+    Object.keys(updatedProgramAreaReviews).forEach((key) => {
+      if (!updatedReview?.programArea?.selectedRoles.includes(key)) {
+        throw new BadRequestException({
+          message:
+            'Invalid request: Reviewer not available in selectedRoles list',
+        });
+      }
+
+      this.updateReviewSubmissionFields(
+        updatedProgramAreaReviews,
+        storedProgramAreaReviews,
+        user,
+        key,
+        [PiaIntakeStatusEnum.FINAL_REVIEW],
+        { ...storedValue, ...updatedValue }.status,
+      );
+    });
+  };
+
   /**
    * @method updateReviewSubmissionFields
    * @description
    * This method updates the dto with the submission related fields, which needs to be filled in by the server based on the user logged in
    */
   updateReviewSubmissionFields = (
-    updatedValue: Review, // add more types here
-    storedValue: Review,
+    updatedValue: Review | Record<string, ProgramAreaSelectedRolesReview>, // add more types here
+    storedValue: Review | Record<string, ProgramAreaSelectedRolesReview>,
     user: KeycloakUser,
-    key: 'mpo',
+    key: 'mpo' | string,
+    allowedInSpecificStatus?: PiaIntakeStatusEnum[] | null,
+    updatedStatus?: PiaIntakeStatusEnum,
   ) => {
+    if (!updatedValue?.[key]) return;
+
     // overwrite the updated values to include the stored fields that may not be passed by the client
     if (updatedValue?.[key]) {
       updatedValue[key] = {
@@ -626,6 +673,16 @@ export class PiaIntakeService {
       ) {
         throw new ForbiddenException({
           message: `You do not have permissions to edit this review.`,
+        });
+      }
+
+      if (
+        allowedInSpecificStatus &&
+        updatedStatus &&
+        !allowedInSpecificStatus.includes(updatedStatus)
+      ) {
+        throw new ForbiddenException({
+          message: 'You do not permissions to update review in this status',
         });
       }
 
