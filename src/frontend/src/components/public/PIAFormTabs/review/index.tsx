@@ -224,11 +224,7 @@ const PIAReview = () => {
                   <Checkbox
                     value=""
                     isLink={false}
-<<<<<<< HEAD
                     checked={reviewForm?.mpo?.isAcknowledged ? true : false}
-=======
-                    checked={reviewForm?.mpo.isAcknowledged ? true : false}
->>>>>>> 9d54c59e (update css to follow design)
                     label={
                       messages.PiaReviewHeader.MinistrySection.Input
                         .AcceptAccountability.en
