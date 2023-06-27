@@ -34,12 +34,18 @@ interface IStatusTransition {
   actions?: Array<IStatusTransitionAction>;
 }
 
+interface IStatusUpdates {
+  allow: boolean;
+  except?: Array<keyof PiaIntakeEntity>;
+}
+
 interface IStatusMetadata {
+  updates: IStatusUpdates;
   transition: Partial<Record<PiaIntakeStatusEnum, IStatusTransition>>;
 }
 
 // TODO: TO BE UPDATED for all statuses
-export const statusMetadata: Partial<
+export const piaStatusMetadata: Partial<
   Record<PiaIntakeStatusEnum, IStatusMetadata>
 > = {
   // [PiaIntakeStatusEnum.INCOMPLETE]: {
@@ -90,24 +96,35 @@ export const statusMetadata: Partial<
   //     },
   //   },
   // },
-  // [PiaIntakeStatusEnum.MPO_REVIEW]: {
-  //   view: true,
-  //   edit: true,
-  //   role: {
-  //     [UserTypesEnum.DRAFTER]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.MPO]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.CPO]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //   },
-  // },
+  [PiaIntakeStatusEnum.MPO_REVIEW]: {
+    updates: {
+      allow: true,
+    },
+    transition: {
+      [PiaIntakeStatusEnum.INCOMPLETE]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.FINAL_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+          },
+        ],
+      },
+    },
+  },
   // [PiaIntakeStatusEnum.CPO_REVIEW]: {
   //   view: true,
   //   edit: true,
@@ -150,6 +167,9 @@ export const statusMetadata: Partial<
   //   },
   // },
   [PiaIntakeStatusEnum.FINAL_REVIEW]: {
+    updates: {
+      allow: true, // add exceptions
+    },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
         allow: true,
@@ -199,5 +219,11 @@ export const statusMetadata: Partial<
         ],
       },
     },
+  },
+  [PiaIntakeStatusEnum.COMPLETE]: {
+    updates: {
+      allow: false, // no changes allowed
+    },
+    transition: {}, // no status changes are allowed
   },
 };

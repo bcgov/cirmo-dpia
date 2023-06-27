@@ -10,10 +10,14 @@ import { CreatePiaIntakeDto } from '../dto/create-pia-intake.dto';
 import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
-import { statusMetadata } from '../metadata/pia-status.metadata';
+import { piaStatusMetadata } from '../metadata/pia-status.metadata';
 
-const throwStatusChangeError = (errorMessage?: string) => {
-  const message = errorMessage || 'Cannot change status of the PIA';
+const throwStatusChangeError = (
+  updatedStatus?: PiaIntakeStatusEnum,
+  errorMessage?: string,
+) => {
+  const message =
+    errorMessage || `Cannot change status of this PIA to ${updatedStatus}`;
 
   throw new ForbiddenException({
     message: `Status change denied: ${message}`,
@@ -30,25 +34,28 @@ export const handlePiaStatusChange = (
   const updatedStatus = updatedValue?.status;
 
   // No status change // no action
-  if (updatedStatus === storedStatus) return;
+  if (!updatedStatus || updatedStatus === storedStatus) return;
 
   // first status of PIA should be INCOMPLETE
   if (
     storedStatus === null &&
     updatedStatus !== PiaIntakeStatusEnum.INCOMPLETE
   ) {
-    throwStatusChangeError('Cannot move a fresh PIA to an Incomplete status');
+    throwStatusChangeError(
+      updatedStatus,
+      'Cannot move a fresh PIA to an Incomplete status',
+    );
   }
 
   // handle status change actions
-  const storedStatusMetadata = statusMetadata?.[storedStatus];
+  const storedStatusMetadata = piaStatusMetadata?.[storedStatus];
 
   if (!storedStatusMetadata) return; // TODO: VALIDATIONS TO BE ADDED SOON
 
   const statusTransition = storedStatusMetadata?.transition?.[updatedStatus];
 
   if (!statusTransition?.allow) {
-    throwStatusChangeError();
+    throwStatusChangeError(updatedStatus);
   }
 
   if (statusTransition?.conditions?.length > 0) {
