@@ -81,10 +81,13 @@ const PIAReview = () => {
         <div className="data-table__container">
           <div
             className={`${
-              pia.status !== PiaStatuses.FINAL_REVIEW && 'data-row'
+              (pia.status === PiaStatuses.MPO_REVIEW ||
+                pia.status === PiaStatuses.CPO_REVIEW) &&
+              'data-row'
             }`}
           >
-            {pia.status !== PiaStatuses.FINAL_REVIEW && (
+            {(pia.status === PiaStatuses.MPO_REVIEW ||
+              pia.status === PiaStatuses.CPO_REVIEW) && (
               <>
                 <div className="d-flex">
                   <div className="p-2 col-md-5">
