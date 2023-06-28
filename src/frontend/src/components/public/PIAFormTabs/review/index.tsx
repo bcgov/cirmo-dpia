@@ -16,17 +16,12 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
-import { getGUID } from '../../../../utils/helper.util';
-import { AppStorage } from '../../../../utils/storage';
 import ViewMPOReview from './viewMPOReview';
 
 const PIAReview = () => {
   const { id } = useParams();
-  const { piaStateChangeHandler } = useContext<IPiaFormContext>(PiaFormContext);
-  const [pia, setPia] = useState<IPiaForm>({
-    id: Number(id),
-    saveId: 0,
-  });
+  const { pia, piaStateChangeHandler } =
+    useContext<IPiaFormContext>(PiaFormContext);
   const initialFormState: IReview = useMemo(
     () => ({
       programArea: {
@@ -51,11 +46,6 @@ const PIAReview = () => {
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
       );
       const data: IPiaForm = Object(piaData).data;
-      setPia({
-        id: data.id,
-        saveId: data.saveId,
-        status: data.status,
-      });
       if (data.review) {
         setReviewForm(Object(data).review);
       }
@@ -108,14 +98,12 @@ const PIAReview = () => {
                     );
                     piaStateChangeHandler(
                       {
-                        mpo: {
-                          ...reviewForm.mpo,
-                        },
                         programArea: {
                           selectedRoles: reviewForm.programArea.selectedRoles,
                         },
                       },
                       'review',
+                      true,
                     );
                   }}
                 >
@@ -146,14 +134,12 @@ const PIAReview = () => {
                     setRolesInput('');
                     piaStateChangeHandler(
                       {
-                        mpo: {
-                          ...reviewForm.mpo,
-                        },
                         programArea: {
                           selectedRoles: reviewForm.programArea.selectedRoles,
                         },
                       },
                       'review',
+                      true,
                     );
                   }}
                 >
@@ -189,15 +175,13 @@ const PIAReview = () => {
                               );
                               piaStateChangeHandler(
                                 {
-                                  mpo: {
-                                    ...reviewForm.mpo,
-                                  },
                                   programArea: {
                                     selectedRoles:
                                       reviewForm.programArea.selectedRoles,
                                   },
                                 },
                                 'review',
+                                true,
                               );
                             }}
                           >
@@ -227,11 +211,7 @@ const PIAReview = () => {
               {reviewForm.mpo?.reviewNote &&
               reviewForm.mpo?.reviewNote !== '' &&
               editReviewNote === false ? (
-                <ViewMPOReview
-                  pia={pia}
-                  reviewForm={reviewForm}
-                  editReviewNote={setEditReviewNote}
-                />
+                <ViewMPOReview pia={pia} editReviewNote={setEditReviewNote} />
               ) : (
                 <>
                   <Checkbox
@@ -288,15 +268,13 @@ const PIAReview = () => {
                             });
                             piaStateChangeHandler(
                               {
-                                programArea: {
-                                  ...reviewForm.programArea,
-                                },
                                 mpo: {
                                   isAcknowledged: true,
                                   reviewNote: '',
                                 },
                               },
                               'review',
+                              true,
                             );
                           }}
                         >
@@ -315,15 +293,13 @@ const PIAReview = () => {
                             setEditReviewNote(false);
                             piaStateChangeHandler(
                               {
-                                programArea: {
-                                  ...reviewForm.programArea,
-                                },
                                 mpo: {
                                   isAcknowledged: true,
                                   reviewNote: reviewNote,
                                 },
                               },
                               'review',
+                              true,
                             );
                           }}
                         >

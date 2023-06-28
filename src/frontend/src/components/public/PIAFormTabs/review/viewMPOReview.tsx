@@ -2,7 +2,6 @@ import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
 import { PiaStatuses } from '../../../../constant/constant';
 import { Dispatch, SetStateAction } from 'react';
-import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,21 +11,20 @@ import { getGUID } from '../../../../utils/helper.util';
 
 interface IMPOReviewProps {
   pia: IPiaForm;
-  reviewForm: IReview;
   editReviewNote: Dispatch<SetStateAction<boolean>>;
 }
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
-  const { pia, reviewForm, editReviewNote } = props;
+  const { pia, editReviewNote } = props;
   return (
     <div className="d-grid gap-3">
       <div className="row">
         <div className="col col-md-3">
           <b> Reviewed by</b>
-          <div className="mt-2"> {reviewForm.mpo?.reviewedByDisplayName}</div>
+          <div className="mt-2"> {pia?.review?.mpo?.reviewedByDisplayName}</div>
         </div>
         {pia.status !== PiaStatuses.FINAL_REVIEW &&
-          reviewForm.mpo?.reviewedByGuid === getGUID() && (
+          pia?.review?.mpo?.reviewedByGuid === getGUID() && (
             <div className=" col d-flex justify-content-end">
               <button
                 className="bcgovbtn bcgovbtn__tertiary p-3"
@@ -43,8 +41,8 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
           <div className="col col-md-3">
             <b> Date received</b>
             <div className="mt-2">
-              {reviewForm.mpo?.reviewedAt
-                ? dateToString(new Date(reviewForm.mpo?.reviewedAt))
+              {pia?.review?.mpo?.reviewedAt
+                ? dateToString(new Date(pia.review.mpo.reviewedAt))
                 : 'N/A'}
             </div>
           </div>
@@ -52,7 +50,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
         <div className="row mt-4">
           <div className="col col-md-3">
             <b> Review note</b>
-            <div className="mt-2"> {reviewForm.mpo?.reviewNote}</div>
+            <div className="mt-2"> {pia?.review?.mpo?.reviewNote}</div>
           </div>
         </div>
         <div className="row mt-4">
