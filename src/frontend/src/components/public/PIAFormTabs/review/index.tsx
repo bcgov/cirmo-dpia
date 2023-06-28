@@ -79,82 +79,94 @@ const PIAReview = () => {
       </section>
       <section className="drop-shadow card p-4 p-md-5">
         <div className="data-table__container">
-          <div className="data-row">
-            <div className="d-flex">
-              <div className="p-2 col-md-5">
-                <Dropdown
-                  id="programArea"
-                  label="Select a role from the list"
-                  options={Object.keys(ApprovalRoles).map((role: string) => ({
-                    value: role,
-                    label: ApprovalRoles[role],
-                  }))}
-                  value={rolesSelect}
-                  changeHandler={(e) => setRolesSelect(e.target.value)}
-                />
-                <button
-                  className="bcgovbtn bcgovbtn__secondary mt-3"
-                  onClick={() => {
-                    reviewForm.programArea?.selectedRoles.push(
-                      ApprovalRoles[rolesSelect],
-                    );
-                    setRolesSelect('');
-                    stateChangeHandler(
-                      reviewForm.programArea?.selectedRoles,
-                      'programArea.selectedRoles',
-                    );
-                    piaStateChangeHandler(
-                      {
-                        programArea: {
-                          selectedRoles: reviewForm.programArea.selectedRoles,
-                        },
-                      },
-                      'review',
-                      true,
-                    );
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-              <div className="p-2 col-md-2 d-flex justify-content-center align-items-center">
-                Or
-              </div>
-              <div className="p-2 col-md-5">
-                <InputText
-                  id="programArea"
-                  label={
-                    messages.PiaReviewHeader.ProgramAreaSection.Input
-                      .EnterRoleTitle.en
-                  }
-                  value={rolesInput}
-                  onChange={(e) => setRolesInput(e.target.value)}
-                />
-                <button
-                  className="bcgovbtn bcgovbtn__secondary mt-3"
-                  onClick={() => {
-                    reviewForm.programArea?.selectedRoles.push(rolesInput);
-                    stateChangeHandler(
-                      reviewForm.programArea.selectedRoles,
-                      'programArea.selectedRoles',
-                    );
-                    setRolesInput('');
-                    piaStateChangeHandler(
-                      {
-                        programArea: {
-                          selectedRoles: reviewForm.programArea.selectedRoles,
-                        },
-                      },
-                      'review',
-                      true,
-                    );
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-            <div className="horizontal-divider mt-5 mb-5"></div>
+          <div
+            className={`${
+              pia.status !== PiaStatuses.FINAL_REVIEW && 'data-row'
+            }`}
+          >
+            {pia.status !== PiaStatuses.FINAL_REVIEW && (
+              <>
+                <div className="d-flex">
+                  <div className="p-2 col-md-5">
+                    <Dropdown
+                      id="programArea"
+                      label="Select a role from the list"
+                      options={Object.keys(ApprovalRoles).map(
+                        (role: string) => ({
+                          value: role,
+                          label: ApprovalRoles[role],
+                        }),
+                      )}
+                      value={rolesSelect}
+                      changeHandler={(e) => setRolesSelect(e.target.value)}
+                    />
+                    <button
+                      className="bcgovbtn bcgovbtn__secondary mt-3"
+                      onClick={() => {
+                        reviewForm.programArea?.selectedRoles.push(
+                          ApprovalRoles[rolesSelect],
+                        );
+                        setRolesSelect('');
+                        stateChangeHandler(
+                          reviewForm.programArea?.selectedRoles,
+                          'programArea.selectedRoles',
+                        );
+                        piaStateChangeHandler(
+                          {
+                            programArea: {
+                              selectedRoles:
+                                reviewForm.programArea.selectedRoles,
+                            },
+                          },
+                          'review',
+                          true,
+                        );
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div className="p-2 col-md-2 d-flex justify-content-center align-items-center">
+                    Or
+                  </div>
+                  <div className="p-2 col-md-5">
+                    <InputText
+                      id="programArea"
+                      label={
+                        messages.PiaReviewHeader.ProgramAreaSection.Input
+                          .EnterRoleTitle.en
+                      }
+                      value={rolesInput}
+                      onChange={(e) => setRolesInput(e.target.value)}
+                    />
+                    <button
+                      className="bcgovbtn bcgovbtn__secondary mt-3"
+                      onClick={() => {
+                        reviewForm.programArea?.selectedRoles.push(rolesInput);
+                        stateChangeHandler(
+                          reviewForm.programArea.selectedRoles,
+                          'programArea.selectedRoles',
+                        );
+                        setRolesInput('');
+                        piaStateChangeHandler(
+                          {
+                            programArea: {
+                              selectedRoles:
+                                reviewForm.programArea.selectedRoles,
+                            },
+                          },
+                          'review',
+                          true,
+                        );
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div className="horizontal-divider mt-5 mb-5"></div>
+              </>
+            )}
             <div>
               <h3>
                 {
@@ -167,37 +179,12 @@ const PIAReview = () => {
                   reviewForm.programArea?.selectedRoles.map(
                     (role: string, index: number) => (
                       <div className="d-flex align-items-center" key={index}>
-                        <div className="d-block mt-3">{role}</div>
-                        <div className="d-block">
-                          <button
-                            className="bcgovbtn bcgovbtn__tertiary bold min-gap delete__btn mt-3 p-3"
-                            onClick={() => {
-                              reviewForm.programArea.selectedRoles?.splice(
-                                index,
-                                1,
-                              );
-                              stateChangeHandler(
-                                reviewForm.programArea.selectedRoles,
-                                'programArea.selectedRoles',
-                              );
-                              piaStateChangeHandler(
-                                {
-                                  programArea: {
-                                    selectedRoles:
-                                      reviewForm.programArea.selectedRoles,
-                                  },
-                                },
-                                'review',
-                                true,
-                              );
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              className="ms-1"
-                              icon={faTrash}
-                              size="lg"
-                            />
-                          </button>
+                        <div
+                          className={`d-block mt-3 ${
+                            pia.status === PiaStatuses.FINAL_REVIEW && 'mb-2'
+                          }`}
+                        >
+                          {role}
                         </div>
                         {pia.status !== PiaStatuses.FINAL_REVIEW && (
                           <div className="d-block">
