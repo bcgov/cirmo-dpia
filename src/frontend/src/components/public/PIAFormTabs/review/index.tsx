@@ -49,15 +49,22 @@ const PIAReview = () => {
       if (data.review) {
         setReviewForm(Object(data).review);
       }
+      if (!data.review?.programArea) {
+        setReviewForm({
+          mpo: { ...reviewForm.mpo },
+          programArea: { ...initialFormState.programArea },
+        });
+      }
     };
     getPIADATA();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   // passing updated data to parent for auto-save to work efficiently only if there are changes
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
-    reviewForm.mpo?.reviewNote || '',
+    pia?.review?.mpo?.reviewNote || '',
   );
   return (
     <>
@@ -247,7 +254,7 @@ const PIAReview = () => {
                         <div className="d-block">
                           <textarea
                             className="w-50  h-200"
-                            value={reviewNote || reviewForm.mpo.reviewNote}
+                            value={reviewNote}
                             onChange={(e) => {
                               setReviewNote(e.target.value);
                             }}
@@ -282,6 +289,7 @@ const PIAReview = () => {
                         </button>
                         <button
                           className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                          disabled={reviewNote === ''}
                           onClick={() => {
                             setReviewForm({
                               ...reviewForm,
