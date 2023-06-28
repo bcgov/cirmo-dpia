@@ -28,7 +28,7 @@ module.exports = class Page {
         const buttonElement= await $(newbuttondiv);
         await buttonElement.waitForClickable();
         await buttonElement.click();
-        //await browser.pause(2000);     
+        await browser.pause(2000);     
     }
     async clickButtonDiv (button) {
         const newbuttondiv=buttonDiv+button+"')]";
