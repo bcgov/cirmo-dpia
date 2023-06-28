@@ -17,11 +17,11 @@ export const handlePiaUpdates = (
   if (!statusMetadata) return; // TODO: VALIDATIONS TO BE ADDED SOON
 
   // no field updates requested
-  if (Object.keys(updates).length > 0) return;
+  if (Object.keys(updates).length === 0) return;
 
   if (statusMetadata?.updates?.allow === false) {
     throw new ForbiddenException({
-      message: 'Changes not allowed:',
+      message: 'Changes not allowed in this status',
     });
   }
 };

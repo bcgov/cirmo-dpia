@@ -2353,6 +2353,134 @@ describe('PiaIntakeService', () => {
         service.update(id, updatePiaIntakeDto, user, userRoles),
       ).resolves.not.toThrow();
     });
+
+    it('succeeds and updates PIA with no error if a user updates the program area reviews IN FINAL_REVIEW status', async () => {
+      const existingPia: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Review note by an MPO',
+          },
+        },
+        saveId: 1,
+        status: PiaIntakeStatusEnum.FINAL_REVIEW,
+      };
+
+      const updatePiaIntakeDto: UpdatePiaIntakeDto = {
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+            reviews: {
+              'Area Director': {
+                isAcknowledged: true,
+                reviewNote: 'Acknowledged',
+              },
+            },
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Review note by an MPO',
+          },
+        },
+        saveId: 1,
+        hasAddedPiToDataElements: false,
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = []; // drafter only
+
+      // mock validated user access
+      service.validateUserAccess = jest.fn(async () => null);
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return { ...existingPia };
+      });
+
+      piaIntakeRepository.save = jest.fn(async () => null);
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return { ...existingPia, ...updatePiaIntakeDto };
+      });
+
+      const response = await service.update(
+        123,
+        updatePiaIntakeDto,
+        user,
+        userRoles,
+      );
+
+      expect(
+        response.review.programArea.reviews['Area Director'].reviewNote,
+      ).toBeDefined();
+    });
+
+    it('fails and throw error if a user updates the program area reviews in a status other than FINAL_REVIEW ', async () => {
+      const existingPia: PiaIntakeEntity = {
+        ...piaIntakeEntityMock,
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Review note by an MPO',
+          },
+        },
+        saveId: 1,
+      };
+
+      const updatePiaIntakeDto: UpdatePiaIntakeDto = {
+        review: {
+          programArea: {
+            selectedRoles: ['Area Director'],
+            reviews: {
+              'Area Director': {
+                isAcknowledged: true,
+                reviewNote: 'Acknowledged',
+              },
+            },
+          },
+          mpo: {
+            isAcknowledged: true,
+            reviewNote: 'Review note by an MPO',
+          },
+        },
+        saveId: 1,
+        hasAddedPiToDataElements: false,
+      };
+
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = []; // drafter only
+
+      // mock validated user access
+      service.validateUserAccess = jest.fn(async () => null);
+
+      service.findOneBy = jest.fn(async () => {
+        delay(10);
+        return { ...existingPia };
+      });
+
+      piaIntakeRepository.save = jest.fn(async () => null);
+
+      service.findOneById = jest.fn(async () => {
+        delay(10);
+        return { ...existingPia, ...updatePiaIntakeDto };
+      });
+
+      await expect(
+        service.update(123, updatePiaIntakeDto, user, userRoles),
+      ).rejects.toThrow(
+        new ForbiddenException({
+          message: 'You do not permissions to update review in this status',
+        }),
+      );
+    });
   });
 
   /**
@@ -2822,13 +2950,6 @@ describe('PiaIntakeService', () => {
    *  updatedStatus?: PiaIntakeStatusEnum
    */
   describe('`updateReviewSubmissionFields` method', () => {
-    // const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {};
-    // const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {};
-    // const user = { ...keycloakUserMock };
-    // const key = 'mpo';
-    // const allowedInSpecificStatus = null;
-    // const updatedStatus = null;
-
     it('does not update anything if updatedValue is not provided', () => {
       const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = null;
       const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
