@@ -199,6 +199,30 @@ const PIAReview = () => {
                             />
                           </button>
                         </div>
+                        {pia.status !== PiaStatuses.FINAL_REVIEW && (
+                          <div className="d-block">
+                            <button
+                              className="bcgovbtn bcgovbtn__secondary--negative mt-3 ms-3 bold min-gap delete__btn p-3"
+                              onClick={() => {
+                                reviewForm.programArea.selectedRoles?.splice(
+                                  index,
+                                  1,
+                                );
+                                stateChangeHandler(
+                                  reviewForm.programArea.selectedRoles,
+                                  'programArea.selectedRoles',
+                                );
+                                piaStateChangeHandler(reviewForm, 'review');
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className="ms-1"
+                                icon={faTrash}
+                                size="lg"
+                              />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     ),
                   )}
