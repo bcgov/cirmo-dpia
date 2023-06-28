@@ -150,6 +150,8 @@ export class PiaIntakeService {
     // update submittedAt column if it is first time submit
     this.updateSubmittedAt(updatePiaIntakeDto);
 
+    this.updateReviewField(updatePiaIntakeDto, existingRecord);
+
     // once validated, updated the review submission fields
     this.updateReviewSubmissionFields(
       updatePiaIntakeDto?.review,
@@ -598,6 +600,17 @@ export class PiaIntakeService {
   updateSubmittedAt = (dto: CreatePiaIntakeDto | UpdatePiaIntakeDto) => {
     if (!dto.submittedAt && dto.status === PiaIntakeStatusEnum.MPO_REVIEW)
       dto.submittedAt = new Date();
+  };
+
+  updateReviewField = (
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
+  ) => {
+    const updatedReview: Review = updatedValue?.review;
+
+    if (!updatedReview) return;
+
+    updatedValue.review = { ...storedValue?.review, ...updatedValue?.review };
   };
 
   updateProgramAreaReviews = (

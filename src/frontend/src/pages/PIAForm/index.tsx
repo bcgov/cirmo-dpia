@@ -32,6 +32,7 @@ import { isCPORole } from '../../utils/helper.util';
 export type PiaStateChangeHandlerType = (
   value: any,
   key: keyof IPiaForm,
+  isEager?: boolean,
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';
@@ -85,6 +86,7 @@ const PIAFormPage = () => {
   const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
 
   const [isConflict, setIsConflict] = useState<boolean>(false);
+  const [isEagerSave, setIsEagerSave] = useState<boolean>(false);
   const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
     useState<boolean>(false);
 
@@ -101,9 +103,17 @@ const PIAFormPage = () => {
       ? 'view'
       : 'edit';
 
-  const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
+  const piaStateChangeHandler = (
+    value: any,
+    key: keyof IPiaForm,
+    isEager?: boolean,
+  ) => {
     // DO NOT allow state changes in the view mode
     if (mode === 'view' && !pathname?.split('/').includes('review')) return;
+
+    if (isEager) {
+      setIsEagerSave(true);
+    }
 
     setPia((latest) => ({
       ...latest,
@@ -769,6 +779,7 @@ const PIAFormPage = () => {
 
   useEffect(() => {
     const autoSave = async () => {
+      setIsEagerSave(false);
       if (isConflict) return; //noop if already a conflict
 
       try {
@@ -790,6 +801,12 @@ const PIAFormPage = () => {
         }
       }
     };
+
+    if (isEagerSave) {
+      autoSave();
+      return;
+    }
+
     const autoSaveTimer = setTimeout(() => {
       autoSave();
     }, 3000);
