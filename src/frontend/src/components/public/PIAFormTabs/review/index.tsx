@@ -352,7 +352,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         pia?.status === PiaStatuses.MPO_REVIEW ? (
         <PendingReview />
       ) : (
-        <ViewMPOReview pia={pia} />
+        <ViewMPOReview
+          pia={pia}
+          printPreview
+          editReviewNote={setEditReviewNote}
+        />
       )}
     </>
   );

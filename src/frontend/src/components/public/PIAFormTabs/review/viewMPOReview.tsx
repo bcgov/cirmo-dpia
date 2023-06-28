@@ -8,64 +8,47 @@ import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../../../utils/date';
 import { getGUID } from '../../../../utils/helper.util';
+import ViewReviewSection from './viewReviewSection';
 
 interface IMPOReviewProps {
   pia?: IPiaForm;
-  editReviewNote?: Dispatch<SetStateAction<boolean>>;
+  editReviewNote: Dispatch<SetStateAction<boolean>>;
+  printPreview?: boolean;
 }
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
-  const { pia, editReviewNote } = props;
+  const { pia, printPreview, editReviewNote } = props;
+
+  console.log('test', pia?.review);
   return (
     <div className="d-grid gap-3">
-      <div className="row">
-        <div className="col col-md-3">
-          <b> Reviewed by</b>
-          <div className="mt-2"> {pia?.review?.mpo?.reviewedByDisplayName}</div>
-        </div>
-        {pia.status !== PiaStatuses.FINAL_REVIEW &&
-          pia?.review?.mpo?.reviewedByGuid === getGUID() && (
-            <div className=" col d-flex justify-content-end">
-              <button
-                className="bcgovbtn bcgovbtn__tertiary p-3"
-                onClick={() => {
-                  editReviewNote(true);
-                }}
-              >
-                <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
-                Edit review
-              </button>
+      <div className="mt-2 pb-2">
+        <h2> Ministry Privacy Office</h2>
+      </div>
+      {printPreview ? (
+        <div className="review-container ">
+          {pia?.review?.mpo?.isAcknowledged === false ? (
+            <>
+              <div> Reviewed by</div>
+              <div> Review incomplete</div>
+            </>
+          ) : (
+            <div>
+              <ViewReviewSection
+                pia={pia}
+                editReviewNote={editReviewNote}
+                printPreview
+              />
             </div>
           )}
-        <div className="row mt-4 ">
-          <div className="col col-md-3">
-            <b> Date received</b>
-            <div className="mt-2">
-              {pia?.review?.mpo?.reviewedAt
-                ? dateToString(new Date(pia.review.mpo.reviewedAt))
-                : 'N/A'}
-            </div>
-          </div>
         </div>
-        <div className="row mt-4">
-          <div className="col col-md-3">
-            <b> Review note</b>
-            <div className="mt-2"> {pia?.review?.mpo?.reviewNote}</div>
-          </div>
-        </div>
-        <div className="row mt-4">
-          <Checkbox
-            value=""
-            checked={true}
-            isLink={false}
-            label={
-              messages.PiaReviewHeader.MinistrySection.Input
-                .AcceptAccountability.en
-            }
-            readOnly={true}
-          />
-        </div>
-      </div>
+      ) : (
+        <ViewReviewSection
+          pia={pia}
+          editReviewNote={editReviewNote}
+          printPreview
+        />
+      )}
     </div>
   );
 };

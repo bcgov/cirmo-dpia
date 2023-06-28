@@ -90,9 +90,8 @@ export const PiaFormPrintPreview = () => {
             ) : (
               <>
                 <IntakePrintPreview {...pia} />
-                
-                  <PIAReview printPreview />
-               
+
+                <PIAReview printPreview />
               </>
             )}
 
