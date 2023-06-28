@@ -10,8 +10,8 @@ import { dateToString } from '../../../../utils/date';
 import { getGUID } from '../../../../utils/helper.util';
 
 interface IMPOReviewProps {
-  pia: IPiaForm;
-  editReviewNote: Dispatch<SetStateAction<boolean>>;
+  pia?: IPiaForm;
+  editReviewNote?: Dispatch<SetStateAction<boolean>>;
 }
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
