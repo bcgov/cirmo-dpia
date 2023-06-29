@@ -43,7 +43,7 @@ const ViewProgramAreaReview = (props: IProgramAreaReviewProps) => {
           pia={pia}
           reviewSection={pia?.review?.programArea?.review}
           editReviewNote={editReviewNote}
-          printPreview
+          printPreview={false}
         />
       )}
     </div>
