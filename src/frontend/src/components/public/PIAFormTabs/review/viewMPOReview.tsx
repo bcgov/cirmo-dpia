@@ -42,7 +42,6 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
           pia={pia}
           reviewSection={pia?.review?.mpo}
           editReviewNote={editReviewNote}
-          printPreview={false}
         />
       )}
     </div>
