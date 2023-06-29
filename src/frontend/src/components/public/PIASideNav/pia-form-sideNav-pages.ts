@@ -11,6 +11,7 @@ import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { PiaStatuses } from '../../../constant/constant';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
@@ -48,7 +49,9 @@ export const PiaFormSideNavPages = (
   const enableReview = (): boolean => {
     if (
       pia?.hasAddedPiToDataElements === false &&
-      pia?.isNextStepsSeenForDelegatedFlow === true
+      pia?.isNextStepsSeenForDelegatedFlow === true &&
+      pia?.status !== PiaStatuses.INCOMPLETE &&
+      pia?.status !== PiaStatuses.EDIT_IN_PROGRESS
     ) {
       // This is for delegated review
       if (isMPORole()) {
