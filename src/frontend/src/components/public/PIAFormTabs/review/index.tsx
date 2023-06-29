@@ -18,6 +18,7 @@ import {
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
+import ViewProgramAreaReview from './viewProgramArea';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -352,11 +353,28 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         pia?.status === PiaStatuses.MPO_REVIEW ? (
         <PendingReview />
       ) : (
-        <ViewMPOReview
-          pia={pia}
-          printPreview
-          editReviewNote={setEditReviewNote}
-        />
+        <>
+          <div className="mt-2 pb-2">
+            <h3>
+              <b>Program Area</b>
+            </h3>
+          </div>
+          {pia?.review?.programArea?.selectedRoles.map((role: string) => (
+            <>
+              <ViewProgramAreaReview
+                pia={pia}
+                printPreview
+                role={role}
+                editReviewNote={setEditReviewNote}
+              />
+            </>
+          ))}
+          <ViewMPOReview
+            pia={pia}
+            printPreview
+            editReviewNote={setEditReviewNote}
+          />
+        </>
       )}
     </>
   );
