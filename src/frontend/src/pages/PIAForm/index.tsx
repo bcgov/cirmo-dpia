@@ -236,7 +236,7 @@ const PIAFormPage = () => {
       pia.status === PiaStatuses.MPO_REVIEW &&
       pia.hasAddedPiToDataElements === false
     ) {
-      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINAL_REVIEW);
+      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW);
     } else if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
