@@ -43,7 +43,7 @@ const ViewReviewSection = (props: IReviewProps) => {
         )}
       <div className="row mt-4 ">
         <div className="col col-md-3">
-          <b> Date received</b>
+          <b> Date reviewed</b>
           <div className="mt-2">
             {reviewSection?.reviewedAt
               ? dateToString(new Date(reviewSection?.reviewedAt))
