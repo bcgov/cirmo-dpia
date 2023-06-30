@@ -283,7 +283,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                   messages.PiaReviewHeader.MinistrySection.Input
                                     .ReviewNote.en
                                 }
-                                <span className="error-text">( required )</span>
+                                &nbsp;
+                                <span className="error-text">(required)</span>
                               </b>
                             </div>
                             <div className="d-block">
