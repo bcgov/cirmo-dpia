@@ -42,6 +42,9 @@ export default {
         AcceptAccountability: {
           en: 'I acknowledge that I have participated in the drafting and/or review of this PIA on behalf of my ministry or sector. All privacy risks of which I am aware are documented with acceptable risk mitigations in place and I have no outstanding privacy concerns related to the initiative under review.',
         },
+        DeclineAccountability: {
+          en: `I decline to accept accountability for this PIA. By declining to accept accountability, CPO will do a full review of this PIA.`,
+        },
         ReviewNote: {
           en: 'Review Note',
         },
