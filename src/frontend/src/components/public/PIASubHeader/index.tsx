@@ -130,7 +130,7 @@ function PIASubHeader({
     }
     if (
       enableFinalReview === false &&
-      primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINAL_REVIEW
+      primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW
     ) {
       setDisableSubmitButton(true);
     } else {

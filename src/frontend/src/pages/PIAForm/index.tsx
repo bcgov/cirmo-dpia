@@ -49,7 +49,7 @@ export interface PiaValidationMessage {
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
-  DELEGATE_FINAL_REVIEW = 'Final review',
+  DELEGATE_FINISH_REVIEW = 'Finish review',
 }
 
 export enum PiaFormSubmissionTypeEnum {
