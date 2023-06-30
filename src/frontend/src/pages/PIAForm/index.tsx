@@ -486,8 +486,17 @@ const PIAFormPage = () => {
       // if a CPO move a PIA from CPO_Review to MPO_Review
       // it can not access the PIA anymore, current it throw a 403 error
       // this fix by move the page to pia list table instead of stay in pia view page.
-
       if (isCPORole()) navigate(routes.PIA_LIST, { replace: true });
+
+      // For a delegate PIA, change from final review to incomplete/dit_in_progress status
+      // will hide review tab so we need to redirect path to intake
+      if (
+        pathname?.split('/').includes('review') &&
+        (status === PiaStatuses.EDIT_IN_PROGRESS ||
+          status === PiaStatuses.INCOMPLETE)
+      ) {
+        navigate(pathname.replace('review', 'intake'), { replace: true });
+      }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
