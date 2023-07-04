@@ -4,6 +4,6 @@ const searchSortFilterPage = require('../pageobjects/searchsortfilter.page');
 
 
 
-Then(/^I am able to sort "([^"]*)"$/, async(sort) => {
-	await searchSortFilterPage.sortdata(sort)
+Then(/^I am able to sort "([^"]*)" in "([^"]*)" order$/, async(sort,order) => {
+	await searchSortFilterPage.sortdata(sort,order)
 });

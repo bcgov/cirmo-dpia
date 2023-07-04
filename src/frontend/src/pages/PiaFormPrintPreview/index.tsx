@@ -34,6 +34,7 @@ import {
 } from '../../types/interfaces/pia-form.interface';
 import { HttpRequest } from '../../utils/http-request.util';
 import PPQ from '../../components/public/PIAFormTabs/ppq';
+import PIAReview from '../../components/public/PIAFormTabs/review';
 
 export const PiaFormPrintPreview = () => {
   const { id } = useParams();
@@ -87,7 +88,12 @@ export const PiaFormPrintPreview = () => {
                 </div>
               </>
             ) : (
-              <IntakePrintPreview {...pia} />
+              <>
+                <IntakePrintPreview {...pia} />
+                <div className="pageBreak">
+                  <PIAReview printPreview />
+                </div>
+              </>
             )}
 
             {pia?.hasAddedPiToDataElements !== false && (
@@ -113,7 +119,6 @@ export const PiaFormPrintPreview = () => {
               </>
             )}
           </PiaFormContext.Provider>
-          <SignaturesFullPIA />
         </>
       )}
     </>

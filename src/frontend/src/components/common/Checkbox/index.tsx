@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ICheckbox } from './interfaces';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Tooltip from 'react-tooltip';
@@ -18,6 +18,11 @@ const Checkbox = ({
 }: ICheckbox) => {
   const defaultChecked = checked ? checked : false;
   const [isChecked, setIsChecked] = useState(defaultChecked);
+  useEffect(() => {
+    /* If checked is reset or set externally, update the state */
+    setIsChecked(defaultChecked);
+  }, [defaultChecked]);
+
   return (
     <div className="checkbox-wrapper">
       <label className="input-label">

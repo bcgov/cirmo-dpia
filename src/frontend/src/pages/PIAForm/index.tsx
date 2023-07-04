@@ -32,6 +32,7 @@ import { isCPORole } from '../../utils/helper.util';
 export type PiaStateChangeHandlerType = (
   value: any,
   key: keyof IPiaForm,
+  isEager?: boolean,
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';
@@ -48,6 +49,7 @@ export interface PiaValidationMessage {
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
+  DELEGATE_FINISH_REVIEW = 'Finish review',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -84,6 +86,7 @@ const PIAFormPage = () => {
   const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
 
   const [isConflict, setIsConflict] = useState<boolean>(false);
+  const [isEagerSave, setIsEagerSave] = useState<boolean>(false);
   const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
     useState<boolean>(false);
 
@@ -100,9 +103,17 @@ const PIAFormPage = () => {
       ? 'view'
       : 'edit';
 
-  const piaStateChangeHandler = (value: any, key: keyof IPiaForm) => {
+  const piaStateChangeHandler = (
+    value: any,
+    key: keyof IPiaForm,
+    isEager?: boolean,
+  ) => {
     // DO NOT allow state changes in the view mode
-    if (mode === 'view') return;
+    if (mode === 'view' && !pathname?.split('/').includes('review')) return;
+
+    if (isEager) {
+      setIsEagerSave(true);
+    }
 
     setPia((latest) => ({
       ...latest,
@@ -221,12 +232,17 @@ const PIAFormPage = () => {
     const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
 
     // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (onIntakePage || onNewPiaPage) {
+    if (
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      pia.hasAddedPiToDataElements === false
+    ) {
+      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW);
+    } else if (onIntakePage || onNewPiaPage) {
       setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
     } else {
       setSubmitButtonText(SubmitButtonTextEnum.FORM);
     }
-  }, [mode, pathname, pia?.id]);
+  }, [mode, pathname, pia.hasAddedPiToDataElements, pia?.id, pia.status]);
 
   // DO NOT allow user to edit in the MPO review status.
   const accessControl = useCallback(() => {
@@ -310,6 +326,21 @@ const PIAFormPage = () => {
           Messages.Modal.SubmitForCPOReview.ParagraphText.en,
         );
         setPiaModalButtonValue('SubmitForCPOReview');
+        break;
+      case 'SubmitDelegateForFinalReview':
+        setPiaModalConfirmLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.ConfirmLabel.en,
+        );
+        setPiaModalCancelLabel(
+          Messages.Modal.SubmitDelegateForFinalReview.CancelLabel.en,
+        );
+        setPiaModalTitleText(
+          Messages.Modal.SubmitDelegateForFinalReview.TitleText.en,
+        );
+        setPiaModalParagraph(
+          Messages.Modal.SubmitDelegateForFinalReview.ParagraphText.en,
+        );
+        setPiaModalButtonValue('SubmitDelegateForFinalReview');
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
@@ -455,8 +486,17 @@ const PIAFormPage = () => {
       // if a CPO move a PIA from CPO_Review to MPO_Review
       // it can not access the PIA anymore, current it throw a 403 error
       // this fix by move the page to pia list table instead of stay in pia view page.
-
       if (isCPORole()) navigate(routes.PIA_LIST, { replace: true });
+
+      // For a delegate PIA, change from final review to incomplete/dit_in_progress status
+      // will hide review tab so we need to redirect path to intake
+      if (
+        pathname?.split('/').includes('review') &&
+        (status === PiaStatuses.EDIT_IN_PROGRESS ||
+          status === PiaStatuses.INCOMPLETE)
+      ) {
+        navigate(pathname.replace('review', 'intake'), { replace: true });
+      }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
     }
@@ -553,6 +593,20 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'SubmitDelegateForFinalReview') {
+        const updatedPia = await upsertAndUpdatePia({
+          // here not sure what status for this one, need to discuss
+
+          status: PiaStatuses.FINAL_REVIEW,
+        });
+
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -600,7 +654,11 @@ const PIAFormPage = () => {
       handleShowModal('submitPiaIntake');
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        handleShowModal('SubmitForCPOReview');
+        if (pia?.hasAddedPiToDataElements === false) {
+          handleShowModal('SubmitDelegateForFinalReview');
+        } else {
+          handleShowModal('SubmitForCPOReview');
+        }
       } else {
         handleShowModal('submitPiaForm');
       }
@@ -730,6 +788,7 @@ const PIAFormPage = () => {
 
   useEffect(() => {
     const autoSave = async () => {
+      setIsEagerSave(false);
       if (isConflict) return; //noop if already a conflict
 
       try {
@@ -751,6 +810,12 @@ const PIAFormPage = () => {
         }
       }
     };
+
+    if (isEagerSave) {
+      autoSave();
+      return;
+    }
+
     const autoSaveTimer = setTimeout(() => {
       autoSave();
     }, 3000);

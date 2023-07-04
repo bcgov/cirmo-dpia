@@ -11,6 +11,7 @@ import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { PiaStatuses } from '../../../constant/constant';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
@@ -45,6 +46,30 @@ export const PiaFormSideNavPages = (
     }
   };
 
+  const enableReview = (): boolean => {
+    if (
+      pia?.hasAddedPiToDataElements === false &&
+      pia?.isNextStepsSeenForDelegatedFlow === true &&
+      pia?.status !== PiaStatuses.INCOMPLETE &&
+      pia?.status !== PiaStatuses.EDIT_IN_PROGRESS
+    ) {
+      // This is for delegated review
+      if (isMPORole()) {
+        if (!isEditMode) {
+          /* check if the status has review priviliges */
+          return true;
+        } else return false;
+        /* only show in view mode */
+      } else {
+        /* not an MPO user */
+        return false;
+      }
+    } else {
+      // This is for full PIA
+      return showPostIntakeTabs;
+    }
+  };
+
   const checkNextSteps = (): boolean => {
     if (
       pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id })
@@ -71,8 +96,8 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: true, // always show
       state: {
         next: {
-          condition: checkPIANonDelegateFlow(),
-          action: NextStepsDefaultPage(),
+          condition: enableReview(),
+          action: checkPIANonDelegateFlow() ? NextStepsDefaultPage() : 'Review',
         },
       },
     },
@@ -87,10 +112,7 @@ if it is ++ or -- operater navigate to the previous or next tab
             pia?.hasAddedPiToDataElements == true ||
             pia?.hasAddedPiToDataElements == null,
           action: NextStepsDefaultPage(),
-          actionFalse: {
-            link: '/pia/list',
-            title: 'View PIA List',
-          },
+          actionFalse: 'Review',
         },
         prev: {
           condition: true,
@@ -109,7 +131,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: showPostIntakeTabs,
+      enable: enableReview(),
     },
     {
       id: 5,
@@ -273,9 +295,31 @@ if it is ++ or -- operater navigate to the previous or next tab
                 condition: true,
                 action: 'Additional risks',
               },
+              next: {
+                condition: true,
+                action: +1,
+              },
             },
           },
         ]
       : []),
+    {
+      id: 13,
+      label: 'Review',
+      link: buildDynamicPath(routes.PIA_REVIEW, {
+        id: pia?.id,
+      }),
+      enable: enableReview(),
+      state: {
+        prev: {
+          condition: true,
+          action:
+            pia?.hasAddedPiToDataElements === true ||
+            pia?.hasAddedPiToDataElements === null
+              ? -1
+              : 'PIA Intake',
+        },
+      },
+    },
   ];
 };

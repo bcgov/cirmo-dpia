@@ -2,6 +2,7 @@ const Page = require('./page');
 const sortImage = "(//th/img)[";
 let ind = 0;
 let sortThImg="";
+let img;
 
 
 /**
@@ -22,7 +23,7 @@ class FilterSearchSortPage extends Page {
      */
 
     
-    async sortdata (sort) {
+    async sortdata (sort,order) {
         console.log("Sort Element is: " + sort)
           if(sort == 'Last modified') 
           {ind=1;
@@ -33,22 +34,56 @@ class FilterSearchSortPage extends Page {
            sortThImg = sortImage + ind + "]";
           }
           const VarImg = await $(sortThImg);
+          
+          if(ind == 1)
+          {
+            img = await $$("//tr/td[2]"); 
+          } 
+          else if(ind == 2)
+          {
+            img = await $$("//tr/td[3]"); 
+          } 
+          if(order=="ascending")
+          { 
+            await VarImg.click();
+            await browser.pause(2000); 
+          };
           await VarImg.waitForClickable();
           await VarImg.click(); 
-        //   for await (const img of $$('//tr/td[1]')) {
-        //     console.log("Text is: "+ img.getText());
-        //   }
+          await browser.pause(2000); 
+          const actualValues = [];
+          const sortedTitles = []; 
+          for(const lab of img){
+            
+            actualValues.push(await lab.getText());
+            sortedTitles.push(await lab.getText());
+          }
+          console.log("Actual array is: "+actualValues);
+          function compareAscending(a,b) {
+            if (a.toLowerCase() < b.toLowerCase()) {
+              return -1; 
+            } else { 
+              return 1;
+            }
+          }
 
-          $$('//tr/td[2]').forEach(element => {
-            console.log("Text is: " +element.getText());})
-
+          function compareDescending(a,b) {
+            if (a.toLowerCase() > b.toLowerCase()) {
+              return -1; 
+            } else { 
+              return 1;
+            }
+          }
+          if(order=="ascending")
+          {sortedTitles.sort(compareAscending);}
+          if(order=="decsending")
+          {sortedTitles.sort(compareDescending);}
+          
+          console.log("Sorted array is: "+sortedTitles);
+          expect(actualValues).toEqual(sortedTitles);
     }
 
-    
-    
-
-    
-    
+ 
     /**
      * overwrite specific options to adapt it to page object
      */

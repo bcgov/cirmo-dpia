@@ -41,6 +41,8 @@ export const routes = {
   PIA_PPQ_EDIT: '/pia/:id/ppq/edit',
   PIA_PPQ_VIEW: '/pia/:id/ppq/view',
 
+  PIA_REVIEW: '/pia/:id/review/view',
+
   PIA_RESULT: '/pia/result',
   PIA_LIST: '/pia/list',
   NOT_FOUND: '/not-found',
