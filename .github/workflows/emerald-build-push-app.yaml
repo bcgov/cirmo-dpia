@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   
 jobs:
-  DPIA-API-Build-Tag-Push:
+  DPIA-APP-Build-Tag-Push:
     environment: APP-Dev
     runs-on: ubuntu-latest
     steps:
@@ -56,48 +56,48 @@ jobs:
 
       - name: Trigger Tekton Pipeline Deployment
         env:
-            ENVIRONMENT: dev
-            APPLICATION: dpia-app
-            IMAGE: 'app-dev:latest'
-            templateURL: ${{ secrets.templateURL }} 
-          run: |
-            ./.github/helpers/tekton-trigger.sh
+          ENVIRONMENT: dev
+          APPLICATION: dpia-app
+          IMAGE: 'app-dev:latest'
+          templateURL: ${{ secrets.templateURL }} 
+        run: |
+          ./.github/helpers/tekton-trigger.sh
 
   # TODO Build health check in tekton
 
   # TODO Build Cleanup in tekton
 
-  DEV-Success-Notify:
-    runs-on: ubuntu-latest
-    environment: APP-Dev
-    needs: [ DEV-cleanup ]
-    steps:
-      - name: Message Teams Channel on Success
-        run: |
-          curl --location --request POST ${{ secrets.TEAMS_SUCCESS_URL }} \
-          --header 'Content-Type: text/plain' \
-          --data-raw '{
-            "@context": "https://schema.org/extensions",
-            "@type": "MessageCard",
-            "themeColor": "0072C6",
-            "title": "SUCCESS! APP Deployment to PIA EMERALD ${{ secrets.ENVIRONMENT }} Environment has finished.",
-            "text": "The PIA APP has been built and deployed to the EMERALD ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca/api/api-docs).",
-          }'
+  #DEV-Success-Notify:
+  #  runs-on: ubuntu-latest
+  #  environment: APP-Dev
+  #  needs: [ DEV-cleanup ]
+  #  steps:
+  #    - name: Message Teams Channel on Success
+  #      run: |
+  #        curl --location --request POST ${{ secrets.TEAMS_SUCCESS_URL }} \
+  #        --header 'Content-Type: text/plain' \
+  #        --data-raw '{
+  #         "@context": "https://schema.org/extensions",
+  #          "@type": "MessageCard",
+  #          "themeColor": "0072C6",
+  #          "title": "SUCCESS! APP Deployment to PIA EMERALD ${{ secrets.ENVIRONMENT }} Environment has finished.",
+  #          "text": "The PIA APP has been built and deployed to the EMERALD ${{ secrets.ENVIRONMENT }} environment. \n\n The logs for the successful deployment can be found [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n The changes for commit ${{ github.sha }} can be found [here](https://dev.pia.gov.bc.ca/api/api-docs).",
+  #        }'
 
-  DEV-Failure-Notify:
-    runs-on: ubuntu-latest
-    environment: API-Dev
-    if: failure()
-    steps:
-      - name: Message Teams Channel on Failure
-        run: |
-          curl --location --request POST ${{ secrets.TEAMS_FAILURE_URL }} \
-          --header 'Content-Type: text/plain' \
-          --data-raw '{
-            "@context": "https://schema.org/extensions",
-            "@type": "MessageCard",
-            "themeColor": "0072C6",
-            "title": "FAILURE! APP Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
-            "text": "The PIA APP has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
-          }'
+  #DEV-Failure-Notify:
+  #  runs-on: ubuntu-latest
+  #  environment: API-Dev
+  #  if: failure()
+  #  steps:
+  #    - name: Message Teams Channel on Failure
+  #      run: |
+  #        curl --location --request POST ${{ secrets.TEAMS_FAILURE_URL }} \
+  #        --header 'Content-Type: text/plain' \
+  #        --data-raw '{
+  #          "@context": "https://schema.org/extensions",
+  #          "@type": "MessageCard",
+  #          "themeColor": "0072C6",
+  #          "title": "FAILURE! APP Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
+  #          "text": "The PIA APP has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
+  #        }'
 
