@@ -1,5 +1,8 @@
 export default {
   PiaReviewHeader: {
+    NoRolesSelected: {
+      en: 'No roles have been selected.',
+    },
     Title: {
       en: 'Review',
       fr: 'Examen de l’ÉIP',

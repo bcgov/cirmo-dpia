@@ -19,6 +19,7 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
+import EditProgramAreaReview from './editProgramArea';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -98,6 +99,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                   'data-row'
                 }`}
               >
+                {/**
+                 * UI for adding roles to the program area section starts here
+                 */}
                 {(pia.status === PiaStatuses.MPO_REVIEW ||
                   pia.status === PiaStatuses.CPO_REVIEW) && (
                   <>
@@ -121,6 +125,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             reviewForm.programArea?.selectedRoles.push(
                               ApprovalRoles[rolesSelect],
                             );
+                            reviewForm.programArea.selectedRoles.map(role => ({
+                              role: {
+                                isAcknowledged: false,
+                                reviewNote: '',
+                              }
+                            }))
                             setRolesSelect('');
                             stateChangeHandler(
                               reviewForm.programArea?.selectedRoles,
@@ -184,57 +194,75 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     <div className="horizontal-divider mt-5 mb-5"></div>
                   </>
                 )}
+                {/**
+                 * UI for adding roles to the program area section ends here
+                 */}
+
+                {/**
+                 * UI for displaying selected roles in the program area section starts here
+                 */}
                 <div>
-                  <h3>
-                    {
-                      messages.PiaReviewHeader.ProgramAreaSection.Output.Roles
-                        .Title.en
-                    }
-                  </h3>
-                  <div>
-                    {reviewForm.programArea?.selectedRoles &&
-                      reviewForm.programArea?.selectedRoles.map(
-                        (role: string, index: number) => (
+                  {(pia.status === PiaStatuses.MPO_REVIEW ||
+                    pia.status === PiaStatuses.CPO_REVIEW) && (
+                    <h4 className="mb-3">Selected Roles</h4>
+                  )}
+                  {reviewForm.programArea?.selectedRoles.length > 0 ? (
+                    reviewForm.programArea?.selectedRoles.map(
+                      (role: string, index: number) => {
+                        return reviewForm.programArea?.selectedRoles &&
+                          pia.status === PiaStatuses.FINAL_REVIEW ? (
                           <div
                             className="d-flex align-items-center"
                             key={index}
                           >
-                            <div
-                              className={`d-block mt-3 ${
-                                pia.status === PiaStatuses.FINAL_REVIEW &&
-                                'mb-2'
-                              }`}
-                            >
-                              {role}
-                            </div>
-                            {pia.status !== PiaStatuses.FINAL_REVIEW && (
-                              <div className="d-block">
-                                <button
-                                  className="bcgovbtn bcgovbtn__secondary--negative mt-3 ms-3 bold min-gap delete__btn p-3"
-                                  onClick={() => {
-                                    reviewForm.programArea.selectedRoles?.splice(
-                                      index,
-                                      1,
-                                    );
-                                    stateChangeHandler(
-                                      reviewForm.programArea.selectedRoles,
-                                      'programArea.selectedRoles',
-                                    );
-                                    piaStateChangeHandler(reviewForm, 'review');
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    className="ms-1"
-                                    icon={faTrash}
-                                    size="lg"
-                                  />
-                                </button>
-                              </div>
+                            {pia?.review?.programArea?.review
+                              ?.isAcknowledged ? (
+                              <ViewProgramAreaReview
+                                pia={pia}
+                                role={role}
+                                editReviewNote={setEditReviewNote}
+                              />
+                            ) : (
+                              <EditProgramAreaReview
+                                pia={pia}
+                                role={role}
+                                changeHandler={stateChangeHandler}
+                              />
                             )}
                           </div>
-                        ),
-                      )}
-                  </div>
+                        ) : (
+                          <div
+                            key={index}
+                            className="d-flex gap-1 justify-content-start align-items-center"
+                          >
+                            <p className="m-0">{role}</p>
+                            <button
+                              className="bcgovbtn bcgovbtn__tertiary bold delete__btn p-3"
+                              onClick={() => {
+                                reviewForm.programArea.selectedRoles?.splice(
+                                  index,
+                                  1,
+                                );
+                                stateChangeHandler(
+                                  reviewForm.programArea.selectedRoles,
+                                  'programArea.selectedRoles',
+                                );
+                                piaStateChangeHandler(reviewForm, 'review');
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className=""
+                                icon={faTrash}
+                                size="xl"
+                              />
+                            </button>
+                          </div>
+                        );
+                      },
+                    )
+                  ) : (
+                    <p>{messages.PiaReviewHeader.NoRolesSelected.en}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -246,7 +274,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
-                <div className="data-row">
+                <div>
                   {reviewForm.mpo?.reviewNote &&
                   reviewForm.mpo?.reviewNote !== '' &&
                   editReviewNote === false ? (

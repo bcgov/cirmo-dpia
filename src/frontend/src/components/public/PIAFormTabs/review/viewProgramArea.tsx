@@ -3,14 +3,14 @@ import { Dispatch, SetStateAction } from 'react';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
 
-interface IProgramAreaReviewProps {
+interface IViewProgramAreaReviewProps {
   pia: IPiaForm;
   editReviewNote: Dispatch<SetStateAction<boolean>>;
   printPreview?: boolean;
   role: string;
 }
 
-const ViewProgramAreaReview = (props: IProgramAreaReviewProps) => {
+const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const { pia, printPreview, editReviewNote, role } = props;
 
   return (
@@ -39,11 +39,14 @@ const ViewProgramAreaReview = (props: IProgramAreaReviewProps) => {
           )}
         </div>
       ) : (
+      <div className="mt-2 pb-2">
         <ViewReviewSection
           pia={pia}
           reviewSection={pia?.review?.programArea?.review}
           editReviewNote={editReviewNote}
+          role={role}
         />
+      </div>
       )}
     </div>
   );

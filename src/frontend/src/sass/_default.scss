@@ -14,7 +14,7 @@
 :root {
   box-sizing: border-box;
 
-  /* Bootstraps root overwirtes the font-size. 
+  /* Bootstraps root overwirtes the font-size.
      Added important to make this have higher
      specificity */
   font-size: var(--custom-font-size) !important;
