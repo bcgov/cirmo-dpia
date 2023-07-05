@@ -259,84 +259,107 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         pia={pia}
                         editReviewNote={setEditReviewNote}
                       />
-                      {reviewForm.mpo?.isAcknowledged && (
-                        <div className="d-block pb-3">
-                          <div>
-                            <div className="d-block pb-3">
-                              <b>
-                                {
-                                  messages.PiaReviewHeader.MinistrySection.Input
-                                    .ReviewNote.en
-                                }
-                                &nbsp;
-                                <span className="error-text">(required)</span>
-                              </b>
-                            </div>
-                            <div className="d-block">
-                              <textarea
-                                className="w-50  h-200"
-                                value={reviewNote}
-                                onChange={(e) => {
-                                  setReviewNote(e.target.value);
-                                }}
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div className="d-flex">
-                            <button
-                              className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
-                              onClick={() => {
-                                setReviewNote('');
-                                setReviewForm({
-                                  ...reviewForm,
-                                  mpo: {
-                                    ...reviewForm.mpo,
-                                    reviewNote: '',
-                                    isAcknowledged: false,
-                                  },
-                                });
-                                piaStateChangeHandler(
+                    ) : (
+                      <>
+                        <Checkbox
+                          value=""
+                          isLink={false}
+                          checked={
+                            reviewForm?.mpo?.isAcknowledged ? true : false
+                          }
+                          label={
+                            messages.PiaReviewHeader.MinistrySection.Input
+                              .AcceptAccountability.en
+                          }
+                          onChange={(e) => {
+                            setReviewForm({
+                              ...reviewForm,
+                              mpo: {
+                                ...reviewForm.mpo,
+                                isAcknowledged: e.target.checked,
+                              },
+                            });
+                          }}
+                        />
+                        {reviewForm.mpo?.isAcknowledged && (
+                          <div className="d-block pb-3">
+                            <div>
+                              <div className="d-block pb-3">
+                                <b>
                                   {
-                                    mpo: null,
-                                  },
-                                  'review',
-                                  true,
-                                );
-                              }}
-                            >
-                              Clear
-                            </button>
-                            <button
-                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                              disabled={reviewNote === ''}
-                              onClick={() => {
-                                setReviewForm({
-                                  ...reviewForm,
-                                  mpo: {
-                                    ...reviewForm.mpo,
-                                    reviewNote: reviewNote,
-                                  },
-                                });
-                                setEditReviewNote(false);
-                                piaStateChangeHandler(
-                                  {
+                                    messages.PiaReviewHeader.MinistrySection
+                                      .Input.ReviewNote.en
+                                  }
+                                  &nbsp;
+                                  <span className="error-text">(required)</span>
+                                </b>
+                              </div>
+                              <div className="d-block">
+                                <textarea
+                                  className="w-50  h-200"
+                                  value={reviewNote}
+                                  onChange={(e) => {
+                                    setReviewNote(e.target.value);
+                                  }}
+                                ></textarea>
+                              </div>
+                            </div>
+                            <div className="d-flex">
+                              <button
+                                className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
+                                onClick={() => {
+                                  setReviewNote('');
+                                  setReviewForm({
+                                    ...reviewForm,
                                     mpo: {
-                                      isAcknowledged: true,
+                                      ...reviewForm.mpo,
+                                      reviewNote: '',
+                                      isAcknowledged: false,
+                                    },
+                                  });
+                                  piaStateChangeHandler(
+                                    {
+                                      mpo: null,
+                                    },
+                                    'review',
+                                    true,
+                                  );
+                                }}
+                              >
+                                Clear
+                              </button>
+                              <button
+                                className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                                disabled={reviewNote === ''}
+                                onClick={() => {
+                                  setReviewForm({
+                                    ...reviewForm,
+                                    mpo: {
+                                      ...reviewForm.mpo,
                                       reviewNote: reviewNote,
                                     },
-                                  },
-                                  'review',
-                                  true,
-                                );
-                              }}
-                            >
-                              Confirm
-                            </button>
+                                  });
+                                  setEditReviewNote(false);
+                                  piaStateChangeHandler(
+                                    {
+                                      mpo: {
+                                        isAcknowledged: true,
+                                        reviewNote: reviewNote,
+                                      },
+                                    },
+                                    'review',
+                                    true,
+                                  );
+                                }}
+                              >
+                                Confirm
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </>
-                  )}
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             ) : (
