@@ -66,8 +66,10 @@ export const PiaFormSideNavPages = (
       }
     } else {
       // This is for full PIA
-      if( pia?.status !== PiaStatuses.INCOMPLETE &&
-      pia?.status !== PiaStatuses.EDIT_IN_PROGRESS) {
+      if (
+        pia?.status !== PiaStatuses.INCOMPLETE &&
+        pia?.status !== PiaStatuses.EDIT_IN_PROGRESS
+      ) {
         /*
         !TODO - When the PI review tab is implemented
          return showPostIntakeTabs'
