@@ -74,14 +74,20 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       const newReviews = reviewForm.programArea.selectedRoles.reduce(
         (acc: any, role: string) => {
           console.log('programArea', reviewForm.programArea);
-          if (reviewForm.programArea.reviews[role as keyof IReview['programArea']['reviews']] === undefined) {
+          if (
+            Object(reviewForm.programArea.reviews)[
+              role as keyof IReview['programArea']['reviews']
+            ] === undefined
+          ) {
             console.log('reviewForm', reviewForm);
             acc[role] = {
               isAcknowledged: false,
               reviewNote: '',
             };
           } else {
-            acc[role] = reviewForm.programArea.reviews[role as keyof IReview['programArea']['reviews']];
+            acc[role] = Object(reviewForm.programArea.reviews)[
+              role as keyof IReview['programArea']['reviews']
+            ];
           }
           return acc;
         },
@@ -100,7 +106,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reviewForm]);
+    /* When the selectedRoles length changes, we need to update the reviews object */
+  }, [Object(reviewForm.programArea.selectedRoles).length]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
@@ -246,7 +253,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex align-items-center"
                             key={index}
                           >
-                            {pia?.review?.programArea?.review
+                            {Object(pia?.review?.programArea)?.review
                               ?.isAcknowledged ? (
                               <ViewProgramAreaReview
                                 pia={pia}

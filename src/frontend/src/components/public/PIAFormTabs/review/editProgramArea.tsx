@@ -20,17 +20,17 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
           <div className="col col-md-3">
             <b> Reviewed by</b>
             <div className="mt-2">
-              {props.pia?.review?.programArea?.reviews?.[role]?.reviewedByDisplayName}
+              {Object(props.pia?.review?.programArea?.reviews)?.[role]?.reviewedByDisplayName}
             </div>
           </div>
           <div className="row mt-4 ">
             <div className="col col-md-3">
               <b> Date received</b>
               <div className="mt-2">
-                {props.pia?.review?.programArea?.reviews?.[role]?.reviewedAt
+                {Object(props.pia?.review?.programArea?.reviews)?.[role]?.reviewedAt
                   ? dateToString(
                       new Date(
-                        props.pia?.review?.programArea?.reviews?.[role]?.reviewedAt,
+                        Object(props.pia?.review?.programArea?.reviews)?.[role]?.reviewedAt,
                       ),
                     )
                   : 'N/A'}
@@ -41,7 +41,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
             <Checkbox
               value=""
               checked={
-                pia.review?.programArea.reviews?.[role]?.isAcknowledged === true
+                Object(pia.review?.programArea.reviews)?.[role]?.isAcknowledged === true
                   ? true
                   : false
               }
@@ -60,7 +60,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
             <div className="col col-md-3">
               <b> Review note</b>
               <div className="ps-2 mt-2">
-                {props.pia?.review?.programArea?.reviews?.[role]?.reviewNote}
+                {Object(props.pia?.review?.programArea?.reviews)?.[role]?.reviewNote}
               </div>
             </div>
           </div>
