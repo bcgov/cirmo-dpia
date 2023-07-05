@@ -70,7 +70,7 @@ jobs:
           IMAGE: 'api-dev:latest'
           templateURL: ${{ secrets.templateURL }} 
         run: |
-          ./.github/helpers/tekton-trigger.sh
+          ./.github/helpers/trigger-tekton.sh
 
   # TODO Build health check in tekton
 
