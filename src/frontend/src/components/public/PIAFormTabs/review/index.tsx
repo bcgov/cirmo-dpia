@@ -4,7 +4,7 @@ import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { IReview } from './interfaces';
+import { IReview, IReviewSection } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { HttpRequest } from '../../../../utils/http-request.util';
@@ -33,6 +33,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     () => ({
       programArea: {
         selectedRoles: [],
+        reviews: {},
       },
       mpo: {
         isAcknowledged: false,
@@ -67,6 +68,39 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   // passing updated data to parent for auto-save to work efficiently only if there are changes
+
+  useEffect(() => {
+    if (reviewForm.programArea.selectedRoles.length > 0) {
+      const newReviews = reviewForm.programArea.selectedRoles.reduce(
+        (acc: any, role: string) => {
+          console.log('programArea', reviewForm.programArea);
+          if (reviewForm.programArea.reviews[role as keyof IReview['programArea']['reviews']] === undefined) {
+            console.log('reviewForm', reviewForm);
+            acc[role] = {
+              isAcknowledged: false,
+              reviewNote: '',
+            };
+          } else {
+            acc[role] = reviewForm.programArea.reviews[role as keyof IReview['programArea']['reviews']];
+          }
+          return acc;
+        },
+        {},
+      );
+
+      setReviewForm({
+        ...reviewForm,
+        programArea: {
+          ...reviewForm.programArea,
+          reviews: {
+            ...reviewForm.programArea.reviews,
+            ...newReviews,
+          },
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviewForm]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
@@ -122,15 +156,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         <button
                           className="bcgovbtn bcgovbtn__secondary mt-3"
                           onClick={() => {
+                            if (rolesSelect === '') {
+                              return;
+                            }
                             reviewForm.programArea?.selectedRoles.push(
                               ApprovalRoles[rolesSelect],
                             );
-                            reviewForm.programArea.selectedRoles.map(role => ({
-                              role: {
-                                isAcknowledged: false,
-                                reviewNote: '',
-                              }
-                            }))
                             setRolesSelect('');
                             stateChangeHandler(
                               reviewForm.programArea?.selectedRoles,
@@ -311,8 +342,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                   messages.PiaReviewHeader.MinistrySection.Input
                                     .ReviewNote.en
                                 }
-                                &nbsp;
-                                <span className="error-text">(required)</span>
+                                <span className="error-text">( required )</span>
                               </b>
                             </div>
                             <div className="d-block">

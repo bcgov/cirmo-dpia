@@ -22,7 +22,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
               <b> {role} </b>
             </h3>
           </div>
-          {!pia?.review?.programArea?.review?.isAcknowledged ? (
+          {!pia?.review?.programArea?.reviews?.[role]?.isAcknowledged ? (
             <>
               <div> Reviewed by</div>
               <div> Review incomplete</div>
@@ -31,7 +31,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             <div>
               <ViewReviewSection
                 pia={pia}
-                reviewSection={pia?.review?.programArea?.review}
+                reviewSection={pia?.review?.programArea?.reviews?.[role]}
                 editReviewNote={editReviewNote}
                 printPreview
               />
@@ -42,7 +42,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
       <div className="mt-2 pb-2">
         <ViewReviewSection
           pia={pia}
-          reviewSection={pia?.review?.programArea?.review}
+          reviewSection={pia?.review?.programArea?.reviews?.[role]}
           editReviewNote={editReviewNote}
           role={role}
         />

@@ -20,17 +20,17 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
           <div className="col col-md-3">
             <b> Reviewed by</b>
             <div className="mt-2">
-              {props.pia?.review?.programArea?.review?.reviewedByDisplayName}
+              {props.pia?.review?.programArea?.reviews?.[role]?.reviewedByDisplayName}
             </div>
           </div>
           <div className="row mt-4 ">
             <div className="col col-md-3">
               <b> Date received</b>
               <div className="mt-2">
-                {props.pia?.review?.programArea?.review?.reviewedAt
+                {props.pia?.review?.programArea?.reviews?.[role]?.reviewedAt
                   ? dateToString(
                       new Date(
-                        props.pia?.review?.programArea?.review?.reviewedAt,
+                        props.pia?.review?.programArea?.reviews?.[role]?.reviewedAt,
                       ),
                     )
                   : 'N/A'}
@@ -41,7 +41,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
             <Checkbox
               value=""
               checked={
-                pia.review?.programArea.review?.isAcknowledged === true
+                pia.review?.programArea.reviews?.[role]?.isAcknowledged === true
                   ? true
                   : false
               }
@@ -50,7 +50,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
               onChange={(e) => {
                 changeHandler(
                   e.target.checked,
-                  'review.programArea.review.isAcknowledged',
+                  `review.programArea.reviews.${role}.isAcknowledged`,
                 );
               }}
               readOnly={false}
@@ -59,9 +59,8 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
           <div className="row mt-4">
             <div className="col col-md-3">
               <b> Review note</b>
-              <div className="mt-2">
-                {' '}
-                {props.pia?.review?.programArea?.review?.reviewNote}
+              <div className="ps-2 mt-2">
+                {props.pia?.review?.programArea?.reviews?.[role]?.reviewNote}
               </div>
             </div>
           </div>
