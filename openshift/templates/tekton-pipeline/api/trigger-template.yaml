@@ -7,7 +7,7 @@ spec:
   - name: environment
     description: What environment is being targeted?
   - name: application
-    description: blah
+    description: What application is being deployed?
   - name: image
     description: tag or identifier of the image being deployed
   resourcetemplates:
