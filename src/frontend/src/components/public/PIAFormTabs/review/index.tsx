@@ -307,12 +307,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                   mpo: {
                                     ...reviewForm.mpo,
                                     reviewNote: '',
+                                    isAcknowledged: false,
                                   },
                                 });
                                 piaStateChangeHandler(
                                   {
                                     mpo: {
-                                      isAcknowledged: true,
+                                      isAcknowledged: false,
                                       reviewNote: '',
                                     },
                                   },
