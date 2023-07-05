@@ -68,7 +68,8 @@ jobs:
           ENVIRONMENT: dev
           APPLICATION: dpia-api
           IMAGE: 'api-dev:latest'
-          templateURL: 'https://emerald.tools.pia.gov.bc.ca'
+          TEMPLATE_URL: ${{ secrets.TEMPLATEURL }} 
+          EL_ROUTE: ${{ secrets.EL_ROUTE }}
         run: |
           ./.github/helpers/trigger-tekton.sh
 
