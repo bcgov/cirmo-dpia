@@ -312,10 +312,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                 });
                                 piaStateChangeHandler(
                                   {
-                                    mpo: {
-                                      isAcknowledged: false,
-                                      reviewNote: '',
-                                    },
+                                    mpo: null,
                                   },
                                   'review',
                                   true,
