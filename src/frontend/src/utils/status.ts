@@ -84,11 +84,9 @@ export const statusList: StatusList = {
   MPO_REVIEW: {
     title: 'MPO Review',
     class: 'statusBlock__MPOReview',
-    banner: BannerText.MPOReviewStatusCalloutText.Drafter.en,
     modal: defaultMPOReviewModal,
     Privileges: {
       MPO: {
-        banner: BannerText.MPOReviewStatusCalloutText.MPO.en,
         changeStatus: [
           {
             status: 'INCOMPLETE',
