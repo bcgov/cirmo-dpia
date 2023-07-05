@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: process-apply-dpia-service
+  namespace: aa77ab-tools
+  labels:
+    DataClass: Low
+    app.kubernetes.io/version: '0.1'
+    name: process-apply-dpia-service
+    operator.tekton.dev/provider-type: redhat
+spec:
+  description: >-
+    This task uses the openshift cli to process and apply the raw template for
+    the DPIA API to the aa77ab DEV namespace
+  params:
+    - name: environment
+      description: what environment are we deploying a service into?
+      default: $(params.environment)
+    - name: application
+      description: what app are we deploying?
+      default: $(params.application)
+    - name: image
+      description: what image:tag is being deployed?
+      default: $(params.image)
+  steps:
+    - image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+      name: dpia-api
+      resources: {}
+      script: >
+
+        echo "This is the environment"
+        echo $(params.environment)
+
+        oc process -f
+        https://raw.githubusercontent.com/bcgov/cirmo-dpia/main/openshift/templates/api/emerald/api-dc-template.yaml
+        -p APPLICATION_NAME=dpia-api -p ENVIRONMENT=dev -p LICENSE_PLATE=aa77ab 
+        -p IMAGESTREAM='dpia-dev'  -p DATACLASS='Medium' | oc apply -f -

@@ -1,44 +1,36 @@
-apiVersion: template.openshift.io/v1
-kind: Template
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
 metadata:
-  name: ${APPLICATION_NAME}-template
-labels:
-  template: ${APPLICATION_NAME}-template
-objects:
-- kind: Pipeline
-  apiVersion: tekton.dev/v1beta1
-  metadata:
-    name: ${APPLICATION_NAME}-deploy-${ENVIRONMENT}
-    namespace: ${LICENSE_PLATE}-tools
-    labels:
-      DataClass: ${DATACLASS}
-      name: dpia-deploy
-  spec:
-    tasks:
-    - name: process-${APPLICATION_NAME}-template-${ENVIRONMENT}
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"tekton.dev/v1beta1","kind":"Pipeline","metadata":{"annotations":{},"labels":{"DataClass":"low","name":"dpia-deploy","template":"dpia-api-template"},"name":"dpia-api-deploy-dev","namespace":"aa77ab-tools"},"spec":{"tasks":[{"name":"process-dpia-api-template-dev","taskRef":{"kind":"Task","name":"process-dpia-api-template-dev"}}]}}
+  resourceVersion: '330408667'
+  name: process-apply-dpia-service
+  generation: 1
+  namespace: aa77ab-tools
+  labels:
+    DataClass: Low
+    name: process-apply-dpia-service
+spec:
+  params:
+    - name: environment
+      type: string
+      default: ""
+    - name: application
+      type: string
+      default: ""
+    - name: image
+      type: string
+      default: ""
+  tasks:
+    - name: process-apply-dpia-service
       taskRef:
-        name: process-${APPLICATION_NAME}-template-${ENVIRONMENT}
         kind: Task
-
-parameters:
-  - description: Application Name
-    displayName: AppName
-    name: APPLICATION_NAME
-    required: true
-    value: dpia-api
-  - description: Environment
-    displayName: Environment
-    name: ENVIRONMENT
-    required: true
-    value: dev
-  - description: License Plate
-    displayName: License Plate
-    name: LICENSE_PLATE
-    required: true
-    value: aa77ab
-  - description: DataClass
-    displayName: DataClass
-    name: DATACLASS
-    required: true
-    value: low
-  
+        name: process-apply-dpia-service
+      params:
+        - name: environment
+          value: $(params.environment)
+        - name: application
+          value: $(params.application)
+        - name: image
+          value: $(params.image)

@@ -1,0 +1,30 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: el-vanity
+  namespace: aa77ab-tools
+  labels:
+    DataClass: Low
+    Internet-Ingress: ALLOW
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: dpia-api-dev-deploy
+  annotations:
+    ako.vmware.com/controller-cluster-uuid: cluster-10d3d65b-aa10-4eac-bd40-3777bfd2f4a9
+    ako.vmware.com/host-fqdn-vs-uuid-map: >-
+      {"emerald.dev.pia.gov.bc.ca":"virtualservice-39524f91-e2f5-4874-96d2-22b375252d2a"}
+    aviinfrasetting.ako.vmware.com/name: dataclass-public
+spec:
+  host: emerald.dev.pia.gov.bc.ca
+  to:
+    kind: Service
+    name: process-apply-dpia-service
+    weight: 100
+  port:
+    targetPort: http-listener
+  tls:
+    termination: edge
+    certificate: |
+    key: |-
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None

@@ -1,0 +1,8 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: process-apply-dpia-service
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - triggerRef: process-apply-dpia-service
