@@ -5,7 +5,7 @@ metadata:
 spec:
   params:
   - name: environment
-    description: What environment is being targetted?
+    description: What environment is being targeted?
   - name: application
     description: blah
   - name: image
