@@ -43,76 +43,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     [],
   );
 
-  const [reviewForm, setReviewForm] = useState<IReview>(initialFormState);
+  const [reviewForm, setReviewForm] = useState<IReview>(pia.review || initialFormState);
   const [editReviewNote, setEditReviewNote] = useState(false);
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setReviewForm, path, value);
   };
-  useEffect(() => {
-    const getPIADATA = async () => {
-      const piaData = await HttpRequest.get(
-        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${id}`),
-      );
-      const data: IPiaForm = Object(piaData).data;
-      if (data.review) {
-        setReviewForm(Object(data).review);
-      }
-      if (!data.review?.programArea) {
-        setReviewForm({
-          mpo: { ...reviewForm.mpo },
-          programArea: { ...initialFormState.programArea },
-        });
-      }
-    };
-    getPIADATA();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-  // passing updated data to parent for auto-save to work efficiently only if there are changes
-
-  useEffect(() => {
-    if (reviewForm.programArea.selectedRoles.length > 0) {
-      const newReviews = reviewForm.programArea.selectedRoles.reduce(
-        (acc: any, role: string) => {
-          if (
-            Object(reviewForm.programArea.reviews)[
-              role as keyof IReview['programArea']['reviews']
-            ] === undefined
-          ) {
-            acc[role] = {
-              isAcknowledged: false,
-              reviewNote: '',
-            };
-          } else {
-            acc[role] = Object(reviewForm.programArea.reviews)[
-              role as keyof IReview['programArea']['reviews']
-            ];
-          }
-          return acc;
-        },
-        {},
-      );
-
-      setReviewForm({
-        ...reviewForm,
-        programArea: {
-          ...reviewForm.programArea,
-          reviews: newReviews,
-        },
-      });
-
-      piaStateChangeHandler(
-        {
-          programArea: {
-            ...reviewForm.programArea,
-          },
-        },
-        'review',
-        true,
-      );
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    /* When the selectedRoles length changes, we need to update the reviews object */
-  }, [reviewForm.programArea.selectedRoles.length]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
@@ -359,7 +294,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             </div>
                             <div className="d-block">
                               <textarea
-                                className="w-50  h-200"
+                                className="w-50 h-200"
                                 value={reviewNote}
                                 onChange={(e) => {
                                   setReviewNote(e.target.value);
@@ -392,7 +327,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                               Clear
                             </button>
                             <button
-                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                              className="bcgovbtn bcgovbtn__primary mt-3"
                               disabled={reviewNote === ''}
                               onClick={() => {
                                 setReviewForm({

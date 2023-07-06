@@ -2,7 +2,7 @@ export interface IReview {
   programArea: {
     selectedRoles: string[];
     reviews?: {
-      role?: IReviewSection;
+      [role: string]: IReviewSection;
     };
   };
   mpo: IReviewSection;
