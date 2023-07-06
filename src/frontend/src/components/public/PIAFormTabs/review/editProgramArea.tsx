@@ -48,9 +48,10 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
               isLink={false}
               label="Accept accountability"
               onChange={(e) => {
+                console.log(pia.review?.programArea.reviews);
                 changeHandler(
                   e.target.checked,
-                  `review.programArea.reviews.${role}.isAcknowledged`,
+                  `programArea.reviews.${role}.isAcknowledged`,
                 );
               }}
               readOnly={false}

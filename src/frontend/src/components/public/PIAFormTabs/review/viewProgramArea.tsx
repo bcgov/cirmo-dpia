@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
+import { IReview } from './interfaces';
 
 interface IViewProgramAreaReviewProps {
   pia: IPiaForm;
@@ -22,7 +23,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
               <b> {role} </b>
             </h3>
           </div>
-          {!pia?.review?.programArea?.reviews?.[role]?.isAcknowledged ? (
+          {!pia?.review?.programArea?.reviews?.[role as keyof IReview['programArea']['reviews']]['isAcknowledged'] ? (
             <>
               <div> Reviewed by</div>
               <div> Review incomplete</div>
@@ -31,7 +32,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             <div>
               <ViewReviewSection
                 pia={pia}
-                reviewSection={pia?.review?.programArea?.reviews?.[role]}
+                reviewSection={pia?.review?.programArea?.reviews?.[role as keyof IReview['programArea']['reviews']]}
                 editReviewNote={editReviewNote}
                 printPreview
               />
@@ -42,7 +43,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
       <div className="mt-2 pb-2">
         <ViewReviewSection
           pia={pia}
-          reviewSection={pia?.review?.programArea?.reviews?.[role]}
+          reviewSection={pia?.review?.programArea?.reviews?.[role as keyof IReview['programArea']['reviews']]}
           editReviewNote={editReviewNote}
           role={role}
         />
