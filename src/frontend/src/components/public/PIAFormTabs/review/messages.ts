@@ -45,6 +45,9 @@ export default {
         DeclineAccountability: {
           en: `I decline to accept accountability for this PIA. By declining to accept accountability, CPO will do a full review of this PIA.`,
         },
+        DeclineNote: {
+          en: 'Warning: This reviewer has declined to accept accountability for the contents of this PIA on behalf of their ministry or sector. As a result, CPO must do a full review of this PIA.',
+        },
         ReviewNote: {
           en: 'Review Note',
         },

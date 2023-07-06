@@ -9,6 +9,7 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../../../utils/date';
 import { getGUID } from '../../../../utils/helper.util';
 import { IReviewSection } from './interfaces';
+import ReviewNote from './reviewNote';
 
 interface IReviewProps {
   pia: IPiaForm;
@@ -51,12 +52,9 @@ const ViewReviewSection = (props: IReviewProps) => {
           </div>
         </div>
       </div>
-      <div className="row mt-4">
-        <div className="col col-md-3">
-          <b> Review note</b>
-          <div className="mt-2"> {reviewSection?.reviewNote}</div>
-        </div>
-      </div>
+      <ReviewNote reviewSection={reviewSection}
+        PI={pia.hasAddedPiToDataElements} 
+        />
       <div className="row mt-4">
         <Checkbox
           value=""
