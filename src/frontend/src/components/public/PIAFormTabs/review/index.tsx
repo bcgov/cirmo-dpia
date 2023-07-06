@@ -67,10 +67,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   // passing updated data to parent for auto-save to work efficiently only if there are changes
-  const [
-    standardPiaMpoAccountabilityOpinion,
-    setStandardPiaMpoAccountabilityOpinion,
-  ] = useState<boolean | null>(null);
+
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
@@ -365,65 +362,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             ) : (
               <StandardPiaMpoAccountability
                 pia={pia}
-                selectAccountabilityByMPO={
-                  setStandardPiaMpoAccountabilityOpinion
-                }
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+                piaStateChangeHandler={piaStateChangeHandler}
               />
             )}
-
-            <div className="d-flex">
-              <button
-                className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
-                onClick={() => {
-                  setReviewNote('');
-                  setReviewForm({
-                    ...reviewForm,
-                    mpo: {
-                      ...reviewForm.mpo,
-                      reviewNote: '',
-                    },
-                  });
-                  piaStateChangeHandler(
-                    {
-                      mpo: {
-                        isAcknowledged: true,
-                        reviewNote: '',
-                      },
-                    },
-                    'review',
-                    true,
-                  );
-                }}
-              >
-                Clear
-              </button>
-              <button
-                className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                disabled={reviewNote === ''}
-                onClick={() => {
-                  setReviewForm({
-                    ...reviewForm,
-                    mpo: {
-                      ...reviewForm.mpo,
-                      reviewNote: reviewNote,
-                    },
-                  });
-                  setEditReviewNote(false);
-                  piaStateChangeHandler(
-                    {
-                      mpo: {
-                        isAcknowledged: true,
-                        reviewNote: reviewNote,
-                      },
-                    },
-                    'review',
-                    true,
-                  );
-                }}
-              >
-                Confirm
-              </button>
-            </div>
           </section>
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
