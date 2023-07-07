@@ -184,9 +184,9 @@ export const MinistryList = [
 
 export const PiaStatusList = [
   { label: 'Incomplete', value: 'INCOMPLETE' },
-  { label: 'Edit_In_Progress', value: 'EDIT_IN_PROGRESS' },
-  { label: 'MPO_Review', value: 'MPO_REVIEW' },
-  { label: 'CPO_Review', value: 'CPO_REVIEW' },
+  { label: 'Edit In Progress', value: 'EDIT_IN_PROGRESS' },
+  { label: 'MPO Review', value: 'MPO_REVIEW' },
+  { label: 'CPO Review', value: 'CPO_REVIEW' },
 ];
 export const PiaDrafterFilterList = [
   {
