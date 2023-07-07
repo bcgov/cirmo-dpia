@@ -8,7 +8,11 @@ import {
 import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 
-const PIAIntakeFilter = () => {
+interface IPIAIntakeFilterProps {
+  filterChangeHandler: (params: any) => void;
+}
+
+const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterByMinistry, setFilterByMinistry] = useState<string>(
     searchParams.get('filterByMinistry') || '',
@@ -36,7 +40,7 @@ const PIAIntakeFilter = () => {
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        setSearchParams(params);
+        filterChangeHandler.filterChangeHandler(params);
         break;
 
       case 'ministry':
@@ -47,7 +51,7 @@ const PIAIntakeFilter = () => {
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        setSearchParams(params);
+        filterChangeHandler.filterChangeHandler(params);
         break;
       case 'drafter':
         if (newValue.target.value !== '')
@@ -56,7 +60,7 @@ const PIAIntakeFilter = () => {
         if (filterByMinistry) params.filterByMinistry = filterByMinistry;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        setSearchParams(params);
+        filterChangeHandler.filterChangeHandler(params);
         break;
     }
   };
@@ -83,7 +87,7 @@ const PIAIntakeFilter = () => {
     searchParams.delete('filterPiaDrafterByCurrentUser');
     searchParams.delete('filterByMinistry');
     searchParams.delete('filterByStatus');
-    setSearchParams(searchParams);
+    filterChangeHandler.filterChangeHandler(searchParams);
   };
 
   return (
