@@ -112,6 +112,34 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     );
   };
 
+  const enableConfirmButton = () => {
+    if (pia.hasAddedPiToDataElements === false) {
+      if (reviewNote === '') return true;
+      else return false;
+    } else return false;
+  };
+  const enableMPOReviewViewMode = () => {
+    // if it is a delegate PI, we make sure show view mode of this MPO Review part
+    // if and only if the user input some review note for this pia
+    if (
+      pia.hasAddedPiToDataElements === false &&
+      reviewForm.mpo?.reviewNote &&
+      reviewForm.mpo?.reviewNote !== '' &&
+      editReviewNote === false
+    )
+      return true;
+
+    // if it is PI PIA, the review note part for MPO is optional, we only check the isAcknowledged
+    // set to true.
+    if (
+      pia.hasAddedPiToDataElements !== false &&
+      reviewForm.mpo?.isAcknowledged &&
+      reviewForm.mpo?.isAcknowledged === true &&
+      editReviewNote === false
+    )
+      return true;
+    return false;
+  };
   return (
     <>
       <section>
@@ -282,10 +310,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
-                <div>
-                  {reviewForm.mpo?.reviewNote &&
-                  reviewForm.mpo?.reviewNote !== '' &&
-                  editReviewNote === false ? (
+                <div className="data-row">
+                  {enableMPOReviewViewMode() ? (
                     <ViewMPOReview
                       pia={pia}
                       editReviewNote={setEditReviewNote}
@@ -319,7 +345,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                   messages.PiaReviewHeader.MinistrySection.Input
                                     .ReviewNote.en
                                 }
-                                <span className="error-text">( required )</span>
+                                &nbsp;
+                                {pia.hasAddedPiToDataElements === false ? (
+                                  <span className="error-text">(required)</span>
+                                ) : (
+                                  <span>(optional)</span>
+                                )}
                               </b>
                             </div>
                             <div className="d-block">
@@ -357,8 +388,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                               Clear
                             </button>
                             <button
-                              className="bcgovbtn bcgovbtn__primary mt-3"
-                              disabled={reviewNote === ''}
+                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                              disabled={enableConfirmButton()}
                               onClick={() => {
                                 setReviewForm({
                                   ...reviewForm,
