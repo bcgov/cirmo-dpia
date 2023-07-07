@@ -7,8 +7,16 @@ export default {
       en: `Notify your MPO`,
     },
     description: {
-      en: `The next step is to send an email to your ministry privacy officer and let them know you have completed the PIA intake. Find your MPO here. Your MPO will make sure your answers are complete, and they may ask for more information.
-      `,
+      desc1: {
+        en: `The next step is to send an email to your ministry privacy officer and let them know you have completed the PIA intake. `,
+      },
+      link: {
+        en: `Find your MPO here.`,
+        href: 'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers',
+      },
+      desc2: {
+        en: ` Your MPO will make sure your answers are complete, and they may ask for more information.`,
+      },
     },
     helpline: {
       title: {
