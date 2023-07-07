@@ -39,24 +39,29 @@ const PIAList = () => {
     // if the searchText is not empty, means user input some new searchText, we update it, otherwise delete it from params
     if (searchText !== '') params.searchText = searchText;
     else delete params.searchText;
+    setcurrentPage(1);
     setSearchParams(params);
   }, [searchParams, searchText, setSearchParams]);
 
   const updateSearchUrl = () => {
+    setcurrentPage(1);
     setSearchParamsForSearchText();
   };
 
   const handleClearSearchText = () => {
     setSearchText('');
     searchParams.delete('searchText');
+    setcurrentPage(1);
     setSearchParams(searchParams);
   };
 
   const handleSearchTextChange = (newSearchText: any) => {
+    setcurrentPage(1);
     setSearchText(newSearchText.target.value);
   };
   //Switch ordering states
   function startSorting(Sortheading: string) {
+    setcurrentPage(1);
     Object.keys(headings).forEach((key) => {
       if (key === Sortheading) {
         headings[Sortheading].sortValue =
