@@ -7,10 +7,7 @@ import {
 } from '../../../constant/constant';
 import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
-
-interface IPIAIntakeFilterProps {
-  filterChangeHandler: (params: any) => void;
-}
+import { IPIAIntakeFilterProps } from './interfaces';
 
 const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
