@@ -113,9 +113,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   };
 
   const enableConfirmButton = () => {
+  const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false) {
-      if (reviewNote === '') return true;
-      else return false;
+      if (reviewNote.trim() !== '') return false;
+      else return true;
     } else return false;
   };
   const enableMPOReviewViewMode = () => {
@@ -389,7 +390,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             </button>
                             <button
                               className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                              disabled={enableConfirmButton()}
+                              disabled={disableConfirmButton()}
                               onClick={() => {
                                 setReviewForm({
                                   ...reviewForm,
