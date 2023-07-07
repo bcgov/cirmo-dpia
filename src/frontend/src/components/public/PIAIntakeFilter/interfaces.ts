@@ -1,3 +1,3 @@
 export interface IPIAIntakeFilterProps {
-  filterChangeHandler: (params: any) => void;
+  filterChangeHandler: (params: string) => void;
 }
