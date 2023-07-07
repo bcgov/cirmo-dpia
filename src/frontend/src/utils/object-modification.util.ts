@@ -9,10 +9,6 @@ export const modifyNestedObject = <T>(
   // return the value if path is empty; last key
   if (!path) return value;
 
-  console.log('prevState', prevState);
-  console.log('path', path);
-  console.log('value', value);
-
   // split paths by delimiter
   const pathSplit = path.split(delimiter);
 
@@ -21,7 +17,6 @@ export const modifyNestedObject = <T>(
 
   // further nested keys
   const nestedKeys = pathSplit.splice(1);
-  console.log('nestedKeys', nestedKeys);
 
   // fetch the nested state
   const nestedState = modifyNestedObject(

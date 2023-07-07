@@ -12,7 +12,7 @@ interface IEditProgramAreaReviewProps {
 }
 
 const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
-  const { pia, role, stateChangeHandler, piaStateChangeHandler } = props;
+  const { pia, role, stateChangeHandler } = props;
 
   /**
    * Local state for the checkbox and review note

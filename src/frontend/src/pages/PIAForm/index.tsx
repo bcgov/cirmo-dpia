@@ -108,7 +108,7 @@ const PIAFormPage = () => {
     key: keyof IPiaForm,
     isEager?: boolean,
   ) => {
-    // DO NOT allow state changes in the view mode
+    // DO NOT allow state changes in the view mode unless it is a review page
     if (mode === 'view' && !pathname?.split('/').includes('review')) return;
 
     if (isEager) {

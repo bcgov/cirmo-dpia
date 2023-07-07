@@ -43,20 +43,64 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     [],
   );
 
+  const [updatePia, setUpdatePia] = useState(false);
+
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
   const [editReviewNote, setEditReviewNote] = useState(false);
   const stateChangeHandler = (value: any, path: string, callApi?: boolean) => {
     setNestedReactState(setReviewForm, path, value);
-    if (callApi) piaStateChangeHandler(reviewForm, 'review', true);
+    if (callApi) setUpdatePia(true);
   };
+
+  /**
+   * Update pia.review when reviewForm is updated
+   */
+  useEffect(() => {
+    if (!updatePia) return;
+    setUpdatePia(false);
+    piaStateChangeHandler(reviewForm, 'review', true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviewForm, updatePia]);
+
+  /**
+   * Update reviewForm when pia.review is updated
+   */
+  useEffect(() => {
+    if (!pia.review) return;
+    setReviewForm(pia.review);
+  }, [pia.review]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
     pia?.review?.mpo?.reviewNote || '',
   );
+
+  const addRole = (role: string) => {
+    const casedRoles = reviewForm.programArea?.selectedRoles.map((r) =>
+      r.toLowerCase(),
+    );
+    if (rolesSelect === '' || casedRoles.includes(role.toLowerCase())) {
+      return;
+    }
+    reviewForm.programArea?.selectedRoles.push(ApprovalRoles[rolesSelect]);
+    stateChangeHandler(
+      reviewForm.programArea?.selectedRoles,
+      'programArea.selectedRoles',
+    );
+    piaStateChangeHandler(
+      {
+        programArea: {
+          ...reviewForm.programArea,
+          selectedRoles: reviewForm.programArea.selectedRoles,
+        },
+      },
+      'review',
+      true,
+    );
+  };
 
   return (
     <>
@@ -95,39 +139,25 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         <Dropdown
                           id="programArea"
                           label="Select a role from the list"
-                          options={Object.keys(ApprovalRoles).map(
-                            (role: string) => ({
+                          options={Object.keys(ApprovalRoles)
+                            .filter(
+                              (role) =>
+                                !reviewForm.programArea?.selectedRoles?.includes(
+                                  ApprovalRoles[role],
+                                ),
+                            )
+                            .map((role: string) => ({
                               value: role,
                               label: ApprovalRoles[role],
-                            }),
-                          )}
+                            }))}
                           value={rolesSelect}
                           changeHandler={(e) => setRolesSelect(e.target.value)}
                         />
                         <button
                           className="bcgovbtn bcgovbtn__secondary mt-3"
                           onClick={() => {
-                            if (rolesSelect === '') {
-                              return;
-                            }
-                            reviewForm.programArea?.selectedRoles.push(
-                              ApprovalRoles[rolesSelect],
-                            );
+                            addRole(ApprovalRoles[rolesSelect]);
                             setRolesSelect('');
-                            stateChangeHandler(
-                              reviewForm.programArea?.selectedRoles,
-                              'programArea.selectedRoles',
-                            );
-                            piaStateChangeHandler(
-                              {
-                                programArea: {
-                                  selectedRoles:
-                                    reviewForm.programArea.selectedRoles,
-                                },
-                              },
-                              'review',
-                              true,
-                            );
                           }}
                         >
                           Add
@@ -149,24 +179,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         <button
                           className="bcgovbtn bcgovbtn__secondary mt-3"
                           onClick={() => {
-                            reviewForm.programArea?.selectedRoles.push(
-                              rolesInput,
-                            );
-                            stateChangeHandler(
-                              reviewForm.programArea.selectedRoles,
-                              'programArea.selectedRoles',
-                            );
+                            addRole(rolesInput);
                             setRolesInput('');
-                            piaStateChangeHandler(
-                              {
-                                programArea: {
-                                  selectedRoles:
-                                    reviewForm.programArea.selectedRoles,
-                                },
-                              },
-                              'review',
-                              true,
-                            );
                           }}
                         >
                           Add
@@ -197,12 +211,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex align-items-center"
                             key={index}
                           >
-                            {Object(pia?.review?.programArea)?.review
+                            {Object(pia?.review?.programArea)?.reviews?.[role]
                               ?.isAcknowledged ? (
                               <ViewProgramAreaReview
                                 pia={pia}
                                 role={role}
-                                editReviewNote={setEditReviewNote}
+                                stateChangeHandler={stateChangeHandler}
                               />
                             ) : (
                               <EditProgramAreaReview
@@ -217,27 +231,29 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             key={index}
                             className="d-flex gap-1 justify-content-start align-items-center"
                           >
-                            <p className="m-0">{role}</p>
-                            <button
-                              className="bcgovbtn bcgovbtn__tertiary bold delete__btn p-3"
-                              onClick={() => {
-                                reviewForm.programArea.selectedRoles?.splice(
-                                  index,
-                                  1,
-                                );
-                                stateChangeHandler(
-                                  reviewForm.programArea.selectedRoles,
-                                  'programArea.selectedRoles',
-                                );
-                                piaStateChangeHandler(reviewForm, 'review');
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                className=""
-                                icon={faTrash}
-                                size="xl"
-                              />
-                            </button>
+                            <p className="m-0 pt-2">{role}</p>
+                            {!reviewForm.programArea?.reviews?.[role] && (
+                              <button
+                                className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
+                                onClick={() => {
+                                  reviewForm.programArea.selectedRoles?.splice(
+                                    index,
+                                    1,
+                                  );
+                                  stateChangeHandler(
+                                    reviewForm.programArea.selectedRoles,
+                                    'programArea.selectedRoles',
+                                  );
+                                  piaStateChangeHandler(reviewForm, 'review');
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  className=""
+                                  icon={faTrash}
+                                  size="xl"
+                                />
+                              </button>
+                            )}
                           </div>
                         );
                       },
@@ -383,6 +399,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                 pia={pia}
                 printPreview
                 role={role}
+                stateChangeHandler={stateChangeHandler}
                 editReviewNote={setEditReviewNote}
               />
             </>

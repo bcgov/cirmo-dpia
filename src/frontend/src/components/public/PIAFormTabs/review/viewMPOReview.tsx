@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
+import { IReviewSection } from './interfaces';
 
 interface IMPOReviewProps {
   pia: IPiaForm;
