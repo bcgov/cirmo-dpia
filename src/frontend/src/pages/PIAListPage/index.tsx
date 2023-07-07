@@ -93,6 +93,11 @@ const PIAList = () => {
     setPageSizedefault(PageSize);
   }
 
+  function filterChangeHandler(params: URLSearchParams) {
+    setcurrentPage(1);
+    setSearchParams(params);
+  }
+
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
@@ -101,7 +106,7 @@ const PIAList = () => {
       <div className="w-100">
         <div className="row">
           <div className="col-lg-8 col-xl-7">
-            <PIAIntakeFilter />
+            <PIAIntakeFilter filterChangeHandler={filterChangeHandler} />
           </div>
           <div className="col-lg-4 col-xl-5 pt-4 pt-lg-0">
             <SearchBox
