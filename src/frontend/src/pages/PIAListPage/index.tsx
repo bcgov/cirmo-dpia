@@ -93,7 +93,7 @@ const PIAList = () => {
     setPageSizedefault(PageSize);
   }
 
-  function filterChangeHandler(params: string) {
+  function filterChangeHandler(params: URLSearchParams) {
     setcurrentPage(1);
     setSearchParams(params);
   }

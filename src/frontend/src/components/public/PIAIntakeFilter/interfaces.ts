@@ -1,3 +1,5 @@
+import { URLSearchParams } from 'url';
+
 export interface IPIAIntakeFilterProps {
-  filterChangeHandler: (params: string) => void;
+  filterChangeHandler: (params: URLSearchParams) => void;
 }
