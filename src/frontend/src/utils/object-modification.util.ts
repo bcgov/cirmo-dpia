@@ -25,7 +25,7 @@ export const modifyNestedObject = <T>(
 
   // fetch the nested state
   const nestedState = modifyNestedObject(
-    prevState[key],
+    prevState?.[key],
     nestedKeys.join(delimiter),
     value,
   );

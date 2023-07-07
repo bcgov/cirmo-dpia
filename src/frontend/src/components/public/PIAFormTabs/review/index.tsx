@@ -43,10 +43,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     [],
   );
 
-  const [reviewForm, setReviewForm] = useState<IReview>(pia.review || initialFormState);
+  const [reviewForm, setReviewForm] = useState<IReview>(
+    pia.review || initialFormState,
+  );
   const [editReviewNote, setEditReviewNote] = useState(false);
-  const stateChangeHandler = (value: any, path: string) => {
+  const stateChangeHandler = (value: any, path: string, callApi?: boolean) => {
     setNestedReactState(setReviewForm, path, value);
+    if (callApi) piaStateChangeHandler(reviewForm, 'review', true);
   };
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
@@ -54,6 +57,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const [reviewNote, setReviewNote] = useState<string>(
     pia?.review?.mpo?.reviewNote || '',
   );
+
   return (
     <>
       <section>
@@ -204,7 +208,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                               <EditProgramAreaReview
                                 pia={pia}
                                 role={role}
-                                changeHandler={stateChangeHandler}
+                                stateChangeHandler={stateChangeHandler}
                               />
                             )}
                           </div>

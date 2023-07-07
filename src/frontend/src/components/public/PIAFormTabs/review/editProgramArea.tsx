@@ -8,11 +8,11 @@ import messages from './messages';
 interface IEditProgramAreaReviewProps {
   pia: IPiaForm;
   role: string;
-  changeHandler: (value: any, path: string) => void;
+  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
 }
 
 const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
-  const { pia, role, changeHandler } = props;
+  const { pia, role, stateChangeHandler, piaStateChangeHandler } = props;
 
   /**
    * Local state for the checkbox and review note
@@ -23,6 +23,12 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
   const [reviewNote, setReviewNote] = useState(
     pia.review?.programArea?.reviews?.[role]?.reviewNote || '',
   );
+
+  const handleSubmit = () => {
+    const review = { isAcknowledged: acknowledged, reviewNote };
+
+    stateChangeHandler(review, `programArea.reviews.${role}`, true);
+  };
 
   return (
     <div className="d-grid gap-3">
@@ -88,14 +94,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
                 <button
                   disabled={!acknowledged}
                   className="bcgovbtn bcgovbtn__primary"
-                  onClick={() => {
-                    changeHandler(
-                      { isAcknowledged: acknowledged, reviewNote },
-                      `review.programArea.reviews.${role}`,
-                    );
-                    setReviewNote('');
-                    setAcknowledged(false);
-                  }}
+                  onClick={handleSubmit}
                 >
                   Confirm
                 </button>
