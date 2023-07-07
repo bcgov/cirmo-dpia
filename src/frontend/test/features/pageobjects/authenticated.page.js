@@ -1,5 +1,6 @@
 const Page = require('./page');
 const header = "//h1[contains(text(),'";
+let baseURL='';
 
 
 /**
@@ -30,13 +31,47 @@ class authPage extends Page {
 
 
     async openSameBrowser () {
-      await browser.url('/');
+        if(browser.options.baseUrl?.includes('test'))
+        {
+          baseURL = 'https://test.pia.gov.bc.ca/';
+        }
+        else if(browser.options.baseUrl?.includes('dev'))
+        {
+          baseURL = 'https://dev.pia.gov.bc.ca/';
+        }
+        else if(browser.options.baseUrl?.includes('local'))
+        {
+          baseURL = 'http://localhost:8080/';
+        }
+        else
+        {
+          await expect("URL not equal to dev,test or local").toEqual("URL should be dev,test or local");
+        }
+        console.log("URL is: "+baseURL)
+        await browser.url(baseURL);
     }
 
     async openNewBrowser () {
-      await browser.newWindow('/');
-      const handles = await browser.getWindowHandles()
-      await browser.switchToWindow(handles[1])
+        if(browser.options.baseUrl?.includes('test'))
+        {
+          baseURL = 'https://test.pia.gov.bc.ca/';
+        }
+        else if(browser.options.baseUrl?.includes('dev'))
+        {
+          baseURL = 'https://dev.pia.gov.bc.ca/';
+        }
+        else if(browser.options.baseUrl?.includes('local'))
+        {
+          baseURL = 'http://localhost:8080/';
+        }
+        else
+        {
+          await expect("URL not equal to dev,test or local").toEqual("URL should be dev,test or local");
+        }
+        console.log("URL is: "+baseURL)
+        await browser.newWindow(baseURL);
+        const handles = await browser.getWindowHandles()
+        await browser.switchToWindow(handles[1])
     }
     
     async authError (error) {

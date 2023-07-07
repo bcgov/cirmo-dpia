@@ -196,6 +196,7 @@ jobs:
 
     #Generate Cucumber report and upload artifact  
     - name: Generate Cucumber report and upload artifact
+      if: always()
       uses: actions/upload-artifact@v3
       with:
         name: cucumber-artifact
