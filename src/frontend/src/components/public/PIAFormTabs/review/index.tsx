@@ -123,8 +123,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if and only if the user input some review note for this pia
     if (
       pia.hasAddedPiToDataElements === false &&
-      reviewForm.mpo?.reviewNote &&
-      reviewForm.mpo?.reviewNote !== '' &&
+      pia?.review?.mpo?.reviewNote &&
+      pia?.review?.mpo?.reviewNote !== '' &&
       editReviewNote === false
     )
       return true;
@@ -133,8 +133,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // set to true.
     if (
       pia.hasAddedPiToDataElements !== false &&
-      reviewForm.mpo?.isAcknowledged &&
-      reviewForm.mpo?.isAcknowledged === true &&
+      pia?.review?.mpo?.isAcknowledged &&
+      pia?.review?.mpo?.isAcknowledged === true &&
       editReviewNote === false
     )
       return true;
