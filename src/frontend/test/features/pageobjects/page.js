@@ -61,15 +61,34 @@ module.exports = class Page {
         const newLink=hyperlinkNorm+link+"')]";
         const hyperElement= await $(newLink);
         await hyperElement.waitForClickable();
-        await hyperElement.click();     
+        await hyperElement.click(); 
+        await browser.pause(1000);      
     }
 
     async getURL () {
-        console.log("Current URL is: "+ await browser.getUrl());
+        await browser.pause(2000); 
         retrieveURL=await browser.getUrl();
+        console.log("Current URL is: "+ retrieveURL);
     }
 
     async openCurrentURL () {
+        
+        if(browser.options.baseUrl?.includes('test'))
+        {
+          retrieveURL = 'https://test.pia.gov.bc.ca/pia/list';
+        }
+        else if(browser.options.baseUrl?.includes('dev'))
+        {
+          retrieveURL = 'https://dev.pia.gov.bc.ca/pia/list';
+        }
+        else if(browser.options.baseUrl?.includes('local'))
+        {
+          retrieveURL = 'http://localhost:8080/pia/list';
+        }
+        else
+        {
+          await expect("URL not equal to dev or test").toEqual("URL should be dev or test");
+        }
         console.log("CurrentURL is: "+retrieveURL)
         await browser.url(retrieveURL);
 

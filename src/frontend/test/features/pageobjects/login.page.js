@@ -45,7 +45,7 @@ class LoginPage extends Page {
         await this.inputPassword.setValue(mpoPass);
         await this.btnSubmit.waitForClickable();
         await this.btnSubmit.click();
-        await browser.pause(2000);     
+        await browser.pause(3000);     
     }
 
     async title () {

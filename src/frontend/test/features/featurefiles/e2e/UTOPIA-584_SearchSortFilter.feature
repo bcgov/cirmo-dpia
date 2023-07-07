@@ -51,3 +51,16 @@ Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
       | DORGALE  | MPO     |   
       | DOND     | Drafter |
       | ANDYA    | CPO     |
+
+  #  Scenario Outline: As a <role> user, I am able to verify filter 
+
+  #    Given I am on the login page
+  #    And I click on "Log in with IDIR" button
+  #    When I login with user <username> having role <role>
+  #    Then I click on the filter "Any Status" and select "Incomplete"
+
+  #    Examples:
+  #     | username | role    |
+  #     | DORGALE  | MPO     |   
+  #     | DOND     | Drafter |
+  #     | ANDYA    | CPO     |
