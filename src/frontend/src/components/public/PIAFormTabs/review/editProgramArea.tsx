@@ -3,6 +3,7 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import Checkbox from '../../../common/Checkbox';
 import { dateToString } from '../../../../utils/date';
 import { useState } from 'react';
+import messages from './messages';
 
 interface IEditProgramAreaReviewProps {
   pia: IPiaForm;
@@ -29,7 +30,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
         <div className="row mb-5 p-3 pb-5 border border-2 rounded">
           <h3>{props.role}</h3>
           <div className="col col-md-3">
-            <b> Reviewed by</b>
+            <b>Reviewed by</b>
             <div className="mt-2">
               {
                 Object(props.pia?.review?.programArea?.reviews)?.[role]
@@ -39,7 +40,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
           </div>
           <div className="row mt-4 ">
             <div className="col col-md-3">
-              <b> Date received</b>
+              <b>Date received</b>
               <div className="mt-2">
                 {Object(props.pia?.review?.programArea?.reviews)?.[role]
                   ?.reviewedAt
@@ -54,27 +55,50 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
               </div>
             </div>
           </div>
-          <div className="row mt-4">
+          <div className="row mt-1">
             <Checkbox
               value=""
-              checked={
-                acknowledged
-              }
+              checked={acknowledged}
               isLink={false}
-              label="Accept accountability"
+              label={
+                messages.PiaReviewHeader.ProgramAreaSection.Input
+                  .AcceptAccountability.en
+              }
               onChange={(e) => setAcknowledged(e.target.checked)}
               readOnly={false}
             />
           </div>
-          <div className="row mt-4">
-            <b> Review note</b>
+          <div className="row mt-1">
+            <b>Review note (optional)</b>
             <div className="ps-2 mt-2 pb-5">
-              <textarea className="w-75 h-100" value={reviewNote} onChange={(e) => setReviewNote(e.target.value)} />
+              <textarea
+                className="w-75 h-100"
+                value={reviewNote}
+                onChange={(e) => setReviewNote(e.target.value)}
+              />
               <div className="d-flex gap-3 mt-2">
-                <button className="bcgovbtn bcgovbtn__secondary" onClick={() => {
+                <button
+                  className="bcgovbtn bcgovbtn__secondary"
+                  onClick={() => {
                     setReviewNote('');
-                  }}>Cancel</button>
-                <button disabled={!acknowledged} className="bcgovbtn bcgovbtn__primary" onClick={() => changeHandler({ isAcknowledged: acknowledged, reviewNote }, `review.programArea.reviews.${role}`)}>Confirm</button>
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={!acknowledged}
+                  className="bcgovbtn bcgovbtn__primary"
+                  onClick={() => {
+                    changeHandler(
+                      { isAcknowledged: acknowledged, reviewNote },
+                      `review.programArea.reviews.${role}`,
+                    );
+                    setReviewNote('');
+                    setAcknowledged(false);
+                  }}
+                >
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
