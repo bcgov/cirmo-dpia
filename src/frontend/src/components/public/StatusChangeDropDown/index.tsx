@@ -39,21 +39,25 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     if (roles !== undefined && roles.roles !== undefined) {
       roles.roles.forEach((role: string) => {
         /* check if the role is in the statusList */
-        if (role in statusList[props.pia.status || 'Completed'].Privileges) {
+        if (
+          role in statusList(null)[props.pia.status || 'Completed'].Privileges
+        ) {
           /* check if the role has changeStatus */
           if (
             'changeStatus' in
-            Object(statusList[props.pia.status || 'Completed'].Privileges)[role]
+            Object(
+              statusList(null)[props.pia.status || 'Completed'].Privileges,
+            )[role]
           ) {
             /* check if the changeStatus is not empty */
             if (
-              Object(statusList[props.pia.status || 'Completed'].Privileges)[
-                role
-              ].changeStatus.length !== 0
+              Object(
+                statusList(null)[props.pia.status || 'Completed'].Privileges,
+              )[role].changeStatus.length !== 0
             ) {
               hasStatusDropdown = true;
               const statusObj = Object(
-                statusList[props.pia.status || 'Completed'].Privileges,
+                statusList(null)[props.pia.status || 'Completed'].Privileges,
               )[role].changeStatus;
 
               /* This function will push unique status object into the statuses array */
@@ -88,15 +92,16 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     const role = userRoles.roles[0];
     let useDefault = true;
     const currentStatus = props.pia.status || 'Completed';
-    if (role in statusList[currentStatus].Privileges) {
+    if (role in statusList(null)[currentStatus].Privileges) {
       if (
-        'changeStatus' in Object(statusList[currentStatus].Privileges)[role]
+        'changeStatus' in
+        Object(statusList(props.pia)[currentStatus].Privileges)[role]
       ) {
         if (
-          Object(statusList[currentStatus].Privileges)[role].changeStatus
-            .length !== 0
+          Object(statusList(props.pia)[currentStatus].Privileges)[role]
+            .changeStatus.length !== 0
         ) {
-          Object(statusList[currentStatus].Privileges)[
+          Object(statusList(props.pia)[currentStatus].Privileges)[
             role
           ].changeStatus.forEach((status: ChangeStatus) => {
             if (status.status === nextStatus) {
@@ -110,7 +115,10 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
       }
     }
     if (useDefault) {
-      props.changeStatusFn(Object(statusList[nextStatus]).modal, nextStatus);
+      props.changeStatusFn(
+        Object(statusList(null)[nextStatus]).modal,
+        nextStatus,
+      );
     }
   };
 
@@ -131,17 +139,17 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
             >
               <div
                 className={`statusBlock statusBlock--active ${
-                  props.pia.status && statusList[props.pia.status].class
+                  props.pia.status && statusList(null)[props.pia.status].class
                 }`}
               >
                 {props.pia.status
-                  ? statusList[props.pia.status].title
-                  : statusList[PiaStatuses.INCOMPLETE].title}
+                  ? statusList(null)[props.pia.status].title
+                  : statusList(null)[PiaStatuses.INCOMPLETE].title}
               </div>
               <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
             </button>
             {props.pia.status ? (
-              props.pia.status in statusList ? (
+              props.pia.status in statusList(null) ? (
                 <ul
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
@@ -156,10 +164,10 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                     >
                       <div
                         className={`dropdown-item statusBlock ${
-                          statusList[statuskey.status].class
+                          statusList(null)[statuskey.status].class
                         }`}
                       >
-                        {statusList[statuskey.status].title}
+                        {statusList(null)[statuskey.status].title}
                       </div>
                     </li>
                   ))}
@@ -172,12 +180,14 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
             )}
           </div>
         ) : props.pia.status ? (
-          props.pia.status in statusList ? (
+          props.pia.status in statusList(null) ? (
             <div
-              className={`statusBlock ${statusList[props.pia.status].class}`}
+              className={`statusBlock ${
+                statusList(null)[props.pia.status].class
+              }`}
             >
               {props.pia.status
-                ? statusList[props.pia.status].title
+                ? statusList(null)[props.pia.status].title
                 : 'Completed'}
             </div>
           ) : (

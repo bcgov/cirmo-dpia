@@ -9,11 +9,11 @@ const BannerStatus = ({ pia }: IBannerStatusProps) => {
     const currentStatus = pia.status || 'Completed';
     if (userRoles !== undefined && userRoles.roles !== undefined) {
       const role = userRoles.roles[0];
-      if (role in statusList[currentStatus].Privileges) {
-        return Object(statusList[currentStatus].Privileges)[role].banner;
+      if (role in statusList(null)[currentStatus].Privileges) {
+        return Object(statusList(null)[currentStatus].Privileges)[role].banner;
       }
     }
-    return statusList[currentStatus].banner;
+    return statusList(null)[currentStatus].banner;
   };
 
   return (
