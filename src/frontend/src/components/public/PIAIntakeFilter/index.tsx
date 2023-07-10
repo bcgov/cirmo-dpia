@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   MinistryList,
@@ -9,7 +9,7 @@ import { roleCheck } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 import { IPIAIntakeFilterProps } from './interfaces';
 
-const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
+const PIAIntakeFilter = (props: IPIAIntakeFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterByMinistry, setFilterByMinistry] = useState<string>(
     searchParams.get('filterByMinistry') || '',
@@ -19,6 +19,7 @@ const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
   );
   const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
     useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
+
   const isAdminRole = () => {
     const userRoles = roleCheck();
     if (userRoles !== undefined && userRoles.roles !== undefined) {
@@ -37,7 +38,7 @@ const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        filterChangeHandler.filterChangeHandler(params);
+        props.filterChangeHandler(params);
         break;
 
       case 'ministry':
@@ -48,7 +49,7 @@ const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
           params.filterPiaDrafterByCurrentUser = filterPiaDrafterByCurrentUser;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        filterChangeHandler.filterChangeHandler(params);
+        props.filterChangeHandler(params);
         break;
       case 'drafter':
         if (newValue.target.value !== '')
@@ -57,7 +58,7 @@ const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
         if (filterByMinistry) params.filterByMinistry = filterByMinistry;
         if (searchParams.get('searchText'))
           params.searchText = searchParams.get('searchText');
-        filterChangeHandler.filterChangeHandler(params);
+        props.filterChangeHandler(params);
         break;
     }
   };
@@ -84,8 +85,18 @@ const PIAIntakeFilter = (filterChangeHandler: IPIAIntakeFilterProps) => {
     searchParams.delete('filterPiaDrafterByCurrentUser');
     searchParams.delete('filterByMinistry');
     searchParams.delete('filterByStatus');
-    filterChangeHandler.filterChangeHandler(searchParams);
+    Object(props).filterChangeHandler(searchParams);
   };
+
+  useEffect(() => {
+    const resetFilter = () => {
+      if (Object(props.defaultSearchParam).size === 0) {
+        handleClearFilterClick();
+      }
+    };
+    resetFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.defaultSearchParam]);
 
   return (
     <div className="w-100 d-lg-inline-flex text-nowrap align-items-center">
