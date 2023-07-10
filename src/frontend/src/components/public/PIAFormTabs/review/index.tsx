@@ -122,6 +122,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if the user already done review the MPO review field, we will show
     // the review result page, otherwise the app will show review page
     // display a checkbox and ask the MPO to accept the accountability and add review note
+
+    // for PI PIA, it allows users just check the checkbox without inputting any review note, and if they click confirm button, will send to the backend
+    // and there will be a reviewedAt timestamp that attaches to the object.
+    // but if the user never checks the checkbox, the reivewedAt will not exist.
+    // so if the reviewedAt field have a value, we show the review result otherwise show review
     if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
   };
