@@ -1,4 +1,6 @@
 import messages from './helper/messages';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 const NextStepsDelegatedFlow = () => {
   return (
@@ -13,6 +15,7 @@ const NextStepsDelegatedFlow = () => {
             rel="noreferrer"
           >
             {messages.Delegated.description.link.en}
+            <FontAwesomeIcon icon={faUpRightFromSquare} />
           </a>
           {messages.Delegated.description.desc2.en}
         </p>
