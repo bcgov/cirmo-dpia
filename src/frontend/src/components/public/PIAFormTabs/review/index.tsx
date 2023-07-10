@@ -112,7 +112,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     );
   };
 
-  const enableConfirmButton = () => {
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
