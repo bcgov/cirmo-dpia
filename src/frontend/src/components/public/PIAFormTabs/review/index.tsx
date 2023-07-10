@@ -114,10 +114,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const enableConfirmButton = () => {
   const disableConfirmButton = () => {
-    if (pia.hasAddedPiToDataElements === false) {
-      if (reviewNote.trim() !== '') return false;
-      else return true;
-    } else return false;
+    if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
+      return true;
+    return false;
   };
   const enableMPOReviewViewMode = () => {
     // if it is a delegate PI, we make sure show view mode of this MPO Review part
