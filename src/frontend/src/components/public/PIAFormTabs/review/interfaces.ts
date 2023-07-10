@@ -1,21 +1,11 @@
 export interface IReview {
   programArea: {
     selectedRoles: string[];
-    review?: {
-      isAcknowledged: boolean;
-      reviewNote: string;
-      reviewedByDisplayName?: string;
-      reviewedByGuid?: string;
-      reviewedAt?: string;
+    reviews?: {
+      [role: string]: IReviewSection;
     };
   };
-  mpo: {
-    isAcknowledged: boolean;
-    reviewNote: string;
-    reviewedByDisplayName?: string;
-    reviewedByGuid?: string;
-    reviewedAt?: string;
-  };
+  mpo: IReviewSection;
 }
 
 export interface IReviewSection {

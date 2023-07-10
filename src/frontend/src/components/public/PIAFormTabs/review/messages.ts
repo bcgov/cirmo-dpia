@@ -1,5 +1,8 @@
 export default {
   PiaReviewHeader: {
+    NoRolesSelected: {
+      en: 'No roles have been selected.',
+    },
     Title: {
       en: 'Review',
       fr: 'Examen de l’ÉIP',
@@ -18,6 +21,9 @@ export default {
         },
         EnterRoleTitle: {
           en: 'Enter a role not in list',
+        },
+        AcceptAccountability: {
+          en: 'I acknowledge that this PIA accurately documents the data elements and information flow at the time of this review. If there are any changes to the overall initiative, including to the way personal information is collected, used, stored or disclosed, the program area will engage with their Privacy Office and if necessary, complete a PIA update.',
         },
       },
       Output: {

@@ -17,4 +17,8 @@
     background-color: $link-blue;
     font-weight: 700;
   }
+
+  & > .input-label {
+    max-width: 100ch;
+  }
 }
