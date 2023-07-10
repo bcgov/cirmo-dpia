@@ -30,37 +30,44 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
     stateChangeHandler(review, `programArea.reviews.${role}`, true);
   };
 
+  const reviewedByDisplayName = Object(
+    props.pia?.review?.programArea?.reviews,
+  )?.[role]?.reviewedByDisplayName;
+
+  const reviewedAt = Object(props.pia?.review?.programArea?.reviews)?.[role]
+    ?.reviewedAt;
+
   return (
     <div className="d-grid gap-3">
       <div className="mt-2 pb-2">
         <div className="row mb-5 p-3 pb-5 border border-2 rounded">
-          <h3>{props.role}</h3>
-          <div className="col col-md-3">
-            <b>Reviewed by</b>
-            <div className="mt-2">
-              {
-                Object(props.pia?.review?.programArea?.reviews)?.[role]
-                  ?.reviewedByDisplayName
-              }
-            </div>
-          </div>
-          <div className="row mt-4 ">
+          {props.role && <h3>{props.role}</h3>}
+          {reviewedByDisplayName && (
             <div className="col col-md-3">
-              <b>Date received</b>
-              <div className="mt-2">
-                {Object(props.pia?.review?.programArea?.reviews)?.[role]
-                  ?.reviewedAt
-                  ? dateToString(
-                      new Date(
-                        Object(props.pia?.review?.programArea?.reviews)?.[
-                          role
-                        ]?.reviewedAt,
-                      ),
-                    )
-                  : 'N/A'}
+              <b>Reviewed by</b>
+              <div className="mt-2">{reviewedByDisplayName}</div>
+            </div>
+          )}
+
+          {reviewedAt && (
+            <div className="row mt-4 ">
+              <div className="col col-md-3">
+                <b>Date reviewed</b>
+                <div className="mt-2">
+                  {reviewedAt
+                    ? dateToString(
+                        new Date(
+                          Object(props.pia?.review?.programArea?.reviews)?.[
+                            role
+                          ]?.reviewedAt,
+                        ),
+                      )
+                    : 'N/A'}
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <div className="row mt-1">
             <Checkbox
               value=""

@@ -45,22 +45,22 @@ const ViewReviewSection = (props: IReviewProps) => {
         <b>Reviewed by</b>
         <div className="mt-2">{reviewSection?.reviewedByDisplayName}</div>
       </div>
-      {pia?.status === PiaStatuses.FINAL_REVIEW &&
-        reviewGuid === getGUID() &&
-        !printPreview && (
-          <div className=" col d-flex justify-content-end">
-            <button
-              className="bcgovbtn bcgovbtn__tertiary p-3"
-              onClick={() => {
-                if (editReviewNote) editReviewNote(true);
-                else if (stateChangeHandler) setEditReview(true);
-              }}
-            >
-              <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
-              Edit review
-            </button>
-          </div>
-        )}
+
+      {reviewGuid === getGUID() && !printPreview && (
+        <div className=" col d-flex justify-content-end">
+          <button
+            className="bcgovbtn bcgovbtn__tertiary p-3"
+            onClick={() => {
+              if (editReviewNote) editReviewNote(true);
+              else if (stateChangeHandler) setEditReview(true);
+            }}
+          >
+            <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
+            Edit review
+          </button>
+        </div>
+      )}
+
       <div className="row mt-4 ">
         <div className="col col-md-3">
           <b>Date reviewed</b>
@@ -71,6 +71,7 @@ const ViewReviewSection = (props: IReviewProps) => {
           </div>
         </div>
       </div>
+
       <div className="row mt-4">
         <Checkbox
           value=""
@@ -80,59 +81,61 @@ const ViewReviewSection = (props: IReviewProps) => {
             messages.PiaReviewHeader.MinistrySection.Input.AcceptAccountability
               .en
           }
-          readOnly={reviewSection?.isAcknowledged}
+          readOnly={!editReview}
         />
       </div>
-      <div className="row mt-4">
-        <b>Review note</b>
-        {editReview ? (
-          <div className="mt-1 pb-5">
-            <textarea
-              className="w-50 h-100"
-              rows={5}
-              cols={50}
-              value={reviewNote}
-              onChange={(e) => setReviewNote(e.target.value)}
-            />
-            <div className="d-flex gap-3 mt-2">
-              <button
-                className="bcgovbtn bcgovbtn__secondary"
-                onClick={() => {
-                  setEditReview(false);
-                  setReviewNote(
+      {(editReview || reviewSection?.reviewNote) && (
+        <div className="row mt-4">
+          <b>Review note</b>
+          {editReview ? (
+            <div className="mt-1 pb-5">
+              <textarea
+                className="w-50 h-100"
+                rows={5}
+                cols={50}
+                value={reviewNote}
+                onChange={(e) => setReviewNote(e.target.value)}
+              />
+              <div className="d-flex gap-3 mt-2">
+                <button
+                  className="bcgovbtn bcgovbtn__secondary"
+                  onClick={() => {
+                    setEditReview(false);
+                    setReviewNote(
+                      pia.review?.programArea?.reviews?.[
+                        role as keyof IReview['programArea']['reviews']
+                      ]?.reviewNote,
+                    );
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={
+                    reviewNote ===
                     pia.review?.programArea?.reviews?.[
                       role as keyof IReview['programArea']['reviews']
-                    ]?.reviewNote,
-                  );
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                disabled={
-                  reviewNote ===
-                  pia.review?.programArea?.reviews?.[
-                    role as keyof IReview['programArea']['reviews']
-                  ]?.reviewNote
-                }
-                className="bcgovbtn bcgovbtn__primary"
-                onClick={() => {
-                  stateChangeHandler?.(
-                    reviewNote,
-                    `programArea.reviews.${role}.reviewNote`,
-                    true,
-                  );
-                  setEditReview(false);
-                }}
-              >
-                Confirm
-              </button>
+                    ]?.reviewNote
+                  }
+                  className="bcgovbtn bcgovbtn__primary"
+                  onClick={() => {
+                    stateChangeHandler?.(
+                      reviewNote,
+                      `programArea.reviews.${role}.reviewNote`,
+                      true,
+                    );
+                    setEditReview(false);
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="mt-2">{reviewSection?.reviewNote}</div>
-        )}
-      </div>
+          ) : (
+            <div className="mt-2">{reviewSection?.reviewNote}</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

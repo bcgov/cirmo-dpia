@@ -79,17 +79,27 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   );
 
   const addRole = (role: string) => {
-    const casedRoles = reviewForm.programArea?.selectedRoles.map((r) =>
-      r.toLowerCase(),
-    );
-    if (rolesSelect === '' || casedRoles.includes(role.toLowerCase())) {
-      return;
+    const casedRoles =
+      reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) || [];
+
+    if (rolesInput === '' && rolesSelect === '') return; // no empty role
+
+    if (rolesInput !== '' && casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
+
+    if (!reviewForm.programArea?.selectedRoles) {
+      reviewForm.programArea = {
+        ...reviewForm?.programArea,
+        selectedRoles: [],
+      };
     }
-    reviewForm.programArea?.selectedRoles.push(ApprovalRoles[rolesSelect]);
+
+    reviewForm.programArea?.selectedRoles.push(role);
+
     stateChangeHandler(
       reviewForm.programArea?.selectedRoles,
       'programArea.selectedRoles',
     );
+
     piaStateChangeHandler(
       {
         programArea: {
