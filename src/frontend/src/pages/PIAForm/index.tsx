@@ -284,8 +284,6 @@ const PIAFormPage = () => {
     setPiaModalParagraph(Object(modal).description);
     setPiaModalConfirmLabel(Object(modal).confirmLabel);
     setPiaModalCancelLabel(Object(modal).cancelLabel);
-    //setStatusLocal(status);
-    //setShowModal(true);
   };
 
   const handleShowModal = (modalType: string, conflictUser = '') => {
