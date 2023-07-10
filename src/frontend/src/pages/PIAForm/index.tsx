@@ -28,6 +28,7 @@ import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/helper.util';
+import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -277,6 +278,14 @@ const PIAFormPage = () => {
   //
   // Event Handlers
   //
+
+  const populateModalFn = (modal: object, status: string) => {
+    setPiaModalTitleText(Object(modal).title);
+    setPiaModalParagraph(Object(modal).description);
+    setPiaModalConfirmLabel(Object(modal).confirmLabel);
+    setPiaModalCancelLabel(Object(modal).cancelLabel);
+  };
+
   const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
       case 'cancel':
@@ -294,10 +303,11 @@ const PIAFormPage = () => {
         setPiaModalButtonValue('save');
         break;
       case 'edit':
-        setPiaModalConfirmLabel(Messages.Modal.Edit.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.Edit.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.Edit.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.Edit.ParagraphText.en);
+        /* Using the state table, we can determine which modal to show based on the status of the PIA 
+           This will keep the modal text in one place and allow for easy updates in the future
+           and will make the whole app consistent. 
+        */
+        PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn);
         setPiaModalButtonValue('edit');
         break;
       case 'submitPiaIntake':

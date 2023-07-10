@@ -73,11 +73,13 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
               <td className="d-none d-md-table-cell">{pia.drafterName}</td>
               <td>
                 {pia.status ? (
-                  pia.status in statusList ? (
+                  pia.status in statusList(null) ? (
                     <div
-                      className={`statusBlock ${statusList[pia.status].class}`}
+                      className={`statusBlock ${
+                        statusList(null)[pia.status].class
+                      }`}
                     >
-                      {statusList[pia.status].title}
+                      {statusList(null)[pia.status].title}
                     </div>
                   ) : (
                     ''
