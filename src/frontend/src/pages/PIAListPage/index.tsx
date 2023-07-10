@@ -17,7 +17,7 @@ const PIAList = () => {
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
 
-  const { tableData, Page, Total } = usePIALookup(
+  const { tableData, Total } = usePIALookup(
     SortBy,
     SortOrder,
     currentPage,
@@ -54,6 +54,16 @@ const PIAList = () => {
     setcurrentPage(1);
     setSearchParams(searchParams);
   };
+
+  useEffect(() => {
+    const resetSearchText = () => {
+      if (Object(searchParams).size === 0) {
+        handleClearSearchText();
+      }
+    };
+    resetSearchText();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleSearchTextChange = (newSearchText: any) => {
     setcurrentPage(1);
@@ -106,7 +116,10 @@ const PIAList = () => {
       <div className="w-100">
         <div className="row">
           <div className="col-lg-8 col-xl-7">
-            <PIAIntakeFilter filterChangeHandler={filterChangeHandler} />
+            <PIAIntakeFilter
+              filterChangeHandler={filterChangeHandler}
+              defaultSearchParam={searchParams}
+            />
           </div>
           <div className="col-lg-4 col-xl-5 pt-4 pt-lg-0">
             <SearchBox
