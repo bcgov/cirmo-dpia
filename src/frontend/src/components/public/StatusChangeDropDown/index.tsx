@@ -1,15 +1,10 @@
 import { roleCheck } from '../../../utils/helper.util';
 import { ChangeStatus, statusList } from '../../../utils/status';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-interface StatusChangeDropDownProps {
-  pia: IPiaForm;
-  changeStatusFn: (modal: object, status: string) => void;
-  mode?: 'view' | 'edit';
-}
+import { IStatusChangeDropDownProps } from './interface';
+import populateModal from './populateModal';
 
 /* create a function to push unique status object into an array */
 function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
@@ -24,7 +19,7 @@ function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
   }
 }
 
-function StatusChangeDropDown(props: StatusChangeDropDownProps) {
+function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
   /* This function checks if the user has the privilege to change the status
    * of the PIA. It checks the user's role against the statusList and the
    * Privileges object. If the user's role is in the Privileges object, it
@@ -75,53 +70,6 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
     };
   };
 
-  /*
-   * This function populates the modal with the appropriate modal strings based on
-   * the current status, the next status, and the user's role.
-   * If the user's role is in the currentStatus Privileges object,
-   * it checks if the changeStatus is not empty. If it is not empty, it checks if the
-   * status is in the changeStatus array matches the nextStatus.
-   * If it matches, it checks if the modal is not empty. If it is not empty, it sets the modal to the
-   * modal in the changeStatus object.
-   *
-   * If there is no modal defined, it will use the default modal of the nextStatus.
-   *
-   */
-  const populateModal = (nextStatus: string) => {
-    const userRoles = roleCheck();
-    const role = userRoles.roles[0];
-    let useDefault = true;
-    const currentStatus = props.pia.status || 'Completed';
-    if (role in statusList(null)[currentStatus].Privileges) {
-      if (
-        'changeStatus' in
-        Object(statusList(props.pia)[currentStatus].Privileges)[role]
-      ) {
-        if (
-          Object(statusList(props.pia)[currentStatus].Privileges)[role]
-            .changeStatus.length !== 0
-        ) {
-          Object(statusList(props.pia)[currentStatus].Privileges)[
-            role
-          ].changeStatus.forEach((status: ChangeStatus) => {
-            if (status.status === nextStatus) {
-              if (status.modal) {
-                props.changeStatusFn(Object(status).modal, nextStatus);
-                useDefault = false;
-              }
-            }
-          });
-        }
-      }
-    }
-    if (useDefault) {
-      props.changeStatusFn(
-        Object(statusList(null)[nextStatus]).modal,
-        nextStatus,
-      );
-    }
-  };
-
   const { hasStatusDropdown, statuses } = checkPrivileges();
 
   return (
@@ -158,7 +106,11 @@ function StatusChangeDropDown(props: StatusChangeDropDownProps) {
                     <li
                       key={index}
                       onClick={() => {
-                        populateModal(statuskey.status);
+                        populateModal(
+                          props.pia,
+                          statuskey.status,
+                          props.changeStatusFn,
+                        );
                       }}
                       className="dropdown-item-container"
                     >
