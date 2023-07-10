@@ -119,25 +119,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     return false;
   };
   const enableMPOReviewViewMode = () => {
-    // if it is a delegate PI, we make sure show view mode of this MPO Review part
-    // if and only if the user input some review note for this pia
-    if (
-      pia.hasAddedPiToDataElements === false &&
-      pia?.review?.mpo?.reviewNote &&
-      pia?.review?.mpo?.reviewNote !== '' &&
-      editReviewNote === false
-    )
-      return true;
-
-    // if it is PI PIA, the review note part for MPO is optional, we only check the isAcknowledged
-    // set to true.
-    if (
-      pia.hasAddedPiToDataElements !== false &&
-      pia?.review?.mpo?.isAcknowledged &&
-      pia?.review?.mpo?.isAcknowledged === true &&
-      editReviewNote === false
-    )
-      return true;
+    // if the user already done review the MPO review field, we will show
+    // the review result page, otherwise the app will show review page
+    // display a checkbox and ask the MPO to accept the accountability and add review note
+    if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
   };
   return (
