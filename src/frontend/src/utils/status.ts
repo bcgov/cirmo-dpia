@@ -128,7 +128,6 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       modal: defaultMPOReviewModal,
       Privileges: {
         MPO: {
-          banner: BannerText.MPOReviewStatusCalloutText.MPO.en,
           changeStatus: [
             {
               status: 'INCOMPLETE',

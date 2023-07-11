@@ -299,14 +299,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
-                <div className="data-row">
-                  {enableMPOReviewViewMode() ? (
-                    <ViewMPOReview
-                      pia={pia}
-                      editReviewNote={setEditReviewNote}
-                    />
-                  ) : (
-                    <>
+                {enableMPOReviewViewMode() ? (
+                  <ViewMPOReview pia={pia} editReviewNote={setEditReviewNote} />
+                ) : (
+                  <>
+                    <div className="data-row">
                       <Checkbox
                         value=""
                         isLink={false}
@@ -405,9 +402,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                           </div>
                         </div>
                       )}
-                    </>
-                  )}
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </section>
