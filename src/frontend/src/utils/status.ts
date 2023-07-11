@@ -91,16 +91,16 @@ const defaultFinalReviewModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
-const checkReviewStatusDelegate = (pia: IPiaForm | null): boolean => {
+const checkReviewStatus = (pia: IPiaForm | null): boolean => {
+  // this function use to check if the review tab has any data, if so, show warning modal, otherwise
+  // display default modal
   if (
     pia &&
     (pia?.status === PiaStatuses.MPO_REVIEW ||
       pia?.status === PiaStatuses.FINAL_REVIEW) &&
-    pia?.hasAddedPiToDataElements === false &&
-    pia?.review?.programArea?.selectedRoles &&
-    pia?.review?.programArea?.selectedRoles?.length > 0 &&
-    pia?.review?.mpo?.isAcknowledged === true &&
-    pia?.review?.mpo?.reviewNote !== ''
+    ((pia?.review?.programArea?.selectedRoles &&
+      pia?.review?.programArea?.selectedRoles?.length > 0) ||
+      pia?.review?.mpo?.isAcknowledged === true)
   ) {
     return true;
   }
@@ -131,13 +131,13 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           changeStatus: [
             {
               status: 'INCOMPLETE',
-              modal: checkReviewStatusDelegate(pia)
+              modal: checkReviewStatus(pia)
                 ? resetReviewIncompleteModal
                 : defaultIncompleteModal,
             },
             {
               status: 'EDIT_IN_PROGRESS',
-              modal: checkReviewStatusDelegate(pia)
+              modal: checkReviewStatus(pia)
                 ? resetReviewEditInPRogressModal
                 : defaultEditInProgressModal,
             },
@@ -155,13 +155,13 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
             },
             {
               status: 'INCOMPLETE',
-              modal: checkReviewStatusDelegate(pia)
+              modal: checkReviewStatus(pia)
                 ? resetReviewIncompleteModal
                 : defaultIncompleteModal,
             },
             {
               status: 'EDIT_IN_PROGRESS',
-              modal: checkReviewStatusDelegate(pia)
+              modal: checkReviewStatus(pia)
                 ? resetReviewEditInPRogressModal
                 : defaultEditInProgressModal,
             },
@@ -180,7 +180,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           changeStatus: [
             {
               status: 'EDIT_IN_PROGRESS',
-              modal: checkReviewStatusDelegate(pia)
+              modal: checkReviewStatus(pia)
                 ? resetReviewEditInPRogressModal
                 : defaultEditInProgressModal,
             },
