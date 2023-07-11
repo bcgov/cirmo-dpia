@@ -97,7 +97,8 @@ const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   if (
     pia &&
     (pia?.status === PiaStatuses.MPO_REVIEW ||
-      pia?.status === PiaStatuses.FINAL_REVIEW) &&
+      pia?.status === PiaStatuses.FINAL_REVIEW ||
+      pia?.status === PiaStatuses.CPO_REVIEW) &&
     ((pia?.review?.programArea?.selectedRoles &&
       pia?.review?.programArea?.selectedRoles?.length > 0) ||
       pia?.review?.mpo?.isAcknowledged === true)
