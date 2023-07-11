@@ -578,7 +578,6 @@ const PIAFormPage = () => {
               : pia?.status,
         });
         if (pia?.id) {
-          console.log('this is the edit issue updated');
           navigate(getEditPath(pathname));
         } else {
           navigate(-1);
