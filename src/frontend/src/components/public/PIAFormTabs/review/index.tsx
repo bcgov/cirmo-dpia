@@ -112,6 +112,23 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     );
   };
 
+  const disableConfirmButton = () => {
+    if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
+      return true;
+    return false;
+  };
+  const enableMPOReviewViewMode = () => {
+    // if the user already done review the MPO review field, we will show
+    // the review result page, otherwise the app will show review page
+    // display a checkbox and ask the MPO to accept the accountability and add review note
+
+    // for PI PIA, it allows users just check the checkbox without inputting any review note, and if they click confirm button, will send to the backend
+    // and there will be a reviewedAt timestamp that attaches to the object.
+    // but if the user never checks the checkbox, the reivewedAt will not exist.
+    // so if the reviewedAt field have a value, we show the review result otherwise show review
+    if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
+    return false;
+  };
   return (
     <>
       <section>
@@ -282,16 +299,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
-                <div>
-                  {reviewForm.mpo?.reviewNote &&
-                  reviewForm.mpo?.reviewNote !== '' &&
-                  editReviewNote === false ? (
-                    <ViewMPOReview
-                      pia={pia}
-                      editReviewNote={setEditReviewNote}
-                    />
-                  ) : (
-                    <>
+                {enableMPOReviewViewMode() ? (
+                  <ViewMPOReview pia={pia} editReviewNote={setEditReviewNote} />
+                ) : (
+                  <>
+                    <div className="data-row">
                       <Checkbox
                         value=""
                         isLink={false}
@@ -319,7 +331,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                   messages.PiaReviewHeader.MinistrySection.Input
                                     .ReviewNote.en
                                 }
-                                <span className="error-text">( required )</span>
+                                &nbsp;
+                                {pia.hasAddedPiToDataElements === false ? (
+                                  <span className="error-text">(required)</span>
+                                ) : (
+                                  <span>(optional)</span>
+                                )}
                               </b>
                             </div>
                             <div className="d-block">
@@ -357,8 +374,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                               Clear
                             </button>
                             <button
-                              className="bcgovbtn bcgovbtn__primary mt-3"
-                              disabled={reviewNote === ''}
+                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
+                              disabled={disableConfirmButton()}
                               onClick={() => {
                                 setReviewForm({
                                   ...reviewForm,
@@ -385,9 +402,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                           </div>
                         </div>
                       )}
-                    </>
-                  )}
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </section>

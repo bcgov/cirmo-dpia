@@ -74,7 +74,7 @@ export const PiaFormSideNavPages = (
         !TODO - When the PI review tab is implemented
          return showPostIntakeTabs'
         */
-        return false;
+        return true;
       } else {
         return false;
       }
