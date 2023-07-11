@@ -16,7 +16,7 @@ import {
   IPiaForm,
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
-import { buildDynamicPath } from '../../utils/path';
+import { buildDynamicPath, getEditPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
@@ -578,7 +578,7 @@ const PIAFormPage = () => {
               : pia?.status,
         });
         if (pia?.id) {
-          navigate(pathname.replace('view', 'edit'));
+          navigate(getEditPath(pathname));
         } else {
           navigate(-1);
         }
