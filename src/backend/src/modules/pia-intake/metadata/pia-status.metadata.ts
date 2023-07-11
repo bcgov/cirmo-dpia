@@ -109,11 +109,6 @@ export const piaStatusMetadata: Partial<
       },
       [PiaIntakeStatusEnum.CPO_REVIEW]: {
         allow: true,
-        conditions: [
-          {
-            piaType: [PiaTypesEnum.STANDARD],
-          },
-        ],
       },
       [PiaIntakeStatusEnum.FINAL_REVIEW]: {
         allow: true,
