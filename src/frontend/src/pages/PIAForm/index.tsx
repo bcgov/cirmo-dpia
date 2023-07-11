@@ -303,9 +303,9 @@ const PIAFormPage = () => {
         setPiaModalButtonValue('save');
         break;
       case 'edit':
-        /* Using the state table, we can determine which modal to show based on the status of the PIA 
+        /* Using the state table, we can determine which modal to show based on the status of the PIA
            This will keep the modal text in one place and allow for easy updates in the future
-           and will make the whole app consistent. 
+           and will make the whole app consistent.
         */
         PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn);
         setPiaModalButtonValue('edit');
@@ -833,20 +833,6 @@ const PIAFormPage = () => {
     return () => clearTimeout(autoSaveTimer);
   });
 
-  /**
-   * On load, check if the pia status is CPO_REVIEW
-   * If it is, make sure the form is readonly
-   */
-  useEffect(() => {
-    try {
-      if (pia?.status === PiaStatuses.CPO_REVIEW) {
-        setFormReadOnly(true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [pia.status]);
-
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
     return () => {
@@ -864,6 +850,7 @@ const PIAFormPage = () => {
     ) {
       // change edit to view
       pathname?.replace('edit', 'view');
+      setFormReadOnly(true);
     }
   }, [pia?.status, id, pathname]);
 
