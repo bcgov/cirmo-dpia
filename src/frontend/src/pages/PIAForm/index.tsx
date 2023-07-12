@@ -123,34 +123,30 @@ const PIAFormPage = () => {
   };
 
   /**
-   * Reset pia.review when pia.status is changed to INCOMPLETE or EDIT_IN_PROGRESS
+   * @description - Check if the PIA is in an editable status
+   * @returns {boolean}
    */
-  const resetPiaReview = () => {
-    piaStateChangeHandler(
-      {
-        programArea: {
-          selectedRoles: [],
-          reviews: {},
-        },
-        mpo: {
-          isAcknowledged: false,
-          reviewNote: '',
-        },
-      },
-      'review',
-      true,
-    );
-  };
-
-  useEffect(() => {
+  const checkEditableStatus = () => {
     if (
       pia.status === PiaStatuses.INCOMPLETE ||
       pia.status === PiaStatuses.EDIT_IN_PROGRESS
     ) {
-      resetPiaReview();
+      return true;
     }
+    return false;
+  };
+
+  /**
+   * @description - Navigate to the intake page upon status change to an
+   *                editable status or if the user changes the mode
+   */
+  useEffect(() => {
+    if (checkEditableStatus() && mode === 'edit')
+      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }));
+    else if (checkEditableStatus() && mode === 'view')
+      navigate(buildDynamicPath(routes.PIA_INTAKE_VIEW, { id: pia.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia.status]);
+  }, [pia.status, mode]);
 
   const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
 
@@ -607,8 +603,9 @@ const PIAFormPage = () => {
               ? PiaStatuses.EDIT_IN_PROGRESS
               : pia?.status,
         });
-        if (pia?.id) {
-          navigate(getEditPath(pathname));
+        if (pia?.id && !pathname?.split('/').includes('review')) {
+          const regex = /(?<=\/)view/g;
+          navigate(pathname.replace(regex, 'edit'));
         } else {
           navigate(-1);
         }

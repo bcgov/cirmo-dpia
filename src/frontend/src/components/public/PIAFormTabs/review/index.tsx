@@ -7,7 +7,6 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -89,7 +88,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       };
     }
 
-    reviewForm.programArea?.selectedRoles?.push(role);
+    reviewForm.programArea?.selectedRoles.push(role);
 
     stateChangeHandler(
       reviewForm.programArea?.selectedRoles,
@@ -225,8 +224,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     pia.status === PiaStatuses.CPO_REVIEW) && (
                     <h4 className="mb-3">Selected Roles</h4>
                   )}
-                  {reviewForm.programArea?.selectedRoles?.length > 0 ? (
-                    reviewForm.programArea?.selectedRoles?.map(
+                  {reviewForm.programArea?.selectedRoles.length > 0 ? (
+                    reviewForm.programArea?.selectedRoles.map(
                       (role: string, index: number) => {
                         return reviewForm.programArea?.selectedRoles &&
                           pia.status === PiaStatuses.FINAL_REVIEW ? (
@@ -416,7 +415,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               <b>Program Area</b>
             </h3>
           </div>
-          {pia?.review?.programArea?.selectedRoles?.map((role: string) => (
+          {pia?.review?.programArea?.selectedRoles.map((role: string) => (
             <>
               <ViewProgramAreaReview
                 pia={pia}
