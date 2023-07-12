@@ -13,13 +13,22 @@
  */
 
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
+import { SizeEnum } from 'src/common/enums/size.enum';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 
-interface IStatusTransitionCondition {
+export interface IFieldValidation {
+  required?: boolean;
+  size?: SizeEnum;
+}
+export interface IFieldValidationsByPath {
+  [path: string]: IFieldValidation;
+}
+export interface ICondition extends Partial<PiaIntakeEntity> {
   accessType?: Array<UserTypesEnum>;
   piaType?: Array<PiaTypesEnum>;
+  fieldValidations?: IFieldValidationsByPath;
 }
 
 interface IStatusTransitionAction {
@@ -30,13 +39,14 @@ interface IStatusTransitionAction {
 
 interface IStatusTransition {
   allow: boolean;
-  conditions?: Array<IStatusTransitionCondition>;
+  conditions?: Array<ICondition>;
   actions?: Array<IStatusTransitionAction>;
 }
 
 interface IStatusUpdates {
   allow: boolean;
   except?: Array<keyof PiaIntakeEntity>;
+  conditions?: Array<ICondition>;
 }
 
 interface IStatusMetadata {
@@ -115,52 +125,48 @@ export const piaStatusMetadata: Partial<
         conditions: [
           {
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.programArea.selectedRoles': {
+                size: SizeEnum.AT_LEAST_ONE,
+              },
+            },
           },
         ],
       },
     },
   },
-  // [PiaIntakeStatusEnum.CPO_REVIEW]: {
-  //   view: true,
-  //   edit: true,
-  //   roles: {
-  //     [UserTypesEnum.DRAFTER]: {
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.MPO]: {
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.CPO]: {
-  //       edit: true,
-  //     },
-  //   },
-  //   transitions: {
-  //     [PiaIntakeStatusEnum.INCOMPLETE]: {
-  //       allow: true,
-  //       actions: [
-  //         {
-  //           type: 'update',
-  //           key: 'review',
-  //           value: null,
-  //         },
-  //       ],
-  //     },
-  //     [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
-  //       allow: true,
-  //       actions: [
-  //         {
-  //           type: 'update',
-  //           key: 'review',
-  //           value: null,
-  //         },
-  //       ],
-  //     },
-  //     [PiaIntakeStatusEnum.CPO_REVIEW]: {
-  //       allow: true,
-  //       conditions: [],
-  //     },
-  //   },
-  // },
+  [PiaIntakeStatusEnum.CPO_REVIEW]: {
+    updates: {
+      allow: true,
+      conditions: [
+        {
+          piaType: [PiaTypesEnum.STANDARD], // updates in CPO_REVIEW are only allowed when standard PIA
+        },
+      ],
+    },
+    transition: {
+      [PiaIntakeStatusEnum.INCOMPLETE]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.FINAL_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+          },
+        ],
+      },
+    },
+  },
   [PiaIntakeStatusEnum.FINAL_REVIEW]: {
     updates: {
       allow: true, // add exceptions
@@ -168,7 +174,6 @@ export const piaStatusMetadata: Partial<
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
         allow: true,
-
         // allow if any of the below conditions completely satisfies
         conditions: [
           {
@@ -176,7 +181,6 @@ export const piaStatusMetadata: Partial<
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
           },
         ],
-
         actions: [
           {
             type: 'update',
@@ -187,14 +191,12 @@ export const piaStatusMetadata: Partial<
       },
       [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
         allow: true,
-
         conditions: [
           {
             accessType: [UserTypesEnum.MPO],
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
           },
         ],
-
         actions: [
           {
             type: 'update',
@@ -205,7 +207,6 @@ export const piaStatusMetadata: Partial<
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
-
         conditions: [
           {
             accessType: [UserTypesEnum.MPO],

@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsString,
 } from '@nestjs/class-validator';
+import { Transform } from 'class-transformer';
 
 export class RoleReview {
   @IsBoolean()
@@ -12,6 +13,7 @@ export class RoleReview {
 
   @IsString()
   @IsOptional()
+  @Transform(({ value }) => value.trim())
   reviewNote?: string;
 
   @IsString()

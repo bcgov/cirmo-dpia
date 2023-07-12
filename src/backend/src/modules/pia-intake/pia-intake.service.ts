@@ -142,7 +142,7 @@ export class PiaIntakeService {
     );
 
     // handle field updates
-    handlePiaUpdates(updatePiaIntakeDto, existingRecord);
+    handlePiaUpdates(updatePiaIntakeDto, existingRecord, accessType, piaType);
 
     // remove the provided saveId
     delete updatePiaIntakeDto.saveId;
