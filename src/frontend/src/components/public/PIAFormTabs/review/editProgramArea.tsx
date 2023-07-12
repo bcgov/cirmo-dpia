@@ -26,7 +26,6 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
 
   const handleSubmit = () => {
     const review = { isAcknowledged: acknowledged, reviewNote };
-    console.log('test hereddddd');
     stateChangeHandler(review, `programArea.reviews.${role}`, true);
   };
   const handleClear = () => {

@@ -18,7 +18,9 @@ export const deepEqual = (
       typeof object1[key] === typeof object2[key] &&
       typeof object1[key] === 'object' &&
       object1[key] !== null &&
-      object1[key] !== undefined
+      object1[key] !== undefined &&
+      object2[key] !== null &&
+      object2[key] !== undefined
     ) {
       if (deepEqual(object1[key], object2[key])) continue;
 
