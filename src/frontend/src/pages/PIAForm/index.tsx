@@ -122,6 +122,36 @@ const PIAFormPage = () => {
     }));
   };
 
+  /**
+   * Reset pia.review when pia.status is changed to INCOMPLETE or EDIT_IN_PROGRESS
+   */
+  const resetPiaReview = () => {
+    piaStateChangeHandler(
+      {
+        programArea: {
+          selectedRoles: [],
+          reviews: {},
+        },
+        mpo: {
+          isAcknowledged: false,
+          reviewNote: '',
+        },
+      },
+      'review',
+      true,
+    );
+  };
+
+  useEffect(() => {
+    if (
+      pia.status === PiaStatuses.INCOMPLETE ||
+      pia.status === PiaStatuses.EDIT_IN_PROGRESS
+    ) {
+      resetPiaReview();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pia.status]);
+
   const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
 
   useEffect(() => {

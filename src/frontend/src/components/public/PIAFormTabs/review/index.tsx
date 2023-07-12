@@ -4,13 +4,10 @@ import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { IReview, IReviewSection } from './interfaces';
+import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { HttpRequest } from '../../../../utils/http-request.util';
-import { API_ROUTES } from '../../../../constant/apiRoutes';
 import { useParams } from 'react-router-dom';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -26,7 +23,6 @@ export interface IReviewProps {
 }
 
 const PIAReview = ({ printPreview }: IReviewProps) => {
-  const { id } = useParams();
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const initialFormState: IReview = useMemo(
@@ -93,7 +89,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       };
     }
 
-    reviewForm.programArea?.selectedRoles.push(role);
+    reviewForm.programArea?.selectedRoles?.push(role);
 
     stateChangeHandler(
       reviewForm.programArea?.selectedRoles,
@@ -229,8 +225,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     pia.status === PiaStatuses.CPO_REVIEW) && (
                     <h4 className="mb-3">Selected Roles</h4>
                   )}
-                  {reviewForm.programArea?.selectedRoles.length > 0 ? (
-                    reviewForm.programArea?.selectedRoles.map(
+                  {reviewForm.programArea?.selectedRoles?.length > 0 ? (
+                    reviewForm.programArea?.selectedRoles?.map(
                       (role: string, index: number) => {
                         return reviewForm.programArea?.selectedRoles &&
                           pia.status === PiaStatuses.FINAL_REVIEW ? (
@@ -420,7 +416,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               <b>Program Area</b>
             </h3>
           </div>
-          {pia?.review?.programArea?.selectedRoles.map((role: string) => (
+          {pia?.review?.programArea?.selectedRoles?.map((role: string) => (
             <>
               <ViewProgramAreaReview
                 pia={pia}
