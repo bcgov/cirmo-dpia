@@ -26,10 +26,15 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
 
   const handleSubmit = () => {
     const review = { isAcknowledged: acknowledged, reviewNote };
-
+    console.log('test hereddddd');
     stateChangeHandler(review, `programArea.reviews.${role}`, true);
   };
-
+  const handleClear = () => {
+    setReviewNote('');
+    setAcknowledged(false);
+    const review = null;
+    stateChangeHandler(review, `programArea.reviews.${role}`, true);
+  };
   const reviewedByDisplayName = Object(
     props.pia?.review?.programArea?.reviews,
   )?.[role]?.reviewedByDisplayName;
@@ -92,11 +97,9 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
               <div className="d-flex gap-3 mt-2">
                 <button
                   className="bcgovbtn bcgovbtn__secondary"
-                  onClick={() => {
-                    setReviewNote('');
-                  }}
+                  onClick={handleClear}
                 >
-                  Cancel
+                  Clear
                 </button>
                 <button
                   disabled={!acknowledged}
