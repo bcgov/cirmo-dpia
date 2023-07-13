@@ -40,8 +40,7 @@ const ViewReviewSection = (props: IReviewProps) => {
 
   const handleClear = () => {
     setReviewNote('');
-    const review = null;
-    stateChangeHandler?.(review, `programArea.reviews.${role}`, true);
+    stateChangeHandler?.(null, `programArea.reviews.${role}`, true);
   };
   return (
     <div className="row mb-5 p-3 pb-5 border border-2 rounded">

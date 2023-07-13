@@ -31,8 +31,7 @@ const EditProgramAreaReview = (props: IEditProgramAreaReviewProps) => {
   const handleClear = () => {
     setReviewNote('');
     setAcknowledged(false);
-    const review = null;
-    stateChangeHandler(review, `programArea.reviews.${role}`, true);
+    stateChangeHandler(null, `programArea.reviews.${role}`, true);
   };
   const reviewedByDisplayName = Object(
     props.pia?.review?.programArea?.reviews,

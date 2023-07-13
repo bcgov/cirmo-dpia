@@ -314,8 +314,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     <div className="data-row">
                       <Checkbox
                         value=""
-                        isLink={mpoAcknowledged}
-                        checked={reviewForm?.mpo?.isAcknowledged ? true : false}
+                        isLink={false}
+                        checked={mpoAcknowledged}
                         label={
                           messages.PiaReviewHeader.MinistrySection.Input
                             .AcceptAccountability.en
