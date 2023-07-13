@@ -11,6 +11,10 @@ export type Privileges = {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
   };
+  DRAFTER?: {
+    changeStatus: Array<ChangeStatus>;
+    banner?: string;
+  };
 };
 
 interface Modal {
@@ -145,6 +149,16 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
             {
               status: 'CPO_REVIEW',
               modal: defaultCPOReviewModal,
+            },
+          ],
+        },
+        DRAFTER: {
+          changeStatus: [
+            {
+              status: 'EDIT_IN_PROGRESS',
+              modal: checkReviewStatus(pia)
+                ? resetReviewEditInPRogressModal
+                : defaultEditInProgressModal,
             },
           ],
         },
