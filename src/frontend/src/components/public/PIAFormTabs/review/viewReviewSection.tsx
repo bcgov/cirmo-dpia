@@ -17,6 +17,7 @@ interface IReviewProps {
   stateChangeHandler?: (value: any, path: string, callApi?: boolean) => void;
   printPreview?: boolean;
   role?: string;
+  isAcknowledged: boolean;
 }
 
 const ViewReviewSection = (props: IReviewProps) => {
@@ -27,6 +28,7 @@ const ViewReviewSection = (props: IReviewProps) => {
     editReviewNote,
     stateChangeHandler,
     role,
+    isAcknowledged,
   } = props;
 
   const reviewGuid = reviewSection?.reviewedByGuid;
@@ -75,7 +77,7 @@ const ViewReviewSection = (props: IReviewProps) => {
       <div className="row mt-4">
         <Checkbox
           value=""
-          checked={true}
+          checked={isAcknowledged}
           isLink={false}
           label={
             messages.PiaReviewHeader.MinistrySection.Input.AcceptAccountability
