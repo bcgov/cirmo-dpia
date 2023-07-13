@@ -1,4 +1,6 @@
 import { ForbiddenException } from '@nestjs/common';
+import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
+import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from 'src/modules/pia-intake/enums/pia-intake-status.enum';
@@ -14,7 +16,13 @@ describe('`handlePiaUpdates` method', () => {
 
     const storedValue: PiaIntakeEntity = { ...piaIntakeEntityMock };
 
-    const result = handlePiaUpdates(updatedValue, storedValue);
+    const result = handlePiaUpdates(
+      updatedValue,
+      storedValue,
+      [UserTypesEnum.DRAFTER],
+      PiaTypesEnum.STANDARD,
+    );
+
     expect(result).toBeUndefined(); // no error
   });
 
@@ -30,7 +38,12 @@ describe('`handlePiaUpdates` method', () => {
     };
 
     try {
-      handlePiaUpdates(updatedValue, storedValue);
+      handlePiaUpdates(
+        updatedValue,
+        storedValue,
+        [UserTypesEnum.DRAFTER],
+        PiaTypesEnum.STANDARD,
+      );
     } catch (e) {
       expect(e).toBeInstanceOf(ForbiddenException);
     }
@@ -47,7 +60,12 @@ describe('`handlePiaUpdates` method', () => {
       status: PiaIntakeStatusEnum.COMPLETE,
     };
 
-    const result = handlePiaUpdates(updatedValue, storedValue);
+    const result = handlePiaUpdates(
+      updatedValue,
+      storedValue,
+      [UserTypesEnum.DRAFTER],
+      PiaTypesEnum.STANDARD,
+    );
     expect(result).toBeUndefined(); // no error
   });
 
@@ -62,7 +80,14 @@ describe('`handlePiaUpdates` method', () => {
       status: PiaIntakeStatusEnum.MPO_REVIEW,
     };
 
-    const result = handlePiaUpdates(updatedValue, storedValue);
+    const result = handlePiaUpdates(
+      updatedValue,
+      storedValue,
+      [UserTypesEnum.DRAFTER],
+      PiaTypesEnum.STANDARD,
+    );
     expect(result).toBeUndefined(); // no error
   });
+
+  // add conditions test
 });

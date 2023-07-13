@@ -11,16 +11,11 @@ import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { piaStatusMetadata } from '../metadata/pia-status.metadata';
+import { validateConditionsAny } from './validate-conditions';
 
-const throwStatusChangeError = (
-  updatedStatus?: PiaIntakeStatusEnum,
-  errorMessage?: string,
-) => {
-  const message =
-    errorMessage || `Cannot change status of this PIA to ${updatedStatus}`;
-
+const throwStatusChangeError = (errorMessage: string) => {
   throw new ForbiddenException({
-    message: `Status change denied: ${message}`,
+    message: `Status change denied: ${errorMessage}`,
   });
 };
 
@@ -41,10 +36,7 @@ export const handlePiaStatusChange = (
     storedStatus === null &&
     updatedStatus !== PiaIntakeStatusEnum.INCOMPLETE
   ) {
-    throwStatusChangeError(
-      updatedStatus,
-      'Cannot move a fresh PIA to an Incomplete status',
-    );
+    throwStatusChangeError('Cannot move a fresh PIA to an Incomplete status');
   }
 
   // handle status change actions
@@ -55,39 +47,23 @@ export const handlePiaStatusChange = (
   const statusTransition = storedStatusMetadata?.transition?.[updatedStatus];
 
   if (!statusTransition?.allow) {
-    throwStatusChangeError(updatedStatus);
+    throwStatusChangeError(
+      `Cannot change status of this PIA to ${updatedStatus}`,
+    );
   }
 
-  if (statusTransition?.conditions?.length > 0) {
-    const updatedEntity: PiaIntakeEntity = { ...storedValue, ...updatedValue };
+  const updatedEntity: PiaIntakeEntity = { ...storedValue, ...updatedValue };
 
-    // check for conditions
-    const conditions = statusTransition?.conditions;
+  // check if any condition is fulfilled entirely
+  const isSatisfied = validateConditionsAny(
+    statusTransition?.conditions,
+    accessType,
+    piaType,
+    updatedEntity,
+  );
 
-    // check if any condition is fulfilled entirely
-    const isSatisfied = conditions.some((condition) => {
-      const keys = Object.keys(condition);
-
-      return keys.every((key) => {
-        switch (key) {
-          case 'accessType':
-            return (
-              condition?.accessType?.filter((access) =>
-                accessType.includes(access),
-              ).length > 0
-            );
-          case 'piaType':
-            return condition?.piaType.includes(piaType);
-
-          default:
-            return condition?.[key]?.includes(updatedEntity?.[key]);
-        }
-      });
-    });
-
-    if (!isSatisfied) {
-      throwStatusChangeError();
-    }
+  if (isSatisfied === false) {
+    throwStatusChangeError('Failed to satisfy the required conditions');
   }
 
   if (statusTransition?.actions?.length > 0) {
