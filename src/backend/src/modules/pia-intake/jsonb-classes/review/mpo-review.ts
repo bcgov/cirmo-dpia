@@ -1,5 +1,4 @@
 import { IsBoolean } from '@nestjs/class-validator';
-import { BadRequestException } from '@nestjs/common';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
@@ -62,15 +61,6 @@ export const validateRoleForMpoReview = (
     const updatedKeyValue = updatedValue?.[key];
     const storedKeyValue = storedValue?.[key];
     const metadata = mpoReviewMetadata.find((m) => m.key === key);
-
-    // override class-validator checks
-    // REVIEW_NOTE is REQUIRED when Delegated PIA
-    if (key === 'reviewNote' && !updatedValue?.[key]) {
-      throw new BadRequestException({
-        path: `review.mpo.${key}`,
-        message: 'Bad Request: Missing MPO Review note',
-      });
-    }
 
     validateRoleForFormField(
       metadata,

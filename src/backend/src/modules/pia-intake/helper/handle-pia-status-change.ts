@@ -13,9 +13,10 @@ import { PiaIntakeStatusEnum } from '../enums/pia-intake-status.enum';
 import { piaStatusMetadata } from '../metadata/pia-status.metadata';
 import { validateConditionsAny } from './validate-conditions';
 
-const throwStatusChangeError = (errorMessage: string) => {
+const throwStatusChangeError = (errorMessage: string, errors?: string[]) => {
   throw new ForbiddenException({
     message: `Status change denied: ${errorMessage}`,
+    errors,
   });
 };
 
@@ -55,7 +56,7 @@ export const handlePiaStatusChange = (
   const updatedEntity: PiaIntakeEntity = { ...storedValue, ...updatedValue };
 
   // check if any condition is fulfilled entirely
-  const isSatisfied = validateConditionsAny(
+  const { isSatisfied, errors } = validateConditionsAny(
     statusTransition?.conditions,
     accessType,
     piaType,
@@ -63,7 +64,7 @@ export const handlePiaStatusChange = (
   );
 
   if (isSatisfied === false) {
-    throwStatusChangeError('Failed to satisfy the required conditions');
+    throwStatusChangeError('Failed to satisfy the required conditions', errors);
   }
 
   if (statusTransition?.actions?.length > 0) {
