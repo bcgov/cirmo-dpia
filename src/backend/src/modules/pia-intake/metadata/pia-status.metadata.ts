@@ -113,9 +113,23 @@ export const piaStatusMetadata: Partial<
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
         allow: true,
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
         allow: true,
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.CPO_REVIEW]: {
         allow: true,
@@ -150,9 +164,23 @@ export const piaStatusMetadata: Partial<
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
         allow: true,
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
         allow: true,
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
@@ -213,6 +241,9 @@ export const piaStatusMetadata: Partial<
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
           },
         ],
+      },
+      [PiaIntakeStatusEnum.COMPLETE]: {
+        allow: true,
       },
     },
   },
