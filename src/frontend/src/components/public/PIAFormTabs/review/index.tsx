@@ -49,6 +49,14 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
+  // For requirement
+  // if  PIA Part 4 Assessment(storing personal information tab) (PIDSOC),
+  // If Assessment of Disclosures Outside of Canada is filled out in PIA,
+  // ADM(Assistant Deputy Minister) is a preselected role and can not be delete
+  // we need to distinguish user select ADM role vs system pre-select ADM
+
+  const [mandatoryADM, setMandatoryADM] = useState(false);
+
   const [editReviewNote, setEditReviewNote] = useState(false);
   const stateChangeHandler = (value: any, path: string, callApi?: boolean) => {
     setNestedReactState(setReviewForm, path, value);
@@ -93,18 +101,25 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       pia?.storingPersonalInformation?.sensitivePersonalInformation
         .disclosedOutsideCanada === YesNoInput.NO
     ) {
-      reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
-      stateChangeHandler(
-        reviewForm.programArea?.selectedRoles,
-        'programArea.selectedRoles',
-      );
+      setMandatoryADM(true);
+      if (
+        !pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM) &&
+        !reviewForm.programArea?.selectedRoles.includes(ApprovalRoles.ADM)
+      ) {
+        reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
+        stateChangeHandler(
+          reviewForm.programArea?.selectedRoles,
+          'programArea.selectedRoles',
+        );
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    pia?.review?.programArea.selectedRoles,
     pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation
       .disclosedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
+    reviewForm.programArea?.selectedRoles,
   ]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
@@ -294,28 +309,34 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex gap-1 justify-content-start align-items-center"
                           >
                             <p className="m-0 pt-2">{role}</p>
-                            {!reviewForm.programArea?.reviews?.[role] && (
-                              <button
-                                className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
-                                onClick={() => {
-                                  reviewForm.programArea.selectedRoles?.splice(
-                                    index,
-                                    1,
-                                  );
-                                  stateChangeHandler(
-                                    reviewForm.programArea.selectedRoles,
-                                    'programArea.selectedRoles',
-                                  );
-                                  piaStateChangeHandler(reviewForm, 'review');
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className=""
-                                  icon={faTrash}
-                                  size="xl"
-                                />
-                              </button>
-                            )}
+                            {mandatoryADM ? (
+                              <p className="m-0 pt-2 error-text">
+                                (required for this PIA)
+                              </p>
+                            ) : null}
+                            {!reviewForm.programArea?.reviews?.[role] &&
+                              !mandatoryADM && (
+                                <button
+                                  className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
+                                  onClick={() => {
+                                    reviewForm.programArea.selectedRoles?.splice(
+                                      index,
+                                      1,
+                                    );
+                                    stateChangeHandler(
+                                      reviewForm.programArea.selectedRoles,
+                                      'programArea.selectedRoles',
+                                    );
+                                    piaStateChangeHandler(reviewForm, 'review');
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    className=""
+                                    icon={faTrash}
+                                    size="xl"
+                                  />
+                                </button>
+                              )}
                           </div>
                         );
                       },
