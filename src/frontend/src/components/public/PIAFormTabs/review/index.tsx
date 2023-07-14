@@ -20,6 +20,7 @@ import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
 import EditProgramAreaReview from './editProgramArea';
+import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -71,6 +72,40 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     if (!pia.review) return;
     setReviewForm(pia.review);
   }, [pia.review]);
+
+  /**
+   * Update reviewForm.programArea when
+   * Part 4 Assessment(storing personal information tab) (PIDSOC), If Assessment of Disclosures Outside of Canada is filled out in PIA,
+   * ADM(Assistant Deputy Minister) is a preselected role
+   * and can not be deleted
+   * personalInformation.storedOutsideCanada is yes
+   * sensitivePersonalInformation.doesInvolve is yes
+   * sensitivePersonalInformation.disclosedOutsideCanada is no
+   */
+  useEffect(() => {
+    // if the condition does satisfy the rule, add the adm to programArea
+    // otherwise do nothing
+    if (
+      pia?.storingPersonalInformation?.personalInformation
+        ?.storedOutsideCanada === YesNoInput.YES &&
+      pia?.storingPersonalInformation?.sensitivePersonalInformation
+        .doesInvolve === YesNoInput.YES &&
+      pia?.storingPersonalInformation?.sensitivePersonalInformation
+        .disclosedOutsideCanada === YesNoInput.NO
+    ) {
+      reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
+      stateChangeHandler(
+        reviewForm.programArea?.selectedRoles,
+        'programArea.selectedRoles',
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
+    pia?.storingPersonalInformation?.sensitivePersonalInformation
+      .disclosedOutsideCanada,
+    pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
+  ]);
 
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
