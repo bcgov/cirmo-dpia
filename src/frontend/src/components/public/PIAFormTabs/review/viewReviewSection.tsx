@@ -39,7 +39,6 @@ const ViewReviewSection = (props: IReviewProps) => {
   );
 
   const handleClear = () => {
-    setReviewNote('');
     stateChangeHandler?.(null, `programArea.reviews.${role}`, true);
   };
   return (
