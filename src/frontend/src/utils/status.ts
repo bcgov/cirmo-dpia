@@ -209,7 +209,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
         },
       },
     },
-    COMPLETED: {
+    COMPLETE: {
       title: 'Completed',
       class: 'statusBlock__success',
       modal: defaultEmptyModal,
@@ -348,6 +348,16 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 cancelLabel: 'Cancel',
               },
             },
+            {
+              status: 'COMPLETE',
+              modal: {
+                title: 'Submit for Completion',
+                description:
+                  'Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+                confirmLabel: 'Yes, submit',
+                cancelLabel: 'Cancel',
+              },
+            },
           ],
         },
         CPO: {
@@ -389,6 +399,16 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 description:
                   'The status will be changed to "MPO Review" and this PIA will be unlocked.',
                 confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'COMPLETE',
+              modal: {
+                title: 'Submit for Completion',
+                description:
+                  'Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+                confirmLabel: 'Yes, submit',
                 cancelLabel: 'Cancel',
               },
             },

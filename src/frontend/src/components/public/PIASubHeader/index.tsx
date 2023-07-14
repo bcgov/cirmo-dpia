@@ -51,6 +51,7 @@ function PIASubHeader({
   const accessLink = `${protocol}//${host}/pia/${pia.id}?invite=${accessCode}`;
 
   const [enableFinalReview, setEnableFinalReview] = useState<boolean>(false);
+  const [enableComplete, setEnableComplete] = useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
   const changeStatusFn = (modal: object, status: string) => {
@@ -120,6 +121,37 @@ function PIASubHeader({
     pia?.review?.programArea?.selectedRoles?.length,
     pia?.status,
   ]);
+
+  useEffect(() => {
+    let reviewProgramAreaDone = false;
+    if (pia?.status === PiaStatuses.FINAL_REVIEW) {
+      const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
+      for (const role of selectedRoles) {
+        if (
+          pia?.review?.programArea?.reviews?.[role]?.isAcknowledged !== true
+        ) {
+          reviewProgramAreaDone = false;
+          break;
+        }
+        reviewProgramAreaDone = true;
+      }
+    }
+
+    if (
+      pia?.status === PiaStatuses.FINAL_REVIEW &&
+      reviewProgramAreaDone &&
+      pia?.review?.mpo?.isAcknowledged === true
+    ) {
+      setEnableComplete(true);
+    } else {
+      setEnableComplete(false);
+    }
+  }, [
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.programArea?.reviews,
+    pia?.review?.programArea?.selectedRoles,
+    pia?.status,
+  ]);
   useEffect(() => {
     if (
       mode === 'view' &&
@@ -133,10 +165,21 @@ function PIASubHeader({
       primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW
     ) {
       setDisableSubmitButton(true);
+    } else if (
+      enableComplete === false &&
+      primaryButtonText === SubmitButtonTextEnum.COMPLETE_PIA
+    ) {
+      setDisableSubmitButton(true);
     } else {
       setDisableSubmitButton(false);
     }
-  }, [enableFinalReview, isValidationFailed, mode, primaryButtonText]);
+  }, [
+    enableComplete,
+    enableFinalReview,
+    isValidationFailed,
+    mode,
+    primaryButtonText,
+  ]);
 
   const showSaveAndEditButton = () => {
     // we may revisit this part later for standard PIA
@@ -147,8 +190,8 @@ function PIASubHeader({
   };
   const showSubmitButton = () => {
     const owner = getGUID() === pia.createdByGuid ? true : false;
-    // if the status is final review, hide submit button
-    if (pia.status === PiaStatuses.FINAL_REVIEW) return false;
+    // if the status is completed, hide submit button
+    if (pia.status === PiaStatuses.COMPLETE) return false;
     if (
       owner &&
       pia.status !== PiaStatuses.CPO_REVIEW &&

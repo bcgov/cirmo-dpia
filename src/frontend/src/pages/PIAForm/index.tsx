@@ -51,6 +51,7 @@ export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
   DELEGATE_FINISH_REVIEW = 'Finish review',
+  COMPLETE_PIA = 'Complete PIA',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -233,7 +234,9 @@ const PIAFormPage = () => {
     const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
 
     // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (
+    if (pia.status === PiaStatuses.FINAL_REVIEW) {
+      setSubmitButtonText(SubmitButtonTextEnum.COMPLETE_PIA);
+    } else if (
       pia.status === PiaStatuses.MPO_REVIEW &&
       pia.hasAddedPiToDataElements === false
     ) {
@@ -374,6 +377,10 @@ const PIAFormPage = () => {
             getShortTime(pia?.updatedAt),
           ),
         );
+        setPiaModalButtonValue(modalType);
+        break;
+      case 'completePIA':
+        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn);
         setPiaModalButtonValue(modalType);
         break;
       default:
@@ -617,6 +624,20 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'completePIA') {
+        const updatedPia = await upsertAndUpdatePia({
+          // here not sure what status for this one, need to discuss
+
+          status: PiaStatuses.COMPLETE,
+        });
+        // need to revisit this part, what happen when complete PIA
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -669,6 +690,8 @@ const PIAFormPage = () => {
         } else {
           handleShowModal('SubmitForCPOReview');
         }
+      } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
+        handleShowModal('completePIA');
       } else {
         handleShowModal('submitPiaForm');
       }
