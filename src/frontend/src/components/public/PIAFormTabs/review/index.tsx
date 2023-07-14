@@ -113,7 +113,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const allowUserReviewProgramArea = () => {
     const userGuid = getGUID();
     const selectedRoles = reviewForm?.programArea?.selectedRoles;
-
+    // if selectedRoles is null means none of selectedRole got reviewed so return true
+    // otherwise loop all the role in reviews part to see if the current user already did review
+    if (selectedRoles === null) return true;
     for (const role of selectedRoles) {
       if (
         reviewForm?.programArea?.reviews?.[role]?.reviewedByGuid === userGuid
