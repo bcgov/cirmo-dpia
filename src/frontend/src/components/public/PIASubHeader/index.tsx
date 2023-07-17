@@ -126,15 +126,7 @@ function PIASubHeader({
     let reviewProgramAreaDone = false;
     if (pia?.status === PiaStatuses.FINAL_REVIEW) {
       const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
-      for (const role of selectedRoles) {
-        if (
-          pia?.review?.programArea?.reviews?.[role]?.isAcknowledged !== true
-        ) {
-          reviewProgramAreaDone = false;
-          break;
-        }
-        reviewProgramAreaDone = true;
-      }
+const reviewProgramAreaDone = selectedRoles.every((role) => pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true)
     }
 
     if (
