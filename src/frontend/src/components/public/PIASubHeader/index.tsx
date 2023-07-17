@@ -182,8 +182,13 @@ function PIASubHeader({
   const showSaveAndEditButton = () => {
     // we may revisit this part later for standard PIA
     if (mode === 'view' && pia.status === PiaStatuses.CPO_REVIEW) return false;
-    else if (mode === 'view' && pia.status === PiaStatuses.FINAL_REVIEW)
+    else if (
+      mode === 'view' &&
+      (pia.status === PiaStatuses.FINAL_REVIEW ||
+        pia.status === PiaStatuses.COMPLETE)
+    )
       return false;
+
     return true;
   };
   const showSubmitButton = () => {
