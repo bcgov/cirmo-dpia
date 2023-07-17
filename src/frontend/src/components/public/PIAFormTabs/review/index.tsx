@@ -45,7 +45,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   );
 
   const [updatePia, setUpdatePia] = useState(false);
-
+  const [mpoAcknowledged, setMpoAcknowledged] = useState(
+    pia.review?.mpo?.isAcknowledged || false,
+  );
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
@@ -178,6 +180,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // so if the reviewedAt field have a value, we show the review result otherwise show review
     if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
+  };
+
+  const handleMPOReviewSubmit = () => {
+    setEditReviewNote(false);
+    const review = { isAcknowledged: mpoAcknowledged, reviewNote };
+    stateChangeHandler(review, `mpo`, true);
   };
   return (
     <>
@@ -363,22 +371,14 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                       <Checkbox
                         value=""
                         isLink={false}
-                        checked={reviewForm?.mpo?.isAcknowledged ? true : false}
+                        checked={mpoAcknowledged}
                         label={
                           messages.PiaReviewHeader.MinistrySection.Input
                             .AcceptAccountability.en
                         }
-                        onChange={(e) => {
-                          setReviewForm({
-                            ...reviewForm,
-                            mpo: {
-                              ...reviewForm.mpo,
-                              isAcknowledged: e.target.checked,
-                            },
-                          });
-                        }}
+                        onChange={(e) => setMpoAcknowledged(e.target.checked)}
                       />
-                      {reviewForm.mpo?.isAcknowledged && (
+                      {mpoAcknowledged && (
                         <div className="d-block pb-3">
                           <div>
                             <div className="d-block pb-3">
@@ -410,21 +410,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                               className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
                               onClick={() => {
                                 setReviewNote('');
-                                setReviewForm({
-                                  ...reviewForm,
-                                  mpo: {
-                                    ...reviewForm.mpo,
-                                    reviewNote: '',
-                                    isAcknowledged: false,
-                                  },
-                                });
-                                piaStateChangeHandler(
-                                  {
-                                    mpo: null,
-                                  },
-                                  'review',
-                                  true,
-                                );
+                                setMpoAcknowledged(false);
+                                stateChangeHandler(null, 'mpo', true);
                               }}
                             >
                               Clear
@@ -432,26 +419,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             <button
                               className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
                               disabled={disableConfirmButton()}
-                              onClick={() => {
-                                setReviewForm({
-                                  ...reviewForm,
-                                  mpo: {
-                                    ...reviewForm.mpo,
-                                    reviewNote: reviewNote,
-                                  },
-                                });
-                                setEditReviewNote(false);
-                                piaStateChangeHandler(
-                                  {
-                                    mpo: {
-                                      isAcknowledged: true,
-                                      reviewNote: reviewNote,
-                                    },
-                                  },
-                                  'review',
-                                  true,
-                                );
-                              }}
+                              onClick={handleMPOReviewSubmit}
                             >
                               Confirm
                             </button>
