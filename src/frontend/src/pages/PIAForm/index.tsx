@@ -653,11 +653,10 @@ const PIAFormPage = () => {
         }
       } else if (buttonValue === 'completePIA') {
         const updatedPia = await upsertAndUpdatePia({
-          // here not sure what status for this one, need to discuss
-
           status: PiaStatuses.COMPLETE,
         });
-        // need to revisit this part, what happen when complete PIA
+        // need to revisit this part, current route to pia_intake tab
+        // when complete PIA story done, will go to Complete PIA list page
         if (updatedPia?.id) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {

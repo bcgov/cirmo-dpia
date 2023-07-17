@@ -123,10 +123,16 @@ function PIASubHeader({
   ]);
 
   useEffect(() => {
+    // If all reviews are acknowledged
+    // the current status is in final review and
+    // MPO too has acknowledged, the PIA can progress to complete.
     let reviewProgramAreaDone = false;
     if (pia?.status === PiaStatuses.FINAL_REVIEW) {
       const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
-const reviewProgramAreaDone = selectedRoles.every((role) => pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true)
+      reviewProgramAreaDone = selectedRoles.every(
+        (role) =>
+          pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true,
+      );
     }
 
     if (
