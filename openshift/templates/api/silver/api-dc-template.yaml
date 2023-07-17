@@ -176,6 +176,10 @@ objects:
                   secretKeyRef:
                     name: gc-notify-integration-key
                     key: GCNOTIFY_TEMPLATE_ID
+              - name: CLAMAV_PORT
+                value: '3310'
+              - name: CLAMAV_HOST
+                value: clamav
             resources:
               limits:
                 cpu: 150m
