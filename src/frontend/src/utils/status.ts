@@ -229,20 +229,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       modal: defaultEmptyModal,
       Privileges: {
         MPO: {
-          changeStatus: [
-            {
-              status: 'INCOMPLETE',
-              modal: defaultEmptyModal,
-            },
-            {
-              status: 'EDIT_IN_PROGRESS',
-              modal: defaultEmptyModal,
-            },
-            {
-              status: 'CPO_REVIEW',
-              modal: defaultEmptyModal,
-            },
-          ],
+          changeStatus: [],
         },
       },
     },
