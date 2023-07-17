@@ -7,7 +7,7 @@ const HandleState = (
 ) => {
   const current = pages.find((page) => page.link === pathname);
   const currentIndex = pages.findIndex((page) => page.link === pathname);
-  /* The firs part of this function is to check if the current page
+  /* The first part of this function is to check if the current page
         has a state object with the direction property. 
         If it does not, return null.
         If it does, check if the state object has a condition property. If it does not,
