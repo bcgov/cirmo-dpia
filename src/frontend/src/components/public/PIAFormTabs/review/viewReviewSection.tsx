@@ -40,6 +40,9 @@ const ViewReviewSection = (props: IReviewProps) => {
     ]?.reviewNote,
   );
 
+  const handleClear = () => {
+    stateChangeHandler?.(null, `programArea.reviews.${role}`, true);
+  };
   return (
     <div className="row mb-5 p-3 pb-5 border border-2 rounded">
       <h3>{role}</h3>
@@ -101,16 +104,9 @@ const ViewReviewSection = (props: IReviewProps) => {
               <div className="d-flex gap-3 mt-2">
                 <button
                   className="bcgovbtn bcgovbtn__secondary"
-                  onClick={() => {
-                    setEditReview(false);
-                    setReviewNote(
-                      pia.review?.programArea?.reviews?.[
-                        role as keyof IReview['programArea']['reviews']
-                      ]?.reviewNote,
-                    );
-                  }}
+                  onClick={handleClear}
                 >
-                  Cancel
+                  Clear
                 </button>
                 <button
                   disabled={

@@ -13,7 +13,7 @@ export class RoleReview {
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value?.trim())
   reviewNote?: string;
 
   @IsString()

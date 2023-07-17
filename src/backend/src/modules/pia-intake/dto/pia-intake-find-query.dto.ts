@@ -27,7 +27,7 @@ export class PiaIntakeFindQuery {
   @IsString()
   @IsOptional()
   @Length(0, 100)
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value?.trim())
   readonly searchText?: string = '';
 
   @ApiProperty({
