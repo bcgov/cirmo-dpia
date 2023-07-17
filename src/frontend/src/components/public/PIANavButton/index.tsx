@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { INavButton } from './interface';
 import HandleState from './handleState';
+import { roleCheck } from '../../../utils/helper.util';
 
-const PIANavButton = ({ pages }: INavButton) => {
+const PIANavButton = ({ pages, isDelegate }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -30,6 +31,8 @@ const PIANavButton = ({ pages }: INavButton) => {
     }
   };
 
+  const userRole = roleCheck().roles;
+
   return (
     <>
       {(HandleState(pages, pathname, 'prev') ||
@@ -49,18 +52,19 @@ const PIANavButton = ({ pages }: INavButton) => {
               : 'Back'}
           </button>
         )}
-        {HandleState(pages, pathname, 'next') && (
-          <button
-            className="bcgovbtn bcgovbtn__secondary btn-next ms-auto"
-            onClick={handleNext}
-            type="button"
-            aria-label="Next Button"
-          >
-            {typeof HandleState(pages, pathname, 'next') === 'object'
-              ? Object(HandleState(pages, pathname, 'next'))?.title
-              : 'Next'}
-          </button>
-        )}
+        {HandleState(pages, pathname, 'next') &&
+          (!isDelegate || userRole !== undefined) && (
+            <button
+              className="bcgovbtn bcgovbtn__secondary btn-next ms-auto"
+              onClick={handleNext}
+              type="button"
+              aria-label="Next Button"
+            >
+              {typeof HandleState(pages, pathname, 'next') === 'object'
+                ? Object(HandleState(pages, pathname, 'next'))?.title
+                : 'Next'}
+            </button>
+          )}
       </div>
     </>
   );
