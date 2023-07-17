@@ -4,13 +4,9 @@ import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { IReview, IReviewSection } from './interfaces';
+import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { HttpRequest } from '../../../../utils/http-request.util';
-import { API_ROUTES } from '../../../../constant/apiRoutes';
-import { useParams } from 'react-router-dom';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -26,7 +22,6 @@ export interface IReviewProps {
 }
 
 const PIAReview = ({ printPreview }: IReviewProps) => {
-  const { id } = useParams();
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const initialFormState: IReview = useMemo(
