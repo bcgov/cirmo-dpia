@@ -151,8 +151,6 @@ const PIAFormPage = () => {
       navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: id || pia?.id }));
     } else if (checkEditableStatus() && mode === 'view') {
       navigate(buildDynamicPath(routes.PIA_INTAKE_VIEW, { id: id || pia?.id }));
-    } else {
-      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pia.status, mode]);
