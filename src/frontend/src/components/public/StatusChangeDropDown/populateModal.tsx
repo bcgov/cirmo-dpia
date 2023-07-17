@@ -1,5 +1,6 @@
 import { roleCheck } from '../../../utils/helper.util';
 import { ChangeStatus, statusList } from '../../../utils/status';
+import { deepEqual } from '../../../utils/object-comparison.util';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { ImodalCB } from './interface';
 
@@ -22,7 +23,11 @@ const PopulateModal = (
   changeStatusFn: ImodalCB,
 ) => {
   const userRoles = roleCheck();
-  const role = userRoles.roles[0];
+  // a drafter does not have a role, but we also allow the drafter can change a status from
+  // MPO to edit_in_progress. so if no roles then this user is a drafter and assign role as DRAFTER
+  let role;
+  if (!deepEqual(userRoles, {})) role = userRoles.roles[0];
+  else role = 'DRAFTER';
   let useDefault = true;
   const currentStatus = pia.status || 'Completed';
   if (role in statusList(null)[currentStatus].Privileges) {
