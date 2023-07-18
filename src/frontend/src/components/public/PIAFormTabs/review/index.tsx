@@ -158,7 +158,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
 
-
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
@@ -291,8 +290,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex align-items-center"
                             key={index}
                           >
-                            {!allowUserReviewProgramArea() ||
-                            Object(pia?.review?.programArea)?.reviews?.[role]
+                            {Object(pia?.review?.programArea)?.reviews?.[role]
                               ?.isAcknowledged ? (
                               <ViewProgramAreaReview
                                 pia={pia}
