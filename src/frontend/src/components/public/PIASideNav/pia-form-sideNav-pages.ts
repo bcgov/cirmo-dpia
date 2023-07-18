@@ -48,7 +48,6 @@ export const PiaFormSideNavPages = (
   };
 
   const enableReview = (): boolean => {
-    console.log(roleCheck());
     let roles;
     if (roleCheck().hasOwnProperty('roles')) {
       roles = roleCheck().roles[0];
