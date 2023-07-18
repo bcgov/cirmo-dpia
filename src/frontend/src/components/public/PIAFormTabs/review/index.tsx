@@ -99,10 +99,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         .disclosedOutsideCanada === YesNoInput.NO
     ) {
       setMandatoryADM(true);
-      if (
-        !pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM) &&
-        !reviewForm.programArea?.selectedRoles.includes(ApprovalRoles.ADM)
-      ) {
+      if (!pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM)) {
         reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
         stateChangeHandler(
           reviewForm.programArea?.selectedRoles,
