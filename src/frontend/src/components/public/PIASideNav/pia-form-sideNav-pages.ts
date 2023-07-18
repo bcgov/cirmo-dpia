@@ -4,7 +4,7 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
-import { isMPORole } from '../../../utils/helper.util';
+import { isMPORole, roleCheck } from '../../../utils/helper.util';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
@@ -12,6 +12,7 @@ import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { PiaStatuses } from '../../../constant/constant';
+import { reviewAccessControl } from '../PIAFormTabs/review/accessControl';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
@@ -47,38 +48,14 @@ export const PiaFormSideNavPages = (
   };
 
   const enableReview = (): boolean => {
-    if (
-      pia?.hasAddedPiToDataElements === false &&
-      pia?.isNextStepsSeenForDelegatedFlow === true &&
-      pia?.status !== PiaStatuses.INCOMPLETE &&
-      pia?.status !== PiaStatuses.EDIT_IN_PROGRESS
-    ) {
-      // This is for delegated review
-      if (isMPORole()) {
-        if (!isEditMode) {
-          /* check if the status has review priviliges */
-          return true;
-        } else return false;
-        /* only show in view mode */
-      } else {
-        /* not an MPO user */
-        return false;
-      }
+    console.log(roleCheck());
+    let roles;
+    if (roleCheck().hasOwnProperty('roles')) {
+      roles = roleCheck().roles[0];
     } else {
-      // This is for full PIA
-      if (
-        pia?.status !== PiaStatuses.INCOMPLETE &&
-        pia?.status !== PiaStatuses.EDIT_IN_PROGRESS
-      ) {
-        /*
-        !TODO - When the PI review tab is implemented
-         return showPostIntakeTabs'
-        */
-        return true;
-      } else {
-        return false;
-      }
+      roles = null;
     }
+    return reviewAccessControl(pia?.status, roles);
   };
 
   const checkNextSteps = (): boolean => {
@@ -88,6 +65,19 @@ export const PiaFormSideNavPages = (
       return true;
     } else {
       return false;
+    }
+  };
+
+  const nextStepsNavigation = () => {
+    /* if non delegated */
+    if (
+      pia?.hasAddedPiToDataElements == true ||
+      pia?.hasAddedPiToDataElements == null
+    ) {
+      return true;
+    }
+    if (pia?.hasAddedPiToDataElements == false) {
+      return enableReview();
     }
   };
 
@@ -119,10 +109,11 @@ if it is ++ or -- operater navigate to the previous or next tab
       enable: checkNextSteps(), // enable them in subsequent tickets
       state: {
         next: {
-          condition:
-            pia?.hasAddedPiToDataElements == true ||
-            pia?.hasAddedPiToDataElements == null,
-          action: NextStepsDefaultPage(),
+          condition: nextStepsNavigation(),
+          action:
+            pia.hasAddedPiToDataElements == false
+              ? 'Review'
+              : 'Collection, use and disclosure',
           actionFalse: 'Review',
         },
         prev: {
