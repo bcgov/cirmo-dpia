@@ -3,7 +3,7 @@ import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -60,6 +60,50 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     if (callApi) setUpdatePia(true);
   };
 
+  const [rolesSelect, setRolesSelect] = useState<string>('');
+  const [rolesInput, setRolesInput] = useState<string>('');
+  const [reviewNote, setReviewNote] = useState<string>(
+    pia?.review?.mpo?.reviewNote || '',
+  );
+
+  const addRole = useCallback(
+    (role: string) => {
+      const casedRoles =
+        reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) ||
+        [];
+
+      if (!role) return; // no empty role
+
+      if (casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
+
+      if (!reviewForm.programArea?.selectedRoles) {
+        reviewForm.programArea = {
+          ...reviewForm?.programArea,
+          selectedRoles: [],
+        };
+      }
+
+      reviewForm.programArea?.selectedRoles.push(role);
+
+      stateChangeHandler(
+        reviewForm.programArea?.selectedRoles,
+        'programArea.selectedRoles',
+      );
+
+      piaStateChangeHandler(
+        {
+          programArea: {
+            ...reviewForm.programArea,
+            selectedRoles: reviewForm.programArea.selectedRoles,
+          },
+        },
+        'review',
+        true,
+      );
+    },
+    [piaStateChangeHandler, reviewForm],
+  );
+
   /**
    * Update pia.review when reviewForm is updated
    */
@@ -99,18 +143,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         .disclosedOutsideCanada === YesNoInput.NO
     ) {
       setMandatoryADM(true);
-      if (
-        !pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM) &&
-        !reviewForm.programArea?.selectedRoles.includes(ApprovalRoles.ADM)
-      ) {
-        reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
-        stateChangeHandler(
-          reviewForm.programArea?.selectedRoles,
-          'programArea.selectedRoles',
-        );
-      }
+      addRole(ApprovalRoles.ADM);
     }
   }, [
+    addRole,
     pia?.review?.programArea.selectedRoles,
     pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -118,46 +154,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
     reviewForm.programArea?.selectedRoles,
   ]);
-
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
-  const [reviewNote, setReviewNote] = useState<string>(
-    pia?.review?.mpo?.reviewNote || '',
-  );
-
-  const addRole = (role: string) => {
-    const casedRoles =
-      reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) || [];
-
-    if (rolesInput === '' && rolesSelect === '') return; // no empty role
-
-    if (rolesInput !== '' && casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
-
-    if (!reviewForm.programArea?.selectedRoles) {
-      reviewForm.programArea = {
-        ...reviewForm?.programArea,
-        selectedRoles: [],
-      };
-    }
-
-    reviewForm.programArea?.selectedRoles.push(role);
-
-    stateChangeHandler(
-      reviewForm.programArea?.selectedRoles,
-      'programArea.selectedRoles',
-    );
-
-    piaStateChangeHandler(
-      {
-        programArea: {
-          ...reviewForm.programArea,
-          selectedRoles: reviewForm.programArea.selectedRoles,
-        },
-      },
-      'review',
-      true,
-    );
-  };
 
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
@@ -330,7 +326,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                       reviewForm.programArea.selectedRoles,
                                       'programArea.selectedRoles',
                                     );
-                                    piaStateChangeHandler(reviewForm, 'review');
+                                    piaStateChangeHandler(
+                                      reviewForm,
+                                      'review',
+                                      true,
+                                    );
                                   }}
                                 >
                                   <FontAwesomeIcon
