@@ -99,7 +99,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         .disclosedOutsideCanada === YesNoInput.NO
     ) {
       setMandatoryADM(true);
-      if (!pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM)) {
+      if (
+        !pia?.review?.programArea.selectedRoles.includes(ApprovalRoles.ADM) &&
+        !reviewForm.programArea?.selectedRoles.includes(ApprovalRoles.ADM)
+      ) {
         reviewForm.programArea?.selectedRoles.push(ApprovalRoles.ADM);
         stateChangeHandler(
           reviewForm.programArea?.selectedRoles,
@@ -309,13 +312,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex gap-1 justify-content-start align-items-center"
                           >
                             <p className="m-0 pt-2">{role}</p>
-                            {mandatoryADM ? (
+                            {mandatoryADM && role === ApprovalRoles.ADM ? (
                               <p className="m-0 pt-2 error-text">
                                 (required for this PIA)
                               </p>
                             ) : null}
                             {!reviewForm.programArea?.reviews?.[role] &&
-                              !mandatoryADM && (
+                              !(mandatoryADM && role === ApprovalRoles.ADM) && (
                                 <button
                                   className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
                                   onClick={() => {
