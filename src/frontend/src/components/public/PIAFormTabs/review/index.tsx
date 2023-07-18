@@ -3,7 +3,7 @@ import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +19,7 @@ import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
 import EditProgramAreaReview from './editProgramArea';
+import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -48,11 +49,63 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
+  // For requirement
+  // if  PIA Part 4 Assessment(storing personal information tab) (PIDSOC),
+  // If Assessment of Disclosures Outside of Canada is filled out in PIA,
+  // ADM(Assistant Deputy Minister) is a preselected role and can not be delete
+  // we need to distinguish user select ADM role vs system pre-select ADM
+
+  const [mandatoryADM, setMandatoryADM] = useState(false);
+
   const [editReviewNote, setEditReviewNote] = useState(false);
   const stateChangeHandler = (value: any, path: string, callApi?: boolean) => {
     setNestedReactState(setReviewForm, path, value);
     if (callApi) setUpdatePia(true);
   };
+
+  const [rolesSelect, setRolesSelect] = useState<string>('');
+  const [rolesInput, setRolesInput] = useState<string>('');
+  const [reviewNote, setReviewNote] = useState<string>(
+    pia?.review?.mpo?.reviewNote || '',
+  );
+
+  const addRole = useCallback(
+    (role: string) => {
+      const casedRoles =
+        reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) ||
+        [];
+
+      if (!role) return; // no empty role
+
+      if (casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
+
+      if (!reviewForm.programArea?.selectedRoles) {
+        reviewForm.programArea = {
+          ...reviewForm?.programArea,
+          selectedRoles: [],
+        };
+      }
+
+      reviewForm.programArea?.selectedRoles.push(role);
+
+      stateChangeHandler(
+        reviewForm.programArea?.selectedRoles,
+        'programArea.selectedRoles',
+      );
+
+      piaStateChangeHandler(
+        {
+          programArea: {
+            ...reviewForm.programArea,
+            selectedRoles: reviewForm.programArea.selectedRoles,
+          },
+        },
+        'review',
+        true,
+      );
+    },
+    [piaStateChangeHandler, reviewForm],
+  );
 
   /**
    * Update pia.review when reviewForm is updated
@@ -72,61 +125,40 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     setReviewForm(pia.review);
   }, [pia.review]);
 
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
-  const [reviewNote, setReviewNote] = useState<string>(
-    pia?.review?.mpo?.reviewNote || '',
-  );
-
-  const addRole = (role: string) => {
-    const casedRoles =
-      reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) || [];
-
-    if (rolesInput === '' && rolesSelect === '') return; // no empty role
-
-    if (rolesInput !== '' && casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
-
-    if (!reviewForm.programArea?.selectedRoles) {
-      reviewForm.programArea = {
-        ...reviewForm?.programArea,
-        selectedRoles: [],
-      };
+  /**
+   * Update reviewForm.programArea when
+   * Part 4 Assessment(storing personal information tab) (PIDSOC), If Assessment of Disclosures Outside of Canada is filled out in PIA,
+   * ADM(Assistant Deputy Minister) is a preselected role
+   * and can not be deleted
+   * personalInformation.storedOutsideCanada is yes
+   * sensitivePersonalInformation.doesInvolve is yes
+   * sensitivePersonalInformation.disclosedOutsideCanada is no
+   */
+  useEffect(() => {
+    // if the condition does satisfy the rule, add the adm to programArea
+    // otherwise do nothing
+    if (
+      pia?.storingPersonalInformation?.personalInformation
+        ?.storedOutsideCanada === YesNoInput.YES &&
+      pia?.storingPersonalInformation?.sensitivePersonalInformation
+        .doesInvolve === YesNoInput.YES &&
+      pia?.storingPersonalInformation?.sensitivePersonalInformation
+        .disclosedOutsideCanada === YesNoInput.NO
+    ) {
+      setMandatoryADM(true);
+      addRole(ApprovalRoles.ADM);
     }
+  }, [
+    addRole,
+    pia?.review?.programArea.selectedRoles,
+    pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
+    pia?.storingPersonalInformation?.sensitivePersonalInformation
+      .disclosedOutsideCanada,
+    pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
+    reviewForm.programArea?.selectedRoles,
+  ]);
 
-    reviewForm.programArea?.selectedRoles.push(role);
 
-    stateChangeHandler(
-      reviewForm.programArea?.selectedRoles,
-      'programArea.selectedRoles',
-    );
-
-    piaStateChangeHandler(
-      {
-        programArea: {
-          ...reviewForm.programArea,
-          selectedRoles: reviewForm.programArea.selectedRoles,
-        },
-      },
-      'review',
-      true,
-    );
-  };
-  const allowUserReviewProgramArea = () => {
-    const userGuid = getGUID();
-    const selectedRoles = reviewForm?.programArea?.selectedRoles;
-    // if selectedRoles is null means none of selectedRole got reviewed so return true
-    // otherwise loop all the role in reviews part to see if the current user already did review
-    if (selectedRoles === null) return true;
-    for (const role of selectedRoles) {
-      if (
-        reviewForm?.programArea?.reviews?.[role]?.reviewedByGuid === userGuid
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  };
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
@@ -286,28 +318,38 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex gap-1 justify-content-start align-items-center"
                           >
                             <p className="m-0 pt-2">{role}</p>
-                            {!reviewForm.programArea?.reviews?.[role] && (
-                              <button
-                                className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
-                                onClick={() => {
-                                  reviewForm.programArea.selectedRoles?.splice(
-                                    index,
-                                    1,
-                                  );
-                                  stateChangeHandler(
-                                    reviewForm.programArea.selectedRoles,
-                                    'programArea.selectedRoles',
-                                  );
-                                  piaStateChangeHandler(reviewForm, 'review');
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className=""
-                                  icon={faTrash}
-                                  size="xl"
-                                />
-                              </button>
-                            )}
+                            {mandatoryADM && role === ApprovalRoles.ADM ? (
+                              <p className="m-0 pt-2 error-text">
+                                (required for this PIA)
+                              </p>
+                            ) : null}
+                            {!reviewForm.programArea?.reviews?.[role] &&
+                              !(mandatoryADM && role === ApprovalRoles.ADM) && (
+                                <button
+                                  className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
+                                  onClick={() => {
+                                    reviewForm.programArea.selectedRoles?.splice(
+                                      index,
+                                      1,
+                                    );
+                                    stateChangeHandler(
+                                      reviewForm.programArea.selectedRoles,
+                                      'programArea.selectedRoles',
+                                    );
+                                    piaStateChangeHandler(
+                                      reviewForm,
+                                      'review',
+                                      true,
+                                    );
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    className=""
+                                    icon={faTrash}
+                                    size="xl"
+                                  />
+                                </button>
+                              )}
                           </div>
                         );
                       },
