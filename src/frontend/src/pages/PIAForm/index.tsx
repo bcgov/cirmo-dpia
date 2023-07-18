@@ -126,10 +126,13 @@ const PIAFormPage = () => {
    * @description - Check if the PIA is in an editable status
    * @returns {boolean}
    */
+
   const checkEditableStatus = () => {
+    // the root cause is when the page loading, the pia does not exist,so it will
+    // use empty state object, which  this function always return true.
     if (
-      pia.status === PiaStatuses.INCOMPLETE ||
-      pia.status === PiaStatuses.EDIT_IN_PROGRESS
+      pia?.status === PiaStatuses.INCOMPLETE ||
+      pia?.status === PiaStatuses.EDIT_IN_PROGRESS
     ) {
       return true;
     }
@@ -140,11 +143,15 @@ const PIAFormPage = () => {
    * @description - Navigate to the intake page upon status change to an
    *                editable status or if the user changes the mode
    */
+
   useEffect(() => {
-    if (checkEditableStatus() && mode === 'edit')
-      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }));
-    else if (checkEditableStatus() && mode === 'view')
-      navigate(buildDynamicPath(routes.PIA_INTAKE_VIEW, { id: pia.id }));
+    if (pathname === routes.PIA_NEW) return;
+    // temp fix, just use id instead of pia.id to make sure the app does not broken right now
+    if (checkEditableStatus() && mode === 'edit') {
+      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: id || pia?.id }));
+    } else if (checkEditableStatus() && mode === 'view') {
+      navigate(buildDynamicPath(routes.PIA_INTAKE_VIEW, { id: id || pia?.id }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pia.status, mode]);
 
