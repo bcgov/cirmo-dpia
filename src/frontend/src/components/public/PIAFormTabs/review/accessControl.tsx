@@ -13,7 +13,9 @@ export const defaultAccess = (status: string | undefined) => {
   if ('Pages' in Object(statusList(null)[status])) {
     const pages = Object(statusList(null)[status]).Pages;
     if ('review' in pages) {
-      return pages.review.accessControl;
+      if ('accessControl' in pages.review) {
+        return pages.review.accessControl;
+      }
     }
   }
   return false;
@@ -29,20 +31,17 @@ export const reviewAccessControl = (
   if (!role) {
     return defaultAccess(status);
   }
-  let defaultAccessFlag = true;
-  const priviliges =
-    role in Object(statusList(null)[status].Privileges) ? true : false;
+  const priviliges = role in Object(statusList(null)[status].Privileges);
   if (priviliges) {
     /* check if Pages is defined for this role */
     if ('Pages' in Object(statusList(null)[status]).Privileges[role]) {
       const pages = Object(statusList(null)[status]).Privileges[role].Pages;
       if ('review' in pages) {
-        defaultAccessFlag = false;
-        return pages.review.accessControl;
+        if ('accessControl' in pages.review) {
+          return pages.review.accessControl;
+        }
       }
     }
   }
-  if (defaultAccessFlag) {
-    return defaultAccess(status);
-  }
+  return defaultAccess(status);
 };

@@ -48,13 +48,13 @@ export const PiaFormSideNavPages = (
   };
 
   const enableReview = (): boolean => {
-    let roles;
+    let role;
     if ('roles' in roleCheck()) {
-      roles = roleCheck().roles[0];
+      role = roleCheck().roles[0];
     } else {
-      roles = null;
+      role = null;
     }
-    return reviewAccessControl(pia?.status, roles);
+    return reviewAccessControl(pia?.status, role);
   };
 
   const checkNextSteps = (): boolean => {
