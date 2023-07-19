@@ -7,6 +7,9 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
+import { getGUID } from '../../../../utils/helper.util';
+import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -312,6 +315,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                                 pia={pia}
                                 role={role}
                                 stateChangeHandler={stateChangeHandler}
+                                isAcknowledged={
+                                  Object(pia?.review?.programArea)?.reviews?.[
+                                    role
+                                  ]?.isAcknowledged || false
+                                }
                               />
                             ) : (
                               <EditProgramAreaReview
@@ -378,7 +386,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
                 {enableMPOReviewViewMode() ? (
-                  <ViewMPOReview pia={pia} editReviewNote={setEditReviewNote} />
+                  <ViewMPOReview
+                    pia={pia}
+                    editReviewNote={setEditReviewNote}
+                    isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
+                  />
                 ) : (
                   <>
                     <div className="data-row">
@@ -461,6 +473,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           {pia?.review?.programArea?.selectedRoles.map((role: string) => (
             <>
               <ViewProgramAreaReview
+                isAcknowledged={
+                  pia?.review?.programArea?.reviews?.[role].isAcknowledged ||
+                  false
+                }
                 pia={pia}
                 printPreview
                 role={role}
@@ -473,6 +489,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             pia={pia}
             printPreview
             editReviewNote={setEditReviewNote}
+            isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
           />
         </>
       )}

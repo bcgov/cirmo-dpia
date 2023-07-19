@@ -10,10 +10,11 @@ interface IViewProgramAreaReviewProps {
   editReviewNote?: Dispatch<SetStateAction<boolean>>;
   printPreview?: boolean;
   role: string;
+  isAcknowledged: boolean;
 }
 
 const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
-  const { pia, printPreview, stateChangeHandler, role } = props;
+  const { pia, printPreview, stateChangeHandler, role, isAcknowledged } = props;
 
   return (
     <div className="d-grid gap-3">
@@ -38,6 +39,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
                   pia?.review?.programArea?.reviews?.[role as keyof IReview]
                 }
                 printPreview
+                isAcknowledged={isAcknowledged}
               />
             </div>
           )}
@@ -51,6 +53,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             }
             stateChangeHandler={stateChangeHandler}
             role={role}
+            isAcknowledged={isAcknowledged}
           />
         </div>
       )}
