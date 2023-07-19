@@ -54,61 +54,61 @@ interface IStatusMetadata {
   transition: Partial<Record<PiaIntakeStatusEnum, IStatusTransition>>;
 }
 
-// TODO: TO BE UPDATED for all statuses
 export const piaStatusMetadata: Partial<
   Record<PiaIntakeStatusEnum, IStatusMetadata>
 > = {
-  // [PiaIntakeStatusEnum.INCOMPLETE]: {
-  //   view: true,
-  //   edit: true,
-  //   roles: {
-  //     [UserTypesEnum.DRAFTER]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.MPO]: {
-  //       view: false,
-  //       edit: false,
-  //     },
-  //     [UserTypesEnum.CPO]: {
-  //       view: false,
-  //       edit: false,
-  //     },
-  //   },
-  //   access: [UserTypesEnum.DRAFTER, UserTypesEnum.MPO, UserTypesEnum.CPO],
-  //   actions: [],
-  //   statusChange: {
-  //     [PiaIntakeStatusEnum.MPO_REVIEW]: {
-  //       actions: [
-  //         {
-  //           type: 'delete',
-  //           key: 'review',
-  //         },
-  //       ],
-  //     },
-  //   },
-  // },
-  // [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
-  //   view: true,
-  //   edit: true,
-  //   role: {
-  //     [UserTypesEnum.DRAFTER]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.MPO]: {
-  //       view: true,
-  //       edit: true,
-  //     },
-  //     [UserTypesEnum.CPO]: {
-  //       view: false,
-  //       edit: false,
-  //     },
-  //   },
-  // },
+  [PiaIntakeStatusEnum.INCOMPLETE]: {
+    updates: {
+      allow: true,
+    },
+    transition: {
+      [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+      },
+    },
+  },
+  [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+    updates: {
+      allow: true,
+      conditions: [
+        {
+          piaType: [PiaTypesEnum.STANDARD],
+        },
+      ],
+    },
+    transition: {
+      [PiaIntakeStatusEnum.INCOMPLETE]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+          },
+        ],
+      },
+    },
+  },
   [PiaIntakeStatusEnum.MPO_REVIEW]: {
     updates: {
       allow: true,
+      // IMPROVE to allow select updates
+      // review: true,
+      // pia: false
     },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
