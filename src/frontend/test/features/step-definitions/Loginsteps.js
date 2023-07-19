@@ -60,3 +60,7 @@ Then(/^I see "([^"]*)" Button$/, async(button) => {
 When(/^I get the currentURL of the page$/, async() => {
 	await LoginPage.getURL();
 });
+
+Then(/^pause browser$/, async() => {
+	await browser.pause(5000);
+});

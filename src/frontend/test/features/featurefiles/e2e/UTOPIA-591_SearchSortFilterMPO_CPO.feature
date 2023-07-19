@@ -1,4 +1,4 @@
-Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
+Feature: UTOPIA-591 MPO and CPO: Search, sort, filter list of PIAs
 
    Scenario Outline: As a <role> user, I am able to verify sort of "Last modified" column in descending order
 
@@ -69,6 +69,7 @@ Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
      And I click on "Log in with IDIR" button
      When I login with user <username> having role <role>
      Then I click on the filter "Any Ministry" and select "Agriculture and Food"
+     Then I enter "SearchTestData" in searchbar
      And Verify if the PIAtitle is "SearchTestData"
 
      Examples:

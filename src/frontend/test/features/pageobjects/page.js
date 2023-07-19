@@ -24,11 +24,14 @@ module.exports = class Page {
     }
 
     async clickButton (button) {
-        const newbuttondiv=buttonNorm+button+"')]";
+        if(button=='cancel')
+        {var newbuttondiv="("+buttonNorm+"Cancel"+"')])[2]";}
+        else{
+        var newbuttondiv=buttonNorm+button+"')]";}
         const buttonElement= await $(newbuttondiv);
         await buttonElement.waitForClickable();
         await buttonElement.click();
-        await browser.pause(2000);     
+        await browser.pause(2000);    
     }
     async clickButtonDiv (button) {
         const newbuttondiv=buttonDiv+button+"')]";
