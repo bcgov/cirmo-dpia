@@ -29,6 +29,7 @@ import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/helper.util';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
+import { statusList } from '../../utils/status';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -254,32 +255,14 @@ const PIAFormPage = () => {
   const [submitButtonText, setSubmitButtonText] =
     useState<SubmitButtonTextEnum>(SubmitButtonTextEnum.INTAKE);
 
-  useEffect(() => {
-    const onIntakePage =
-      pathname ===
-      buildDynamicPath(
-        mode === 'edit' ? routes.PIA_INTAKE_EDIT : routes.PIA_INTAKE_VIEW,
-        {
-          id: pia?.id,
-        },
-      );
-
-    const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
-
-    // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (pia.status === PiaStatuses.FINAL_REVIEW) {
-      setSubmitButtonText(SubmitButtonTextEnum.COMPLETE_PIA);
-    } else if (
-      pia.status === PiaStatuses.MPO_REVIEW &&
-      pia.hasAddedPiToDataElements === false
-    ) {
-      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW);
-    } else if (onIntakePage || onNewPiaPage) {
-      setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
-    } else {
-      setSubmitButtonText(SubmitButtonTextEnum.FORM);
-    }
-  }, [mode, pathname, pia.hasAddedPiToDataElements, pia?.id, pia.status]);
+  useEffect(
+    () =>
+      setSubmitButtonText(
+        statusList(pia)[pia?.status || 'incomplete'].buttonText ||
+          SubmitButtonTextEnum.FORM,
+      ),
+    [pia, pia.status],
+  );
 
   // DO NOT allow user to edit in the MPO review status.
   const accessControl = useCallback(() => {
