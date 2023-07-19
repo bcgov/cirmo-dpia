@@ -20,7 +20,6 @@ import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
 import EditProgramAreaReview from './editProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
-import { getGUID } from '../../../../utils/helper.util';
 
 export interface IReviewProps {
   printPreview?: boolean;
