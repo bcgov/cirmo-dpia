@@ -14,6 +14,7 @@ export interface Comment {
 }
 
 export default interface CommentSidebarProps {
+  piaStatus?: string;
   comments?: Comment[];
   piaId?: number;
   path: PiaSections | undefined;

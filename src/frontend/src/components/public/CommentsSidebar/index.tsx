@@ -10,7 +10,9 @@ import Messages from './messages';
 import { useLocation } from 'react-router-dom';
 import { AppStorage } from '../../../utils/storage';
 import { getGUID } from '../../../utils/helper.util';
+import { PiaStatuses } from '../../../constant/constant';
 const CommentSidebar = ({
+  piaStatus,
   piaId,
   path,
   handleStatusChange,
@@ -176,7 +178,7 @@ const CommentSidebar = ({
             <p className="p-3">No comments yet.</p>
           )}
         </div>
-        {path && comments && (
+        {piaStatus !== PiaStatuses.COMPLETE && path && comments && (
           <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
             <input
               type="text"
