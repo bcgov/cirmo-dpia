@@ -8,10 +8,11 @@ interface IMPOReviewProps {
   pia: IPiaForm;
   editReviewNote: Dispatch<SetStateAction<boolean>>;
   printPreview?: boolean;
+  isAcknowledged: boolean;
 }
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
-  const { pia, printPreview, editReviewNote } = props;
+  const { pia, printPreview, editReviewNote, isAcknowledged } = props;
 
   return (
     <div className="d-grid gap-3">
@@ -29,12 +30,14 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
                 reviewSection={pia.review?.mpo}
                 editReviewNote={editReviewNote}
                 printPreview
+                isAcknowledged={isAcknowledged}
               />
             </div>
           )}
         </div>
       ) : (
         <ViewReviewSection
+          isAcknowledged={isAcknowledged}
           pia={pia}
           reviewSection={pia?.review?.mpo}
           editReviewNote={editReviewNote}
