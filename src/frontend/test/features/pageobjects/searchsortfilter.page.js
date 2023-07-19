@@ -150,6 +150,7 @@ class FilterSearchSortPage extends Page {
         await this.searchBar.setValue(search);
         await this.searchBtn.waitForClickable();
         await this.searchBtn.click();
+        await browser.pause(2000); 
 }
 
 async verifySearch (search) {
