@@ -147,7 +147,9 @@ const PIAFormPage = () => {
    */
 
   useEffect(() => {
+    // for create new pig and next step page, bypass the check
     if (pathname === routes.PIA_NEW) return;
+    if (pathname.split('/').includes('nextSteps')) return;
     // temp fix, just use id instead of pia.id to make sure the app does not broken right now
     if (checkEditableStatus() && mode === 'edit') {
       navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: id || pia?.id }));

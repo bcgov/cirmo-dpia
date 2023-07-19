@@ -14,6 +14,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
 import { SubmitButtonTextEnum } from '../../../pages/PIAForm';
+import { statusList } from '../../../utils/status';
 
 function PIASubHeader({
   pia,
@@ -126,25 +127,11 @@ function PIASubHeader({
     // If all reviews are acknowledged
     // the current status is in final review and
     // MPO too has acknowledged, the PIA can progress to complete.
-    let reviewProgramAreaDone = false;
-    if (pia?.status === PiaStatuses.FINAL_REVIEW) {
-      const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
-      reviewProgramAreaDone = selectedRoles.every(
-        (role) =>
-          pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true,
-      );
-    }
-
-    if (
-      pia?.status === PiaStatuses.FINAL_REVIEW &&
-      reviewProgramAreaDone &&
-      pia?.review?.mpo?.isAcknowledged === true
-    ) {
-      setEnableComplete(true);
-    } else {
-      setEnableComplete(false);
-    }
+    let reviewDone = false;
+    reviewDone = statusList(pia)?.FINAL_REVIEW?.finalReviewCompleted || false;
+    setEnableComplete(reviewDone);
   }, [
+    pia,
     pia?.review?.mpo?.isAcknowledged,
     pia?.review?.programArea?.reviews,
     pia?.review?.programArea?.selectedRoles,
