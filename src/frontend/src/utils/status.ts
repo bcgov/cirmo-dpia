@@ -48,7 +48,7 @@ interface StatusList {
     modal: Modal;
     Privileges: Privileges;
     Pages?: PageAccessControl;
-    finalReviewCompleted?: boolean; 
+    finalReviewCompleted?: boolean;
   };
 }
 
@@ -150,19 +150,17 @@ interface Status {
 }
 
 const finalReviewCompleted = (pia: IPiaForm | null): boolean => {
-      let reviewProgramAreaDone = false;
-      const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
-      reviewProgramAreaDone = selectedRoles.every(
-        (role) =>
-          pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true,
-      );
-      if (
-      reviewProgramAreaDone &&
-      pia?.review?.mpo?.isAcknowledged === true) {
-        return true;
-      }
-      return false;
-}
+  let reviewProgramAreaDone = false;
+  const selectedRoles = pia?.review?.programArea?.selectedRoles || [];
+  reviewProgramAreaDone = selectedRoles.every(
+    (role) =>
+      pia?.review?.programArea?.reviews?.[role]?.isAcknowledged === true,
+  );
+  if (reviewProgramAreaDone && pia?.review?.mpo?.isAcknowledged === true) {
+    return true;
+  }
+  return false;
+};
 
 export const statusList = (pia: IPiaForm | null): StatusList => {
   return {
@@ -285,8 +283,8 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       },
     },
     COMPLETE: {
-      title: 'Completed',
-      class: 'statusBlock__success',
+      title: 'Complete',
+      class: 'statusBlock__completed',
       modal: defaultEmptyModal,
       Pages: {
         review: {

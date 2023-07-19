@@ -128,13 +128,15 @@ function PIASubHeader({
     // the current status is in final review and
     // MPO too has acknowledged, the PIA can progress to complete.
     let reviewProgramAreaDone = false;
-    reviewProgramAreaDone = statusList(pia)?.FINAL_REVIEW?.finalReviewCompleted || false;
+    reviewProgramAreaDone =
+      statusList(pia)?.FINAL_REVIEW?.finalReviewCompleted || false;
     setEnableComplete(reviewProgramAreaDone);
   }, [
-    pia?.review?.mpo?.isAcknowledged,
-    pia?.review?.programArea?.reviews,
-    pia?.review?.programArea?.selectedRoles,
-    pia?.status,
+    pia,
+    pia.review?.mpo?.isAcknowledged,
+    pia.review?.programArea?.reviews,
+    pia.review?.programArea?.selectedRoles,
+    pia.status,
   ]);
   useEffect(() => {
     if (
