@@ -127,10 +127,9 @@ function PIASubHeader({
     // If all reviews are acknowledged
     // the current status is in final review and
     // MPO too has acknowledged, the PIA can progress to complete.
-    let reviewProgramAreaDone = false;
-    reviewProgramAreaDone =
-      statusList(pia)?.FINAL_REVIEW?.finalReviewCompleted || false;
-    setEnableComplete(reviewProgramAreaDone);
+    let reviewDone = false;
+    reviewDone = statusList(pia)?.FINAL_REVIEW?.finalReviewCompleted || false;
+    setEnableComplete(reviewDone);
   }, [
     pia,
     pia?.review?.mpo?.isAcknowledged,
