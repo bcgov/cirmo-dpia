@@ -10,9 +10,9 @@ export const defaultAccess = (status: string | undefined) => {
   if (!status) {
     return false;
   }
-  if (Object(statusList(null)[status]).hasOwnProperty('Pages')) {
+  if ('Pages' in Object(statusList(null)[status])) {
     const pages = Object(statusList(null)[status]).Pages;
-    if (pages.hasOwnProperty('review')) {
+    if ('review' in pages) {
       return pages.review.accessControl;
     }
   }
@@ -30,20 +30,19 @@ export const reviewAccessControl = (
     return defaultAccess(status);
   }
   let defaultAccessFlag = true;
-  const priviliges = Object(statusList(null)[status]).Privileges.hasOwnProperty(role);
+  const priviliges =
+    role in Object(statusList(null)[status].Privileges) ? true : false;
   if (priviliges) {
     /* check if Pages is defined for this role */
-    if (
-      Object(statusList(null)[status]).Privileges[role].hasOwnProperty('Pages')
-    ) {
+    if ('Pages' in Object(statusList(null)[status]).Privileges[role]) {
       const pages = Object(statusList(null)[status]).Privileges[role].Pages;
-      if (pages.hasOwnProperty('review')) {
+      if ('review' in pages) {
         defaultAccessFlag = false;
         return pages.review.accessControl;
       }
     }
   }
-  if (defaultAccess) {
+  if (defaultAccessFlag) {
     return defaultAccess(status);
   }
 };

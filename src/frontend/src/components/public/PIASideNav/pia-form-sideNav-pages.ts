@@ -49,7 +49,7 @@ export const PiaFormSideNavPages = (
 
   const enableReview = (): boolean => {
     let roles;
-    if (roleCheck().hasOwnProperty('roles')) {
+    if ('roles' in roleCheck()) {
       roles = roleCheck().roles[0];
     } else {
       roles = null;
@@ -113,7 +113,6 @@ if it is ++ or -- operater navigate to the previous or next tab
             pia.hasAddedPiToDataElements == false
               ? 'Review'
               : 'Collection, use and disclosure',
-          actionFalse: 'Review',
         },
         prev: {
           condition: true,
