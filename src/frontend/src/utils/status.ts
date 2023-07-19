@@ -2,18 +2,27 @@ import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
 import { PiaStatuses } from '../constant/constant';
 
+export type PageAccessControl = {
+  [page: string]: {
+    accessControl: boolean;
+  };
+};
+
 export type Privileges = {
   MPO?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
   CPO?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
   DRAFTER?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
 };
 
@@ -36,6 +45,7 @@ interface StatusList {
     banner?: string;
     modal: Modal;
     Privileges: Privileges;
+    Pages?: PageAccessControl;
   };
 }
 
@@ -131,6 +141,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'MPO Review',
       class: 'statusBlock__MPOReview',
       modal: defaultMPOReviewModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [
@@ -151,6 +166,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
               modal: defaultCPOReviewModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
         DRAFTER: {
           changeStatus: [
@@ -181,6 +201,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 : defaultEditInProgressModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
       },
     },
@@ -189,6 +214,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       class: 'statusBlock__incomplete',
       banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
       modal: defaultIncompleteModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
@@ -227,6 +257,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Completed',
       class: 'statusBlock__success',
       modal: defaultEmptyModal,
+      Pages: {
+        review: {
+          accessControl: true,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [
@@ -249,6 +284,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     EDIT_IN_PROGRESS: {
       title: 'Edit in progress',
       class: 'statusBlock__edit',
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       modal: {
         title: 'Change status to “Edit in progress”?',
         description:
@@ -296,10 +336,20 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
       class: 'statusBlock__CPOReview',
       modal: defaultCPOReviewModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
           changeStatus: [],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
         CPO: {
           changeStatus: [
@@ -322,6 +372,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
               modal: defaultEditInProgressModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
       },
     },
@@ -329,6 +384,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Final Review',
       class: 'statusBlock__finalReview',
       modal: defaultFinalReviewModal,
+      Pages: {
+        review: {
+          accessControl: true,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [
