@@ -133,10 +133,10 @@ function PIASubHeader({
     setEnableComplete(reviewProgramAreaDone);
   }, [
     pia,
-    pia.review?.mpo?.isAcknowledged,
-    pia.review?.programArea?.reviews,
-    pia.review?.programArea?.selectedRoles,
-    pia.status,
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.programArea?.reviews,
+    pia?.review?.programArea?.selectedRoles,
+    pia?.status,
   ]);
   useEffect(() => {
     if (
