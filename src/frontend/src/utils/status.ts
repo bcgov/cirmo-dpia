@@ -1,6 +1,7 @@
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
 import { PiaStatuses } from '../constant/constant';
+import { SubmitButtonTextEnum } from '../pages/PIAForm';
 
 export type PageAccessControl = {
   [page: string]: {
@@ -42,6 +43,7 @@ interface StatusList {
   [name: string]: {
     title: string;
     class: string;
+    buttonText?: SubmitButtonTextEnum;
     banner?: string;
     modal: Modal;
     Privileges: Privileges;
@@ -104,7 +106,18 @@ const defaultFinalReviewModal: Modal = {
   confirmLabel: 'Yes, finish',
   cancelLabel: 'Cancel',
 };
-
+const checkButtonText = (pia: IPiaForm | null) => {
+  // in MPO status the button text will different
+  // for delegate PIA, the button text should finish review
+  // for standard PIA, the button text still as submit
+  if (pia === null) return;
+  if (
+    pia.status === PiaStatuses.MPO_REVIEW &&
+    pia.hasAddedPiToDataElements === false
+  )
+    return SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW;
+  return SubmitButtonTextEnum.FORM;
+};
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   // this function use to check if the review tab has any data, if so, show warning modal, otherwise
   // display default modal
@@ -140,6 +153,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     MPO_REVIEW: {
       title: 'MPO Review',
       class: 'statusBlock__MPOReview',
+      buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FORM,
       modal: defaultMPOReviewModal,
       Pages: {
         review: {
@@ -213,6 +227,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Incomplete',
       class: 'statusBlock__incomplete',
       banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
+      buttonText: SubmitButtonTextEnum.FORM,
       modal: defaultIncompleteModal,
       Pages: {
         review: {
@@ -253,7 +268,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
         },
       },
     },
-    COMPLETED: {
+    COMPLETE: {
       title: 'Completed',
       class: 'statusBlock__success',
       modal: defaultEmptyModal,
@@ -264,25 +279,13 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       },
       Privileges: {
         MPO: {
-          changeStatus: [
-            {
-              status: 'INCOMPLETE',
-              modal: defaultEmptyModal,
-            },
-            {
-              status: 'EDIT_IN_PROGRESS',
-              modal: defaultEmptyModal,
-            },
-            {
-              status: 'CPO_REVIEW',
-              modal: defaultEmptyModal,
-            },
-          ],
+          changeStatus: [],
         },
       },
     },
     EDIT_IN_PROGRESS: {
       title: 'Edit in progress',
+      buttonText: SubmitButtonTextEnum.FORM,
       class: 'statusBlock__edit',
       Pages: {
         review: {
@@ -335,6 +338,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'CPO Review',
       banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
       class: 'statusBlock__CPOReview',
+      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultCPOReviewModal,
       Pages: {
         review: {
@@ -383,6 +387,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     FINAL_REVIEW: {
       title: 'Final Review',
       class: 'statusBlock__finalReview',
+      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultFinalReviewModal,
       Pages: {
         review: {
@@ -419,6 +424,16 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 description:
                   'The status will be changed to "MPO Review" and this PIA will be unlocked.',
                 confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'COMPLETE',
+              modal: {
+                title: 'Submit for Completion',
+                description:
+                  'Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+                confirmLabel: 'Yes, submit',
                 cancelLabel: 'Cancel',
               },
             },

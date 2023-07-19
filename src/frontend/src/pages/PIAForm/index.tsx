@@ -29,6 +29,7 @@ import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/helper.util';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
+import { statusList } from '../../utils/status';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -51,6 +52,7 @@ export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
   FORM = 'Submit',
   DELEGATE_FINISH_REVIEW = 'Finish review',
+  COMPLETE_PIA = 'Complete PIA',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -253,30 +255,14 @@ const PIAFormPage = () => {
   const [submitButtonText, setSubmitButtonText] =
     useState<SubmitButtonTextEnum>(SubmitButtonTextEnum.INTAKE);
 
-  useEffect(() => {
-    const onIntakePage =
-      pathname ===
-      buildDynamicPath(
-        mode === 'edit' ? routes.PIA_INTAKE_EDIT : routes.PIA_INTAKE_VIEW,
-        {
-          id: pia?.id,
-        },
-      );
-
-    const onNewPiaPage = pathname === buildDynamicPath(routes.PIA_NEW, {});
-
-    // if the user is on intake or new PIA page, show the submit PIA intake button; Else submit PIA
-    if (
-      pia.status === PiaStatuses.MPO_REVIEW &&
-      pia.hasAddedPiToDataElements === false
-    ) {
-      setSubmitButtonText(SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW);
-    } else if (onIntakePage || onNewPiaPage) {
-      setSubmitButtonText(SubmitButtonTextEnum.INTAKE);
-    } else {
-      setSubmitButtonText(SubmitButtonTextEnum.FORM);
-    }
-  }, [mode, pathname, pia.hasAddedPiToDataElements, pia?.id, pia.status]);
+  useEffect(
+    () =>
+      setSubmitButtonText(
+        statusList(pia)[pia?.status || 'incomplete'].buttonText ||
+          SubmitButtonTextEnum.FORM,
+      ),
+    [pia, pia.status],
+  );
 
   // DO NOT allow user to edit in the MPO review status.
   const accessControl = useCallback(() => {
@@ -407,6 +393,10 @@ const PIAFormPage = () => {
             getShortTime(pia?.updatedAt),
           ),
         );
+        setPiaModalButtonValue(modalType);
+        break;
+      case 'completePIA':
+        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn);
         setPiaModalButtonValue(modalType);
         break;
       default:
@@ -651,6 +641,19 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'completePIA') {
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.COMPLETE,
+        });
+        // need to revisit this part, current route to pia_intake tab
+        // when complete PIA story done, will go to Complete PIA list page
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -703,6 +706,8 @@ const PIAFormPage = () => {
         } else {
           handleShowModal('SubmitForCPOReview');
         }
+      } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
+        handleShowModal('completePIA');
       } else {
         handleShowModal('submitPiaForm');
       }
