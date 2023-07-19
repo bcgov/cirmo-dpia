@@ -3,18 +3,27 @@ import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
 import { PiaStatuses } from '../constant/constant';
 import { SubmitButtonTextEnum } from '../pages/PIAForm';
 
+export type PageAccessControl = {
+  [page: string]: {
+    accessControl: boolean;
+  };
+};
+
 export type Privileges = {
   MPO?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
   CPO?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
   DRAFTER?: {
     changeStatus: Array<ChangeStatus>;
     banner?: string;
+    Pages?: PageAccessControl;
   };
 };
 
@@ -38,6 +47,7 @@ interface StatusList {
     banner?: string;
     modal: Modal;
     Privileges: Privileges;
+    Pages?: PageAccessControl;
   };
 }
 
@@ -145,6 +155,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       class: 'statusBlock__MPOReview',
       buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FORM,
       modal: defaultMPOReviewModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [
@@ -165,6 +180,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
               modal: defaultCPOReviewModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
         DRAFTER: {
           changeStatus: [
@@ -195,6 +215,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 : defaultEditInProgressModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
       },
     },
@@ -204,6 +229,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
       buttonText: SubmitButtonTextEnum.FORM,
       modal: defaultIncompleteModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
@@ -242,6 +272,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Completed',
       class: 'statusBlock__success',
       modal: defaultEmptyModal,
+      Pages: {
+        review: {
+          accessControl: true,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [],
@@ -252,6 +287,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Edit in progress',
       buttonText: SubmitButtonTextEnum.FORM,
       class: 'statusBlock__edit',
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       modal: {
         title: 'Change status to “Edit in progress”?',
         description:
@@ -300,10 +340,20 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       class: 'statusBlock__CPOReview',
       buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultCPOReviewModal,
+      Pages: {
+        review: {
+          accessControl: false,
+        },
+      },
       Privileges: {
         MPO: {
           banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
           changeStatus: [],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
         CPO: {
           changeStatus: [
@@ -326,6 +376,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
               modal: defaultEditInProgressModal,
             },
           ],
+          Pages: {
+            review: {
+              accessControl: true,
+            },
+          },
         },
       },
     },
@@ -334,6 +389,11 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       class: 'statusBlock__finalReview',
       buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultFinalReviewModal,
+      Pages: {
+        review: {
+          accessControl: true,
+        },
+      },
       Privileges: {
         MPO: {
           changeStatus: [

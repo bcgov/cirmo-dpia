@@ -158,6 +158,23 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
 
+  const allowUserReviewProgramArea = () => {
+    // if selectedRoles is null means none of selectedRole got reviewed so return true
+    // otherwise loop all the role in reviews part to see if the current user already did review
+
+    const userGuid = getGUID();
+    const selectedRoles = reviewForm?.programArea?.selectedRoles;
+    if (selectedRoles === null) return true;
+    for (const role of selectedRoles) {
+      if (
+        reviewForm?.programArea?.reviews?.[role]?.reviewedByGuid === userGuid
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
@@ -290,7 +307,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             className="d-flex align-items-center"
                             key={index}
                           >
-                            {Object(pia?.review?.programArea)?.reviews?.[role]
+                            {!allowUserReviewProgramArea() ||
+                            Object(pia?.review?.programArea)?.reviews?.[role]
                               ?.isAcknowledged ? (
                               <ViewProgramAreaReview
                                 pia={pia}
