@@ -1,7 +1,7 @@
 import { ForbiddenException } from '@nestjs/common';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
-import { isDeepStrictEqual } from 'util';
+import { deepEqual } from 'src/common/utils/object-comparison.util';
 import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { piaStatusMetadata } from '../metadata/pia-status.metadata';
@@ -29,7 +29,7 @@ export const handlePiaUpdates = (
   if (Object.keys(updates).length === 0) return;
 
   const hasUpdates = !Object.keys(updates || {}).every((key) =>
-    isDeepStrictEqual(updates[key], storedValue?.[key]),
+    deepEqual(updates[key], storedValue?.[key]),
   );
 
   // when no updates
