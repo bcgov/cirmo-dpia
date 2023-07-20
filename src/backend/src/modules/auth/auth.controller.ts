@@ -68,6 +68,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @Unprotected()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOkResponse({ description: 'Logout from keycloak sso server' })
   async logout(@Body() token: AppTokensDto) {
