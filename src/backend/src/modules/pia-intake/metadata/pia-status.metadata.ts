@@ -64,11 +64,6 @@ export const piaStatusMetadata: Partial<
     transition: {
       [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
         allow: true,
-        conditions: [
-          {
-            piaType: [PiaTypesEnum.STANDARD],
-          },
-        ],
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
@@ -78,28 +73,13 @@ export const piaStatusMetadata: Partial<
   [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
     updates: {
       allow: true,
-      conditions: [
-        {
-          piaType: [PiaTypesEnum.STANDARD],
-        },
-      ],
     },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
         allow: true,
-        conditions: [
-          {
-            piaType: [PiaTypesEnum.STANDARD],
-          },
-        ],
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
-        conditions: [
-          {
-            piaType: [PiaTypesEnum.STANDARD],
-          },
-        ],
       },
     },
   },
