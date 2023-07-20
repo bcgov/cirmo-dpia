@@ -25,7 +25,6 @@ export const checkUpdatePermissions = ({
   const meta: IStatusUpdates = piaStatusMetadata?.[status]?.updates;
 
   if (!meta) return false;
-  console.log('meta', meta);
 
   let isChangeAllowed = !!meta?.allow;
 
