@@ -86,9 +86,6 @@ export const piaStatusMetadata: Partial<
   [PiaIntakeStatusEnum.MPO_REVIEW]: {
     updates: {
       allow: true,
-      // IMPROVE to allow select updates
-      // review: true,
-      // pia: false
     },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
