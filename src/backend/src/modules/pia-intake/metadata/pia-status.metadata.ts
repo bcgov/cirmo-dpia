@@ -68,6 +68,9 @@ export const piaStatusMetadata: Partial<
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
       },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
+        allow: true,
+      },
     },
   },
   [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
@@ -79,6 +82,9 @@ export const piaStatusMetadata: Partial<
         allow: true,
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+      },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
         allow: true,
       },
     },
