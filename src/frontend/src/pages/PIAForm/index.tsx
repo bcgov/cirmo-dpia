@@ -999,7 +999,7 @@ const PIAFormPage = () => {
               bringToFocus={bringCommentsSidebarToFocus}
             >
               <CommentSidebar
-                piaStatus={pia.status}
+                pia={pia}
                 path={selectedSection}
                 piaId={pia.id}
                 handleStatusChange={commentChangeHandler}
