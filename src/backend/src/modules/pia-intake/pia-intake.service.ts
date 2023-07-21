@@ -264,9 +264,7 @@ export class PiaIntakeService {
         whereClause.push({
           ...commonWhereClause,
           ministry: In(mpoMinistries),
-          status: Not(
-            PiaIntakeStatusEnum.INCOMPLETE || PiaIntakeStatusEnum.COMPLETE,
-          ),
+          status: Not(PiaIntakeStatusEnum.INCOMPLETE),
         });
       }
     }
@@ -292,26 +290,12 @@ export class PiaIntakeService {
       invitee: {
         createdByGuid: user.idir_user_guid,
       },
-      status: Not(PiaIntakeStatusEnum.COMPLETE),
     });
 
-    // Scenario 5: Return COMPLETE PIAs if the user is a drafter, invitee, or MPO
+    // Scenario 5: Return COMPLETE PIAs only if queried and if the user is a drafter, invitee, or MPO on the PIA
     if (query.filterByStatus === PiaIntakeStatusEnum.COMPLETE) {
       whereClause.push({
         ...commonWhereClause,
-        createdByGuid: user.idir_user_guid,
-        status: PiaIntakeStatusEnum.COMPLETE,
-      });
-      whereClause.push({
-        ...commonWhereClause,
-        invitee: {
-          createdByGuid: user.idir_user_guid,
-        },
-        status: PiaIntakeStatusEnum.COMPLETE,
-      });
-      whereClause.push({
-        ...commonWhereClause,
-        ministry: In(mpoMinistries),
         status: PiaIntakeStatusEnum.COMPLETE,
       });
     }
