@@ -11,9 +11,9 @@ import { IListViewRenderProps } from './interface';
 import { set } from 'cypress/types/lodash';
 
 const ListViewRender = (props: IListViewRenderProps) => {
-  let defaultparams = new URLSearchParams();
+  let setParamsComplete = new URLSearchParams();
   if (props.showCompleted) {
-    defaultparams = new URLSearchParams({
+    setParamsComplete = new URLSearchParams({
       filterByStatus: PiaStatuses.COMPLETE,
     });
   }
@@ -37,7 +37,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
-  const [filterMetaParams, setfilterMetaParams] = useState(showFilters);
+  const [filterMetaParams] = useState(showFilters);
 
   const { tableData, Total } = usePIALookup(
     SortBy,
@@ -89,17 +89,17 @@ const ListViewRender = (props: IListViewRenderProps) => {
   }, [searchParams]);
 
   /* This useEfect is to handle the case when user click on the completed tab,
-   * if the current filter is not completed, we need to update the filter to completed 
+   * if the current filter is not completed, we need to update the filter to completed
    *  Once can change the filter to completed through the url. This useeffect should
    *  be able to handle that case as well.
-  */
+   */
   useEffect(() => {
     if (props.showCompleted) {
       if (searchParams.get('filterByStatus') !== PiaStatuses.COMPLETE) {
         if (searchParams.get('searchText')) {
           setSearchParams(searchParams);
         } else {
-          setSearchParams(defaultparams);
+          setSearchParams(setParamsComplete);
         }
       }
     }

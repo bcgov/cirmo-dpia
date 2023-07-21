@@ -8,7 +8,7 @@ export const NavPages = [
   {
     id: 2,
     label: 'Completed PIAs',
-    link: '/pia/completed',
+    link: '/pia/completed?filterByStatus=COMPLETE',
     enable: true,
   },
   {
