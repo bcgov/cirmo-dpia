@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchAndFilter from './searchAndFilter';
 import { IListViewRenderProps } from './interface';
+import { set } from 'cypress/types/lodash';
 
 const ListViewRender = (props: IListViewRenderProps) => {
   let defaultparams = new URLSearchParams();
@@ -46,7 +47,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   );
 
   useEffect(() => {
-    document.title = props.title +  '- Digital Privacy Impact Assessment (DPIA)';
+    document.title = props.title + '- Digital Privacy Impact Assessment (DPIA)';
   }, []); // Empty array ensures this runs once on mount and unmount
 
   const [searchText, setSearchText] = useState(
@@ -84,11 +85,20 @@ const ListViewRender = (props: IListViewRenderProps) => {
       }
     };
     resetSearchText();
-    if (props.showCompleted) {
-      setSearchParams(defaultparams);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  useEffect(() => {
+    if (props.showCompleted) {
+      if (searchParams.get('filterByStatus') !== PiaStatuses.COMPLETE) {
+        if (searchParams.get('searchText')) {
+          setSearchParams(searchParams);
+        } else {
+          setSearchParams(defaultparams);
+        }
+      }
+    }
+  }, [props.showCompleted, searchParams]);
 
   const handleSearchTextChange = (newSearchText: any) => {
     setcurrentPage(1);
@@ -136,7 +146,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
-        <h1>{ props.title }</h1>
+        <h1>{props.title}</h1>
       </div>
       <SearchAndFilter
         filterChangeHandler={filterChangeHandler}
