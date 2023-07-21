@@ -160,7 +160,7 @@ export class CommentsService {
       userRoles,
     );
 
-    // check if viewing comments to this PIA allowed
+    // check if deleting comments to this PIA allowed
     const isActionAllowed = checkUpdatePermissions({
       status: pia?.status,
       entityType: 'comment',
