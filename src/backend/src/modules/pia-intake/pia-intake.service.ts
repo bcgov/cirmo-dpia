@@ -261,10 +261,16 @@ export class PiaIntakeService {
       ) {
         // skip this where clause
       } else {
+        const allStatuses = Object.values(PiaIntakeStatusEnum);
+        const exceptions = [
+          PiaIntakeStatusEnum.INCOMPLETE, // can never see PIAs of other users in Incomplete status
+          PiaIntakeStatusEnum.COMPLETE, // can only see complete if explicitly requested
+        ];
+        const statusIn = allStatuses.filter((s) => !exceptions.includes(s));
         whereClause.push({
           ...commonWhereClause,
           ministry: In(mpoMinistries),
-          status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+          status: In(statusIn),
         });
       }
     }
@@ -290,15 +296,8 @@ export class PiaIntakeService {
       invitee: {
         createdByGuid: user.idir_user_guid,
       },
+      status: Not(PiaIntakeStatusEnum.COMPLETE),
     });
-
-    // Scenario 5: Return COMPLETE PIAs only if queried and if the user is a drafter, invitee, or MPO on the PIA
-    if (query.filterByStatus === PiaIntakeStatusEnum.COMPLETE) {
-      whereClause.push({
-        ...commonWhereClause,
-        status: PiaIntakeStatusEnum.COMPLETE,
-      });
-    }
 
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {

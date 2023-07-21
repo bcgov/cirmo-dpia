@@ -2,9 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { marked } from 'marked';
 
-import * as typeormIn from 'typeorm/find-options/operator/In';
-import * as typeormILike from 'typeorm/find-options/operator/ILike';
-
 import * as pdfHelper from 'src/common/helpers/pdf-helper';
 import * as dateHelper from 'src/common/helpers/date-helper';
 import * as baseHelper from 'src/common/helpers/base-helper';
@@ -15,7 +12,6 @@ import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { PiaIntakeController } from 'src/modules/pia-intake/pia-intake.controller';
 import { PiaIntakeEntity } from 'src/modules/pia-intake/entities/pia-intake.entity';
 import { PiaIntakeService } from 'src/modules/pia-intake/pia-intake.service';
-import { Roles } from 'src/common/constants/roles.constants';
 import { RolesEnum } from 'src/common/enums/roles.enum';
 
 import {
@@ -40,6 +36,8 @@ import { PaginatedRO } from 'src/common/paginated.ro';
 import { GetPiaIntakeRO } from 'src/modules/pia-intake/ro/get-pia-intake.ro';
 import { PiaFilterDrafterByCurrentUserEnum } from 'src/modules/pia-intake/enums/pia-filter-drafter-by-current-user.enum';
 import { Not } from 'typeorm/find-options/operator/Not';
+import { In } from 'typeorm/find-options/operator/In';
+import { ILike } from 'typeorm/find-options/operator/ILike';
 import { SortOrderEnum } from 'src/common/enums/sort-order.enum';
 import { UpdatePiaIntakeDto } from 'src/modules/pia-intake/dto/update-pia-intake.dto';
 import { emptyJsonbValues } from 'test/util/mocks/data/pia-empty-jsonb-values.mock';
@@ -448,19 +446,11 @@ describe('PiaIntakeService', () => {
    * @method findAll
    */
   describe('`findAll` method', () => {
-    const typeormInSpy = jest.spyOn(typeormIn, 'In').mockReturnValue(null);
-
-    const typeormILikeSpy = jest
-      .spyOn(typeormILike, 'ILike')
-      .mockReturnValue(null);
-
     const omitBaseKeysSpy = jest
       .spyOn(baseHelper, 'omitBaseKeys')
       .mockImplementation(() => null);
 
     beforeEach(() => {
-      typeormInSpy.mockClear();
-      typeormILikeSpy.mockClear();
       omitBaseKeysSpy.mockClear();
     });
 
@@ -483,28 +473,29 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
-            ministry: null,
-            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            status: In([
+              PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+              PiaIntakeStatusEnum.MPO_REVIEW,
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+            ]),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -544,20 +535,19 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -598,49 +588,57 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            title: null,
+            title: ILike('%King Richard%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
-            ministry: null,
-            title: null,
-            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            title: ILike('%King Richard%'),
+            status: In([
+              PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+              PiaIntakeStatusEnum.MPO_REVIEW,
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+            ]),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            title: null,
+            title: ILike('%King Richard%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
-            ministry: null,
-            drafterName: null,
-            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            drafterName: ILike('%King Richard%'),
+            status: In([
+              PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+              PiaIntakeStatusEnum.MPO_REVIEW,
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+            ]),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -681,34 +679,35 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            title: null,
+            title: ILike('%Will Smith%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            title: null,
+            title: ILike('%Will Smith%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            drafterName: ILike('%Will Smith%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            drafterName: null,
+            drafterName: ILike('%Will Smith%'),
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -751,23 +750,19 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'INCOMPLETE',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'INCOMPLETE',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
           },
         ],
         order: {
@@ -810,30 +805,24 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'MPO_REVIEW',
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
           },
           {
             isActive: true,
-            ministry: null,
-            status: 'MPO_REVIEW',
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'MPO_REVIEW',
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
           },
         ],
         order: {
@@ -874,23 +863,19 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'INCOMPLETE',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'INCOMPLETE',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
           },
         ],
         order: {
@@ -932,25 +917,21 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'INCOMPLETE',
-            ministry: 'CITIZENS_SERVICES',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'INCOMPLETE',
-            ministry: 'CITIZENS_SERVICES',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
         order: {
@@ -991,32 +972,26 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'MPO_REVIEW',
-            ministry: 'CITIZENS_SERVICES',
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
           {
             isActive: true,
-            ministry: 'CITIZENS_SERVICES',
-            status: 'MPO_REVIEW',
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'MPO_REVIEW',
-            ministry: 'CITIZENS_SERVICES',
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
         order: {
@@ -1060,17 +1035,13 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'INCOMPLETE',
-            ministry: 'CITIZENS_SERVICES',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+            ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
         order: {
@@ -1113,10 +1084,6 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
       const result = await service.findAll(user, userRoles, query);
-
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
@@ -1170,12 +1137,6 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
       const result = await service.findAll(user, userRoles, query);
-
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
@@ -1234,15 +1195,12 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            title: null,
+            title: ILike('%Will Smith%'),
             status: 'INCOMPLETE',
           },
           {
@@ -1250,13 +1208,13 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            title: null,
+            title: ILike('%Will Smith%'),
             status: 'INCOMPLETE',
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            drafterName: ILike('%Will Smith%'),
             status: 'INCOMPLETE',
           },
           {
@@ -1264,7 +1222,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            drafterName: null,
+            drafterName: ILike('%Will Smith%'),
             status: 'INCOMPLETE',
           },
         ],
@@ -1307,16 +1265,12 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            title: null,
+            title: ILike('%King Richard%'),
             status: 'INCOMPLETE',
           },
           {
@@ -1324,13 +1278,13 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            title: null,
+            title: ILike('%King Richard%'),
             status: 'INCOMPLETE',
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
             status: 'INCOMPLETE',
           },
           {
@@ -1338,7 +1292,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
             status: 'INCOMPLETE',
           },
         ],
@@ -1381,24 +1335,18 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        Roles[RolesEnum.MPO_CITZ].ministry,
-      ]);
-
-      expect(typeormILikeSpy).toHaveBeenCalledTimes(1);
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            title: null,
+            title: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
           {
             isActive: true,
-            ministry: null,
-            title: null,
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            title: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
           {
@@ -1406,19 +1354,19 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            title: null,
+            title: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
           {
             isActive: true,
-            ministry: null,
-            drafterName: null,
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+            drafterName: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
           {
@@ -1426,7 +1374,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            drafterName: null,
+            drafterName: ILike('%King Richard%'),
             status: 'MPO_REVIEW',
           },
         ],
@@ -1468,25 +1416,21 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+            ministry: GovMinistriesEnum.FORESTS,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'INCOMPLETE',
-            ministry: 'FORESTS',
+            status: PiaIntakeStatusEnum.INCOMPLETE,
+            ministry: GovMinistriesEnum.FORESTS,
           },
         ],
         order: {
@@ -1526,16 +1470,12 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
-            ministry: 'FORESTS',
-            status: 'MPO_REVIEW',
+            ministry: GovMinistriesEnum.FORESTS,
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
             createdByGuid: user.idir_user_guid,
           },
           {
@@ -1543,8 +1483,8 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            ministry: 'FORESTS',
-            status: 'MPO_REVIEW',
+            ministry: GovMinistriesEnum.FORESTS,
+            status: PiaIntakeStatusEnum.MPO_REVIEW,
           },
         ],
         order: {
@@ -1584,14 +1524,12 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
@@ -1602,6 +1540,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -1641,21 +1580,22 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).toHaveBeenCalledWith([
-        GovMinistriesEnum.ATTORNEY_GENERAL,
-      ]);
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
-            ministry: null, // from spy
-            status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+            ministry: In([GovMinistriesEnum.ATTORNEY_GENERAL]),
+            status: In([
+              PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+              PiaIntakeStatusEnum.MPO_REVIEW,
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+            ]),
           },
           {
             isActive: true,
@@ -1666,6 +1606,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -1705,10 +1646,6 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
       const result = await service.findAll(user, userRoles, query);
-
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
@@ -1762,10 +1699,6 @@ describe('PiaIntakeService', () => {
       omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
 
       const result = await service.findAll(user, userRoles, query);
-
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
 
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
@@ -1824,16 +1757,13 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
@@ -1846,6 +1776,7 @@ describe('PiaIntakeService', () => {
               createdByGuid: user.idir_user_guid,
             },
             ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -1886,21 +1817,19 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
+            status: Not(PiaIntakeStatusEnum.COMPLETE),
           },
         ],
         order: {
@@ -1942,10 +1871,6 @@ describe('PiaIntakeService', () => {
 
       const result = await service.findAll(user, userRoles, query);
 
-      expect(typeormInSpy).not.toHaveBeenCalled();
-
-      expect(typeormILikeSpy).not.toHaveBeenCalled();
-
       expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
         where: [
           {
@@ -1961,6 +1886,59 @@ describe('PiaIntakeService', () => {
             },
             status: PiaIntakeStatusEnum.CPO_REVIEW,
             ministry: GovMinistriesEnum.AGRICULTURE_AND_FOOD,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // Scenario 20: User is a drafter, has no roles, and is filtering for COMPLETE PIAs
+    it('succeeds when the user is only a drafter and is filtering for COMPLETE PIAs', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.COMPLETE,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.COMPLETE,
           },
         ],
         order: {
