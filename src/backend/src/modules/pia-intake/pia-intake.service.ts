@@ -247,6 +247,7 @@ export class PiaIntakeService {
     whereClause.push({
       ...commonWhereClause,
       createdByGuid: user.idir_user_guid,
+      status: Not(PiaIntakeStatusEnum.COMPLETE),
     });
 
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
@@ -263,7 +264,9 @@ export class PiaIntakeService {
         whereClause.push({
           ...commonWhereClause,
           ministry: In(mpoMinistries),
-          status: Not(PiaIntakeStatusEnum.INCOMPLETE),
+          status: Not(
+            PiaIntakeStatusEnum.INCOMPLETE || PiaIntakeStatusEnum.COMPLETE,
+          ),
         });
       }
     }
@@ -289,7 +292,29 @@ export class PiaIntakeService {
       invitee: {
         createdByGuid: user.idir_user_guid,
       },
+      status: Not(PiaIntakeStatusEnum.COMPLETE),
     });
+
+    // Scenario 5: Return COMPLETE PIAs if the user is a drafter, invitee, or MPO
+    if (query.filterByStatus === PiaIntakeStatusEnum.COMPLETE) {
+      whereClause.push({
+        ...commonWhereClause,
+        createdByGuid: user.idir_user_guid,
+        status: PiaIntakeStatusEnum.COMPLETE,
+      });
+      whereClause.push({
+        ...commonWhereClause,
+        invitee: {
+          createdByGuid: user.idir_user_guid,
+        },
+        status: PiaIntakeStatusEnum.COMPLETE,
+      });
+      whereClause.push({
+        ...commonWhereClause,
+        ministry: In(mpoMinistries),
+        status: PiaIntakeStatusEnum.COMPLETE,
+      });
+    }
 
     // searchText logic - if there is a search text, find the matching titles OR drafter names
     if (query.searchText) {
