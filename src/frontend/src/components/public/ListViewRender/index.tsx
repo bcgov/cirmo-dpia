@@ -36,7 +36,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
-  const [filteMetaParams, setfilteMetaParams] = useState(showFilters);
+  const [filterMetaParams, setfilterMetaParams] = useState(showFilters);
 
   const { tableData, Total } = usePIALookup(
     SortBy,
@@ -46,7 +46,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   );
 
   useEffect(() => {
-    document.title = 'List of PIAs - Digital Privacy Impact Assessment (DPIA)';
+    document.title = props.title +  '- Digital Privacy Impact Assessment (DPIA)';
   }, []); // Empty array ensures this runs once on mount and unmount
 
   const [searchText, setSearchText] = useState(
@@ -136,7 +136,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
-        <h1>List of PIAs</h1>
+        <h1>{ props.title }</h1>
       </div>
       <SearchAndFilter
         filterChangeHandler={filterChangeHandler}
@@ -146,7 +146,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
         setSearchParamsForSearchText={setSearchParamsForSearchText}
         updateSearchUrl={updateSearchUrl}
         handleClearSearchText={handleClearSearchText}
-        showfilter={filteMetaParams}
+        showfilter={filterMetaParams}
       />
 
       {tableData.length === 0 ? (

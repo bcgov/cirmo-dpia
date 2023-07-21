@@ -1,4 +1,4 @@
-import Messages from '../../../pages/PIAListPage/messages';
+import Messages from '../../../pages/PIAActiveListPage/messages';
 import EmptyFolder from '../../../assets/empty.svg';
 import MDEditor from '@uiw/react-md-editor';
 

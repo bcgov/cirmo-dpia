@@ -1,8 +1,8 @@
-export interface IfilterMetaParams {
+export interface IFilterMetaParams {
   [key: string]: boolean;
 }
 
-export interface IsearchAndFilter {
+export interface ISearchAndFilter {
   filterChangeHandler: (params: URLSearchParams) => void;
   searchParams: URLSearchParams;
   searchText: string;
@@ -10,9 +10,10 @@ export interface IsearchAndFilter {
   setSearchParamsForSearchText: () => void;
   updateSearchUrl: () => void;
   handleClearSearchText: () => void;
-  showfilter: IfilterMetaParams | null;
+  showfilter: IFilterMetaParams | null;
 }
 
 export interface IListViewRenderProps {
   showCompleted: boolean;
+  title: string;
 }

@@ -1,8 +1,8 @@
 import SearchBox from '../../common/SearchBox';
 import PIAIntakeFilter from '../PIAIntakeFilter';
-import { IsearchAndFilter } from './interface';
+import { ISearchAndFilter } from './interface';
 
-const SearchAndFilter = (props: IsearchAndFilter) => {
+const SearchAndFilter = (props: ISearchAndFilter) => {
   const showIntakeFilter = () => {
     if (props.showfilter) {
       if (

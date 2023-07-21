@@ -8,7 +8,7 @@ import { AppStorage } from '../utils/storage';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAIntakeFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
-import PIAList from '../pages/PIAListPage';
+import PIAActiveList from '../pages/PIAActiveListPage';
 import PIACompletedList from '../pages/PIACompletedList';
 import PPQConnectPage from '../pages/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
@@ -67,7 +67,7 @@ const Router = () => {
         <Route path="/pia" element={<Outlet />}>
           <Route index element={<Navigate relative="path" to="list" />} />
 
-          <Route path="list" element={<PIAList />} />
+          <Route path="list" element={<PIAActiveList />} />
           <Route path="completed" element={<PIACompletedList />} />
           <Route path="result" element={<PIAIntakeResultsPage />} />
 
