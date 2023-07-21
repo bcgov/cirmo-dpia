@@ -31,6 +31,7 @@ import {
 import { CreateCommentDto } from 'src/modules/comments/dto/create-comment.dto';
 import { AllowedCommentPaths } from 'src/modules/comments/enums/allowed-comment-paths.enum';
 import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
+import * as checkUpdatePermissions from 'src/modules/pia-intake/helper/check-update-permissions';
 
 /**
  * @Description
@@ -40,6 +41,10 @@ describe('CommentsService', () => {
   let commentsService: CommentsService;
   let piaService: PiaIntakeService;
   let commentRepository;
+
+  const checkUpdatePermissionsSpy = jest
+    .spyOn(checkUpdatePermissions, 'checkUpdatePermissions')
+    .mockReturnValue(false);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -65,6 +70,8 @@ describe('CommentsService', () => {
     commentsService = module.get<CommentsService>(CommentsService);
     piaService = module.get<PiaIntakeService>(PiaIntakeService);
     commentRepository = module.get(getRepositoryToken(CommentEntity));
+
+    checkUpdatePermissionsSpy.mockClear();
   });
 
   afterEach(() => {
@@ -106,12 +113,11 @@ describe('CommentsService', () => {
 
       const expectedResult = { ...commentROMock };
 
-      piaService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
 
-      piaService.findOneBy = jest.fn(async () => {
-        delay(10);
-        return { ...piaIntakeEntityMock };
-      });
+      checkUpdatePermissionsSpy.mockReturnValue(true);
 
       commentRepository.save = jest.fn(async () => {
         delay(10);
@@ -130,8 +136,10 @@ describe('CommentsService', () => {
         userRoles,
       );
 
-      expect(piaService.findOneBy).toHaveBeenCalledWith({
-        id: createCommentDto.piaId,
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock.status,
+        entityType: 'comment',
+        entityAction: 'add',
       });
 
       expect(commentRepository.save).toHaveBeenCalledWith({
@@ -147,6 +155,43 @@ describe('CommentsService', () => {
       });
 
       expect(result).toEqual(expectedResult);
+    });
+
+    it('fails and throws error on creating comment when not allowed', async () => {
+      const createCommentDto: CreateCommentDto = { ...createCommentDtoMock };
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
+
+      checkUpdatePermissionsSpy.mockReturnValue(false); // NOT allowed
+
+      commentRepository.save = jest.fn(async () => {
+        delay(10);
+        return { ...commentEntityMock };
+      });
+
+      try {
+        await commentsService.create(createCommentDto, user, userRoles);
+      } catch (e) {
+        expect(e).toBeInstanceOf(ForbiddenException);
+      }
+
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
+        createCommentDto.piaId,
+        user,
+        userRoles,
+      );
+
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock.status,
+        entityType: 'comment',
+        entityAction: 'add',
+      });
+
+      expect(commentRepository.save).not.toHaveBeenCalled();
     });
   });
 
@@ -311,14 +356,57 @@ describe('CommentsService', () => {
         createdByGuid: 'a_random_user_id',
       }));
 
-      await expect(commentsService.remove(id, user, userRoles)).rejects.toThrow(
-        new ForbiddenException(),
-      );
+      checkUpdatePermissionsSpy.mockReturnValue(true);
+
+      try {
+        await commentsService.remove(id, user, userRoles);
+      } catch (e) {
+        expect(e).toBeInstanceOf(ForbiddenException);
+      }
 
       expect(commentsService.findOneBy).toHaveBeenCalledWith({ id });
+      expect(piaService.validatePiaAccess).not.toHaveBeenCalled();
+      expect(checkUpdatePermissionsSpy).not.toHaveBeenCalled();
+      expect(commentRepository.save).not.toHaveBeenCalled();
     });
 
-    // Scenario2: BadRequest Exception: User tried to delete a comment which is already deleted
+    // Scenario2: Forbidden request: Pia status does not have access to delete comments
+    it('fails with the Forbidden Exception as Pia status does not have access to delete comments', async () => {
+      const id = 1;
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles: Array<RolesEnum> = [];
+
+      commentsService.findOneBy = jest.fn(async () => ({
+        ...commentEntityMock,
+      }));
+
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
+
+      checkUpdatePermissionsSpy.mockReturnValue(false);
+
+      try {
+        await commentsService.remove(id, user, userRoles);
+      } catch (e) {
+        expect(e).toBeInstanceOf(ForbiddenException);
+      }
+
+      expect(commentsService.findOneBy).toHaveBeenCalledWith({ id });
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
+        commentEntityMock.piaId,
+        user,
+        userRoles,
+      );
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock?.status,
+        entityType: 'comment',
+        entityAction: 'remove',
+      });
+      expect(commentRepository.save).not.toHaveBeenCalled();
+    });
+
+    // Scenario3: BadRequest Exception: User tried to delete a comment which is already deleted
     it('fails with the BadRequest Exception as the user tried to delete a comment which is already deleted', async () => {
       const id = 1;
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -329,7 +417,11 @@ describe('CommentsService', () => {
         isActive: false,
       }));
 
-      piaService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
+
+      checkUpdatePermissionsSpy.mockReturnValue(true);
 
       await expect(commentsService.remove(id, user, userRoles)).rejects.toThrow(
         new BadRequestException('Comment already deleted'),
@@ -341,9 +433,15 @@ describe('CommentsService', () => {
         user,
         userRoles,
       );
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock?.status,
+        entityType: 'comment',
+        entityAction: 'remove',
+      });
+      expect(commentRepository.save).not.toHaveBeenCalled();
     });
 
-    // Scenario3: User successfully deletes a comment
+    // Scenario4: User successfully deletes a comment
     it('succeeds as user successfully deletes a comment', async () => {
       const id = 1;
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -353,7 +451,11 @@ describe('CommentsService', () => {
         ...commentEntityMock,
       }));
 
-      piaService.validatePiaAccess = jest.fn(async () => null);
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
+
+      checkUpdatePermissionsSpy.mockReturnValue(true);
 
       commentRepository.save = jest.fn(async () => {
         delay(10);
@@ -368,6 +470,13 @@ describe('CommentsService', () => {
         user,
         userRoles,
       );
+
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock?.status,
+        entityType: 'comment',
+        entityAction: 'remove',
+      });
+
       expect(commentRepository.save).toHaveBeenCalledWith({
         ...commentEntityMock,
         isActive: false,

@@ -2233,7 +2233,6 @@ describe('PiaIntakeService', () => {
       const updatePiaIntakeDto: UpdatePiaIntakeDto = {
         status: PiaIntakeStatusEnum.MPO_REVIEW,
         saveId: 1,
-        submittedAt: null,
       };
 
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -2242,7 +2241,7 @@ describe('PiaIntakeService', () => {
 
       service.findOneBy = jest.fn(async () => {
         delay(10);
-        return piaIntakeMock;
+        return { ...piaIntakeMock, submittedAt: null };
       });
 
       service.findOneById = jest.fn(async () => {
@@ -2272,6 +2271,7 @@ describe('PiaIntakeService', () => {
       const piaIntakeMock: PiaIntakeEntity = {
         ...piaIntakeEntityMock,
         saveId: 10,
+        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
         createdByGuid: user.idir_user_guid,
       };
 
@@ -2320,6 +2320,7 @@ describe('PiaIntakeService', () => {
 
       const piaIntakeMock: PiaIntakeEntity = {
         ...piaIntakeEntityMock,
+        status: PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
         saveId: 10,
       };
 
@@ -2874,14 +2875,21 @@ describe('PiaIntakeService', () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles: Array<RolesEnum> = [];
 
-      service.findOneById = jest.fn(async () => {
+      service.findOneBy = jest.fn(async () => {
         delay(10);
         return { ...piaIntakeEntityMock };
       });
 
+      service.validateUserAccess = jest.fn(() => null);
+
       await service.validatePiaAccess(piaId, user, userRoles);
 
-      expect(service.findOneById).toBeCalledWith(piaId, user, userRoles);
+      expect(service.findOneBy).toBeCalledWith({ id: piaId });
+      expect(service.validateUserAccess).toBeCalledWith(
+        user,
+        userRoles,
+        piaIntakeEntityMock,
+      );
     });
   });
 

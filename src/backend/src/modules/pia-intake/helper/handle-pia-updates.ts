@@ -35,9 +35,6 @@ export const handlePiaUpdates = (
     });
   }
 
-  // no field updates requested
-  if (Object.keys(updates).length === 0) return;
-
   const updatedKeys: Array<keyof typeof updates> = [];
 
   Object.keys(updates || {}).forEach((key: keyof typeof updates) => {
@@ -72,6 +69,7 @@ export const handlePiaUpdates = (
     { ...storedValue, ...updatedValue },
   );
 
+  // explicitly checking for false [when at-least one condition is not met]
   if (isSatisfied === false) {
     throw new ForbiddenException({
       status,
