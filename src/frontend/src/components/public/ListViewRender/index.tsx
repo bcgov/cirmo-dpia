@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchAndFilter from './searchAndFilter';
 import { IListViewRenderProps } from './interface';
-import { set } from 'cypress/types/lodash';
 
 const ListViewRender = (props: IListViewRenderProps) => {
   let setParamsComplete = new URLSearchParams();
@@ -48,7 +47,7 @@ const ListViewRender = (props: IListViewRenderProps) => {
 
   useEffect(() => {
     document.title = props.title + '- Digital Privacy Impact Assessment (DPIA)';
-  }, []); // Empty array ensures this runs once on mount and unmount
+  }, [props.title]); // Empty array ensures this runs once on mount and unmount
 
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
@@ -96,13 +95,10 @@ const ListViewRender = (props: IListViewRenderProps) => {
   useEffect(() => {
     if (props.showCompleted) {
       if (searchParams.get('filterByStatus') !== PiaStatuses.COMPLETE) {
-        if (searchParams.get('searchText')) {
-          setSearchParams(searchParams);
-        } else {
-          setSearchParams(setParamsComplete);
-        }
+        setSearchParams(setParamsComplete);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.showCompleted, searchParams]);
 
   const handleSearchTextChange = (newSearchText: any) => {

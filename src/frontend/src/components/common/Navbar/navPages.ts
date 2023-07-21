@@ -1,7 +1,7 @@
 export const NavPages = [
   {
     id: 1,
-    label: 'List of PIAs',
+    label: 'Active PIAs',
     link: '/pia/list',
     enable: true,
   },
