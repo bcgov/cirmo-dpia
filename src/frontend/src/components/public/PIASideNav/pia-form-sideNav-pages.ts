@@ -4,7 +4,7 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
-import { isMPORole, roleCheck } from '../../../utils/helper.util';
+import { isAdminRole, roleCheck } from '../../../utils/helper.util';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
@@ -80,7 +80,7 @@ export const PiaFormSideNavPages = (
     }
   };
 
-  const userIsMpo = useMemo(() => isMPORole(), []);
+  const userIsAdmin = useMemo(() => isAdminRole(), []);
 
   /* 
 * if null the states are not used
@@ -257,7 +257,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       ),
       enable: showPostIntakeTabs,
       state: {
-        ...(userIsMpo
+        ...(userIsAdmin
           ? {
               next: {
                 condition: true,
@@ -276,9 +276,9 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: userIsMpo && showPostIntakeTabs,
+      enable: userIsAdmin && showPostIntakeTabs,
     },
-    ...(userIsMpo
+    ...(userIsAdmin
       ? [
           {
             id: 12,

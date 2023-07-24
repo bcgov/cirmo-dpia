@@ -42,3 +42,11 @@ export const roleCheck = () => {
 
   return roleOjb;
 };
+
+export const isAdminRole = () => {
+  const userRoles = roleCheck();
+  if (userRoles !== undefined && userRoles.roles !== undefined) {
+    if (userRoles.roles.length > 0) return true;
+  }
+  return false;
+};
