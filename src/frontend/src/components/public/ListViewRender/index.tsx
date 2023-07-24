@@ -1,21 +1,42 @@
-import EmptyPIAList from '../../components/public/EmptyPIAList';
-import PIAListTable from '../../components/public/PIAListTable';
-import { usePIALookup } from '../../hooks/usePIALookup';
+import EmptyPIAList from '../EmptyPIAList';
+import PIAListTable from '../PIAListTable';
+import { usePIALookup } from '../../../hooks/usePIALookup';
 import { tableHeadingProperties } from './tableProperties';
-import { PiaSorting } from '../../constant/constant';
-import Pagination from '../../components/common/Pagination';
+import { PiaSorting, PiaStatuses } from '../../../constant/constant';
+import Pagination from '../../common/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import SearchBox from '../../components/common/SearchBox';
-import PIAIntakeFilter from '../../components/public/PIAIntakeFilter';
+import SearchAndFilter from './searchAndFilter';
+import { IListViewRenderProps } from './interface';
 
-const PIAList = () => {
+const ListViewRender = (props: IListViewRenderProps) => {
+  let setParamsComplete = new URLSearchParams();
+  if (props.showCompleted) {
+    setParamsComplete = new URLSearchParams({
+      filterByStatus: PiaStatuses.COMPLETE,
+    });
+  }
+
+  const showFilters = () => {
+    let filters = null;
+    if (props.showCompleted) {
+      filters = {
+        showStatus: false,
+        showMinistry: false,
+        showDrafter: false,
+        showSearch: true,
+      };
+    }
+    return filters;
+  };
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [SortBy, setSortBy] = useState('');
   const [SortOrder, setSortOrder] = useState(0);
   const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
+  const [filterMetaParams] = useState(showFilters);
 
   const { tableData, Total } = usePIALookup(
     SortBy,
@@ -23,9 +44,10 @@ const PIAList = () => {
     currentPage,
     PageSizedefault,
   );
+
   useEffect(() => {
-    document.title = 'List of PIAs - Digital Privacy Impact Assessment (DPIA)';
-  }, []); // Empty array ensures this runs once on mount and unmount
+    document.title = props.title + '- Digital Privacy Impact Assessment (DPIA)';
+  }, [props.title]); // Empty array ensures this runs once on mount and unmount
 
   const [searchText, setSearchText] = useState(
     searchParams.get('searchText') || '',
@@ -64,6 +86,20 @@ const PIAList = () => {
     resetSearchText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  /* This useEfect is to handle the case when user click on the completed tab,
+   * if the current filter is not completed, we need to update the filter to completed
+   *  Once can change the filter to completed through the url. This useeffect should
+   *  be able to handle that case as well.
+   */
+  useEffect(() => {
+    if (props.showCompleted) {
+      if (searchParams.get('filterByStatus') !== PiaStatuses.COMPLETE) {
+        setSearchParams(setParamsComplete);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.showCompleted, searchParams]);
 
   const handleSearchTextChange = (newSearchText: any) => {
     setcurrentPage(1);
@@ -111,27 +147,18 @@ const PIAList = () => {
   return (
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <div className="page__controls full__width">
-        <h1>List of PIAs</h1>
+        <h1>{props.title}</h1>
       </div>
-      <div className="w-100">
-        <div className="row">
-          <div className="col-lg-8 col-xl-7">
-            <PIAIntakeFilter
-              filterChangeHandler={filterChangeHandler}
-              defaultSearchParam={searchParams}
-            />
-          </div>
-          <div className="col-lg-4 col-xl-5 pt-4 pt-lg-0">
-            <SearchBox
-              searchText={searchText}
-              onChange={handleSearchTextChange}
-              onEnter={() => setSearchParamsForSearchText()}
-              onSearchClick={updateSearchUrl}
-              onClearSearchClick={handleClearSearchText}
-            />
-          </div>
-        </div>
-      </div>
+      <SearchAndFilter
+        filterChangeHandler={filterChangeHandler}
+        searchParams={searchParams}
+        searchText={searchText}
+        handleSearchTextChange={handleSearchTextChange}
+        setSearchParamsForSearchText={setSearchParamsForSearchText}
+        updateSearchUrl={updateSearchUrl}
+        handleClearSearchText={handleClearSearchText}
+        showfilter={filterMetaParams}
+      />
 
       {tableData.length === 0 ? (
         <EmptyPIAList />
@@ -157,4 +184,4 @@ const PIAList = () => {
   );
 };
 
-export default PIAList;
+export default ListViewRender;
