@@ -44,6 +44,9 @@ export const roleCheck = () => {
 };
 
 export const isAdminRole = () => {
+  // be aware for next maintainer
+  // This function currently is only used to check who has access to the PPQ forms page.
+  // and filters(ministry and drafter) in active PIAs list page
   const userRoles = roleCheck();
   if (userRoles !== undefined && userRoles.roles !== undefined) {
     if (userRoles.roles.length > 0) return true;
