@@ -762,13 +762,19 @@ export class PiaIntakeService {
     // ... space for future validators, as needed
   }
 
-  // wrapper | convenient method that validates PIA access
+  // wrapper | convenient method that validates access and returns PIA
   async validatePiaAccess(
     piaId: number,
     user: KeycloakUser,
     userRoles: Array<RolesEnum>,
-  ) {
-    // this method will fetch pia and validate user access
-    await this.findOneById(piaId, user, userRoles);
+  ): Promise<PiaIntakeEntity> {
+    // Fetch the record by ID
+    const pia = await this.findOneBy({ id: piaId });
+
+    // Validate if the user has access to the pia-intake form
+    await this.validateUserAccess(user, userRoles, pia);
+
+    // return pia once validated
+    return pia;
   }
 }

@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RolesEnum } from 'src/common/enums/roles.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { KeycloakUser } from '../auth/keycloak-user.model';
+import { checkUpdatePermissions } from '../pia-intake/helper/check-update-permissions';
 import { PiaIntakeService } from '../pia-intake/pia-intake.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
@@ -52,17 +53,28 @@ export class CommentsService {
     userRoles: Array<RolesEnum>,
   ): Promise<CommentRO> {
     // validate access to PIA. Throw error if not
-    await this.piaService.validatePiaAccess(
+    const pia = await this.piaService.validatePiaAccess(
       createCommentDto.piaId,
       user,
       userRoles,
     );
 
     // extract user input dto
-    const { piaId, path, text } = createCommentDto;
+    const { path, text } = createCommentDto;
 
-    // fetch pia entity
-    const pia = await this.piaService.findOneBy({ id: piaId });
+    // check if adding comments to this PIA allowed
+    const isActionAllowed = checkUpdatePermissions({
+      status: pia?.status,
+      entityType: 'comment',
+      entityAction: 'add',
+    });
+
+    if (!isActionAllowed) {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message: 'Forbidden: Failed to add comments to the PIA',
+      });
+    }
 
     // create resource
     const comment: CommentEntity = await this.commentRepository.save({
@@ -136,11 +148,31 @@ export class CommentsService {
 
     // if the comment person who created the comment is not the one deleting, throw error
     if (user.idir_user_guid !== comment.createdByGuid) {
-      throw new ForbiddenException();
+      throw new ForbiddenException({
+        message: "Forbidden: You're are not authorized to remoe this comment",
+      });
     }
 
     // validate access to PIA. Throw error if not
-    await this.piaService.validatePiaAccess(comment.piaId, user, userRoles);
+    const pia = await this.piaService.validatePiaAccess(
+      comment.piaId,
+      user,
+      userRoles,
+    );
+
+    // check if deleting comments to this PIA allowed
+    const isActionAllowed = checkUpdatePermissions({
+      status: pia?.status,
+      entityType: 'comment',
+      entityAction: 'remove',
+    });
+
+    if (!isActionAllowed) {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message: 'Forbidden: Failed to remove comments of the PIA',
+      });
+    }
 
     // throw error if comment already deleted
     if (comment.isActive === false) {

@@ -1,45 +1,63 @@
-import { ForbiddenException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { deepEqual } from 'src/common/utils/object-comparison.util';
 import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { piaStatusMetadata } from '../metadata/pia-status.metadata';
+import { checkUpdatePermissions } from './check-update-permissions';
 import { validateConditionsAny } from './validate-conditions';
 
+/**
+ * This method validates all PIA changes, except status movements; which is taken care by `handlePiaStatusChange`
+ */
 export const handlePiaUpdates = (
   updatedValue: UpdatePiaIntakeDto,
   storedValue: PiaIntakeEntity,
   accessType: UserTypesEnum[],
   piaType: PiaTypesEnum,
 ) => {
-  const errorMessage =
-    'Operation Restricted: Changes not allowed in this status';
-
   // extract updated fields except status from the DTO; Handle Status changes to be done separately as part of handle-pia-status-change.ts
-  const { status: updatedStatus, saveId, ...updates } = updatedValue;
+  const {
+    status: updatedStatus,
+    saveId,
+    ...updates // this contains the type of IUpdateOverrides.pia
+  }: UpdatePiaIntakeDto = updatedValue;
 
   const status = updatedStatus || storedValue.status;
 
   const statusMetadata = piaStatusMetadata?.[status];
 
-  if (!statusMetadata) return; // TODO: VALIDATIONS TO BE ADDED SOON
+  if (!statusMetadata) {
+    throw new BadRequestException({
+      status,
+      message: 'Bad Request: Invalid status',
+    });
+  }
 
-  // no field updates requested
-  if (Object.keys(updates).length === 0) return;
+  const updatedKeys: Array<keyof typeof updates> = [];
 
-  const hasUpdates = !Object.keys(updates || {}).every((key) =>
-    deepEqual(updates[key], storedValue?.[key]),
-  );
+  Object.keys(updates || {}).forEach((key: keyof typeof updates) => {
+    const isEqual = deepEqual(updates[key], storedValue?.[key]);
+
+    if (!isEqual) {
+      updatedKeys.push(key);
+    }
+  });
 
   // when no updates
-  if (!hasUpdates) {
+  if (updatedKeys.length === 0) {
     return;
   }
 
-  if (statusMetadata?.updates?.allow === false) {
+  const allowUpdates = checkUpdatePermissions({
+    status,
+    updatedPiaKeys: updatedKeys,
+  });
+
+  if (!allowUpdates) {
     throw new ForbiddenException({
-      message: errorMessage,
+      message: 'Operation Restricted: Changes not allowed in this status',
     });
   }
 
@@ -51,6 +69,7 @@ export const handlePiaUpdates = (
     { ...storedValue, ...updatedValue },
   );
 
+  // explicitly checking for false [when at-least one condition is not met]
   if (isSatisfied === false) {
     throw new ForbiddenException({
       status,

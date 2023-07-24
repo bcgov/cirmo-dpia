@@ -43,9 +43,21 @@ interface IStatusTransition {
   actions?: Array<IStatusTransitionAction>;
 }
 
-interface IStatusUpdates {
+export interface IEntityActions {
+  add?: boolean;
+  remove?: boolean;
+}
+export interface IUpdateOverrides {
+  comment?: IEntityActions;
+  fileUpload?: IEntityActions;
+  pia?: Partial<
+    Record<keyof Omit<PiaIntakeEntity, 'status' | 'saveId'>, boolean> // status permissions should be given via transition and are handled separately via handlePiaStatusChange
+  >;
+}
+
+export interface IStatusUpdates {
   allow: boolean;
-  except?: Array<keyof PiaIntakeEntity>;
+  overrides?: IUpdateOverrides;
   conditions?: Array<ICondition>;
 }
 
@@ -91,7 +103,18 @@ export const piaStatusMetadata: Partial<
   },
   [PiaIntakeStatusEnum.MPO_REVIEW]: {
     updates: {
-      allow: true,
+      allow: false,
+      overrides: {
+        pia: {
+          review: true,
+          isNextStepsSeenForDelegatedFlow: true,
+          isNextStepsSeenForNonDelegatedFlow: true,
+        },
+        comment: {
+          add: true,
+          remove: true,
+        },
+      },
     },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
@@ -137,7 +160,16 @@ export const piaStatusMetadata: Partial<
   },
   [PiaIntakeStatusEnum.CPO_REVIEW]: {
     updates: {
-      allow: true,
+      allow: false,
+      overrides: {
+        pia: {
+          review: true,
+        },
+        comment: {
+          add: true,
+          remove: true,
+        },
+      },
       conditions: [
         {
           piaType: [PiaTypesEnum.STANDARD], // updates in CPO_REVIEW are only allowed when standard PIA
@@ -180,7 +212,16 @@ export const piaStatusMetadata: Partial<
   },
   [PiaIntakeStatusEnum.FINAL_REVIEW]: {
     updates: {
-      allow: true, // add exceptions
+      allow: false,
+      overrides: {
+        pia: {
+          review: true,
+        },
+        comment: {
+          add: true,
+          remove: true,
+        },
+      },
     },
     transition: {
       [PiaIntakeStatusEnum.INCOMPLETE]: {
