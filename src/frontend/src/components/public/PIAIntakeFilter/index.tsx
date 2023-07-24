@@ -5,7 +5,7 @@ import {
   PiaDrafterFilterList,
   PiaStatusList,
 } from '../../../constant/constant';
-import { roleCheck } from '../../../utils/helper.util';
+import { isAdminRole } from '../../../utils/helper.util';
 import Dropdown from '../../common/Dropdown';
 import { IPIAIntakeFilterProps } from './interfaces';
 
@@ -20,13 +20,6 @@ const PIAIntakeFilter = (props: IPIAIntakeFilterProps) => {
   const [filterPiaDrafterByCurrentUser, setFilterPiaDrafterByCurrentUser] =
     useState<string>(searchParams.get('filterPiaDrafterByCurrentUser') || '');
 
-  const isAdminRole = () => {
-    const userRoles = roleCheck();
-    if (userRoles !== undefined && userRoles.roles !== undefined) {
-      if (userRoles.roles.length > 0) return true;
-    }
-    return false;
-  };
   const setSearchParamsForFilter = (field: string, newValue: any) => {
     const params: any = {};
     switch (field) {
