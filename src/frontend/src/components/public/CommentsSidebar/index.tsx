@@ -10,7 +10,10 @@ import Messages from './messages';
 import { useLocation } from 'react-router-dom';
 import { AppStorage } from '../../../utils/storage';
 import { getGUID } from '../../../utils/helper.util';
+import { PiaStatuses } from '../../../constant/constant';
+import { statusList } from '../../../utils/status';
 const CommentSidebar = ({
+  pia,
   piaId,
   path,
   handleStatusChange,
@@ -27,6 +30,14 @@ const CommentSidebar = ({
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
+  const [enableComments, setEnableComments] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!pia?.status) return;
+
+    const allowComment = statusList(pia)?.[pia.status]?.comments || false;
+    setEnableComments(allowComment);
+  }, [pia]);
   /**
    * Async callback for getting comments within a useEffect hook
    */
@@ -176,7 +187,7 @@ const CommentSidebar = ({
             <p className="p-3">No comments yet.</p>
           )}
         </div>
-        {path && comments && (
+        {enableComments && path && comments && (
           <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
             <input
               type="text"

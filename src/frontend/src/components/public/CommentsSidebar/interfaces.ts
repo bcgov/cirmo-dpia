@@ -1,3 +1,4 @@
+import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { PiaSections } from '../../../types/enums/pia-sections.enum';
 
 export interface Comment {
@@ -14,6 +15,7 @@ export interface Comment {
 }
 
 export default interface CommentSidebarProps {
+  pia: IPiaForm;
   comments?: Comment[];
   piaId?: number;
   path: PiaSections | undefined;

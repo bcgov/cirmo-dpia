@@ -49,6 +49,7 @@ interface StatusList {
     Privileges: Privileges;
     Pages?: PageAccessControl;
     finalReviewCompleted?: boolean;
+    comments: boolean;
   };
 }
 
@@ -167,6 +168,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     MPO_REVIEW: {
       title: 'MPO Review',
       class: 'statusBlock__MPOReview',
+      comments: true,
       buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FORM,
       modal: defaultMPOReviewModal,
       Pages: {
@@ -243,6 +245,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
       buttonText: SubmitButtonTextEnum.FORM,
       modal: defaultIncompleteModal,
+      comments: true,
       Pages: {
         review: {
           accessControl: false,
@@ -286,6 +289,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'Complete',
       class: 'statusBlock__completed',
       modal: defaultEmptyModal,
+      comments: false,
       Pages: {
         review: {
           accessControl: true,
@@ -300,6 +304,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     EDIT_IN_PROGRESS: {
       title: 'Edit in progress',
       buttonText: SubmitButtonTextEnum.FORM,
+      comments: true,
       class: 'statusBlock__edit',
       Pages: {
         review: {
@@ -352,6 +357,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'CPO Review',
       banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
       class: 'statusBlock__CPOReview',
+      comments: true,
       buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultCPOReviewModal,
       Pages: {
@@ -400,6 +406,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     },
     FINAL_REVIEW: {
       title: 'Final Review',
+      comments: true,
       class: 'statusBlock__finalReview',
       buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultFinalReviewModal,
