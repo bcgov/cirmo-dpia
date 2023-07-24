@@ -30,7 +30,7 @@ const CommentSidebar = ({
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
-  const [enableComments, setEnableComments] = useState<boolean>(true);
+  const [enableComments, setEnableComments] = useState<boolean>(false);
 
   useEffect(() => {
     if (!pia?.status) return;
