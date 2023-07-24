@@ -33,7 +33,9 @@ const CommentSidebar = ({
   const [enableComments, setEnableComments] = useState<boolean>(true);
 
   useEffect(() => {
-    const allowComment = statusList(pia)[pia.status || 'complete'].comments;
+    if (!pia?.status) return;
+
+    const allowComment = statusList(pia)?.[pia.status]?.comments || false;
     setEnableComments(allowComment);
   }, [pia]);
   /**
