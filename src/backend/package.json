@@ -43,7 +43,7 @@
     "keycloak-connect": "18.0.2",
     "marked": "5.0.1",
     "morgan": "1.10.0",
-    "nest-keycloak-connect": "1.9.0",
+    "nest-keycloak-connect": "1.9.2",
     "pg": "8.8.0",
     "pug": "3.0.2",
     "puppeteer": "13.5.0",
