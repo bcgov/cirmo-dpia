@@ -5,7 +5,7 @@ Feature: Login and check the HomePage
     Given I am on the login page
     And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
-    Then Check "Active PIAs" tab is displayed
+    Then Check "Active PIA" tab is displayed
 
     Examples:
       | username | role    |
