@@ -1,11 +1,11 @@
 Feature: Login and check the HomePage
 
-  Scenario Outline: As <role> user, I am able to verify if List of PIA exists
+  Scenario Outline: As <role> user, I am able to verify if Active PIAs exists
 
     Given I am on the login page
     And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
-    Then Check "List of PIAs" tab is displayed
+    Then Check "Active PIAs" tab is displayed
 
     Examples:
       | username | role    |
@@ -26,12 +26,12 @@ Feature: Login and check the HomePage
       | DOND     | Drafter | 
       | ANDYA    | CPO     |
   
-  Scenario Outline: As <role> user, I am able to verify List of PIA pagination
+  Scenario Outline: As <role> user, I am able to verify Active PIAs pagination
 
     Given I am on the login page
     And I click on "Log in with IDIR" button
     When I login with user <username> having role <role>
-    And I click on "List of PIAs" tab
+    And I click on "Active PIAs" tab
     Then Verify List of PIA pagination
 
     Examples:

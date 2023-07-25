@@ -114,6 +114,7 @@ class FilterSearchSortPage extends Page {
       console.log("Status is: " + status);
       if(filter == 'Any Status') 
           {
+          await browser.pause(1000); 
           await this.AnyStatus.waitForClickable();
           await this.AnyStatus.click(); 
           await this.AnyStatus.selectByVisibleText(status);
@@ -121,6 +122,7 @@ class FilterSearchSortPage extends Page {
           }
       if(filter == 'Any Ministry') 
           {
+          await browser.pause(1000); 
           await this.AnyMinistry.waitForClickable();
           await this.AnyMinistry.click(); 
           await this.AnyMinistry.selectByVisibleText(status);
@@ -128,6 +130,7 @@ class FilterSearchSortPage extends Page {
           }
       if(filter == 'Any drafter') 
           {
+          await browser.pause(1000); 
           await this.AnyDrafter.waitForClickable();
           await this.AnyDrafter.click(); 
           await this.AnyDrafter.selectByVisibleText(status);
