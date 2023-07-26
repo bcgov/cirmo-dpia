@@ -1958,6 +1958,117 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
+
+    // Scenario 21: User is an MPO and is filtering for COMPLETE PIAs
+    it('succeeds when the user is an MPO and is filtering for COMPLETE PIAs', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.MPO_CITZ];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.COMPLETE,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+          {
+            isActive: true,
+            status: PiaIntakeStatusEnum.COMPLETE,
+            ministry: In([GovMinistriesEnum.CITIZENS_SERVICES]),
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    // Scenario 22: User is a CPO and is filtering for COMPLETE PIAs
+    it('succeeds when the user is a CPO and is filtering for COMPLETE PIAs', async () => {
+      const user: KeycloakUser = { ...keycloakUserMock };
+      const userRoles = [RolesEnum.CPO];
+      const piaIntakeEntity = { ...piaIntakeEntityMock };
+      const query: PiaIntakeFindQuery = {
+        page: 1,
+        pageSize: 12,
+        filterByStatus: PiaIntakeStatusEnum.COMPLETE,
+      };
+
+      piaIntakeRepository.findAndCount = jest.fn(async () => {
+        delay(10);
+        return [[piaIntakeEntity], 100];
+      });
+
+      omitBaseKeysSpy.mockReturnValue({ ...getPiaIntakeROMock });
+
+      const result = await service.findAll(user, userRoles, query);
+
+      expect(piaIntakeRepository.findAndCount).toHaveBeenCalledWith({
+        where: [
+          {
+            isActive: true,
+            createdByGuid: user.idir_user_guid,
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+          {
+            isActive: true,
+            invitee: {
+              createdByGuid: user.idir_user_guid,
+            },
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+        ],
+        order: {
+          createdAt: -1,
+        },
+        skip: 0,
+        take: 12,
+      });
+
+      expect(omitBaseKeysSpy).toHaveBeenCalledTimes(1);
+
+      const expectedResult: PaginatedRO<GetPiaIntakeRO> = {
+        data: [getPiaIntakeROMock],
+        page: 1,
+        pageSize: 12,
+        total: 100,
+      };
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   /**
