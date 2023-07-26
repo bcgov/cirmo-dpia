@@ -80,7 +80,7 @@
     "stylelint-scss": "5.0.0",
     "typescript": "4.6.4",
     "vite": "3.2.7",
-    "wdio-chromedriver-service": "8.1.1",
+    "wdio-chromedriver-service": "^8.1.1",
     "wdio-cucumberjs-json-reporter": "5.1.5",
     "wdio-wait-for": "3.0.4"
   },
