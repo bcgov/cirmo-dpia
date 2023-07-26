@@ -71,7 +71,22 @@ export const PIAFormIntake = () => {
             <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
             <ul>
               {Messages.PiaIntakeHeader.ListText.map((item, index) => (
-                <li key={index}>{item.en}</li>
+                <li key={index}>
+                  {item.en}
+                  <a
+                    href={item.linkHref}
+                    rel="noreferrer external"
+                    target="_blank"
+                  >
+                    {item.linkText}
+                    {item.linkText && (
+                      <FontAwesomeIcon
+                        className="ms-1"
+                        icon={faUpRightFromSquare}
+                      />
+                    )}
+                  </a>
+                </li>
               ))}
             </ul>
           </>

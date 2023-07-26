@@ -17,7 +17,9 @@ export default {
         en: 'After you submit this form, your MPO will be able to see it and help you with any questions you might have',
       },
       {
-        en: "If you are updating an existing PIA or drafting a PIA for legislation or regulations, find the PIA template you need here"
+        en: "If you are updating an existing PIA or drafting a PIA for legislation or regulations, ",
+        linkText: "find the PIA template you need here",
+        linkHref: "https://www2.gov.bc.ca/gov/content?id=BA30DD63C55342D8A32E6355D7451A13",
       },
     ],
   },
