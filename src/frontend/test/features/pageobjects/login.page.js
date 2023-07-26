@@ -50,7 +50,7 @@ class LoginPage extends Page {
 
     async title () {
         console.log('Title is ' + (await browser.getTitle()));
-        const ExpTitle = 'List of PIAs - Digital Privacy Impact Assessment (DPIA)';
+        const ExpTitle = "Active PIA's- Digital Privacy Impact Assessment (DPIA)";
         await expect(browser).toHaveTitle(ExpTitle);
 
     }

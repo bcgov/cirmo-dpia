@@ -21,7 +21,7 @@ Feature: UTOPIA-1121 Drafter:View PIA details
     And I enter "Data Text"
     And I enter "Personal information as No"
     And Await SavedAt function 
-    And I click on "List of PIAs" tab
+    And I click on "Active PIAs" tab
     And Search with title
     And Verify if the status is only "Incomplete"
   
@@ -60,7 +60,7 @@ Feature: UTOPIA-1121 Drafter:View PIA details
     Then I click on "Save" button
     Then I click on "Submit" button
     Then I click on "Yes, submit" button
-    And I click on "List of PIAs" tab
+    And I click on "Active PIAs" tab
     And Search with title
     And Verify if the status is only "MPO Review"
   

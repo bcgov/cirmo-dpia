@@ -27,7 +27,7 @@ Feature: UTOPIA-617 Fill a PIA
     Then I click on "Save" button
     Then I click on "Submit" button
     Then I click on "Yes, submit" button
-    And I click on "List of PIAs" tab
+    And I click on "Active PIAs" tab
     And Search with title
     And Verify if the status is only "MPO Review"
 
