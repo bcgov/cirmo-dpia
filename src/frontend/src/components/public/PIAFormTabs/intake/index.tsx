@@ -73,19 +73,19 @@ export const PIAFormIntake = () => {
               {Messages.PiaIntakeHeader.ListText.map((item, index) => (
                 <li key={index}>
                   {item.en}
-                  <a
-                    href={item.linkHref}
-                    rel="noreferrer external"
-                    target="_blank"
-                  >
-                    {item.linkText}
-                    {item.linkText && (
+                  {item.linkHref && item.linkText && (
+                    <a
+                      href={item.linkHref}
+                      rel="noreferrer external"
+                      target="_blank"
+                    >
+                      {item.linkText}
                       <FontAwesomeIcon
                         className="ms-1"
                         icon={faUpRightFromSquare}
                       />
-                    )}
-                  </a>
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
