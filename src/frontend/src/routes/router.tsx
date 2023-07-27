@@ -6,7 +6,7 @@ import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 import { AppStorage } from '../utils/storage';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
-import PIAIntakeFormPage from '../pages/PIAForm';
+import PIAFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
 import PIAActiveList from '../pages/PIAActiveListPage';
 import PIACompletedList from '../pages/PIACompletedList';
@@ -71,14 +71,14 @@ const Router = () => {
           <Route path="completed" element={<PIACompletedList />} />
           <Route path="result" element={<PIAIntakeResultsPage />} />
 
-          <Route path="new" element={<PIAIntakeFormPage />}>
+          <Route path="new" element={<PIAFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
             <Route path="intake" element={<PIAFormIntake />} />
           </Route>
 
           <Route path=":id/preview" element={<PiaFormPrintPreview />} />
 
-          <Route path=":id" element={<PIAIntakeFormPage />}>
+          <Route path=":id" element={<PIAFormPage />}>
             <Route index element={<Navigate relative="path" to="intake" />} />
 
             <Route path="intake">
