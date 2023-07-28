@@ -232,6 +232,9 @@ export const piaStatusMetadata: Partial<
             accessType: [UserTypesEnum.MPO],
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
           },
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
         ],
         actions: [
           {
@@ -248,6 +251,9 @@ export const piaStatusMetadata: Partial<
             accessType: [UserTypesEnum.MPO],
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
           },
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
         ],
         actions: [
           {
@@ -263,6 +269,18 @@ export const piaStatusMetadata: Partial<
           {
             accessType: [UserTypesEnum.MPO],
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+          },
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+            piaType: [PiaTypesEnum.STANDARD],
           },
         ],
       },
