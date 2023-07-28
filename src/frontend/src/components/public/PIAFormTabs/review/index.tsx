@@ -3,6 +3,11 @@ import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
+import { getGUID } from '../../../../utils/helper.util';
+import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -13,6 +18,8 @@ import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import ProgramArea from './ProgamArea';
+import EditCPOReview from './editCPOReview';
+import ViewCPOReview from './viewCPOReview';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -31,6 +38,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         isAcknowledged: false,
         reviewNote: '',
       },
+      cpo: [
+        {
+          isAcknowledged: false,
+          reviewNote: '',
+        },
+      ],
     }),
     [],
   );
@@ -151,6 +164,37 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
 
+  const allowUserReviewCPO = () => {
+    // only allow one CPO user do review once
+
+    const userGuid = getGUID();
+    const CPOs = reviewForm?.cpo;
+    if (CPOs !== undefined) {
+      for (let i = 0; i < CPOs.length; i++) {
+        if (reviewForm?.cpo?.[i].reviewedByGuid === userGuid) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const addNewCPOReview = () => {
+    const newCPOReview = {
+      isAcknowledged: false,
+      reviewNote: '',
+    };
+    if (reviewForm?.cpo !== undefined) {
+      reviewForm?.cpo?.push(newCPOReview);
+    } else {
+      setReviewForm({
+        ...reviewForm,
+        cpo: [],
+      });
+    }
+
+    piaStateChangeHandler(reviewForm, 'review', true);
+  };
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
@@ -200,16 +244,16 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             mandatoryADM={mandatoryADM}
           />
           <section className="mt-5 ">
-            <h3>{messages.PiaReviewHeader.MinistrySection.Title.en}</h3>
+            <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
             <p className="pb-4">
-              {messages.PiaReviewHeader.MinistrySection.Description.en}
+              {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
                 {enableMPOReviewViewMode() ? (
                   <ViewMPOReview
                     pia={pia}
-                    editReviewNote={setEditReviewNote}
+                    stateChangeHandler={stateChangeHandler}
                     isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
                   />
                 ) : (
@@ -220,7 +264,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         isLink={false}
                         checked={mpoAcknowledged}
                         label={
-                          messages.PiaReviewHeader.MinistrySection.Input
+                          messages.PiaReviewHeader.MinistrySection.MPO.Input
                             .AcceptAccountability.en
                         }
                         onChange={(e) => setMpoAcknowledged(e.target.checked)}
@@ -231,8 +275,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             <div className="d-block pb-3">
                               <b>
                                 {
-                                  messages.PiaReviewHeader.MinistrySection.Input
-                                    .ReviewNote.en
+                                  messages.PiaReviewHeader.MinistrySection.MPO
+                                    .Input.ReviewNote.en
                                 }
                                 &nbsp;
                                 {pia.hasAddedPiToDataElements === false ? (
@@ -279,6 +323,71 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               </div>
             </div>
           </section>
+          {/**
+           * this part need to refactor
+           * this part should only display on cpo review and onward
+           * like final review, pending completion and complete
+           * right now we only have two status, cpo review and final review
+           */}
+          {pia.hasAddedPiToDataElements !== false &&
+          (pia.status === PiaStatuses.CPO_REVIEW ||
+            pia.status === PiaStatuses.FINAL_REVIEW) ? (
+            <section className="mt-5 ">
+              <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
+              <p className="pb-4">
+                {messages.PiaReviewHeader.MinistrySection.CPO.Description.en}
+              </p>
+              <div className="drop-shadow card p-4 p-md-5">
+                <div className="data-table__container">
+                  {pia?.review?.cpo ? (
+                    pia?.review?.cpo?.map((_: any, index: number) => {
+                      return reviewForm.cpo ? (
+                        <div className="d-flex align-items-center" key={index}>
+                          {!allowUserReviewCPO() ||
+                          Object(pia?.review?.cpo)?.[index]?.isAcknowledged ? (
+                            <ViewCPOReview
+                              pia={pia}
+                              stateChangeHandler={stateChangeHandler}
+                              isAcknowledged={
+                                Object(pia?.review?.cpo)?.[index]
+                                  ?.isAcknowledged || false
+                              }
+                              index={index}
+                            />
+                          ) : (
+                            <EditCPOReview
+                              pia={pia}
+                              stateChangeHandler={stateChangeHandler}
+                              index={index}
+                            />
+                          )}
+                        </div>
+                      ) : null;
+                    })
+                  ) : (
+                    <EditCPOReview
+                      pia={pia}
+                      stateChangeHandler={stateChangeHandler}
+                      index={0}
+                    />
+                  )}
+                  <div className="horizontal-divider "></div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addNewCPOReview();
+                      }}
+                      className="bcgovbtn bcgovbtn__tertiary bold min-gap"
+                    >
+                      Add CPO reviewer
+                      <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          ) : null}
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
         pia?.status === PiaStatuses.INCOMPLETE ||
@@ -309,9 +418,20 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           <ViewMPOReview
             pia={pia}
             printPreview
-            editReviewNote={setEditReviewNote}
+            stateChangeHandler={stateChangeHandler}
             isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
           />
+          {pia?.review?.cpo?.map((_: any, index: number) => (
+            <>
+              <ViewCPOReview
+                pia={pia}
+                printPreview
+                stateChangeHandler={stateChangeHandler}
+                isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
+                index={index}
+              />
+            </>
+          ))}
         </>
       )}
     </>

@@ -1,24 +1,23 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
-import { IReviewSection } from './interfaces';
 
-interface IMPOReviewProps {
+interface ICPOReviewProps {
   pia: IPiaForm;
   printPreview?: boolean;
   isAcknowledged: boolean;
+  index: number;
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
 }
 
-const ViewMPOReview = (props: IMPOReviewProps) => {
-  const { pia, printPreview, isAcknowledged, stateChangeHandler } = props;
+const ViewCPOReview = (props: ICPOReviewProps) => {
+  const { pia, printPreview, isAcknowledged, index, stateChangeHandler } =
+    props;
 
   return (
     <div className="d-grid gap-3">
       {printPreview ? (
         <div className="review-container px-2">
-          {pia?.review?.mpo?.isAcknowledged === false ? (
+          {pia?.review?.cpo?.[index].isAcknowledged === false ? (
             <>
               <div> Reviewed by</div>
               <div> Review incomplete</div>
@@ -30,6 +29,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
                 reviewSection={pia.review?.mpo}
                 printPreview
                 isAcknowledged={isAcknowledged}
+                section="CPO"
               />
             </div>
           )}
@@ -40,11 +40,11 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
           pia={pia}
           reviewSection={pia?.review?.mpo}
           stateChangeHandler={stateChangeHandler}
-          section="MPO"
+          section="CPO"
         />
       )}
     </div>
   );
 };
 
-export default ViewMPOReview;
+export default ViewCPOReview;

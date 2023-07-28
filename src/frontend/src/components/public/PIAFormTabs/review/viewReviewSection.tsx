@@ -18,6 +18,7 @@ interface IReviewProps {
   printPreview?: boolean;
   role?: string;
   isAcknowledged: boolean;
+  section?: string;
 }
 
 const ViewReviewSection = (props: IReviewProps) => {
@@ -89,8 +90,8 @@ const ViewReviewSection = (props: IReviewProps) => {
           checked={isAcknowledged}
           isLink={false}
           label={
-            messages.PiaReviewHeader.MinistrySection.Input.AcceptAccountability
-              .en
+            messages.PiaReviewHeader.MinistrySection.MPO.Input
+              .AcceptAccountability.en
           }
           readOnly={!editReview}
         />
