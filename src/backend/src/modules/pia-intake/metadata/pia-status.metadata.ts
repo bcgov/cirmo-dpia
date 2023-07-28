@@ -280,7 +280,6 @@ export const piaStatusMetadata: Partial<
         conditions: [
           {
             accessType: [UserTypesEnum.CPO],
-            piaType: [PiaTypesEnum.STANDARD],
           },
         ],
       },
