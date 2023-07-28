@@ -30,6 +30,8 @@
     "migration:create": "npm run typeorm -- migration:create"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.378.0",
+    "@aws-sdk/s3-request-presigner": "^3.378.0",
     "@nestjs/axios": "1.0.1",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/common": "9.2.1",
@@ -53,6 +55,7 @@
     "typeorm": "0.3.14"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.378.0",
     "@nestjs/cli": "9.3.0",
     "@nestjs/schematics": "9.0.4",
     "@nestjs/testing": "9.2.1",

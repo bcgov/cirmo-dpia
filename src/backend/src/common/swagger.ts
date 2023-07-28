@@ -6,6 +6,7 @@ import { HealthModule } from 'src/health/health.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { CommentsModule } from 'src/modules/comments/comments.module';
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
+import { FileUploadModule } from 'src/modules/file-upload/file-upload.module';
 import { GCNotifyModule } from 'src/modules/gcnotify/gcnotify.module';
 import { InvitesModule } from 'src/modules/invites/invites.module';
 import { PiaIntakeModule } from 'src/modules/pia-intake/pia-intake.module';
@@ -38,6 +39,7 @@ export const SwaggerDocs = (app: INestApplication) => {
       GCNotifyModule,
       CommentsModule,
       InvitesModule,
+      FileUploadModule,
     ],
   });
 

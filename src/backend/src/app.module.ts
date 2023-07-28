@@ -18,6 +18,7 @@ import { GCNotifyModule } from './modules/gcnotify/gcnotify.module';
 import { CommentsModule } from './modules/comments/comments.module';
 import { InvitesModule } from './modules/invites/invites.module';
 import { InviteesModule } from './modules/invitees/invitees.module';
+import { FileUploadModule } from './modules/file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { InviteesModule } from './modules/invitees/invitees.module';
     CommentsModule,
     InvitesModule,
     InviteesModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [

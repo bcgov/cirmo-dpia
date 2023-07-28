@@ -70,5 +70,9 @@ const configService = new ConfigServiceClass(process.env).ensureValues([
   'GCNOTIFY_BASE_URL',
   'GCNOTIFY_API_KEY',
   'GCNOTIFY_TEMPLATE_ID',
+  'AWS_ACCESS_KEY_ID',
+  'AWS_SECRET_ACCESS_KEY',
+  'S3_ENDPOINT',
+  'S3_BUCKET',
 ]);
 export { configService };
