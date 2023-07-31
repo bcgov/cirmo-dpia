@@ -8,9 +8,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import Modal from '../../../components/common/Modal';
 import Messages from './messages';
 import { useLocation } from 'react-router-dom';
-import { AppStorage } from '../../../utils/storage';
 import { getGUID } from '../../../utils/helper.util';
-import { PiaStatuses } from '../../../constant/constant';
 import { statusList } from '../../../utils/status';
 const CommentSidebar = ({
   pia,
@@ -35,6 +33,7 @@ const CommentSidebar = ({
   useEffect(() => {
     if (!pia?.status) return;
 
+    // Allow adding new comments and use of "more" menu including delete comment.
     const allowComment = statusList(pia)?.[pia.status]?.comments || false;
     setEnableComments(allowComment);
   }, [pia]);
@@ -127,31 +126,33 @@ const CommentSidebar = ({
                       {getDateTime(stringToDate(comment.updatedAt))}
                     </span>
                   </p>
-                  <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
-                    <button
-                      className="mx-2 bcgovbtn bcgovbtn__tertiary"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded={false}
-                      aria-label="Comment Options Button"
-                    >
-                      <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
-                    </button>
-                    <ul
-                      aria-label="Comment Options Menu"
-                      className="dropdown-menu border-1 shadow-sm"
-                    >
-                      <li role="button">
-                        <button
-                          onClick={() => handleDeleteComment(comment.id)}
-                          className="dropdown-item"
-                          disabled={comment.createdByGuid !== getGUID()}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
+                  {enableComments && (
+                    <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
+                      <button
+                        className="mx-2 bcgovbtn bcgovbtn__tertiary"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded={false}
+                        aria-label="Comment Options Button"
+                      >
+                        <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
+                      </button>
+                      <ul
+                        aria-label="Comment Options Menu"
+                        className="dropdown-menu border-1 shadow-sm"
+                      >
+                        <li role="button">
+                          <button
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className="dropdown-item"
+                            disabled={comment.createdByGuid !== getGUID()}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
                 <div>
                   {comment.isActive ? (
