@@ -7,9 +7,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
 import { getGUID } from '../../../../utils/helper.util';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -302,7 +300,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     reviewForm.programArea?.selectedRoles.map(
                       (role: string, index: number) => {
                         return reviewForm.programArea?.selectedRoles &&
-                          pia.status === PiaStatuses.FINAL_REVIEW ? (
+                          (pia.status === PiaStatuses.FINAL_REVIEW ||
+                            pia.status === PiaStatuses.COMPLETE) ? (
                           <div
                             className="d-flex align-items-center"
                             key={index}

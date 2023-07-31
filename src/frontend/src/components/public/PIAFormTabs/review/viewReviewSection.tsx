@@ -1,7 +1,7 @@
 import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
 import { PiaStatuses } from '../../../../constant/constant';
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -51,7 +51,7 @@ const ViewReviewSection = (props: IReviewProps) => {
         <div className="mt-2">{reviewSection?.reviewedByDisplayName}</div>
       </div>
 
-      {reviewGuid === getGUID() && !printPreview && (
+      {reviewGuid === getGUID() && !printPreview && pia.status !== PiaStatuses.COMPLETE && (
         <div className=" col d-flex justify-content-end">
           <button
             className="bcgovbtn bcgovbtn__tertiary p-3"
