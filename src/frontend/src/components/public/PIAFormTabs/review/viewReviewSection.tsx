@@ -51,20 +51,22 @@ const ViewReviewSection = (props: IReviewProps) => {
         <div className="mt-2">{reviewSection?.reviewedByDisplayName}</div>
       </div>
 
-      {reviewGuid === getGUID() && !printPreview && pia.status !== PiaStatuses.COMPLETE && (
-        <div className=" col d-flex justify-content-end">
-          <button
-            className="bcgovbtn bcgovbtn__tertiary p-3"
-            onClick={() => {
-              if (editReviewNote) editReviewNote(true);
-              else if (stateChangeHandler) setEditReview(true);
-            }}
-          >
-            <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
-            Edit review
-          </button>
-        </div>
-      )}
+      {reviewGuid === getGUID() &&
+        !printPreview &&
+        pia.status !== PiaStatuses.COMPLETE && (
+          <div className=" col d-flex justify-content-end">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary p-3"
+              onClick={() => {
+                if (editReviewNote) editReviewNote(true);
+                else if (stateChangeHandler) setEditReview(true);
+              }}
+            >
+              <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
+              Edit review
+            </button>
+          </div>
+        )}
 
       <div className="row mt-4 ">
         <div className="col col-md-3">
