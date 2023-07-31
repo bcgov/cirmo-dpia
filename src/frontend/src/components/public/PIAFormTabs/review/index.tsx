@@ -18,6 +18,7 @@ import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
 import EditProgramAreaReview from './editProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import { statusList } from '../../../../utils/status';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -196,6 +197,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     const review = { isAcknowledged: mpoAcknowledged, reviewNote };
     stateChangeHandler(review, `mpo`, true);
   };
+
   return (
     <>
       <section>
@@ -300,8 +302,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     reviewForm.programArea?.selectedRoles.map(
                       (role: string, index: number) => {
                         return reviewForm.programArea?.selectedRoles &&
-                          (pia.status === PiaStatuses.FINAL_REVIEW ||
-                            pia.status === PiaStatuses.COMPLETE) ? (
+                          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                          statusList?.(pia)?.[pia?.status!]?.Pages?.review
+                            .viewProgramAreaReviews ? (
                           <div
                             className="d-flex align-items-center"
                             key={index}
