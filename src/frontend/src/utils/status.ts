@@ -51,6 +51,8 @@ interface StatusList {
     Pages?: PageAccessControl;
     finalReviewCompleted?: boolean;
     comments: boolean;
+    showCPOReview?: boolean;
+    showMPOReview?: boolean;
   };
 }
 
@@ -109,18 +111,20 @@ const defaultFinalReviewModal: Modal = {
   confirmLabel: 'Yes, finish',
   cancelLabel: 'Cancel',
 };
-
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   // this function use to check if the review tab has any data, if so, show warning modal, otherwise
   // display default modal
   if (
-    pia &&
-    (pia?.status === PiaStatuses.MPO_REVIEW ||
-      pia?.status === PiaStatuses.FINAL_REVIEW ||
-      pia?.status === PiaStatuses.CPO_REVIEW) &&
-    ((pia?.review?.programArea?.selectedRoles &&
-      pia?.review?.programArea?.selectedRoles?.length > 0) ||
-      pia?.review?.mpo?.isAcknowledged === true)
+    (pia &&
+      (pia?.status === PiaStatuses.MPO_REVIEW ||
+        pia?.status === PiaStatuses.FINAL_REVIEW ||
+        pia?.status === PiaStatuses.CPO_REVIEW) &&
+      ((pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0) ||
+        pia?.review?.mpo?.isAcknowledged === true)) ||
+    (pia?.review?.cpo &&
+      pia?.review?.cpo?.length > 0 &&
+      pia?.review?.cpo.some((review) => review.isAcknowledged === true))
   ) {
     return true;
   }
@@ -354,7 +358,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
       class: 'statusBlock__CPOReview',
       comments: true,
-      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
+      buttonText: checkButtonText(pia) || SubmitButtonTextEnum.COMPLETE_PIA,
       modal: defaultCPOReviewModal,
       Pages: {
         review: {

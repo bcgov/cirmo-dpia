@@ -101,12 +101,28 @@ function PIASubHeader({
     setModalCancelLabel(Messages.GenerateAccessLinkModal.cancelLabel);
   };
   useEffect(() => {
+    // enable finish review button condition
+    // Delegate PIA, MPO_review status, program area at least one role selected and mpo accepted accountability
+    // PI PIA, CPO_review status, same as delegate PIA, also at least one CPO need to accept accountability
     if (
-      pia?.status === PiaStatuses.MPO_REVIEW &&
-      pia?.review?.programArea?.selectedRoles &&
-      pia?.review?.programArea?.selectedRoles?.length > 0 &&
-      pia?.review?.mpo?.isAcknowledged === true &&
-      pia?.review?.mpo?.reviewNote !== ''
+      (pia?.status === PiaStatuses.MPO_REVIEW &&
+        pia?.hasAddedPiToDataElements === false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '') ||
+      (pia?.status === PiaStatuses.CPO_REVIEW &&
+        pia?.hasAddedPiToDataElements !== false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '' &&
+        pia?.review?.cpo &&
+        pia?.review.cpo?.length > 0 &&
+        pia?.review?.cpo?.every(
+          (review) =>
+            review.isAcknowledged === true && review.reviewNote !== '',
+        ))
     ) {
       setEnableFinalReview(true);
     } else {
@@ -114,6 +130,7 @@ function PIASubHeader({
     }
   }, [
     pia?.hasAddedPiToDataElements,
+    pia?.review?.cpo,
     pia?.review?.mpo?.isAcknowledged,
     pia?.review?.mpo?.reviewNote,
     pia?.review?.programArea?.selectedRoles,
