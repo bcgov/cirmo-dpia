@@ -39,7 +39,7 @@ const EditCPOReview = (props: IEditCPOReviewProps) => {
   return (
     <div className="d-grid gap-3">
       <div className="mt-2 pb-2">
-        <div className="row mb-5 p-3 pb-5 border border-2 rounded">
+        <div className="row mb-1 p-3 pb-5 border border-2 rounded">
           {reviewedByDisplayName && (
             <div className="col col-md-3">
               <b>Reviewed by</b>
