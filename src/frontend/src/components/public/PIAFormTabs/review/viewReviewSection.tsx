@@ -1,6 +1,5 @@
 import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
-import { PiaStatuses } from '../../../../constant/constant';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +36,7 @@ const ViewReviewSection = (props: IReviewProps) => {
   const canEditReviewNote =
     reviewGuid === getGUID() &&
     !printPreview &&
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
 
   const [editReview, setEditReview] = useState(false);
