@@ -277,15 +277,15 @@ export class PiaIntakeService {
 
     // Scenario 3: As a CPO, retrieve all pia-intakes in CPO_Review
     // CPO can only see CPO_REVIEW status in the Active PIAs
-    // And COMPLETED PIAs in the completed tab - when filterByStatus === COMPLETE
     if (isCPO) {
-      if (
-        query.filterByStatus &&
-        ![
-          PiaIntakeStatusEnum.CPO_REVIEW,
-          PiaIntakeStatusEnum.COMPLETE, // when query.filterByStatus === COMPLETE, do NOT skip the where clause. And the status gets overridden by /** filter logic here */
-        ].includes(query.filterByStatus)
-      ) {
+      const allStatuses = Object.values(PiaIntakeStatusEnum);
+      const exceptions = [
+        PiaIntakeStatusEnum.CPO_REVIEW, // CPOs must always see PIAs in CPO_REVIEW status by default
+        PiaIntakeStatusEnum.COMPLETE, // CPOs can see COMPLETE PIAs, if explicitly requested by status filter
+      ];
+      const statusIn = allStatuses.filter((s) => !exceptions.includes(s));
+
+      if (query.filterByStatus && statusIn.includes(query.filterByStatus)) {
         // skip this where clause
       } else {
         // default CPO query
