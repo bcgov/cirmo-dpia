@@ -2046,6 +2046,10 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
+            status: PiaIntakeStatusEnum.COMPLETE,
+          },
+          {
+            isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
