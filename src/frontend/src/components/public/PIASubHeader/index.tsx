@@ -192,6 +192,12 @@ function PIASubHeader({
       pia.status === PiaStatuses.MPO_REVIEW
     )
       return true;
+    else if (
+      userRoles.roles !== undefined &&
+      userRoles.roles[0].includes('CPO') &&
+      pia.status === PiaStatuses.CPO_REVIEW
+    )
+      return true;
     else return false;
   };
 
