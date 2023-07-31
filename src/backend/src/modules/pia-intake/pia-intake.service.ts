@@ -527,8 +527,8 @@ export class PiaIntakeService {
     const isCPO = this.isCPO(userRoles);
     if (
       isCPO &&
-      (piaIntake.status === PiaIntakeStatusEnum.COMPLETE ||
-        piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW ||
+      (piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW ||
+        piaIntake.status === PiaIntakeStatusEnum.COMPLETE ||
         piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW) // [UTOPIA-1112] fix cpo update pia status throw 403 error #1187;; WRONG FIX. If the status is changed other than CPO_Review.. user should be taken to a different page
       // currently user sees CPO_Review in their list; but can access MPO_Review also, if given direct link
       // TODO to be fixed
