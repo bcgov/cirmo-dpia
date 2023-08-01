@@ -45,10 +45,8 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   };
   return (
     <div>
-      {(props.pia.status === PiaStatuses.MPO_REVIEW ||
-        props.pia.status === PiaStatuses.CPO_REVIEW) && (
-        <h4 className="mb-3">Selected Roles</h4>
-      )}
+      {statusList(null)?.[Object(props.pia).status]?.Pages?.review?.params
+        ?.editProgramArea && <h4 className="mb-3">Selected Roles</h4>}
       {props.reviewForm.programArea?.selectedRoles.length > 0 ? (
         props.reviewForm.programArea?.selectedRoles.map(
           (role: string, index: number) => {
