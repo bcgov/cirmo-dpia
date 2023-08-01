@@ -46,7 +46,7 @@
     "@types/jest": "29.1.2",
     "@types/react": "18.0.17",
     "@types/react-datepicker": "4.4.2",
-    "@types/react-dom": "18.0.6",
+    "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "5.40.0",
     "@typescript-eslint/parser": "5.40.0",
     "@vitejs/plugin-react": "2.1.0",
