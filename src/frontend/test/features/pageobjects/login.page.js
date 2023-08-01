@@ -1,4 +1,7 @@
 const Page = require('./page');
+let mpoPass='';
+let cpoPass='';
+let drafterPass='';
 
 
 /**
@@ -39,10 +42,23 @@ class LoginPage extends Page {
      * e.g. to login using username and password
      */
 
-    async login (username) {
-        const mpoPass= process.env.mpoPass;
+    async login (username,role) {
         await this.inputUsername.setValue(username);
+        if(role=='MPO')
+        {
+        mpoPass= process.env.mpoPass;
         await this.inputPassword.setValue(mpoPass);
+        }
+        else if (role=='CPO')
+        {
+        cpoPass= process.env.cpoPass;
+        await this.inputPassword.setValue(cpoPass);
+        }
+        else if (role=='Drafter')
+        {
+        drafterPass= process.env.drafterPass;
+        await this.inputPassword.setValue(drafterPass);
+        }
         await this.btnSubmit.waitForClickable();
         await this.btnSubmit.click();
         await browser.pause(3000);     
