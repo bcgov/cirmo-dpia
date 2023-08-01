@@ -1,2 +1,2 @@
-*               eol=crlf
+*               eol=lf
 *.sh            text eol=lf
