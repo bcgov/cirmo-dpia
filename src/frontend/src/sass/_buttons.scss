@@ -196,6 +196,14 @@ a:hover {
   --text-color: #{$text-light};
 }
 
+.bcgovbtn__tertiary--negative {
+  --text-color: #{$error};
+}
+
+.bcgovbtn__tertiary--negative:hover {
+  text-decoration: underline;
+}
+
 /* TODO! This class needs to be removed as there is no login button as such */
 .btn-login,
 %btn-login {

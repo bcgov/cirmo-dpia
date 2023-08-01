@@ -1,5 +1,3 @@
-import InputText from '../../../../components/common/InputText/InputText';
-import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
@@ -13,7 +11,6 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
-import EditProgramAreaReview from './editProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import ProgramArea from './ProgamArea';
 
@@ -132,6 +129,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if the condition does satisfy the rule, add the adm to programArea
     // otherwise do nothing
     if (
+      pia?.hasAddedPiToDataElements !== false &&
       pia?.storingPersonalInformation?.personalInformation
         ?.storedOutsideCanada === YesNoInput.YES &&
       pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -144,6 +142,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     }
   }, [
     addRole,
+    pia?.hasAddedPiToDataElements,
     pia?.review?.programArea.selectedRoles,
     pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation

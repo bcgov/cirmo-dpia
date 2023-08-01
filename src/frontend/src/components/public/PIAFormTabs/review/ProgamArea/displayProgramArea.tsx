@@ -2,8 +2,8 @@ import ViewProgramAreaReview from '../viewProgramArea';
 import EditProgramAreaReview from '../editProgramArea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ApprovalRoles } from '../../../../../constant/constant';
-import { PiaStatuses } from '../../../../../constant/constant';
+import { ApprovalRoles, PiaStatuses } from '../../../../../constant/constant';
+
 import { getGUID } from '../../../../../utils/helper.util';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
@@ -89,7 +89,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                 {!props.reviewForm.programArea?.reviews?.[role] &&
                   !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
                     <button
-                      className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
+                      className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
                       onClick={() => {
                         props.reviewForm.programArea.selectedRoles?.splice(
                           index,
