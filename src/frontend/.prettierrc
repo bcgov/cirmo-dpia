@@ -3,5 +3,5 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "singleQuote": true,
-  "endOfLine": "crlf"
+  "endOfLine": "lf"
 }
