@@ -1,7 +1,6 @@
 import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
-import { PiaStatuses } from '../../../../constant/constant';
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,6 +8,7 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../../../utils/date';
 import { getGUID } from '../../../../utils/helper.util';
 import { IReviewSection, IReview } from './interfaces';
+import { statusList } from '../../../../utils/status';
 
 interface IReviewProps {
   pia: IPiaForm;
@@ -33,6 +33,12 @@ const ViewReviewSection = (props: IReviewProps) => {
 
   const reviewGuid = reviewSection?.reviewedByGuid;
 
+  const canEditReviewNote =
+    reviewGuid === getGUID() &&
+    !printPreview &&
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
+
   const [editReview, setEditReview] = useState(false);
   const [reviewNote, setReviewNote] = useState(
     pia.review?.programArea?.reviews?.[
@@ -51,7 +57,7 @@ const ViewReviewSection = (props: IReviewProps) => {
         <div className="mt-2">{reviewSection?.reviewedByDisplayName}</div>
       </div>
 
-      {reviewGuid === getGUID() && !printPreview && (
+      {canEditReviewNote && (
         <div className=" col d-flex justify-content-end">
           <button
             className="bcgovbtn bcgovbtn__tertiary p-3"

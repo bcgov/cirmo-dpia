@@ -6,6 +6,8 @@ import { SubmitButtonTextEnum } from '../pages/PIAForm';
 export type PageAccessControl = {
   [page: string]: {
     accessControl: boolean;
+    params?: any;
+    viewProgramAreaReviews?: boolean;
   };
 };
 
@@ -174,6 +176,9 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Pages: {
         review: {
           accessControl: false,
+          params: {
+            editReviewNote: true,
+          },
         },
       },
       Privileges: {
@@ -293,6 +298,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Pages: {
         review: {
           accessControl: true,
+          viewProgramAreaReviews: true,
         },
       },
       Privileges: {
@@ -363,6 +369,9 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Pages: {
         review: {
           accessControl: false,
+          params: {
+            editReviewNote: true,
+          },
         },
       },
       Privileges: {
@@ -414,6 +423,10 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Pages: {
         review: {
           accessControl: true,
+          viewProgramAreaReviews: true,
+          params: {
+            editReviewNote: true,
+          },
         },
       },
       Privileges: {
