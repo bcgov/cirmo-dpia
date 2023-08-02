@@ -23,9 +23,9 @@ interface InputTextProps {
   className?: string;
   value?: string | null;
   placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLElement>;
-  onFocus?: FocusEventHandler<HTMLElement>;
-  onEnter?: MouseEventHandler<HTMLElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onEnter?: MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
