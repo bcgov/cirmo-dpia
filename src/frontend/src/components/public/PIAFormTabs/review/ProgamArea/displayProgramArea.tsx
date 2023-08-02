@@ -43,70 +43,73 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
 
     return true;
   };
+
+  const getSelectedRoles = () => {
+    return props.reviewForm.programArea?.selectedRoles;
+  };
+
   return (
     <div>
       {statusList(null)?.[Object(props.pia).status]?.Pages?.review?.params
         ?.editProgramArea && <h4 className="mb-3">Selected Roles</h4>}
-      {props.reviewForm.programArea?.selectedRoles.length > 0 ? (
-        props.reviewForm.programArea?.selectedRoles.map(
-          (role: string, index: number) => {
-            return props.reviewForm.programArea?.selectedRoles &&
-              // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-              statusList?.(pia)?.[pia?.status!]?.Pages?.review
-                .viewProgramAreaReviews ? (
-              <div className="d-flex align-items-center" key={index}>
-                {!allowUserReviewProgramArea() ||
-                Object(props.pia?.review?.programArea)?.reviews?.[role]
-                  ?.isAcknowledged ? (
-                  <ViewProgramAreaReview
-                    pia={props.pia}
-                    role={role}
-                    stateChangeHandler={props.stateChangeHandler}
-                    isAcknowledged={
-                      Object(props.pia?.review?.programArea)?.reviews?.[role]
-                        ?.isAcknowledged || false
-                    }
-                  />
-                ) : (
-                  <EditProgramAreaReview
-                    pia={props.pia}
-                    role={role}
-                    stateChangeHandler={props.stateChangeHandler}
-                  />
+      {getSelectedRoles().length > 0 ? (
+        getSelectedRoles().map((role: string, index: number) => {
+          return getSelectedRoles() &&
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+            statusList?.(pia)?.[pia?.status!]?.Pages?.review
+              .viewProgramAreaReviews ? (
+            <div className="d-flex align-items-center" key={index}>
+              {!allowUserReviewProgramArea() ||
+              Object(props.pia?.review?.programArea)?.reviews?.[role]
+                ?.isAcknowledged ? (
+                <ViewProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                  isAcknowledged={
+                    Object(props.pia?.review?.programArea)?.reviews?.[role]
+                      ?.isAcknowledged || false
+                  }
+                />
+              ) : (
+                <EditProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                />
+              )}
+            </div>
+          ) : (
+            <div
+              key={index}
+              className="d-flex gap-1 justify-content-start align-items-center"
+            >
+              <p className="m-0 pt-2">{role}</p>
+              {props.mandatoryADM && role === ApprovalRoles.ADM ? (
+                <p className="m-0 pt-2 error-text">(required for this PIA)</p>
+              ) : null}
+              {!props.reviewForm.programArea?.reviews?.[role] &&
+                !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
+                  <button
+                    className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
+                    onClick={() => {
+                      props.reviewForm.programArea.selectedRoles?.splice(
+                        index,
+                        1,
+                      );
+                      props.stateChangeHandler(
+                        props.reviewForm.programArea.selectedRoles,
+                        'programArea.selectedRoles',
+                      );
+                      piaStateChangeHandler(props.reviewForm, 'review', true);
+                    }}
+                  >
+                    <FontAwesomeIcon className="" icon={faTrash} size="xl" />
+                  </button>
                 )}
-              </div>
-            ) : (
-              <div
-                key={index}
-                className="d-flex gap-1 justify-content-start align-items-center"
-              >
-                <p className="m-0 pt-2">{role}</p>
-                {props.mandatoryADM && role === ApprovalRoles.ADM ? (
-                  <p className="m-0 pt-2 error-text">(required for this PIA)</p>
-                ) : null}
-                {!props.reviewForm.programArea?.reviews?.[role] &&
-                  !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
-                    <button
-                      className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
-                      onClick={() => {
-                        props.reviewForm.programArea.selectedRoles?.splice(
-                          index,
-                          1,
-                        );
-                        props.stateChangeHandler(
-                          props.reviewForm.programArea.selectedRoles,
-                          'programArea.selectedRoles',
-                        );
-                        piaStateChangeHandler(props.reviewForm, 'review', true);
-                      }}
-                    >
-                      <FontAwesomeIcon className="" icon={faTrash} size="xl" />
-                    </button>
-                  )}
-              </div>
-            );
-          },
-        )
+            </div>
+          );
+        })
       ) : (
         <p>{messages.PiaReviewHeader.NoRolesSelected.en}</p>
       )}
