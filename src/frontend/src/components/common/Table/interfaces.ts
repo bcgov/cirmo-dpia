@@ -5,6 +5,7 @@ export interface ColumnMetaData {
   isDisable?: boolean;
   className?: string;
   hint?: string;
+  type?: string;
 }
 
 // default tabular data format - [{key1: value1, key2: value2}]

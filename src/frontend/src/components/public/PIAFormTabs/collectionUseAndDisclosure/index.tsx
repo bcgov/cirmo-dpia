@@ -54,6 +54,7 @@ const PIACollectionUseAndDisclosure = () => {
     {
       key: 'drafterInput',
       label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
+      type: 'textArea',
     },
     {
       key: 'mpoInput',

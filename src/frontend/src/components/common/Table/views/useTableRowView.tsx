@@ -31,7 +31,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               {/* Input Text */}
               {!props.readOnly && (
                 <InputText
-                  type="text"
+                  type={column.type ? column.type : 'text'}
                   value={rowData[column.key]}
                   labelSide="top"
                   label={column.label}

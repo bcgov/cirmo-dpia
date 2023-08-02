@@ -10,7 +10,7 @@ import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-type SupportedInputTypes = 'text' | 'email';
+type SupportedInputTypes = 'text' | 'email' | 'textArea' | string;
 
 interface InputTextProps {
   id?: string;
@@ -23,9 +23,9 @@ interface InputTextProps {
   className?: string;
   value?: string | null;
   placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  onFocus?: FocusEventHandler<HTMLInputElement>;
-  onEnter?: MouseEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLElement>;
+  onFocus?: FocusEventHandler<HTMLElement>;
+  onEnter?: MouseEventHandler<HTMLElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
@@ -71,7 +71,7 @@ const InputText = ({
   );
 
   useEffect(() => {
-    const inputRefCurrent = inputRef?.current as unknown as HTMLInputElement;
+    const inputRefCurrent = inputRef?.current as unknown as HTMLElement;
 
     if (!inputRefCurrent) return;
 
@@ -80,6 +80,14 @@ const InputText = ({
     return () =>
       inputRefCurrent.removeEventListener('keydown', keydownListener);
   }, [keydownListener]);
+
+  const checkTextArea = () => {
+    if (type === 'textArea') {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div
@@ -106,20 +114,36 @@ const InputText = ({
         </p>
       )}
       {!readOnly ? (
-        <input
-          id={inputId}
-          type={type}
-          value={value || ''}
-          placeholder={placeholder}
-          onChange={onChange}
-          onFocus={onFocus}
-          className="form-control"
-          required={required}
-          disabled={isDisabled}
-          readOnly={isAccessLink}
-          ref={inputRef}
-          aria-label={inputId}
-        />
+        checkTextArea() ? (
+          <textarea
+            id={inputId}
+            value={value || ''}
+            placeholder={placeholder}
+            onChange={onChange}
+            onFocus={onFocus}
+            className="form-control"
+            required={required}
+            disabled={isDisabled}
+            readOnly={isAccessLink}
+            ref={inputRef}
+            aria-label={inputId}
+          />
+        ) : (
+          <input
+            id={inputId}
+            type={type}
+            value={value || ''}
+            placeholder={placeholder}
+            onChange={onChange}
+            onFocus={onFocus}
+            className="form-control"
+            required={required}
+            disabled={isDisabled}
+            readOnly={isAccessLink}
+            ref={inputRef}
+            aria-label={inputId}
+          />
+        )
       ) : value ? (
         <p>{value}</p>
       ) : (
