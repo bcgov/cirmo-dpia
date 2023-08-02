@@ -119,6 +119,13 @@ const defaultPendingCompletionModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
+const defaultCompleteModal: Modal = {
+  title: 'Complete PIA?',
+  description: 'Before completing the PIA, make sure all necessary ministry reviews have occurred and confirm that data has been uploaded to the PID. This PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, complete',
+  cancelLabel: 'Cancel',
+};
+
 const checkButtonText = (pia: IPiaForm | null) => {
   // in MPO status the button text will different
   // for delegate PIA, the button text should finish review
@@ -302,7 +309,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     COMPLETE: {
       title: 'Complete',
       class: 'statusBlock__completed',
-      modal: defaultEmptyModal,
+      modal: defaultCompleteModal,
       comments: false,
       Pages: {
         review: {
