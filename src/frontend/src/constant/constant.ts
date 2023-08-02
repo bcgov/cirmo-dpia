@@ -274,3 +274,10 @@ export const ApprovalRoles: IapprovalRoles = {
   MCIO: 'Ministry Chief Information Officer',
   ADM: 'Assistant Deputy Minister',
 };
+
+export enum SubmitButtonTextEnum {
+  INTAKE = 'Submit',
+  FORM = 'Submit',
+  FINISH_REVIEW = 'Finish review',
+  COMPLETE_PIA = 'Complete PIA',
+}

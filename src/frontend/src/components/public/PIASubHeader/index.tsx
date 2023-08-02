@@ -4,7 +4,7 @@ import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { PiaStatuses } from '../../../constant/constant';
+import { PiaStatuses, SubmitButtonTextEnum } from '../../../constant/constant';
 import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
@@ -13,7 +13,6 @@ import { getGUID, roleCheck } from '../../../utils/helper.util';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
-import { SubmitButtonTextEnum } from '../../../pages/PIAForm';
 import { statusList } from '../../../utils/status';
 
 function PIASubHeader({
@@ -104,7 +103,6 @@ function PIASubHeader({
   useEffect(() => {
     if (
       pia?.status === PiaStatuses.MPO_REVIEW &&
-      pia?.hasAddedPiToDataElements === false &&
       pia?.review?.programArea?.selectedRoles &&
       pia?.review?.programArea?.selectedRoles?.length > 0 &&
       pia?.review?.mpo?.isAcknowledged === true &&
@@ -147,7 +145,7 @@ function PIASubHeader({
     }
     if (
       enableFinalReview === false &&
-      primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW
+      primaryButtonText === SubmitButtonTextEnum.FINISH_REVIEW
     ) {
       setDisableSubmitButton(true);
     } else if (

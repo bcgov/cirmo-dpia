@@ -1,7 +1,6 @@
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
-import { PiaStatuses } from '../constant/constant';
-import { SubmitButtonTextEnum } from '../pages/PIAForm';
+import { PiaStatuses, SubmitButtonTextEnum } from '../constant/constant';
 
 export type PageAccessControl = {
   [page: string]: {
@@ -110,18 +109,7 @@ const defaultFinalReviewModal: Modal = {
   confirmLabel: 'Yes, finish',
   cancelLabel: 'Cancel',
 };
-const checkButtonText = (pia: IPiaForm | null) => {
-  // in MPO status the button text will different
-  // for delegate PIA, the button text should finish review
-  // for standard PIA, the button text still as submit
-  if (pia === null) return;
-  if (
-    pia.status === PiaStatuses.MPO_REVIEW &&
-    pia.hasAddedPiToDataElements === false
-  )
-    return SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW;
-  return SubmitButtonTextEnum.FORM;
-};
+
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   // this function use to check if the review tab has any data, if so, show warning modal, otherwise
   // display default modal
@@ -171,13 +159,15 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       title: 'MPO Review',
       class: 'statusBlock__MPOReview',
       comments: true,
-      buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FORM,
+      // in MPO status the button text will different
+      buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
       modal: defaultMPOReviewModal,
       Pages: {
         review: {
           accessControl: false,
           params: {
             editReviewNote: true,
+            editProgramArea: true,
           },
         },
       },
@@ -371,6 +361,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           accessControl: false,
           params: {
             editReviewNote: true,
+            editProgramArea: true,
           },
         },
       },
