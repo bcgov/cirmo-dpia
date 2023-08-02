@@ -184,7 +184,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Navigate to frontend dir, install dependencies, execute cypress command
+    # Navigate to frontend dir, install dependencies, execute WebDriverIO command
     - name: Setup and Execute WebDriverIO e2e test suite
       shell: bash
       env:
