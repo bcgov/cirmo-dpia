@@ -6,7 +6,9 @@ export interface IReview {
     };
   };
   mpo: IReviewSection;
-  cpo?: Array<IReviewSection>;
+  cpo?: {
+    [guid: string]: IReviewSection;
+  };
 }
 
 export interface IReviewSection {

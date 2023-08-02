@@ -1,6 +1,13 @@
 import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { PiaStatuses } from '../../../../constant/constant';
+import {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useEffect,
+  MouseEventHandler,
+} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,27 +16,44 @@ import { dateToString } from '../../../../utils/date';
 import { getGUID } from '../../../../utils/helper.util';
 import { IReviewSection, IReview } from './interfaces';
 import { statusList } from '../../../../utils/status';
+import EditReviewSection from './editReviewSection';
 
 interface IReviewProps {
   pia: IPiaForm;
-  reviewSection?: IReviewSection;
-  editReviewNote?: Dispatch<SetStateAction<boolean>>;
+  editReviewNote: Dispatch<SetStateAction<boolean>>;
+  setAcknowledged: Dispatch<SetStateAction<boolean>>;
+  setReviewNote: Dispatch<SetStateAction<string>>;
   stateChangeHandler?: (value: any, path: string, callApi?: boolean) => void;
   printPreview?: boolean;
   role?: string;
   isAcknowledged: boolean;
   section?: string;
+  reviewedAtTime?: string;
+  reviewedByDisplayName?: string;
+  reviewNote: string;
+  checkBoxLabel: string;
+  canEditReview?: boolean;
+  onConfirmClick: MouseEventHandler<HTMLButtonElement>;
+  onClearClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ViewReviewSection = (props: IReviewProps) => {
   const {
     pia,
-    reviewSection,
     printPreview,
     editReviewNote,
+    setAcknowledged,
+    setReviewNote,
     stateChangeHandler,
     role,
     isAcknowledged,
+    reviewedAtTime,
+    reviewedByDisplayName,
+    reviewNote,
+    checkBoxLabel,
+    canEditReview,
+    onClearClick = () => {},
+    onConfirmClick = () => {},
   } = props;
 
   const reviewGuid = reviewSection?.reviewedByGuid;
@@ -41,107 +65,72 @@ const ViewReviewSection = (props: IReviewProps) => {
     statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
 
   const [editReview, setEditReview] = useState(false);
-  const [reviewNote, setReviewNote] = useState(
-    pia.review?.programArea?.reviews?.[
-      role as keyof IReview['programArea']['reviews']
-    ]?.reviewNote,
-  );
 
-  const handleClear = () => {
-    stateChangeHandler?.(null, `programArea.reviews.${role}`, true);
-  };
-  return (
-    <div className="row mb-5 p-3 pb-5 border border-2 rounded">
-      <h3>{role}</h3>
-      <div className="col col-md-3">
-        <b>Reviewed by</b>
-        <div className="mt-2">{reviewSection?.reviewedByDisplayName}</div>
-      </div>
-
-      {canEditReviewNote && (
-        <div className=" col d-flex justify-content-end">
-          <button
-            className="bcgovbtn bcgovbtn__tertiary p-3"
-            onClick={() => {
-              if (editReviewNote) editReviewNote(true);
-              else if (stateChangeHandler) setEditReview(true);
-            }}
-          >
-            <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
-            Edit review
-          </button>
-        </div>
-      )}
-
-      <div className="row mt-4 ">
+  return editReview ? (
+    <EditReviewSection
+      pia={pia}
+      isAcknowledged={isAcknowledged}
+      reviewNote={reviewNote}
+      editReviewNote={editReviewNote}
+      setAcknowledged={setAcknowledged}
+      setReviewNote={setReviewNote}
+      checkBoxLabel={
+        messages.PiaReviewHeader.MinistrySection.MPO.Input.AcceptAccountability
+          .en
+      }
+      reviewNoteOption={'required'}
+      onClearClick={onClearClick}
+      onConfirmClick={onConfirmClick}
+    />
+  ) : (
+    <>
+      <div className="row mb-5 p-3 pb-5 border border-2 rounded">
+        {role ? <h3>{role}</h3> : null}
         <div className="col col-md-3">
-          <b>Date reviewed</b>
-          <div className="mt-2">
-            {reviewSection?.reviewedAt
-              ? dateToString(new Date(reviewSection?.reviewedAt))
-              : 'N/A'}
+          <b>Reviewed by</b>
+          <div className="mt-2">{reviewedByDisplayName}</div>
+        </div>
+
+        {canEditReview && (
+          <div className=" col d-flex justify-content-end">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary p-3"
+              onClick={() => {
+                if (editReviewNote) editReviewNote(true);
+                else if (stateChangeHandler) setEditReview(true);
+              }}
+            >
+              <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />
+              Edit review
+            </button>
+          </div>
+        )}
+
+        <div className="row mt-4 ">
+          <div className="col col-md-3">
+            <b>Date reviewed</b>
+            <div className="mt-2">
+              {reviewedAtTime ? dateToString(new Date(reviewedAtTime)) : 'N/A'}
+            </div>
           </div>
         </div>
-      </div>
+        <div className="row mt-4">
+          <Checkbox
+            value=""
+            checked={isAcknowledged}
+            isLink={false}
+            label={checkBoxLabel}
+            readOnly={true}
+          />
+        </div>
 
-      <div className="row mt-4">
-        <Checkbox
-          value=""
-          checked={isAcknowledged}
-          isLink={false}
-          label={
-            messages.PiaReviewHeader.MinistrySection.MPO.Input
-              .AcceptAccountability.en
-          }
-          readOnly={!editReview}
-        />
-      </div>
-      {(editReview || reviewSection?.reviewNote) && (
         <div className="row mt-4">
           <b>Review note</b>
-          {editReview ? (
-            <div className="mt-1 pb-5">
-              <textarea
-                className="w-50 h-100"
-                rows={5}
-                cols={50}
-                value={reviewNote}
-                onChange={(e) => setReviewNote(e.target.value)}
-              />
-              <div className="d-flex gap-3 mt-2">
-                <button
-                  className="bcgovbtn bcgovbtn__secondary"
-                  onClick={handleClear}
-                >
-                  Clear
-                </button>
-                <button
-                  disabled={
-                    reviewNote ===
-                    pia.review?.programArea?.reviews?.[
-                      role as keyof IReview['programArea']['reviews']
-                    ]?.reviewNote
-                  }
-                  className="bcgovbtn bcgovbtn__primary"
-                  onClick={() => {
-                    stateChangeHandler?.(
-                      reviewNote,
-                      `programArea.reviews.${role}.reviewNote`,
-                      true,
-                    );
-                    setEditReview(false);
-                  }}
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-2">{reviewSection?.reviewNote}</div>
-          )}
+
+          <div className="mt-2">{reviewNote}</div>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

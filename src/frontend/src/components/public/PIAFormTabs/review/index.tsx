@@ -20,6 +20,7 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import ProgramArea from './ProgamArea';
 import EditCPOReview from './editCPOReview';
 import ViewCPOReview from './viewCPOReview';
+import EditMPOReview from './editMPOReview';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -38,12 +39,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         isAcknowledged: false,
         reviewNote: '',
       },
-      cpo: [
-        {
-          isAcknowledged: false,
-          reviewNote: '',
-        },
-      ],
+      cpo: {},
     }),
     [],
   );
@@ -254,71 +250,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                   <ViewMPOReview
                     pia={pia}
                     stateChangeHandler={stateChangeHandler}
-                    isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
                   />
                 ) : (
-                  <>
-                    <div className="data-row">
-                      <Checkbox
-                        value=""
-                        isLink={false}
-                        checked={mpoAcknowledged}
-                        label={
-                          messages.PiaReviewHeader.MinistrySection.MPO.Input
-                            .AcceptAccountability.en
-                        }
-                        onChange={(e) => setMpoAcknowledged(e.target.checked)}
-                      />
-                      {mpoAcknowledged && (
-                        <div className="d-block pb-3">
-                          <div>
-                            <div className="d-block pb-3">
-                              <b>
-                                {
-                                  messages.PiaReviewHeader.MinistrySection.MPO
-                                    .Input.ReviewNote.en
-                                }
-                                &nbsp;
-                                {pia.hasAddedPiToDataElements === false ? (
-                                  <span className="error-text">(required)</span>
-                                ) : (
-                                  <span>(optional)</span>
-                                )}
-                              </b>
-                            </div>
-                            <div className="d-block">
-                              <textarea
-                                className="w-50 h-200"
-                                value={reviewNote}
-                                onChange={(e) => {
-                                  setReviewNote(e.target.value);
-                                }}
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div className="d-flex">
-                            <button
-                              className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
-                              onClick={() => {
-                                setReviewNote('');
-                                setMpoAcknowledged(false);
-                                stateChangeHandler(null, 'mpo', true);
-                              }}
-                            >
-                              Clear
-                            </button>
-                            <button
-                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                              disabled={disableConfirmButton()}
-                              onClick={handleMPOReviewSubmit}
-                            >
-                              Confirm
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
+                  <EditMPOReview
+                    pia={pia}
+                    stateChangeHandler={stateChangeHandler}
+                  />
                 )}
               </div>
             </div>
@@ -419,7 +356,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             pia={pia}
             printPreview
             stateChangeHandler={stateChangeHandler}
-            isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
           />
           {pia?.review?.cpo?.map((_: any, index: number) => (
             <>

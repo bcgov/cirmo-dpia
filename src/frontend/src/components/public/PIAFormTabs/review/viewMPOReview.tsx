@@ -1,18 +1,49 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
 import { IReviewSection } from './interfaces';
+import { getGUID } from '../../../../utils/helper.util';
+import { statusList } from '../../../../utils/status';
+import messages from './messages';
 
 interface IMPOReviewProps {
   pia: IPiaForm;
   printPreview?: boolean;
-  isAcknowledged: boolean;
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
 }
 
 const ViewMPOReview = (props: IMPOReviewProps) => {
-  const { pia, printPreview, isAcknowledged, stateChangeHandler } = props;
+  const { pia, printPreview, stateChangeHandler } = props;
+  const reviewedByDisplayName = Object(
+    props.pia?.review?.mpo,
+  )?.reviewedByDisplayName;
+
+  const reviewedAt = Object(props.pia?.review?.mpo)?.reviewedAt;
+  const reviewGuid = Object(props.pia?.review?.mpo)?.reviewedByGuid;
+
+  /**
+   * Local state for the checkbox and review note
+   */
+  const [acknowledged, setAcknowledged] = useState(
+    pia.review?.mpo?.isAcknowledged || false,
+  );
+  const [reviewNote, setReviewNote] = useState(
+    pia.review?.mpo?.reviewNote || '',
+  );
+  const [editReviewNote, setEditReviewNote] = useState(false);
+  const handleSubmit = () => {
+    const review = { isAcknowledged: acknowledged, reviewNote };
+    stateChangeHandler(review, `mpo`, true);
+  };
+  const handleClear = () => {
+    stateChangeHandler(null, `mpo`, true);
+  };
+  const canEditReviewNote =
+    reviewGuid === getGUID() &&
+    !printPreview &&
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.accessControl;
 
   return (
     <div className="d-grid gap-3">
@@ -27,20 +58,43 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
             <div>
               <ViewReviewSection
                 pia={pia}
-                reviewSection={pia.review?.mpo}
                 printPreview
-                isAcknowledged={isAcknowledged}
+                editReviewNote={setEditReviewNote}
+                isAcknowledged={acknowledged}
+                setAcknowledged={setAcknowledged}
+                setReviewNote={setReviewNote}
+                reviewedByDisplayName={reviewedByDisplayName}
+                reviewNote={reviewNote}
+                reviewedAtTime={reviewedAt}
+                checkBoxLabel={
+                  messages.PiaReviewHeader.MinistrySection.MPO.Input
+                    .AcceptAccountability.en
+                }
+                canEditReview={canEditReviewNote}
+                onClearClick={handleClear}
+                onConfirmClick={handleSubmit}
               />
             </div>
           )}
         </div>
       ) : (
         <ViewReviewSection
-          isAcknowledged={isAcknowledged}
           pia={pia}
-          reviewSection={pia?.review?.mpo}
-          stateChangeHandler={stateChangeHandler}
-          section="MPO"
+          printPreview
+          editReviewNote={setEditReviewNote}
+          isAcknowledged={acknowledged}
+          setAcknowledged={setAcknowledged}
+          setReviewNote={setReviewNote}
+          reviewedByDisplayName={reviewedByDisplayName}
+          reviewNote={reviewNote}
+          reviewedAtTime={reviewedAt}
+          checkBoxLabel={
+            messages.PiaReviewHeader.MinistrySection.MPO.Input
+              .AcceptAccountability.en
+          }
+          canEditReview={canEditReviewNote}
+          onClearClick={handleClear}
+          onConfirmClick={handleSubmit}
         />
       )}
     </div>
