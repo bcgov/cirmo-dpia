@@ -5,4 +5,5 @@ export interface IFormField<T> {
   type?: 'text' | 'boolean'; // add ORs for future support if needed
   isRichText?: boolean;
   allowedUserTypesEdit: Array<UserTypesEnum>; // null if no role restrictions apply
+  isSystemGeneratedField?: boolean;
 }
