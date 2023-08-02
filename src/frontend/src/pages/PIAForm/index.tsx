@@ -373,6 +373,10 @@ const PIAFormPage = () => {
         );
         setPiaModalButtonValue('SubmitDelegateForFinalReview');
         break;
+      case 'SubmitForPendingCompletion':
+        PopulateModal(pia, PiaStatuses.PENDING_COMPLETION, populateModalFn);
+        setPiaModalButtonValue(modalType);
+        break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
         setPiaModalTitleText(
@@ -656,6 +660,17 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'SubmitForPendingCompletion') {
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.PENDING_COMPLETION,
+        });
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
       } else if (buttonValue === 'conflict') {
         // noop
       } else if (buttonValue === 'autoSaveFailed') {
@@ -709,6 +724,8 @@ const PIAFormPage = () => {
           handleShowModal('SubmitForCPOReview');
         }
       } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
+        handleShowModal('SubmitForPendingCompletion');
+      } else if (pia?.status === PiaStatuses.PENDING_COMPLETION) {
         handleShowModal('completePIA');
       } else {
         handleShowModal('submitPiaForm');

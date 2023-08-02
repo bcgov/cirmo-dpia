@@ -7,10 +7,10 @@ export const OtherFactor = [
     label: 'Sensitive personal information',
     value: 'hasSensitivePersonalInformation',
     tooltip: false,
-    tooltipText: `There is no complete definition for sensitive personal information. That’s because 
-    sensitivity depends on context and the type of personal information involved. Any type of personal 
-    information can be sensitive in one context, and not sensitive in others. Ask your MPO for help, 
-    and learn more about sensitive personal information. Ask your MPO for help to identify whether 
+    tooltipText: `There is no complete definition for sensitive personal information. That’s because
+    sensitivity depends on context and the type of personal information involved. Any type of personal
+    information can be sensitive in one context, and not sensitive in others. Ask your MPO for help,
+    and learn more about sensitive personal information. Ask your MPO for help to identify whether
     personal information in your initiative is sensitive.`,
     isLink: true,
     linkURL: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessments/guidance-on-disclosures-outside-of-canada#sensitive`,
@@ -19,7 +19,7 @@ export const OtherFactor = [
     label: 'Common or integrated program agreement',
     value: 'hasProgramAgreement',
     tooltip: false,
-    tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information 
+    tooltipText: `A CIPA is an agreement that allows two or more public bodies to share personal information
     for the purpose of providing a service.`,
   },
   {
@@ -30,9 +30,9 @@ export const OtherFactor = [
     label: 'Cloud technology',
     value: 'hasCloudTechnology',
     tooltip: false,
-    tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a 
-    service through a web browser, that’s a good indication that you’re using a cloud service. If you’re 
-    working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using 
+    tooltipText: `Cloud technology means a service provided on-demand over the internet. If you access a
+    service through a web browser, that’s a good indication that you’re using a cloud service. If you’re
+    working on a contract that includes software-, infrastructure- or platform-as-a-service, you’re using
     cloud.`,
   },
   {
@@ -58,7 +58,7 @@ export const OtherFactor = [
     label: 'BC Services Card Onboarding',
     value: 'hasBcServicesCardOnboarding',
     tooltip: false,
-    tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate 
+    tooltipText: `The BC Services Card is a government-issued ID. Program areas use the card to authenticate
     a user’s identity when the user accesses a service.`,
   },
   {
@@ -187,6 +187,7 @@ export const PiaStatusList = [
   { label: 'Edit In Progress', value: 'EDIT_IN_PROGRESS' },
   { label: 'MPO Review', value: 'MPO_REVIEW' },
   { label: 'CPO Review', value: 'CPO_REVIEW' },
+  { label: 'Pending Completion', value: 'PENDING_COMPLETION' },
 ];
 export const PiaDrafterFilterList = [
   {
@@ -255,6 +256,7 @@ export enum PiaStatuses {
   COMPLETE = 'COMPLETE',
   WITHDRAWN = 'WITHDRAWN',
   FINAL_REVIEW = 'FINAL_REVIEW',
+  PENDING_COMPLETION = 'PENDING_COMPLETION',
 }
 
 export enum PiaSorting {

@@ -110,6 +110,15 @@ const defaultFinalReviewModal: Modal = {
   confirmLabel: 'Yes, finish',
   cancelLabel: 'Cancel',
 };
+
+const defaultPendingCompletionModal: Modal = {
+  title: 'Submit for completion?',
+  description:
+    'Status will change to “Pending Completion”. Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, submit',
+  cancelLabel: 'Cancel',
+};
+
 const checkButtonText = (pia: IPiaForm | null) => {
   // in MPO status the button text will different
   // for delegate PIA, the button text should finish review
@@ -310,8 +319,9 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     PENDING_COMPLETION: {
       title: 'Pending completion',
       class: 'statusBlock__pending-completion',
-      modal: defaultEmptyModal,
+      modal: defaultPendingCompletionModal,
       comments: false,
+      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       Pages: {
         review: {
           accessControl: true,
