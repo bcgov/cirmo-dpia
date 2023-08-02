@@ -187,6 +187,7 @@ export const PiaStatusList = [
   { label: 'Edit In Progress', value: 'EDIT_IN_PROGRESS' },
   { label: 'MPO Review', value: 'MPO_REVIEW' },
   { label: 'CPO Review', value: 'CPO_REVIEW' },
+  { label: 'Final Review', value: 'FINAL_REVIEW' },
 ];
 export const PiaDrafterFilterList = [
   {
