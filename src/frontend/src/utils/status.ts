@@ -524,16 +524,6 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 cancelLabel: 'Cancel',
               },
             },
-            {
-              status: 'COMPLETE',
-              modal: {
-                title: 'Submit for Completion',
-                description:
-                  'Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
-                confirmLabel: 'Yes, submit',
-                cancelLabel: 'Cancel',
-              },
-            },
           ],
         },
         CPO: {
