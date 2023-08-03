@@ -2571,7 +2571,7 @@ describe('PiaIntakeService', () => {
         service.update(123, updatePiaIntakeDto, user, userRoles),
       ).rejects.toThrow(
         new ForbiddenException({
-          message: 'You do not have permissions to update review in this status',
+          message: 'You do not permissions to update review in this status',
         }),
       );
     });
