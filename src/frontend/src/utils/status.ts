@@ -113,6 +113,22 @@ const defaultFinalReviewModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
+const defaultPendingCompletionModal: Modal = {
+  title: 'Submit for completion?',
+  description:
+    'Status will change to “Pending Completion”. Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, submit',
+  cancelLabel: 'Cancel',
+};
+
+const defaultCompleteModal: Modal = {
+  title: 'Complete PIA?',
+  description:
+    'Before completing the PIA, make sure all necessary ministry reviews have occurred and confirm that data has been uploaded to the PID. This PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, complete',
+  cancelLabel: 'Cancel',
+};
+
 const checkButtonText = (pia: IPiaForm | null) => {
   // in MPO status the button text will different
   // for delegate PIA, the button text should finish review
@@ -303,7 +319,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     COMPLETE: {
       title: 'Complete',
       class: 'statusBlock__completed',
-      modal: defaultEmptyModal,
+      modal: defaultCompleteModal,
       comments: false,
       Pages: {
         review: {
@@ -314,6 +330,78 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Privileges: {
         MPO: {
           changeStatus: [],
+        },
+      },
+    },
+    PENDING_COMPLETION: {
+      title: 'Pending completion',
+      class: 'statusBlock__pending-completion',
+      modal: defaultPendingCompletionModal,
+      comments: false,
+      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
+      Pages: {
+        review: {
+          accessControl: true,
+          viewProgramAreaReviews: true,
+        },
+      },
+      Privileges: {
+        MPO: {
+          changeStatus: [],
+        },
+        CPO: {
+          changeStatus: [
+            {
+              status: 'CPO_REVIEW',
+              modal: {
+                title: 'Unlock PIA?',
+                description:
+                  'The status will be changed to "CPO Review" and this PIA will be unlocked.',
+                confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'INCOMPLETE',
+              modal: {
+                title: 'Unlock PIA? Reviews will not be saved.',
+                description:
+                  'Changing status to Incomplete will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+                confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'EDIT_IN_PROGRESS',
+              modal: {
+                title: 'Unlock PIA? Reviews will not be saved.',
+                description:
+                  'Changing status to Edit in progress will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+                confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'MPO_REVIEW',
+              modal: {
+                title: 'Unlock PIA?',
+                description:
+                  'The status will be changed to "MPO Review" and this PIA will be unlocked.',
+                confirmLabel: 'Yes, unlock',
+                cancelLabel: 'Cancel',
+              },
+            },
+            {
+              status: 'FINAL_REVIEW',
+              modal: {
+                title: 'Change status to Final Review?',
+                description:
+                  'The status will be changed back to Final Review. Review data will be retained and PIA will remain locked.',
+                confirmLabel: 'Yes, change',
+                cancelLabel: 'Cancel',
+              },
+            },
+          ],
         },
       },
     },
@@ -470,16 +558,6 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 description:
                   'The status will be changed to "MPO Review" and this PIA will be unlocked.',
                 confirmLabel: 'Yes, unlock',
-                cancelLabel: 'Cancel',
-              },
-            },
-            {
-              status: 'COMPLETE',
-              modal: {
-                title: 'Submit for Completion',
-                description:
-                  'Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
-                confirmLabel: 'Yes, submit',
                 cancelLabel: 'Cancel',
               },
             },
