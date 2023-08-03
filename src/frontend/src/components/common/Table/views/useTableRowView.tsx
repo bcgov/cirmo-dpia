@@ -2,6 +2,7 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import InputText from '../../InputText/InputText';
 import { TableViewProps } from './table-view-props.interface';
+import { TextInputType } from '../../../../constant/constant';
 
 type UseTableRowViewProps = TableViewProps;
 
@@ -31,7 +32,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               {/* Input Text */}
               {!props.readOnly && (
                 <InputText
-                  type={column.type ? column.type : 'text'}
+                  type={column.type ? column.type : TextInputType.INPUTTEXT}
                   value={rowData[column.key]}
                   labelSide="top"
                   label={column.label}

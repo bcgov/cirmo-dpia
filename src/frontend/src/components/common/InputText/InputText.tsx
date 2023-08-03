@@ -9,6 +9,7 @@ import {
 import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TextInputType } from '../../../constant/constant';
 
 type SupportedInputTypes = 'text' | 'email' | 'textArea' | string;
 
@@ -40,7 +41,7 @@ const InputText = ({
   linkText = '',
   linkHref = '',
   hasIcon = false,
-  type = 'text',
+  type = TextInputType.INPUTTEXT,
   className = '',
   value = '',
   placeholder = '',
@@ -82,7 +83,7 @@ const InputText = ({
   }, [keydownListener]);
 
   const checkTextArea = () => {
-    if (type === 'textArea') {
+    if (type === TextInputType.INPUTTEXTAREA) {
       return true;
     } else {
       return false;

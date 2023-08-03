@@ -274,3 +274,8 @@ export const ApprovalRoles: IapprovalRoles = {
   MCIO: 'Ministry Chief Information Officer',
   ADM: 'Assistant Deputy Minister',
 };
+
+export enum TextInputType {
+  INPUTTEXT = 'text',
+  INPUTTEXTAREA = 'textArea',
+}
