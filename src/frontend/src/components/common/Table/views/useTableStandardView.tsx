@@ -40,7 +40,9 @@ export const UseTableStandardView = (props: UseTableStandardViewProps) => {
                     >
                       {!props.readOnly ? (
                         <InputText
-                          type={column.type ? column.type : TextInputType.INPUTTEXT}
+                          type={
+                            column.type ? column.type : TextInputType.INPUTTEXT
+                          }
                           value={rowData?.[column.key]}
                           labelSide="left"
                           label={
