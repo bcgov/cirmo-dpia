@@ -1,4 +1,8 @@
-import { PiaStatuses, PIOptions } from '../../constant/constant';
+import {
+  PiaStatuses,
+  PIOptions,
+  SubmitButtonTextEnum,
+} from '../../constant/constant';
 import Messages from './messages';
 import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
@@ -46,13 +50,6 @@ export interface PiaValidationMessage {
   piaInitialDescription?: string | null;
   ppqProposeDeadline?: string | null;
   ppqProposeDeadlineReason?: string | null;
-}
-
-export enum SubmitButtonTextEnum {
-  INTAKE = 'Submit',
-  FORM = 'Submit',
-  DELEGATE_FINISH_REVIEW = 'Finish review',
-  COMPLETE_PIA = 'Complete PIA',
 }
 
 export enum PiaFormSubmissionTypeEnum {

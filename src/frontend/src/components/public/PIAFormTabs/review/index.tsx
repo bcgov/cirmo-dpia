@@ -1,13 +1,8 @@
-import InputText from '../../../../components/common/InputText/InputText';
-import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview } from './interfaces';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getGUID } from '../../../../utils/helper.util';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -16,9 +11,8 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
-import EditProgramAreaReview from './editProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
-import { statusList } from '../../../../utils/status';
+import ProgramArea from './ProgamArea';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -62,8 +56,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     if (callApi) setUpdatePia(true);
   };
 
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
   const [reviewNote, setReviewNote] = useState<string>(
     pia?.review?.mpo?.reviewNote || '',
   );
@@ -137,6 +129,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if the condition does satisfy the rule, add the adm to programArea
     // otherwise do nothing
     if (
+      pia?.hasAddedPiToDataElements !== false &&
       pia?.storingPersonalInformation?.personalInformation
         ?.storedOutsideCanada === YesNoInput.YES &&
       pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -149,6 +142,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     }
   }, [
     addRole,
+    pia?.hasAddedPiToDataElements,
     pia?.review?.programArea.selectedRoles,
     pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -157,23 +151,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
 
-  const allowUserReviewProgramArea = () => {
-    // if selectedRoles is null means none of selectedRole got reviewed so return true
-    // otherwise loop all the role in reviews part to see if the current user already did review
-
-    const userGuid = getGUID();
-    const selectedRoles = reviewForm?.programArea?.selectedRoles;
-    if (selectedRoles === null) return true;
-    for (const role of selectedRoles) {
-      if (
-        reviewForm?.programArea?.reviews?.[role]?.reviewedByGuid === userGuid
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  };
   const disableConfirmButton = () => {
     if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
       return true;
@@ -215,170 +192,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       </section>
       {!printPreview ? (
         <>
-          <section className="drop-shadow card p-4 p-md-5">
-            <div className="data-table__container">
-              <div
-                className={`${
-                  (pia.status === PiaStatuses.MPO_REVIEW ||
-                    pia.status === PiaStatuses.CPO_REVIEW) &&
-                  'data-row'
-                }`}
-              >
-                {/**
-                 * UI for adding roles to the program area section starts here
-                 */}
-                {(pia.status === PiaStatuses.MPO_REVIEW ||
-                  pia.status === PiaStatuses.CPO_REVIEW) && (
-                  <>
-                    <div className="d-flex">
-                      <div className="p-2 col-md-5">
-                        <Dropdown
-                          id="programArea"
-                          label="Select a role from the list"
-                          options={Object.keys(ApprovalRoles)
-                            .filter(
-                              (role) =>
-                                !reviewForm.programArea?.selectedRoles?.includes(
-                                  ApprovalRoles[role],
-                                ),
-                            )
-                            .map((role: string) => ({
-                              value: role,
-                              label: ApprovalRoles[role],
-                            }))}
-                          value={rolesSelect}
-                          changeHandler={(e) => setRolesSelect(e.target.value)}
-                        />
-                        <button
-                          className="bcgovbtn bcgovbtn__secondary mt-3"
-                          onClick={() => {
-                            addRole(ApprovalRoles[rolesSelect]);
-                            setRolesSelect('');
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
-                      <div className="p-2 col-md-2 d-flex justify-content-center align-items-center">
-                        Or
-                      </div>
-                      <div className="p-2 col-md-5">
-                        <InputText
-                          id="programArea"
-                          label={
-                            messages.PiaReviewHeader.ProgramAreaSection.Input
-                              .EnterRoleTitle.en
-                          }
-                          value={rolesInput}
-                          onChange={(e) => setRolesInput(e.target.value)}
-                        />
-                        <button
-                          className="bcgovbtn bcgovbtn__secondary mt-3"
-                          onClick={() => {
-                            addRole(rolesInput);
-                            setRolesInput('');
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                    <div className="horizontal-divider mt-5 mb-5"></div>
-                  </>
-                )}
-                {/**
-                 * UI for adding roles to the program area section ends here
-                 */}
-
-                {/**
-                 * UI for displaying selected roles in the program area section starts here
-                 */}
-                <div>
-                  {(pia.status === PiaStatuses.MPO_REVIEW ||
-                    pia.status === PiaStatuses.CPO_REVIEW) && (
-                    <h4 className="mb-3">Selected Roles</h4>
-                  )}
-                  {reviewForm.programArea?.selectedRoles.length > 0 ? (
-                    reviewForm.programArea?.selectedRoles.map(
-                      (role: string, index: number) => {
-                        return reviewForm.programArea?.selectedRoles &&
-                          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                          statusList?.(pia)?.[pia?.status!]?.Pages?.review
-                            .viewProgramAreaReviews ? (
-                          <div
-                            className="d-flex align-items-center"
-                            key={index}
-                          >
-                            {!allowUserReviewProgramArea() ||
-                            Object(pia?.review?.programArea)?.reviews?.[role]
-                              ?.isAcknowledged ? (
-                              <ViewProgramAreaReview
-                                pia={pia}
-                                role={role}
-                                stateChangeHandler={stateChangeHandler}
-                                isAcknowledged={
-                                  Object(pia?.review?.programArea)?.reviews?.[
-                                    role
-                                  ]?.isAcknowledged || false
-                                }
-                              />
-                            ) : (
-                              <EditProgramAreaReview
-                                pia={pia}
-                                role={role}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            )}
-                          </div>
-                        ) : (
-                          <div
-                            key={index}
-                            className="d-flex gap-1 justify-content-start align-items-center"
-                          >
-                            <p className="m-0 pt-2">{role}</p>
-                            {mandatoryADM && role === ApprovalRoles.ADM ? (
-                              <p className="m-0 pt-2 error-text">
-                                (required for this PIA)
-                              </p>
-                            ) : null}
-                            {!reviewForm.programArea?.reviews?.[role] &&
-                              !(mandatoryADM && role === ApprovalRoles.ADM) && (
-                                <button
-                                  className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
-                                  onClick={() => {
-                                    reviewForm.programArea.selectedRoles?.splice(
-                                      index,
-                                      1,
-                                    );
-                                    stateChangeHandler(
-                                      reviewForm.programArea.selectedRoles,
-                                      'programArea.selectedRoles',
-                                    );
-                                    piaStateChangeHandler(
-                                      reviewForm,
-                                      'review',
-                                      true,
-                                    );
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    className=""
-                                    icon={faTrash}
-                                    size="xl"
-                                  />
-                                </button>
-                              )}
-                          </div>
-                        );
-                      },
-                    )
-                  ) : (
-                    <p>{messages.PiaReviewHeader.NoRolesSelected.en}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
+          <ProgramArea
+            pia={pia}
+            reviewForm={reviewForm}
+            addRole={addRole}
+            stateChangeHandler={stateChangeHandler}
+            mandatoryADM={mandatoryADM}
+          />
           <section className="mt-5 ">
             <h3>{messages.PiaReviewHeader.MinistrySection.Title.en}</h3>
             <p className="pb-4">

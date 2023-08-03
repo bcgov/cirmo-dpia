@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "baseUrl": "./src",   
+    "baseUrl": "./src",
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -17,7 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "cypress.config.ts", "cypress/e2e", "cypress/support"],
-  "exclude": ["cypress/downloads", "cypress/fixtures"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
