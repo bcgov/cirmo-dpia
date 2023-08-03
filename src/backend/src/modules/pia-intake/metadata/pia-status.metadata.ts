@@ -283,8 +283,63 @@ export const piaStatusMetadata: Partial<
           },
         ],
       },
+      [PiaIntakeStatusEnum.PENDING_COMPLETION]: {
+        allow: true,
+      },
+    },
+  },
+  [PiaIntakeStatusEnum.PENDING_COMPLETION]: {
+    updates: {
+      allow: false,
+    },
+    transition: {
+      [PiaIntakeStatusEnum.INCOMPLETE]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.FINAL_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
       [PiaIntakeStatusEnum.COMPLETE]: {
         allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
       },
     },
   },
