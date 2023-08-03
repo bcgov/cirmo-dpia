@@ -2,7 +2,7 @@ import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { IReview } from './interfaces';
+import { IReview, IReviewSection } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
@@ -159,33 +159,40 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
     reviewForm.programArea?.selectedRoles,
   ]);
-
+  const userGuid = getGUID();
   const allowUserReviewCPO = () => {
     // only allow one CPO user do review once
-
-    const userGuid = getGUID();
-    const CPOs = reviewForm?.cpo;
-    if (CPOs !== undefined) {
-      for (let i = 0; i < CPOs.length; i++) {
-        if (reviewForm?.cpo?.[i].reviewedByGuid === userGuid) {
-          return false;
-        }
-      }
+    const CPOReviews = Object(reviewForm?.cpo);
+    if (CPOReviews !== undefined) {
+      if (
+        Object.values<IReviewSection>(CPOReviews).some(
+          (review) => review.reviewedByGuid === userGuid,
+        )
+      )
+        return false;
     }
     return true;
   };
 
   const addNewCPOReview = () => {
     const newCPOReview = {
-      isAcknowledged: false,
-      reviewNote: '',
+      userGuid: {
+        isAcknowledged: false,
+        reviewNote: '',
+      },
     };
     if (reviewForm?.cpo !== undefined) {
-      reviewForm?.cpo?.push(newCPOReview);
+      setReviewForm({
+        ...reviewForm,
+        cpo: {
+          ...reviewForm.cpo,
+          ...newCPOReview,
+        },
+      });
     } else {
       setReviewForm({
         ...reviewForm,
-        cpo: [],
+        cpo: {},
       });
     }
 
@@ -207,12 +214,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // so if the reviewedAt field have a value, we show the review result otherwise show review
     if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
-  };
-
-  const handleMPOReviewSubmit = () => {
-    setEditReviewNote(false);
-    const review = { isAcknowledged: mpoAcknowledged, reviewNote };
-    stateChangeHandler(review, `mpo`, true);
   };
 
   return (
@@ -277,25 +278,21 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               <div className="drop-shadow card p-4 p-md-5">
                 <div className="data-table__container">
                   {pia?.review?.cpo ? (
-                    pia?.review?.cpo?.map((_: any, index: number) => {
+                    Object(pia?.review?.cpo)?.map((cpo: any, index: number) => {
                       return reviewForm.cpo ? (
                         <div className="d-flex align-items-center" key={index}>
                           {!allowUserReviewCPO() ||
-                          Object(pia?.review?.cpo)?.[index]?.isAcknowledged ? (
+                          Object(pia?.review?.cpo)?.[cpo].isAcknowledged ? (
                             <ViewCPOReview
                               pia={pia}
+                              cpoId={cpo}
                               stateChangeHandler={stateChangeHandler}
-                              isAcknowledged={
-                                Object(pia?.review?.cpo)?.[index]
-                                  ?.isAcknowledged || false
-                              }
-                              index={index}
                             />
                           ) : (
                             <EditCPOReview
                               pia={pia}
+                              cpoId={cpo}
                               stateChangeHandler={stateChangeHandler}
-                              index={index}
                             />
                           )}
                         </div>
@@ -304,8 +301,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                   ) : (
                     <EditCPOReview
                       pia={pia}
+                      cpoId={getGUID()}
                       stateChangeHandler={stateChangeHandler}
-                      index={0}
                     />
                   )}
                   <div className="horizontal-divider "></div>
@@ -340,10 +337,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           {pia?.review?.programArea?.selectedRoles.map((role: string) => (
             <>
               <ViewProgramAreaReview
-                isAcknowledged={
-                  pia?.review?.programArea?.reviews?.[role].isAcknowledged ||
-                  false
-                }
                 pia={pia}
                 printPreview
                 role={role}
@@ -357,14 +350,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             printPreview
             stateChangeHandler={stateChangeHandler}
           />
-          {pia?.review?.cpo?.map((_: any, index: number) => (
+          {Object(pia?.review?.cpo)?.map((cpo: any, index: number) => (
             <>
               <ViewCPOReview
                 pia={pia}
                 printPreview
                 stateChangeHandler={stateChangeHandler}
-                isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
-                index={index}
+                cpoId={cpo}
               />
             </>
           ))}

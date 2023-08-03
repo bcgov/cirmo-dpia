@@ -1,6 +1,7 @@
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { BannerText } from '../pages/PIAForm/BannerStatus/messages';
 import { PiaStatuses, SubmitButtonTextEnum } from '../constant/constant';
+import { IReviewSection } from '../components/public/PIAFormTabs/review/interfaces';
 
 export type PageAccessControl = {
   [page: string]: {
@@ -111,6 +112,19 @@ const defaultFinalReviewModal: Modal = {
   confirmLabel: 'Yes, finish',
   cancelLabel: 'Cancel',
 };
+
+const checkButtonText = (pia: IPiaForm | null) => {
+  // in MPO status the button text will different
+  // for delegate PIA, the button text should finish review
+  // for standard PIA, the button text still as submit
+  if (pia === null) return;
+  if (
+    pia.status === PiaStatuses.MPO_REVIEW &&
+    pia.hasAddedPiToDataElements === false
+  )
+    return SubmitButtonTextEnum.FINISH_REVIEW;
+  return SubmitButtonTextEnum.FORM;
+};
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   // this function use to check if the review tab has any data, if so, show warning modal, otherwise
   // display default modal
@@ -123,8 +137,10 @@ const checkReviewStatus = (pia: IPiaForm | null): boolean => {
         pia?.review?.programArea?.selectedRoles?.length > 0) ||
         pia?.review?.mpo?.isAcknowledged === true)) ||
     (pia?.review?.cpo &&
-      pia?.review?.cpo?.length > 0 &&
-      pia?.review?.cpo.some((review) => review.isAcknowledged === true))
+      Object(pia?.review?.cpo)?.length > 0 &&
+      Object(pia?.review?.cpo)?.some(
+        (review: IReviewSection) => review.isAcknowledged === true,
+      ))
   ) {
     return true;
   }

@@ -14,6 +14,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
 import { statusList } from '../../../utils/status';
+import { IReviewSection } from '../PIAFormTabs/review/interfaces';
 
 function PIASubHeader({
   pia,
@@ -118,9 +119,9 @@ function PIASubHeader({
         pia?.review?.mpo?.isAcknowledged === true &&
         pia?.review?.mpo?.reviewNote !== '' &&
         pia?.review?.cpo &&
-        pia?.review.cpo?.length > 0 &&
-        pia?.review?.cpo?.every(
-          (review) =>
+        Object(pia?.review.cpo)?.length > 0 &&
+        Object(pia?.review?.cpo)?.every(
+          (review: IReviewSection) =>
             review.isAcknowledged === true && review.reviewNote !== '',
         ))
     ) {

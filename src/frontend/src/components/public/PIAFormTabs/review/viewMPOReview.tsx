@@ -43,7 +43,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
     reviewGuid === getGUID() &&
     !printPreview &&
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.accessControl;
+    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
 
   return (
     <div className="d-grid gap-3">

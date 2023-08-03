@@ -56,14 +56,6 @@ const ViewReviewSection = (props: IReviewProps) => {
     onConfirmClick = () => {},
   } = props;
 
-  const reviewGuid = reviewSection?.reviewedByGuid;
-
-  const canEditReviewNote =
-    reviewGuid === getGUID() &&
-    !printPreview &&
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
-
   const [editReview, setEditReview] = useState(false);
 
   return editReview ? (
