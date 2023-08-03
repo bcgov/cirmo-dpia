@@ -52,7 +52,7 @@ import {
 } from 'test/util/mocks/data/invites.mock';
 import { inviteeEntityMock } from 'test/util/mocks/data/invitee.mock';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
-import { ProgramAreaSelectedRolesReview } from 'src/modules/pia-intake/jsonb-classes/review/programArea/programAreaSelectedRoleReviews';
+import * as updateReviewSubmissionFields from 'src/modules/pia-intake/helper/update-review-submission-fields';
 
 /**
  * @Description
@@ -3039,252 +3039,6 @@ describe('PiaIntakeService', () => {
   });
 
   /**
-   * @method updateReviewSubmissionFields
-   * @description This method updates the dto with the submission related fields, which needs to be filled in by the server based on the user logged in
-   * @fieldsUpdated reviewedAt, reviewedByGuid, reviewedByUsername, reviewedByDisplayName, reviewLastUpdatedAt
-   * @input
-   *  updatedValue: Review | Record<string, ProgramAreaSelectedRolesReview>
-   *  storedValue: Review | Record<string, ProgramAreaSelectedRolesReview>
-   *  user: KeycloakUser
-   *  key: 'mpo' | string
-   *  allowedInSpecificStatus?: PiaIntakeStatusEnum[] | null
-   *  updatedStatus?: PiaIntakeStatusEnum
-   */
-  describe('`updateReviewSubmissionFields` method', () => {
-    it('does not update anything if updatedValue is not provided', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = null;
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Test Note' },
-      };
-      const user = { ...keycloakUserMock };
-
-      service.updateReviewSubmissionFields(
-        updatedValue,
-        storedValue,
-        user,
-        'mpo',
-      );
-      expect(updatedValue?.mpo?.reviewLastUpdatedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByGuid).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByUsername).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByDisplayName).toBeUndefined();
-    });
-
-    it('does not update anything if updatedValue key is different than expected', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' },
-      };
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Test Note' },
-      };
-      const user = { ...keycloakUserMock };
-
-      service.updateReviewSubmissionFields(
-        updatedValue,
-        storedValue,
-        user,
-        'RANDOM_KEY',
-      );
-      expect(updatedValue?.mpo?.reviewLastUpdatedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByGuid).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByUsername).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByDisplayName).toBeUndefined();
-    });
-
-    it('does not update anything if updatedValue has NO updated data', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Test Note' }, // same as before
-      };
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Test Note' },
-      };
-      const user = { ...keycloakUserMock };
-
-      service.updateReviewSubmissionFields(
-        updatedValue,
-        storedValue,
-        user,
-        'mpo',
-      );
-      expect(updatedValue?.mpo?.reviewLastUpdatedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedAt).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByGuid).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByUsername).toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByDisplayName).toBeUndefined();
-    });
-
-    it('update fields if updatedValue HAS updated data', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' },
-      };
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Test Note' },
-      };
-      const user = { ...keycloakUserMock };
-
-      service.updateReviewSubmissionFields(
-        updatedValue,
-        storedValue,
-        user,
-        'mpo',
-      );
-      expect(updatedValue?.mpo?.reviewLastUpdatedAt).not.toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedAt).not.toBeUndefined();
-      expect(updatedValue?.mpo?.reviewedByGuid).toBe(user.idir_user_guid);
-      expect(updatedValue?.mpo?.reviewedByUsername).toBe(user.idir_username);
-      expect(updatedValue?.mpo?.reviewedByDisplayName).toBe(user.display_name);
-    });
-
-    it('fails and throws error if updatedValue has updated data, but a different reviewer', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' },
-      };
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: {
-          isAcknowledged: true,
-          reviewNote: 'Test Note',
-          reviewedAt: new Date(),
-          reviewedByDisplayName: 'ABCD',
-          reviewedByGuid: 'OTHER_USER', // OTHER USER REVIEWED
-          reviewLastUpdatedAt: new Date(),
-          reviewedByUsername: 'RANDOM_USER',
-        },
-      };
-
-      const user = { ...keycloakUserMock };
-
-      try {
-        service.updateReviewSubmissionFields(
-          updatedValue,
-          storedValue,
-          user,
-          'mpo',
-        );
-      } catch (e) {
-        expect(e).toBeInstanceOf(ForbiddenException);
-      }
-    });
-
-    it('succeeds and updates reviewLastUpdatedAt when updated data is provided by the same user', () => {
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' },
-      };
-      const user = { ...keycloakUserMock };
-      const reviewedAt = new Date();
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: {
-          isAcknowledged: true,
-          reviewNote: 'Test Note',
-          reviewedAt: reviewedAt,
-          reviewedByDisplayName: user?.display_name,
-          reviewedByGuid: user?.idir_user_guid,
-          reviewLastUpdatedAt: reviewedAt,
-          reviewedByUsername: user?.idir_username,
-        },
-      };
-
-      service.updateReviewSubmissionFields(
-        updatedValue,
-        storedValue,
-        user,
-        'mpo',
-      );
-
-      expect(updatedValue.mpo.reviewLastUpdatedAt).not.toBe(
-        storedValue.mpo.reviewLastUpdatedAt,
-      );
-      expect(updatedValue.mpo.reviewedAt).toBe(storedValue.mpo.reviewedAt);
-      expect(updatedValue.mpo.reviewedByDisplayName).toBe(
-        storedValue.mpo.reviewedByDisplayName,
-      );
-      expect(updatedValue.mpo.reviewedByGuid).toBe(
-        storedValue.mpo.reviewedByGuid,
-      );
-      expect(updatedValue.mpo.reviewedByUsername).toBe(
-        storedValue.mpo.reviewedByUsername,
-      );
-    });
-
-    it('fails and throw error if updated are made in a NOT allowed status', () => {
-      const user = { ...keycloakUserMock };
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' }, // same as before
-      };
-      const reviewedAt = new Date();
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: {
-          isAcknowledged: true,
-          reviewNote: 'Test Note',
-          reviewedAt: reviewedAt,
-          reviewedByDisplayName: user?.display_name,
-          reviewedByGuid: user?.idir_user_guid,
-          reviewLastUpdatedAt: reviewedAt,
-          reviewedByUsername: user?.idir_username,
-        },
-      };
-      const key = 'mpo';
-      const allowedInSpecificStatus: PiaIntakeStatusEnum[] = [
-        PiaIntakeStatusEnum.COMPLETE,
-        PiaIntakeStatusEnum.MPO_REVIEW,
-      ];
-      const updatedStatus: PiaIntakeStatusEnum = PiaIntakeStatusEnum.CPO_REVIEW;
-
-      try {
-        service.updateReviewSubmissionFields(
-          updatedValue,
-          storedValue,
-          user,
-          key,
-          allowedInSpecificStatus,
-          updatedStatus,
-        );
-      } catch (e) {
-        expect(e).toBeInstanceOf(ForbiddenException);
-      }
-    });
-
-    it('succeeds and updates if updated are made in an allowed status', () => {
-      const user = { ...keycloakUserMock };
-      const updatedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: { isAcknowledged: true, reviewNote: 'Updated Note' }, // same as before
-      };
-      const reviewedAt = new Date();
-      const storedValue: Record<string, ProgramAreaSelectedRolesReview> = {
-        mpo: {
-          isAcknowledged: true,
-          reviewNote: 'Test Note',
-          reviewedAt: reviewedAt,
-          reviewedByDisplayName: user?.display_name,
-          reviewedByGuid: user?.idir_user_guid,
-          reviewLastUpdatedAt: reviewedAt,
-          reviewedByUsername: user?.idir_username,
-        },
-      };
-      const key = 'mpo';
-      const allowedInSpecificStatus: PiaIntakeStatusEnum[] = [
-        PiaIntakeStatusEnum.COMPLETE,
-        PiaIntakeStatusEnum.MPO_REVIEW,
-      ];
-      const updatedStatus: PiaIntakeStatusEnum = PiaIntakeStatusEnum.MPO_REVIEW; // This status is allowed
-
-      try {
-        service.updateReviewSubmissionFields(
-          updatedValue,
-          storedValue,
-          user,
-          key,
-          allowedInSpecificStatus,
-          updatedStatus,
-        );
-      } catch (e) {
-        expect(e).not.toBeInstanceOf(ForbiddenException);
-      }
-    });
-  });
-
-  /**
    * @method updateProgramAreaReviews
    * @input fields
    *  updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
@@ -3293,10 +3047,10 @@ describe('PiaIntakeService', () => {
    *
    */
   describe('`updateProgramAreaReviews` method', () => {
-    let mockListener = null;
+    let updateReviewSubmissionFieldsSpy = null;
     beforeEach(() => {
-      mockListener = jest
-        .spyOn(service, 'updateReviewSubmissionFields')
+      updateReviewSubmissionFieldsSpy = jest
+        .spyOn(updateReviewSubmissionFields, 'updateReviewSubmissionFields')
         .mockImplementation(() => null);
     });
 
@@ -3306,7 +3060,7 @@ describe('PiaIntakeService', () => {
       const user = { ...keycloakUserMock };
 
       service.updateProgramAreaReviews(updatedValue, storedValue, user);
-      expect(mockListener).not.toHaveBeenCalled();
+      expect(updateReviewSubmissionFieldsSpy).not.toHaveBeenCalled();
     });
 
     it('fails and throws error when review is updated for fields not in selectedRoles', () => {
@@ -3334,11 +3088,11 @@ describe('PiaIntakeService', () => {
         service.updateProgramAreaReviews(updatedValue, storedValue, user);
       } catch (e) {
         expect(e).toBeInstanceOf(BadRequestException);
-        expect(mockListener).not.toHaveBeenCalled();
+        expect(updateReviewSubmissionFieldsSpy).not.toHaveBeenCalled();
       }
     });
 
-    it('succeeds when review is updated for fields in selectedRoles', () => {
+    it('successfully calls the subsequent method when review is updated for fields in selectedRoles', () => {
       const updatedValue: UpdatePiaIntakeDto = {
         saveId: 1,
         review: {
@@ -3369,16 +3123,61 @@ describe('PiaIntakeService', () => {
       const user = { ...keycloakUserMock };
 
       service.updateProgramAreaReviews(updatedValue, storedValue, user);
-      expect(
-        updatedValue?.review?.programArea?.reviews?.['Assistant Director']
-          ?.reviewedByGuid,
-      ).toBe(user.idir_user_guid);
-      expect(
-        updatedValue?.review?.programArea?.reviews?.Boss?.reviewedByGuid,
-      ).toBeUndefined();
-      expect(
-        updatedValue?.review?.programArea?.reviews?.['Boss 2']?.reviewedByGuid,
-      ).toBe(user.idir_user_guid);
+
+      expect(updateReviewSubmissionFieldsSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  /**
+   * @method updateCpoReviews
+   * @input fields
+   *  updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+   *  storedValue: PiaIntakeEntity,
+   *  user: KeycloakUser,
+   */
+  describe('`updateCpoReviews` method', () => {
+    let updateReviewSubmissionFieldsSpy = null;
+    beforeEach(() => {
+      updateReviewSubmissionFieldsSpy = jest
+        .spyOn(updateReviewSubmissionFields, 'updateReviewSubmissionFields')
+        .mockImplementation(() => null);
+    });
+
+    it('does not process the method when there is no updated reviews', () => {
+      const updatedValue: UpdatePiaIntakeDto = { saveId: 1 };
+      const storedValue: PiaIntakeEntity = { ...piaIntakeEntityMock };
+      const user = { ...keycloakUserMock };
+
+      service.updateCpoReviews(updatedValue, storedValue, user);
+      expect(updateReviewSubmissionFieldsSpy).not.toHaveBeenCalled();
+    });
+
+    it('successfully calls the subsequent method when updatedCpoReviews have reviews', () => {
+      const updatedValue: UpdatePiaIntakeDto = {
+        saveId: 1,
+        review: {
+          cpo: {
+            GUID_1: {
+              isAcknowledged: true,
+              reviewNote: 'Test Note 1',
+            },
+            GUID_2: {
+              isAcknowledged: true,
+              reviewNote: 'Test Note 2',
+            },
+            GUID_3: {
+              isAcknowledged: true,
+              reviewNote: 'Test Note 3',
+            },
+          },
+        },
+      };
+      const storedValue: PiaIntakeEntity = { ...piaIntakeEntityMock };
+      const user = { ...keycloakUserMock };
+
+      service.updateCpoReviews(updatedValue, storedValue, user);
+
+      expect(updateReviewSubmissionFieldsSpy).toHaveBeenCalledTimes(3);
     });
   });
 });

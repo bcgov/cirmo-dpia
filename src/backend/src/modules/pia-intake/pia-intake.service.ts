@@ -39,7 +39,7 @@ import { Review, validateRoleForReview } from './jsonb-classes/review';
 import { handlePiaStatusChange } from './helper/handle-pia-status-change';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 import { handlePiaUpdates } from './helper/handle-pia-updates';
-import { ProgramAreaSelectedRolesReview } from './jsonb-classes/review/programArea/programAreaSelectedRoleReviews';
+import { updateReviewSubmissionFields } from './helper/update-review-submission-fields';
 
 @Injectable()
 export class PiaIntakeService {
@@ -63,7 +63,7 @@ export class PiaIntakeService {
     // Get User role access type
     const accessType = this.getRoleAccess(userRoles);
 
-    this.validateJsonbFields(createPiaIntakeDto, null, accessType);
+    this.validateJsonbFields(createPiaIntakeDto, null, accessType, user);
 
     // fetch PIA TYPE
     const piaType = this.getPiaType(createPiaIntakeDto, null);
@@ -72,14 +72,11 @@ export class PiaIntakeService {
     handlePiaStatusChange(createPiaIntakeDto, null, accessType, piaType);
 
     // once validated, updated the review fields
-    this.updateReviewSubmissionFields(
-      createPiaIntakeDto?.review,
-      null,
-      user,
-      'mpo',
-    );
+    updateReviewSubmissionFields(createPiaIntakeDto?.review, null, user, 'mpo');
 
     this.updateProgramAreaReviews(createPiaIntakeDto, null, user);
+
+    this.updateCpoReviews(createPiaIntakeDto, null, user);
 
     // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be incomplete / Edits in progress only]
 
@@ -128,7 +125,12 @@ export class PiaIntakeService {
     }
 
     // validate jsonb fields for role access
-    this.validateJsonbFields(updatePiaIntakeDto, existingRecord, accessType);
+    this.validateJsonbFields(
+      updatePiaIntakeDto,
+      existingRecord,
+      accessType,
+      user,
+    );
 
     // fetch PIA TYPE
     const piaType = this.getPiaType(updatePiaIntakeDto, existingRecord);
@@ -153,7 +155,7 @@ export class PiaIntakeService {
     this.updateReviewField(updatePiaIntakeDto, existingRecord);
 
     // once validated, updated the review submission fields
-    this.updateReviewSubmissionFields(
+    updateReviewSubmissionFields(
       updatePiaIntakeDto?.review,
       existingRecord?.review,
       user,
@@ -161,6 +163,8 @@ export class PiaIntakeService {
     );
 
     this.updateProgramAreaReviews(updatePiaIntakeDto, existingRecord, user);
+
+    this.updateCpoReviews(updatePiaIntakeDto, existingRecord, user);
 
     // update the record with the provided keys [using save instead of update updates the @UpdateDateColumn]
     await this.piaIntakeRepository.save({
@@ -651,7 +655,7 @@ export class PiaIntakeService {
         });
       }
 
-      this.updateReviewSubmissionFields(
+      updateReviewSubmissionFields(
         updatedProgramAreaReviews,
         storedProgramAreaReviews,
         user,
@@ -662,69 +666,30 @@ export class PiaIntakeService {
     });
   };
 
-  /**
-   * @method updateReviewSubmissionFields
-   * @description
-   * This method updates the dto with the submission related fields, which needs to be filled in by the server based on the user logged in
-   */
-  updateReviewSubmissionFields = (
-    updatedValue: Review | Record<string, ProgramAreaSelectedRolesReview>, // add more types here
-    storedValue: Review | Record<string, ProgramAreaSelectedRolesReview>,
+  updateCpoReviews = (
+    updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
+    storedValue: PiaIntakeEntity,
     user: KeycloakUser,
-    key: 'mpo' | string,
-    allowedInSpecificStatus?: PiaIntakeStatusEnum[] | null,
-    updatedStatus?: PiaIntakeStatusEnum,
   ) => {
-    if (!updatedValue?.[key]) return;
+    const updatedCpoReviews = updatedValue?.review?.cpo;
+    const storedCpoReviews = storedValue?.review?.cpo;
 
-    // overwrite the updated values to include the stored fields that may not be passed by the client
-    if (updatedValue?.[key]) {
-      updatedValue[key] = {
-        ...(storedValue?.[key] || {}),
-        ...updatedValue?.[key],
-      };
+    // GUID of the CPO reviewers
+    const updatedCpoReviewers = Object.keys(updatedCpoReviews || {});
+
+    // if no records to upsert
+    if (updatedCpoReviewers.length === 0) {
+      return;
     }
 
-    // Scenario 1: User is saving review information for the first time [First time save]
-    // Scenario 2: User is saving review information for the subsequent times [Editing]
-
-    // Either ways, if the value is changed from the stored one, update the submission fields
-    if (
-      storedValue?.[key]?.isAcknowledged !==
-        updatedValue?.[key]?.isAcknowledged ||
-      storedValue?.[key]?.reviewNote !== updatedValue?.[key]?.reviewNote
-    ) {
-      // if it is not the same person updating the fields, throw forbidden error
-      if (
-        storedValue?.[key]?.reviewedByGuid &&
-        storedValue?.[key]?.reviewedByGuid !== user.idir_user_guid
-      ) {
-        throw new ForbiddenException({
-          message: `You do not have permissions to edit this review.`,
-        });
-      }
-
-      if (
-        allowedInSpecificStatus &&
-        updatedStatus &&
-        !allowedInSpecificStatus.includes(updatedStatus)
-      ) {
-        throw new ForbiddenException({
-          message: 'You do not permissions to update review in this status',
-        });
-      }
-
-      // if first time reviewed
-      if (!storedValue?.[key]?.reviewedByGuid) {
-        updatedValue[key].reviewedAt = new Date();
-        updatedValue[key].reviewedByGuid = user.idir_user_guid;
-        updatedValue[key].reviewedByUsername = user.idir_username;
-        updatedValue[key].reviewedByDisplayName = user.display_name;
-      }
-
-      // update last review updated at
-      updatedValue[key].reviewLastUpdatedAt = new Date();
-    }
+    Object.keys(updatedCpoReviews).forEach((reviewerId) => {
+      updateReviewSubmissionFields(
+        updatedCpoReviews,
+        storedCpoReviews,
+        user,
+        reviewerId,
+      );
+    });
   };
 
   getPiaType(
@@ -763,6 +728,7 @@ export class PiaIntakeService {
     updatedValue: CreatePiaIntakeDto | UpdatePiaIntakeDto,
     storedValue: PiaIntakeEntity,
     userType: UserTypesEnum[],
+    user: KeycloakUser,
   ) {
     validateRoleForCollectionUseAndDisclosure(
       updatedValue?.collectionUseAndDisclosure,
@@ -770,7 +736,12 @@ export class PiaIntakeService {
       userType,
     );
 
-    validateRoleForReview(updatedValue?.review, storedValue?.review, userType);
+    validateRoleForReview(
+      updatedValue?.review,
+      storedValue?.review,
+      userType,
+      user,
+    );
 
     validateRoleForPPq(updatedValue?.ppq, storedValue?.ppq, userType);
 
