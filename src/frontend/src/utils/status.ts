@@ -120,7 +120,8 @@ const defaultPendingCompletionModal: Modal = {
 
 const defaultCompleteModal: Modal = {
   title: 'Complete PIA?',
-  description: 'Before completing the PIA, make sure all necessary ministry reviews have occurred and confirm that data has been uploaded to the PID. This PIA will move to “Complete” status.',
+  description:
+    'Before completing the PIA, make sure all necessary ministry reviews have occurred and confirm that data has been uploaded to the PID. This PIA will move to “Complete” status.',
   confirmLabel: 'Yes, complete',
   cancelLabel: 'Cancel',
 };
@@ -134,7 +135,7 @@ const checkButtonText = (pia: IPiaForm | null) => {
     pia.status === PiaStatuses.MPO_REVIEW &&
     pia.hasAddedPiToDataElements === false
   )
-    return SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW;
+    return SubmitButtonTextEnum.FINISH_REVIEW;
   return SubmitButtonTextEnum.FORM;
 };
 

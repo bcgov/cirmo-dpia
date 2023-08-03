@@ -189,7 +189,6 @@ export const PiaStatusList = [
   { label: 'CPO Review', value: 'CPO_REVIEW' },
   { label: 'Pending Completion', value: 'PENDING_COMPLETION' },
   { label: 'Final Review', value: 'FINAL_REVIEW' },
-
 ];
 export const PiaDrafterFilterList = [
   {
