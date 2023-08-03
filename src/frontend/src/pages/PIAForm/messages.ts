@@ -11,7 +11,7 @@ export default {
         en: `Do you want to save this PIA?`,
       },
       ParagraphText: {
-        en: `Only you will be able to view the saved version and you can return at any 
+        en: `Only you will be able to view the saved version and you can return at any
         time to make further changes.`,
       },
     },
@@ -101,6 +101,20 @@ export default {
 
       ParagraphText: {
         en: `The status will be changed to “Final Review” and this PIA will be locked. Program area roles you designated wil be required to review the PIA.`,
+      },
+    },
+    SubmitForPendingCompletion: {
+      ConfirmLabel: {
+        en: `Yes, submit`,
+      },
+      CancelLabel: {
+        en: `Cancel`,
+      },
+      TitleText: {
+        en: `Submit for completion?`,
+      },
+      ParagraphText: {
+        en: `Status will change to “Pending Completion”. Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.`,
       },
     },
     AutoSaveFailed: {

@@ -110,6 +110,35 @@ const defaultFinalReviewModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
+const defaultPendingCompletionModal: Modal = {
+  title: 'Submit for completion?',
+  description:
+    'Status will change to “Pending Completion”. Once CPO has confirmed all necessary ministry reviews have occurred and data has been uploaded to the PID, PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, submit',
+  cancelLabel: 'Cancel',
+};
+
+const defaultCompleteModal: Modal = {
+  title: 'Complete PIA?',
+  description:
+    'Before completing the PIA, make sure all necessary ministry reviews have occurred and confirm that data has been uploaded to the PID. This PIA will move to “Complete” status.',
+  confirmLabel: 'Yes, complete',
+  cancelLabel: 'Cancel',
+};
+
+const checkButtonText = (pia: IPiaForm | null) => {
+  // in MPO status the button text will different
+  // for delegate PIA, the button text should finish review
+  // for standard PIA, the button text still as submit
+  if (pia === null) return;
+  if (
+    pia.status === PiaStatuses.MPO_REVIEW &&
+    pia.hasAddedPiToDataElements === false
+  )
+    return SubmitButtonTextEnum.FINISH_REVIEW;
+  return SubmitButtonTextEnum.FORM;
+};
+
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
   // this function use to check if the review tab has any data, if so, show warning modal, otherwise
   // display default modal
@@ -283,7 +312,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     COMPLETE: {
       title: 'Complete',
       class: 'statusBlock__completed',
-      modal: defaultEmptyModal,
+      modal: defaultCompleteModal,
       comments: false,
       Pages: {
         review: {
@@ -300,8 +329,9 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
     PENDING_COMPLETION: {
       title: 'Pending completion',
       class: 'statusBlock__pending-completion',
-      modal: defaultEmptyModal,
+      modal: defaultPendingCompletionModal,
       comments: false,
+      buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
       Pages: {
         review: {
           accessControl: true,

@@ -54,6 +54,7 @@ function PIASubHeader({
   const [enableComplete, setEnableComplete] = useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
+
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
     setModalParagraph(Object(modal).description);
