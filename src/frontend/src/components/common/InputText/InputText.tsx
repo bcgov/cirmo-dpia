@@ -72,7 +72,9 @@ const InputText = ({
   );
 
   useEffect(() => {
-    const inputRefCurrent = inputRef?.current as unknown as HTMLElement;
+    const inputRefCurrent = inputRef?.current as unknown as
+      | HTMLInputElement
+      | HTMLTextAreaElement;
 
     if (!inputRefCurrent) return;
 
