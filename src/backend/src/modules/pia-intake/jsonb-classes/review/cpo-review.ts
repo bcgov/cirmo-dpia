@@ -2,7 +2,7 @@ import { IsBoolean, IsString } from '@nestjs/class-validator';
 import { Transform } from 'class-transformer';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
-import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { RoleReview } from './role-review';
 
 export class CpoReview extends RoleReview {
@@ -65,31 +65,14 @@ export const validateRoleForCpoReview = (
   storedValue: CpoReview,
   userType: UserTypesEnum[],
   path: string,
-  isDeleted?: boolean, // when review is deleted, only check roles of NON-system generated values
+  loggedInUser: KeycloakUser,
 ) => {
-  if (!updatedValue) return;
-
-  let keys = Object.keys(updatedValue) as Array<keyof CpoReview>;
-
-  // if review is deleted, only check role for ONLY user generated keys
-  if (isDeleted) {
-    keys = keys.filter((key) => {
-      const metadata = cpoReviewMetadata.find((m) => m.key === key);
-      return !metadata.isSystemGeneratedField;
-    });
-  }
-
-  keys.forEach((key) => {
-    const updatedKeyValue = updatedValue?.[key];
-    const storedKeyValue = storedValue?.[key];
-    const metadata = cpoReviewMetadata.find((m) => m.key === key);
-
-    validateRoleForFormField(
-      metadata,
-      updatedKeyValue,
-      storedKeyValue,
-      userType,
-      `${path}.${key}`,
-    );
-  });
+  RoleReview.validateRoleForReview<CpoReview>(
+    updatedValue,
+    storedValue,
+    userType,
+    path,
+    loggedInUser,
+    cpoReviewMetadata,
+  );
 };

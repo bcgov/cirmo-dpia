@@ -1,7 +1,7 @@
 import { IsBoolean } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
-import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { RoleReview } from '../role-review';
 
 export class ProgramAreaSelectedRolesReview extends RoleReview {
@@ -17,36 +17,43 @@ export const selectedRolesReviewMetadata: Array<
     key: 'isAcknowledged',
     type: 'boolean',
     allowedUserTypesEdit: null, // null signifies that anyone can change this field
+    isSystemGeneratedField: false,
   },
   {
     key: 'reviewNote',
     type: 'text',
     allowedUserTypesEdit: null,
+    isSystemGeneratedField: false,
   },
   {
     key: 'reviewedByDisplayName',
     type: 'text',
     allowedUserTypesEdit: [], // empty array signifies that the client can't edit these fields
+    isSystemGeneratedField: true,
   },
   {
     key: 'reviewedByUsername',
     type: 'text',
     allowedUserTypesEdit: [],
+    isSystemGeneratedField: true,
   },
   {
     key: 'reviewedByGuid',
     type: 'text',
     allowedUserTypesEdit: [],
+    isSystemGeneratedField: true,
   },
   {
     key: 'reviewedAt',
     type: 'text',
     allowedUserTypesEdit: [],
+    isSystemGeneratedField: true,
   },
   {
     key: 'reviewLastUpdatedAt',
     type: 'text',
     allowedUserTypesEdit: [],
+    isSystemGeneratedField: true,
   },
 ];
 
@@ -55,32 +62,14 @@ export const validateRoleForSelectedRoleReviews = (
   storedValue: ProgramAreaSelectedRolesReview,
   userType: UserTypesEnum[],
   path: string,
-  isDeleted?: boolean, // when review is deleted, only check roles of NON-system generated values
+  loggedInUser: KeycloakUser,
 ) => {
-  if (!updatedValue) return;
-
-  let keys = Object.keys(updatedValue) as Array<
-    keyof ProgramAreaSelectedRolesReview
-  >;
-
-  // if review is deleted, only check role for ONLY user generated keys
-  if (isDeleted) {
-    keys = keys.filter((key) => {
-      const metadata = selectedRolesReviewMetadata.find((m) => m.key === key);
-      return !metadata.isSystemGeneratedField;
-    });
-  }
-
-  keys.forEach((key) => {
-    const updatedKeyValue = updatedValue?.[key];
-    const storedKeyValue = storedValue?.[key];
-    const metadata = selectedRolesReviewMetadata.find((m) => m.key === key);
-    validateRoleForFormField(
-      metadata,
-      updatedKeyValue,
-      storedKeyValue,
-      userType,
-      `${path}.${key}`,
-    );
-  });
+  RoleReview.validateRoleForReview<ProgramAreaSelectedRolesReview>(
+    updatedValue,
+    storedValue,
+    userType,
+    path,
+    loggedInUser,
+    selectedRolesReviewMetadata,
+  );
 };
