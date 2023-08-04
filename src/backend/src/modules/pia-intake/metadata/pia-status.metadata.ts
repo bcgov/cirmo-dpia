@@ -304,7 +304,7 @@ export const piaStatusMetadata: Partial<
               'review.mpo.reviewNote': {
                 required: true,
               },
-              'review.cpo[Object.keys(cpo)[0]].isAcknowledged': {
+              'review.cpo': {
                 required: true,
               },
               'review.programArea.reviews': {
@@ -400,7 +400,7 @@ export const piaStatusMetadata: Partial<
               'review.mpo.reviewNote': {
                 required: true,
               },
-              'review.cpo[Object.keys(cpo)[0]].isAcknowledged': {
+              'review.cpo': {
                 required: true,
               },
               'review.programArea.reviews': {
