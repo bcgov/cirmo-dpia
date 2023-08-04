@@ -300,6 +300,13 @@ export const piaStatusMetadata: Partial<
             accessType: [UserTypesEnum.CPO],
           },
         ],
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
         allow: true,
