@@ -24,6 +24,12 @@ const validateSize = (
   switch (size) {
     case SizeEnum.AT_LEAST_ONE:
       if (Array.isArray(value) && value.length > 0) return true; // validation ok
+      break;
+    case SizeEnum.ALL:
+      if (Array.isArray(value) && value.length > 0) {
+        return value.every((v) => v.isAcknowledged === true);
+      }
+      break;
   }
 
   errors?.push(`path: ${path} should have at-least one value`);

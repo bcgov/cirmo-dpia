@@ -285,6 +285,35 @@ export const piaStatusMetadata: Partial<
       },
       [PiaIntakeStatusEnum.PENDING_COMPLETION]: {
         allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL,
+              },
+            },
+          },
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.cpo[Object.keys(cpo)[0]].isAcknowledged': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL,
+              },
+            },
+          },
+        ],
       },
     },
   },
@@ -352,6 +381,33 @@ export const piaStatusMetadata: Partial<
         conditions: [
           {
             accessType: [UserTypesEnum.CPO],
+          },
+          {
+            piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL,
+              },
+            },
+          },
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.cpo[Object.keys(cpo)[0]].isAcknowledged': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL,
+              },
+            },
           },
         ],
       },
