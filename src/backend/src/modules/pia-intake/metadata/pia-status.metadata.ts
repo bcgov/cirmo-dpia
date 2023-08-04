@@ -308,6 +308,13 @@ export const piaStatusMetadata: Partial<
             accessType: [UserTypesEnum.CPO],
           },
         ],
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
         allow: true,
