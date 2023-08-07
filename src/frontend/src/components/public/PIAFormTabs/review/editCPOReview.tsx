@@ -40,7 +40,8 @@ const EditCPOReview = (props: IEditCPOReviewProps) => {
           pia={pia}
           isAcknowledged={acknowledged}
           reviewNote={reviewNote}
-          editReviewNote={setEditReviewNote}
+          editReviewNote={editReviewNote}
+          setEditReviewNote={setEditReviewNote}
           setAcknowledged={setAcknowledged}
           setReviewNote={setReviewNote}
           checkBoxLabel={

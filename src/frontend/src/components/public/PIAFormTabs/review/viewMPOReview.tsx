@@ -59,7 +59,8 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
               <ViewReviewSection
                 pia={pia}
                 printPreview
-                editReviewNote={setEditReviewNote}
+                editReviewNote={editReviewNote}
+                setEditReviewNote={setEditReviewNote}
                 isAcknowledged={acknowledged}
                 setAcknowledged={setAcknowledged}
                 setReviewNote={setReviewNote}
@@ -81,7 +82,8 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
         <ViewReviewSection
           pia={pia}
           printPreview
-          editReviewNote={setEditReviewNote}
+          editReviewNote={editReviewNote}
+          setEditReviewNote={setEditReviewNote}
           isAcknowledged={acknowledged}
           setAcknowledged={setAcknowledged}
           setReviewNote={setReviewNote}

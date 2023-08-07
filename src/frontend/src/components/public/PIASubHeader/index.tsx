@@ -120,8 +120,8 @@ function PIASubHeader({
         pia?.review?.mpo?.isAcknowledged === true &&
         pia?.review?.mpo?.reviewNote !== '' &&
         pia?.review?.cpo &&
-        Object(pia?.review.cpo)?.length > 0 &&
-        Object(pia?.review?.cpo)?.every(
+        Object.values(pia?.review.cpo)?.length > 0 &&
+        Object.values(pia?.review?.cpo)?.every(
           (review: IReviewSection) =>
             review.isAcknowledged === true && review.reviewNote !== '',
         ))

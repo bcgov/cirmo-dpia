@@ -60,7 +60,8 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
                 printPreview
                 isAcknowledged={acknowledged}
                 canEditReview={canEditReviewNote}
-                editReviewNote={setEditReviewNote}
+                editReviewNote={editReviewNote}
+                setEditReviewNote={setEditReviewNote}
                 setAcknowledged={setAcknowledged}
                 setReviewNote={setReviewNote}
                 reviewedByDisplayName={reviewedByDisplayName}
@@ -81,7 +82,8 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
           pia={pia}
           isAcknowledged={acknowledged}
           canEditReview={canEditReviewNote}
-          editReviewNote={setEditReviewNote}
+          editReviewNote={editReviewNote}
+          setEditReviewNote={setEditReviewNote}
           setAcknowledged={setAcknowledged}
           setReviewNote={setReviewNote}
           reviewedByDisplayName={reviewedByDisplayName}

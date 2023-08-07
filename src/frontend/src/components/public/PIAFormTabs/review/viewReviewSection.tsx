@@ -1,29 +1,19 @@
 import Checkbox from '../../../common/Checkbox';
 import messages from './messages';
-import { PiaStatuses } from '../../../../constant/constant';
-import {
-  Dispatch,
-  SetStateAction,
-  useState,
-  useEffect,
-  MouseEventHandler,
-} from 'react';
+import { Dispatch, SetStateAction, MouseEventHandler } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { dateToString } from '../../../../utils/date';
-import { getGUID } from '../../../../utils/helper.util';
-import { IReviewSection, IReview } from './interfaces';
-import { statusList } from '../../../../utils/status';
 import EditReviewSection from './editReviewSection';
 
 interface IReviewProps {
   pia: IPiaForm;
-  editReviewNote: Dispatch<SetStateAction<boolean>>;
+  setEditReviewNote: Dispatch<SetStateAction<boolean>>;
   setAcknowledged: Dispatch<SetStateAction<boolean>>;
   setReviewNote: Dispatch<SetStateAction<string>>;
-  stateChangeHandler?: (value: any, path: string, callApi?: boolean) => void;
+  editReviewNote: boolean;
   printPreview?: boolean;
   role?: string;
   isAcknowledged: boolean;
@@ -42,9 +32,9 @@ const ViewReviewSection = (props: IReviewProps) => {
     pia,
     printPreview,
     editReviewNote,
+    setEditReviewNote,
     setAcknowledged,
     setReviewNote,
-    stateChangeHandler,
     role,
     isAcknowledged,
     reviewedAtTime,
@@ -56,14 +46,15 @@ const ViewReviewSection = (props: IReviewProps) => {
     onConfirmClick = () => {},
   } = props;
 
-  const [editReview, setEditReview] = useState(false);
+  // const [editReview, setEditReview] = useState(false);
 
-  return editReview ? (
+  return editReviewNote ? (
     <EditReviewSection
       pia={pia}
       isAcknowledged={isAcknowledged}
       reviewNote={reviewNote}
       editReviewNote={editReviewNote}
+      setEditReviewNote={setEditReviewNote}
       setAcknowledged={setAcknowledged}
       setReviewNote={setReviewNote}
       checkBoxLabel={
@@ -88,8 +79,7 @@ const ViewReviewSection = (props: IReviewProps) => {
             <button
               className="bcgovbtn bcgovbtn__tertiary p-3"
               onClick={() => {
-                if (editReviewNote) editReviewNote(true);
-                else if (stateChangeHandler) setEditReview(true);
+                setEditReviewNote(true);
               }}
             >
               <FontAwesomeIcon className="ms-1" icon={faFileEdit} size="lg" />

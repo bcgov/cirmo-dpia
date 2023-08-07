@@ -45,9 +45,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   );
 
   const [updatePia, setUpdatePia] = useState(false);
-  const [mpoAcknowledged, setMpoAcknowledged] = useState(
-    pia.review?.mpo?.isAcknowledged || false,
-  );
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
@@ -64,10 +61,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     setNestedReactState(setReviewForm, path, value);
     if (callApi) setUpdatePia(true);
   };
-
-  const [reviewNote, setReviewNote] = useState<string>(
-    pia?.review?.mpo?.reviewNote || '',
-  );
 
   const addRole = useCallback(
     (role: string) => {
@@ -198,10 +191,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
     piaStateChangeHandler(reviewForm, 'review', true);
   };
-  const disableConfirmButton = () => {
-    if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
-      return true;
-    return false;
+
+  const enableAddNewCPOReview = () => {
+    if (allowUserReviewCPO()) return true;
+    else return false;
   };
   const enableMPOReviewViewMode = () => {
     // if the user already done review the MPO review field, we will show
@@ -278,26 +271,31 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               <div className="drop-shadow card p-4 p-md-5">
                 <div className="data-table__container">
                   {pia?.review?.cpo ? (
-                    Object(pia?.review?.cpo)?.map((cpo: any, index: number) => {
-                      return reviewForm.cpo ? (
-                        <div className="d-flex align-items-center" key={index}>
-                          {!allowUserReviewCPO() ||
-                          Object(pia?.review?.cpo)?.[cpo].isAcknowledged ? (
-                            <ViewCPOReview
-                              pia={pia}
-                              cpoId={cpo}
-                              stateChangeHandler={stateChangeHandler}
-                            />
-                          ) : (
-                            <EditCPOReview
-                              pia={pia}
-                              cpoId={cpo}
-                              stateChangeHandler={stateChangeHandler}
-                            />
-                          )}
-                        </div>
-                      ) : null;
-                    })
+                    Object.entries(pia?.review?.cpo)?.map(
+                      ([cpoId, reviewSection]) => {
+                        return reviewForm.cpo ? (
+                          <div
+                            className="d-flex align-items-center"
+                            key={cpoId}
+                          >
+                            {!allowUserReviewCPO() ||
+                            Object(pia?.review?.cpo)?.[cpoId].isAcknowledged ? (
+                              <ViewCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            ) : (
+                              <EditCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            )}
+                          </div>
+                        ) : null;
+                      },
+                    )
                   ) : (
                     <EditCPOReview
                       pia={pia}
@@ -305,19 +303,23 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                       stateChangeHandler={stateChangeHandler}
                     />
                   )}
-                  <div className="horizontal-divider "></div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        addNewCPOReview();
-                      }}
-                      className="bcgovbtn bcgovbtn__tertiary bold min-gap"
-                    >
-                      Add CPO reviewer
-                      <FontAwesomeIcon icon={faPlus} />
-                    </button>
-                  </div>
+                  {enableAddNewCPOReview() ? (
+                    <>
+                      <div className="horizontal-divider "></div>
+                      <div className="d-flex justify-content-center">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addNewCPOReview();
+                          }}
+                          className="bcgovbtn bcgovbtn__tertiary bold min-gap"
+                        >
+                          Add CPO reviewer
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
               </div>
             </section>
@@ -350,16 +352,23 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             printPreview
             stateChangeHandler={stateChangeHandler}
           />
-          {Object(pia?.review?.cpo)?.map((cpo: any, index: number) => (
+          {pia?.review?.cpo ? (
+            Object.entries(pia?.review?.cpo)?.map(([cpoId, reviewSection]) => (
+              <>
+                <ViewCPOReview
+                  pia={pia}
+                  printPreview
+                  stateChangeHandler={stateChangeHandler}
+                  cpoId={cpoId}
+                />
+              </>
+            ))
+          ) : (
             <>
-              <ViewCPOReview
-                pia={pia}
-                printPreview
-                stateChangeHandler={stateChangeHandler}
-                cpoId={cpo}
-              />
+              <div> Reviewed by</div>
+              <div> Review incomplete</div>
             </>
-          ))}
+          )}
         </>
       )}
     </>

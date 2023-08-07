@@ -131,13 +131,24 @@ const defaultCompleteModal: Modal = {
 
 const checkButtonText = (pia: IPiaForm | null) => {
   // in MPO status the button text will different
-  // for delegate PIA, the button text should finish review
+  // for delegate PIA, the button text finish review
   // for standard PIA, the button text still as submit
+  // reminder: for CPO review status, it should only for standard PIA, however
+  // the delegate PIA can also in CPO_review status due to the requirement
+  // the cpo_review status button text should be finish review unless special requirement
   if (pia === null) return;
   if (
     pia.status === PiaStatuses.MPO_REVIEW &&
     pia.hasAddedPiToDataElements === false
   )
+    return SubmitButtonTextEnum.FINISH_REVIEW;
+
+  if (
+    pia.status === PiaStatuses.MPO_REVIEW &&
+    pia.hasAddedPiToDataElements !== false
+  )
+    return SubmitButtonTextEnum.FORM;
+  if (pia.status === PiaStatuses.CPO_REVIEW)
     return SubmitButtonTextEnum.FINISH_REVIEW;
   return SubmitButtonTextEnum.FORM;
 };
@@ -196,7 +207,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       class: 'statusBlock__MPOReview',
       comments: true,
       // in MPO status the button text will different
-      buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
+      buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FINISH_REVIEW,
       modal: defaultMPOReviewModal,
       Pages: {
         review: {

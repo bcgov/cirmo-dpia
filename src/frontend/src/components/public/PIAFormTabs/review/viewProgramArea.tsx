@@ -72,7 +72,8 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
               <ViewReviewSection
                 pia={pia}
                 printPreview
-                editReviewNote={setEditReviewNote}
+                editReviewNote={editReviewNote}
+                setEditReviewNote={setEditReviewNote}
                 isAcknowledged={acknowledged}
                 setAcknowledged={setAcknowledged}
                 setReviewNote={setReviewNote}
@@ -94,7 +95,8 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
         <div className="mt-2 pb-2">
           <ViewReviewSection
             pia={pia}
-            editReviewNote={setEditReviewNote}
+            editReviewNote={editReviewNote}
+            setEditReviewNote={setEditReviewNote}
             isAcknowledged={acknowledged}
             setAcknowledged={setAcknowledged}
             setReviewNote={setReviewNote}
