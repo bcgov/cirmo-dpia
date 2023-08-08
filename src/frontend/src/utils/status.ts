@@ -148,8 +148,7 @@ const checkButtonText = (pia: IPiaForm | null) => {
     pia.hasAddedPiToDataElements !== false
   )
     return SubmitButtonTextEnum.FORM;
-  if (pia.status === PiaStatuses.CPO_REVIEW)
-    return SubmitButtonTextEnum.FINISH_REVIEW;
+
   return SubmitButtonTextEnum.FORM;
 };
 const checkReviewStatus = (pia: IPiaForm | null): boolean => {
@@ -473,7 +472,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       banner: BannerText.CPOReviewStatusCalloutText.Drafter.en,
       class: 'statusBlock__CPOReview',
       comments: true,
-      buttonText: checkButtonText(pia) || SubmitButtonTextEnum.COMPLETE_PIA,
+      buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
       modal: defaultCPOReviewModal,
       Pages: {
         review: {
