@@ -153,9 +153,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
   const userGuid = getGUID();
+
   const allowUserReviewCPO = () => {
     // only allow one CPO user do review once
-    const CPOReviews = Object(reviewForm?.cpo);
+    const CPOReviews = Object(pia.review?.cpo);
     if (CPOReviews !== undefined) {
       if (
         Object.values<IReviewSection>(CPOReviews).some(
@@ -192,8 +193,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     piaStateChangeHandler(reviewForm, 'review', true);
   };
 
-  const enableAddNewCPOReview = () => {
-    if (allowUserReviewCPO()) return true;
+  const enableAddNewCPOReviewer = () => {
+    /**
+     * the logic is list as below
+     * if a cpo does not review the PIA, we do not allow this CPO user add a new CPO reviewer
+     * if a cpo already reviewed this PIA, we allow this CPO add a new cpo review
+     */
+    if (!allowUserReviewCPO()) return true;
     else return false;
   };
   const enableMPOReviewViewMode = () => {
@@ -303,7 +309,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                       stateChangeHandler={stateChangeHandler}
                     />
                   )}
-                  {enableAddNewCPOReview() ? (
+                  {enableAddNewCPOReviewer() ? (
                     <>
                       <div className="horizontal-divider "></div>
                       <div className="d-flex justify-content-center">
