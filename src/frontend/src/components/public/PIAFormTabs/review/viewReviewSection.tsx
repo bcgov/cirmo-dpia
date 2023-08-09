@@ -61,7 +61,7 @@ const ViewReviewSection = (props: IReviewProps) => {
         messages.PiaReviewHeader.MinistrySection.MPO.Input.AcceptAccountability
           .en
       }
-      reviewNoteOption={'required'}
+      reviewNoteRequired
       onClearClick={onClearClick}
       onConfirmClick={onConfirmClick}
     />
@@ -71,7 +71,9 @@ const ViewReviewSection = (props: IReviewProps) => {
         {role ? <h3>{role}</h3> : null}
         <div className="col col-md-3">
           <b>Reviewed by</b>
-          <div className="mt-2">{reviewedByDisplayName}</div>
+          <div className="mt-2">
+            {isAcknowledged ? reviewedByDisplayName : 'N/A'}
+          </div>
         </div>
 
         {canEditReview && (
@@ -92,7 +94,9 @@ const ViewReviewSection = (props: IReviewProps) => {
           <div className="col col-md-3">
             <b>Date reviewed</b>
             <div className="mt-2">
-              {reviewedAtTime ? dateToString(new Date(reviewedAtTime)) : 'N/A'}
+              {isAcknowledged && reviewedAtTime
+                ? dateToString(new Date(reviewedAtTime))
+                : 'N/A'}
             </div>
           </div>
         </div>

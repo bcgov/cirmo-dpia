@@ -14,7 +14,6 @@ interface ICPOReviewProps {
 
 const ViewCPOReview = (props: ICPOReviewProps) => {
   const { pia, printPreview, stateChangeHandler, cpoId } = props;
-
   const reviewedByDisplayName = Object(props.pia?.review?.cpo)?.[cpoId]
     .reviewedByDisplayName;
 

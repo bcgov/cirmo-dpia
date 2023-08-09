@@ -28,7 +28,7 @@ interface IReviewProps {
   role?: string;
   isAcknowledged: boolean;
   checkBoxLabel: string;
-  reviewNoteOption: 'required' | 'optional';
+  reviewNoteRequired?: boolean;
   onConfirmClick: MouseEventHandler<HTMLButtonElement>;
   onClearClick: MouseEventHandler<HTMLButtonElement>;
   reviewNote: string;
@@ -46,7 +46,7 @@ const EditReviewSection = (props: IReviewProps) => {
     role,
     isAcknowledged,
     checkBoxLabel,
-    reviewNoteOption,
+    reviewNoteRequired,
     onClearClick = () => {},
     onConfirmClick = () => {},
     reviewNote,
@@ -74,7 +74,7 @@ const EditReviewSection = (props: IReviewProps) => {
       <div className="row mt-4">
         <b>
           Review note &nbsp;
-          {reviewNoteOption === 'required' ? (
+          {reviewNoteRequired ? (
             <span className="error-text">(required)</span>
           ) : (
             `(

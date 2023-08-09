@@ -156,11 +156,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const allowUserReviewCPO = () => {
     // only allow one CPO user do review once
-    const CPOReviews = Object(pia.review?.cpo);
-    if (CPOReviews !== undefined) {
+
+    if (pia?.review?.cpo !== undefined) {
       if (
-        Object.values<IReviewSection>(CPOReviews).some(
-          (review) => review.reviewedByGuid === userGuid,
+        Object.values<IReviewSection>(pia?.review?.cpo).some(
+          (review) => review !== null && review.reviewedByGuid === userGuid,
         )
       )
         return false;
@@ -170,7 +170,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const addNewCPOReview = () => {
     const newCPOReview = {
-      userGuid: {
+      [userGuid]: {
         isAcknowledged: false,
         reviewNote: '',
       },
@@ -196,11 +196,21 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const enableAddNewCPOReviewer = () => {
     /**
      * the logic is list as below
-     * if a cpo does not review the PIA, we do not allow this CPO user add a new CPO reviewer
-     * if a cpo already reviewed this PIA, we allow this CPO add a new cpo review
+     * if a PIA not reviewed by any cpo, the cpo user can not add a new CPO reviewer
+     * if a cpo already reviewed this PIA, this cpo can not add a new CPO review section
+     * only a PIA reviewed by other CPO user but not current login CPO user,
+     * the current login CPO user allowed to see the button and add themselves as a reviewer for this pia
      */
-    if (!allowUserReviewCPO()) return true;
-    else return false;
+    // if the current login user GUID exist in CPO section, the user can not see the button
+    if (
+      pia?.review?.cpo &&
+      Object.keys(pia?.review?.cpo).some((cpoId: string) => cpoId === userGuid)
+    )
+      return false;
+    // if this current user already review the pia, can not see this button
+    if (!allowUserReviewCPO()) return false;
+
+    return true;
   };
   const enableMPOReviewViewMode = () => {
     // if the user already done review the MPO review field, we will show
@@ -305,7 +315,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                   ) : (
                     <EditCPOReview
                       pia={pia}
-                      cpoId={getGUID()}
+                      cpoId={userGuid}
                       stateChangeHandler={stateChangeHandler}
                     />
                   )}
@@ -314,10 +324,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                       <div className="horizontal-divider "></div>
                       <div className="d-flex justify-content-center">
                         <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            addNewCPOReview();
-                          }}
+                          onClick={addNewCPOReview}
                           className="bcgovbtn bcgovbtn__tertiary bold min-gap"
                         >
                           Add CPO reviewer

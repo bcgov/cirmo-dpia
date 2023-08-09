@@ -45,7 +45,7 @@ const EditMPOReview = (props: IEditMPOReviewProps) => {
             messages.PiaReviewHeader.MinistrySection.MPO.Input
               .AcceptAccountability.en
           }
-          reviewNoteOption={'required'}
+          reviewNoteRequired
           onClearClick={handleClear}
           onConfirmClick={handleSubmit}
         />
