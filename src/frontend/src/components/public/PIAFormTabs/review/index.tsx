@@ -160,7 +160,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     if (pia?.review?.cpo !== undefined) {
       if (
         Object.values<IReviewSection>(pia?.review?.cpo).some(
-          (review) => review !== null && review.reviewedByGuid === userGuid,
+          (review) =>
+            review !== null &&
+            review.isAcknowledged !== false &&
+            review.reviewedByGuid === userGuid,
         )
       )
         return false;
@@ -190,7 +193,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       });
     }
 
-    piaStateChangeHandler(reviewForm, 'review', true);
+    stateChangeHandler(reviewForm, 'review', true);
   };
 
   const enableAddNewCPOReviewer = () => {
