@@ -46,7 +46,6 @@ const ViewReviewSection = (props: IReviewProps) => {
     onConfirmClick = () => {},
   } = props;
 
-
   return editReviewNote ? (
     <EditReviewSection
       pia={pia}
