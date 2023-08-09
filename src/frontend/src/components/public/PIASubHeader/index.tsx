@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faL } from '@fortawesome/free-solid-svg-icons';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useEffect, useState } from 'react';
@@ -53,6 +53,8 @@ function PIASubHeader({
 
   const [enableFinalReview, setEnableFinalReview] = useState<boolean>(false);
   const [enableComplete, setEnableComplete] = useState<boolean>(false);
+  const [enableSubmitToCPOReview, setEnableSubmitToCPOReview] =
+    useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
 
@@ -141,6 +143,24 @@ function PIASubHeader({
   ]);
 
   useEffect(() => {
+    if (
+      pia?.status === PiaStatuses.MPO_REVIEW &&
+      pia?.hasAddedPiToDataElements !== false &&
+      pia?.review?.programArea?.selectedRoles &&
+      pia?.review?.programArea?.selectedRoles?.length > 0 &&
+      pia?.review?.mpo?.isAcknowledged === true &&
+      pia?.review?.mpo?.reviewNote !== ''
+    )
+      setEnableSubmitToCPOReview(true);
+  }, [
+    pia?.hasAddedPiToDataElements,
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.mpo?.reviewNote,
+    pia?.review?.programArea?.selectedRoles,
+    pia?.status,
+  ]);
+
+  useEffect(() => {
     // If all reviews are acknowledged
     // the current status is in final review and
     // MPO too has acknowledged, the PIA can progress to complete.
@@ -154,6 +174,8 @@ function PIASubHeader({
     pia?.review?.programArea?.selectedRoles,
     pia?.status,
   ]);
+
+  // TODO refactor this part asap.
   useEffect(() => {
     if (
       mode === 'view' &&
@@ -163,6 +185,13 @@ function PIASubHeader({
       setDisableSubmitButton(true);
     }
     if (
+      pia.hasAddedPiToDataElements !== false &&
+      primaryButtonText === SubmitButtonTextEnum.FORM &&
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      enableSubmitToCPOReview === false
+    ) {
+      setDisableSubmitButton(true);
+    } else if (
       enableFinalReview === false &&
       primaryButtonText === SubmitButtonTextEnum.FINISH_REVIEW
     ) {
@@ -178,8 +207,11 @@ function PIASubHeader({
   }, [
     enableComplete,
     enableFinalReview,
+    enableSubmitToCPOReview,
     isValidationFailed,
     mode,
+    pia.hasAddedPiToDataElements,
+    pia.status,
     primaryButtonText,
   ]);
 
