@@ -283,8 +283,132 @@ export const piaStatusMetadata: Partial<
           },
         ],
       },
+      [PiaIntakeStatusEnum.PENDING_COMPLETION]: {
+        allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL_ACK,
+              },
+            },
+          },
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.cpo': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL_ACK,
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+  [PiaIntakeStatusEnum.PENDING_COMPLETION]: {
+    updates: {
+      allow: false,
+    },
+    transition: {
+      [PiaIntakeStatusEnum.INCOMPLETE]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.EDIT_IN_PROGRESS]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+        actions: [
+          {
+            type: 'update',
+            key: 'review',
+            value: null,
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.MPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.CPO_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
+      [PiaIntakeStatusEnum.FINAL_REVIEW]: {
+        allow: true,
+        conditions: [
+          {
+            accessType: [UserTypesEnum.CPO],
+          },
+        ],
+      },
       [PiaIntakeStatusEnum.COMPLETE]: {
         allow: true,
+        conditions: [
+          {
+            piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            accessType: [UserTypesEnum.CPO],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL_ACK,
+              },
+            },
+          },
+          {
+            piaType: [PiaTypesEnum.STANDARD],
+            accessType: [UserTypesEnum.CPO],
+            fieldValidations: {
+              'review.mpo.reviewNote': {
+                required: true,
+              },
+              'review.cpo': {
+                required: true,
+              },
+              'review.programArea.reviews': {
+                required: true,
+                size: SizeEnum.ALL_ACK,
+              },
+            },
+          },
+        ],
       },
     },
   },
