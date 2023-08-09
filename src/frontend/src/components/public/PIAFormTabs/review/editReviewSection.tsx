@@ -52,7 +52,15 @@ const EditReviewSection = (props: IReviewProps) => {
     reviewNote,
   } = props;
   const disableConfirmButton = () => {
-    if (reviewNote.trim() === '') return true;
+    // the check box must be selected in both scenarios
+    // if review note is required, then user must input the review note
+    // to enable the confirm button
+
+    if (isAcknowledged === false) return true;
+    if (reviewNoteRequired) {
+      if (reviewNote.trim() === '') return true;
+    }
+
     return false;
   };
   return (
