@@ -46,7 +46,6 @@ const ViewReviewSection = (props: IReviewProps) => {
     onConfirmClick = () => {},
   } = props;
 
-  // const [editReview, setEditReview] = useState(false);
 
   return editReviewNote ? (
     <EditReviewSection
