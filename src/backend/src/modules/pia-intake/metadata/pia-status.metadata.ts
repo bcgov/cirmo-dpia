@@ -381,7 +381,7 @@ export const piaStatusMetadata: Partial<
         conditions: [
           {
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
-            accessType: [UserTypesEnum.MPO],
+            accessType: [UserTypesEnum.CPO],
             fieldValidations: {
               'review.mpo.reviewNote': {
                 required: true,
