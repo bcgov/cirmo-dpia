@@ -488,6 +488,7 @@ describe('PiaIntakeService', () => {
               PiaIntakeStatusEnum.MPO_REVIEW,
               PiaIntakeStatusEnum.CPO_REVIEW,
               PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
             ]),
           },
           {
@@ -605,6 +606,7 @@ describe('PiaIntakeService', () => {
               PiaIntakeStatusEnum.MPO_REVIEW,
               PiaIntakeStatusEnum.CPO_REVIEW,
               PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
             ]),
           },
           {
@@ -630,6 +632,7 @@ describe('PiaIntakeService', () => {
               PiaIntakeStatusEnum.MPO_REVIEW,
               PiaIntakeStatusEnum.CPO_REVIEW,
               PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
             ]),
           },
           {
@@ -1595,6 +1598,7 @@ describe('PiaIntakeService', () => {
               PiaIntakeStatusEnum.MPO_REVIEW,
               PiaIntakeStatusEnum.CPO_REVIEW,
               PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
             ]),
           },
           {
