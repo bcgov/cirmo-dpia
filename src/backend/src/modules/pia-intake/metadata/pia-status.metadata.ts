@@ -380,10 +380,8 @@ export const piaStatusMetadata: Partial<
         allow: true,
         conditions: [
           {
-            accessType: [UserTypesEnum.CPO],
-          },
-          {
             piaType: [PiaTypesEnum.DELEGATE_REVIEW],
+            accessType: [UserTypesEnum.MPO],
             fieldValidations: {
               'review.mpo.reviewNote': {
                 required: true,
@@ -396,6 +394,7 @@ export const piaStatusMetadata: Partial<
           },
           {
             piaType: [PiaTypesEnum.STANDARD],
+            accessType: [UserTypesEnum.CPO],
             fieldValidations: {
               'review.mpo.reviewNote': {
                 required: true,
