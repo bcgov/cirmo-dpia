@@ -25,7 +25,7 @@ const validateSize = (
     case SizeEnum.AT_LEAST_ONE:
       if (Array.isArray(value) && value.length > 0) return true; // validation ok
       break;
-    case SizeEnum.ALL:
+    case SizeEnum.ALL_ACK:
       if (Array.isArray(value) && value.length > 0) {
         return value.every((v) => v.isAcknowledged === true);
       }

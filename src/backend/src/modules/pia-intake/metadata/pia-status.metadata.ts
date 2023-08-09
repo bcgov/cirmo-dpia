@@ -294,7 +294,7 @@ export const piaStatusMetadata: Partial<
               },
               'review.programArea.reviews': {
                 required: true,
-                size: SizeEnum.ALL,
+                size: SizeEnum.ALL_ACK,
               },
             },
           },
@@ -309,7 +309,7 @@ export const piaStatusMetadata: Partial<
               },
               'review.programArea.reviews': {
                 required: true,
-                size: SizeEnum.ALL,
+                size: SizeEnum.ALL_ACK,
               },
             },
           },
@@ -390,7 +390,7 @@ export const piaStatusMetadata: Partial<
               },
               'review.programArea.reviews': {
                 required: true,
-                size: SizeEnum.ALL,
+                size: SizeEnum.ALL_ACK,
               },
             },
           },
@@ -405,7 +405,7 @@ export const piaStatusMetadata: Partial<
               },
               'review.programArea.reviews': {
                 required: true,
-                size: SizeEnum.ALL,
+                size: SizeEnum.ALL_ACK,
               },
             },
           },
