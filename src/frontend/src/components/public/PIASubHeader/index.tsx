@@ -35,6 +35,7 @@ function PIASubHeader({
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
   const userRoles = roleCheck();
+  const role = userRoles?.roles[0];
 
   //
   // Modal State
@@ -179,21 +180,13 @@ function PIASubHeader({
   };
   const showSubmitButton = () => {
     const owner = getGUID() === pia.createdByGuid ? true : false;
-    // if the status is completed, hide submit button
-    if (pia.status === PiaStatuses.COMPLETE) return false;
-    if (
-      owner &&
-      pia.status !== PiaStatuses.CPO_REVIEW &&
-      pia.status !== PiaStatuses.MPO_REVIEW
-    )
-      return true;
-    else if (
-      userRoles.roles !== undefined &&
-      userRoles.roles[0].includes('MPO') &&
-      pia.status === PiaStatuses.MPO_REVIEW
-    )
-      return true;
-    else return false;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    return (
+      statusList?.(pia)?.[pia?.status!]?.Privileges[role]?.showSubmitButton ||
+      // TODO: Implement 'owner' logic in state machine
+      (owner && pia.status === PiaStatuses.INCOMPLETE) ||
+      (owner && pia.status === PiaStatuses.EDIT_IN_PROGRESS)
+    );
   };
 
   return (
