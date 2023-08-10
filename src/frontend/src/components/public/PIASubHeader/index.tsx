@@ -35,7 +35,10 @@ function PIASubHeader({
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
   const userRoles = roleCheck();
-  const role = userRoles?.roles[0];
+  const role =
+    userRoles?.roles !== undefined && userRoles?.roles.length > 0
+      ? userRoles?.roles[0]
+      : 'DRAFTER';
 
   //
   // Modal State
@@ -180,9 +183,9 @@ function PIASubHeader({
   };
   const showSubmitButton = () => {
     const owner = getGUID() === pia.createdByGuid ? true : false;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     return (
-      statusList?.(pia)?.[pia?.status!]?.Privileges[role]?.showSubmitButton ||
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton ||
       // TODO: Implement 'owner' logic in state machine
       (owner && pia.status === PiaStatuses.INCOMPLETE) ||
       (owner && pia.status === PiaStatuses.EDIT_IN_PROGRESS)
