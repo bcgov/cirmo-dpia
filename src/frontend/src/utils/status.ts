@@ -11,9 +11,11 @@ export type PageAccessControl = {
   };
 };
 
+export type UserRole = 'MPO' | 'CPO' | 'DRAFTER';
+
 export type Privileges = {
-  [role: string]: {
-    changeStatus: Array<ChangeStatus>;
+  [role in UserRole]?: {
+    changeStatus?: Array<ChangeStatus>;
     banner?: string;
     Pages?: PageAccessControl;
     showSubmitButton?: boolean;
@@ -243,6 +245,12 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 ? resetReviewEditInPRogressModal
                 : defaultEditInProgressModal,
             },
+            {
+              status: 'INCOMPLETE',
+              modal: checkReviewStatus(pia)
+                ? resetReviewIncompleteModal
+                : defaultIncompleteModal,
+            },
           ],
         },
         CPO: {
@@ -461,6 +469,15 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
             {
               status: 'CPO_REVIEW',
               modal: defaultCPOReviewModal,
+            },
+          ],
+        },
+        DRAFTER: {
+          showSubmitButton: true,
+          changeStatus: [
+            {
+              status: 'INCOMPLETE',
+              modal: defaultIncompleteModal,
             },
           ],
         },

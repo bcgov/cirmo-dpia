@@ -1,5 +1,5 @@
 import { roleCheck } from '../../../utils/helper.util';
-import { ChangeStatus, statusList } from '../../../utils/status';
+import { ChangeStatus, statusList, UserRole } from '../../../utils/status';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,7 @@ import { IStatusChangeDropDownProps } from './interface';
 import populateModal from './populateModal';
 
 /* create a function to push unique status object into an array */
+// TODO: Remove this function in favour of using a Set with reduce
 function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
   let isUnique = true;
   statuses.forEach((statusObj) => {
@@ -19,7 +20,11 @@ function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
   }
 }
 
-function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
+function StatusChangeDropDown({
+  pia,
+  changeStatusFn,
+  mode,
+}: IStatusChangeDropDownProps) {
   /* This function checks if the user has the privilege to change the status
    * of the PIA. It checks the user's role against the statusList and the
    * Privileges object. If the user's role is in the Privileges object, it
@@ -28,40 +33,24 @@ function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
    */
   const checkPrivileges = () => {
     const roles = roleCheck();
+    const role: UserRole =
+      roles?.roles?.length > 0 ? (roles?.roles[0] as UserRole) : 'DRAFTER';
     const statuses: ChangeStatus[] = [];
 
     let hasStatusDropdown = false;
-    if (roles !== undefined && roles.roles !== undefined) {
-      roles.roles.forEach((role: string) => {
-        /* check if the role is in the statusList */
-        if (
-          role in statusList(null)[props.pia.status || 'Completed'].Privileges
-        ) {
-          /* check if the role has changeStatus */
-          if (
-            'changeStatus' in
-            Object(
-              statusList(null)[props.pia.status || 'Completed'].Privileges,
-            )[role]
-          ) {
-            /* check if the changeStatus is not empty */
-            if (
-              Object(
-                statusList(null)[props.pia.status || 'Completed'].Privileges,
-              )[role].changeStatus.length !== 0
-            ) {
-              hasStatusDropdown = true;
-              const statusObj = Object(
-                statusList(null)[props.pia.status || 'Completed'].Privileges,
-              )[role].changeStatus;
+    /* check if the changeStatus is not empty */
+    if (
+      Object(statusList(null)?.[pia.status!])?.Privileges[role]?.changeStatus
+        ?.length > 0
+    ) {
+      hasStatusDropdown = true;
+      const statusArr = Object(statusList(pia)[pia.status!].Privileges)[role]
+        .changeStatus;
 
-              /* This function will push unique status object into the statuses array */
-              statusObj.forEach((status: ChangeStatus) => {
-                pushUniqueStatus(statuses, status);
-              });
-            }
-          }
-        }
+      /* This function will push unique status object into the statuses array */
+      // TODO: See above todo for pushUniqueStatus ⬆️  🤮
+      statusArr.forEach((status: ChangeStatus) => {
+        pushUniqueStatus(statuses, status);
       });
     }
     return {
@@ -87,17 +76,17 @@ function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
             >
               <div
                 className={`statusBlock statusBlock--active ${
-                  props.pia.status && statusList(null)[props.pia.status].class
+                  pia.status && statusList(null)[pia.status].class
                 }`}
               >
-                {props.pia.status
-                  ? statusList(null)[props.pia.status].title
+                {pia.status
+                  ? statusList(null)[pia.status].title
                   : statusList(null)[PiaStatuses.INCOMPLETE].title}
               </div>
               <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
             </button>
-            {props.pia.status ? (
-              props.pia.status in statusList(null) ? (
+            {pia.status ? (
+              pia.status in statusList(null) ? (
                 <ul
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
@@ -106,11 +95,7 @@ function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
                     <li
                       key={index}
                       onClick={() => {
-                        populateModal(
-                          props.pia,
-                          statuskey.status,
-                          props.changeStatusFn,
-                        );
+                        populateModal(pia, statuskey.status, changeStatusFn);
                       }}
                       className="dropdown-item-container"
                     >
@@ -131,16 +116,12 @@ function StatusChangeDropDown(props: IStatusChangeDropDownProps) {
               ''
             )}
           </div>
-        ) : props.pia.status ? (
-          props.pia.status in statusList(null) ? (
+        ) : pia.status ? (
+          pia.status in statusList(null) ? (
             <div
-              className={`statusBlock ${
-                statusList(null)[props.pia.status].class
-              }`}
+              className={`statusBlock ${statusList(null)[pia.status].class}`}
             >
-              {props.pia.status
-                ? statusList(null)[props.pia.status].title
-                : 'Completed'}
+              {pia.status ? statusList(null)[pia.status].title : 'Completed'}
             </div>
           ) : (
             ''

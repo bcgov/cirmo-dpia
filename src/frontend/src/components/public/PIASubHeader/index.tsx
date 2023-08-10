@@ -13,7 +13,7 @@ import { getGUID, roleCheck } from '../../../utils/helper.util';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
-import { statusList } from '../../../utils/status';
+import { statusList, UserRole } from '../../../utils/status';
 import { IReviewSection } from '../PIAFormTabs/review/interfaces';
 
 function PIASubHeader({
@@ -36,9 +36,9 @@ function PIASubHeader({
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
   const userRoles = roleCheck();
-  const role =
+  const role: UserRole =
     userRoles?.roles !== undefined && userRoles?.roles.length > 0
-      ? userRoles?.roles[0]
+      ? (userRoles?.roles[0] as UserRole)
       : 'DRAFTER';
 
   //
@@ -232,14 +232,8 @@ function PIASubHeader({
     return true;
   };
   const showSubmitButton = () => {
-    const owner = getGUID() === pia.createdByGuid ?? false;
-    return (
-      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-      statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton ||
-      // TODO: Implement 'owner' logic in state machine
-      (owner && pia.status === PiaStatuses.INCOMPLETE) ||
-      (owner && pia.status === PiaStatuses.EDIT_IN_PROGRESS)
-    );
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    return statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton;
   };
 
   return (
