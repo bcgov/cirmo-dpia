@@ -232,7 +232,7 @@ function PIASubHeader({
     return true;
   };
   const showSubmitButton = () => {
-    const owner = getGUID() === pia.createdByGuid ? true : false;
+    const owner = getGUID() === pia.createdByGuid ?? false;
     return (
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton ||
