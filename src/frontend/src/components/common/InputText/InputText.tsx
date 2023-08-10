@@ -11,7 +11,7 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputType } from '../../../constant/constant';
 
-type SupportedInputTypes = 'text' | 'email' | 'textArea' | string;
+type SupportedInputTypes = string;
 
 interface InputTextProps {
   id?: string;
@@ -41,7 +41,7 @@ const InputText = ({
   linkText = '',
   linkHref = '',
   hasIcon = false,
-  type = TextInputType.INPUTTEXT,
+  type = TextInputType.INPUT_TEXT,
   className = '',
   value = '',
   placeholder = '',
@@ -85,11 +85,29 @@ const InputText = ({
   }, [keydownListener]);
 
   const checkTextArea = () => {
-    if (type === TextInputType.INPUTTEXTAREA) {
-      return true;
-    } else {
-      return false;
-    }
+    return type === TextInputType.INPUT_TEXT_AREA;
+  };
+
+  const commonProps = {
+    id: inputId,
+    value: value || '',
+    placeholder,
+    onChange,
+    onFocus,
+    className: 'form-control',
+    required,
+    disabled: isDisabled,
+    readOnly: isAccessLink,
+    'aria-label': inputId,
+  };
+
+  const inputProps = {
+    ...commonProps,
+    type,
+  };
+
+  const textareaProps = {
+    ...commonProps,
   };
 
   return (
@@ -118,34 +136,9 @@ const InputText = ({
       )}
       {!readOnly ? (
         checkTextArea() ? (
-          <textarea
-            id={inputId}
-            value={value || ''}
-            placeholder={placeholder}
-            onChange={onChange}
-            onFocus={onFocus}
-            className="form-control"
-            required={required}
-            disabled={isDisabled}
-            readOnly={isAccessLink}
-            ref={inputRef}
-            aria-label={inputId}
-          />
+          <textarea {...textareaProps} />
         ) : (
-          <input
-            id={inputId}
-            type={type}
-            value={value || ''}
-            placeholder={placeholder}
-            onChange={onChange}
-            onFocus={onFocus}
-            className="form-control"
-            required={required}
-            disabled={isDisabled}
-            readOnly={isAccessLink}
-            ref={inputRef}
-            aria-label={inputId}
-          />
+          <input {...inputProps} />
         )
       ) : value ? (
         <p>{value}</p>

@@ -55,25 +55,25 @@ const PIACollectionUseAndDisclosure = () => {
     {
       key: 'drafterInput',
       label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
-      type: TextInputType.INPUTTEXTAREA,
+      type: TextInputType.INPUT_TEXT_AREA,
     },
     {
       key: 'mpoInput',
       label: Messages.WorkThroughDetails.ColumnMpoInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUTTEXT,
+      type: TextInputType.INPUT_TEXT,
     },
     {
       key: 'foippaInput',
       label: Messages.WorkThroughDetails.ColumnFoippaInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUTTEXT,
+      type: TextInputType.INPUT_TEXT,
     },
     {
       key: 'OtherInput',
       label: Messages.WorkThroughDetails.ColumnOtherInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUTTEXT,
+      type: TextInputType.INPUT_TEXT,
     },
   ];
 
