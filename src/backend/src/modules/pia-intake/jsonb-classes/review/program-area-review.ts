@@ -1,5 +1,4 @@
 import { IsArray, IsObject, IsOptional } from '@nestjs/class-validator';
-import { ForbiddenException } from '@nestjs/common';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
@@ -55,51 +54,18 @@ export const validateRoleForProgramAreaReview = (
   const updatedReviews = updatedValue?.reviews;
   const storedReviews = storedValue?.reviews;
 
-  // no records
-  if (!updatedReviews && !storedReviews) return;
+  const allKeys = new Set<string>();
+  Object.keys(updatedReviews || {}).forEach((key) => allKeys.add(key));
+  Object.keys(storedReviews || {}).forEach((key) => allKeys.add(key));
 
-  const updatedReviewers = Object.keys(updatedReviews || {});
-  const storedReviewers = Object.keys(storedReviews || {});
-
-  // check role access for reviews that are cleared / removed reviews
-  // check role for non-system generated values
-  const deletedReviewers = storedReviewers.filter((r) => {
-    return (
-      !updatedReviewers.includes(r) || // when the role key does not exist at all
-      !updatedReviews[r] // or when the key exists, but null or undefined
-    );
-  });
-
-  deletedReviewers.forEach((role) => {
-    // check if user only deletes/removes reviews he only left
-    if (
-      storedReviews?.[role]?.reviewedByGuid !== loggedInUser?.idir_user_guid
-    ) {
-      throw new ForbiddenException({
-        message: 'User is not allowed to remove review for the path',
-        path: `review.programArea.reviews.${role}`,
-      });
-    }
-
-    // check for role considerations of the user
+  // check role access for reviews that are updated or added
+  Array.from(allKeys).forEach((role) => {
     validateRoleForSelectedRoleReviews(
       updatedReviews?.[role],
       storedReviews?.[role],
       userType,
       `review.programArea.reviews.${role}`,
-      true,
+      loggedInUser,
     );
   });
-
-  // check role access for reviews that are updated or added
-  updatedReviewers
-    .filter((r) => !deletedReviewers.includes(r)) // filter deleted / nullified reviews
-    .forEach((role) => {
-      validateRoleForSelectedRoleReviews(
-        updatedReviews?.[role],
-        storedReviews?.[role],
-        userType,
-        `review.programArea.reviews.${role}`,
-      );
-    });
 };

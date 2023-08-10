@@ -66,10 +66,6 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                   pia={props.pia}
                   role={role}
                   stateChangeHandler={props.stateChangeHandler}
-                  isAcknowledged={
-                    Object(props.pia?.review?.programArea)?.reviews?.[role]
-                      ?.isAcknowledged || false
-                  }
                 />
               ) : (
                 <EditProgramAreaReview

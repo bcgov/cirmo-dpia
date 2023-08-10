@@ -88,7 +88,7 @@ export default {
         en: `Your status will be changed to CPO review. A CPO analyst will be able to review your PIA.`,
       },
     },
-    SubmitDelegateForFinalReview: {
+    SubmitForFinalReview: {
       ConfirmLabel: {
         en: `Yes, finish`,
       },

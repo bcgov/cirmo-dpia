@@ -355,20 +355,18 @@ const PIAFormPage = () => {
         );
         setPiaModalButtonValue('SubmitForCPOReview');
         break;
-      case 'SubmitDelegateForFinalReview':
+      case 'SubmitForFinalReview':
         setPiaModalConfirmLabel(
-          Messages.Modal.SubmitDelegateForFinalReview.ConfirmLabel.en,
+          Messages.Modal.SubmitForFinalReview.ConfirmLabel.en,
         );
         setPiaModalCancelLabel(
-          Messages.Modal.SubmitDelegateForFinalReview.CancelLabel.en,
+          Messages.Modal.SubmitForFinalReview.CancelLabel.en,
         );
-        setPiaModalTitleText(
-          Messages.Modal.SubmitDelegateForFinalReview.TitleText.en,
-        );
+        setPiaModalTitleText(Messages.Modal.SubmitForFinalReview.TitleText.en);
         setPiaModalParagraph(
-          Messages.Modal.SubmitDelegateForFinalReview.ParagraphText.en,
+          Messages.Modal.SubmitForFinalReview.ParagraphText.en,
         );
-        setPiaModalButtonValue('SubmitDelegateForFinalReview');
+        setPiaModalButtonValue('SubmitForFinalReview');
         break;
       case 'SubmitForPendingCompletion':
         PopulateModal(pia, PiaStatuses.PENDING_COMPLETION, populateModalFn);
@@ -630,7 +628,7 @@ const PIAFormPage = () => {
             }),
           );
         }
-      } else if (buttonValue === 'SubmitDelegateForFinalReview') {
+      } else if (buttonValue === 'SubmitForFinalReview') {
         const updatedPia = await upsertAndUpdatePia({
           // here not sure what status for this one, need to discuss
 
@@ -716,10 +714,12 @@ const PIAFormPage = () => {
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
         if (pia?.hasAddedPiToDataElements === false) {
-          handleShowModal('SubmitDelegateForFinalReview');
+          handleShowModal('SubmitForFinalReview');
         } else {
           handleShowModal('SubmitForCPOReview');
         }
+      } else if (pia?.status === PiaStatuses.CPO_REVIEW) {
+        handleShowModal('SubmitForFinalReview');
       } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
         handleShowModal('SubmitForPendingCompletion');
       } else if (pia?.status === PiaStatuses.PENDING_COMPLETION) {

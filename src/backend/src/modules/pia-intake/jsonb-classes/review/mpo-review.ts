@@ -1,7 +1,7 @@
 import { IsBoolean } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
-import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import { RoleReview } from './role-review';
 
 export class MpoReview extends RoleReview {
@@ -59,31 +59,15 @@ export const validateRoleForMpoReview = (
   updatedValue: MpoReview,
   storedValue: MpoReview,
   userType: UserTypesEnum[],
-  isDeleted?: boolean,
+  path: string,
+  loggedInUser: KeycloakUser,
 ) => {
-  if (!updatedValue) return;
-
-  let keys = Object.keys(updatedValue) as Array<keyof MpoReview>;
-
-  // if review is deleted, only check role for ONLY user generated keys
-  if (isDeleted) {
-    keys = keys.filter((key) => {
-      const metadata = mpoReviewMetadata.find((m) => m.key === key);
-      return !metadata.isSystemGeneratedField;
-    });
-  }
-
-  keys.forEach((key) => {
-    const updatedKeyValue = updatedValue?.[key];
-    const storedKeyValue = storedValue?.[key];
-    const metadata = mpoReviewMetadata.find((m) => m.key === key);
-
-    validateRoleForFormField(
-      metadata,
-      updatedKeyValue,
-      storedKeyValue,
-      userType,
-      `review.mpo.${key}`,
-    );
-  });
+  RoleReview.validateRoleForReview<MpoReview>(
+    updatedValue,
+    storedValue,
+    userType,
+    path,
+    loggedInUser,
+    mpoReviewMetadata,
+  );
 };
