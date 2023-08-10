@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faL } from '@fortawesome/free-solid-svg-icons';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
 import { statusList } from '../../../utils/status';
+import { IReviewSection } from '../PIAFormTabs/review/interfaces';
 
 function PIASubHeader({
   pia,
@@ -52,6 +53,8 @@ function PIASubHeader({
 
   const [enableFinalReview, setEnableFinalReview] = useState<boolean>(false);
   const [enableComplete, setEnableComplete] = useState<boolean>(false);
+  const [enableSubmitToCPOReview, setEnableSubmitToCPOReview] =
+    useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
 
@@ -102,12 +105,28 @@ function PIASubHeader({
     setModalCancelLabel(Messages.GenerateAccessLinkModal.cancelLabel);
   };
   useEffect(() => {
+    // enable finish review button condition
+    // Delegate PIA, MPO_review status, program area at least one role selected and mpo accepted accountability
+    // PI PIA, CPO_review status, same as delegate PIA, also at least one CPO need to accept accountability
     if (
-      pia?.status === PiaStatuses.MPO_REVIEW &&
-      pia?.review?.programArea?.selectedRoles &&
-      pia?.review?.programArea?.selectedRoles?.length > 0 &&
-      pia?.review?.mpo?.isAcknowledged === true &&
-      pia?.review?.mpo?.reviewNote !== ''
+      (pia?.status === PiaStatuses.MPO_REVIEW &&
+        pia?.hasAddedPiToDataElements === false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '') ||
+      (pia?.status === PiaStatuses.CPO_REVIEW &&
+        pia?.hasAddedPiToDataElements !== false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '' &&
+        pia?.review?.cpo &&
+        Object.values(pia?.review.cpo)?.length > 0 &&
+        Object.values(pia?.review?.cpo)?.every(
+          (review: IReviewSection) =>
+            review.isAcknowledged === true && review.reviewNote !== '',
+        ))
     ) {
       setEnableFinalReview(true);
     } else {
@@ -115,10 +134,29 @@ function PIASubHeader({
     }
   }, [
     pia?.hasAddedPiToDataElements,
+    pia?.review?.cpo,
     pia?.review?.mpo?.isAcknowledged,
     pia?.review?.mpo?.reviewNote,
     pia?.review?.programArea?.selectedRoles,
     pia?.review?.programArea?.selectedRoles?.length,
+    pia?.status,
+  ]);
+
+  useEffect(() => {
+    if (
+      pia?.status === PiaStatuses.MPO_REVIEW &&
+      pia?.hasAddedPiToDataElements !== false &&
+      pia?.review?.programArea?.selectedRoles &&
+      pia?.review?.programArea?.selectedRoles?.length > 0 &&
+      pia?.review?.mpo?.isAcknowledged === true &&
+      pia?.review?.mpo?.reviewNote !== ''
+    )
+      setEnableSubmitToCPOReview(true);
+  }, [
+    pia?.hasAddedPiToDataElements,
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.mpo?.reviewNote,
+    pia?.review?.programArea?.selectedRoles,
     pia?.status,
   ]);
 
@@ -136,6 +174,8 @@ function PIASubHeader({
     pia?.review?.programArea?.selectedRoles,
     pia?.status,
   ]);
+
+  // TODO refactor this part asap.
   useEffect(() => {
     if (
       mode === 'view' &&
@@ -145,6 +185,13 @@ function PIASubHeader({
       setDisableSubmitButton(true);
     }
     if (
+      pia.hasAddedPiToDataElements !== false &&
+      primaryButtonText === SubmitButtonTextEnum.FORM &&
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      enableSubmitToCPOReview === false
+    ) {
+      setDisableSubmitButton(true);
+    } else if (
       enableFinalReview === false &&
       primaryButtonText === SubmitButtonTextEnum.FINISH_REVIEW
     ) {
@@ -160,8 +207,11 @@ function PIASubHeader({
   }, [
     enableComplete,
     enableFinalReview,
+    enableSubmitToCPOReview,
     isValidationFailed,
     mode,
+    pia.hasAddedPiToDataElements,
+    pia.status,
     primaryButtonText,
   ]);
 
@@ -191,6 +241,12 @@ function PIASubHeader({
       userRoles.roles !== undefined &&
       userRoles.roles[0].includes('MPO') &&
       pia.status === PiaStatuses.MPO_REVIEW
+    )
+      return true;
+    else if (
+      userRoles.roles !== undefined &&
+      userRoles.roles[0].includes('CPO') &&
+      pia.status === PiaStatuses.CPO_REVIEW
     )
       return true;
     else return false;
