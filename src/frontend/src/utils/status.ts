@@ -11,21 +11,14 @@ export type PageAccessControl = {
   };
 };
 
+export type UserRole = 'MPO' | 'CPO' | 'DRAFTER';
+
 export type Privileges = {
-  MPO?: {
-    changeStatus: Array<ChangeStatus>;
+  [role in UserRole]?: {
+    changeStatus?: Array<ChangeStatus>;
     banner?: string;
     Pages?: PageAccessControl;
-  };
-  CPO?: {
-    changeStatus: Array<ChangeStatus>;
-    banner?: string;
-    Pages?: PageAccessControl;
-  };
-  DRAFTER?: {
-    changeStatus: Array<ChangeStatus>;
-    banner?: string;
-    Pages?: PageAccessControl;
+    showSubmitButton?: boolean;
   };
 };
 
@@ -219,6 +212,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       },
       Privileges: {
         MPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'INCOMPLETE',
@@ -250,6 +244,12 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
               modal: checkReviewStatus(pia)
                 ? resetReviewEditInPRogressModal
                 : defaultEditInProgressModal,
+            },
+            {
+              status: 'INCOMPLETE',
+              modal: checkReviewStatus(pia)
+                ? resetReviewIncompleteModal
+                : defaultIncompleteModal,
             },
           ],
         },
@@ -324,6 +324,10 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
             },
           ],
         },
+        DRAFTER: {
+          showSubmitButton: true,
+          changeStatus: [],
+        },
       },
     },
     COMPLETE: {
@@ -360,6 +364,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           changeStatus: [],
         },
         CPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'CPO_REVIEW',
@@ -434,6 +439,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       },
       Privileges: {
         MPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'INCOMPLETE',
@@ -450,6 +456,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           ],
         },
         CPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'MPO_REVIEW',
@@ -462,6 +469,15 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
             {
               status: 'CPO_REVIEW',
               modal: defaultCPOReviewModal,
+            },
+          ],
+        },
+        DRAFTER: {
+          showSubmitButton: true,
+          changeStatus: [
+            {
+              status: 'INCOMPLETE',
+              modal: defaultIncompleteModal,
             },
           ],
         },
@@ -494,6 +510,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           },
         },
         CPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'MPO_REVIEW',
@@ -540,6 +557,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       },
       Privileges: {
         MPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'INCOMPLETE',
@@ -574,6 +592,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           ],
         },
         CPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'CPO_REVIEW',
