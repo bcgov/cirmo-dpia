@@ -9,7 +9,7 @@ import {
 import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { TextInputType } from '../../../constant/constant';
+import { TextInputEnum } from '../../../constant/constant';
 import { TextType } from '../../../types/types/text.type';
 
 interface InputTextProps {
@@ -40,7 +40,7 @@ const InputText = ({
   linkText = '',
   linkHref = '',
   hasIcon = false,
-  type = TextInputType.INPUT_TEXT,
+  type = TextInputEnum.INPUT_TEXT,
   className = '',
   value = '',
   placeholder = '',
@@ -84,7 +84,7 @@ const InputText = ({
   }, [keydownListener]);
 
   const checkTextArea = () => {
-    return type === TextInputType.INPUT_TEXT_AREA;
+    return type === TextInputEnum.INPUT_TEXT_AREA;
   };
 
   const commonProps = {

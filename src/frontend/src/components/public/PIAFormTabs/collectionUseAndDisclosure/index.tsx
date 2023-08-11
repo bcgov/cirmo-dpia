@@ -16,7 +16,7 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
-import { TextInputType } from '../../../../constant/constant';
+import { TextInputEnum } from '../../../../constant/constant';
 
 const PIACollectionUseAndDisclosure = () => {
   const {
@@ -55,25 +55,25 @@ const PIACollectionUseAndDisclosure = () => {
     {
       key: 'drafterInput',
       label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
-      type: TextInputType.INPUT_TEXT_AREA,
+      type: TextInputEnum.INPUT_TEXT_AREA,
     },
     {
       key: 'mpoInput',
       label: Messages.WorkThroughDetails.ColumnMpoInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUT_TEXT,
+      type: TextInputEnum.INPUT_TEXT,
     },
     {
       key: 'foippaInput',
       label: Messages.WorkThroughDetails.ColumnFoippaInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUT_TEXT,
+      type: TextInputEnum.INPUT_TEXT,
     },
     {
       key: 'OtherInput',
       label: Messages.WorkThroughDetails.ColumnOtherInput.en,
       isDisable: !isMPORole(),
-      type: TextInputType.INPUT_TEXT,
+      type: TextInputEnum.INPUT_TEXT,
     },
   ];
 

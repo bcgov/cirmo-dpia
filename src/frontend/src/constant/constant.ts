@@ -278,7 +278,7 @@ export const ApprovalRoles: IapprovalRoles = {
   ADM: 'Assistant Deputy Minister',
 };
 
-export enum TextInputType {
+export enum TextInputEnum {
   INPUT_TEXT = 'text',
   INPUT_TEXT_AREA = 'textarea',
   INPUT_EMAIL = 'email',
