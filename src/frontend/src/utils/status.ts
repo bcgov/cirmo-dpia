@@ -303,6 +303,10 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
                 : defaultEditInProgressModal,
             },
             {
+              status: 'MPO_REVIEW',
+              modal: defaultMPOReviewModal,
+            },
+            {
               status: 'CPO_REVIEW',
               modal: defaultCPOReviewModal,
             },
