@@ -1,3 +1,5 @@
+import { TextInputType } from '../../../constant/constant';
+
 export interface ColumnMetaData {
   key: string;
   label: string;
@@ -5,7 +7,7 @@ export interface ColumnMetaData {
   isDisable?: boolean;
   className?: string;
   hint?: string;
-  type?: string;
+  type?: TextInputType;
 }
 
 // default tabular data format - [{key1: value1, key2: value2}]

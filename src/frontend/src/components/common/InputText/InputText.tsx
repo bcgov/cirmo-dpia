@@ -11,8 +11,6 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputType } from '../../../constant/constant';
 
-type SupportedInputTypes = string;
-
 interface InputTextProps {
   id?: string;
   label?: string;
@@ -20,7 +18,7 @@ interface InputTextProps {
   linkText?: string;
   linkHref?: string;
   hasIcon?: boolean;
-  type?: SupportedInputTypes;
+  type?: TextInputType;
   className?: string;
   value?: string | null;
   placeholder?: string;
@@ -61,7 +59,8 @@ const InputText = ({
   labelSideClasses += labelSide === 'top' ? 'flex-column ' : 'flex-row ';
   labelSideClasses += labelSide === 'left' ? 'align-items-center ' : ' ';
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
   const keydownListener = useCallback(
     (e: any) => {
       if (e.code === 'Enter' || e.code === 'NumpadEnter') {
@@ -72,16 +71,15 @@ const InputText = ({
   );
 
   useEffect(() => {
-    const inputRefCurrent = inputRef?.current as unknown as
-      | HTMLInputElement
-      | HTMLTextAreaElement;
+    const currentInput = inputRef.current;
 
-    if (!inputRefCurrent) return;
+    if (!currentInput) return;
 
-    inputRefCurrent.addEventListener('keydown', keydownListener);
+    currentInput.addEventListener('keydown', keydownListener);
 
-    return () =>
-      inputRefCurrent.removeEventListener('keydown', keydownListener);
+    return () => {
+      currentInput.removeEventListener('keydown', keydownListener);
+    };
   }, [keydownListener]);
 
   const checkTextArea = () => {

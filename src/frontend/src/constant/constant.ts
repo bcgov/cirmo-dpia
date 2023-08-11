@@ -278,4 +278,5 @@ export const ApprovalRoles: IapprovalRoles = {
 export enum TextInputType {
   INPUT_TEXT = 'text',
   INPUT_TEXT_AREA = 'textArea',
+  INPUT_EMAIL = 'email',
 }
