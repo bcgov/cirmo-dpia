@@ -3,7 +3,9 @@ import {
   IsEnum,
   IsOptional,
   IsString,
+  IsArray,
   Validate,
+  ValidateNested,
 } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
@@ -64,6 +66,24 @@ export class Ppq {
   @IsString()
   @IsOptional()
   otherCpoConsideration?: string;
+
+  @IsString()
+  @IsOptional()
+  pidInitiativeSummary?: string;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  relatedOperationalPias?: Array<string>;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  relatedEnactmentPias?: Array<string>;
+
+  @IsString()
+  @IsOptional()
+  otherCpoConsiderations?: string;
 }
 
 // only MPO users can edit all these field
@@ -126,6 +146,22 @@ export const PpqMetadata: Array<IFormField<Ppq>> = [
   },
   {
     key: 'otherCpoConsideration',
+    allowedUserTypesEdit: [UserTypesEnum.MPO],
+  },
+  {
+    key: 'pidInitiativeSummary',
+    allowedUserTypesEdit: [UserTypesEnum.MPO],
+  },
+  {
+    key: 'relatedOperationalPias',
+    allowedUserTypesEdit: [UserTypesEnum.MPO],
+  },
+  {
+    key: 'relatedEnactmentPias',
+    allowedUserTypesEdit: [UserTypesEnum.MPO],
+  },
+  {
+    key: 'otherCpoConsiderations',
     allowedUserTypesEdit: [UserTypesEnum.MPO],
   },
 ];
