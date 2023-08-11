@@ -2,6 +2,7 @@ import { IsArray, IsObject, IsOptional } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
 import {
   ProgramAreaSelectedRolesReview,
   validateRoleForSelectedRoleReviews,
@@ -26,8 +27,9 @@ export const validateRoleForProgramAreaReview = (
   updatedValue: ProgramAreaReview,
   storedValue: ProgramAreaReview,
   userType: UserTypesEnum[],
+  loggedInUser: KeycloakUser,
 ) => {
-  if (!updatedValue) return;
+  if (!updatedValue && !storedValue) return;
 
   //
   // selectedRoles
@@ -52,14 +54,18 @@ export const validateRoleForProgramAreaReview = (
   const updatedReviews = updatedValue?.reviews;
   const storedReviews = storedValue?.reviews;
 
-  if (!updatedReviews) return;
+  const allKeys = new Set<string>();
+  Object.keys(updatedReviews || {}).forEach((key) => allKeys.add(key));
+  Object.keys(storedReviews || {}).forEach((key) => allKeys.add(key));
 
-  Object.keys(updatedReviews).forEach((role) => {
+  // check role access for reviews that are updated or added
+  Array.from(allKeys).forEach((role) => {
     validateRoleForSelectedRoleReviews(
       updatedReviews?.[role],
       storedReviews?.[role],
       userType,
       `review.programArea.reviews.${role}`,
+      loggedInUser,
     );
   });
 };

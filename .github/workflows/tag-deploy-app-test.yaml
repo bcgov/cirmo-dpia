@@ -184,15 +184,17 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Navigate to frontend dir, install dependencies, execute cypress command
+    # Navigate to frontend dir, install dependencies, execute WebDriverIO command
     - name: Setup and Execute WebDriverIO e2e test suite
       shell: bash
       env:
-        mpoPass : ${{ secrets.TEST_IDIR_PASSWORD }}
+        mpoPass : ${{ secrets.MPO_IDIR_PASSWORD }}
+        cpoPass : ${{ secrets.CPO_IDIR_PASSWORD }}
+        drafterPass : ${{ secrets.DRAFT_IDIR_PASSWORD }}
       run: |
         cd ./src/frontend
         npm install
-        mpoPass=$mpoPass npm run wdio-test
+        mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass npm run wdio-test
 
     #Generate Cucumber report and upload artifact  
     - name: Generate Cucumber report and upload artifact

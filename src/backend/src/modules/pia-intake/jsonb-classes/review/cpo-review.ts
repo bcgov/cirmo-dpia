@@ -1,28 +1,31 @@
-import { IsBoolean } from '@nestjs/class-validator';
+import { IsBoolean, IsString } from '@nestjs/class-validator';
+import { Transform } from 'class-transformer';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
-import { RoleReview } from '../role-review';
+import { RoleReview } from './role-review';
 
-export class ProgramAreaSelectedRolesReview extends RoleReview {
-  // override mandatory fields
+export class CpoReview extends RoleReview {
+  // overriding the mandatory fields
   @IsBoolean()
   isAcknowledged: boolean;
+
+  @IsString()
+  @Transform(({ value }) => value?.trim())
+  reviewNote?: string;
 }
 
-export const selectedRolesReviewMetadata: Array<
-  IFormField<ProgramAreaSelectedRolesReview>
-> = [
+export const cpoReviewMetadata: Array<IFormField<CpoReview>> = [
   {
     key: 'isAcknowledged',
     type: 'boolean',
-    allowedUserTypesEdit: null, // null signifies that anyone can change this field
+    allowedUserTypesEdit: [UserTypesEnum.CPO],
     isSystemGeneratedField: false,
   },
   {
     key: 'reviewNote',
     type: 'text',
-    allowedUserTypesEdit: null,
+    allowedUserTypesEdit: [UserTypesEnum.CPO],
     isSystemGeneratedField: false,
   },
   {
@@ -57,19 +60,19 @@ export const selectedRolesReviewMetadata: Array<
   },
 ];
 
-export const validateRoleForSelectedRoleReviews = (
-  updatedValue: ProgramAreaSelectedRolesReview,
-  storedValue: ProgramAreaSelectedRolesReview,
+export const validateRoleForCpoReview = (
+  updatedValue: CpoReview,
+  storedValue: CpoReview,
   userType: UserTypesEnum[],
   path: string,
   loggedInUser: KeycloakUser,
 ) => {
-  RoleReview.validateRoleForReview<ProgramAreaSelectedRolesReview>(
+  RoleReview.validateRoleForReview<CpoReview>(
     updatedValue,
     storedValue,
     userType,
     path,
     loggedInUser,
-    selectedRolesReviewMetadata,
+    cpoReviewMetadata,
   );
 };

@@ -59,15 +59,3 @@ src/frontend/builds/css/*
 ##                                  Plugins                                  ##
 ###############################################################################
 .history
-###############################################################################
-##                                  Cypress output                               ##
-###############################################################################
-src/frontend/cypress/videos/*
-src/frontend/cypress/screenshots/*
-cypress.env.json
-cypress.meta.json
-src/frontend/cypress/logs/
-src/frontend/cypress/integration/_generated/*
-src/frontend/cypress/data/migration/generated/*.csv
-src/frontend/cypress/fixtures/example.json
-src/frontend/cypress/build/*

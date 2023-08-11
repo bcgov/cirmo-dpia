@@ -180,6 +180,23 @@ objects:
                 value: '3310'
               - name: CLAMAV_HOST
                 value: clamav
+              - name: S3_CONNECTION_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: s3-connection-string
+                    key: S3_CONNECTION_NAME
+              - name: S3_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: s3-connection-string
+                    key: S3_ACCESS_KEY_ID
+              - name: S3_ACCESS_SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: s3-connection-string
+                    key: S3_ACCESS_SECRET_KEY
+              - name: S3_URL
+                value: citz-cirmo-dpia.objectstore.gov.bc.ca
             resources:
               limits:
                 cpu: 150m

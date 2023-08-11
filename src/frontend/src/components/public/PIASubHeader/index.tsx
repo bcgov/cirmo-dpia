@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faL } from '@fortawesome/free-solid-svg-icons';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { PiaStatuses } from '../../../constant/constant';
+import { PiaStatuses, SubmitButtonTextEnum } from '../../../constant/constant';
 import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
@@ -13,8 +13,8 @@ import { getGUID, roleCheck } from '../../../utils/helper.util';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
-import { SubmitButtonTextEnum } from '../../../pages/PIAForm';
-import { statusList } from '../../../utils/status';
+import { statusList, UserRole } from '../../../utils/status';
+import { IReviewSection } from '../PIAFormTabs/review/interfaces';
 
 function PIASubHeader({
   pia,
@@ -36,6 +36,10 @@ function PIASubHeader({
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
   const userRoles = roleCheck();
+  const role: UserRole =
+    userRoles?.roles !== undefined && userRoles?.roles.length > 0
+      ? (userRoles?.roles[0] as UserRole)
+      : 'DRAFTER';
 
   //
   // Modal State
@@ -53,8 +57,11 @@ function PIASubHeader({
 
   const [enableFinalReview, setEnableFinalReview] = useState<boolean>(false);
   const [enableComplete, setEnableComplete] = useState<boolean>(false);
+  const [enableSubmitToCPOReview, setEnableSubmitToCPOReview] =
+    useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
+
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
     setModalParagraph(Object(modal).description);
@@ -102,13 +109,28 @@ function PIASubHeader({
     setModalCancelLabel(Messages.GenerateAccessLinkModal.cancelLabel);
   };
   useEffect(() => {
+    // enable finish review button condition
+    // Delegate PIA, MPO_review status, program area at least one role selected and mpo accepted accountability
+    // PI PIA, CPO_review status, same as delegate PIA, also at least one CPO need to accept accountability
     if (
-      pia?.status === PiaStatuses.MPO_REVIEW &&
-      pia?.hasAddedPiToDataElements === false &&
-      pia?.review?.programArea?.selectedRoles &&
-      pia?.review?.programArea?.selectedRoles?.length > 0 &&
-      pia?.review?.mpo?.isAcknowledged === true &&
-      pia?.review?.mpo?.reviewNote !== ''
+      (pia?.status === PiaStatuses.MPO_REVIEW &&
+        pia?.hasAddedPiToDataElements === false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '') ||
+      (pia?.status === PiaStatuses.CPO_REVIEW &&
+        pia?.hasAddedPiToDataElements !== false &&
+        pia?.review?.programArea?.selectedRoles &&
+        pia?.review?.programArea?.selectedRoles?.length > 0 &&
+        pia?.review?.mpo?.isAcknowledged === true &&
+        pia?.review?.mpo?.reviewNote !== '' &&
+        pia?.review?.cpo &&
+        Object.values(pia?.review.cpo)?.length > 0 &&
+        Object.values(pia?.review?.cpo)?.every(
+          (review: IReviewSection) =>
+            review.isAcknowledged === true && review.reviewNote !== '',
+        ))
     ) {
       setEnableFinalReview(true);
     } else {
@@ -116,10 +138,29 @@ function PIASubHeader({
     }
   }, [
     pia?.hasAddedPiToDataElements,
+    pia?.review?.cpo,
     pia?.review?.mpo?.isAcknowledged,
     pia?.review?.mpo?.reviewNote,
     pia?.review?.programArea?.selectedRoles,
     pia?.review?.programArea?.selectedRoles?.length,
+    pia?.status,
+  ]);
+
+  useEffect(() => {
+    if (
+      pia?.status === PiaStatuses.MPO_REVIEW &&
+      pia?.hasAddedPiToDataElements !== false &&
+      pia?.review?.programArea?.selectedRoles &&
+      pia?.review?.programArea?.selectedRoles?.length > 0 &&
+      pia?.review?.mpo?.isAcknowledged === true &&
+      pia?.review?.mpo?.reviewNote !== ''
+    )
+      setEnableSubmitToCPOReview(true);
+  }, [
+    pia?.hasAddedPiToDataElements,
+    pia?.review?.mpo?.isAcknowledged,
+    pia?.review?.mpo?.reviewNote,
+    pia?.review?.programArea?.selectedRoles,
     pia?.status,
   ]);
 
@@ -137,6 +178,8 @@ function PIASubHeader({
     pia?.review?.programArea?.selectedRoles,
     pia?.status,
   ]);
+
+  // TODO refactor this part asap.
   useEffect(() => {
     if (
       mode === 'view' &&
@@ -146,8 +189,15 @@ function PIASubHeader({
       setDisableSubmitButton(true);
     }
     if (
+      pia.hasAddedPiToDataElements !== false &&
+      primaryButtonText === SubmitButtonTextEnum.FORM &&
+      pia.status === PiaStatuses.MPO_REVIEW &&
+      enableSubmitToCPOReview === false
+    ) {
+      setDisableSubmitButton(true);
+    } else if (
       enableFinalReview === false &&
-      primaryButtonText === SubmitButtonTextEnum.DELEGATE_FINISH_REVIEW
+      primaryButtonText === SubmitButtonTextEnum.FINISH_REVIEW
     ) {
       setDisableSubmitButton(true);
     } else if (
@@ -161,8 +211,11 @@ function PIASubHeader({
   }, [
     enableComplete,
     enableFinalReview,
+    enableSubmitToCPOReview,
     isValidationFailed,
     mode,
+    pia.hasAddedPiToDataElements,
+    pia.status,
     primaryButtonText,
   ]);
 
@@ -179,22 +232,8 @@ function PIASubHeader({
     return true;
   };
   const showSubmitButton = () => {
-    const owner = getGUID() === pia.createdByGuid ? true : false;
-    // if the status is completed, hide submit button
-    if (pia.status === PiaStatuses.COMPLETE) return false;
-    if (
-      owner &&
-      pia.status !== PiaStatuses.CPO_REVIEW &&
-      pia.status !== PiaStatuses.MPO_REVIEW
-    )
-      return true;
-    else if (
-      userRoles.roles !== undefined &&
-      userRoles.roles[0].includes('MPO') &&
-      pia.status === PiaStatuses.MPO_REVIEW
-    )
-      return true;
-    else return false;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    return statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton;
   };
 
   return (

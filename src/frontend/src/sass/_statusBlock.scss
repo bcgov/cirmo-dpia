@@ -71,3 +71,8 @@
   background-color: $bg-warningBanner;
   color: $fg-editInProgress;
 }
+
+.statusBlock__pending-completion {
+  background-color: $bg-pending-completion;
+  color: $fg-pending-completion;
+}

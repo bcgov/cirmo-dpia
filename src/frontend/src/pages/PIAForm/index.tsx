@@ -1,4 +1,8 @@
-import { PiaStatuses, PIOptions } from '../../constant/constant';
+import {
+  PiaStatuses,
+  PIOptions,
+  SubmitButtonTextEnum,
+} from '../../constant/constant';
 import Messages from './messages';
 import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
@@ -46,13 +50,6 @@ export interface PiaValidationMessage {
   piaInitialDescription?: string | null;
   ppqProposeDeadline?: string | null;
   ppqProposeDeadlineReason?: string | null;
-}
-
-export enum SubmitButtonTextEnum {
-  INTAKE = 'Submit',
-  FORM = 'Submit',
-  DELEGATE_FINISH_REVIEW = 'Finish review',
-  COMPLETE_PIA = 'Complete PIA',
 }
 
 export enum PiaFormSubmissionTypeEnum {
@@ -147,7 +144,7 @@ const PIAFormPage = () => {
    */
 
   useEffect(() => {
-    // for create new pig and next step page, bypass the check
+    // for create new pia and next step page, bypass the check
     if (pathname === routes.PIA_NEW) return;
     if (pathname.split('/').includes('nextSteps')) return;
     // temp fix, just use id instead of pia.id to make sure the app does not broken right now
@@ -358,20 +355,22 @@ const PIAFormPage = () => {
         );
         setPiaModalButtonValue('SubmitForCPOReview');
         break;
-      case 'SubmitDelegateForFinalReview':
+      case 'SubmitForFinalReview':
         setPiaModalConfirmLabel(
-          Messages.Modal.SubmitDelegateForFinalReview.ConfirmLabel.en,
+          Messages.Modal.SubmitForFinalReview.ConfirmLabel.en,
         );
         setPiaModalCancelLabel(
-          Messages.Modal.SubmitDelegateForFinalReview.CancelLabel.en,
+          Messages.Modal.SubmitForFinalReview.CancelLabel.en,
         );
-        setPiaModalTitleText(
-          Messages.Modal.SubmitDelegateForFinalReview.TitleText.en,
-        );
+        setPiaModalTitleText(Messages.Modal.SubmitForFinalReview.TitleText.en);
         setPiaModalParagraph(
-          Messages.Modal.SubmitDelegateForFinalReview.ParagraphText.en,
+          Messages.Modal.SubmitForFinalReview.ParagraphText.en,
         );
-        setPiaModalButtonValue('SubmitDelegateForFinalReview');
+        setPiaModalButtonValue('SubmitForFinalReview');
+        break;
+      case 'SubmitForPendingCompletion':
+        PopulateModal(pia, PiaStatuses.PENDING_COMPLETION, populateModalFn);
+        setPiaModalButtonValue(modalType);
         break;
       case 'conflict':
         setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
@@ -629,7 +628,7 @@ const PIAFormPage = () => {
             }),
           );
         }
-      } else if (buttonValue === 'SubmitDelegateForFinalReview') {
+      } else if (buttonValue === 'SubmitForFinalReview') {
         const updatedPia = await upsertAndUpdatePia({
           // here not sure what status for this one, need to discuss
 
@@ -649,6 +648,17 @@ const PIAFormPage = () => {
         });
         // need to revisit this part, current route to pia_intake tab
         // when complete PIA story done, will go to Complete PIA list page
+        if (updatedPia?.id) {
+          navigate(
+            buildDynamicPath(routes.PIA_VIEW, {
+              id: updatedPia.id,
+            }),
+          );
+        }
+      } else if (buttonValue === 'SubmitForPendingCompletion') {
+        const updatedPia = await upsertAndUpdatePia({
+          status: PiaStatuses.PENDING_COMPLETION,
+        });
         if (updatedPia?.id) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
@@ -704,11 +714,15 @@ const PIAFormPage = () => {
     } else {
       if (pia?.status === PiaStatuses.MPO_REVIEW) {
         if (pia?.hasAddedPiToDataElements === false) {
-          handleShowModal('SubmitDelegateForFinalReview');
+          handleShowModal('SubmitForFinalReview');
         } else {
           handleShowModal('SubmitForCPOReview');
         }
+      } else if (pia?.status === PiaStatuses.CPO_REVIEW) {
+        handleShowModal('SubmitForFinalReview');
       } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
+        handleShowModal('SubmitForPendingCompletion');
+      } else if (pia?.status === PiaStatuses.PENDING_COMPLETION) {
         handleShowModal('completePIA');
       } else {
         handleShowModal('submitPiaForm');

@@ -1,12 +1,10 @@
-import InputText from '../../../../components/common/InputText/InputText';
-import Dropdown from '../../../../components/common/Dropdown';
 import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { IReview } from './interfaces';
+import { IReview, IReviewSection } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { getGUID } from '../../../../utils/helper.util';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
@@ -18,8 +16,11 @@ import { setNestedReactState } from '../../../../utils/object-modification.util'
 import ViewMPOReview from './viewMPOReview';
 import PendingReview from './pendingReview';
 import ViewProgramAreaReview from './viewProgramArea';
-import EditProgramAreaReview from './editProgramArea';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import ProgramArea from './ProgamArea';
+import EditCPOReview from './editCPOReview';
+import ViewCPOReview from './viewCPOReview';
+import EditMPOReview from './editMPOReview';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -38,14 +39,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         isAcknowledged: false,
         reviewNote: '',
       },
+      cpo: {},
     }),
     [],
   );
 
   const [updatePia, setUpdatePia] = useState(false);
-  const [mpoAcknowledged, setMpoAcknowledged] = useState(
-    pia.review?.mpo?.isAcknowledged || false,
-  );
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
@@ -62,12 +61,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     setNestedReactState(setReviewForm, path, value);
     if (callApi) setUpdatePia(true);
   };
-
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
-  const [reviewNote, setReviewNote] = useState<string>(
-    pia?.review?.mpo?.reviewNote || '',
-  );
 
   const addRole = useCallback(
     (role: string) => {
@@ -138,6 +131,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if the condition does satisfy the rule, add the adm to programArea
     // otherwise do nothing
     if (
+      pia?.hasAddedPiToDataElements !== false &&
       pia?.storingPersonalInformation?.personalInformation
         ?.storedOutsideCanada === YesNoInput.YES &&
       pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -150,6 +144,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     }
   }, [
     addRole,
+    pia?.hasAddedPiToDataElements,
     pia?.review?.programArea.selectedRoles,
     pia?.storingPersonalInformation?.personalInformation?.storedOutsideCanada,
     pia?.storingPersonalInformation?.sensitivePersonalInformation
@@ -157,28 +152,68 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     pia?.storingPersonalInformation?.sensitivePersonalInformation.doesInvolve,
     reviewForm.programArea?.selectedRoles,
   ]);
+  const userGuid = getGUID();
 
-  const allowUserReviewProgramArea = () => {
-    // if selectedRoles is null means none of selectedRole got reviewed so return true
-    // otherwise loop all the role in reviews part to see if the current user already did review
+  const allowUserReviewCPO = () => {
+    // only allow one CPO user do review once
 
-    const userGuid = getGUID();
-    const selectedRoles = reviewForm?.programArea?.selectedRoles;
-    if (selectedRoles === null) return true;
-    for (const role of selectedRoles) {
+    if (pia?.review?.cpo !== undefined) {
       if (
-        reviewForm?.programArea?.reviews?.[role]?.reviewedByGuid === userGuid
-      ) {
+        Object.values<IReviewSection>(pia?.review?.cpo).some(
+          (review) =>
+            review !== null &&
+            review.isAcknowledged !== false &&
+            review.reviewedByGuid === userGuid,
+        )
+      )
         return false;
-      }
     }
-
     return true;
   };
-  const disableConfirmButton = () => {
-    if (pia.hasAddedPiToDataElements === false && reviewNote.trim() === '')
-      return true;
-    return false;
+
+  const addNewCPOReview = () => {
+    const newCPOReview = {
+      [userGuid]: {
+        isAcknowledged: false,
+        reviewNote: '',
+      },
+    };
+    if (reviewForm?.cpo !== undefined) {
+      setReviewForm({
+        ...reviewForm,
+        cpo: {
+          ...reviewForm.cpo,
+          ...newCPOReview,
+        },
+      });
+    } else {
+      setReviewForm({
+        ...reviewForm,
+        cpo: {},
+      });
+    }
+
+    stateChangeHandler(reviewForm, 'review', true);
+  };
+
+  const enableAddNewCPOReviewer = () => {
+    /**
+     * the logic is list as below
+     * if a PIA not reviewed by any cpo, the cpo user can not add a new CPO reviewer
+     * if a cpo already reviewed this PIA, this cpo can not add a new CPO review section
+     * only a PIA reviewed by other CPO user but not current login CPO user,
+     * the current login CPO user allowed to see the button and add themselves as a reviewer for this pia
+     */
+    // if the current login user GUID exist in CPO section, the user can not see the button
+    if (
+      pia?.review?.cpo &&
+      Object.keys(pia?.review?.cpo).some((cpoId: string) => cpoId === userGuid)
+    )
+      return false;
+    // if this current user already review the pia, can not see this button
+    if (!allowUserReviewCPO()) return false;
+
+    return true;
   };
   const enableMPOReviewViewMode = () => {
     // if the user already done review the MPO review field, we will show
@@ -193,11 +228,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     return false;
   };
 
-  const handleMPOReviewSubmit = () => {
-    setEditReviewNote(false);
-    const review = { isAcknowledged: mpoAcknowledged, reviewNote };
-    stateChangeHandler(review, `mpo`, true);
-  };
   return (
     <>
       <section>
@@ -215,248 +245,101 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       </section>
       {!printPreview ? (
         <>
-          <section className="drop-shadow card p-4 p-md-5">
-            <div className="data-table__container">
-              <div
-                className={`${
-                  (pia.status === PiaStatuses.MPO_REVIEW ||
-                    pia.status === PiaStatuses.CPO_REVIEW) &&
-                  'data-row'
-                }`}
-              >
-                {/**
-                 * UI for adding roles to the program area section starts here
-                 */}
-                {(pia.status === PiaStatuses.MPO_REVIEW ||
-                  pia.status === PiaStatuses.CPO_REVIEW) && (
-                  <>
-                    <div className="d-flex">
-                      <div className="p-2 col-md-5">
-                        <Dropdown
-                          id="programArea"
-                          label="Select a role from the list"
-                          options={Object.keys(ApprovalRoles)
-                            .filter(
-                              (role) =>
-                                !reviewForm.programArea?.selectedRoles?.includes(
-                                  ApprovalRoles[role],
-                                ),
-                            )
-                            .map((role: string) => ({
-                              value: role,
-                              label: ApprovalRoles[role],
-                            }))}
-                          value={rolesSelect}
-                          changeHandler={(e) => setRolesSelect(e.target.value)}
-                        />
-                        <button
-                          className="bcgovbtn bcgovbtn__secondary mt-3"
-                          onClick={() => {
-                            addRole(ApprovalRoles[rolesSelect]);
-                            setRolesSelect('');
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
-                      <div className="p-2 col-md-2 d-flex justify-content-center align-items-center">
-                        Or
-                      </div>
-                      <div className="p-2 col-md-5">
-                        <InputText
-                          id="programArea"
-                          label={
-                            messages.PiaReviewHeader.ProgramAreaSection.Input
-                              .EnterRoleTitle.en
-                          }
-                          value={rolesInput}
-                          onChange={(e) => setRolesInput(e.target.value)}
-                        />
-                        <button
-                          className="bcgovbtn bcgovbtn__secondary mt-3"
-                          onClick={() => {
-                            addRole(rolesInput);
-                            setRolesInput('');
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                    <div className="horizontal-divider mt-5 mb-5"></div>
-                  </>
-                )}
-                {/**
-                 * UI for adding roles to the program area section ends here
-                 */}
-
-                {/**
-                 * UI for displaying selected roles in the program area section starts here
-                 */}
-                <div>
-                  {(pia.status === PiaStatuses.MPO_REVIEW ||
-                    pia.status === PiaStatuses.CPO_REVIEW) && (
-                    <h4 className="mb-3">Selected Roles</h4>
-                  )}
-                  {reviewForm.programArea?.selectedRoles.length > 0 ? (
-                    reviewForm.programArea?.selectedRoles.map(
-                      (role: string, index: number) => {
-                        return reviewForm.programArea?.selectedRoles &&
-                          pia.status === PiaStatuses.FINAL_REVIEW ? (
-                          <div
-                            className="d-flex align-items-center"
-                            key={index}
-                          >
-                            {!allowUserReviewProgramArea() ||
-                            Object(pia?.review?.programArea)?.reviews?.[role]
-                              ?.isAcknowledged ? (
-                              <ViewProgramAreaReview
-                                pia={pia}
-                                role={role}
-                                stateChangeHandler={stateChangeHandler}
-                                isAcknowledged={
-                                  Object(pia?.review?.programArea)?.reviews?.[
-                                    role
-                                  ]?.isAcknowledged || false
-                                }
-                              />
-                            ) : (
-                              <EditProgramAreaReview
-                                pia={pia}
-                                role={role}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            )}
-                          </div>
-                        ) : (
-                          <div
-                            key={index}
-                            className="d-flex gap-1 justify-content-start align-items-center"
-                          >
-                            <p className="m-0 pt-2">{role}</p>
-                            {mandatoryADM && role === ApprovalRoles.ADM ? (
-                              <p className="m-0 pt-2 error-text">
-                                (required for this PIA)
-                              </p>
-                            ) : null}
-                            {!reviewForm.programArea?.reviews?.[role] &&
-                              !(mandatoryADM && role === ApprovalRoles.ADM) && (
-                                <button
-                                  className="bcgovbtn bcgovbtn__tertiary bold delete__btn ps-3"
-                                  onClick={() => {
-                                    reviewForm.programArea.selectedRoles?.splice(
-                                      index,
-                                      1,
-                                    );
-                                    stateChangeHandler(
-                                      reviewForm.programArea.selectedRoles,
-                                      'programArea.selectedRoles',
-                                    );
-                                    piaStateChangeHandler(
-                                      reviewForm,
-                                      'review',
-                                      true,
-                                    );
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    className=""
-                                    icon={faTrash}
-                                    size="xl"
-                                  />
-                                </button>
-                              )}
-                          </div>
-                        );
-                      },
-                    )
-                  ) : (
-                    <p>{messages.PiaReviewHeader.NoRolesSelected.en}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
+          <ProgramArea
+            pia={pia}
+            reviewForm={reviewForm}
+            addRole={addRole}
+            stateChangeHandler={stateChangeHandler}
+            mandatoryADM={mandatoryADM}
+          />
           <section className="mt-5 ">
-            <h3>{messages.PiaReviewHeader.MinistrySection.Title.en}</h3>
+            <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
             <p className="pb-4">
-              {messages.PiaReviewHeader.MinistrySection.Description.en}
+              {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
             </p>
             <div className="drop-shadow card p-4 p-md-5">
               <div className="data-table__container">
                 {enableMPOReviewViewMode() ? (
                   <ViewMPOReview
                     pia={pia}
-                    editReviewNote={setEditReviewNote}
-                    isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
+                    stateChangeHandler={stateChangeHandler}
                   />
                 ) : (
-                  <>
-                    <div className="data-row">
-                      <Checkbox
-                        value=""
-                        isLink={false}
-                        checked={mpoAcknowledged}
-                        label={
-                          messages.PiaReviewHeader.MinistrySection.Input
-                            .AcceptAccountability.en
-                        }
-                        onChange={(e) => setMpoAcknowledged(e.target.checked)}
-                      />
-                      {mpoAcknowledged && (
-                        <div className="d-block pb-3">
-                          <div>
-                            <div className="d-block pb-3">
-                              <b>
-                                {
-                                  messages.PiaReviewHeader.MinistrySection.Input
-                                    .ReviewNote.en
-                                }
-                                &nbsp;
-                                {pia.hasAddedPiToDataElements === false ? (
-                                  <span className="error-text">(required)</span>
-                                ) : (
-                                  <span>(optional)</span>
-                                )}
-                              </b>
-                            </div>
-                            <div className="d-block">
-                              <textarea
-                                className="w-50 h-200"
-                                value={reviewNote}
-                                onChange={(e) => {
-                                  setReviewNote(e.target.value);
-                                }}
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div className="d-flex">
-                            <button
-                              className="bcgovbtn bcgovbtn__secondary mt-3 me-3"
-                              onClick={() => {
-                                setReviewNote('');
-                                setMpoAcknowledged(false);
-                                stateChangeHandler(null, 'mpo', true);
-                              }}
-                            >
-                              Clear
-                            </button>
-                            <button
-                              className="bcgovbtn bcgovbtn__primary mt-3 ml-3"
-                              disabled={disableConfirmButton()}
-                              onClick={handleMPOReviewSubmit}
-                            >
-                              Confirm
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
+                  <EditMPOReview
+                    pia={pia}
+                    stateChangeHandler={stateChangeHandler}
+                  />
                 )}
               </div>
             </div>
           </section>
+          {/**
+           * this part need to refactor
+           * this part should only display on cpo review and onward
+           * like final review, pending completion and complete
+           * right now we only have two status, cpo review and final review
+           */}
+          {pia.hasAddedPiToDataElements !== false &&
+          (pia.status === PiaStatuses.CPO_REVIEW ||
+            pia.status === PiaStatuses.FINAL_REVIEW) ? (
+            <section className="mt-5 ">
+              <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
+              <p className="pb-4">
+                {messages.PiaReviewHeader.MinistrySection.CPO.Description.en}
+              </p>
+              <div className="drop-shadow card p-4 p-md-5">
+                <div className="data-table__container">
+                  {pia?.review?.cpo ? (
+                    Object.entries(pia?.review?.cpo)?.map(
+                      ([cpoId, reviewSection]) => {
+                        return reviewForm.cpo ? (
+                          <div
+                            className="d-flex align-items-center"
+                            key={cpoId}
+                          >
+                            {!allowUserReviewCPO() ||
+                            Object(pia?.review?.cpo)?.[cpoId].isAcknowledged ? (
+                              <ViewCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            ) : (
+                              <EditCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            )}
+                          </div>
+                        ) : null;
+                      },
+                    )
+                  ) : (
+                    <EditCPOReview
+                      pia={pia}
+                      cpoId={userGuid}
+                      stateChangeHandler={stateChangeHandler}
+                    />
+                  )}
+                  {enableAddNewCPOReviewer() ? (
+                    <>
+                      <div className="horizontal-divider "></div>
+                      <div className="d-flex justify-content-center">
+                        <button
+                          onClick={addNewCPOReview}
+                          className="bcgovbtn bcgovbtn__tertiary bold min-gap"
+                        >
+                          Add CPO reviewer
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              </div>
+            </section>
+          ) : null}
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
         pia?.status === PiaStatuses.INCOMPLETE ||
@@ -472,10 +355,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           {pia?.review?.programArea?.selectedRoles.map((role: string) => (
             <>
               <ViewProgramAreaReview
-                isAcknowledged={
-                  pia?.review?.programArea?.reviews?.[role].isAcknowledged ||
-                  false
-                }
                 pia={pia}
                 printPreview
                 role={role}
@@ -487,9 +366,25 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           <ViewMPOReview
             pia={pia}
             printPreview
-            editReviewNote={setEditReviewNote}
-            isAcknowledged={pia?.review?.mpo?.isAcknowledged || false}
+            stateChangeHandler={stateChangeHandler}
           />
+          {pia?.review?.cpo ? (
+            Object.entries(pia?.review?.cpo)?.map(([cpoId, reviewSection]) => (
+              <>
+                <ViewCPOReview
+                  pia={pia}
+                  printPreview
+                  stateChangeHandler={stateChangeHandler}
+                  cpoId={cpoId}
+                />
+              </>
+            ))
+          ) : (
+            <>
+              <div> Reviewed by</div>
+              <div> Review incomplete</div>
+            </>
+          )}
         </>
       )}
     </>

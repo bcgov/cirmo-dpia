@@ -1,6 +1,8 @@
 import { IsObject, IsOptional, ValidateNested } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
+import { KeycloakUser } from 'src/modules/auth/keycloak-user.model';
+import { CpoReview, validateRoleForCpoReview } from './cpo-review';
 import { MpoReview, validateRoleForMpoReview } from './mpo-review';
 import {
   ProgramAreaReview,
@@ -19,6 +21,10 @@ export class Review {
   @ValidateNested()
   @Type(() => MpoReview)
   mpo?: MpoReview;
+
+  @IsObject()
+  @IsOptional()
+  cpo?: Record<string, CpoReview>;
 }
 
 /**
@@ -29,16 +35,45 @@ export const validateRoleForReview = (
   updatedValue: Review,
   storedValue: Review,
   userType: UserTypesEnum[],
+  loggedInUser: KeycloakUser,
 ) => {
-  if (!updatedValue) return;
+  if (!updatedValue && !storedValue) return;
 
+  //
   // program area validations
+  //
   validateRoleForProgramAreaReview(
     updatedValue?.programArea,
     storedValue?.programArea,
     userType,
+    loggedInUser,
   );
 
+  //
   // mpo validations
-  validateRoleForMpoReview(updatedValue?.mpo, storedValue?.mpo, userType);
+  //
+  validateRoleForMpoReview(
+    updatedValue?.mpo,
+    storedValue?.mpo,
+    userType,
+    `review.mpo`,
+    loggedInUser,
+  );
+
+  //
+  // cpo validations
+  //
+  const allKeys = new Set<string>();
+  Object.keys(updatedValue?.cpo || {}).forEach((key) => allKeys.add(key));
+  Object.keys(storedValue?.cpo || {}).forEach((key) => allKeys.add(key));
+
+  Array.from(allKeys).forEach((userId) => {
+    validateRoleForCpoReview(
+      updatedValue?.cpo?.[userId],
+      storedValue?.cpo?.[userId],
+      userType,
+      `review.cpo.${userId}`,
+      loggedInUser,
+    );
+  });
 };

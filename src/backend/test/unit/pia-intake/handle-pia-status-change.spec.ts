@@ -226,4 +226,230 @@ describe(`handlePiaStatusChange method`, () => {
       expect(e).toBeInstanceOf(ForbiddenException);
     }
   });
+
+  it('succeeds to change status of a DELEGATE PIA if MPO changes status from FINAL_REVIEW to PENDING_COMPLETION', async () => {
+    const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
+
+    const storedValue: PiaIntakeEntity = {
+      ...piaIntakeEntityMock,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+      saveId: 10,
+      status: PiaIntakeStatusEnum.FINAL_REVIEW,
+    };
+
+    const updatedValue: UpdatePiaIntakeDto = {
+      status: PiaIntakeStatusEnum.PENDING_COMPLETION,
+      saveId: 10,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD2',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+    };
+
+    handlePiaStatusChange(
+      updatedValue,
+      storedValue,
+      userType,
+      PiaTypesEnum.DELEGATE_REVIEW,
+    );
+
+    expect(updatedValue.review).not.toBe(null);
+  });
+
+  it('succeeds to change status of a STANDARD PIA if CPO changes status from FINAL_REVIEW to PENDING_COMPLETION with a CPO review', async () => {
+    const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+    const storedValue: PiaIntakeEntity = {
+      ...piaIntakeEntityMock,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+      saveId: 10,
+      status: PiaIntakeStatusEnum.FINAL_REVIEW,
+    };
+
+    const updatedValue: UpdatePiaIntakeDto = {
+      status: PiaIntakeStatusEnum.PENDING_COMPLETION,
+      saveId: 10,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD2',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+        cpo: {
+          1234: {
+            isAcknowledged: true,
+            reviewNote: 'ABCD2',
+          },
+        },
+      },
+    };
+
+    handlePiaStatusChange(
+      updatedValue,
+      storedValue,
+      userType,
+      PiaTypesEnum.STANDARD,
+    );
+
+    expect(updatedValue.review.cpo).not.toBe(null);
+  });
+
+  it('DOES NOT succeed to change status of a STANDARD PIA if CPO changes status from FINAL_REVIEW to PENDING_COMPLETION without a CPO review', async () => {
+    const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+    const storedValue: PiaIntakeEntity = {
+      ...piaIntakeEntityMock,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+      saveId: 10,
+      status: PiaIntakeStatusEnum.FINAL_REVIEW,
+    };
+
+    const updatedValue: UpdatePiaIntakeDto = {
+      status: PiaIntakeStatusEnum.PENDING_COMPLETION,
+      saveId: 10,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD2',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+    };
+
+    try {
+      handlePiaStatusChange(
+        updatedValue,
+        storedValue,
+        userType,
+        PiaTypesEnum.STANDARD,
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(ForbiddenException);
+    }
+  });
+
+  it('DOES NOT succeed to change status of a DELEGATED PIA if MPO changes status from FINAL_REVIEW to PENDING_COMPLETION without Program Area reviews', async () => {
+    const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
+
+    const storedValue: PiaIntakeEntity = {
+      ...piaIntakeEntityMock,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+      saveId: 10,
+      status: PiaIntakeStatusEnum.FINAL_REVIEW,
+    };
+
+    const updatedValue: UpdatePiaIntakeDto = {
+      status: PiaIntakeStatusEnum.PENDING_COMPLETION,
+      saveId: 10,
+      review: {
+        mpo: {
+          isAcknowledged: true,
+          reviewNote: 'ABCD2',
+        },
+        programArea: {
+          selectedRoles: ['Director'],
+          reviews: {
+            Director: {
+              isAcknowledged: true,
+              reviewNote: 'ABCD2',
+            },
+          },
+        },
+      },
+    };
+
+    try {
+      handlePiaStatusChange(
+        updatedValue,
+        storedValue,
+        userType,
+        PiaTypesEnum.STANDARD,
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(ForbiddenException);
+    }
+  });
 });

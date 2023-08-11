@@ -6,6 +6,9 @@ export interface IReview {
     };
   };
   mpo: IReviewSection;
+  cpo?: {
+    [guid: string]: IReviewSection;
+  };
 }
 
 export interface IReviewSection {

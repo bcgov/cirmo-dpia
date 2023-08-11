@@ -53,7 +53,6 @@ This structure diagram show all directories and specific files of interest. It d
     │   └── frontend                            # All React App related source code
     |       ├── .config                         #
     |       ├── .docker                         #
-    |       ├── cypress                         #
     |       ├── public                          #
     |       └── src                             #
     |           ├── assets                      #
