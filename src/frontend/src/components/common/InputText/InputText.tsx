@@ -10,6 +10,7 @@ import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputType } from '../../../constant/constant';
+import { TextType } from '../../../types/types/text.type';
 
 interface InputTextProps {
   id?: string;
@@ -18,7 +19,7 @@ interface InputTextProps {
   linkText?: string;
   linkHref?: string;
   hasIcon?: boolean;
-  type?: TextInputType;
+  type?: TextType;
   className?: string;
   value?: string | null;
   placeholder?: string;
