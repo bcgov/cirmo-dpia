@@ -1,3 +1,5 @@
+import { TextType } from '../../../types/types/text.type';
+
 export interface ColumnMetaData {
   key: string;
   label: string;
@@ -5,6 +7,7 @@ export interface ColumnMetaData {
   isDisable?: boolean;
   className?: string;
   hint?: string;
+  type?: TextType;
 }
 
 // default tabular data format - [{key1: value1, key2: value2}]

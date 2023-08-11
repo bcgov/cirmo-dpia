@@ -9,8 +9,8 @@ import {
 import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-type SupportedInputTypes = 'text' | 'email';
+import { TextInputEnum } from '../../../constant/constant';
+import { TextType } from '../../../types/types/text.type';
 
 interface InputTextProps {
   id?: string;
@@ -19,13 +19,13 @@ interface InputTextProps {
   linkText?: string;
   linkHref?: string;
   hasIcon?: boolean;
-  type?: SupportedInputTypes;
+  type?: TextType;
   className?: string;
   value?: string | null;
   placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  onFocus?: FocusEventHandler<HTMLInputElement>;
-  onEnter?: MouseEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onEnter?: MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   required?: boolean;
   labelSide?: 'top' | 'left';
   isDisabled?: boolean;
@@ -40,7 +40,7 @@ const InputText = ({
   linkText = '',
   linkHref = '',
   hasIcon = false,
-  type = 'text',
+  type = TextInputEnum.INPUT_TEXT,
   className = '',
   value = '',
   placeholder = '',
@@ -60,7 +60,8 @@ const InputText = ({
   labelSideClasses += labelSide === 'top' ? 'flex-column ' : 'flex-row ';
   labelSideClasses += labelSide === 'left' ? 'align-items-center ' : ' ';
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
   const keydownListener = useCallback(
     (e: any) => {
       if (e.code === 'Enter' || e.code === 'NumpadEnter') {
@@ -71,15 +72,42 @@ const InputText = ({
   );
 
   useEffect(() => {
-    const inputRefCurrent = inputRef?.current as unknown as HTMLInputElement;
+    const currentInput = inputRef.current;
 
-    if (!inputRefCurrent) return;
+    if (!currentInput) return;
 
-    inputRefCurrent.addEventListener('keydown', keydownListener);
+    currentInput.addEventListener('keydown', keydownListener);
 
-    return () =>
-      inputRefCurrent.removeEventListener('keydown', keydownListener);
+    return () => {
+      currentInput.removeEventListener('keydown', keydownListener);
+    };
   }, [keydownListener]);
+
+  const checkTextArea = () => {
+    return type === TextInputEnum.INPUT_TEXT_AREA;
+  };
+
+  const commonProps = {
+    id: inputId,
+    value: value || '',
+    placeholder,
+    onChange,
+    onFocus,
+    className: 'form-control',
+    required,
+    disabled: isDisabled,
+    readOnly: isAccessLink,
+    'aria-label': inputId,
+  };
+
+  const inputProps = {
+    ...commonProps,
+    type,
+  };
+
+  const textareaProps = {
+    ...commonProps,
+  };
 
   return (
     <div
@@ -106,20 +134,11 @@ const InputText = ({
         </p>
       )}
       {!readOnly ? (
-        <input
-          id={inputId}
-          type={type}
-          value={value || ''}
-          placeholder={placeholder}
-          onChange={onChange}
-          onFocus={onFocus}
-          className="form-control"
-          required={required}
-          disabled={isDisabled}
-          readOnly={isAccessLink}
-          ref={inputRef}
-          aria-label={inputId}
-        />
+        checkTextArea() ? (
+          <textarea {...textareaProps} />
+        ) : (
+          <input {...inputProps} />
+        )
       ) : value ? (
         <p>{value}</p>
       ) : (
