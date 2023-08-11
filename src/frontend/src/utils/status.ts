@@ -295,6 +295,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
       Privileges: {
         MPO: {
           banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'EDIT_IN_PROGRESS',
@@ -313,6 +314,7 @@ export const statusList = (pia: IPiaForm | null): StatusList => {
           ],
         },
         CPO: {
+          showSubmitButton: true,
           changeStatus: [
             {
               status: 'MPO_REVIEW',
