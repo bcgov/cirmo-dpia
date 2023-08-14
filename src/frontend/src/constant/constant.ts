@@ -73,6 +73,10 @@ export const OtherFactor = [
 
 export const MinistryList = [
   {
+    label: 'Post-Secondary Education and Future Skills',
+    value: 'POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS',
+  },
+  {
     label: 'Agriculture and Food',
     value: 'AGRICULTURE_AND_FOOD',
   },
@@ -85,20 +89,16 @@ export const MinistryList = [
     value: 'BC_PUBLIC_SERVICE_AGENCY',
   },
   {
-    label: "Citizens' Services",
-    value: 'CITIZENS_SERVICES',
-  },
-  {
     label: 'Children and Family Development',
     value: 'CHILDREN_AND_FAMILY_DEVELOPMENT',
   },
   {
-    label: 'Education and Child Care',
-    value: 'EDUCATION_AND_CHILD_CARE',
+    label: "Citizens' Services",
+    value: 'CITIZENS_SERVICES',
   },
   {
-    label: 'Emergency Management and Climate Readiness',
-    value: 'EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS',
+    label: 'Education and Child Care',
+    value: 'EDUCATION_AND_CHILD_CARE',
   },
   {
     label: 'Energy, Mines and Low Carbon Innovation',
@@ -125,10 +125,6 @@ export const MinistryList = [
     value: 'HEALTH',
   },
   {
-    label: 'Housing',
-    value: 'HOUSING',
-  },
-  {
     label: 'Indigenous Relations and Reconciliation',
     value: 'INDIGENOUS_RELATIONS_AND_RECONCILIATION',
   },
@@ -139,6 +135,10 @@ export const MinistryList = [
   {
     label: 'Labour',
     value: 'LABOUR',
+  },
+  {
+    label: 'Water, Land and Resource Stewardship',
+    value: 'WATER_LAND_AND_RESOURCE_STEWARDSHIP',
   },
   {
     label: 'Liquor Distribution Branch',
@@ -157,10 +157,6 @@ export const MinistryList = [
     value: 'OFFICE_OF_THE_PREMIER',
   },
   {
-    label: 'Post-Secondary Education and Future Skills',
-    value: 'POST_SECONDARY_EDUCATION_AND_FUTURE_SKILLS',
-  },
-  {
     label: 'Public Safety and Solicitor General',
     value: 'PUBLIC_SAFETY_AND_SOLICITOR_GENERAL',
   },
@@ -177,10 +173,14 @@ export const MinistryList = [
     value: 'TRANSPORTATION_AND_INFRASTRUCTURE',
   },
   {
-    label: 'Water, Land and Resource Stewardship',
-    value: 'WATER_LAND_AND_RESOURCE_STEWARDSHIP',
+    label: 'Housing',
+    value: 'HOUSING',
   },
-];
+  {
+    label: 'Emergency Management and Climate Readiness',
+    value: 'EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS',
+  },
+].sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
 
 export const PiaStatusList = [
   { label: 'Incomplete', value: 'INCOMPLETE' },
