@@ -20,7 +20,7 @@ Please describe the tests that you ran to verify your changes.
 - [ ] My code DOES NOT include the importing of new dependencies into the DPIA ecosystem
 - [ ] My code DOES include the importing of new dependencies into the DPIA ecosystem
 **If new dependencies are being introduced to the DPIA ecosystem:**
-- [ ] The functionality of the dependency drastically reduces code complexity and makes my changes more easily maintainable and readible 
+- [ ] The functionality of the dependency drastically reduces code complexity and makes my changes more easily maintainable and readable 
 - [ ] The dependency being introduced does not contain multiple layers of nested dependencies introducing maintainability complexity to the DPIA ecosystem
 
 ## Frontend Development Changes
