@@ -180,7 +180,7 @@ export const MinistryList = [
     label: 'Emergency Management and Climate Readiness',
     value: 'EMERGENCY_MANAGEMENT_AND_CLIMATE_READINESS',
   },
-];
+].sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
 
 export const PiaStatusList = [
   { label: 'Incomplete', value: 'INCOMPLETE' },
