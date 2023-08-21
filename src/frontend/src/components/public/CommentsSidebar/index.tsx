@@ -219,6 +219,7 @@ const CommentSidebar = ({
                   setNewCommentContent('');
                 }}
                 aria-label="Add New Comment Button"
+                disabled={(newCommentContent || '').trim() === ''}
               >
                 Add
               </button>
