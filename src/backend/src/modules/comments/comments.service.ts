@@ -30,7 +30,7 @@ export class CommentsService {
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
     private readonly piaService: PiaIntakeService,
-  ) { }
+  ) {}
 
   async findOneBy(
     where: FindOptionsWhere<CommentEntity>,
