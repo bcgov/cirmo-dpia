@@ -30,7 +30,7 @@ export class CommentsService {
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
     private readonly piaService: PiaIntakeService,
-  ) {}
+  ) { }
 
   async findOneBy(
     where: FindOptionsWhere<CommentEntity>,
@@ -61,6 +61,14 @@ export class CommentsService {
 
     // extract user input dto
     const { path, text } = createCommentDto;
+
+    // validate blank text 
+    if ((text || '').trim() === '') {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message: 'Forbidden: Failed to add comments to the PIA. Text cannot be blank.',
+      });
+    }
 
     // check if adding comments to this PIA allowed
     const isActionAllowed = checkUpdatePermissions({
