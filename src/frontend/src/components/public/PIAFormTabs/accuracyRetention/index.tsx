@@ -13,6 +13,7 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import Radio from '../../../common/Radio';
 
 export const AccuracyCorrectionAndRetention = () => {
   const {
@@ -57,6 +58,140 @@ export const AccuracyCorrectionAndRetention = () => {
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setAccuracyCorrectionAndRetentionForm, path, value);
   };
+
+  const haveProcessinPlace = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'haveProcessinPlace',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
+          YesNoInput.YES ||
+        !accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'correction.haveProcessInPlace'),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'haveProcessinPlace',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
+        YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'correction.haveProcessInPlace'),
+    },
+  ];
+
+  const WillDocument = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'WillDocument',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
+          YesNoInput.YES ||
+        !accuracyCorrectionAndRetentionForm?.correction?.willDocument,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'correction.willDocument'),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'WillDocument',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
+        YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'correction.willDocument'),
+    },
+  ];
+
+  const WillconductNotifications = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'WillconductNotifications',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction
+          ?.willConductNotifications === YesNoInput.YES ||
+        !accuracyCorrectionAndRetentionForm?.correction
+          ?.willConductNotifications,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'correction.willConductNotifications',
+        ),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'WillconductNotifications',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.correction
+          ?.willConductNotifications === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'correction.willConductNotifications',
+        ),
+    },
+  ];
+
+  const WillProvideInformation = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'WillProvideInformation',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
+          YesNoInput.YES ||
+        !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'retention.usePIForDecision'),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'WillProvideInformation',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
+        YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'retention.usePIForDecision'),
+    },
+  ];
+
+  const HaveApprovedInfoSchedule = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'HaveApprovedInfoSchedule',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.retention
+          ?.haveApprovedInfoSchedule === YesNoInput.YES ||
+        !accuracyCorrectionAndRetentionForm?.retention
+          ?.haveApprovedInfoSchedule,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'retention.haveApprovedInfoSchedule',
+        ),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'HaveApprovedInfoSchedule',
+      isDefault:
+        accuracyCorrectionAndRetentionForm?.retention
+          ?.haveApprovedInfoSchedule === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'retention.haveApprovedInfoSchedule',
+        ),
+    },
+  ];
 
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
@@ -202,48 +337,9 @@ export const AccuracyCorrectionAndRetention = () => {
               </h4>
             )}
             {!isReadOnly ? (
-              <>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="haveProcessinPlace"
-                    value={YesNoInput.YES}
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.haveProcessInPlace === YesNoInput.YES ||
-                      !accuracyCorrectionAndRetentionForm?.correction
-                        ?.haveProcessInPlace
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.haveProcessInPlace',
-                      )
-                    }
-                  />
-                  Yes
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="haveProcessinPlace"
-                    value={YesNoInput.NO}
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.correction
-                        ?.haveProcessInPlace === YesNoInput.NO
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'correction.haveProcessInPlace',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </>
+              haveProcessinPlace.map((radio, index) => (
+                <Radio key={index} {...radio} />
+              ))
             ) : (
               <p>
                 {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace?.charAt(
@@ -310,48 +406,9 @@ export const AccuracyCorrectionAndRetention = () => {
                 </h4>
               )}
               {!isReadOnly ? (
-                <>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="WillDocument"
-                      value={YesNoInput.YES}
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.correction
-                          ?.willDocument === YesNoInput.YES ||
-                        !accuracyCorrectionAndRetentionForm?.correction
-                          ?.willDocument
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'correction.willDocument',
-                        )
-                      }
-                    />
-                    Yes
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="WillDocument"
-                      value={YesNoInput.NO}
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.correction
-                          ?.willDocument === YesNoInput.NO
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'correction.willDocument',
-                        )
-                      }
-                    />
-                    No
-                  </div>
-                </>
+                WillDocument.map((radio, index) => (
+                  <Radio key={index} {...radio} />
+                ))
               ) : (
                 <p>
                   {accuracyCorrectionAndRetentionForm.correction.willDocument?.charAt(
@@ -419,48 +476,9 @@ export const AccuracyCorrectionAndRetention = () => {
                 </h4>
               )}
               {!isReadOnly ? (
-                <>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="WillconductNotifications"
-                      value={YesNoInput.YES}
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.correction
-                          ?.willConductNotifications === YesNoInput.YES ||
-                        !accuracyCorrectionAndRetentionForm?.correction
-                          ?.willConductNotifications
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'correction.willConductNotifications',
-                        )
-                      }
-                    />
-                    Yes
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="WillconductNotifications"
-                      value={YesNoInput.NO}
-                      checked={
-                        accuracyCorrectionAndRetentionForm?.correction
-                          ?.willConductNotifications === YesNoInput.NO
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'correction.willConductNotifications',
-                        )
-                      }
-                    />
-                    No
-                  </div>
-                </>
+                WillconductNotifications.map((radio, index) => (
+                  <Radio key={index} {...radio} />
+                ))
               ) : (
                 <p>
                   {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications?.charAt(
@@ -514,48 +532,9 @@ export const AccuracyCorrectionAndRetention = () => {
               </h4>
             )}
             {!isReadOnly ? (
-              <>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillProvideInformation"
-                    value={YesNoInput.YES}
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.retention
-                        ?.usePIForDecision === YesNoInput.YES ||
-                      !accuracyCorrectionAndRetentionForm?.retention
-                        ?.usePIForDecision
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'retention.usePIForDecision',
-                      )
-                    }
-                  />
-                  Yes
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="WillProvideInformation"
-                    value={YesNoInput.NO}
-                    checked={
-                      accuracyCorrectionAndRetentionForm?.retention
-                        ?.usePIForDecision === YesNoInput.NO
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'retention.usePIForDecision',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </>
+              WillProvideInformation.map((radio, index) => (
+                <Radio key={index} {...radio} />
+              ))
             ) : (
               <p>
                 {accuracyCorrectionAndRetentionForm.retention?.usePIForDecision?.charAt(
@@ -635,48 +614,9 @@ export const AccuracyCorrectionAndRetention = () => {
                   </h4>
                 )}
                 {!isReadOnly ? (
-                  <>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="HaveApprovedInfoSchedule"
-                        value={YesNoInput.YES}
-                        checked={
-                          accuracyCorrectionAndRetentionForm?.retention
-                            ?.haveApprovedInfoSchedule === YesNoInput.YES ||
-                          !accuracyCorrectionAndRetentionForm?.retention
-                            ?.haveApprovedInfoSchedule
-                        }
-                        onChange={(e) =>
-                          stateChangeHandler(
-                            e.target.value,
-                            'retention.haveApprovedInfoSchedule',
-                          )
-                        }
-                      />
-                      Yes
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="HaveApprovedInfoSchedule"
-                        value={YesNoInput.NO}
-                        checked={
-                          accuracyCorrectionAndRetentionForm?.retention
-                            ?.haveApprovedInfoSchedule === YesNoInput.NO
-                        }
-                        onChange={(e) =>
-                          stateChangeHandler(
-                            e.target.value,
-                            'retention.haveApprovedInfoSchedule',
-                          )
-                        }
-                      />
-                      No
-                    </div>
-                  </>
+                  HaveApprovedInfoSchedule.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))
                 ) : (
                   <p>
                     {accuracyCorrectionAndRetentionForm.retention.haveApprovedInfoSchedule?.charAt(
