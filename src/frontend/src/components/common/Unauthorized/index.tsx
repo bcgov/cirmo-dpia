@@ -3,17 +3,12 @@ import UnAuthorizedImg from '../../../assets/401.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { API_ROUTES } from '../../../constant/apiRoutes';
-import { AppStorage } from '../../../utils/storage';
 
 const Unauthorized = () => {
   const win: Window = window;
 
   const login = () => {
     win.location = API_ROUTES.KEYCLOAK_LOGIN;
-  };
-
-  const clearReturnUri = () => {
-    AppStorage.removeItem('returnUri');
   };
 
   return (
@@ -43,11 +38,7 @@ const Unauthorized = () => {
             Log in with IDIR
             <FontAwesomeIcon className="icon" icon={faUser} />
           </button>
-          <Link
-            className="bcgovbtn bcgovbtn__secondary"
-            to="/"
-            onClick={clearReturnUri}
-          >
+          <Link className="bcgovbtn bcgovbtn__secondary" to="/">
             Go to Home
           </Link>
         </div>
