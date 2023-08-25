@@ -31,6 +31,7 @@ describe('AuthService', () => {
       KEYCLOAK_REALM: 'realm',
       KEYCLOAK_USER_INFO_URI: 'https://app.example.com/user',
       KEYCLOAK_LOGOUT_URI: 'https://app.example.com/logout',
+      SITEMINDER_LOGOUT_URI: 'https://siteminder.example.com/logoff',
     });
     jest
       .spyOn(configService, 'getValue')
@@ -71,7 +72,7 @@ describe('AuthService', () => {
      */
     it('should return the correct login URL', () => {
       const expectedUrl = `https://app.example.com/oauth/realms/realm/protocol/openid-connect/auth?client_id=myclientid&response_type=idir&scope=scope&redirect_uri=https://app.example.com/callback`;
-      expect(configService.getValue).toHaveBeenCalledTimes(10);
+      expect(configService.getValue).toHaveBeenCalledTimes(11);
       const result = service.getUrlLogin();
       expect(result.url).toEqual(expectedUrl);
     });
@@ -95,6 +96,7 @@ describe('AuthService', () => {
         'refresh_token',
         '300',
         '1800',
+        '500',
       );
 
       const response: any = {
@@ -214,6 +216,7 @@ describe('AuthService', () => {
         'new_refresh_token',
         '300',
         '1800',
+        '500',
       );
 
       const response: any = {
@@ -268,68 +271,31 @@ describe('AuthService', () => {
     });
   });
 
-  describe('logout', () => {
+  describe('getLogoutURL', () => {
     /**
-     * This test validates that the it should successful logout from OAuth server(bc keycloak instance)
+     * This test validates that the it can return correct OAuth logout URL.
      *
      * @Input
-     *   - refreshToken
+     *   - empty
      *
      *
      * @Output
-     *   - empty output
+     *   - an object containing url
      */
-    it('should logout user', async () => {
-      const refreshToken = 'sample_refresh_token';
+    it('should return the correct login URL', () => {
+      const idToken = '500';
+      const redirectUrl = 'https://app.example.com';
 
-      const response: any = {
-        data: null,
-        status: 204,
-        statusText: 'No Content',
-        config: {},
-        headers: {},
-      };
-
-      jest
-        .spyOn(httpService, 'post')
-        .mockImplementationOnce(() => of(response));
-
-      await expect(service.logout(refreshToken)).resolves.toBeNull();
-    });
-    /**
-     * This test validates that the it should throw exception when got error logout from OAuth server(bc keycloak instance)
-     *
-     * @Input
-     *   - refreshToken
-     *
-     *
-     * @Output
-     *   - an http exception
-     */
-    it('should throw HttpException with 500 status when httpService.post throws other errors', async () => {
-      const error: any = {
-        message: JSON.stringify(new Error('Some other error')),
-        AxiosError: true,
-      };
-      const mockRefreshToken = 'sample_refresh_token';
-      jest
-        .spyOn(httpService, 'post')
-        .mockReturnValueOnce(throwError(() => error));
-
-      await expect(service.logout(mockRefreshToken)).rejects.toThrowError(
-        HttpException,
+      const expectedKCUrl = encodeURIComponent(
+        `https://app.example.com/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${redirectUrl}`,
       );
+      const expectedSMUrl =
+        'https://siteminder.example.com/logoff?retnow=1&returl=';
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'auth.service.ts:logout:data',
-        'Error data unknown, Something Went wrong',
-        500,
-      );
-      expect(httpService.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.stringContaining(`refresh_token=${mockRefreshToken}`),
-        expect.any(Object),
-      );
+      expect(configService.getValue).toHaveBeenCalledTimes(11);
+      const result = service.getUrlLogout(idToken, redirectUrl);
+      expect(result.siteMinderUrl).toEqual(expectedSMUrl);
+      expect(result.keycloakUrl).toEqual(expectedKCUrl);
     });
   });
 });
