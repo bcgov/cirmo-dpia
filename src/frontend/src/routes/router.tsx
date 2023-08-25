@@ -3,7 +3,6 @@ import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
-import { AppStorage } from '../utils/storage';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAFormPage from '../pages/PIAForm';
@@ -30,10 +29,6 @@ export const ProtectedRoute = () => {
   const location = useLocation();
   const auth = isAuthenticated();
 
-  if (location.pathname) {
-    AppStorage.setItem('returnUri', `${location.pathname}${location.search}`);
-  }
-
   return auth ? (
     <Outlet />
   ) : (
@@ -44,13 +39,13 @@ export const ProtectedRoute = () => {
 const Router = () => {
   const isMPO = !!isMPORole();
 
-  const comingSoonBanner = (
-    <div className="container w-100">
-      <div className="row justify-content-center align-items-center">
-        <h1 className="text-center">Coming Soon...</h1>
-      </div>
-    </div>
-  );
+  // const comingSoonBanner = (
+  //   <div className="container w-100">
+  //     <div className="row justify-content-center align-items-center">
+  //       <h1 className="text-center">Coming Soon...</h1>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <Routes>
