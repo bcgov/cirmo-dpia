@@ -298,7 +298,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             key={cpoId}
                           >
                             {!allowUserReviewCPO() ||
-                            Object(pia?.review?.cpo)?.[cpoId].isAcknowledged ? (
+                            Object(pia?.review?.cpo)?.[cpoId]
+                              ?.isAcknowledged ? (
                               <ViewCPOReview
                                 pia={pia}
                                 cpoId={cpoId}

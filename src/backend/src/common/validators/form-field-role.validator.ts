@@ -30,6 +30,9 @@ export const validateRoleForFormField = <T>(
 
   if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
 
+  // Client is not updating the field, return.
+  if (updatedValue === undefined) return;
+
   // if not null; allow only specific roles access
   const intersectingUserTypes = metadata.allowedUserTypesEdit.filter((type) =>
     userType.includes(type),

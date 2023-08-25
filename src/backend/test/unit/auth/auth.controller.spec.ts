@@ -237,10 +237,10 @@ describe('AuthController', () => {
     });
   });
 
-  describe('logout', () => {
+  describe('keycloakLogout', () => {
     /**
      * @Description
-     * This test validates the happy flow if the method `authService.logout` is called with correct mock data
+     * This test validates the happy flow if the method `authService.getUrlLogout` is called with correct mock data
      *
      * @Input
      *   - AppTokensDto
@@ -248,52 +248,18 @@ describe('AuthController', () => {
      * @Output 200
      *   - no output
      */
-    it('should call the logout method of the AuthService', async () => {
-      const appTokensDto: AppTokensDto = { ...appTokensDtoMock };
+    it('should call the getUrlLogout method of the AuthService', async () => {
+      const req = {
+        query: { id_token: '500', redirect_url: 'http://app.example.com' },
+      };
 
-      service.logout = jest.fn().mockResolvedValue(undefined);
+      service.getUrlLogout = jest.fn().mockResolvedValue(undefined);
 
-      await controller.logout(appTokensDto);
-      expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
-    });
-    /**
-     * @Description
-     * This test validates the happy flow if the method `authService.logout` is failed with http exception
-     *
-     * @Input
-     *   - AppTokensDto
-     *
-     * @Output 400
-     * it should return the http exception when service method failed
-     */
-    it('should throw HttpException when authService.logout() throws HttpException', async () => {
-      const appTokensDto: AppTokensDto = { ...appTokensDtoMock };
-      const httpException = new HttpException('Logout failed', 400);
-      service.logout = jest.fn().mockRejectedValue(httpException);
-      await expect(controller.logout(appTokensDto)).rejects.toThrowError(
-        httpException,
+      await controller.logout(req);
+      expect(service.getUrlLogout).toHaveBeenCalledWith(
+        '500',
+        'http://app.example.com',
       );
-      expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
-    });
-    /**
-     * @Description
-     * This test validates the non-happy flow if the method `authService.logout` is throw exception
-     *
-     * @Input
-     *   - AppTokensDto
-     *
-     * @Output 500
-     * it should return the InternalServerErrorException
-     */
-    it('should throw InternalServerErrorException when authService.logout() throws other errors', async () => {
-      service.logout = jest
-        .fn()
-        .mockRejectedValue(new Error('Some other error'));
-      const appTokensDto: AppTokensDto = { ...appTokensDtoMock };
-      await expect(controller.logout(appTokensDto)).rejects.toThrowError(
-        InternalServerErrorException,
-      );
-      expect(service.logout).toHaveBeenCalledWith(appTokensDto.refresh_token);
     });
   });
 });

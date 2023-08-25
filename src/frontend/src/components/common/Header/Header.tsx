@@ -53,7 +53,7 @@ function Header({ user }: Props) {
           const config = await HttpRequest.get<IConfig>(API_ROUTES.CONFIG_FILE);
           AppStorage.setItem(ConfigStorageKeys.CONFIG, config);
 
-          navigate(AppStorage.getItem('returnUri') || routes.PIA_LIST);
+          navigate(routes.PIA_LIST);
         } else {
           throw new Error('Invalid Token Information found');
         }

@@ -2,12 +2,12 @@ import { API_ROUTES } from '../constant/apiRoutes';
 import { IKeycloakToken } from '../types/interfaces/keyCloakToken.interface';
 import { HttpRequest } from './http-request.util';
 import { AppStorage } from './storage';
-import { useLocation } from 'react-router-dom';
 
 export enum TokenStorageKeys {
   ACCESS_TOKEN = 'accessToken',
   ACCESS_TOKEN_EXPIRY = 'accessTokenExpiry',
   REFRESH_TOKEN = 'refreshToken',
+  ID_TOKEN = 'idToken',
   REFRESH_TOKEN_EXPIRY = 'refreshTokenExpiry',
   TOKENS_LAST_REFRESHED_AT = 'tokensLastRefreshedAt',
   LAST_ACTIVITY_AT = 'lastActivityAt',
@@ -44,6 +44,7 @@ export const storeAuthTokens = (data: IKeycloakToken) => {
     TokenStorageKeys.ACCESS_TOKEN_EXPIRY,
     now + +data.expires_in * 1000,
   );
+  AppStorage.setItem(TokenStorageKeys.ID_TOKEN, data.id_token);
   AppStorage.setItem(TokenStorageKeys.REFRESH_TOKEN, data.refresh_token);
   AppStorage.setItem(
     TokenStorageKeys.REFRESH_TOKEN_EXPIRY,
@@ -69,27 +70,38 @@ export const getAuthTokens = () => {
   return {
     access_token: AppStorage.getItem(TokenStorageKeys.ACCESS_TOKEN),
     refresh_token: AppStorage.getItem(TokenStorageKeys.REFRESH_TOKEN),
+    id_token: AppStorage.getItem(TokenStorageKeys.ID_TOKEN),
   };
 };
 
 export const logMeOut = async (unauthorized = false, cb?: () => void) => {
-  // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
-  if (isAuthenticated()) {
-    await HttpRequest.post(API_ROUTES.KEYCLOAK_LOGOUT, getAuthTokens());
-  }
-
-  clearStorage();
-
-  // If you're logged out due to timeout, you'll be redirected to the last page you were on
-  if (unauthorized) {
-    AppStorage.setItem('returnUri', window.location.pathname);
-  }
-
-  const unauthRedirectUrl = '/not-authorized';
-  const loginRedirectUrl = '/';
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const unauthRedirectUrl = `${baseUrl}/not-authorized`;
+  const loginRedirectUrl = `${baseUrl}/`;
 
   const redirectUrl = unauthorized ? unauthRedirectUrl : loginRedirectUrl;
-  window.location.href = redirectUrl;
+
+  interface LogoutUrlResponse {
+    siteMinderUrl: string;
+    keycloakUrl: string;
+  }
+
+  const logoutUrlResponse: LogoutUrlResponse = await HttpRequest.get(
+    API_ROUTES.KEYCLOAK_LOGOUT,
+    {},
+    {},
+    true,
+    {
+      id_token: AppStorage.getItem(TokenStorageKeys.ID_TOKEN),
+      redirect_url: redirectUrl,
+    },
+  );
+
+  // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
+  if (isAuthenticated())
+    window.location.href = `${logoutUrlResponse.siteMinderUrl}${logoutUrlResponse.keycloakUrl}`;
+
+  clearStorage();
 
   cb?.();
 };

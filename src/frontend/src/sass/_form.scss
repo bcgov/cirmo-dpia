@@ -54,6 +54,8 @@
   accent-color: $primary-colour;
   display: flex;
   gap: 0.5em;
+  font-weight: 400 !important;
+  margin-top: 0.5em !important;
 }
 
 .form__row--flex-end {

@@ -7,6 +7,7 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import Checkbox from '../../../common/Checkbox';
+import Radio from '../../../common/Radio';
 import CustomInputDate from '../../../common/CustomInputDate';
 import MDEditor from '@uiw/react-md-editor';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
@@ -46,6 +47,25 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const stateChangeHandler = (value: any, key: keyof IPPQ) => {
     setNestedReactState(setPpqForm, key, value);
   };
+
+  const ProposedDeadlineRadio = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'proposed-deadline-radio',
+      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.YES,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'proposed-deadline-radio',
+      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
+    },
+  ];
 
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
@@ -128,43 +148,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               <h4>{Messages.DeadlineDateHeading.en}</h4>
             )}
             {!isReadOnly ? (
-              <div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="proposed-deadline-radio"
-                    value={YesNoInput.YES}
-                    checked={
-                      ppqForm?.proposedDeadlineAvailable === YesNoInput.YES
-                    }
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'proposedDeadlineAvailable',
-                      )
-                    }
-                  />
-                  Yes
-                </div>
-
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="proposed-deadline-radio"
-                    value={YesNoInput.NO}
-                    checked={ppqForm?.proposedDeadlineAvailable === 'NO'}
-                    onChange={(e) =>
-                      stateChangeHandler(
-                        e.target.value,
-                        'proposedDeadlineAvailable',
-                      )
-                    }
-                  />
-                  No
-                </div>
-              </div>
+              ProposedDeadlineRadio.map((radio, index) => (
+                <Radio key={index} {...radio} />
+              ))
             ) : (
               <p>
                 {ppqForm?.proposedDeadlineAvailable?.charAt(0)}
