@@ -20,7 +20,7 @@ import {
   IPiaForm,
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
-import { buildDynamicPath, getEditPath } from '../../utils/path';
+import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
@@ -297,7 +297,7 @@ const PIAFormPage = () => {
   // Event Handlers
   //
 
-  const populateModalFn = (modal: object, status: string) => {
+  const populateModalFn = (modal: object) => {
     setPiaModalTitleText(Object(modal).title);
     setPiaModalParagraph(Object(modal).description);
     setPiaModalConfirmLabel(Object(modal).confirmLabel);
@@ -883,7 +883,7 @@ const PIAFormPage = () => {
 
     const autoSaveTimer = setTimeout(() => {
       autoSave();
-    }, 3000);
+    }, 500);
 
     return () => clearTimeout(autoSaveTimer);
   });

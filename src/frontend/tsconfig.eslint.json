@@ -7,5 +7,6 @@
     "*.config.cjs",
     "vite.config.ts",
     "public/snowplow.js"
-  ]
+  ],
+  "exclude": ["test/**/*"]
 }
