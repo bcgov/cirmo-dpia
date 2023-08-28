@@ -55,7 +55,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   return (
     <div className="d-grid gap-3">
       {printPreview ? (
-        <div className="review-container px-2 ">
+        <div className="review-container.no-border px-2 ">
           <div className="mt-2 pb-2">
             <h3>
               <b>{role}</b>

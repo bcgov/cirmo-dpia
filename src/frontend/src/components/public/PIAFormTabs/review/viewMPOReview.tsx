@@ -47,6 +47,9 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
 
   return (
     <div className="d-grid gap-3">
+      <h3>
+        <b>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</b>
+      </h3>
       {printPreview ? (
         <div className="review-container px-2">
           {pia?.review?.mpo?.isAcknowledged === false ? (
@@ -55,7 +58,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
               <div> Review incomplete</div>
             </>
           ) : (
-            <div>
+            <div className="review-container px-2">
               <ViewReviewSection
                 pia={pia}
                 printPreview

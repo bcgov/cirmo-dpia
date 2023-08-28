@@ -116,6 +116,9 @@ export const PiaFormPrintPreview = () => {
                 <div className="pageBreak">
                   <PIAAdditionalRisks />
                 </div>
+                <div className="pageBreak">
+                  <PIAReview printPreview />
+                </div>
               </>
             )}
           </PiaFormContext.Provider>
