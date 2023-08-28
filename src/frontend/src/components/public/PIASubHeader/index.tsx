@@ -129,7 +129,7 @@ function PIASubHeader({
         Object.values(pia?.review.cpo)?.length > 0 &&
         Object.values(pia?.review?.cpo)?.every(
           (review: IReviewSection) =>
-            review.isAcknowledged === true && review.reviewNote !== '',
+            review?.isAcknowledged === true && review.reviewNote !== '',
         ))
     ) {
       setEnableFinalReview(true);
