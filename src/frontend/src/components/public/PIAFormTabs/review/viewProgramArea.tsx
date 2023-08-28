@@ -62,7 +62,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             </h3>
           </div>
           {!pia?.review?.programArea?.reviews?.[role as keyof IReview]
-            .isAcknowledged ? (
+            ?.isAcknowledged ? (
             <>
               <div>Reviewed by</div>
               <div>Review incomplete</div>

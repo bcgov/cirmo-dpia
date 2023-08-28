@@ -24,7 +24,7 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
    * Local state for the checkbox and review note
    */
   const [acknowledged, setAcknowledged] = useState(
-    Object(pia.review?.cpo)?.[cpoId].isAcknowledged || false,
+    Object(pia.review?.cpo)?.[cpoId]?.isAcknowledged || false,
   );
   const [reviewNote, setReviewNote] = useState(
     Object(pia.review?.cpo)?.[cpoId].reviewNote || '',
@@ -47,7 +47,7 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
     <div className="d-grid gap-3">
       {printPreview ? (
         <div className="review-container px-2">
-          {Object(pia?.review?.cpo)?.[cpoId].isAcknowledged === false ? (
+          {Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged === false ? (
             <>
               <div> Reviewed by</div>
               <div> Review incomplete</div>

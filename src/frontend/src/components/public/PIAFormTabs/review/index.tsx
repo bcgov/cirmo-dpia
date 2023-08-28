@@ -162,7 +162,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         Object.values<IReviewSection>(pia?.review?.cpo).some(
           (review) =>
             review !== null &&
-            review.isAcknowledged !== false &&
+            review?.isAcknowledged !== false &&
             review.reviewedByGuid === userGuid,
         )
       )
