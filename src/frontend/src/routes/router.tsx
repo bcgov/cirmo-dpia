@@ -38,6 +38,7 @@ export const ProtectedRoute = () => {
 
 const Router = () => {
   const isMPO = !!isMPORole();
+  const hideViewComments = false;
 
   // const comingSoonBanner = (
   //   <div className="container w-100">
@@ -91,47 +92,125 @@ const Router = () => {
 
             <Route path="collectionUseAndDisclosure">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<PIACollectionUseAndDisclosure />} />
-              <Route path="view" element={<PIACollectionUseAndDisclosure />} />
+              <Route
+                path="edit"
+                element={
+                  <PIACollectionUseAndDisclosure
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
+              <Route
+                path="view"
+                element={
+                  <PIACollectionUseAndDisclosure
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
             </Route>
 
             <Route
               path="storingPersonalInformation"
-              element={<StoringPersonalInformation />}
+              element={
+                <StoringPersonalInformation
+                  hideViewComments={hideViewComments}
+                />
+              }
             >
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<StoringPersonalInformation />} />
-              <Route path="view" element={<StoringPersonalInformation />} />
+              <Route
+                path="edit"
+                element={
+                  <StoringPersonalInformation
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
+              <Route
+                path="view"
+                element={
+                  <StoringPersonalInformation
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
             </Route>
 
             <Route path="securityOfPersonalInformation">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<SecurityPersonalInformation />} />
-              <Route path="view" element={<SecurityPersonalInformation />} />
+              <Route
+                path="edit"
+                element={
+                  <SecurityPersonalInformation
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
+              <Route
+                path="view"
+                element={
+                  <SecurityPersonalInformation
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
             </Route>
 
             <Route path="accuracyCorrectionAndRetention">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<AccuracyCorrectionAndRetention />} />
-              <Route path="view" element={<AccuracyCorrectionAndRetention />} />
+              <Route
+                path="edit"
+                element={
+                  <AccuracyCorrectionAndRetention
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
+              <Route
+                path="view"
+                element={
+                  <AccuracyCorrectionAndRetention
+                    hideViewComments={hideViewComments}
+                  />
+                }
+              />
             </Route>
 
             <Route path="agreementsAndInformationBanks">
               <Route index element={<Navigate relative="path" to="view" />} />
               <Route
                 path="edit"
-                element={<PIAAgreementsAndInformationBanks />}
+                element={
+                  <PIAAgreementsAndInformationBanks
+                    hideViewComments={hideViewComments}
+                  />
+                }
               />
               <Route
                 path="view"
-                element={<PIAAgreementsAndInformationBanks />}
+                element={
+                  <PIAAgreementsAndInformationBanks
+                    hideViewComments={hideViewComments}
+                  />
+                }
               />
             </Route>
 
             <Route path="additionalRisks">
               <Route index element={<Navigate relative="path" to="view" />} />
-              <Route path="edit" element={<PIAAdditionalRisks />} />
-              <Route path="view" element={<PIAAdditionalRisks />} />
+              <Route
+                path="edit"
+                element={
+                  <PIAAdditionalRisks hideViewComments={hideViewComments} />
+                }
+              />
+              <Route
+                path="view"
+                element={
+                  <PIAAdditionalRisks hideViewComments={hideViewComments} />
+                }
+              />
             </Route>
             <Route path="ppq">
               <Route index element={<Navigate relative="path" to="view" />} />
