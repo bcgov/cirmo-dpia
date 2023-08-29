@@ -12,7 +12,11 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-const PIAAdditionalRisks = () => {
+interface PIAAdditionalRisksProps {
+  hideViewComments: boolean;
+}
+
+const PIAAdditionalRisks = ({ hideViewComments }: PIAAdditionalRisksProps) => {
   const {
     pia,
     commentCount,
@@ -80,10 +84,12 @@ const PIAAdditionalRisks = () => {
           format="row"
           readOnly={isReadOnly}
         />
-        <ViewComments
-          count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
-          path={PiaSections.ADDITIONAL_RISKS_RISKS}
-        />
+        {!hideViewComments && (
+          <ViewComments
+            count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
+            path={PiaSections.ADDITIONAL_RISKS_RISKS}
+          />
+        )}
       </section>
     </>
   );

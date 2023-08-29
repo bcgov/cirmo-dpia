@@ -15,7 +15,13 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Radio from '../../../common/Radio';
 
-export const AccuracyCorrectionAndRetention = () => {
+interface AccuracyCorrectionAndRetentionProps {
+  hideViewComments: boolean;
+}
+
+export const AccuracyCorrectionAndRetention = ({
+  hideViewComments,
+}: AccuracyCorrectionAndRetentionProps) => {
   const {
     pia,
     commentCount,
@@ -273,14 +279,16 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
-                ]
-              }
-              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY
+                  ]
+                }
+                path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_ACCURACY}
+              />
+            )}
           </div>
         </section>
 
@@ -490,14 +498,16 @@ export const AccuracyCorrectionAndRetention = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
-                ]
-              }
-              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+                  ]
+                }
+                path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
+              />
+            )}
           </div>
         </section>
 
@@ -684,14 +694,16 @@ export const AccuracyCorrectionAndRetention = () => {
                 </div>
               ) : null
             ) : null}
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
-                ]
-              }
-              path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION
+                  ]
+                }
+                path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_RETENTION}
+              />
+            )}
           </div>
         </section>
       </form>

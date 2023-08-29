@@ -18,7 +18,14 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
 
-const PIACollectionUseAndDisclosure = () => {
+// Define the prop type for hideViewComments
+interface PIACollectionUseAndDisclosureProps {
+  hideViewComments: boolean;
+}
+
+const PIACollectionUseAndDisclosure = ({
+  hideViewComments,
+}: PIACollectionUseAndDisclosureProps) => {
   const {
     pia,
     commentCount,
@@ -114,12 +121,14 @@ const PIACollectionUseAndDisclosure = () => {
           addRowBtnLabel="Add more steps"
           format="row"
         />
-        <ViewComments
-          count={
-            commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
-          }
-          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
-        />
+        {!hideViewComments && (
+          <ViewComments
+            count={
+              commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
+            }
+            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
+          />
+        )}
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
@@ -236,14 +245,16 @@ const PIACollectionUseAndDisclosure = () => {
             )}
           </div>
         </div>
-        <ViewComments
-          count={
-            commentCount?.[
-              PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
-            ]
-          }
-          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
-        />
+        {!hideViewComments && (
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+              ]
+            }
+            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
+          />
+        )}
       </section>
     </>
   );

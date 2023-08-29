@@ -16,7 +16,13 @@ import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-export const SecurityPersonalInformation = () => {
+interface SecurityPersonalInformationProps {
+  hideViewComments: boolean;
+}
+
+export const SecurityPersonalInformation = ({
+  hideViewComments,
+}: SecurityPersonalInformationProps) => {
   const {
     pia,
     commentCount,
@@ -331,17 +337,19 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-                ]
-              }
-              path={
-                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-              }
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                  ]
+                }
+                path={
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                }
+              />
+            )}
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
@@ -427,17 +435,19 @@ export const SecurityPersonalInformation = () => {
                   )}
                 </div>
               )}
-              <ViewComments
-                count={
-                  commentCount?.[
-                    PiaSections
-                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                  ]
-                }
-                path={
-                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                }
-              />
+              {!hideViewComments && (
+                <ViewComments
+                  count={
+                    commentCount?.[
+                      PiaSections
+                        .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                    ]
+                  }
+                  path={
+                    PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                  }
+                />
+              )}
             </div>
           )}
         </section>
@@ -572,17 +582,19 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-                ]
-              }
-              path={
-                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-              }
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                  ]
+                }
+                path={
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                }
+              />
+            )}
           </div>
         </section>
       </div>

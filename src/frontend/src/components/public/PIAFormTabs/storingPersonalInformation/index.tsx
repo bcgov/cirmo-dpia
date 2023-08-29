@@ -19,7 +19,13 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Callout from '../../../common/Callout';
 
-const StoringPersonalInformation = () => {
+interface StoringPersonalInformationProps {
+  hideViewComments: boolean;
+}
+
+const StoringPersonalInformation = ({
+  hideViewComments,
+}: StoringPersonalInformationProps) => {
   const {
     pia,
     commentCount,
@@ -390,14 +396,18 @@ const StoringPersonalInformation = () => {
               )}
             </div>
           )}
-          <ViewComments
-            count={
-              commentCount?.[
+          {!hideViewComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
+                ]
+              }
+              path={
                 PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
-              ]
-            }
-            path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
-          />
+              }
+            />
+          )}
         </div>
       </section>
       {storingPersonalInformationForm.personalInformation
@@ -508,17 +518,19 @@ const StoringPersonalInformation = () => {
                 )}
               </div>
             )}
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
-                ]
-              }
-              path={
-                PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
-              }
-            />
+            {!hideViewComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                  ]
+                }
+                path={
+                  PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                }
+              />
+            )}
           </div>
         </section>
       )}
@@ -754,17 +766,19 @@ const StoringPersonalInformation = () => {
                     </p>
                   )}
                 </div>
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
-                  }
-                />
+                {!hideViewComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -845,17 +859,19 @@ const StoringPersonalInformation = () => {
                         <i>Not answered</i>
                       </p>
                     )}
-                    <ViewComments
-                      count={
-                        commentCount?.[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
-                        ]
-                      }
-                      path={
-                        PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
-                      }
-                    />
+                    {!hideViewComments && (
+                      <ViewComments
+                        count={
+                          commentCount?.[
+                            PiaSections
+                              .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                          ]
+                        }
+                        path={
+                          PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                        }
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -907,17 +923,19 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
-                  }
-                />
+                {!hideViewComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -967,17 +985,19 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
-                  }
-                />
+                {!hideViewComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -1021,17 +1041,19 @@ const StoringPersonalInformation = () => {
                     readOnly={isReadOnly}
                   />
                 </div>
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
-                  }
-                />
+                {!hideViewComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                    }
+                  />
+                )}
               </div>
               <div className="mt-5">
                 <Callout
