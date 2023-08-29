@@ -51,14 +51,15 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
         <b>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</b>
       </h3>
       {printPreview ? (
-        <div className="review-container px-2">
-          {pia?.review?.mpo?.isAcknowledged === false ? (
-            <>
+        <div>
+          {pia?.review?.mpo?.isAcknowledged === false ||
+          pia?.review?.mpo?.isAcknowledged === undefined ? (
+            <div className="row mb-5 p-3 pb-5 border border-2 rounded">
               <div> Reviewed by</div>
               <div> Review incomplete</div>
-            </>
+            </div>
           ) : (
-            <div className="review-container px-2">
+            <div>
               <ViewReviewSection
                 pia={pia}
                 printPreview

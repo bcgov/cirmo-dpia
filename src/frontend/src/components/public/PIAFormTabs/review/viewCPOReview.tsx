@@ -49,12 +49,12 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
         <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
       </h3>
       {printPreview ? (
-        <div className="review-container px-2">
+        <div>
           {Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged === false ? (
-            <>
+            <div className="row mb-5 p-3 pb-5 border border-2 rounded">
               <div> Reviewed by</div>
               <div> Review incomplete</div>
-            </>
+            </div>
           ) : (
             <div>
               <ViewReviewSection
