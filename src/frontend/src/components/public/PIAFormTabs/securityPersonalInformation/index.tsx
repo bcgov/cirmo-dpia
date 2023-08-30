@@ -1,7 +1,10 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helper/messages';
-import { ISecurityPersonalInformation } from './security-personal-info-interface';
+import {
+  ISecurityPersonalInformation,
+  SecurityPersonalInformationProps,
+} from './security-personal-info-interface';
 import Checkbox from '../../../common/Checkbox';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
@@ -16,12 +19,8 @@ import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-interface SecurityPersonalInformationProps {
-  hideViewComments: boolean;
-}
-
 export const SecurityPersonalInformation = ({
-  hideViewComments,
+  showComments = true,
 }: SecurityPersonalInformationProps) => {
   const {
     pia,
@@ -337,7 +336,7 @@ export const SecurityPersonalInformation = ({
                 </p>
               )}
             </div>
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[
@@ -435,7 +434,7 @@ export const SecurityPersonalInformation = ({
                   )}
                 </div>
               )}
-              {!hideViewComments && (
+              {showComments && (
                 <ViewComments
                   count={
                     commentCount?.[
@@ -582,7 +581,7 @@ export const SecurityPersonalInformation = ({
                 </p>
               )}
             </div>
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[

@@ -6,3 +6,7 @@ export interface IAdditionRisk extends Record<string, string> {
   risk: string;
   response: string;
 }
+
+export interface PIAAdditionalRisksProps {
+  showComments?: boolean;
+}

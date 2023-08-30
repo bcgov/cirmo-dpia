@@ -4,7 +4,10 @@ import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { isMPORole } from '../../../../utils/helper.util';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import Radio from '../../../common/Radio';
-import { IStoringPersonalInformation } from './interfaces';
+import {
+  IStoringPersonalInformation,
+  StoringPersonalInformationProps,
+} from './interfaces';
 import Messages from './messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -19,12 +22,8 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Callout from '../../../common/Callout';
 
-interface StoringPersonalInformationProps {
-  hideViewComments: boolean;
-}
-
 const StoringPersonalInformation = ({
-  hideViewComments,
+  showComments = true,
 }: StoringPersonalInformationProps) => {
   const {
     pia,
@@ -396,7 +395,7 @@ const StoringPersonalInformation = ({
               )}
             </div>
           )}
-          {!hideViewComments && (
+          {showComments && (
             <ViewComments
               count={
                 commentCount?.[
@@ -518,7 +517,7 @@ const StoringPersonalInformation = ({
                 )}
               </div>
             )}
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[
@@ -766,7 +765,7 @@ const StoringPersonalInformation = ({
                     </p>
                   )}
                 </div>
-                {!hideViewComments && (
+                {showComments && (
                   <ViewComments
                     count={
                       commentCount?.[
@@ -859,7 +858,7 @@ const StoringPersonalInformation = ({
                         <i>Not answered</i>
                       </p>
                     )}
-                    {!hideViewComments && (
+                    {showComments && (
                       <ViewComments
                         count={
                           commentCount?.[
@@ -923,7 +922,7 @@ const StoringPersonalInformation = ({
                     <i>Not answered</i>
                   </p>
                 )}
-                {!hideViewComments && (
+                {showComments && (
                   <ViewComments
                     count={
                       commentCount?.[
@@ -985,7 +984,7 @@ const StoringPersonalInformation = ({
                     <i>Not answered</i>
                   </p>
                 )}
-                {!hideViewComments && (
+                {showComments && (
                   <ViewComments
                     count={
                       commentCount?.[
@@ -1041,7 +1040,7 @@ const StoringPersonalInformation = ({
                     readOnly={isReadOnly}
                   />
                 </div>
-                {!hideViewComments && (
+                {showComments && (
                   <ViewComments
                     count={
                       commentCount?.[

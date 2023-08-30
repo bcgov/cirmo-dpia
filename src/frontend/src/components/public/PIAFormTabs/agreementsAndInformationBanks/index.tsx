@@ -2,7 +2,10 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
 import MDEditor from '@uiw/react-md-editor';
-import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
+import {
+  IAgreementsAndInformationBanks,
+  PIAAgreementsAndInformationBanksProps,
+} from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -18,12 +21,8 @@ import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-interface PIAAgreementsAndInformationBanksProps {
-  hideViewComments: boolean;
-}
-
 const PIAAgreementsAndInformationBanks = ({
-  hideViewComments,
+  showComments = true,
 }: PIAAgreementsAndInformationBanksProps) => {
   const {
     pia,
@@ -372,7 +371,7 @@ const PIAAgreementsAndInformationBanks = ({
               </div>
             )}
           </div>
-          {!hideViewComments && (
+          {showComments && (
             <ViewComments
               count={
                 commentCount?.[
@@ -560,7 +559,7 @@ const PIAAgreementsAndInformationBanks = ({
               )}
             </div>
           </div>
-          {!hideViewComments && (
+          {showComments && (
             <ViewComments
               count={
                 commentCount?.[

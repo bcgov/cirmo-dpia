@@ -46,3 +46,7 @@ export interface IStoringPersonalInformation {
     };
   };
 }
+
+export interface StoringPersonalInformationProps {
+  showComments?: boolean;
+}

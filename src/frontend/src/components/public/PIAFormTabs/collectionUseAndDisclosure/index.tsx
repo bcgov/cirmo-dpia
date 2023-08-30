@@ -3,7 +3,10 @@ import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
 import { isMPORole } from '../../../../utils/helper.util';
 
-import { ICollectionUseAndDisclosure } from './CollectionUseAndDisclosure';
+import {
+  ICollectionUseAndDisclosure,
+  PIACollectionUseAndDisclosureProps,
+} from './CollectionUseAndDisclosure';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -18,13 +21,8 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
 
-// Define the prop type for hideViewComments
-interface PIACollectionUseAndDisclosureProps {
-  hideViewComments: boolean;
-}
-
 const PIACollectionUseAndDisclosure = ({
-  hideViewComments,
+  showComments = true,
 }: PIACollectionUseAndDisclosureProps) => {
   const {
     pia,
@@ -121,7 +119,7 @@ const PIACollectionUseAndDisclosure = ({
           addRowBtnLabel="Add more steps"
           format="row"
         />
-        {!hideViewComments && (
+        {showComments && (
           <ViewComments
             count={
               commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
@@ -245,7 +243,7 @@ const PIACollectionUseAndDisclosure = ({
             )}
           </div>
         </div>
-        {!hideViewComments && (
+        {showComments && (
           <ViewComments
             count={
               commentCount?.[

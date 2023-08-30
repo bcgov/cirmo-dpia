@@ -1,7 +1,10 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helper/messages';
-import { IAccuracyCorrectionAndRetention } from './accuracy-retention-interface';
+import {
+  IAccuracyCorrectionAndRetention,
+  AccuracyCorrectionAndRetentionProps,
+} from './accuracy-retention-interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -15,12 +18,8 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Radio from '../../../common/Radio';
 
-interface AccuracyCorrectionAndRetentionProps {
-  hideViewComments: boolean;
-}
-
 export const AccuracyCorrectionAndRetention = ({
-  hideViewComments,
+  showComments = true,
 }: AccuracyCorrectionAndRetentionProps) => {
   const {
     pia,
@@ -279,7 +278,7 @@ export const AccuracyCorrectionAndRetention = ({
                 </p>
               )}
             </div>
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[
@@ -498,7 +497,7 @@ export const AccuracyCorrectionAndRetention = ({
                 </p>
               )}
             </div>
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[
@@ -694,7 +693,7 @@ export const AccuracyCorrectionAndRetention = ({
                 </div>
               ) : null
             ) : null}
-            {!hideViewComments && (
+            {showComments && (
               <ViewComments
                 count={
                   commentCount?.[

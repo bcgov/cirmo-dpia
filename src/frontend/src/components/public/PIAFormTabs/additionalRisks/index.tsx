@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import { IAdditionalRisks } from './AdditionalRisks';
+import { IAdditionalRisks, PIAAdditionalRisksProps } from './AdditionalRisks';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { Table } from '../../../common/Table';
@@ -12,11 +12,9 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-interface PIAAdditionalRisksProps {
-  hideViewComments: boolean;
-}
-
-const PIAAdditionalRisks = ({ hideViewComments }: PIAAdditionalRisksProps) => {
+const PIAAdditionalRisks = ({
+  showComments = true,
+}: PIAAdditionalRisksProps) => {
   const {
     pia,
     commentCount,
@@ -84,7 +82,7 @@ const PIAAdditionalRisks = ({ hideViewComments }: PIAAdditionalRisksProps) => {
           format="row"
           readOnly={isReadOnly}
         />
-        {!hideViewComments && (
+        {showComments && (
           <ViewComments
             count={commentCount?.[PiaSections.ADDITIONAL_RISKS_RISKS]}
             path={PiaSections.ADDITIONAL_RISKS_RISKS}

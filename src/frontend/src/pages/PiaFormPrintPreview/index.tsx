@@ -42,7 +42,7 @@ export const PiaFormPrintPreview = () => {
   const [pia, setPia] = useState<IPiaForm>();
 
   // Determine to hide ViewComments on PDF
-  const hideViewComments = true;
+  const showComments = false;
 
   useEffect(() => {
     const htmlTag = document.getElementsByTagName('HTML')[0];
@@ -102,32 +102,24 @@ export const PiaFormPrintPreview = () => {
             {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <div className="pageBreak">
-                  <PIACollectionUseAndDisclosure
-                    hideViewComments={hideViewComments}
-                  />
+                  <PIACollectionUseAndDisclosure showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <StoringPersonalInformation
-                    hideViewComments={hideViewComments}
-                  />
+                  <StoringPersonalInformation showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <SecurityPersonalInformation
-                    hideViewComments={hideViewComments}
-                  />
+                  <SecurityPersonalInformation showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <AccuracyCorrectionAndRetention
-                    hideViewComments={hideViewComments}
-                  />
+                  <AccuracyCorrectionAndRetention showComments={showComments} />
                 </div>
                 <div className="pageBreak">
                   <PIAAgreementsAndInformationBanks
-                    hideViewComments={hideViewComments}
+                    showComments={showComments}
                   />
                 </div>
                 <div className="pageBreak">
-                  <PIAAdditionalRisks hideViewComments={hideViewComments} />
+                  <PIAAdditionalRisks showComments={showComments} />
                 </div>
                 <div className="pageBreak">
                   <PIAReview printPreview />
