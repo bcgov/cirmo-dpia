@@ -14,6 +14,7 @@ import {
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
 import { useContext } from 'react';
+import { getUserPrivileges } from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
@@ -26,6 +27,9 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const allowUserReviewProgramArea = () => {
+    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview)
+      return false;
+
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
 

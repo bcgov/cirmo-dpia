@@ -26,6 +26,18 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
     Privileges: {
       MPO: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              editProgramAreaReviewers: true,
+              editMpoReview: true,
+              editCpoReview: false,
+            },
+          },
+        },
         changeStatus: [
           {
             status: 'INCOMPLETE',
@@ -44,16 +56,35 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
             modal: defaultCPOReviewModal,
           },
         ],
+      },
+      CPO: {
         Pages: {
           review: {
             accessControl: true,
             params: {
-              editProgramAreaReviewers: true,
-              editMpoReview: true,
-              editCpoReview: false,
+              showProgramAreaReview: true,
+              showMpoReview: true,
             },
           },
         },
+        changeStatus: [
+          {
+            status: 'CPO_REVIEW',
+            modal: defaultCPOReviewModal,
+          },
+          {
+            status: 'INCOMPLETE',
+            modal: checkReviewStatus(pia)
+              ? resetReviewIncompleteModal
+              : defaultIncompleteModal,
+          },
+          {
+            status: 'EDIT_IN_PROGRESS',
+            modal: checkReviewStatus(pia)
+              ? resetReviewEditInPRogressModal
+              : defaultEditInProgressModal,
+          },
+        ],
       },
       DRAFTER: {
         changeStatus: [
@@ -70,31 +101,6 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
               : defaultIncompleteModal,
           },
         ],
-      },
-      CPO: {
-        changeStatus: [
-          {
-            status: 'CPO_REVIEW',
-            modal: defaultCPOReviewModal,
-          },
-          {
-            status: 'INCOMPLETE',
-            modal: checkReviewStatus(pia)
-              ? resetReviewIncompleteModal
-              : defaultIncompleteModal,
-          },
-          {
-            status: 'EDIT_IN_PROGRESS',
-            modal: checkReviewStatus(pia)
-              ? resetReviewEditInPRogressModal
-              : defaultEditInProgressModal,
-          },
-        ],
-        Pages: {
-          review: {
-            accessControl: true,
-          },
-        },
       },
     },
   };

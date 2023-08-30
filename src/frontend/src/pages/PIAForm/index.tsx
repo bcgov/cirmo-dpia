@@ -297,7 +297,7 @@ const PIAFormPage = () => {
   // Event Handlers
   //
 
-  const populateModalFn = (modal: object, status: string) => {
+  const populateModalFn = (modal: object) => {
     setPiaModalTitleText(Object(modal).title);
     setPiaModalParagraph(Object(modal).description);
     setPiaModalConfirmLabel(Object(modal).confirmLabel);
@@ -883,7 +883,7 @@ const PIAFormPage = () => {
 
     const autoSaveTimer = setTimeout(() => {
       autoSave();
-    }, 3000);
+    }, 500);
 
     return () => clearTimeout(autoSaveTimer);
   });

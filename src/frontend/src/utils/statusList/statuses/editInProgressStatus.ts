@@ -30,6 +30,8 @@ export const editInProgressStatus = () => {
           review: {
             accessControl: true,
             params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
               editProgramAreaReviewers: true,
               editMpoReview: false,
               editCpoReview: false,

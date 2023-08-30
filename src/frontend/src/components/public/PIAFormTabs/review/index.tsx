@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview, IReviewSection } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getGUID } from '../../../../utils/user';
+import { getGUID, isCPORole } from '../../../../utils/user';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -18,6 +18,7 @@ import ProgramArea from './ProgamArea';
 import EditCPOReview from './editCPOReview';
 import ViewCPOReview from './viewCPOReview';
 import EditMPOReview from './editMPOReview';
+import { getUserPrivileges } from '../../../../utils/statusList/common';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -210,6 +211,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if this current user already review the pia, can not see this button
     if (!allowUserReviewCPO()) return false;
 
+    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview)
+      return false;
+
     return true;
   };
   const enableMPOReviewViewMode = () => {
@@ -225,60 +229,69 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     return false;
   };
 
+  const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
+
+  const showCpoReview = reviewPageParams?.showCpoReview ?? false;
+  const showMpoReview = reviewPageParams?.showMpoReview ?? false;
+  const showProgramAreaReview =
+    reviewPageParams?.showProgramAreaReview ?? false;
+
+  // CPO Review can't be shown if there is no cpoId.
+  const invalidCpoReviewData =
+    Object.entries(!pia?.review?.cpo).length < 0 && !isCPORole();
+
   return (
     <>
       <section>
         <h2 className="results-header">
           <b>{messages.PiaReviewHeader.Title.en}</b>
         </h2>
-        {!printPreview ? (
+        {!printPreview && showProgramAreaReview && (
           <>
             <h3>{messages.PiaReviewHeader.ProgramAreaSection.Title.en}</h3>
             <p className="pb-4">
               {messages.PiaReviewHeader.ProgramAreaSection.Description.en}
             </p>
           </>
-        ) : null}
+        )}
       </section>
       {!printPreview ? (
         <>
-          <ProgramArea
-            pia={pia}
-            reviewForm={reviewForm}
-            addRole={addRole}
-            stateChangeHandler={stateChangeHandler}
-            mandatoryADM={mandatoryADM}
-          />
-          <section className="mt-5 ">
-            <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
-            <p className="pb-4">
-              {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
-            </p>
-            <div className="drop-shadow card p-4 p-md-5">
-              <div className="data-table__container">
-                {enableMPOReviewViewMode() ? (
-                  <ViewMPOReview
-                    pia={pia}
-                    stateChangeHandler={stateChangeHandler}
-                  />
-                ) : (
-                  <EditMPOReview
-                    pia={pia}
-                    stateChangeHandler={stateChangeHandler}
-                  />
-                )}
+          {showProgramAreaReview && (
+            <ProgramArea
+              pia={pia}
+              reviewForm={reviewForm}
+              addRole={addRole}
+              stateChangeHandler={stateChangeHandler}
+              mandatoryADM={mandatoryADM}
+            />
+          )}
+          {showMpoReview && (
+            <section className="mt-5 ">
+              <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
+              <p className="pb-4">
+                {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
+              </p>
+              <div className="drop-shadow card p-4 p-md-5">
+                <div className="data-table__container">
+                  {enableMPOReviewViewMode() ? (
+                    <ViewMPOReview
+                      pia={pia}
+                      stateChangeHandler={stateChangeHandler}
+                    />
+                  ) : (
+                    <EditMPOReview
+                      pia={pia}
+                      stateChangeHandler={stateChangeHandler}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
-          {/**
-           * this part need to refactor
-           * this part should only display on cpo review and onward
-           * like final review, pending completion and complete
-           * right now we only have two status, cpo review and final review
-           */}
+            </section>
+          )}
           {pia.hasAddedPiToDataElements !== false &&
-          (pia.status === PiaStatuses.CPO_REVIEW ||
-            pia.status === PiaStatuses.FINAL_REVIEW) ? (
+          showCpoReview &&
+          !invalidCpoReviewData ? (
             <section className="mt-5 ">
               <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
               <p className="pb-4">

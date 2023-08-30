@@ -15,6 +15,28 @@ export const completeStatus = () => {
     Privileges: {
       MPO: {
         changeStatus: [],
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
+            },
+          },
+        },
+      },
+      CPO: {
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
+            },
+          },
+        },
       },
     },
   };

@@ -17,9 +17,29 @@ export const pendingCompletionStatus = () => {
     Privileges: {
       MPO: {
         changeStatus: [],
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
+            },
+          },
+        },
       },
       CPO: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
+            },
+          },
+        },
         changeStatus: [
           {
             status: 'CPO_REVIEW',

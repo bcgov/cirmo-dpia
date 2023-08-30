@@ -27,15 +27,28 @@ export const cpoReviewStatus = () => {
           review: {
             accessControl: true,
             params: {
-              editProgramAreaReviewers: false,
-              editMpoReview: false,
-              editCpoReview: false,
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
             },
           },
         },
       },
       CPO: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: true,
+            params: {
+              showProgramAreaReview: true,
+              showMpoReview: true,
+              showCpoReview: true,
+              editProgramAreaReviewers: true,
+              editMpoReview: false,
+              editCpoReview: true,
+            },
+          },
+        },
         changeStatus: [
           {
             status: 'MPO_REVIEW',
@@ -56,16 +69,6 @@ export const cpoReviewStatus = () => {
             modal: defaultEditInProgressModal,
           },
         ],
-        Pages: {
-          review: {
-            accessControl: true,
-            params: {
-              editProgramAreaReviewers: true,
-              editMpoReview: false,
-              editCpoReview: true,
-            },
-          },
-        },
       },
     },
   };

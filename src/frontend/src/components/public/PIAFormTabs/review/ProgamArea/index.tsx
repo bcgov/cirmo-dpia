@@ -28,9 +28,10 @@ const ProgramArea = (props: IProgramAreaProps) => {
     /* One can only edit Progam Area section if you are in a particular status
      * The information related to editing this section is retrieved from the statusList
      */
-    const editProgramAreaCheck = getUserPrivileges(props.pia)?.Pages?.review
-      ?.params?.editProgramAreaReviewers;
-    setEditProgramArea(editProgramAreaCheck ?? false);
+    const editProgramAreaCheck =
+      getUserPrivileges(props.pia)?.Pages?.review?.params
+        ?.editProgramAreaReviewers ?? false;
+    setEditProgramArea(editProgramAreaCheck);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.pia?.status]);
 
@@ -50,15 +51,17 @@ const ProgramArea = (props: IProgramAreaProps) => {
         {/**
          * UI for triggering 'Add Program area' section starts here
          */}
-        <section className="d-flex justify-content-center">
-          <button
-            className="bcgovbtn bcgovbtn__tertiary bold"
-            onClick={() => setShowProgramArea(!showProgramArea)}
-          >
-            {!showProgramArea ? 'Add a role' : 'Hide Roles'}
-            <FontAwesomeIcon icon={faPlus} className="ml-2" />
-          </button>
-        </section>
+        {editProgramArea && (
+          <section className="d-flex justify-content-center">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary bold"
+              onClick={() => setShowProgramArea(!showProgramArea)}
+            >
+              {!showProgramArea ? 'Add a role' : 'Hide Roles'}
+              <FontAwesomeIcon icon={faPlus} className="ml-2" />
+            </button>
+          </section>
+        )}
         {/**
          * UI for adding roles to the program area section starts here
          */}
