@@ -2,13 +2,13 @@ import ViewProgramAreaReview from '../viewProgramArea';
 import EditProgramAreaReview from '../editProgramArea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ApprovalRoles, PiaStatuses } from '../../../../../constant/constant';
+import { ApprovalRoles } from '../../../../../constant/constant';
 
-import { getGUID } from '../../../../../utils/helper.util';
+import { getGUID, getUserRole } from '../../../../../utils/user';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
-import { statusList } from '../../../../../utils/status';
+import { statusList } from '../../../../../utils/statusList/statusList';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -48,34 +48,18 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
     return props.reviewForm.programArea?.selectedRoles;
   };
 
+  const canEditProgramAreaReviewers =
+    statusList(null)?.[Object(props.pia).status]?.Privileges[getUserRole()]
+      ?.Pages?.review?.params?.editProgramAreaReviewers ?? false;
+
   return (
     <div>
-      {statusList(null)?.[Object(props.pia).status]?.Pages?.review?.params
-        ?.editProgramArea && <h4 className="mb-3">Selected Roles</h4>}
+      {canEditProgramAreaReviewers && <h4 className="mb-3">Selected Roles</h4>}
       {getSelectedRoles().length > 0 ? (
         getSelectedRoles().map((role: string, index: number) => {
           return getSelectedRoles() &&
             // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            statusList?.(pia)?.[pia?.status!]?.Pages?.review
-              .viewProgramAreaReviews ? (
-            <div className="d-flex align-items-center" key={index}>
-              {!allowUserReviewProgramArea() ||
-              Object(props.pia?.review?.programArea)?.reviews?.[role]
-                ?.isAcknowledged ? (
-                <ViewProgramAreaReview
-                  pia={props.pia}
-                  role={role}
-                  stateChangeHandler={props.stateChangeHandler}
-                />
-              ) : (
-                <EditProgramAreaReview
-                  pia={props.pia}
-                  role={role}
-                  stateChangeHandler={props.stateChangeHandler}
-                />
-              )}
-            </div>
-          ) : (
+            canEditProgramAreaReviewers ? (
             <div
               key={index}
               className="d-flex gap-1 justify-content-start align-items-center"
@@ -103,6 +87,24 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                     <FontAwesomeIcon className="" icon={faTrash} size="xl" />
                   </button>
                 )}
+            </div>
+          ) : (
+            <div className="d-flex align-items-center" key={index}>
+              {!allowUserReviewProgramArea() ||
+              Object(props.pia?.review?.programArea)?.reviews?.[role]
+                ?.isAcknowledged ? (
+                <ViewProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                />
+              ) : (
+                <EditProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                />
+              )}
             </div>
           );
         })

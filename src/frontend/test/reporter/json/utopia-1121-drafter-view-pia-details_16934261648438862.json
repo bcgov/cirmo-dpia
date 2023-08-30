@@ -1,0 +1,479 @@
+[
+  {
+    "keyword": "Feature",
+    "type": "feature",
+    "description": "",
+    "line": 1,
+    "name": "UTOPIA-1121 Drafter:View PIA details",
+    "uri": "C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\featurefiles\\e2e\\UTOPIA-1121_Drafter_ViewPIA.feature",
+    "tags": [],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As Drafter user, I am able to submit a valid form with all fields filled",
+        "tags": [],
+        "id": "utopia-1121-drafter-view-pia-detailsas-drafter-user,-i-am-able-to-submit-a-valid-form-with-all-fields-filled",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 2000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1586000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3681000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DOND having role Drafter",
+            "result": { "status": "passed", "duration": 4344000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 20168000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PIA Intake\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Check for createPIA \"first\" form",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I set scenario name",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Title\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Branch\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Name\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Title\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Email\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Ministry\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Await SavedAt function",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Initiative Details\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Scope Text\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Data Text\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Personal information as No\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Await SavedAt function",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Active PIAs\" tab",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Search with title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Verify if the status is only \"Incomplete\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 841000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As Drafter user, I am able to submit a valid form with all fields filled",
+        "tags": [],
+        "id": "utopia-1121-drafter-view-pia-detailsas-drafter-user,-i-am-able-to-submit-a-valid-form-with-all-fields-filled",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1573000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3426000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DOND having role Drafter",
+            "result": { "status": "passed", "duration": 3856000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 19885000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PIA Intake\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Check for createPIA \"first\" form",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I set scenario name",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Title\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Branch\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Name\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Title\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Lead Email\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Ministry\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Await SavedAt function",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Initiative Details\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Scope Text\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Data Text\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I enter \"Personal information as Yes\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Await SavedAt function",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I click on \"Submit\" button",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I see \"Are you sure you want to submit your PIA intake?\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I click on \"Yes, submit\" button",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I click on \"Save\" button",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I click on \"Submit\" button",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I click on \"Yes, submit\" button",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Active PIAs\" tab",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Search with title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "Verify if the status is only \"MPO Review\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 815000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      }
+    ],
+    "id": "utopia-1121-drafter-view-pia-details",
+    "metadata": {
+      "browser": { "name": "chrome", "version": "116.0.5845.111" },
+      "device": "Device name not known",
+      "platform": { "name": "windows", "version": "Version not known" }
+    }
+  }
+]

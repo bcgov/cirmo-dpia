@@ -1,7 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
-import { isMPORole } from '../../../../utils/helper.util';
+import { isMPORole } from '../../../../utils/user';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import Radio from '../../../common/Radio';
 import { IStoringPersonalInformation } from './interfaces';

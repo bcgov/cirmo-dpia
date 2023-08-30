@@ -1,0 +1,331 @@
+[
+  {
+    "keyword": "Feature",
+    "type": "feature",
+    "description": "",
+    "line": 1,
+    "name": "UTOPIA-566 Create new PIA",
+    "uri": "C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\featurefiles\\e2e\\UTOPIA-566_CreatePIA.feature",
+    "tags": [],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As MPO user, I am able to click Start PIA Intake",
+        "tags": [],
+        "id": "utopia-566-create-new-piaas-mpo-user,-i-am-able-to-click-start-pia-intake",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 2050000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3627000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DORGALE having role MPO",
+            "result": { "status": "passed", "duration": 3978000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 20063000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PIA Intake\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify intakeURL",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 809000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As Drafter user, I am able to click Start PIA Intake",
+        "tags": [],
+        "id": "utopia-566-create-new-piaas-drafter-user,-i-am-able-to-click-start-pia-intake",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 2120000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3542000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DOND having role Drafter",
+            "result": { "status": "passed", "duration": 4268000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 20039000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PIA Intake\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify intakeURL",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 755000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As CPO user, I am able to click Start PIA Intake",
+        "tags": [],
+        "id": "utopia-566-create-new-piaas-cpo-user,-i-am-able-to-click-start-pia-intake",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1935000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3512000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user ANDYA having role CPO",
+            "result": { "status": "passed", "duration": 3649000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 20050000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PIA Intake\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify intakeURL",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 815000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As MPO user, I am able to click Start PPQ intake",
+        "tags": [],
+        "id": "utopia-566-create-new-piaas-mpo-user,-i-am-able-to-click-start-ppq-intake",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1669000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3521000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DORGALE having role MPO",
+            "result": { "status": "passed", "duration": 4167000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Create new\"",
+            "result": {
+              "status": "failed",
+              "duration": 20115000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Create new')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Start PPQ\"",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify PPQURL",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 718000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      }
+    ],
+    "id": "utopia-566-create-new-pia",
+    "metadata": {
+      "browser": { "name": "chrome", "version": "116.0.5845.111" },
+      "device": "Device name not known",
+      "platform": { "name": "windows", "version": "Version not known" }
+    }
+  }
+]

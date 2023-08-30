@@ -1,5 +1,6 @@
-import { roleCheck } from '../../../utils/helper.util';
-import { ChangeStatus, statusList, UserRole } from '../../../utils/status';
+import { getUserRole } from '../../../utils/user';
+import { ChangeStatus } from '../../../utils/statusList/types';
+import { statusList } from '../../../utils/statusList/statusList';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,9 +33,7 @@ function StatusChangeDropDown({
    * true. Otherwise, it returns false.
    */
   const checkPrivileges = () => {
-    const roles = roleCheck();
-    const role: UserRole =
-      roles?.roles?.length > 0 ? (roles?.roles[0] as UserRole) : 'DRAFTER';
+    const role = getUserRole();
     const statuses: ChangeStatus[] = [];
 
     let hasStatusDropdown = false;

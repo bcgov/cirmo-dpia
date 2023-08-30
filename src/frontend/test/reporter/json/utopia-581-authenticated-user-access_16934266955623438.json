@@ -1,0 +1,487 @@
+[
+  {
+    "keyword": "Feature",
+    "type": "feature",
+    "description": "",
+    "line": 1,
+    "name": "UTOPIA-581 Authenticated user access",
+    "uri": "C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\featurefiles\\e2e\\UTOPIA-581_authenticated.feature",
+    "tags": [],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As MPO user, I am able to access app in same browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-mpo-user,-i-am-able-to-access-app-in-same-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 3000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1719000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 4378000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DORGALE having role MPO",
+            "result": { "status": "passed", "duration": 4086000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in same browser",
+            "result": { "status": "passed", "duration": 1584000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 20122000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 890000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As Drafter user, I am able to access app in same browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-drafter-user,-i-am-able-to-access-app-in-same-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1852000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3692000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DOND having role Drafter",
+            "result": { "status": "passed", "duration": 4370000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in same browser",
+            "result": { "status": "passed", "duration": 1434000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 20075000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 761000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As CPO user, I am able to access app in same browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-cpo-user,-i-am-able-to-access-app-in-same-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1709000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 4448000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user ANDYA having role CPO",
+            "result": { "status": "passed", "duration": 4153000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in same browser",
+            "result": { "status": "passed", "duration": 1569000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 20075000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 765000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As MPO user, I am able to access app in new browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-mpo-user,-i-am-able-to-access-app-in-new-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1656000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 4278000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DORGALE having role MPO",
+            "result": { "status": "passed", "duration": 4345000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in new browser",
+            "result": { "status": "passed", "duration": 161000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 21556000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 816000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As Drafter user, I am able to access app in new browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-drafter-user,-i-am-able-to-access-app-in-new-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 1761000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 3479000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user DOND having role Drafter",
+            "result": { "status": "passed", "duration": 3588000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in new browser",
+            "result": { "status": "passed", "duration": 148000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 21511000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 3181000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      },
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "description": "",
+        "name": "As CPO user, I am able to access app in new browser window",
+        "tags": [],
+        "id": "utopia-581-authenticated-user-accessas-cpo-user,-i-am-able-to-access-app-in-new-browser-window",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Before",
+            "name": "",
+            "result": { "status": "passed", "duration": 1000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given",
+            "name": "I am on the login page",
+            "result": { "status": "passed", "duration": 5603000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I click on \"Log in with IDIR\" button",
+            "result": { "status": "passed", "duration": 5981000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "When",
+            "name": "I login with user ANDYA having role CPO",
+            "result": { "status": "passed", "duration": 5574000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I paste landing page URL in new browser",
+            "result": { "status": "passed", "duration": 119000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "And",
+            "name": "I am able to click link \"Access App\"",
+            "result": {
+              "status": "failed",
+              "duration": 22460000000,
+              "error_message": "Error: element (\"//a[contains(text(),'Access App')]\") still not clickable after 20000ms\n    at authPage.clickhyperLink (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\pageobjects\\/page.js:66:9)\n    at World.<anonymous> (C:\\Repos\\cirmo-dpia\\src\\frontend\\test\\features\\step-definitions\\/Authenticated.js:10:2)"
+            },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then",
+            "name": "I am able to verify title",
+            "result": { "status": "skipped", "duration": 0 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          },
+          {
+            "arguments": [],
+            "keyword": "After",
+            "name": "",
+            "result": { "status": "passed", "duration": 1082000000 },
+            "line": null,
+            "match": { "location": "can not be determined with webdriver.io" }
+          }
+        ]
+      }
+    ],
+    "id": "utopia-581-authenticated-user-access",
+    "metadata": {
+      "browser": { "name": "chrome", "version": "116.0.5845.111" },
+      "device": "Device name not known",
+      "platform": { "name": "windows", "version": "Version not known" }
+    }
+  }
+]

@@ -4,7 +4,8 @@
  * If the status is in Final review status then you can view this page.
  */
 
-import { statusList } from '../../../../utils/status';
+import { UserRole } from '../../../../utils/statusList/types';
+import { statusList } from '../../../../utils/statusList/statusList';
 
 export const defaultAccess = (status: string | undefined) => {
   if (!status) {
@@ -23,14 +24,10 @@ export const defaultAccess = (status: string | undefined) => {
 
 export const reviewAccessControl = (
   status: string | undefined,
-  role: string | null,
+  role: UserRole,
 ) => {
-  if (!status) {
-    return false;
-  }
-  if (!role) {
-    return defaultAccess(status);
-  }
+  if (!status) return false;
+  if (role === 'DRAFTER') return defaultAccess(status);
   const priviliges = role in Object(statusList(null)[status].Privileges);
   if (priviliges) {
     /* check if Pages is defined for this role */
