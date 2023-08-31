@@ -3,9 +3,21 @@ import { SubmitButtonTextEnum } from '../../constant/constant';
 export type PageAccessControl = {
   [page: string]: {
     accessControl: boolean;
-    params?: any;
+    params?: any & PageParamProperties;
   };
 };
+
+// Add page param interfaces for each page.
+export type PageParamProperties = ReviewPageParams;
+
+export interface ReviewPageParams {
+  showProgramAreaReview?: boolean;
+  showMpoReview?: boolean;
+  showCpoReview?: boolean;
+  editProgramAreaReview?: boolean;
+  editMpoReview?: boolean;
+  editCpoReview?: boolean;
+}
 
 export type UserRole = 'MPO' | 'CPO' | 'DRAFTER';
 
