@@ -151,9 +151,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
   const userGuid = getGUID();
+  const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
 
   const allowUserReviewCPO = () => {
     // only allow one CPO user do review once
+    const canEditCpoReview = reviewPageParams?.editCpoReview ?? false;
+    if (!canEditCpoReview) return false;
 
     if (pia?.review?.cpo !== undefined) {
       if (
@@ -216,6 +219,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
     return true;
   };
+
   const enableMPOReviewViewMode = () => {
     // if the user already done review the MPO review field, we will show
     // the review result page, otherwise the app will show review page
@@ -225,11 +229,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // and there will be a reviewedAt timestamp that attaches to the object.
     // but if the user never checks the checkbox, the reivewedAt will not exist.
     // so if the reviewedAt field have a value, we show the review result otherwise show review
+    const canEditMpoReview = reviewPageParams?.editMpoReview ?? false;
+    if (!canEditMpoReview) return true;
     if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
   };
-
-  const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
 
   const showCpoReview = reviewPageParams?.showCpoReview ?? false;
   const showMpoReview = reviewPageParams?.showMpoReview ?? false;
@@ -238,7 +242,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   // CPO Review can't be shown if there is no cpoId.
   const invalidCpoReviewData =
-    Object.entries(!pia?.review?.cpo).length < 0 && !isCPORole();
+    (!pia?.review?.cpo && !isCPORole()) ||
+    ((Object.entries(!pia?.review?.cpo)?.length ?? []) < 0 && !isCPORole());
 
   return (
     <>
