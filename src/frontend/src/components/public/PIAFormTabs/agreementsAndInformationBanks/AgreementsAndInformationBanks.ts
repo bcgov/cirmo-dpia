@@ -23,3 +23,7 @@ export interface IAgreementsAndInformationBanks {
 export interface ITextInputProps {
   pia: IPiaForm;
 }
+
+export interface PIAAgreementsAndInformationBanksProps {
+  showComments?: boolean;
+}

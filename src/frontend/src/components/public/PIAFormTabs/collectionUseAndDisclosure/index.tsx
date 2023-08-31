@@ -3,7 +3,10 @@ import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
 import { isMPORole } from '../../../../utils/helper.util';
 
-import { ICollectionUseAndDisclosure } from './CollectionUseAndDisclosure';
+import {
+  ICollectionUseAndDisclosure,
+  PIACollectionUseAndDisclosureProps,
+} from './CollectionUseAndDisclosure';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +21,9 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
 
-const PIACollectionUseAndDisclosure = () => {
+const PIACollectionUseAndDisclosure = ({
+  showComments = true,
+}: PIACollectionUseAndDisclosureProps) => {
   const {
     pia,
     commentCount,
@@ -114,12 +119,14 @@ const PIACollectionUseAndDisclosure = () => {
           addRowBtnLabel="Add more steps"
           format="row"
         />
-        <ViewComments
-          count={
-            commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
-          }
-          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
-        />
+        {showComments && (
+          <ViewComments
+            count={
+              commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
+            }
+            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
+          />
+        )}
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
@@ -236,14 +243,16 @@ const PIACollectionUseAndDisclosure = () => {
             )}
           </div>
         </div>
-        <ViewComments
-          count={
-            commentCount?.[
-              PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
-            ]
-          }
-          path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
-        />
+        {showComments && (
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE
+              ]
+            }
+            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_COLLECTION_NOTICE}
+          />
+        )}
       </section>
     </>
   );

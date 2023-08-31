@@ -344,7 +344,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
         pia?.status === PiaStatuses.INCOMPLETE ||
-        pia?.status === PiaStatuses.MPO_REVIEW ? (
+        pia?.status === PiaStatuses.MPO_REVIEW ||
+        pia?.status === PiaStatuses.CPO_REVIEW ? (
         <PendingReview />
       ) : (
         <>
@@ -382,8 +383,15 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             ))
           ) : (
             <>
-              <div> Reviewed by</div>
-              <div> Review incomplete</div>
+              <div className="d-grid gap-3">
+                <h3>
+                  <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
+                </h3>
+              </div>
+              <div className="row mb-5 p-3 pb-5 border border-2 rounded">
+                <div> Reviewed by</div>
+                <div> Review incomplete</div>
+              </div>
             </>
           )}
         </>

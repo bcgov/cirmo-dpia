@@ -16,3 +16,7 @@ export interface ISecurityPersonalInformation {
     additionalStrategies: string;
   };
 }
+
+export interface SecurityPersonalInformationProps {
+  showComments?: boolean;
+}

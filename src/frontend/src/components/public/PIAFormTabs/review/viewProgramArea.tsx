@@ -55,7 +55,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   return (
     <div className="d-grid gap-3">
       {printPreview ? (
-        <div className="review-container px-2 ">
+        <div>
           <div className="mt-2 pb-2">
             <h3>
               <b>{role}</b>
@@ -63,10 +63,10 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
           </div>
           {!pia?.review?.programArea?.reviews?.[role as keyof IReview]
             ?.isAcknowledged ? (
-            <>
+            <div className="row mb-5 p-3 pb-5 border border-2 rounded">
               <div>Reviewed by</div>
               <div>Review incomplete</div>
-            </>
+            </div>
           ) : (
             <div>
               <ViewReviewSection

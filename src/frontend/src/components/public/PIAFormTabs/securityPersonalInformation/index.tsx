@@ -1,7 +1,10 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helper/messages';
-import { ISecurityPersonalInformation } from './security-personal-info-interface';
+import {
+  ISecurityPersonalInformation,
+  SecurityPersonalInformationProps,
+} from './security-personal-info-interface';
 import Checkbox from '../../../common/Checkbox';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
@@ -16,7 +19,9 @@ import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-export const SecurityPersonalInformation = () => {
+export const SecurityPersonalInformation = ({
+  showComments = true,
+}: SecurityPersonalInformationProps) => {
   const {
     pia,
     commentCount,
@@ -331,17 +336,19 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-                ]
-              }
-              path={
-                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
-              }
-            />
+            {showComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                  ]
+                }
+                path={
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_TOOLS_AND_ASSESSMENT
+                }
+              />
+            )}
           </div>
 
           {securityPersonalInformationForm?.digitalToolsAndSystems
@@ -427,17 +434,19 @@ export const SecurityPersonalInformation = () => {
                   )}
                 </div>
               )}
-              <ViewComments
-                count={
-                  commentCount?.[
-                    PiaSections
-                      .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                  ]
-                }
-                path={
-                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
-                }
-              />
+              {showComments && (
+                <ViewComments
+                  count={
+                    commentCount?.[
+                      PiaSections
+                        .SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                    ]
+                  }
+                  path={
+                    PiaSections.SECURITY_OF_PERSONAL_INFORMATION_DIGITAL_TOOLS_AND_SYSTEMS_STORAGE
+                  }
+                />
+              )}
             </div>
           )}
         </section>
@@ -572,17 +581,19 @@ export const SecurityPersonalInformation = () => {
                 </p>
               )}
             </div>
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-                ]
-              }
-              path={
-                PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
-              }
-            />
+            {showComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                  ]
+                }
+                path={
+                  PiaSections.SECURITY_OF_PERSONAL_INFORMATION_ACCESS_TO_PERSONAL_INFORMATION
+                }
+              />
+            )}
           </div>
         </section>
       </div>

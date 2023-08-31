@@ -2,7 +2,10 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
 import MDEditor from '@uiw/react-md-editor';
-import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
+import {
+  IAgreementsAndInformationBanks,
+  PIAAgreementsAndInformationBanksProps,
+} from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -18,7 +21,9 @@ import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-const PIAAgreementsAndInformationBanks = () => {
+const PIAAgreementsAndInformationBanks = ({
+  showComments = true,
+}: PIAAgreementsAndInformationBanksProps) => {
   const {
     pia,
     commentCount,
@@ -366,17 +371,19 @@ const PIAAgreementsAndInformationBanks = () => {
               </div>
             )}
           </div>
-          <ViewComments
-            count={
-              commentCount?.[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
-              ]
-            }
-            path={
-              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
-            }
-          />
+          {showComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections
+                    .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+                ]
+              }
+              path={
+                PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+              }
+            />
+          )}
         </section>
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
@@ -552,17 +559,19 @@ const PIAAgreementsAndInformationBanks = () => {
               )}
             </div>
           </div>
-          <ViewComments
-            count={
-              commentCount?.[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
-              ]
-            }
-            path={
-              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
-            }
-          />
+          {showComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections
+                    .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+                ]
+              }
+              path={
+                PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+              }
+            />
+          )}
         </section>
       </div>
     </>
