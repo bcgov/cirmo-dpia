@@ -14,7 +14,10 @@ import {
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
 import { useContext } from 'react';
-import { getUserPrivileges } from '../../../../../utils/statusList/common';
+import {
+  getUserPrivileges,
+  getUserPrivilegesByStatus,
+} from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
@@ -53,8 +56,8 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   };
 
   const canEditProgramAreaReviewers =
-    statusList(null)?.[Object(props.pia).status]?.Privileges[getUserRole()]
-      ?.Pages?.review?.params?.editProgramAreaReviewers ?? false;
+    getUserPrivilegesByStatus(Object(props.pia).status)?.Pages?.review?.params
+      ?.editProgramAreaReviewers ?? false;
 
   return (
     <div>

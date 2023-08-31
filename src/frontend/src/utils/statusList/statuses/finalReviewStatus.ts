@@ -11,12 +11,6 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
     modal: defaultFinalReviewModal,
     finalReviewCompleted: finalReviewCompleted(pia),
-    Pages: {
-      review: {
-        accessControl: true,
-        viewProgramAreaReviews: true,
-      },
-    },
     Privileges: {
       MPO: {
         showSubmitButton: true,

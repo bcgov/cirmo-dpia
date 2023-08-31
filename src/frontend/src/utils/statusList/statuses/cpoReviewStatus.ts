@@ -14,11 +14,6 @@ export const cpoReviewStatus = () => {
     comments: true,
     buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultCPOReviewModal,
-    Pages: {
-      review: {
-        accessControl: false,
-      },
-    },
     Privileges: {
       MPO: {
         banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
@@ -69,6 +64,13 @@ export const cpoReviewStatus = () => {
             modal: defaultEditInProgressModal,
           },
         ],
+      },
+      DRAFTER: {
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+        },
       },
     },
   };

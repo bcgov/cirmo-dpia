@@ -6,12 +6,6 @@ export const completeStatus = () => {
     class: 'statusBlock__completed',
     modal: defaultCompleteModal,
     comments: false,
-    Pages: {
-      review: {
-        accessControl: true,
-        viewProgramAreaReviews: true,
-      },
-    },
     Privileges: {
       MPO: {
         changeStatus: [],
@@ -35,6 +29,14 @@ export const completeStatus = () => {
               showMpoReview: true,
               showCpoReview: true,
             },
+          },
+        },
+      },
+      DRAFTER: {
+        Pages: {
+          review: {
+            accessControl: true,
+            showProgramAreaReview: true,
           },
         },
       },

@@ -46,8 +46,7 @@ export const PiaFormSideNavPages = (
     }
   };
 
-  const enableReview = (): boolean =>
-    reviewAccessControl(pia?.status, getUserRole());
+  const enableReview = (): boolean => reviewAccessControl(pia?.status);
 
   const checkNextSteps = (): boolean => {
     if (

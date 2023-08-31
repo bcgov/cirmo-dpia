@@ -6,7 +6,7 @@ const BannerStatus = ({ pia }: IBannerStatusProps) => {
   const populateBanner = () => {
     const currentStatus = pia.status || 'Completed';
     const role = getUserRole();
-    if (role in statusList(null)[currentStatus].Privileges) {
+    if (statusList(null)[currentStatus].Privileges[role]?.banner) {
       return Object(statusList(null)[currentStatus].Privileges)[role].banner;
     }
     return statusList(null)[currentStatus].banner;

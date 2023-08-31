@@ -18,11 +18,6 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
     // in MPO status the button text will different
     buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultMPOReviewModal,
-    Pages: {
-      review: {
-        accessControl: false,
-      },
-    },
     Privileges: {
       MPO: {
         showSubmitButton: true,
@@ -87,6 +82,11 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         ],
       },
       DRAFTER: {
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+        },
         changeStatus: [
           {
             status: 'EDIT_IN_PROGRESS',

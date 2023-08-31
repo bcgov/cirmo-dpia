@@ -8,12 +8,6 @@ export const pendingCompletionStatus = () => {
     modal: defaultPendingCompletionModal,
     comments: false,
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
-    Pages: {
-      review: {
-        accessControl: true,
-        viewProgramAreaReviews: true,
-      },
-    },
     Privileges: {
       MPO: {
         changeStatus: [],
@@ -92,6 +86,14 @@ export const pendingCompletionStatus = () => {
             },
           },
         ],
+      },
+      DRAFTER: {
+        Pages: {
+          review: {
+            accessControl: true,
+            showProgramAreaReview: true,
+          },
+        },
       },
     },
   };

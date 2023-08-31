@@ -4,7 +4,6 @@ export type PageAccessControl = {
   [page: string]: {
     accessControl: boolean;
     params?: any;
-    viewProgramAreaReviews?: boolean;
   };
 };
 

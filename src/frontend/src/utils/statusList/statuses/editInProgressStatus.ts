@@ -11,11 +11,6 @@ export const editInProgressStatus = () => {
     buttonText: SubmitButtonTextEnum.FORM,
     comments: true,
     class: 'statusBlock__edit',
-    Pages: {
-      review: {
-        accessControl: false,
-      },
-    },
     modal: {
       title: 'Change status to “Edit in progress”?',
       description:
@@ -72,6 +67,11 @@ export const editInProgressStatus = () => {
       },
       DRAFTER: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+        },
         changeStatus: [
           {
             status: 'INCOMPLETE',

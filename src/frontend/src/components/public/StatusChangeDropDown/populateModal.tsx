@@ -25,25 +25,23 @@ const PopulateModal = (
   const role = getUserRole();
   let useDefault = true;
   const currentStatus = pia.status || 'Completed';
-  if (role in statusList(null)[currentStatus].Privileges) {
+  if (
+    'changeStatus' in Object(statusList(pia)[currentStatus].Privileges)[role]
+  ) {
     if (
-      'changeStatus' in Object(statusList(pia)[currentStatus].Privileges)[role]
+      Object(statusList(pia)[currentStatus].Privileges)[role].changeStatus
+        .length !== 0
     ) {
-      if (
-        Object(statusList(pia)[currentStatus].Privileges)[role].changeStatus
-          .length !== 0
-      ) {
-        Object(statusList(pia)[currentStatus].Privileges)[
-          role
-        ].changeStatus.forEach((status: ChangeStatus) => {
-          if (status.status === nextStatus) {
-            if (status.modal) {
-              changeStatusFn(Object(status).modal, nextStatus);
-              useDefault = false;
-            }
+      Object(statusList(pia)[currentStatus].Privileges)[
+        role
+      ].changeStatus.forEach((status: ChangeStatus) => {
+        if (status.status === nextStatus) {
+          if (status.modal) {
+            changeStatusFn(Object(status).modal, nextStatus);
+            useDefault = false;
           }
-        });
-      }
+        }
+      });
     }
   }
   if (useDefault) {

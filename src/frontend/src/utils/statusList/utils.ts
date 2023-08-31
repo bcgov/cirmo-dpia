@@ -1,6 +1,7 @@
 import { IPiaForm } from '../../types/interfaces/pia-form.interface';
 import { PiaStatuses, SubmitButtonTextEnum } from '../../constant/constant';
 import { IReviewSection } from '../../components/public/PIAFormTabs/review/interfaces';
+import { Modal } from './types';
 
 export const checkButtonText = (pia: IPiaForm | null) => {
   // in MPO status the button text will different

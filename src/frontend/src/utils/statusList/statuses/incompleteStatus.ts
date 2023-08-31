@@ -18,11 +18,6 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
     buttonText: SubmitButtonTextEnum.FORM,
     modal: defaultIncompleteModal,
     comments: true,
-    Pages: {
-      review: {
-        accessControl: false,
-      },
-    },
     Privileges: {
       MPO: {
         banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
@@ -63,6 +58,11 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
       },
       DRAFTER: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+        },
         changeStatus: [],
       },
     },
