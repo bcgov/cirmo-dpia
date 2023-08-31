@@ -31,9 +31,9 @@ import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
-import { isCPORole } from '../../utils/helper.util';
+import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
-import { statusList } from '../../utils/status';
+import { statusList } from '../../utils/statusList/statusList';
 
 export type PiaStateChangeHandlerType = (
   value: any,

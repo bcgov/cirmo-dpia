@@ -6,9 +6,9 @@ import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
 import messages from './../messages';
 import DisplayProgramArea from './displayProgramArea';
-import { statusList } from '../../../../../utils/status';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { getUserPrivileges } from '../../../../../utils/statusList/common';
 
 interface IProgramAreaProps {
   reviewForm: IReview;
@@ -28,10 +28,10 @@ const ProgramArea = (props: IProgramAreaProps) => {
     /* One can only edit Progam Area section if you are in a particular status
      * The information related to editing this section is retrieved from the statusList
      */
-    const editProgramAreaCheck = statusList(props.pia)?.[
-      Object(props.pia)?.status
-    ]?.Pages?.review?.params?.editProgramArea;
-    setEditProgramArea(editProgramAreaCheck ?? false);
+    const editProgramAreaCheck =
+      getUserPrivileges(props.pia)?.Pages?.review?.params
+        ?.editProgramAreaReviewers ?? false;
+    setEditProgramArea(editProgramAreaCheck);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.pia?.status]);
 
@@ -51,15 +51,17 @@ const ProgramArea = (props: IProgramAreaProps) => {
         {/**
          * UI for triggering 'Add Program area' section starts here
          */}
-        <section className="d-flex justify-content-center">
-          <button
-            className="bcgovbtn bcgovbtn__tertiary bold"
-            onClick={() => setShowProgramArea(!showProgramArea)}
-          >
-            {!showProgramArea ? 'Add a role' : 'Hide Roles'}
-            <FontAwesomeIcon icon={faPlus} className="ml-2" />
-          </button>
-        </section>
+        {editProgramArea && (
+          <section className="d-flex justify-content-center">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary bold"
+              onClick={() => setShowProgramArea(!showProgramArea)}
+            >
+              {!showProgramArea ? 'Add a role' : 'Hide Roles'}
+              <FontAwesomeIcon icon={faPlus} className="ml-2" />
+            </button>
+          </section>
+        )}
         {/**
          * UI for adding roles to the program area section starts here
          */}

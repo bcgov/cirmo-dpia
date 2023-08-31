@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { dateToString } from '../../../utils/date';
-import { statusList } from '../../../utils/status';
+import { statusList } from '../../../utils/statusList/statusList';
 import TableOrdering from './TableOrdering';
 import { IDataTable } from './interface';
 import { routes } from '../../../constant/routes';

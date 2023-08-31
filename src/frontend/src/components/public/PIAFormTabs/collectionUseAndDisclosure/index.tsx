@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-import { isMPORole } from '../../../../utils/helper.util';
+import { isMPORole } from '../../../../utils/user';
 
 import {
   ICollectionUseAndDisclosure,

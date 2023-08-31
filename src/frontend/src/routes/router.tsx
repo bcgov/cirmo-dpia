@@ -14,7 +14,7 @@ import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import StoringPersonalInformation from '../components/public/PIAFormTabs/storingPersonalInformation';
 import { isAuthenticated } from '../utils/auth';
-import { isMPORole } from '../utils/helper.util';
+import { isMPORole } from '../utils/user';
 import PIAAgreementsAndInformationBanks from '../components/public/PIAFormTabs/agreementsAndInformationBanks';
 import PIACollectionUseAndDisclosure from '../components/public/PIAFormTabs/collectionUseAndDisclosure';
 import { SecurityPersonalInformation } from '../components/public/PIAFormTabs/securityPersonalInformation';

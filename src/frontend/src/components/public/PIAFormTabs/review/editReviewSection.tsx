@@ -1,21 +1,8 @@
 import Checkbox from '../../../common/Checkbox';
-import messages from './messages';
-import { PiaStatuses } from '../../../../constant/constant';
-import {
-  Dispatch,
-  SetStateAction,
-  useState,
-  useEffect,
-  MouseEventHandler,
-  ChangeEventHandler,
-} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
+import { Dispatch, SetStateAction, MouseEventHandler } from 'react';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { dateToString } from '../../../../utils/date';
-import { getGUID } from '../../../../utils/helper.util';
-import { IReviewSection, IReview } from './interfaces';
+import { IReviewSection } from './interfaces';
 
 interface IReviewProps {
   pia: IPiaForm;

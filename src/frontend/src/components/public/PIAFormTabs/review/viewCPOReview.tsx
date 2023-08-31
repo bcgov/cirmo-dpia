@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
-import { getGUID } from '../../../../utils/helper.util';
-import { statusList } from '../../../../utils/status';
+import { getGUID } from '../../../../utils/user';
 import messages from './messages';
+import { getUserPrivileges } from '../../../../utils/statusList/common';
 
 interface ICPOReviewProps {
   pia: IPiaForm;
@@ -37,11 +37,11 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
   const handleClear = () => {
     stateChangeHandler(null, `cpo.${cpoId}`, true);
   };
-  const canEditReviewNote =
+
+  const canEditReview =
     reviewGuid === getGUID() &&
     !printPreview &&
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
+    (getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview ?? false);
 
   return (
     <div className="d-grid gap-3">
@@ -61,7 +61,7 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
                 pia={pia}
                 printPreview
                 isAcknowledged={acknowledged}
-                canEditReview={canEditReviewNote}
+                canEditReview={canEditReview}
                 editReviewNote={editReviewNote}
                 setEditReviewNote={setEditReviewNote}
                 setAcknowledged={setAcknowledged}
@@ -83,7 +83,7 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
         <ViewReviewSection
           pia={pia}
           isAcknowledged={acknowledged}
-          canEditReview={canEditReviewNote}
+          canEditReview={canEditReview}
           editReviewNote={editReviewNote}
           setEditReviewNote={setEditReviewNote}
           setAcknowledged={setAcknowledged}

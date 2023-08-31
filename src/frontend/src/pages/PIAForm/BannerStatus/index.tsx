@@ -1,17 +1,13 @@
 import { IBannerStatusProps } from './interfaces';
 import Callout from '../../../components/common/Callout';
-import { PiaStatuses } from '../../../constant/constant';
-import { roleCheck } from '../../../utils/helper.util';
-import { statusList } from '../../../utils/status';
+import { getUserRole } from '../../../utils/user';
+import { statusList } from '../../../utils/statusList/statusList';
 const BannerStatus = ({ pia }: IBannerStatusProps) => {
   const populateBanner = () => {
-    const userRoles = roleCheck();
     const currentStatus = pia.status || 'Completed';
-    if (userRoles !== undefined && userRoles.roles !== undefined) {
-      const role = userRoles.roles[0];
-      if (role in statusList(null)[currentStatus].Privileges) {
-        return Object(statusList(null)[currentStatus].Privileges)[role].banner;
-      }
+    const role = getUserRole();
+    if (statusList(null)[currentStatus].Privileges[role]?.banner) {
+      return Object(statusList(null)[currentStatus].Privileges)[role].banner;
     }
     return statusList(null)[currentStatus].banner;
   };

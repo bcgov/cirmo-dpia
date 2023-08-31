@@ -2,18 +2,22 @@ import ViewProgramAreaReview from '../viewProgramArea';
 import EditProgramAreaReview from '../editProgramArea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ApprovalRoles, PiaStatuses } from '../../../../../constant/constant';
+import { ApprovalRoles } from '../../../../../constant/constant';
 
-import { getGUID } from '../../../../../utils/helper.util';
+import { getGUID, getUserRole } from '../../../../../utils/user';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
-import { statusList } from '../../../../../utils/status';
+import { statusList } from '../../../../../utils/statusList/statusList';
 import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
 import { useContext } from 'react';
+import {
+  getUserPrivileges,
+  getUserPrivilegesByStatus,
+} from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
@@ -26,6 +30,9 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const allowUserReviewProgramArea = () => {
+    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview)
+      return false;
+
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
 
@@ -48,34 +55,18 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
     return props.reviewForm.programArea?.selectedRoles;
   };
 
+  const canEditProgramAreaReviewers =
+    getUserPrivilegesByStatus(Object(props.pia).status)?.Pages?.review?.params
+      ?.editProgramAreaReviewers ?? false;
+
   return (
     <div>
-      {statusList(null)?.[Object(props.pia).status]?.Pages?.review?.params
-        ?.editProgramArea && <h4 className="mb-3">Selected Roles</h4>}
+      {canEditProgramAreaReviewers && <h4 className="mb-3">Selected Roles</h4>}
       {getSelectedRoles().length > 0 ? (
         getSelectedRoles().map((role: string, index: number) => {
           return getSelectedRoles() &&
             // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            statusList?.(pia)?.[pia?.status!]?.Pages?.review
-              .viewProgramAreaReviews ? (
-            <div className="d-flex align-items-center" key={index}>
-              {!allowUserReviewProgramArea() ||
-              Object(props.pia?.review?.programArea)?.reviews?.[role]
-                ?.isAcknowledged ? (
-                <ViewProgramAreaReview
-                  pia={props.pia}
-                  role={role}
-                  stateChangeHandler={props.stateChangeHandler}
-                />
-              ) : (
-                <EditProgramAreaReview
-                  pia={props.pia}
-                  role={role}
-                  stateChangeHandler={props.stateChangeHandler}
-                />
-              )}
-            </div>
-          ) : (
+            canEditProgramAreaReviewers ? (
             <div
               key={index}
               className="d-flex gap-1 justify-content-start align-items-center"
@@ -103,6 +94,24 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                     <FontAwesomeIcon className="" icon={faTrash} size="xl" />
                   </button>
                 )}
+            </div>
+          ) : (
+            <div className="d-flex align-items-center" key={index}>
+              {!allowUserReviewProgramArea() ||
+              Object(props.pia?.review?.programArea)?.reviews?.[role]
+                ?.isAcknowledged ? (
+                <ViewProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                />
+              ) : (
+                <EditProgramAreaReview
+                  pia={props.pia}
+                  role={role}
+                  stateChangeHandler={props.stateChangeHandler}
+                />
+              )}
             </div>
           );
         })

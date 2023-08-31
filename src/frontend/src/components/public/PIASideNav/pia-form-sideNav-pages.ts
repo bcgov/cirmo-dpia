@@ -4,14 +4,13 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
-import { isAdminRole, roleCheck } from '../../../utils/helper.util';
+import { getUserRole, isDrafterRole } from '../../../utils/user';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
-import { PiaStatuses } from '../../../constant/constant';
 import { reviewAccessControl } from '../PIAFormTabs/review/accessControl';
 
 export const PiaFormSideNavPages = (
@@ -47,15 +46,7 @@ export const PiaFormSideNavPages = (
     }
   };
 
-  const enableReview = (): boolean => {
-    let role;
-    if ('roles' in roleCheck()) {
-      role = roleCheck().roles[0];
-    } else {
-      role = null;
-    }
-    return reviewAccessControl(pia?.status, role);
-  };
+  const enableReview = (): boolean => reviewAccessControl(pia?.status);
 
   const checkNextSteps = (): boolean => {
     if (
@@ -80,7 +71,7 @@ export const PiaFormSideNavPages = (
     }
   };
 
-  const userIsAdmin = useMemo(() => isAdminRole(), []);
+  const userIsAdmin = useMemo(() => !isDrafterRole(), []);
 
   /* 
 * if null the states are not used

@@ -1,10 +1,15 @@
-import { roleCheck } from '../../../utils/helper.util';
-import { ChangeStatus, statusList, UserRole } from '../../../utils/status';
+import { getUserRole } from '../../../utils/user';
+import { ChangeStatus } from '../../../utils/statusList/types';
+import { statusList } from '../../../utils/statusList/statusList';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IStatusChangeDropDownProps } from './interface';
 import populateModal from './populateModal';
+import {
+  getUserPrivileges,
+  getUserPrivilegesByStatus,
+} from '../../../utils/statusList/common';
 
 /* create a function to push unique status object into an array */
 // TODO: Remove this function in favour of using a Set with reduce
@@ -32,20 +37,16 @@ function StatusChangeDropDown({
    * true. Otherwise, it returns false.
    */
   const checkPrivileges = () => {
-    const roles = roleCheck();
-    const role: UserRole =
-      roles?.roles?.length > 0 ? (roles?.roles[0] as UserRole) : 'DRAFTER';
+    const role = getUserRole();
     const statuses: ChangeStatus[] = [];
 
     let hasStatusDropdown = false;
     /* check if the changeStatus is not empty */
     if (
-      Object(statusList(null)?.[pia.status!])?.Privileges[role]?.changeStatus
-        ?.length > 0
+      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0
     ) {
       hasStatusDropdown = true;
-      const statusArr = Object(statusList(pia)[pia.status!].Privileges)[role]
-        .changeStatus;
+      const statusArr = getUserPrivileges(pia)?.changeStatus ?? [];
 
       /* This function will push unique status object into the statuses array */
       // TODO: See above todo for pushUniqueStatus ⬆️  🤮
