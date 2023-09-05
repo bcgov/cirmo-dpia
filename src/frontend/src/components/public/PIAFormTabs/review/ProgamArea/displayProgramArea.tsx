@@ -13,10 +13,7 @@ import {
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
 import { useContext } from 'react';
-import {
-  getUserPrivileges,
-  getUserPrivilegesByStatus,
-} from '../../../../../utils/statusList/common';
+import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
