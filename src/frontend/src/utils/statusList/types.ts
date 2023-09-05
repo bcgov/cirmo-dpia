@@ -14,9 +14,10 @@ export interface ReviewPageParams {
   showProgramAreaReview?: boolean;
   showMpoReview?: boolean;
   showCpoReview?: boolean;
-  editProgramAreaReview?: boolean;
+  editProgramAreaReviewers?: boolean;
   editMpoReview?: boolean;
   editCpoReview?: boolean;
+  editProgramAreaReview?: boolean;
 }
 
 export type UserRole = 'MPO' | 'CPO' | 'DRAFTER';
