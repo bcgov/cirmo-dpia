@@ -3,12 +3,11 @@
 ##
 
 ## Stage 1 - Build
-FROM node:18.9-alpine as build
+FROM node:20.5-bullseye-slim as build
 
 WORKDIR /app
 
-RUN apk update
-RUN apk add curl
+RUN apt-get update && apt-get install -y curl
 
 # Copy in build artifacts, build project dependencies
 
