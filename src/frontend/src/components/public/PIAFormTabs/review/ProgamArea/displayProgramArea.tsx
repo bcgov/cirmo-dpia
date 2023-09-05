@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApprovalRoles } from '../../../../../constant/constant';
 
-import { getGUID, getUserRole } from '../../../../../utils/user';
+import { getGUID } from '../../../../../utils/user';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
-import { statusList } from '../../../../../utils/statusList/statusList';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -30,7 +29,9 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
   const allowUserReviewProgramArea = () => {
-    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview)
+    if (
+      !getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReviewers
+    )
       return false;
 
     // if selectedRoles is null means none of selectedRole got reviewed so return true

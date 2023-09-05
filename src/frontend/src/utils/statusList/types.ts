@@ -14,7 +14,7 @@ export interface ReviewPageParams {
   showProgramAreaReview?: boolean;
   showMpoReview?: boolean;
   showCpoReview?: boolean;
-  editProgramAreaReview?: boolean;
+  editProgramAreaReviewers?: boolean;
   editMpoReview?: boolean;
   editCpoReview?: boolean;
 }
