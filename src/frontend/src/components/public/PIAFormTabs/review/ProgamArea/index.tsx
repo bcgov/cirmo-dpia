@@ -21,17 +21,18 @@ interface IProgramAreaProps {
 const ProgramArea = (props: IProgramAreaProps) => {
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
-  const [editProgramArea, setEditProgramArea] = useState<boolean>(false);
+  const [editProgramAreaReviewers, setEditProgramAreaReviewers] =
+    useState<boolean>(false);
   const [showProgramArea, setShowProgramArea] = useState<boolean>(false);
 
   useEffect(() => {
     /* One can only edit Progam Area section if you are in a particular status
      * The information related to editing this section is retrieved from the statusList
      */
-    const editProgramAreaCheck =
+    const editProgramAreaReviewersCheck =
       getUserPrivileges(props.pia)?.Pages?.review?.params
         ?.editProgramAreaReviewers ?? false;
-    setEditProgramArea(editProgramAreaCheck);
+    setEditProgramAreaReviewers(editProgramAreaReviewersCheck);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.pia?.status]);
 
@@ -51,7 +52,7 @@ const ProgramArea = (props: IProgramAreaProps) => {
         {/**
          * UI for triggering 'Add Program area' section starts here
          */}
-        {editProgramArea && (
+        {editProgramAreaReviewers && (
           <section className="d-flex justify-content-center">
             <button
               className="bcgovbtn bcgovbtn__tertiary bold"
@@ -65,8 +66,8 @@ const ProgramArea = (props: IProgramAreaProps) => {
         {/**
          * UI for adding roles to the program area section starts here
          */}
-        {editProgramArea && showProgramArea && (
-          <div className={`${editProgramArea && 'data-row'}`}>
+        {editProgramAreaReviewers && showProgramArea && (
+          <div className={`${editProgramAreaReviewers && 'data-row'}`}>
             <div className="d-flex">
               <div className="p-2 col-md-5">
                 <Dropdown
