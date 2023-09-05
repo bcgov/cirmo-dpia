@@ -4,20 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApprovalRoles } from '../../../../../constant/constant';
 
-import { getGUID, getUserRole } from '../../../../../utils/user';
+import { getGUID } from '../../../../../utils/user';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
-import { statusList } from '../../../../../utils/statusList/statusList';
 import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
 import { useContext } from 'react';
-import {
-  getUserPrivileges,
-  getUserPrivilegesByStatus,
-} from '../../../../../utils/statusList/common';
+import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
@@ -29,9 +25,20 @@ export interface IDisplayProgramAreaProps {
 const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
+
+  // From statusList.
+  const reviewPagePrivilegeParams = getUserPrivilegesByStatus(
+    Object(props.pia).status,
+  )?.Pages?.review?.params;
+
+  const canEditProgramAreaReviewers =
+    reviewPagePrivilegeParams?.editProgramAreaReviewers ?? false;
+
+  const canEditProgramAreaReview =
+    reviewPagePrivilegeParams?.editProgramAreaReview ?? false;
+
   const allowUserReviewProgramArea = () => {
-    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview)
-      return false;
+    if (!canEditProgramAreaReview) return false;
 
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
@@ -55,18 +62,12 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
     return props.reviewForm.programArea?.selectedRoles;
   };
 
-  const canEditProgramAreaReviewers =
-    getUserPrivilegesByStatus(Object(props.pia).status)?.Pages?.review?.params
-      ?.editProgramAreaReviewers ?? false;
-
   return (
     <div>
       {canEditProgramAreaReviewers && <h4 className="mb-3">Selected Roles</h4>}
       {getSelectedRoles().length > 0 ? (
         getSelectedRoles().map((role: string, index: number) => {
-          return getSelectedRoles() &&
-            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            canEditProgramAreaReviewers ? (
+          return getSelectedRoles() && canEditProgramAreaReviewers ? (
             <div
               key={index}
               className="d-flex gap-1 justify-content-start align-items-center"
