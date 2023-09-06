@@ -407,6 +407,7 @@ const PIAFormPage = () => {
   };
 
   const fetchAndUpdatePia = async (piaId: string) => {
+    const currentPia = pia;
     const updatedPia = (
       await HttpRequest.get<IPiaFormResponse>(
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
@@ -418,8 +419,16 @@ const PIAFormPage = () => {
         },
       )
     ).data;
-    setStalePia(pia);
     setPia(updatedPia);
+    console.log(
+      'fetchAndUpdatePia, setPia',
+      updatedPia.review?.programArea.selectedRoles,
+    );
+    setStalePia(currentPia);
+    console.log(
+      'fetchAndUpdatePia, setStalePia',
+      stalePia.review?.programArea.selectedRoles,
+    );
     setIsValidationFailed(
       updatedPia.branch === null ||
         updatedPia.branch === '' ||
@@ -433,6 +442,11 @@ const PIAFormPage = () => {
   };
 
   const hasFormChanged = useCallback(() => {
+    console.log(
+      'hasFormChanged, stalePia',
+      stalePia.review?.programArea.selectedRoles,
+    );
+    console.log('hasFormChanged, pia', pia.review?.programArea.selectedRoles);
     return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
   }, [pia, stalePia]);
 
@@ -440,6 +454,7 @@ const PIAFormPage = () => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
 
     if (!hasExplicitChanges && !hasFormChanged()) {
+      console.log('upsertAndUpdatePia, no changes');
       // only expected fields have changes; no need call update
       return pia;
     }
@@ -467,6 +482,10 @@ const PIAFormPage = () => {
     // if first time save, update stale state to the latest state, else keep the previous state for comparisons
     if (isFirstSave) {
       setStalePia(updatedPia);
+      console.log(
+        'upsertAndUpdatePia, isFirstSave, setStalePia',
+        stalePia.review?.programArea.selectedRoles,
+      );
       setIsFirstSave(false);
       if (!pia?.id) {
         navigate(
@@ -477,9 +496,17 @@ const PIAFormPage = () => {
       }
     } else {
       setStalePia(pia);
+      console.log(
+        'upsertAndUpdatePia, NOTFirstSave, setStalePia',
+        stalePia.review?.programArea.selectedRoles,
+      );
     }
 
     setPia(updatedPia);
+    console.log(
+      'upsertAndUpdatePia, setPia',
+      updatedPia.review?.programArea.selectedRoles,
+    );
 
     // reset flags after successful save
     setIsAutoSaveFailedPopupShown(false);
@@ -843,8 +870,15 @@ const PIAFormPage = () => {
 
     fetchAndUpdatePia(id).then((updatedPia) => {
       setStalePia(updatedPia);
+      console.log(
+        'useEffect, fetchAndUpdatePia, setStalePia',
+        stalePia.review?.programArea.selectedRoles,
+      );
       setPia(updatedPia);
-
+      console.log(
+        'useEffect, fetchAndUpdatePia, setPia',
+        updatedPia.review?.programArea.selectedRoles,
+      );
       setInitialPiaStateFetched(true); // no further fetch PIA unless requested
     });
   });

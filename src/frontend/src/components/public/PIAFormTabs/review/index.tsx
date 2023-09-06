@@ -82,6 +82,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
       stateChangeHandler(
         reviewForm.programArea?.selectedRoles,
         'programArea.selectedRoles',
+        true,
       );
 
       piaStateChangeHandler(
