@@ -419,8 +419,8 @@ const PIAFormPage = () => {
         },
       )
     ).data;
-    setPia(updatedPia);
     setStalePia(currentPia);
+    setPia(updatedPia);
     setIsValidationFailed(
       updatedPia.branch === null ||
         updatedPia.branch === '' ||
@@ -845,6 +845,7 @@ const PIAFormPage = () => {
     fetchAndUpdatePia(id).then((updatedPia) => {
       setStalePia(updatedPia);
       setPia(updatedPia);
+
       setInitialPiaStateFetched(true); // no further fetch PIA unless requested
     });
   });
