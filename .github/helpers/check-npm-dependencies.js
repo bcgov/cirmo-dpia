@@ -153,7 +153,7 @@ const logDeps = (dependencies, header, isDevDep, color) => {
     for (let key in dependencies) {
       const { dependency, version, latestVersion } = dependencies[key];
       console.log(
-        `- \`${dependency}\` Update from version \`${version}\` to \`${latestVersion}\` by running`
+        `- [ ] \`${dependency}\` Update from version \`${version}\` to \`${latestVersion}\` by running`
       );
       console.log(
         codeBlock(
