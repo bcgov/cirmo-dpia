@@ -4,7 +4,7 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
-import { getUserRole, isDrafterRole } from '../../../utils/user';
+import { isDrafterRole } from '../../../utils/user';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
