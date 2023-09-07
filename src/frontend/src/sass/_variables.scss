@@ -43,17 +43,12 @@ $bg-errorBanner: #f2dede;
 
 /* Status Block colours */
 $bg-cpoReview: #ece5ff;
-
 $fg-mpoReview: #1a5a96;
-
 $bg-finalReview: #cfd7ff;
 $fg-finalReview: #0020cb;
-
 $fg-editInProgress: #6c4a00;
-
 $bg-incomplete: #f2f2f2;
 $fg-incomplete: #606060;
-
 $bg-pending-completion: #e5fff6;
 $fg-pending-completion: #00815a;
 
@@ -103,7 +98,7 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  tv:1700px,
+  tv: 1700px,
 ) !default;
 // scss-docs-end grid-breakpoints
 

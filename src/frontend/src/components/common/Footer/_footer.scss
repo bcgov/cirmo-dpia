@@ -12,7 +12,7 @@
   min-height: $footer-height;
   display: flex;
   align-items: center;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .footer .container {
@@ -27,28 +27,12 @@
   display: flex;
   flex-flow: row wrap;
   margin: 0;
-  padding: 0.5rem 0px;
+  padding: 0.5rem 0;
   color: #fff;
   list-style: none;
   align-items: center;
   height: 100%;
   justify-content: center;
-}
-
-.footer > ul > li {
-  display: inherit;
-  align-items: center;
-  border-right: 1px solid white;
-  line-height: 1rem;
-  margin: 0.5rem 0px;
-
-  &:first-child > a {
-    margin-left: 0;
-  }
-
-  &:last-child {
-    border-right: none;
-  }
 }
 
 .footer > ul > li > a {
@@ -67,5 +51,21 @@
   &:focus {
     outline: 4px solid $accent-lightblue;
     outline-offset: 1px;
+  }
+}
+
+.footer > ul > li {
+  display: inherit;
+  align-items: center;
+  border-right: 1px solid white;
+  line-height: 1rem;
+  margin: 0.5rem 0;
+
+  &:first-child > a {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    border-right: none;
   }
 }
