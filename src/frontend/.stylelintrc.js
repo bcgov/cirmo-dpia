@@ -15,11 +15,6 @@ module.exports = {
      * @see https://github.com/stylelint-scss/stylelint-config-standard-scss
      */
     'stylelint-config-standard-scss',
-
-    /**
-     * @see https://github.com/prettier/stylelint-config-prettier
-     */
-    'stylelint-config-prettier',
   ],
 
   /**
