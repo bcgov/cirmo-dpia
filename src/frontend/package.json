@@ -6,7 +6,7 @@
     "dev": "vite --config vite.config.local.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prettier": "prettier src -check",
+    "prettier": "prettier src --check",
     "precommit": "lint-staged",
     "prepare": "cd ../.. && husky install ./.husky",
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'",
