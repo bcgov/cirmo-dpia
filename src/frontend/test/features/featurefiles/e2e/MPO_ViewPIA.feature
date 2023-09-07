@@ -71,7 +71,6 @@ Feature: UTOPIA-631 MPO:View PIA details
       | username | role    |
       | DORGALE  | MPO     |
     
-
 Scenario Outline: As <role> user, I am able to submit a valid form with all fields filled
 
     Given I am on the login page
@@ -99,13 +98,19 @@ Scenario Outline: As <role> user, I am able to submit a valid form with all fiel
     Then I click on "Save" button
     Then I click on "Submit" button
     Then I click on "Yes, submit" button
+    And I am able to click link "Review"
+    Then I click on "Add a role" button 
+    And I enter "role"
+    Then I click on "Add" button
+    And I check "Review Acknowledgement" checkbox
+    And I enter "Review Note"
+    Then I click on "Confirm" button
     Then I click on "Submit" button
     Then I click on "Yes, submit" button
     And I click on "Active PIAs" tab
     And Search with title
     And Verify if the status is only "CPO Review"
   
-    
 
 
     Examples:

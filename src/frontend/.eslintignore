@@ -11,3 +11,4 @@ coverage/*
 /src/types/
 
 .eslintrc.js
+wdio.conf.js
