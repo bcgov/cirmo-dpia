@@ -20,7 +20,7 @@ import {
   IPiaForm,
   IPiaFormResponse,
 } from '../../types/interfaces/pia-form.interface';
-import { buildDynamicPath, getEditPath } from '../../utils/path';
+import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
 import { PiaFormSideNavPages } from '../../components/public/PIASideNav/pia-form-sideNav-pages';
@@ -31,9 +31,9 @@ import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
-import { isCPORole } from '../../utils/helper.util';
+import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
-import { statusList } from '../../utils/status';
+import { statusList } from '../../utils/statusList/statusList';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -297,7 +297,7 @@ const PIAFormPage = () => {
   // Event Handlers
   //
 
-  const populateModalFn = (modal: object, status: string) => {
+  const populateModalFn = (modal: object) => {
     setPiaModalTitleText(Object(modal).title);
     setPiaModalParagraph(Object(modal).description);
     setPiaModalConfirmLabel(Object(modal).confirmLabel);
@@ -407,6 +407,7 @@ const PIAFormPage = () => {
   };
 
   const fetchAndUpdatePia = async (piaId: string) => {
+    const currentPia = pia;
     const updatedPia = (
       await HttpRequest.get<IPiaFormResponse>(
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
@@ -418,7 +419,7 @@ const PIAFormPage = () => {
         },
       )
     ).data;
-    setStalePia(pia);
+    setStalePia(currentPia);
     setPia(updatedPia);
     setIsValidationFailed(
       updatedPia.branch === null ||
@@ -883,7 +884,7 @@ const PIAFormPage = () => {
 
     const autoSaveTimer = setTimeout(() => {
       autoSave();
-    }, 3000);
+    }, 500);
 
     return () => clearTimeout(autoSaveTimer);
   });

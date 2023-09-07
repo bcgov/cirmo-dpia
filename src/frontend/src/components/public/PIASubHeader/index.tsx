@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faL } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { PIASubHeaderProps } from './interfaces';
 import Alert from '../../common/Alert';
 import { useEffect, useState } from 'react';
@@ -9,12 +9,12 @@ import Modal from '../../common/Modal';
 import StatusChangeDropDown from '../StatusChangeDropDown';
 import { buildDynamicPath } from '../../../utils/path';
 import { routes } from '../../../constant/routes';
-import { getGUID, roleCheck } from '../../../utils/helper.util';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
-import { statusList, UserRole } from '../../../utils/status';
+import { statusList } from '../../../utils/statusList/statusList';
 import { IReviewSection } from '../PIAFormTabs/review/interfaces';
+import { getUserPrivileges } from '../../../utils/statusList/common';
 
 function PIASubHeader({
   pia,
@@ -34,12 +34,6 @@ function PIASubHeader({
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
   secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
-
-  const userRoles = roleCheck();
-  const role: UserRole =
-    userRoles?.roles !== undefined && userRoles?.roles.length > 0
-      ? (userRoles?.roles[0] as UserRole)
-      : 'DRAFTER';
 
   //
   // Modal State
@@ -129,7 +123,7 @@ function PIASubHeader({
         Object.values(pia?.review.cpo)?.length > 0 &&
         Object.values(pia?.review?.cpo)?.every(
           (review: IReviewSection) =>
-            review.isAcknowledged === true && review.reviewNote !== '',
+            review?.isAcknowledged === true && review.reviewNote !== '',
         ))
     ) {
       setEnableFinalReview(true);
@@ -232,8 +226,7 @@ function PIASubHeader({
     return true;
   };
   const showSubmitButton = () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    return statusList?.(pia)?.[pia.status!]?.Privileges[role]?.showSubmitButton;
+    return getUserPrivileges(pia)?.showSubmitButton;
   };
 
   return (

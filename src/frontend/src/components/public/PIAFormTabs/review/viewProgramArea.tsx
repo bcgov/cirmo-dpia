@@ -4,8 +4,8 @@ import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
 import { IReview } from './interfaces';
 import messages from './messages';
-import { getGUID } from '../../../../utils/helper.util';
-import { statusList } from '../../../../utils/status';
+import { getGUID } from '../../../../utils/user';
+import { getUserPrivileges } from '../../../../utils/statusList/common';
 
 interface IViewProgramAreaReviewProps {
   pia: IPiaForm;
@@ -46,27 +46,28 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const handleClear = () => {
     stateChangeHandler(null, `programArea.reviews.${role}`, true);
   };
-  const canEditReviewNote =
+
+  const canEditReview =
     reviewGuid === getGUID() &&
     !printPreview &&
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
+    (getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReviewers ??
+      false);
 
   return (
     <div className="d-grid gap-3">
       {printPreview ? (
-        <div className="review-container px-2 ">
+        <div>
           <div className="mt-2 pb-2">
             <h3>
               <b>{role}</b>
             </h3>
           </div>
           {!pia?.review?.programArea?.reviews?.[role as keyof IReview]
-            .isAcknowledged ? (
-            <>
+            ?.isAcknowledged ? (
+            <div className="row mb-5 p-3 pb-5 border border-2 rounded">
               <div>Reviewed by</div>
               <div>Review incomplete</div>
-            </>
+            </div>
           ) : (
             <div>
               <ViewReviewSection
@@ -84,7 +85,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
                   messages.PiaReviewHeader.MinistrySection.MPO.Input
                     .AcceptAccountability.en
                 }
-                canEditReview={canEditReviewNote}
+                canEditReview={canEditReview}
                 onClearClick={handleClear}
                 onConfirmClick={handleSubmit}
               />
@@ -107,7 +108,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
               messages.PiaReviewHeader.ProgramAreaSection.Input
                 .AcceptAccountability.en
             }
-            canEditReview={canEditReviewNote}
+            canEditReview={canEditReview}
             onClearClick={handleClear}
             onConfirmClick={handleSubmit}
           />

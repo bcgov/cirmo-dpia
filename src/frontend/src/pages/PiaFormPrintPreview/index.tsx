@@ -41,6 +41,9 @@ export const PiaFormPrintPreview = () => {
 
   const [pia, setPia] = useState<IPiaForm>();
 
+  // Determine to hide ViewComments on PDF
+  const showComments = false;
+
   useEffect(() => {
     const htmlTag = document.getElementsByTagName('HTML')[0];
     htmlTag.classList.add('print-preview');
@@ -99,22 +102,27 @@ export const PiaFormPrintPreview = () => {
             {pia?.hasAddedPiToDataElements !== false && (
               <>
                 <div className="pageBreak">
-                  <PIACollectionUseAndDisclosure />
+                  <PIACollectionUseAndDisclosure showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <StoringPersonalInformation />
+                  <StoringPersonalInformation showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <SecurityPersonalInformation />
+                  <SecurityPersonalInformation showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <AccuracyCorrectionAndRetention />
+                  <AccuracyCorrectionAndRetention showComments={showComments} />
                 </div>
                 <div className="pageBreak">
-                  <PIAAgreementsAndInformationBanks />
+                  <PIAAgreementsAndInformationBanks
+                    showComments={showComments}
+                  />
                 </div>
                 <div className="pageBreak">
-                  <PIAAdditionalRisks />
+                  <PIAAdditionalRisks showComments={showComments} />
+                </div>
+                <div className="pageBreak">
+                  <PIAReview printPreview />
                 </div>
               </>
             )}

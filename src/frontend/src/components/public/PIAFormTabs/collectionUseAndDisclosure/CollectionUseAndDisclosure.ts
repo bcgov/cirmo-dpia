@@ -14,3 +14,7 @@ export interface CollectionNoticeInput {
   drafterInput?: string;
   mpoInput?: string;
 }
+
+export interface PIACollectionUseAndDisclosureProps {
+  showComments?: boolean;
+}

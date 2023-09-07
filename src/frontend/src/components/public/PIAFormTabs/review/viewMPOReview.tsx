@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import ViewReviewSection from './viewReviewSection';
-import { IReviewSection } from './interfaces';
-import { getGUID } from '../../../../utils/helper.util';
-import { statusList } from '../../../../utils/status';
+import { getGUID } from '../../../../utils/user';
 import messages from './messages';
+import { getUserPrivileges } from '../../../../utils/statusList/common';
 
 interface IMPOReviewProps {
   pia: IPiaForm;
@@ -39,21 +38,25 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
   const handleClear = () => {
     stateChangeHandler(null, `mpo`, true);
   };
-  const canEditReviewNote =
+
+  const canEditReview =
     reviewGuid === getGUID() &&
     !printPreview &&
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    statusList?.(pia)?.[pia?.status!]?.Pages?.review?.params?.editReviewNote;
+    (getUserPrivileges(pia)?.Pages?.review?.params?.editMpoReview ?? false);
 
   return (
     <div className="d-grid gap-3">
+      <h3>
+        <b>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</b>
+      </h3>
       {printPreview ? (
-        <div className="review-container px-2">
-          {pia?.review?.mpo?.isAcknowledged === false ? (
-            <>
+        <div>
+          {pia?.review?.mpo?.isAcknowledged === false ||
+          pia?.review?.mpo?.isAcknowledged === undefined ? (
+            <div className="row mb-5 p-3 pb-5 border border-2 rounded">
               <div> Reviewed by</div>
               <div> Review incomplete</div>
-            </>
+            </div>
           ) : (
             <div>
               <ViewReviewSection
@@ -71,7 +74,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
                   messages.PiaReviewHeader.MinistrySection.MPO.Input
                     .AcceptAccountability.en
                 }
-                canEditReview={canEditReviewNote}
+                canEditReview={canEditReview}
                 onClearClick={handleClear}
                 onConfirmClick={handleSubmit}
               />
@@ -94,7 +97,7 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
             messages.PiaReviewHeader.MinistrySection.MPO.Input
               .AcceptAccountability.en
           }
-          canEditReview={canEditReviewNote}
+          canEditReview={canEditReview}
           onClearClick={handleClear}
           onConfirmClick={handleSubmit}
         />

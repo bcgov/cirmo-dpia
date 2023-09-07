@@ -2,7 +2,10 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
 import InputText from '../../../common/InputText/InputText';
 import MDEditor from '@uiw/react-md-editor';
-import { IAgreementsAndInformationBanks } from './AgreementsAndInformationBanks';
+import {
+  IAgreementsAndInformationBanks,
+  PIAAgreementsAndInformationBanksProps,
+} from './AgreementsAndInformationBanks';
 import CustomInputDate from '../../../common/CustomInputDate';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -15,9 +18,12 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
+import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
-const PIAAgreementsAndInformationBanks = () => {
+const PIAAgreementsAndInformationBanks = ({
+  showComments = true,
+}: PIAAgreementsAndInformationBanksProps) => {
   const {
     pia,
     commentCount,
@@ -67,6 +73,64 @@ const PIAAgreementsAndInformationBanks = () => {
     setNestedReactState(setAgreementsAndInformationBanksForm, path, value);
   };
 
+  const InvolveIsaRadio = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'involve-isa-radio',
+      isDefault:
+        agreementsAndInformationBanksForm?.informationSharingAgreement
+          ?.doesInvolveISA === YesNoInput.YES,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'informationSharingAgreement.doesInvolveISA',
+        ),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'involve-isa-radio',
+      isDefault:
+        agreementsAndInformationBanksForm?.informationSharingAgreement
+          ?.doesInvolveISA === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'informationSharingAgreement.doesInvolveISA',
+        ),
+    },
+  ];
+
+  const WillResultPIBRadio = [
+    {
+      index: 1,
+      value: YesNoInput.YES,
+      groupName: 'will-resultPIB-radio',
+      isDefault:
+        agreementsAndInformationBanksForm?.personalInformationBanks
+          ?.willResultInPIB === YesNoInput.YES,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'personalInformationBanks.willResultInPIB',
+        ),
+    },
+    {
+      index: 2,
+      value: YesNoInput.NO,
+      groupName: 'will-resultPIB-radio',
+      isDefault:
+        agreementsAndInformationBanksForm?.personalInformationBanks
+          ?.willResultInPIB === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(
+          e.target.value,
+          'personalInformationBanks.willResultInPIB',
+        ),
+    },
+  ];
+
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     if (!deepEqual(initialFormState, agreementsAndInformationBanksForm)) {
@@ -107,48 +171,9 @@ const PIAAgreementsAndInformationBanks = () => {
             )}
             <div className="form-group row ">
               {!isReadOnly ? (
-                <div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="involve-isa-radio"
-                      value={YesNoInput.YES}
-                      checked={
-                        agreementsAndInformationBanksForm
-                          ?.informationSharingAgreement?.doesInvolveISA ===
-                        YesNoInput.YES
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'informationSharingAgreement.doesInvolveISA',
-                        )
-                      }
-                    />
-                    Yes
-                  </div>
-
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="involve-isa-radio"
-                      value={YesNoInput.NO}
-                      checked={
-                        agreementsAndInformationBanksForm
-                          ?.informationSharingAgreement?.doesInvolveISA === 'NO'
-                      }
-                      onChange={(e) =>
-                        stateChangeHandler(
-                          e.target.value,
-                          'informationSharingAgreement.doesInvolveISA',
-                        )
-                      }
-                    />
-                    No
-                  </div>
-                </div>
+                InvolveIsaRadio.map((radio, index) => (
+                  <Radio key={index} {...radio} />
+                ))
               ) : (
                 <p>
                   {agreementsAndInformationBanksForm.informationSharingAgreement.doesInvolveISA.charAt(
@@ -346,17 +371,19 @@ const PIAAgreementsAndInformationBanks = () => {
               </div>
             )}
           </div>
-          <ViewComments
-            count={
-              commentCount?.[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
-              ]
-            }
-            path={
-              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
-            }
-          />
+          {showComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections
+                    .AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+                ]
+              }
+              path={
+                PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_INFORMATION_SHARING_AGREEMENT
+              }
+            />
+          )}
         </section>
 
         <h3 className="pt-5">{Messages.ResultingPIB.Headings.Title.en}</h3>
@@ -383,48 +410,9 @@ const PIAAgreementsAndInformationBanks = () => {
             <div>
               <div className="form-group row">
                 {!isReadOnly ? (
-                  <div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="will-resultPIB-radio"
-                        value={YesNoInput.YES}
-                        checked={
-                          agreementsAndInformationBanksForm
-                            ?.personalInformationBanks?.willResultInPIB ===
-                          YesNoInput.YES
-                        }
-                        onChange={(e) =>
-                          stateChangeHandler(
-                            e.target.value,
-                            'personalInformationBanks.willResultInPIB',
-                          )
-                        }
-                      />
-                      Yes
-                    </div>
-
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="will-resultPIB-radio"
-                        value={YesNoInput.NO}
-                        checked={
-                          agreementsAndInformationBanksForm
-                            ?.personalInformationBanks?.willResultInPIB === 'NO'
-                        }
-                        onChange={(e) =>
-                          stateChangeHandler(
-                            e.target.value,
-                            'personalInformationBanks.willResultInPIB',
-                          )
-                        }
-                      />
-                      No
-                    </div>
-                  </div>
+                  WillResultPIBRadio.map((radio, index) => (
+                    <Radio key={index} {...radio} />
+                  ))
                 ) : (
                   <p>
                     {agreementsAndInformationBanksForm.personalInformationBanks.willResultInPIB.charAt(
@@ -571,17 +559,19 @@ const PIAAgreementsAndInformationBanks = () => {
               )}
             </div>
           </div>
-          <ViewComments
-            count={
-              commentCount?.[
-                PiaSections
-                  .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
-              ]
-            }
-            path={
-              PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
-            }
-          />
+          {showComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections
+                    .AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+                ]
+              }
+              path={
+                PiaSections.AGREEMENTS_AND_INFORMATION_BANKS_PERSONAL_INFORMATION_BANKS
+              }
+            />
+          )}
         </section>
       </div>
     </>

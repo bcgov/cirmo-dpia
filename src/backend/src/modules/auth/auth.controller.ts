@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
   HttpException,
   HttpStatus,
   InternalServerErrorException,
@@ -67,19 +66,14 @@ export class AuthController {
     }
   }
 
-  @Post('logout')
+  @Get('keycloakLogout')
   @Unprotected()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOkResponse({ description: 'Logout from keycloak sso server' })
-  async logout(@Body() token: AppTokensDto) {
-    try {
-      await this.authService.logout(token.refresh_token);
-    } catch (e) {
-      if (e instanceof HttpException) {
-        throw new HttpException('Logout failed', e.getStatus());
-      }
-      throw new InternalServerErrorException('Logout failed');
-    }
-    return;
+  @ApiOkResponse({
+    description: 'Redirect to keycloak sso server logout',
+  })
+  logout(@Req() req) {
+    const idToken: string = req.query.id_token;
+    const redirectUrl: string = req.query.redirect_url;
+    return this.authService.getUrlLogout(idToken, redirectUrl);
   }
 }

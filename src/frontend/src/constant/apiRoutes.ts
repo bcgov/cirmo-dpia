@@ -3,7 +3,7 @@ export const API_ROUTES = {
   PIA_INTAKE: '/api/pia-intake',
   KEYCLOAK_CALLBACK: 'api/auth/callback',
   KEYCLOAK_USER: '/api/auth/user',
-  KEYCLOAK_LOGOUT: '/api/auth/logout',
+  KEYCLOAK_LOGOUT: '/api/auth/keycloakLogout',
   KEYCLOAK_LOGIN: '/api/auth/keycloakLogin',
   KEYCLOAK_REFRESH_TOKEN: '/api/auth/refreshToken',
   PPQ_RESULT_DOWNLOAD: '/api/ppq/download/:id',

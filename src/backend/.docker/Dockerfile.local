@@ -1,25 +1,25 @@
-FROM node:18.9-alpine
+FROM node:20.5-bullseye-slim
 
-RUN apk update
-
-# Installs latest Chromium (100) package.
-RUN apk add --no-cache \
-      chromium \
-      nss \
-      freetype \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont
+# Update packages and install the required dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    chromium \
+    freetype2-demos \
+    libharfbuzz0b \
+    ca-certificates \
+    fonts-freefont-ttf && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # sidenote: Puppeteer v13.5.0 works with Chromium 100.
 
 # Add user so we don't need --no-sandbox.
-RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
-    && mkdir -p /home/pptruser/Downloads /usr/src/app \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /usr/src/app
+RUN groupadd pptruser && \
+    useradd -r -g pptruser -G audio,video pptruser -m -d /home/pptruser -s /bin/bash && \
+    mkdir -p /home/pptruser/Downloads /usr/src/app && \
+    chown -R pptruser:pptruser /home/pptruser /usr/src/app
 
-# Create an app directory
+# Set the working directory
 WORKDIR /usr/src/app
 
 # Install Project Specific Dependencies
@@ -33,4 +33,4 @@ USER pptruser
 
 # Expose port and run app in watch mode
 EXPOSE 3000
-CMD ["npm",  "run", "start:dev"]
+CMD ["npm", "run", "start:dev"]

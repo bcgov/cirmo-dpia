@@ -29,6 +29,8 @@ export class AuthService {
 
   private keycloakLogoutUri: string;
 
+  private siteMinderLogoutUri: string;
+
   constructor(private readonly httpService: HttpService) {
     this.keycloakAuthServerUri = configService.getValue(
       'KEYCLOAK_AUTH_SERVER_URI',
@@ -46,6 +48,7 @@ export class AuthService {
     this.keycloakUserInfoUri = configService.getValue('KEYCLOAK_USER_INFO_URI');
     this.keycloakTokenUri = configService.getValue('KEYCLOAK_TOKEN_URI');
     this.keycloakLogoutUri = configService.getValue('KEYCLOAK_LOGOUT_URI');
+    this.siteMinderLogoutUri = configService.getValue('SITEMINDER_LOGOUT_URI');
   }
 
   getUrlLogin(): any {
@@ -84,6 +87,7 @@ export class AuthService {
                 res.data.refresh_token,
                 res.data.expires_in,
                 res.data.refresh_expires_in,
+                res.data.id_token,
               ),
           ),
           catchError((e) => {
@@ -136,6 +140,7 @@ export class AuthService {
                 res.data.refresh_token,
                 res.data.expires_in,
                 res.data.refresh_expires_in,
+                res.data.id_token,
               ),
           ),
           catchError((e) => {
@@ -154,36 +159,15 @@ export class AuthService {
     return data;
   }
 
-  async logout(refresh_token: string) {
-    const params = {
-      client_id: this.keycloakClientId,
-      client_secret: this.keycloakClientSecret,
-      refresh_token: refresh_token,
-    };
-
-    const data = await firstValueFrom(
-      this.httpService
-        .post(
-          this.keycloakLogoutUri,
-          queryString.stringify(params),
-          this.getContentType(),
-        )
-        .pipe(
-          map((res: any) => res.data),
-          catchError((e) => {
-            console.error(
-              'auth.service.ts:logout:data',
-              e?.response?.data || 'Error data unknown, Something Went wrong',
-              e?.response?.status || 500,
-            );
-            throw new HttpException(
-              e?.response?.data || 'Error data unknown, Something Went wrong',
-              e?.response?.status || 500,
-            );
-          }),
-        ),
+  getUrlLogout(idToken: string, redirectUrl: string): any {
+    const keycloakLogoutUri = encodeURIComponent(
+      `${this.keycloakLogoutUri}?id_token_hint=${idToken}` +
+        `&post_logout_redirect_uri=${redirectUrl}`,
     );
-    return data;
+    return {
+      siteMinderUrl: `${this.siteMinderLogoutUri}?retnow=1&returl=`,
+      keycloakUrl: keycloakLogoutUri,
+    };
   }
 
   getContentType() {

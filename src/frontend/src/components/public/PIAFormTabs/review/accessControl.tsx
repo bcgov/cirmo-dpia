@@ -1,47 +1,23 @@
 /*
  * @description: This file defines the access control of the review section tab of the PIA form
- * If you are drafter and the status is in CPO review or MPO review you cannot see this page
- * If the status is in Final review status then you can view this page.
+ * Check src\frontend\src\utils\statusList\statuses Privileges to see who has accessControl.
  */
 
-import { statusList } from '../../../../utils/status';
+import { getUserPrivilegesByStatus } from '../../../../utils/statusList/common';
+import { PiaStatuses } from '../../../../constant/constant';
 
-export const defaultAccess = (status: string | undefined) => {
-  if (!status) {
-    return false;
-  }
-  if ('Pages' in Object(statusList(null)[status])) {
-    const pages = Object(statusList(null)[status]).Pages;
-    if ('review' in pages) {
-      if ('accessControl' in pages.review) {
-        return pages.review.accessControl;
-      }
-    }
-  }
-  return false;
-};
+export const reviewAccessControl = (status: string | undefined) => {
+  if (!status) return false;
 
-export const reviewAccessControl = (
-  status: string | undefined,
-  role: string | null,
-) => {
-  if (!status) {
-    return false;
-  }
-  if (!role) {
-    return defaultAccess(status);
-  }
-  const priviliges = role in Object(statusList(null)[status].Privileges);
-  if (priviliges) {
-    /* check if Pages is defined for this role */
-    if ('Pages' in Object(statusList(null)[status]).Privileges[role]) {
-      const pages = Object(statusList(null)[status]).Privileges[role].Pages;
-      if ('review' in pages) {
-        if ('accessControl' in pages.review) {
-          return pages.review.accessControl;
-        }
-      }
-    }
-  }
-  return defaultAccess(status);
+  // Check if status is valid PiaStatus
+  const validStatus = Object.values(PiaStatuses).includes(
+    status as PiaStatuses,
+  );
+  if (!validStatus) return false;
+
+  const hasAccess =
+    getUserPrivilegesByStatus(status as PiaStatuses)?.Pages?.review
+      ?.accessControl ?? false;
+
+  return hasAccess;
 };

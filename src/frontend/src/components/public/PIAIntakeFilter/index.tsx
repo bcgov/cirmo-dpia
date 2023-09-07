@@ -5,7 +5,7 @@ import {
   PiaDrafterFilterList,
   PiaStatusList,
 } from '../../../constant/constant';
-import { isAdminRole } from '../../../utils/helper.util';
+import { isDrafterRole } from '../../../utils/user';
 import Dropdown from '../../common/Dropdown';
 import { IPIAIntakeFilterProps } from './interfaces';
 
@@ -108,7 +108,7 @@ const PIAIntakeFilter = (props: IPIAIntakeFilterProps) => {
             />
           </div>
 
-          {isAdminRole() && (
+          {!isDrafterRole() && (
             <div className="col-sm-6 col-md-3 pt-4 pt-sm-0 pe-md-0">
               <Dropdown
                 id="ministry-select"
@@ -121,7 +121,7 @@ const PIAIntakeFilter = (props: IPIAIntakeFilterProps) => {
             </div>
           )}
 
-          {isAdminRole() && (
+          {!isDrafterRole() && (
             <div className="col-sm-6 col-md-3 pt-4 pt-md-0 pe-sm-0">
               <Dropdown
                 id="drafter-filter-select"

@@ -2,18 +2,18 @@ import ViewProgramAreaReview from '../viewProgramArea';
 import EditProgramAreaReview from '../editProgramArea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ApprovalRoles, PiaStatuses } from '../../../../../constant/constant';
+import { ApprovalRoles } from '../../../../../constant/constant';
 
-import { getGUID } from '../../../../../utils/helper.util';
+import { getGUID } from '../../../../../utils/user';
 import messages from './../messages';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
-import { statusList } from '../../../../../utils/status';
 import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
+import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
   stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
@@ -25,7 +25,21 @@ export interface IDisplayProgramAreaProps {
 const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
+
+  // From statusList.
+  const reviewPagePrivilegeParams = getUserPrivilegesByStatus(
+    Object(props.pia).status,
+  )?.Pages?.review?.params;
+
+  const canEditProgramAreaReviewers =
+    reviewPagePrivilegeParams?.editProgramAreaReviewers ?? false;
+
+  const canEditProgramAreaReview =
+    reviewPagePrivilegeParams?.editProgramAreaReview ?? false;
+
   const allowUserReviewProgramArea = () => {
+    if (!canEditProgramAreaReview) return false;
+
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
 
@@ -48,16 +62,52 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
     return props.reviewForm.programArea?.selectedRoles;
   };
 
+  const deleteRole = useCallback(
+    (roleIndex: number) => {
+      const updatedRoles = [...props.reviewForm.programArea.selectedRoles];
+      updatedRoles.splice(roleIndex, 1);
+
+      piaStateChangeHandler(
+        {
+          programArea: {
+            ...props.reviewForm.programArea,
+            selectedRoles: updatedRoles,
+          },
+        },
+        'review',
+        true,
+      );
+
+      props.stateChangeHandler(updatedRoles, 'programArea.selectedRoles', true);
+    },
+    [props, piaStateChangeHandler],
+  );
+
   return (
     <div>
-      {statusList(null)?.[Object(props.pia).status]?.Pages?.review?.params
-        ?.editProgramArea && <h4 className="mb-3">Selected Roles</h4>}
+      {canEditProgramAreaReviewers && <h4 className="mb-3">Selected Roles</h4>}
       {getSelectedRoles().length > 0 ? (
         getSelectedRoles().map((role: string, index: number) => {
-          return getSelectedRoles() &&
-            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            statusList?.(pia)?.[pia?.status!]?.Pages?.review
-              .viewProgramAreaReviews ? (
+          return getSelectedRoles() && canEditProgramAreaReviewers ? (
+            <div
+              key={index}
+              className="d-flex gap-1 justify-content-start align-items-center"
+            >
+              <p className="m-0 pt-2">{role}</p>
+              {props.mandatoryADM && role === ApprovalRoles.ADM ? (
+                <p className="m-0 pt-2 error-text">(required for this PIA)</p>
+              ) : null}
+              {!props.reviewForm.programArea?.reviews?.[role] &&
+                !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
+                  <button
+                    className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
+                    onClick={() => deleteRole(index)}
+                  >
+                    <FontAwesomeIcon className="" icon={faTrash} size="xl" />
+                  </button>
+                )}
+            </div>
+          ) : (
             <div className="d-flex align-items-center" key={index}>
               {!allowUserReviewProgramArea() ||
               Object(props.pia?.review?.programArea)?.reviews?.[role]
@@ -74,35 +124,6 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                   stateChangeHandler={props.stateChangeHandler}
                 />
               )}
-            </div>
-          ) : (
-            <div
-              key={index}
-              className="d-flex gap-1 justify-content-start align-items-center"
-            >
-              <p className="m-0 pt-2">{role}</p>
-              {props.mandatoryADM && role === ApprovalRoles.ADM ? (
-                <p className="m-0 pt-2 error-text">(required for this PIA)</p>
-              ) : null}
-              {!props.reviewForm.programArea?.reviews?.[role] &&
-                !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
-                  <button
-                    className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
-                    onClick={() => {
-                      props.reviewForm.programArea.selectedRoles?.splice(
-                        index,
-                        1,
-                      );
-                      props.stateChangeHandler(
-                        props.reviewForm.programArea.selectedRoles,
-                        'programArea.selectedRoles',
-                      );
-                      piaStateChangeHandler(props.reviewForm, 'review', true);
-                    }}
-                  >
-                    <FontAwesomeIcon className="" icon={faTrash} size="xl" />
-                  </button>
-                )}
             </div>
           );
         })

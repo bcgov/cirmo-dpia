@@ -1,10 +1,13 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
-import { isMPORole } from '../../../../utils/helper.util';
+import { isMPORole } from '../../../../utils/user';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import Radio from '../../../common/Radio';
-import { IStoringPersonalInformation } from './interfaces';
+import {
+  IStoringPersonalInformation,
+  StoringPersonalInformationProps,
+} from './interfaces';
 import Messages from './messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +22,9 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Callout from '../../../common/Callout';
 
-const StoringPersonalInformation = () => {
+const StoringPersonalInformation = ({
+  showComments = true,
+}: StoringPersonalInformationProps) => {
   const {
     pia,
     commentCount,
@@ -390,14 +395,18 @@ const StoringPersonalInformation = () => {
               )}
             </div>
           )}
-          <ViewComments
-            count={
-              commentCount?.[
+          {showComments && (
+            <ViewComments
+              count={
+                commentCount?.[
+                  PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
+                ]
+              }
+              path={
                 PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION
-              ]
-            }
-            path={PiaSections.STORING_PERSONAL_INFORMATION_PERSONAL_INFORMATION}
-          />
+              }
+            />
+          )}
         </div>
       </section>
       {storingPersonalInformationForm.personalInformation
@@ -508,17 +517,19 @@ const StoringPersonalInformation = () => {
                 )}
               </div>
             )}
-            <ViewComments
-              count={
-                commentCount?.[
-                  PiaSections
-                    .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
-                ]
-              }
-              path={
-                PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
-              }
-            />
+            {showComments && (
+              <ViewComments
+                count={
+                  commentCount?.[
+                    PiaSections
+                      .STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                  ]
+                }
+                path={
+                  PiaSections.STORING_PERSONAL_INFORMATION_SENSITIVE_PERSONAL_INFORMATION
+                }
+              />
+            )}
           </div>
         </section>
       )}
@@ -754,17 +765,19 @@ const StoringPersonalInformation = () => {
                     </p>
                   )}
                 </div>
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
-                  }
-                />
+                {showComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_STORAGE
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -845,17 +858,19 @@ const StoringPersonalInformation = () => {
                         <i>Not answered</i>
                       </p>
                     )}
-                    <ViewComments
-                      count={
-                        commentCount?.[
-                          PiaSections
-                            .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
-                        ]
-                      }
-                      path={
-                        PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
-                      }
-                    />
+                    {showComments && (
+                      <ViewComments
+                        count={
+                          commentCount?.[
+                            PiaSections
+                              .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                          ]
+                        }
+                        path={
+                          PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTRACT
+                        }
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -907,17 +922,19 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
-                  }
-                />
+                {showComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_CONTROLS
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -967,17 +984,19 @@ const StoringPersonalInformation = () => {
                     <i>Not answered</i>
                   </p>
                 )}
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
-                  }
-                />
+                {showComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_TRACK_ACCESS
+                    }
+                  />
+                )}
               </div>
             </section>
             <section className="form__section my-4">
@@ -1021,17 +1040,19 @@ const StoringPersonalInformation = () => {
                     readOnly={isReadOnly}
                   />
                 </div>
-                <ViewComments
-                  count={
-                    commentCount?.[
-                      PiaSections
-                        .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
-                    ]
-                  }
-                  path={
-                    PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
-                  }
-                />
+                {showComments && (
+                  <ViewComments
+                    count={
+                      commentCount?.[
+                        PiaSections
+                          .STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                      ]
+                    }
+                    path={
+                      PiaSections.STORING_PERSONAL_INFORMATION_DISCLOSURES_OUTSIDE_CANADA_RISKS
+                    }
+                  />
+                )}
               </div>
               <div className="mt-5">
                 <Callout

@@ -70,5 +70,6 @@ const configService = new ConfigServiceClass(process.env).ensureValues([
   'GCNOTIFY_BASE_URL',
   'GCNOTIFY_API_KEY',
   'GCNOTIFY_TEMPLATE_ID',
+  'SITEMINDER_LOGOUT_URI',
 ]);
 export { configService };

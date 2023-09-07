@@ -1,13 +1,10 @@
-import Checkbox from '../../../../components/common/Checkbox';
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { IReview, IReviewSection } from './interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
-import { getGUID } from '../../../../utils/helper.util';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { getGUID, isCPORole } from '../../../../utils/user';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -21,6 +18,7 @@ import ProgramArea from './ProgamArea';
 import EditCPOReview from './editCPOReview';
 import ViewCPOReview from './viewCPOReview';
 import EditMPOReview from './editMPOReview';
+import { getUserPrivileges } from '../../../../utils/statusList/common';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -64,38 +62,29 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const addRole = useCallback(
     (role: string) => {
-      const casedRoles =
-        reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) ||
-        [];
-
       if (!role) return; // no empty role
 
-      if (casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
+      const existingRoles = reviewForm.programArea?.selectedRoles || [];
+      const casedRoles = existingRoles.map((r) => r.toLowerCase());
 
-      if (!reviewForm.programArea?.selectedRoles) {
-        reviewForm.programArea = {
-          ...reviewForm?.programArea,
-          selectedRoles: [],
-        };
-      }
+      if (casedRoles.includes(role.toLowerCase())) return; // role with the same name already exists
 
-      reviewForm.programArea?.selectedRoles.push(role);
+      const updatedRoles = [...existingRoles, role];
 
-      stateChangeHandler(
-        reviewForm.programArea?.selectedRoles,
-        'programArea.selectedRoles',
-      );
+      const updatedProgramArea = {
+        ...reviewForm.programArea,
+        selectedRoles: updatedRoles,
+      };
 
       piaStateChangeHandler(
         {
-          programArea: {
-            ...reviewForm.programArea,
-            selectedRoles: reviewForm.programArea.selectedRoles,
-          },
+          programArea: updatedProgramArea,
         },
         'review',
         true,
       );
+
+      stateChangeHandler(updatedRoles, 'programArea.selectedRoles', true);
     },
     [piaStateChangeHandler, reviewForm],
   );
@@ -153,16 +142,19 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
   const userGuid = getGUID();
+  const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
 
   const allowUserReviewCPO = () => {
     // only allow one CPO user do review once
+    const canEditCpoReview = reviewPageParams?.editCpoReview ?? false;
+    if (!canEditCpoReview) return false;
 
     if (pia?.review?.cpo !== undefined) {
       if (
         Object.values<IReviewSection>(pia?.review?.cpo).some(
           (review) =>
             review !== null &&
-            review.isAcknowledged !== false &&
+            review?.isAcknowledged !== false &&
             review.reviewedByGuid === userGuid,
         )
       )
@@ -213,8 +205,12 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // if this current user already review the pia, can not see this button
     if (!allowUserReviewCPO()) return false;
 
+    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview)
+      return false;
+
     return true;
   };
+
   const enableMPOReviewViewMode = () => {
     // if the user already done review the MPO review field, we will show
     // the review result page, otherwise the app will show review page
@@ -224,9 +220,21 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     // and there will be a reviewedAt timestamp that attaches to the object.
     // but if the user never checks the checkbox, the reivewedAt will not exist.
     // so if the reviewedAt field have a value, we show the review result otherwise show review
+    const canEditMpoReview = reviewPageParams?.editMpoReview ?? false;
+    if (!canEditMpoReview) return true;
     if (pia?.review?.mpo?.reviewedAt && editReviewNote === false) return true;
     return false;
   };
+
+  const showCpoReview = reviewPageParams?.showCpoReview ?? false;
+  const showMpoReview = reviewPageParams?.showMpoReview ?? false;
+  const showProgramAreaReview =
+    reviewPageParams?.showProgramAreaReview ?? false;
+
+  // CPO Review can't be shown if there is no cpoId.
+  const invalidCpoReviewData =
+    (!pia?.review?.cpo && !isCPORole()) ||
+    ((Object.entries(!pia?.review?.cpo)?.length ?? []) < 0 && !isCPORole());
 
   return (
     <>
@@ -234,54 +242,52 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         <h2 className="results-header">
           <b>{messages.PiaReviewHeader.Title.en}</b>
         </h2>
-        {!printPreview ? (
+        {!printPreview && showProgramAreaReview && (
           <>
             <h3>{messages.PiaReviewHeader.ProgramAreaSection.Title.en}</h3>
             <p className="pb-4">
               {messages.PiaReviewHeader.ProgramAreaSection.Description.en}
             </p>
           </>
-        ) : null}
+        )}
       </section>
       {!printPreview ? (
         <>
-          <ProgramArea
-            pia={pia}
-            reviewForm={reviewForm}
-            addRole={addRole}
-            stateChangeHandler={stateChangeHandler}
-            mandatoryADM={mandatoryADM}
-          />
-          <section className="mt-5 ">
-            <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
-            <p className="pb-4">
-              {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
-            </p>
-            <div className="drop-shadow card p-4 p-md-5">
-              <div className="data-table__container">
-                {enableMPOReviewViewMode() ? (
-                  <ViewMPOReview
-                    pia={pia}
-                    stateChangeHandler={stateChangeHandler}
-                  />
-                ) : (
-                  <EditMPOReview
-                    pia={pia}
-                    stateChangeHandler={stateChangeHandler}
-                  />
-                )}
+          {showProgramAreaReview && (
+            <ProgramArea
+              pia={pia}
+              reviewForm={reviewForm}
+              addRole={addRole}
+              stateChangeHandler={stateChangeHandler}
+              mandatoryADM={mandatoryADM}
+            />
+          )}
+          {showMpoReview && (
+            <section className="mt-5 ">
+              <h3>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</h3>
+              <p className="pb-4">
+                {messages.PiaReviewHeader.MinistrySection.MPO.Description.en}
+              </p>
+              <div className="drop-shadow card p-4 p-md-5">
+                <div className="data-table__container">
+                  {enableMPOReviewViewMode() ? (
+                    <ViewMPOReview
+                      pia={pia}
+                      stateChangeHandler={stateChangeHandler}
+                    />
+                  ) : (
+                    <EditMPOReview
+                      pia={pia}
+                      stateChangeHandler={stateChangeHandler}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
-          {/**
-           * this part need to refactor
-           * this part should only display on cpo review and onward
-           * like final review, pending completion and complete
-           * right now we only have two status, cpo review and final review
-           */}
+            </section>
+          )}
           {pia.hasAddedPiToDataElements !== false &&
-          (pia.status === PiaStatuses.CPO_REVIEW ||
-            pia.status === PiaStatuses.FINAL_REVIEW) ? (
+          showCpoReview &&
+          !invalidCpoReviewData ? (
             <section className="mt-5 ">
               <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
               <p className="pb-4">
@@ -298,7 +304,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                             key={cpoId}
                           >
                             {!allowUserReviewCPO() ||
-                            Object(pia?.review?.cpo)?.[cpoId].isAcknowledged ? (
+                            Object(pia?.review?.cpo)?.[cpoId]
+                              ?.isAcknowledged ? (
                               <ViewCPOReview
                                 pia={pia}
                                 cpoId={cpoId}
@@ -343,7 +350,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
         pia?.status === PiaStatuses.INCOMPLETE ||
-        pia?.status === PiaStatuses.MPO_REVIEW ? (
+        pia?.status === PiaStatuses.MPO_REVIEW ||
+        pia?.status === PiaStatuses.CPO_REVIEW ? (
         <PendingReview />
       ) : (
         <>
@@ -381,8 +389,15 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             ))
           ) : (
             <>
-              <div> Reviewed by</div>
-              <div> Review incomplete</div>
+              <div className="d-grid gap-3">
+                <h3>
+                  <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
+                </h3>
+              </div>
+              <div className="row mb-5 p-3 pb-5 border border-2 rounded">
+                <div> Reviewed by</div>
+                <div> Review incomplete</div>
+              </div>
             </>
           )}
         </>

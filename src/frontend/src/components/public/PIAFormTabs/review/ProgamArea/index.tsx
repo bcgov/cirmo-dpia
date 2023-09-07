@@ -6,32 +6,33 @@ import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { IReview } from '../interfaces';
 import messages from './../messages';
 import DisplayProgramArea from './displayProgramArea';
-import { statusList } from '../../../../../utils/status';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { getUserPrivileges } from '../../../../../utils/statusList/common';
 
 interface IProgramAreaProps {
   reviewForm: IReview;
   pia: IPiaForm;
   addRole: (role: string) => void;
-  stateChangeHandler: (value: any, key: string) => void;
+  stateChangeHandler: (value: any, key: string, callApi?: boolean) => void;
   mandatoryADM: boolean;
 }
 
 const ProgramArea = (props: IProgramAreaProps) => {
   const [rolesSelect, setRolesSelect] = useState<string>('');
   const [rolesInput, setRolesInput] = useState<string>('');
-  const [editProgramArea, setEditProgramArea] = useState<boolean>(false);
+  const [editProgramAreaReviewers, setEditProgramAreaReviewers] =
+    useState<boolean>(false);
   const [showProgramArea, setShowProgramArea] = useState<boolean>(false);
 
   useEffect(() => {
     /* One can only edit Progam Area section if you are in a particular status
      * The information related to editing this section is retrieved from the statusList
      */
-    const editProgramAreaCheck = statusList(props.pia)?.[
-      Object(props.pia)?.status
-    ]?.Pages?.review?.params?.editProgramArea;
-    setEditProgramArea(editProgramAreaCheck ?? false);
+    const editProgramAreaReviewersCheck =
+      getUserPrivileges(props.pia)?.Pages?.review?.params
+        ?.editProgramAreaReviewers ?? false;
+    setEditProgramAreaReviewers(editProgramAreaReviewersCheck);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.pia?.status]);
 
@@ -51,20 +52,22 @@ const ProgramArea = (props: IProgramAreaProps) => {
         {/**
          * UI for triggering 'Add Program area' section starts here
          */}
-        <section className="d-flex justify-content-center">
-          <button
-            className="bcgovbtn bcgovbtn__tertiary bold"
-            onClick={() => setShowProgramArea(!showProgramArea)}
-          >
-            {!showProgramArea ? 'Add a role' : 'Hide Roles'}
-            <FontAwesomeIcon icon={faPlus} className="ml-2" />
-          </button>
-        </section>
+        {editProgramAreaReviewers && (
+          <section className="d-flex justify-content-center">
+            <button
+              className="bcgovbtn bcgovbtn__tertiary bold"
+              onClick={() => setShowProgramArea(!showProgramArea)}
+            >
+              {!showProgramArea ? 'Add a role' : 'Hide Roles'}
+              <FontAwesomeIcon icon={faPlus} className="ml-2" />
+            </button>
+          </section>
+        )}
         {/**
          * UI for adding roles to the program area section starts here
          */}
-        {editProgramArea && showProgramArea && (
-          <div className={`${editProgramArea && 'data-row'}`}>
+        {editProgramAreaReviewers && showProgramArea && (
+          <div className={`${editProgramAreaReviewers && 'data-row'}`}>
             <div className="d-flex">
               <div className="p-2 col-md-5">
                 <Dropdown

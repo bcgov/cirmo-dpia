@@ -13,3 +13,7 @@ export interface IAccuracyCorrectionAndRetention {
     describeRetention: string;
   };
 }
+
+export interface AccuracyCorrectionAndRetentionProps {
+  showComments?: boolean;
+}

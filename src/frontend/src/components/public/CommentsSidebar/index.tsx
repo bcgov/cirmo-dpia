@@ -8,8 +8,8 @@ import { HttpRequest } from '../../../utils/http-request.util';
 import Modal from '../../../components/common/Modal';
 import Messages from './messages';
 import { useLocation } from 'react-router-dom';
-import { getGUID } from '../../../utils/helper.util';
-import { statusList } from '../../../utils/status';
+import { getGUID } from '../../../utils/user';
+import { statusList } from '../../../utils/statusList/statusList';
 const CommentSidebar = ({
   pia,
   piaId,
@@ -219,6 +219,7 @@ const CommentSidebar = ({
                   setNewCommentContent('');
                 }}
                 aria-label="Add New Comment Button"
+                disabled={(newCommentContent || '').trim() === ''}
               >
                 Add
               </button>
