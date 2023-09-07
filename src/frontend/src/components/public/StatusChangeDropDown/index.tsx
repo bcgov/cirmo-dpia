@@ -1,4 +1,3 @@
-import { getUserRole } from '../../../utils/user';
 import { ChangeStatus } from '../../../utils/statusList/types';
 import { statusList } from '../../../utils/statusList/statusList';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +27,6 @@ function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
 function StatusChangeDropDown({
   pia,
   changeStatusFn,
-  mode,
 }: IStatusChangeDropDownProps) {
   /* This function checks if the user has the privilege to change the status
    * of the PIA. It checks the user's role against the statusList and the
@@ -37,7 +35,6 @@ function StatusChangeDropDown({
    * true. Otherwise, it returns false.
    */
   const checkPrivileges = () => {
-    const role = getUserRole();
     const statuses: ChangeStatus[] = [];
 
     let hasStatusDropdown = false;

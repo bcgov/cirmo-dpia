@@ -1,11 +1,9 @@
 .callout-section {
-
   &.results-callout-section {
     justify-content: start;
     height: auto;
     margin-block: 1.5em 3em;
   }
-  
 }
 
 .callout {
@@ -18,7 +16,7 @@
   padding: 2.5em 1.56em;
 
   &.bg-white {
-    background-color: $bg-white; 
+    background-color: $bg-white;
   }
 
   &.results-callout {

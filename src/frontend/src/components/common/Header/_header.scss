@@ -20,15 +20,17 @@
   }
 
   p {
-    margin: 0px;
+    margin: 0;
   }
 
   span {
     color: $secondary-yellow;
     vertical-align: super;
+
     @include breakpoint(0 map-get($grid-breakpoints, 'md')) {
       vertical-align: baseline;
     }
+
     font-weight: inherit;
     font-variant: small-caps;
   }
@@ -44,4 +46,3 @@ header .banner {
   border-width: 1px;
   border-color: lightgrey; */
 }
-

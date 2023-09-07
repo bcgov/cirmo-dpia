@@ -1,6 +1,7 @@
 .topnav {
   display: flex;
 }
+
 .navbar-container {
   display: flex;
   position: fixed;
@@ -17,6 +18,7 @@
   align-items: center;
   list-style: none;
   margin-bottom: 0;
+
   & :first-child {
     padding-left: 0;
   }

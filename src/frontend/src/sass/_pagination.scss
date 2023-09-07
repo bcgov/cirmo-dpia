@@ -59,6 +59,11 @@
     gap: 0.5em;
     cursor: pointer;
 
+    .dropdown-toggles {
+      display: flex;
+      align-items: center;
+    }
+
     .dropdown {
       display: flex;
       width: 85px; // eyeballed
@@ -70,11 +75,6 @@
     .dropdown-menu {
       width: 75px;
       min-width: auto;
-    }
-
-    .dropdown-toggles {
-      display: flex;
-      align-items: center;
     }
   }
 
@@ -98,7 +98,7 @@
       background-color: $bg-lightgray;
       cursor: auto;
     }
-    //left:auto;
+    // left:auto;
   }
 
   .page__enumeration__container {

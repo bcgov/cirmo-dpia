@@ -1,4 +1,3 @@
-import React from 'react';
 import { SpinnerProps } from './interfaces';
 
 const Spinner = ({ show = true }: SpinnerProps) => {

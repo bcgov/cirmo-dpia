@@ -34,7 +34,7 @@ function App() {
             Skip to main content
           </a>
         </div>
-        <Header user="" />
+        <Header />
 
         {pathname.startsWith('/') && !isAuthenticated() ? null : (
           <>

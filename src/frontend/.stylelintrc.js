@@ -15,11 +15,6 @@ module.exports = {
      * @see https://github.com/stylelint-scss/stylelint-config-standard-scss
      */
     'stylelint-config-standard-scss',
-
-    /**
-     * @see https://github.com/prettier/stylelint-config-prettier
-     */
-    'stylelint-config-prettier',
   ],
 
   /**
@@ -40,7 +35,7 @@ module.exports = {
   /**
    * @see https://stylelint.io/user-guide/configure/#ignorefiles
    */
-  ignoreFiles: ['**/*.js', '**/*.jsx'],
+  ignoreFiles: ['**/*.js', '**/*.jsx', 'src/sass/_bootstrap_variables.scss'],
 
   /**
    * @see https://stylelint.io/user-guide/rules/list
@@ -54,6 +49,7 @@ module.exports = {
     'string-quotes': 'single', // https://stylelint.io/user-guide/rules/list/string-quotes/
     'scss/comment-no-empty': null, // https://github.com/stylelint-scss/stylelint-scss/tree/master/src/rules/comment-no-empty
     'scss/double-slash-comment-empty-line-before': null, // https://github.com/stylelint-scss/stylelint-scss/tree/master/src/rules/double-slash-comment-empty-line-before
+    'scss/dollar-variable-pattern': null,
     'prettier/prettier': [true, { severity: 'warning' }], // https://github.com/prettier/stylelint-prettier#installation
     'scss/operator-no-newline-after': null,
     'at-rule-empty-line-before': [

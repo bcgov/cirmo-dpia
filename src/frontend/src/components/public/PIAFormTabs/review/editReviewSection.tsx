@@ -23,10 +23,6 @@ interface IReviewProps {
 
 const EditReviewSection = (props: IReviewProps) => {
   const {
-    pia,
-    reviewSection,
-    printPreview,
-    editReviewNote,
     setEditReviewNote,
     setAcknowledged,
     setReviewNote,

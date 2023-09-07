@@ -49,14 +49,12 @@
 }
 
 html.print-preview {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
   * {
     -webkit-print-color-adjust: exact;
-  }
-
-  & {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
   }
 
   #root {
@@ -77,6 +75,8 @@ html.print-preview {
     margin: 0 auto !important;
     border: 0;
     padding: 0 !important;
+    padding-top: 72px;
+    padding-bottom: 72px;
     float: none !important;
     overflow: visible;
   }
@@ -117,8 +117,8 @@ html.print-preview {
     font-size: 30pt;
     text-decoration: underline;
     padding-bottom: 5px;
-    //display:inline-block;
-    //border-bottom:1.5px solid #333333;
+    // display:inline-block;
+    // border-bottom:1.5px solid #333333;
   }
 
   h3 {
@@ -132,7 +132,7 @@ html.print-preview {
     line-height: 1.5;
 
     /* identical to box height */
-    letter-spacing: -0.0531272px;
+    letter-spacing: -0.0531px;
     color: #808080;
   }
 
@@ -175,20 +175,15 @@ html.print-preview {
     size: auto; /* auto is the initial value */
   }
 
-  body {
-    padding-top: 72px;
-    padding-bottom: 72px;
-  }
-
   a[href]::after {
     content: none !important;
   }
 
-  @page :footer {
+  @page footer {
     display: none;
   }
 
-  @page :header {
+  @page header {
     display: none;
   }
 
@@ -224,20 +219,14 @@ html.print-preview {
 
   .review-container {
     width: 100%;
-    height:400px;
+    height: 400px;
     border: 1pt solid #606060;
     margin-top: 1rem;
     margin-bottom: 90px;
-
   }
 
   .signatures,
   .pageBreak {
-    page-break-before: always;
-    padding-top: 90px;
-  }
-
-  .signature-section:not(:nth-child(2)) {
     page-break-before: always;
     padding-top: 90px;
   }
@@ -273,5 +262,10 @@ html.print-preview {
       margin-top: 1rem;
       margin-bottom: 90px;
     }
+  }
+
+  .signature-section:not(:nth-child(2)) {
+    page-break-before: always;
+    padding-top: 90px;
   }
 }
