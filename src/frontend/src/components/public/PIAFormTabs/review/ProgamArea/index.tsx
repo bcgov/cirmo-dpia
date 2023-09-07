@@ -14,7 +14,7 @@ interface IProgramAreaProps {
   reviewForm: IReview;
   pia: IPiaForm;
   addRole: (role: string) => void;
-  stateChangeHandler: (value: any, key: string) => void;
+  stateChangeHandler: (value: any, key: string, callApi?: boolean) => void;
   mandatoryADM: boolean;
 }
 

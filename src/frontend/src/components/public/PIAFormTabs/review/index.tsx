@@ -62,38 +62,29 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const addRole = useCallback(
     (role: string) => {
-      const casedRoles =
-        reviewForm.programArea?.selectedRoles?.map((r) => r.toLowerCase()) ||
-        [];
-
       if (!role) return; // no empty role
 
-      if (casedRoles?.includes(role.toLowerCase())) return; // role with the same name already exists
+      const existingRoles = reviewForm.programArea?.selectedRoles || [];
+      const casedRoles = existingRoles.map((r) => r.toLowerCase());
 
-      if (!reviewForm.programArea?.selectedRoles) {
-        reviewForm.programArea = {
-          ...reviewForm?.programArea,
-          selectedRoles: [],
-        };
-      }
+      if (casedRoles.includes(role.toLowerCase())) return; // role with the same name already exists
 
-      reviewForm.programArea?.selectedRoles.push(role);
+      const updatedRoles = [...existingRoles, role];
 
-      stateChangeHandler(
-        reviewForm.programArea?.selectedRoles,
-        'programArea.selectedRoles',
-      );
+      const updatedProgramArea = {
+        ...reviewForm.programArea,
+        selectedRoles: updatedRoles,
+      };
 
       piaStateChangeHandler(
         {
-          programArea: {
-            ...reviewForm.programArea,
-            selectedRoles: reviewForm.programArea.selectedRoles,
-          },
+          programArea: updatedProgramArea,
         },
         'review',
         true,
       );
+
+      stateChangeHandler(updatedRoles, 'programArea.selectedRoles', true);
     },
     [piaStateChangeHandler, reviewForm],
   );

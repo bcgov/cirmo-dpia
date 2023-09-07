@@ -12,7 +12,7 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../../contexts/PiaFormContext';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 
 export interface IDisplayProgramAreaProps {
@@ -62,6 +62,27 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
     return props.reviewForm.programArea?.selectedRoles;
   };
 
+  const deleteRole = useCallback(
+    (roleIndex: number) => {
+      const updatedRoles = [...props.reviewForm.programArea.selectedRoles];
+      updatedRoles.splice(roleIndex, 1);
+
+      piaStateChangeHandler(
+        {
+          programArea: {
+            ...props.reviewForm.programArea,
+            selectedRoles: updatedRoles,
+          },
+        },
+        'review',
+        true,
+      );
+
+      props.stateChangeHandler(updatedRoles, 'programArea.selectedRoles', true);
+    },
+    [props, piaStateChangeHandler],
+  );
+
   return (
     <div>
       {canEditProgramAreaReviewers && <h4 className="mb-3">Selected Roles</h4>}
@@ -80,17 +101,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
                 !(props.mandatoryADM && role === ApprovalRoles.ADM) && (
                   <button
                     className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative ps-3"
-                    onClick={() => {
-                      props.reviewForm.programArea.selectedRoles?.splice(
-                        index,
-                        1,
-                      );
-                      props.stateChangeHandler(
-                        props.reviewForm.programArea.selectedRoles,
-                        'programArea.selectedRoles',
-                      );
-                      piaStateChangeHandler(props.reviewForm, 'review', true);
-                    }}
+                    onClick={() => deleteRole(index)}
                   >
                     <FontAwesomeIcon className="" icon={faTrash} size="xl" />
                   </button>

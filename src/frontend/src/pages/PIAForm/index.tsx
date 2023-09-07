@@ -407,6 +407,7 @@ const PIAFormPage = () => {
   };
 
   const fetchAndUpdatePia = async (piaId: string) => {
+    const currentPia = pia;
     const updatedPia = (
       await HttpRequest.get<IPiaFormResponse>(
         API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
@@ -418,7 +419,7 @@ const PIAFormPage = () => {
         },
       )
     ).data;
-    setStalePia(pia);
+    setStalePia(currentPia);
     setPia(updatedPia);
     setIsValidationFailed(
       updatedPia.branch === null ||
