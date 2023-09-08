@@ -283,19 +283,22 @@ export class PiaIntakeService {
     // CPO can only see CPO_REVIEW status in the Active PIAs
     if (isCPO) {
       const allStatuses = Object.values(PiaIntakeStatusEnum);
-      const exceptions = [
-        PiaIntakeStatusEnum.CPO_REVIEW, // CPOs must always see PIAs in CPO_REVIEW status by default
-        PiaIntakeStatusEnum.COMPLETE, // CPOs can see COMPLETE PIAs, if explicitly requested by status filter
+      const excludedStatuses = [
+        PiaIntakeStatusEnum.INCOMPLETE,
+        PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
+        PiaIntakeStatusEnum.MPO_REVIEW,
       ];
-      const statusIn = allStatuses.filter((s) => !exceptions.includes(s));
+      const statusIn = allStatuses.filter((s) => !excludedStatuses.includes(s));
 
-      if (query.filterByStatus && statusIn.includes(query.filterByStatus)) {
+      if (query.filterByStatus && !statusIn.includes(query.filterByStatus)) {
         // skip this where clause
       } else {
         // default CPO query
         whereClause.push({
           ...commonWhereClause,
-          status: PiaIntakeStatusEnum.CPO_REVIEW,
+          status: In(
+            statusIn.filter((s) => s !== PiaIntakeStatusEnum.COMPLETE),
+          ),
         });
       }
     }
@@ -533,7 +536,9 @@ export class PiaIntakeService {
       isCPO &&
       (piaIntake.status === PiaIntakeStatusEnum.CPO_REVIEW ||
         piaIntake.status === PiaIntakeStatusEnum.COMPLETE ||
-        piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW) // [UTOPIA-1112] fix cpo update pia status throw 403 error #1187;; WRONG FIX. If the status is changed other than CPO_Review.. user should be taken to a different page
+        piaIntake.status === PiaIntakeStatusEnum.PENDING_COMPLETION ||
+        piaIntake.status === PiaIntakeStatusEnum.MPO_REVIEW ||
+        piaIntake.status === PiaIntakeStatusEnum.FINAL_REVIEW) // [UTOPIA-1112] fix cpo update pia status throw 403 error #1187;; WRONG FIX. If the status is changed other than CPO_Review.. user should be taken to a different page
       // currently user sees CPO_Review in their list; but can access MPO_Review also, if given direct link
       // TODO to be fixed
     ) {
