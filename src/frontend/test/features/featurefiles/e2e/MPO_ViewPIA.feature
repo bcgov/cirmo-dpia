@@ -102,7 +102,7 @@ Scenario Outline: As <role> user, I am able to submit a valid form with all fiel
     Then I click on "Add a role" button 
     And I enter "role"
     Then I click on "Add" button
-    And I check "Review Acknowledgement" checkbox
+    And I click with name "Review Acknowledgement" checkbox
     And I enter "Review Note"
     Then I click on "Confirm" button
     Then I click on "Submit" button

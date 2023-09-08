@@ -1,8 +1,6 @@
 const Page = require('./page');
 const link = "//a[contains(text(),'";
 const randomLink = "(//label[contains(text(),'')])[";
-const mpoCheckboxLabel =
-  'I acknowledge that I have participated in the drafting and/or review of this PIA on behalf of my ministry or sector. All privacy risks of which I am aware are documented with acceptable risk mitigations in place and I have no outstanding privacy concerns related to the initiative under review.';
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -29,16 +27,9 @@ class fillPPQ extends Page {
    */
 
   async selectCheckbox(checkName) {
-    if (checkName == 'Review Acknowledgement') {
-      const xpathExpression = `//input[@aria-label="${mpoCheckboxLabel}"]`;
-      const checkboxElement = await $(xpathExpression);
-      await checkboxElement.waitForClickable();
-      await checkboxElement.click();
-    } else {
-      const h1 = link + checkName + "')]/../input";
-      const headerElement = await $(h1);
-      await headerElement.waitForDisplayed();
-    }
+    const h1 = link + checkName + "')]/../input";
+    const headerElement = await $(h1);
+    await headerElement.waitForDisplayed();
   }
 
   async clickCheckbox() {

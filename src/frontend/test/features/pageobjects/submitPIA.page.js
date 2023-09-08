@@ -42,6 +42,8 @@ const roleDropdownOptions = [
   'MCIO',
   'ADM',
 ];
+const mpoCheckboxLabel =
+  'I acknowledge that I have participated in the drafting and/or review of this PIA on behalf of my ministry or sector. All privacy risks of which I am aware are documented with acceptable risk mitigations in place and I have no outstanding privacy concerns related to the initiative under review.';
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -108,7 +110,7 @@ class submitPage extends Page {
   }
   get roleLabel() {
     return $(
-      "//label[contains(text(),'Select a role from the list')]/../div/select",
+      '//label[contains(text(),\'Select a role from the list\')]/../div/select[@id="programArea"]',
     );
   }
 
@@ -244,12 +246,22 @@ class submitPage extends Page {
       const random = Math.floor(
         Math.random() * (roleDropdownOptions.length - 1),
       );
+      await this.roleLabel.waitForDisplayed();
       await this.roleLabel.scrollIntoView();
+      await this.roleLabel.waitForClickable();
       await this.roleLabel.selectByAttribute(
         'value',
         roleDropdownOptions[random],
       );
     }
+  }
+
+  async clickCheckboxByName(checkboxName) {
+    console.log('clickCheckboxByName is : ' + checkboxName);
+    const xpathExpression = `//input[@aria-label="${mpoCheckboxLabel}"]`;
+    const checkboxElement = await $(xpathExpression);
+    await checkboxElement.waitForClickable();
+    await checkboxElement.click();
   }
 
   /**
