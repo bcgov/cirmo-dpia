@@ -1536,7 +1536,11 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            status: In([
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
+            ]),
           },
           {
             isActive: true,
@@ -1603,7 +1607,11 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            status: In([
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
+            ]),
           },
           {
             isActive: true,
@@ -1771,7 +1779,11 @@ describe('PiaIntakeService', () => {
           },
           {
             isActive: true,
-            status: PiaIntakeStatusEnum.CPO_REVIEW,
+            status: In([
+              PiaIntakeStatusEnum.CPO_REVIEW,
+              PiaIntakeStatusEnum.FINAL_REVIEW,
+              PiaIntakeStatusEnum.PENDING_COMPLETION,
+            ]),
             ministry: GovMinistriesEnum.ATTORNEY_GENERAL,
           },
           {
