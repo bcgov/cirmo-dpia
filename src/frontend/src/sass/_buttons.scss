@@ -166,13 +166,14 @@ a:hover {
   background-color: $bg-white;
 
   --text-color: $error;
+
   border: 2px solid $error;
 
   &:hover {
     --text-color: $error;
+
     text-decoration: underline;
     border: 2px solid $error;
-
   }
 }
 

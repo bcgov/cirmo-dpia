@@ -18,9 +18,8 @@ interface IViewProgramAreaReviewProps {
 const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const { pia, printPreview, stateChangeHandler, role } = props;
 
-  const reviewedByDisplayName = Object(
-    props.pia?.review?.mpo,
-  )?.reviewedByDisplayName;
+  const reviewedByDisplayName = Object(props.pia?.review?.mpo)
+    ?.reviewedByDisplayName;
 
   const reviewedAt = Object(props.pia?.review?.mpo)?.reviewedAt;
   const reviewGuid = Object(props.pia?.review?.mpo)?.reviewedByGuid;

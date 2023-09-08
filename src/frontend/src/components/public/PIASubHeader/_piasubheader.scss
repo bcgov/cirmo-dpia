@@ -6,7 +6,7 @@
   width: 100%;
   background-color: $bg-white;
   z-index: 100;
-  box-shadow: 0px 17px 29px 0px #dce2ee99;
+  box-shadow: 0 17px 29px 0 #dce2ee99;
   align-items: center;
   justify-content: space-between;
 
@@ -15,9 +15,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 10%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     width: 50%;
+
     @include breakpoint(0 map-get($grid-breakpoints, 'xxl')) {
       width: 40%;
     }
@@ -41,7 +42,8 @@
   max-width: 80%;
   list-style: none;
   margin-bottom: 0;
+
   & :first-child {
-    //padding-left: 0;
+    // padding-left: 0;
   }
 }

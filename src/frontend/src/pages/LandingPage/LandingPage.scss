@@ -11,7 +11,7 @@
 
   @include breakpoint(map-get($grid-breakpoints, 'xxl')) {
     background-repeat: no-repeat;
-    background-image: url(/src/assets/public_homepage/hero.svg);
+    background-image: url('/src/assets/public_homepage/hero.svg');
     background-position: 90% 100%;
   }
 
@@ -21,6 +21,7 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
+
     .hero-content {
       max-width: 50ch;
     }
@@ -40,6 +41,7 @@
 
 .ctas {
   display: flex;
+
   & > :not(last-child) {
     margin-right: 1em;
   }
@@ -77,6 +79,7 @@
     justify-content: center;
     align-items: center;
   }
+
   display: flex;
   justify-content: space-between;
   align-items: space-evenly;

@@ -21,10 +21,7 @@ import { getAccessToken } from '../../../utils/getAccessToken';
 import { IConfig } from '../../../types/interfaces/config.interface';
 import { AppStorage } from '../../../utils/storage';
 
-type Props = {
-  user: string | null;
-};
-function Header({ user }: Props) {
+function Header() {
   const navigate = useNavigate();
   const { setAuthenticated } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();

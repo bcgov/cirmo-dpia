@@ -21,11 +21,6 @@
 
     & > tbody {
       & > tr {
-        & > td:first-child {
-          width: 50ch;
-          color: $primary-colour;
-        }
-
         & > td {
           &.clickable {
             font-weight: 700;
@@ -40,6 +35,11 @@
             font-weight: 700;
             margin-inline-end: 1em;
           }
+        }
+
+        & > td:first-child {
+          width: 50ch;
+          color: $primary-colour;
         }
       }
     }

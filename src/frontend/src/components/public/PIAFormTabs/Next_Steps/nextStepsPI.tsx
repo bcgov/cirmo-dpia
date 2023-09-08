@@ -87,7 +87,7 @@ const NextStepsPI = (navigateFn: PIFlow) => {
     }
   };
 
-  const updateStatus = (e: any) => {
+  const updateStatus = () => {
     /* set status based on what button is clicked */
     stateChangeHandler('modalShow', false);
     if (nextStepAction.value === 'complete') {
@@ -140,7 +140,7 @@ const NextStepsPI = (navigateFn: PIFlow) => {
         titleText={nextStepAction.modalTitle}
         show={nextStepAction.modalShow}
         value={nextStepAction.value}
-        handleClose={(e) => updateStatus(e)}
+        handleClose={() => updateStatus()}
         handleCancel={handleModalCancel}
       >
         <p className="modal-text">{nextStepAction.modalDescription}</p>

@@ -1,7 +1,7 @@
 .dropdown {
   display: flex;
   align-items: center;
-  position: relative; 
+  position: relative;
 }
 
 .dropdown-icon {
@@ -11,8 +11,8 @@
 
 .dropdown-icon-bg {
   left: calc(100% - 2em);
-  background-image: url("/src/assets/dropdown-icon.svg");
-  background-position:  right 3% bottom 45%;
+  background-image: url('/src/assets/dropdown-icon.svg');
+  background-position: right 3% bottom 45%;
   background-repeat: no-repeat;
 }
 

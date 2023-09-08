@@ -54,16 +54,14 @@ const HandleState = (
         if (
           'link' in Object(Object(current.state?.[direction])?.[actionType])
         ) {
-          returnObj.link = Object(current.state?.[direction])?.[
-            actionType
-          ]?.link;
+          returnObj.link = Object(current.state?.[direction])?.[actionType]
+            ?.link;
         }
         if (
           'title' in Object(Object(current.state?.[direction])?.[actionType])
         ) {
-          returnObj.title = Object(current.state?.[direction])?.[
-            actionType
-          ]?.title;
+          returnObj.title = Object(current.state?.[direction])?.[actionType]
+            ?.title;
         }
         ret = returnObj;
         break;
