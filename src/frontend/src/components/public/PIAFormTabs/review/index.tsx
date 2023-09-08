@@ -78,6 +78,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
       piaStateChangeHandler(
         {
+          ...reviewForm,
           programArea: updatedProgramArea,
         },
         'review',

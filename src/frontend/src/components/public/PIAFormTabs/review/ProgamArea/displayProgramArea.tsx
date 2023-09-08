@@ -69,6 +69,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
 
       piaStateChangeHandler(
         {
+          ...props.reviewForm,
           programArea: {
             ...props.reviewForm.programArea,
             selectedRoles: updatedRoles,
