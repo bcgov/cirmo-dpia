@@ -39,18 +39,18 @@
     "@nestjs/typeorm": "9.0.1",
     "class-transformer": "0.5.1",
     "dotenv": "16.0.2",
-    "express": "4.18.1",
+    "express": "4.18.2",
     "keycloak-connect": "18.0.2",
     "marked": "5.1.2",
     "morgan": "1.10.0",
-    "nest-keycloak-connect": "1.9.0",
+    "nest-keycloak-connect": "1.9.2",
     "pg": "8.11.3",
     "pug": "3.0.2",
     "puppeteer": "13.5.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.8.1",
-    "typeorm": "0.3.14"
+    "typeorm": "0.3.17"
   },
   "devDependencies": {
     "@nestjs/cli": "9.3.0",
