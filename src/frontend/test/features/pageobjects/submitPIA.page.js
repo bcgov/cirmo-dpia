@@ -42,7 +42,7 @@ const roleDropdownOptions = [
   'MCIO',
   'ADM',
 ];
-const mpoCheckboxLabel =
+const mpoCheckboxText =
   'I acknowledge that I have participated in the drafting and/or review of this PIA on behalf of my ministry or sector. All privacy risks of which I am aware are documented with acceptable risk mitigations in place and I have no outstanding privacy concerns related to the initiative under review.';
 
 /**
@@ -112,6 +112,10 @@ class submitPage extends Page {
     return $(
       '//label[contains(text(),\'Select a role from the list\')]/../div/select[@id="programArea"]',
     );
+  }
+
+  get checkboxLabel() {
+    return $(`//label[contains(text(), '${mpoCheckboxText}')]`);
   }
 
   /**
@@ -240,6 +244,7 @@ class submitPage extends Page {
     if (value == 'Review Note') {
       await this.reviewText.scrollIntoView();
       await this.reviewText.waitForExist();
+      await this.reviewText.waitForDisplayed();
       await this.reviewText.setValue('MPO Review Confirmed');
     }
     if (value == 'role') {
@@ -257,11 +262,11 @@ class submitPage extends Page {
   }
 
   async clickCheckboxByName(checkboxName) {
-    console.log('clickCheckboxByName is : ' + checkboxName);
-    const xpathExpression = `//input[@aria-label="${mpoCheckboxLabel}"]`;
-    const checkboxElement = await $(xpathExpression);
-    await checkboxElement.waitForClickable();
-    await checkboxElement.click();
+    if (checkboxName == 'Review Acknowledgement') {
+      await this.checkboxLabel.scrollIntoView();
+      await this.checkboxLabel.waitForClickable();
+      await this.checkboxLabel.click();
+    }
   }
 
   /**
