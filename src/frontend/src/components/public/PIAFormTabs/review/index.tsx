@@ -390,11 +390,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             ))
           ) : (
             <>
-              <div className="d-grid gap-3">
-                <h3>
-                  <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
-                </h3>
-              </div>
               <div className="row mb-5 p-3 pb-5 border border-2 rounded">
                 <div> Reviewed by</div>
                 <div> Review incomplete</div>

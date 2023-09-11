@@ -45,9 +45,6 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
 
   return (
     <div className="d-grid gap-3">
-      <h3>
-        <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
-      </h3>
       {printPreview ? (
         <div>
           {Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged === false ? (
