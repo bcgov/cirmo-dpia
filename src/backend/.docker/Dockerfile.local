@@ -7,6 +7,7 @@ RUN apt-get update && \
     freetype2-demos \
     libharfbuzz0b \
     ca-certificates \
+    procps \
     fonts-freefont-ttf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
