@@ -64,6 +64,7 @@ exports.config = {
       'moz:firefoxOptions': {
         args: ['--headless'],
       },
+      acceptInsecureCerts: true,
     },
   ],
   //
