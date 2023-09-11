@@ -301,7 +301,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                       ([cpoId, reviewSection]) => {
                         return reviewForm.cpo ? (
                           <div
-                            className="d-flex align-items-center"
+                            // className="d-flex align-items-center"
                             key={cpoId}
                           >
                             {!allowUserReviewCPO() ||
