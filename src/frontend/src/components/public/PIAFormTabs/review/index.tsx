@@ -1,9 +1,7 @@
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { IReview, IReviewSection } from './interfaces';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { IReview } from './interfaces';
 import { getGUID, isCPORole } from '../../../../utils/user';
 import {
   IPiaFormContext,
@@ -226,60 +224,61 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               </div>
             </section>
           )}
-          {pia.hasAddedPiToDataElements !== false &&
-          showCpoReview &&
-          !invalidCpoReviewData ? (
-            <section className="mt-5 ">
-              <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
-              <p className="pb-4">
-                {messages.PiaReviewHeader.MinistrySection.CPO.Description.en}
-              </p>
-              <div className="drop-shadow card p-4 p-md-5">
-                <div className="data-table__container">
-                  {/* Display the finished reviews first */}
-                  {pia?.review?.cpo &&
-                    Object.entries(pia?.review?.cpo).map(
-                      ([cpoId, reviewSection]) =>
-                        reviewSection?.isAcknowledged ||
-                        (cpoId !== userGuid &&
-                          !showEditSectionForCurrentUser()) ? (
-                          <div key={cpoId}>
-                            <ViewCPOReview
-                              pia={pia}
-                              cpoId={cpoId}
-                              stateChangeHandler={stateChangeHandler}
-                            />
-                          </div>
-                        ) : null,
-                    )}
+          {isCPORole() &&
+            (pia.hasAddedPiToDataElements !== false &&
+            showCpoReview &&
+            !invalidCpoReviewData ? (
+              <section className="mt-5 ">
+                <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
+                <p className="pb-4">
+                  {messages.PiaReviewHeader.MinistrySection.CPO.Description.en}
+                </p>
+                <div className="drop-shadow card p-4 p-md-5">
+                  <div className="data-table__container">
+                    {/* Display the finished reviews first */}
+                    {pia?.review?.cpo &&
+                      Object.entries(pia?.review?.cpo).map(
+                        ([cpoId, reviewSection]) =>
+                          reviewSection?.isAcknowledged ||
+                          (cpoId !== userGuid &&
+                            !showEditSectionForCurrentUser()) ? (
+                            <div key={cpoId}>
+                              <ViewCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            </div>
+                          ) : null,
+                      )}
 
-                  {/* Then, show the edit sections for those who haven't acknowledged */}
-                  {pia?.review?.cpo &&
-                    Object.entries(pia?.review?.cpo).map(
-                      ([cpoId, reviewSection]) =>
-                        !reviewSection?.isAcknowledged ? (
-                          <div key={cpoId}>
-                            <EditCPOReview
-                              pia={pia}
-                              cpoId={cpoId}
-                              stateChangeHandler={stateChangeHandler}
-                            />
-                          </div>
-                        ) : null,
-                    )}
+                    {/* Then, show the edit sections for those who haven't acknowledged */}
+                    {pia?.review?.cpo &&
+                      Object.entries(pia?.review?.cpo).map(
+                        ([cpoId, reviewSection]) =>
+                          !reviewSection?.isAcknowledged ? (
+                            <div key={cpoId}>
+                              <EditCPOReview
+                                pia={pia}
+                                cpoId={cpoId}
+                                stateChangeHandler={stateChangeHandler}
+                              />
+                            </div>
+                          ) : null,
+                      )}
 
-                  {/* Check if the logged-in user hasn't reviewed the PIA, then show the Edit section for them */}
-                  {showEditSectionForCurrentUser() && (
-                    <EditCPOReview
-                      pia={pia}
-                      cpoId={userGuid}
-                      stateChangeHandler={stateChangeHandler}
-                    />
-                  )}
+                    {/* Check if the logged-in user hasn't reviewed the PIA, then show the Edit section for them */}
+                    {showEditSectionForCurrentUser() && (
+                      <EditCPOReview
+                        pia={pia}
+                        cpoId={userGuid}
+                        stateChangeHandler={stateChangeHandler}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </section>
-          ) : null}
+              </section>
+            ) : null)}
         </>
       ) : pia?.status === PiaStatuses.EDIT_IN_PROGRESS ||
         pia?.status === PiaStatuses.INCOMPLETE ||
