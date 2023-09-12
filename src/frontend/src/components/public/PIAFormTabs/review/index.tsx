@@ -296,37 +296,58 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               </p>
               <div className="drop-shadow card p-4 p-md-5">
                 <div className="data-table__container">
-                  {pia?.review?.cpo ? (
-                    Object.entries(pia?.review?.cpo)?.map(
+                  {/* Display the finished reviews first */}
+                  {pia?.review?.cpo &&
+                    Object.entries(pia?.review?.cpo).map(
                       ([cpoId, reviewSection]) => {
-                        return reviewForm.cpo ? (
-                          <div key={cpoId}>
-                            {!allowUserReviewCPO() ||
-                            Object(pia?.review?.cpo)?.[cpoId]
-                              ?.isAcknowledged ? (
+                        if (
+                          reviewSection?.isAcknowledged ||
+                          !allowUserReviewCPO() ||
+                          Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged
+                        ) {
+                          return (
+                            <div key={cpoId}>
                               <ViewCPOReview
                                 pia={pia}
                                 cpoId={cpoId}
                                 stateChangeHandler={stateChangeHandler}
                               />
-                            ) : (
+                            </div>
+                          );
+                        }
+                        return null;
+                      },
+                    )}
+
+                  {/* Then, show the edit sections */}
+                  {pia?.review?.cpo &&
+                    Object.entries(pia?.review?.cpo).map(
+                      ([cpoId, reviewSection]) => {
+                        if (!reviewSection?.isAcknowledged) {
+                          return (
+                            <div key={cpoId}>
                               <EditCPOReview
                                 pia={pia}
                                 cpoId={cpoId}
                                 stateChangeHandler={stateChangeHandler}
                               />
-                            )}
-                          </div>
-                        ) : null;
+                            </div>
+                          );
+                        }
+                        return null;
                       },
-                    )
-                  ) : (
+                    )}
+
+                  {/* Check if there's no CPO review by the current user, then show the Edit section for them */}
+                  {!pia?.review?.cpo ? (
                     <EditCPOReview
                       pia={pia}
                       cpoId={userGuid}
                       stateChangeHandler={stateChangeHandler}
                     />
-                  )}
+                  ) : null}
+
+                  {/* Finally, display the Add CPO reviewer button */}
                   {enableAddNewCPOReviewer() ? (
                     <>
                       <div className="horizontal-divider "></div>
