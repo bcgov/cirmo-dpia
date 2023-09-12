@@ -230,8 +230,8 @@ class submitPage extends Page {
       );
     }
     if (value == 'Personal information as No') {
+      await browser.setWindowSize(940, 800);
       await this.labelsNo.scrollIntoView();
-      await browser.setWindowSize(940, 700);
       await this.labelsNo.waitForExist();
       await this.labelsNo.click();
     }
