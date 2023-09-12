@@ -26,19 +26,14 @@ module.exports = class Page {
   async clickButton(button) {
     if (button == 'cancel') {
       var newbuttondiv = '(' + buttonNorm + 'Cancel' + "')])[2]";
-    } else if (button == 'Confirm') {
-      const confirmBt = await $('//button[contains(text(),"Confirm")]');
-      await confirmBt.scrollIntoView();
-      await confirmBt.waitForClickable({ timeout: 20000 });
-      await confirmBt.click();
     } else {
       var newbuttondiv = buttonNorm + button + "')]";
-      const buttonElement = await $(newbuttondiv);
-      await buttonElement.scrollIntoView();
-      await buttonElement.waitForClickable({ timeout: 20000 });
-      await buttonElement.click();
-      await browser.pause(2000);
     }
+    const buttonElement = await $(newbuttondiv);
+    await buttonElement.scrollIntoView();
+    await buttonElement.waitForClickable({ timeout: 20000 });
+    await buttonElement.click();
+    await browser.pause(2000);
   }
   async clickButtonDiv(button) {
     const newbuttondiv = buttonDiv + button + "')]";
