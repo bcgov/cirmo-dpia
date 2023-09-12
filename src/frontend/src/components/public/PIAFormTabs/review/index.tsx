@@ -164,52 +164,11 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     return true;
   };
 
-  const addNewCPOReview = () => {
-    const newCPOReview = {
-      [userGuid]: {
-        isAcknowledged: false,
-        reviewNote: '',
-      },
-    };
-    if (reviewForm?.cpo !== undefined) {
-      setReviewForm({
-        ...reviewForm,
-        cpo: {
-          ...reviewForm.cpo,
-          ...newCPOReview,
-        },
-      });
-    } else {
-      setReviewForm({
-        ...reviewForm,
-        cpo: {},
-      });
-    }
-
-    stateChangeHandler(reviewForm, 'review', true);
-  };
-
-  const enableAddNewCPOReviewer = () => {
-    /**
-     * the logic is list as below
-     * if a PIA not reviewed by any cpo, the cpo user can not add a new CPO reviewer
-     * if a cpo already reviewed this PIA, this cpo can not add a new CPO review section
-     * only a PIA reviewed by other CPO user but not current login CPO user,
-     * the current login CPO user allowed to see the button and add themselves as a reviewer for this pia
-     */
-    // if the current login user GUID exist in CPO section, the user can not see the button
-    if (
-      pia?.review?.cpo &&
-      Object.keys(pia?.review?.cpo).some((cpoId: string) => cpoId === userGuid)
-    )
-      return false;
-    // if this current user already review the pia, can not see this button
-    if (!allowUserReviewCPO()) return false;
-
-    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview)
-      return false;
-
-    return true;
+  const showEditSectionForCurrentUser = () => {
+    // Check if the current user has not reviewed the PIA.
+    return !(
+      pia?.review?.cpo && Object.keys(pia?.review?.cpo).includes(userGuid)
+    );
   };
 
   const enableMPOReviewViewMode = () => {
@@ -301,8 +260,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     Object.entries(pia?.review?.cpo).map(
                       ([cpoId, reviewSection]) =>
                         reviewSection?.isAcknowledged ||
-                        !allowUserReviewCPO() ||
-                        Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged ? (
+                        (cpoId !== userGuid &&
+                          !showEditSectionForCurrentUser()) ? (
                           <div key={cpoId}>
                             <ViewCPOReview
                               pia={pia}
@@ -313,7 +272,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         ) : null,
                     )}
 
-                  {/* Then, show the edit sections */}
+                  {/* Then, show the edit sections for those who haven't acknowledged */}
                   {pia?.review?.cpo &&
                     Object.entries(pia?.review?.cpo).map(
                       ([cpoId, reviewSection]) =>
@@ -328,29 +287,13 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         ) : null,
                     )}
 
-                  {/* Check if there's no CPO review by the current user, then show the Edit section for them */}
-                  {!pia?.review?.cpo && (
+                  {/* Check if the logged-in user hasn't reviewed the PIA, then show the Edit section for them */}
+                  {showEditSectionForCurrentUser() && (
                     <EditCPOReview
                       pia={pia}
                       cpoId={userGuid}
                       stateChangeHandler={stateChangeHandler}
                     />
-                  )}
-
-                  {/* Finally, display the Add CPO reviewer button */}
-                  {enableAddNewCPOReviewer() && (
-                    <>
-                      <div className="horizontal-divider "></div>
-                      <div className="d-flex justify-content-center">
-                        <button
-                          onClick={addNewCPOReview}
-                          className="bcgovbtn bcgovbtn__tertiary bold min-gap"
-                        >
-                          Add CPO reviewer
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </div>
-                    </>
                   )}
                 </div>
               </div>
