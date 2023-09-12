@@ -1,10 +1,8 @@
 import messages from './messages';
 import { ApprovalRoles, PiaStatuses } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { IReview, IReviewSection } from './interfaces';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getGUID, isCPORole } from '../../../../utils/user';
+import { IReview } from './interfaces';
+import { getGUID, isCPORole, isMPORole } from '../../../../utils/user';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -145,71 +143,56 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const userGuid = getGUID();
   const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
 
-  const allowUserReviewCPO = () => {
-    // only allow one CPO user do review once
-    const canEditCpoReview = reviewPageParams?.editCpoReview ?? false;
-    if (!canEditCpoReview) return false;
-
-    if (pia?.review?.cpo !== undefined) {
-      if (
-        Object.values<IReviewSection>(pia?.review?.cpo).some(
-          (review) =>
-            review !== null &&
-            review?.isAcknowledged !== false &&
-            review.reviewedByGuid === userGuid,
-        )
-      )
-        return false;
-    }
-    return true;
+  /**
+   * Determine if the Edit section should be displayed for the current user.
+   *
+   * The Edit section is specifically designed for users with the CPO role.
+   * This function checks if:
+   * 1. The user has the CPO role.
+   * 2. The user hasn't already added a review. This is determined by checking
+   *    if the user's GUID is not included in the keys of the `pia.review.cpo` object,
+   *    meaning they haven't reviewed it yet.
+   *
+   * @returns {boolean} - True if the Edit section should be displayed for the current user, false otherwise.
+   */
+  const showEditSectionForCurrentUser = () => {
+    // Only CPO users can edit or add reviews.
+    return (
+      isCPORole() &&
+      !(pia?.review?.cpo && Object.keys(pia?.review?.cpo).includes(userGuid))
+    );
   };
 
-  const addNewCPOReview = () => {
-    const newCPOReview = {
-      [userGuid]: {
-        isAcknowledged: false,
-        reviewNote: '',
-      },
-    };
-    if (reviewForm?.cpo !== undefined) {
-      setReviewForm({
-        ...reviewForm,
-        cpo: {
-          ...reviewForm.cpo,
-          ...newCPOReview,
-        },
-      });
-    } else {
-      setReviewForm({
-        ...reviewForm,
-        cpo: {},
-      });
-    }
+  /**
+   * Check if there are finished reviews.
+   * A review is considered finished if it has an 'isAcknowledged' property.
+   * This function goes through all reviews in `pia.review.cpo` and checks
+   * if at least one of them has been acknowledged.
+   *
+   * @returns {boolean} - True if there's at least one finished review, false otherwise.
+   */
+  const hasFinishedReviews = () => {
+    // Return false early if there are no reviews.
+    if (!pia?.review?.cpo) return false;
 
-    stateChangeHandler(reviewForm, 'review', true);
+    return Object.values(pia.review.cpo).some(
+      (reviewSection) => reviewSection?.isAcknowledged,
+    );
   };
 
-  const enableAddNewCPOReviewer = () => {
-    /**
-     * the logic is list as below
-     * if a PIA not reviewed by any cpo, the cpo user can not add a new CPO reviewer
-     * if a cpo already reviewed this PIA, this cpo can not add a new CPO review section
-     * only a PIA reviewed by other CPO user but not current login CPO user,
-     * the current login CPO user allowed to see the button and add themselves as a reviewer for this pia
-     */
-    // if the current login user GUID exist in CPO section, the user can not see the button
-    if (
-      pia?.review?.cpo &&
-      Object.keys(pia?.review?.cpo).some((cpoId: string) => cpoId === userGuid)
-    )
-      return false;
-    // if this current user already review the pia, can not see this button
-    if (!allowUserReviewCPO()) return false;
+  /**
+   * Determine if the CPO section should be displayed based on user role and finished reviews.
+   * The CPO section should always be displayed for users with the CPO role.
+   * For other users, the section should be displayed only if there are finished reviews.
+   *
+   * @returns {boolean} - True if the CPO section should be displayed, false otherwise.
+   */
+  const shouldDisplayCPOSection = () => {
+    // Always display for users with the CPO role.
+    if (isCPORole()) return true;
 
-    if (!getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview)
-      return false;
-
-    return true;
+    // For other roles, check if there are finished reviews.
+    return hasFinishedReviews();
   };
 
   const enableMPOReviewViewMode = () => {
@@ -288,7 +271,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
           )}
           {pia.hasAddedPiToDataElements !== false &&
           showCpoReview &&
-          !invalidCpoReviewData ? (
+          !invalidCpoReviewData &&
+          shouldDisplayCPOSection() ? (
             <section className="mt-5 ">
               <h3>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</h3>
               <p className="pb-4">
@@ -296,54 +280,46 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
               </p>
               <div className="drop-shadow card p-4 p-md-5">
                 <div className="data-table__container">
-                  {pia?.review?.cpo ? (
-                    Object.entries(pia?.review?.cpo)?.map(
-                      ([cpoId, reviewSection]) => {
-                        return reviewForm.cpo ? (
-                          <div
-                            className="d-flex align-items-center"
-                            key={cpoId}
-                          >
-                            {!allowUserReviewCPO() ||
-                            Object(pia?.review?.cpo)?.[cpoId]
-                              ?.isAcknowledged ? (
-                              <ViewCPOReview
-                                pia={pia}
-                                cpoId={cpoId}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            ) : (
-                              <EditCPOReview
-                                pia={pia}
-                                cpoId={cpoId}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            )}
+                  {/* Display the finished reviews */}
+                  {pia?.review?.cpo &&
+                    Object.entries(pia?.review?.cpo).map(
+                      ([cpoId, reviewSection]) =>
+                        reviewSection?.isAcknowledged ||
+                        (cpoId !== userGuid && isMPORole()) ? (
+                          <div key={cpoId}>
+                            <ViewCPOReview
+                              pia={pia}
+                              cpoId={cpoId}
+                              stateChangeHandler={stateChangeHandler}
+                            />
                           </div>
-                        ) : null;
-                      },
-                    )
-                  ) : (
+                        ) : null,
+                    )}
+
+                  {/* Show the edit sections for CPO users only */}
+                  {isCPORole() &&
+                    pia?.review?.cpo &&
+                    Object.entries(pia?.review?.cpo).map(
+                      ([cpoId, reviewSection]) =>
+                        !reviewSection?.isAcknowledged ? (
+                          <div key={cpoId}>
+                            <EditCPOReview
+                              pia={pia}
+                              cpoId={cpoId}
+                              stateChangeHandler={stateChangeHandler}
+                            />
+                          </div>
+                        ) : null,
+                    )}
+
+                  {/* For CPO users: If the logged-in user hasn't reviewed the PIA, show the Edit section for them */}
+                  {showEditSectionForCurrentUser() && (
                     <EditCPOReview
                       pia={pia}
                       cpoId={userGuid}
                       stateChangeHandler={stateChangeHandler}
                     />
                   )}
-                  {enableAddNewCPOReviewer() ? (
-                    <>
-                      <div className="horizontal-divider "></div>
-                      <div className="d-flex justify-content-center">
-                        <button
-                          onClick={addNewCPOReview}
-                          className="bcgovbtn bcgovbtn__tertiary bold min-gap"
-                        >
-                          Add CPO reviewer
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </div>
-                    </>
-                  ) : null}
                 </div>
               </div>
             </section>
@@ -390,11 +366,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             ))
           ) : (
             <>
-              <div className="d-grid gap-3">
-                <h3>
-                  <b>{messages.PiaReviewHeader.MinistrySection.CPO.Title.en}</b>
-                </h3>
-              </div>
               <div className="row mb-5 p-3 pb-5 border border-2 rounded">
                 <div> Reviewed by</div>
                 <div> Review incomplete</div>

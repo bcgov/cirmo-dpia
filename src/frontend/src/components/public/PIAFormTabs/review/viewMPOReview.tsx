@@ -45,9 +45,6 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
 
   return (
     <div className="d-grid gap-3">
-      <h3>
-        <b>{messages.PiaReviewHeader.MinistrySection.MPO.Title.en}</b>
-      </h3>
       {printPreview ? (
         <div>
           {pia?.review?.mpo?.isAcknowledged === false ||
