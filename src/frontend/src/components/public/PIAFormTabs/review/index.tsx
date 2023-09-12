@@ -299,56 +299,46 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                   {/* Display the finished reviews first */}
                   {pia?.review?.cpo &&
                     Object.entries(pia?.review?.cpo).map(
-                      ([cpoId, reviewSection]) => {
-                        if (
-                          reviewSection?.isAcknowledged ||
-                          !allowUserReviewCPO() ||
-                          Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged
-                        ) {
-                          return (
-                            <div key={cpoId}>
-                              <ViewCPOReview
-                                pia={pia}
-                                cpoId={cpoId}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            </div>
-                          );
-                        }
-                        return null;
-                      },
+                      ([cpoId, reviewSection]) =>
+                        reviewSection?.isAcknowledged ||
+                        !allowUserReviewCPO() ||
+                        Object(pia?.review?.cpo)?.[cpoId]?.isAcknowledged ? (
+                          <div key={cpoId}>
+                            <ViewCPOReview
+                              pia={pia}
+                              cpoId={cpoId}
+                              stateChangeHandler={stateChangeHandler}
+                            />
+                          </div>
+                        ) : null,
                     )}
 
                   {/* Then, show the edit sections */}
                   {pia?.review?.cpo &&
                     Object.entries(pia?.review?.cpo).map(
-                      ([cpoId, reviewSection]) => {
-                        if (!reviewSection?.isAcknowledged) {
-                          return (
-                            <div key={cpoId}>
-                              <EditCPOReview
-                                pia={pia}
-                                cpoId={cpoId}
-                                stateChangeHandler={stateChangeHandler}
-                              />
-                            </div>
-                          );
-                        }
-                        return null;
-                      },
+                      ([cpoId, reviewSection]) =>
+                        !reviewSection?.isAcknowledged ? (
+                          <div key={cpoId}>
+                            <EditCPOReview
+                              pia={pia}
+                              cpoId={cpoId}
+                              stateChangeHandler={stateChangeHandler}
+                            />
+                          </div>
+                        ) : null,
                     )}
 
                   {/* Check if there's no CPO review by the current user, then show the Edit section for them */}
-                  {!pia?.review?.cpo ? (
+                  {!pia?.review?.cpo && (
                     <EditCPOReview
                       pia={pia}
                       cpoId={userGuid}
                       stateChangeHandler={stateChangeHandler}
                     />
-                  ) : null}
+                  )}
 
                   {/* Finally, display the Add CPO reviewer button */}
-                  {enableAddNewCPOReviewer() ? (
+                  {enableAddNewCPOReviewer() && (
                     <>
                       <div className="horizontal-divider "></div>
                       <div className="d-flex justify-content-center">
@@ -361,7 +351,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                         </button>
                       </div>
                     </>
-                  ) : null}
+                  )}
                 </div>
               </div>
             </section>
