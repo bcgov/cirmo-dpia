@@ -145,25 +145,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   const userGuid = getGUID();
   const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
 
-  const allowUserReviewCPO = () => {
-    // only allow one CPO user do review once
-    const canEditCpoReview = reviewPageParams?.editCpoReview ?? false;
-    if (!canEditCpoReview) return false;
-
-    if (pia?.review?.cpo !== undefined) {
-      if (
-        Object.values<IReviewSection>(pia?.review?.cpo).some(
-          (review) =>
-            review !== null &&
-            review?.isAcknowledged !== false &&
-            review.reviewedByGuid === userGuid,
-        )
-      )
-        return false;
-    }
-    return true;
-  };
-
   const showEditSectionForCurrentUser = () => {
     // Check if the current user has not reviewed the PIA.
     return !(
