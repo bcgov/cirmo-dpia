@@ -300,10 +300,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
                     Object.entries(pia?.review?.cpo)?.map(
                       ([cpoId, reviewSection]) => {
                         return reviewForm.cpo ? (
-                          <div
-                            // className="d-flex align-items-center"
-                            key={cpoId}
-                          >
+                          <div key={cpoId}>
                             {!allowUserReviewCPO() ||
                             Object(pia?.review?.cpo)?.[cpoId]
                               ?.isAcknowledged ? (
