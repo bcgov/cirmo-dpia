@@ -1,35 +1,70 @@
-name: "Frontend e2e Test Suite"
+name: "Frontend E2E Test Run"
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Dev or Test environment'
+        type: environment
+        default: 'APP-Dev'
+      suite:
+        description: 'Select a suite of tests to run'
+        type: choice
+        default: 'e2e'
+        options:
+          - e2e
+          - sanity
+      feature:
+        description: 'Select a specific feature file to run'
+        type: string
+
 
 jobs:
   frontend-e2e:
-    environment: APP-Test
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
+    env:
+      WDIO_CMD: 'npm run wdio'
+      mpoPass: ${{ secrets.MPO_IDIR_PASSWORD }}
+      cpoPass: ${{ secrets.CPO_IDIR_PASSWORD }}
+      drafterPass: ${{ secrets.DRAFT_IDIR_PASSWORD }}
+
     steps:
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          path: 'src/frontend'
+
+      # Determine environment and suite, edit WDIO_CMD
+      - name: Determine environment and suite
+        run: |
+          if [ "${{ inputs.environment }}" == 'APP-Dev' ]; then
+            echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://dev.pia.gov.bc.ca\" --suite=\"${{ inputs.suite }}\"" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == 'APP-Test' ]; then
+            echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://test.pia.gov.bc.ca\" --suite=\"${{ inputs.suite }}\"" >> $GITHUB_ENV
+          fi
+          echo $WDIO_CMD
+
+      # Determine feature file if specified, edit WDIO_CMD
+      - name: Determine feature file
+        run: |
+          if [ -n "${{ inputs.feature }}" ]; then
+            echo "WDIO_CMD=$WDIO_CMD --spec=\"test/features/featurefiles/${{ inputs.suite }}/${{ inputs.feature }}.feature\"" >> $GITHUB_ENV
+          fi
+          echo $WDIO_CMD
 
       # Navigate to frontend dir, install dependencies, execute WebDriverIO command
       - name: Setup and Execute WebDriverIO e2e test suite
         shell: bash
-        env:
-          mpoPass : ${{ secrets.MPO_IDIR_PASSWORD }}
-          cpoPass : ${{ secrets.CPO_IDIR_PASSWORD }}
-          drafterPass : ${{ secrets.DRAFT_IDIR_PASSWORD }}
         run: |
-           cd ./src/frontend
            npm install
-           mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass npm run wdio-test
+           mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass $WDIO_CMD
         
-      #Generate Cucumber report and upload artifact  
+      # Generate Cucumber report and upload artifact  
       - name: Generate Cucumber report and upload artifact
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cucumber-artifact
-          path: ./src/frontend/test/reporter/htmlreport/
+          path: ./test/reporter/htmlreport/
