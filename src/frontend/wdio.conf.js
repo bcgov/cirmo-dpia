@@ -32,7 +32,6 @@ exports.config = {
   ],
   suites: {
     sanity: ['./test/features/featurefiles/sanity/*.feature'],
-    acceptance: ['./test/features/featurefiles/acceptance/*.feature'],
     e2e: ['./test/features/featurefiles/**/*.feature'],
   },
   //

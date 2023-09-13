@@ -16,8 +16,7 @@
     "fix:styles": "stylelint --fix src/**/*.{css,scss}",
     "wdio": "wdio run ./wdio.conf.js",
     "wdio-dev": "wdio run ./wdio.conf.js --baseUrl=\"https://dev.pia.gov.bc.ca\" --suite sanity",
-    "wdio-test": "wdio run ./wdio.conf.js --baseUrl=\"https://test.pia.gov.bc.ca\" --suite e2e",
-    "wdio-debug": "wdio run ./wdio.conf.js --baseUrl=\"https://test.pia.gov.bc.ca\" --suite acceptance"
+    "wdio-test": "wdio run ./wdio.conf.js --baseUrl=\"https://test.pia.gov.bc.ca\" --suite e2e"
   },
   "dependencies": {
     "@bcgov/bc-sans": "1.0.1",
