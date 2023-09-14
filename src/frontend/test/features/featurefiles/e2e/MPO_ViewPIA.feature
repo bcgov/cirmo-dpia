@@ -1,6 +1,6 @@
 Feature: UTOPIA-631 MPO:View PIA details
 
-  Scenario Outline: As <role> user, I am able to submit a valid form with all fields filled
+  Scenario Outline: As <role> user, I am able to submit a valid form to Incomplete status
 
     Given I am on the login page
     And I click on "Log in with IDIR" button
@@ -33,7 +33,7 @@ Feature: UTOPIA-631 MPO:View PIA details
       | DORGALE  | MPO     |
     
 
- Scenario Outline: As <role> user, I am able to submit a valid form with all fields filled
+ Scenario Outline: As <role> user, I am able to submit a valid form to MPO Status
 
     Given I am on the login page
     And I click on "Log in with IDIR" button
@@ -71,7 +71,7 @@ Feature: UTOPIA-631 MPO:View PIA details
       | username | role    |
       | DORGALE  | MPO     |
     
-Scenario Outline: As <role> user, I am able to submit a valid form with all fields filled
+Scenario Outline: As <role> user, I am able to submit a valid form to CPO status
 
     Given I am on the login page
     And I click on "Log in with IDIR" button
@@ -106,6 +106,7 @@ Scenario Outline: As <role> user, I am able to submit a valid form with all fiel
     And I click with name "Review Acknowledgement" checkbox
     And I enter "Review Note"
     Then I click on "Confirm" button
+    And Await SavedAt function 
     Then I click on "Submit" button
     Then I click on "Yes, submit" button
     And I click on "Active PIAs" tab
