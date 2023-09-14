@@ -18,7 +18,7 @@ on:
           - e2e
           - sanity
       feature:
-        description: 'Select a specific feature file to run'
+        description: 'Select a specific feature file to run (ex: MPO_ViewPIA)'
         type: string
 
 
@@ -27,7 +27,7 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     env:
-      WDIO_CMD: 'npm run wdio'
+      WDIO_CMD: 'npm run wdio --'
       mpoPass: ${{ secrets.MPO_IDIR_PASSWORD }}
       cpoPass: ${{ secrets.CPO_IDIR_PASSWORD }}
       drafterPass: ${{ secrets.DRAFT_IDIR_PASSWORD }}
@@ -37,22 +37,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          path: 'src/frontend'
+          sparse-checkout: |
+            src/frontend
 
-      # Determine environment and suite, edit WDIO_CMD
-      - name: Determine environment and suite
+      # Determine WDIO_CMD command
+      - name: Determine environment, suite, and feature
         run: |
           if [ "${{ inputs.environment }}" == 'APP-Dev' ]; then
-            echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://dev.pia.gov.bc.ca\" --suite ${{ inputs.suite }}" >> $GITHUB_ENV
+            if [ -n "${{ inputs.feature }}" ]; then
+              echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://dev.pia.gov.bc.ca\" --spec test/features/featurefiles/${{ inputs.suite }}/${{ inputs.feature }}.feature" >> $GITHUB_ENV
+            else
+              echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://dev.pia.gov.bc.ca\" --suite ${{ inputs.suite }}" >> $GITHUB_ENV
+            fi
           elif [ "${{ inputs.environment }}" == 'APP-Test' ]; then
-            echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://test.pia.gov.bc.ca\" --suite ${{ inputs.suite }}" >> $GITHUB_ENV
-          fi
-
-      # Determine feature file if specified, edit WDIO_CMD
-      - name: Determine feature file
-        run: |
-          if [ -n "${{ inputs.feature }}" ]; then
-            echo "WDIO_CMD=$WDIO_CMD --spec test/features/featurefiles/${{ inputs.suite }}/${{ inputs.feature }}.feature" >> $GITHUB_ENV
+            if [ -n "${{ inputs.feature }}" ]; then
+              echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://test.pia.gov.bc.ca\" --spec test/features/featurefiles/${{ inputs.suite }}/${{ inputs.feature }}.feature" >> $GITHUB_ENV
+            else
+              echo "WDIO_CMD=$WDIO_CMD --baseUrl=\"https://test.pia.gov.bc.ca\" --suite ${{ inputs.suite }}" >> $GITHUB_ENV
+            fi
           fi
 
       # Echo wdio command
@@ -65,7 +67,7 @@ jobs:
         run: |
            cd src/frontend
            npm install
-           mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass $WDIO_CMD
+           $WDIO_CMD
         
       # Generate Cucumber report and upload artifact  
       - name: Generate Cucumber report and upload artifact
