@@ -248,10 +248,16 @@ class submitPage extends Page {
       await this.reviewText.setValue('MPO Review Confirmed');
     }
     if (value == 'role') {
+      const random = Math.floor(
+        Math.random() * (roleDropdownOptions.length - 1),
+      );
       await this.roleLabel.waitForDisplayed();
       await this.roleLabel.scrollIntoView();
       await this.roleLabel.waitForClickable();
-      await this.roleLabel.selectByAttribute('value', roleDropdownOptions[0]);
+      await this.roleLabel.selectByAttribute(
+        'value',
+        roleDropdownOptions[random],
+      );
     }
   }
 
