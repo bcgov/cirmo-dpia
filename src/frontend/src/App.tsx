@@ -23,6 +23,7 @@ function App() {
   // https://github.com/ReactTraining/react-router/issues/5210
   useEffect(() => {
     mainContentRef.current?.focus();
+    window.snowplow('trackPageView');
   }, [pathname]);
 
   return (
