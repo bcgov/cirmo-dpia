@@ -103,6 +103,95 @@ const PIAFormPage = () => {
       ? 'view'
       : 'edit';
 
+  const hasFormChanged = useCallback(() => {
+    return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
+  }, [pia, stalePia]);
+
+  const sendSnowplowStatusChangeCall = (completedStatus?: boolean) => {
+    window.snowplow('trackSelfDescribingEvent', {
+      schema: 'iglu:ca.bc.gov.cirmo/dpia_progress/jsonschema/1-0-0',
+      data: {
+        id: pia?.id,
+        title: pia?.title,
+        state: completedStatus ? `${pia?.status}-COMPLETED` : pia?.status,
+        ministry: pia?.ministry,
+        branch: pia?.branch,
+      },
+    });
+  };
+
+  // Send snowplow call when pia is first created with an id.
+  useEffect(() => {
+    if (pia.id && pia?.status === PiaStatuses.INCOMPLETE) {
+      sendSnowplowStatusChangeCall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pia?.id]);
+
+  // Send snowplow call when status is changed.
+  useEffect(() => {
+    if (pia?.status !== PiaStatuses.INCOMPLETE) {
+      sendSnowplowStatusChangeCall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pia?.status]);
+
+  const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
+    const hasExplicitChanges = Object.keys(changes).length > 0;
+
+    if (!hasExplicitChanges && !hasFormChanged()) {
+      // only expected fields have changes; no need call update
+      return pia;
+    }
+
+    // Notify snowplow that status has been completed.
+    if (changes.status !== undefined && pia.status !== changes.status)
+      sendSnowplowStatusChangeCall(true);
+
+    let updatedPia: IPiaForm;
+
+    if (pia?.id) {
+      updatedPia = await HttpRequest.patch<IPiaForm>(
+        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
+        { ...pia, ...changes },
+      );
+    } else {
+      updatedPia = await HttpRequest.post<IPiaForm>(API_ROUTES.PIA_INTAKE, {
+        ...pia,
+        ...changes,
+      });
+    }
+
+    setLastSaveAlertInfo({
+      type: 'success',
+      message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
+      show: true,
+    });
+
+    // if first time save, update stale state to the latest state, else keep the previous state for comparisons
+    if (isFirstSave) {
+      setStalePia(updatedPia);
+      setIsFirstSave(false);
+      if (!pia?.id) {
+        navigate(
+          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+            id: updatedPia.id,
+          }),
+        );
+      }
+    } else {
+      setStalePia(pia);
+    }
+
+    setPia(updatedPia);
+
+    // reset flags after successful save
+    setIsAutoSaveFailedPopupShown(false);
+    setIsConflict(false);
+
+    return updatedPia;
+  };
+
   const piaStateChangeHandler = (
     value: any,
     key: keyof IPiaForm,
@@ -114,6 +203,9 @@ const PIAFormPage = () => {
     if (isEager) {
       setIsEagerSave(true);
     }
+
+    if (key === 'status')
+      upsertAndUpdatePia({ status: value } as Partial<IPiaForm>);
 
     setPia((latest) => ({
       ...latest,
@@ -430,61 +522,6 @@ const PIAFormPage = () => {
         updatedPia.initiativeDescription === null ||
         updatedPia.initiativeDescription === '',
     );
-    return updatedPia;
-  };
-
-  const hasFormChanged = useCallback(() => {
-    return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
-  }, [pia, stalePia]);
-
-  const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
-    const hasExplicitChanges = Object.keys(changes).length > 0;
-
-    if (!hasExplicitChanges && !hasFormChanged()) {
-      // only expected fields have changes; no need call update
-      return pia;
-    }
-
-    let updatedPia: IPiaForm;
-
-    if (pia?.id) {
-      updatedPia = await HttpRequest.patch<IPiaForm>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-        { ...pia, ...changes },
-      );
-    } else {
-      updatedPia = await HttpRequest.post<IPiaForm>(API_ROUTES.PIA_INTAKE, {
-        ...pia,
-        ...changes,
-      });
-    }
-
-    setLastSaveAlertInfo({
-      type: 'success',
-      message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
-      show: true,
-    });
-
-    // if first time save, update stale state to the latest state, else keep the previous state for comparisons
-    if (isFirstSave) {
-      setStalePia(updatedPia);
-      setIsFirstSave(false);
-      if (!pia?.id) {
-        navigate(
-          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
-            id: updatedPia.id,
-          }),
-        );
-      }
-    } else {
-      setStalePia(pia);
-    }
-
-    setPia(updatedPia);
-
-    // reset flags after successful save
-    setIsAutoSaveFailedPopupShown(false);
-    setIsConflict(false);
 
     return updatedPia;
   };
