@@ -115,9 +115,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
             </div>
           ) : (
             <div className="d-flex align-items-center" key={index}>
-              {viewMode(role) ||
-              Object(props.pia?.review?.programArea)?.reviews?.[role]
-                ?.isAcknowledged ? (
+              {viewMode(role) ? (
                 <ViewProgramAreaReview
                   pia={props.pia}
                   role={role}
