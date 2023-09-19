@@ -37,7 +37,10 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const canEditProgramAreaReview =
     reviewPagePrivilegeParams?.editProgramAreaReview ?? false;
 
-  const allowUserReviewProgramArea = () => {
+  // Logic Explanation:
+  //   - When this function returns true, it means the readonly.
+  //   - When this function returns false, it means allow editing the review.
+  const viewUserReviewProgramArea = () => {
     if (canEditProgramAreaReview) return false;
 
     // if selectedRoles is null means none of selectedRole got reviewed so return true
@@ -110,7 +113,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
             </div>
           ) : (
             <div className="d-flex align-items-center" key={index}>
-              {allowUserReviewProgramArea() ||
+              {viewUserReviewProgramArea() ||
               Object(props.pia?.review?.programArea)?.reviews?.[role]
                 ?.isAcknowledged ? (
                 <ViewProgramAreaReview
