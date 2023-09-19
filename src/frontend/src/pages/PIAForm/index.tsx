@@ -107,6 +107,8 @@ const PIAFormPage = () => {
     return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
   }, [pia, stalePia]);
 
+  // Send analytics data to snowplow.
+  // completedStatus is true when moving from one status to another.
   const sendSnowplowStatusChangeCall = (completedStatus?: boolean) => {
     window.snowplow('trackSelfDescribingEvent', {
       schema: 'iglu:ca.bc.gov.cirmo/dpia_progress/jsonschema/1-0-0',
@@ -120,21 +122,11 @@ const PIAFormPage = () => {
     });
   };
 
-  // Send snowplow call when pia is first created with an id.
+  // Send snowplow call when pia is first created with an id or when status is changed.
   useEffect(() => {
-    if (pia.id && pia?.status === PiaStatuses.INCOMPLETE) {
-      sendSnowplowStatusChangeCall();
-    }
+    if (pia.id) sendSnowplowStatusChangeCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia?.id]);
-
-  // Send snowplow call when status is changed.
-  useEffect(() => {
-    if (pia?.status !== PiaStatuses.INCOMPLETE) {
-      sendSnowplowStatusChangeCall();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia?.status]);
+  }, [pia?.id, pia?.status]);
 
   const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
@@ -144,7 +136,8 @@ const PIAFormPage = () => {
       return pia;
     }
 
-    // Notify snowplow that status has been completed.
+    // Notify snowplow that status has been changed, and you are finished with the current status.
+    // Going from MPO_REVIEW to CPO_REVIEW tells snowplow: MPO_REVIEW-COMPLETED.
     if (changes.status !== undefined && pia.status !== changes.status)
       sendSnowplowStatusChangeCall(true);
 
@@ -204,6 +197,8 @@ const PIAFormPage = () => {
       setIsEagerSave(true);
     }
 
+    // Update backend state when status is changed using stateChangeHandler.
+    // Fixes issue in Next Steps where only local state was updated.
     if (key === 'status')
       upsertAndUpdatePia({ status: value } as Partial<IPiaForm>);
 
