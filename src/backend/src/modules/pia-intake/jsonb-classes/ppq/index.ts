@@ -80,10 +80,6 @@ export class Ppq {
   @IsOptional()
   @ValidateNested({ each: true })
   relatedEnactmentPias?: Array<string>;
-
-  @IsString()
-  @IsOptional()
-  otherCpoConsiderations?: string;
 }
 
 // only MPO users can edit all these field
@@ -158,10 +154,6 @@ export const PpqMetadata: Array<IFormField<Ppq>> = [
   },
   {
     key: 'relatedEnactmentPias',
-    allowedUserTypesEdit: [UserTypesEnum.MPO],
-  },
-  {
-    key: 'otherCpoConsiderations',
     allowedUserTypesEdit: [UserTypesEnum.MPO],
   },
 ];
