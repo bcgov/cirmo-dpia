@@ -37,8 +37,13 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const canEditProgramAreaReview =
     reviewPagePrivilegeParams?.editProgramAreaReview ?? false;
 
-  const allowUserReviewProgramArea = () => {
-    if (!canEditProgramAreaReview) return false;
+  // Logic Explanation:
+  // - When this function returns true, it allows a drafter and reviewer to view their own review in view mode.
+  // - When this function returns false, it allows a drafter and reviewer to edit their own review.
+  const viewMode = (reviewerRole: string) => {
+    const reviewerRoleAcknowledged = Object(props.pia?.review?.programArea)
+      ?.reviews?.[reviewerRole]?.isAcknowledged;
+    if (canEditProgramAreaReview || !reviewerRoleAcknowledged) return false;
 
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
@@ -110,9 +115,7 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
             </div>
           ) : (
             <div className="d-flex align-items-center" key={index}>
-              {!allowUserReviewProgramArea() ||
-              Object(props.pia?.review?.programArea)?.reviews?.[role]
-                ?.isAcknowledged ? (
+              {viewMode(role) ? (
                 <ViewProgramAreaReview
                   pia={props.pia}
                   role={role}
