@@ -13,6 +13,8 @@ import MDEditor from '@uiw/react-md-editor';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 const PPQ = ({ printPreview }: IPPQProps) => {
   const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
@@ -269,6 +271,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 rel="noopener noreferrer"
               >
                 {Messages.InitiativeSummaryHeading.en.link.label}
+                <FontAwesomeIcon className="ms-1" icon={faUpRightFromSquare} />
               </a>
               {Messages.InitiativeSummaryHeading.en.secondText}
               <span> ({getCharDisplayMessage()}) </span>
