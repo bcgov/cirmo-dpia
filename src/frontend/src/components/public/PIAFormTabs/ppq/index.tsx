@@ -36,6 +36,8 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       proposedDeadlineReason: '',
       otherCpoConsideration: '',
       pidInitiativeSummary: '',
+      relatedOperationalPias: '',
+      relatedEnactmentPias: '',
     }),
     [],
   );
