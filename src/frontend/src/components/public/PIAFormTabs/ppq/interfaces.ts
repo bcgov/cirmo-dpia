@@ -12,6 +12,7 @@ export interface IPPQ {
   proposedDeadline?: string | null;
   proposedDeadlineReason?: string;
   otherCpoConsideration?: string;
+  initiativeSummary: string;
 }
 export interface IPPQProps {
   printPreview?: boolean;
