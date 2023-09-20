@@ -18,11 +18,14 @@ interface IViewProgramAreaReviewProps {
 const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const { pia, printPreview, stateChangeHandler, role } = props;
 
-  const reviewedByDisplayName = Object(props.pia?.review?.mpo)
-    ?.reviewedByDisplayName;
+  const reviewedByDisplayName = Object(
+    props.pia?.review?.programArea?.reviews,
+  )?.[role]?.reviewedByDisplayName;
 
-  const reviewedAt = Object(props.pia?.review?.mpo)?.reviewedAt;
-  const reviewGuid = Object(props.pia?.review?.mpo)?.reviewedByGuid;
+  const reviewedAt = Object(props.pia?.review?.programArea?.reviews)?.[role]
+    ?.reviewedAt;
+  const reviewGuid = Object(props.pia?.review?.programArea?.reviews)?.[role]
+    ?.reviewedByGuid;
 
   /**
    * Local state for the checkbox and review note
