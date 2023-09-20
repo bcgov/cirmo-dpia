@@ -2,15 +2,11 @@ import { Link } from 'react-router-dom';
 import UnAuthorizedImg from '../../../assets/401.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { API_ROUTES } from '../../../constant/apiRoutes';
+import { TokenStorageKeys, login } from '../../../utils/auth';
+import { AppStorage } from '../../../utils/storage';
 
 const Unauthorized = () => {
-  const win: Window = window;
-
-  const login = () => {
-    win.location = API_ROUTES.KEYCLOAK_LOGIN;
-  };
-
+  const redirect = AppStorage.getItem(TokenStorageKeys.POST_LOGIN_REDIRECT_URL);
   return (
     <div className="bcgovPageContainer notfound-container">
       <div className="container">
@@ -28,6 +24,11 @@ const Unauthorized = () => {
         <div className="row ">
           <p className="d-flex justify-content-center">
             You do not have permission to view this page.
+          </p>
+        </div>
+        <div className="row ">
+          <p className="d-flex justify-content-center">
+            After login you will be redirected to {redirect}
           </p>
         </div>
         <div className="row d-flex justify-content-center gap-3">
