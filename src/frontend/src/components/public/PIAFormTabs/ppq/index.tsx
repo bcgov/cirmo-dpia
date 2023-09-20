@@ -33,6 +33,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       proposedDeadline: null,
       proposedDeadlineReason: '',
       otherCpoConsideration: '',
+      pidInitiativeSummary: '',
     }),
     [],
   );
@@ -47,6 +48,32 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const stateChangeHandler = (value: any, key: keyof IPPQ) => {
     setNestedReactState(setPpqForm, key, value);
   };
+
+  // State for character count
+  const [charCount, setCharCount] = useState<number>(0);
+  // Max character count for initiative summary
+  const MAX_CHAR_COUNT = 50;
+
+  /**
+   * Handles the change event for the initiative summary.
+   *
+   * @param {string} value - The new value for the initiative summary.
+   * @return {void}
+   */
+  const handleInitiativeSummaryChange = (value = '') => {
+    stateChangeHandler(value, 'pidInitiativeSummary');
+    setCharCount(value.length);
+  };
+
+  /**
+   * Returns a message displaying the number of characters left or the maximum character count.
+   *
+   * @return {string} - The message displaying the number of characters left or the maximum character count.
+   */
+  const getCharDisplayMessage = () =>
+    charCount === 0
+      ? `${MAX_CHAR_COUNT} characters max`
+      : `${MAX_CHAR_COUNT - charCount} characters left`;
 
   const ProposedDeadlineRadio = [
     {
@@ -231,6 +258,44 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             </div>
           </>
         )}
+
+        <div className="form-group mt-4">
+          {!isReadOnly ? (
+            <label id="pidInitiativeSummary">
+              {Messages.InitiativeSummaryHeading.en.firstText}
+              <a
+                href={Messages.InitiativeSummaryHeading.en.link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {Messages.InitiativeSummaryHeading.en.link.label}
+              </a>
+              {Messages.InitiativeSummaryHeading.en.secondText}
+              <span> ({getCharDisplayMessage()}) </span>
+            </label>
+          ) : (
+            <h4> {Messages.InitiativeSummaryHeading.en.fullText}</h4>
+          )}
+          {!isReadOnly ? (
+            <MDEditor
+              preview="edit"
+              defaultTabEnable={true}
+              value={ppqForm?.pidInitiativeSummary || ''}
+              onChange={(value) => handleInitiativeSummaryChange(value || '')}
+              aria-label="Initiative Summary Textarea Input"
+              textareaProps={{ maxLength: MAX_CHAR_COUNT }}
+            />
+          ) : ppqForm.pidInitiativeSummary ? (
+            <MDEditor.Markdown
+              source={ppqForm.pidInitiativeSummary}
+              aria-label="Initiative Summary Textarea Input Preview"
+            />
+          ) : (
+            <p>
+              <i>Not answered</i>
+            </p>
+          )}
+        </div>
 
         <div className="form-group mt-4">
           {!isReadOnly ? (
