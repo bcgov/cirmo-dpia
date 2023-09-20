@@ -6,16 +6,9 @@ import problem from '../../assets/public_homepage/problem.svg';
 import Callout from '../../components/common/Callout';
 import { Link } from 'react-router-dom';
 import hero from '../../assets/public_homepage/hero.svg';
-import { API_ROUTES } from '../../constant/apiRoutes';
-import { isAuthenticated } from '../../utils/auth';
+import { isAuthenticated, login } from '../../utils/auth';
 
 function LandingPage() {
-  // https://github.com/microsoft/TypeScript/issues/48949
-  // workaround
-  const win: Window = window;
-  const login = () => {
-    win.location = API_ROUTES.KEYCLOAK_LOGIN;
-  };
   return (
     <div>
       <section className="hero-section wrapper">
