@@ -43,7 +43,9 @@ const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
   const viewMode = (reviewerRole: string) => {
     const reviewerRoleAcknowledged = Object(props.pia?.review?.programArea)
       ?.reviews?.[reviewerRole]?.isAcknowledged;
-    if (canEditProgramAreaReview || !reviewerRoleAcknowledged) return false;
+
+    if (reviewerRoleAcknowledged) return true;
+    if (canEditProgramAreaReview) return false;
 
     // if selectedRoles is null means none of selectedRole got reviewed so return true
     // otherwise loop all the role in reviews part to see if the current user already did review
