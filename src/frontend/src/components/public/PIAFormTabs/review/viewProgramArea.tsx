@@ -52,7 +52,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const canEditReview =
     reviewGuid === getGUID() &&
     !printPreview &&
-    (getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReviewers ??
+    (getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview ??
       false);
 
   return (
