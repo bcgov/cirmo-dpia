@@ -31,6 +31,7 @@ interface InputTextProps {
   isDisabled?: boolean;
   readOnly?: boolean;
   isAccessLink?: boolean;
+  maxLength?: number;
 }
 
 const InputText = ({
@@ -52,6 +53,7 @@ const InputText = ({
   isDisabled = false,
   readOnly = false,
   isAccessLink = false,
+  maxLength,
 }: InputTextProps) => {
   // default to converted id from label if "id" is not provided
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -98,6 +100,7 @@ const InputText = ({
     disabled: isDisabled,
     readOnly: isAccessLink,
     'aria-label': inputId,
+    maxLength,
   };
 
   const inputProps = {
