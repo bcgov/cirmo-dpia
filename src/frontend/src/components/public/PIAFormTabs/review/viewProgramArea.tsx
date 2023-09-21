@@ -49,11 +49,12 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
     stateChangeHandler(null, `programArea.reviews.${role}`, true);
   };
 
+  const privilegedToEdit =
+    getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview ??
+    false;
+
   const canEditReview =
-    reviewGuid === getGUID() &&
-    !printPreview &&
-    (getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview ??
-      false);
+    reviewGuid === getGUID() && !printPreview && privilegedToEdit;
 
   return (
     <div className="d-grid gap-3">
@@ -74,6 +75,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             <div>
               <ViewReviewSection
                 pia={pia}
+                role={role}
                 printPreview
                 editReviewNote={editReviewNote}
                 setEditReviewNote={setEditReviewNote}
@@ -98,6 +100,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
         <div className="mt-2 pb-2">
           <ViewReviewSection
             pia={pia}
+            role={role}
             editReviewNote={editReviewNote}
             setEditReviewNote={setEditReviewNote}
             isAcknowledged={acknowledged}

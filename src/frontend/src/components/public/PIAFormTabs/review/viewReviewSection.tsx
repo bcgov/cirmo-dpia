@@ -45,7 +45,9 @@ const ViewReviewSection = (props: IReviewProps) => {
     onConfirmClick = () => {},
   } = props;
 
-  return editReviewNote ? (
+  if (!isAcknowledged && canEditReview) setEditReviewNote(true);
+
+  return canEditReview && editReviewNote ? (
     <EditReviewSection
       pia={pia}
       isAcknowledged={isAcknowledged}
