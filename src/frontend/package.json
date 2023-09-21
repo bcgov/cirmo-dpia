@@ -26,7 +26,7 @@
     "@uiw/react-md-editor": "3.23.5",
     "breakpoint-sass": "3.0.0",
     "react": "18.2.0",
-    "react-datepicker": "4.16.0",
+    "react-datepicker": "4.18.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.15.0",
     "react-tooltip": "4.4.2",
@@ -68,8 +68,8 @@
     "stylelint-scss": "5.1.0",
     "typescript": "4.6.4",
     "vite": "3.2.7",
-    "wdio-geckodriver-service": "5.0.2",
     "wdio-cucumberjs-json-reporter": "5.1.7",
+    "wdio-geckodriver-service": "5.0.2",
     "wdio-wait-for": "3.0.6"
   },
   "husky": {
