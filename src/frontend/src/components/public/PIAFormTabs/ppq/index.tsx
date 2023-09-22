@@ -74,6 +74,46 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   // Max character count for initiative summary
   const MAX_CHAR_COUNT = 500;
 
+  const [operationalPIAs, setOperationalPIAs] = useState<string[]>([]);
+  const [enactmentPIAs, setEnactmentPIAs] = useState<string[]>([]);
+
+  const addOperationalPIA = () => {
+    // Retrieve the current input value
+    const newPIA = ppqForm?.relatedOperationalPias || '';
+
+    // Check if the input is empty or contains only whitespace
+    if (newPIA.trim() === '') {
+      return; // Exit the function if empty
+    }
+
+    // Add the new PIA to your existing list (assuming you have a state called operationalPIAs)
+    // Replace setOperationalPIAs with the actual function you use to update the state
+    setOperationalPIAs([...operationalPIAs, newPIA]);
+
+    // Reset the relatedOperationalPias field to an empty string
+    stateChangeHandler('', 'relatedOperationalPias');
+  };
+
+  const removeOperationalPIA = (index: number) => {
+    const newList = [...operationalPIAs];
+    newList.splice(index, 1);
+    setOperationalPIAs(newList);
+  };
+  const addEnactmentPIA = () => {
+    const newEnactmentPIA = ppqForm?.relatedEnactmentPias || '';
+    if (newEnactmentPIA.trim() === '') {
+      return;
+    }
+    setEnactmentPIAs([...enactmentPIAs, newEnactmentPIA]);
+    stateChangeHandler('', 'relatedEnactmentPias');
+  };
+
+  const removeEnactmentPIA = (index: number) => {
+    const newList = [...enactmentPIAs];
+    newList.splice(index, 1);
+    setEnactmentPIAs(newList);
+  };
+
   /**
    * Handles the change event for the initiative summary.
    *
@@ -321,7 +361,6 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             </div>
           </>
         )}
-
         {/* Render the form group for the initiative summary. */}
         <div className="form-group mt-4 mb-4">
           {!isReadOnly ? (
@@ -366,6 +405,133 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             </p>
           )}
         </div>
+        <div className="form-group mt-4">
+          {!isReadOnly ? (
+            <>
+              <label>{Messages.RelatedOperationalPIAHeading.en.title}</label>
+              <div className="card p-3 pb-5 border border-2 mb-4">
+                {/* InputText component for entering related operational PIA */}
+                <InputText
+                  label={Messages.RelatedOperationalPIAHeading.en.inputTitle}
+                  id="relatedOperationalPias"
+                  value={ppqForm?.relatedOperationalPias || ''}
+                  onChange={(e) =>
+                    stateChangeHandler(e.target.value, 'relatedOperationalPias')
+                  }
+                  required={false}
+                  placeholder={
+                    Messages.RelatedOperationalPIAHeading.en.inputPlaceholder
+                  }
+                />
+                <div className="mt-3">
+                  {/* Button to add the related operational PIA */}
+                  <button
+                    className="bcgovbtn bcgovbtn__secondary"
+                    onClick={addOperationalPIA}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <h4>{Messages.RelatedOperationalPIAHeading.en.title}</h4>
+          )}
+        </div>
+
+        {operationalPIAs.length > 0 ? (
+          <div className="form-group mb-4">
+            <label className="px-4">
+              {Messages.RelatedOperationalPIAHeading.en.inputTitle}
+            </label>
+            <div className="horizontal-divider-yellow mt-1 mb-1"></div>
+
+            {operationalPIAs.map((operationalPia, index) => (
+              <div key={index} className="mb-0">
+                <div className="d-flex justify-content-between align-items-center align-content-center">
+                  <div className="px-4">{operationalPia}</div>
+                  {!isReadOnly && (
+                    <button
+                      className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
+                      onClick={() => removeOperationalPIA(index)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} size="lg" />
+                    </button>
+                  )}
+                </div>
+                <div className="horizontal-divider-grey mt-2 mb-2"></div>
+              </div>
+            ))}
+          </div>
+        ) : isReadOnly ? (
+          <p>
+            <i>Not answered</i>
+          </p>
+        ) : null}
+
+        <div className="form-group mt-4">
+          {!isReadOnly ? (
+            <>
+              <label>{Messages.RelatedEnactmentPIAHeading.en.title}</label>
+              <div className="card p-3 pb-5 border border-2 mb-4">
+                {/* InputText component for entering related enactment PIA */}
+                <InputText
+                  label={Messages.RelatedEnactmentPIAHeading.en.inputTitle}
+                  id="relatedEnactmentPias"
+                  value={ppqForm?.relatedEnactmentPias || ''}
+                  onChange={(e) =>
+                    stateChangeHandler(e.target.value, 'relatedEnactmentPias')
+                  }
+                  required={false}
+                  placeholder={
+                    Messages.RelatedEnactmentPIAHeading.en.inputPlaceholder
+                  }
+                />
+                <div className="mt-3">
+                  {/* Button to add the related enactment PIA */}
+                  <button
+                    className="bcgovbtn bcgovbtn__secondary"
+                    onClick={addEnactmentPIA}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <h4>{Messages.RelatedEnactmentPIAHeading.en.title}</h4>
+          )}
+        </div>
+
+        {enactmentPIAs.length > 0 ? (
+          <div className="form-group mb-4">
+            <label className="px-4">
+              {Messages.RelatedEnactmentPIAHeading.en.inputTitle}
+            </label>
+            <div className="horizontal-divider-yellow mt-1 mb-1"></div>
+
+            {enactmentPIAs.map((enactmentPia, index) => (
+              <div key={index} className="mb-0">
+                <div className="d-flex justify-content-between align-items-center align-content-center">
+                  <div className="px-4">{enactmentPia}</div>
+                  {!isReadOnly && (
+                    <button
+                      className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
+                      onClick={() => removeEnactmentPIA(index)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} size="lg" />
+                    </button>
+                  )}
+                </div>
+                <div className="horizontal-divider-grey mt-2 mb-2"></div>
+              </div>
+            ))}
+          </div>
+        ) : isReadOnly ? (
+          <p>
+            <i>Not answered</i>
+          </p>
+        ) : null}
 
         <div className="form-group mt-4">
           {/* Conditional rendering of label or heading based on 'isReadOnly' */}
