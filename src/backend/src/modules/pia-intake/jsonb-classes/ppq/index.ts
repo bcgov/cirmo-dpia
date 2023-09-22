@@ -5,7 +5,6 @@ import {
   IsString,
   IsArray,
   Validate,
-  ValidateNested,
 } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
@@ -73,12 +72,10 @@ export class Ppq {
 
   @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
   relatedOperationalPias?: Array<string>;
 
   @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
   relatedEnactmentPias?: Array<string>;
 
   @IsString()
