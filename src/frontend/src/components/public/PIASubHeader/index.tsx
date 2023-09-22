@@ -18,7 +18,6 @@ import { getUserPrivileges } from '../../../utils/statusList/common';
 
 function PIASubHeader({
   pia,
-  secondaryButtonText = 'Save',
   primaryButtonText,
   handleStatusChange,
   mode = 'edit',
@@ -33,7 +32,6 @@ function PIASubHeader({
   const host = window.location.host;
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-  secondaryButtonText = mode === 'view' ? 'Edit' : 'Save';
 
   //
   // Modal State
@@ -213,13 +211,15 @@ function PIASubHeader({
     primaryButtonText,
   ]);
 
-  const showSaveAndEditButton = () => {
+  const showEditButton = () => {
     // we may revisit this part later for standard PIA
-    if (mode === 'view' && pia.status === PiaStatuses.CPO_REVIEW) return false;
-    else if (
-      mode === 'view' &&
-      (pia.status === PiaStatuses.FINAL_REVIEW ||
-        pia.status === PiaStatuses.COMPLETE)
+    if (
+      (mode === 'view' &&
+        (pia.status === PiaStatuses.FINAL_REVIEW ||
+          pia.status === PiaStatuses.COMPLETE ||
+          pia.status === PiaStatuses.CPO_REVIEW)) ||
+      nextStepAction ||
+      mode === 'edit'
     )
       return false;
 
@@ -256,14 +256,14 @@ function PIASubHeader({
             />
           </div>
         )}
-        {showSaveAndEditButton() && (
+        {showEditButton() && (
           <div className="mx-1">
             <button
               onClick={onEditClick}
               className="mx-1 bcgovbtn bcgovbtn__secondary"
               aria-label="Edit Button"
             >
-              {secondaryButtonText}
+              Edit
             </button>
           </div>
         )}
@@ -304,18 +304,6 @@ function PIASubHeader({
               >
                 Generate access link
               </button>
-            </li>
-            <li role="button">
-              {/* Save or Edit button */}
-              {!nextStepAction && mode === 'edit' && (
-                <button
-                  onClick={onSaveChangeClick}
-                  className="dropdown-item"
-                  aria-label="Save Change Button"
-                >
-                  {secondaryButtonText}
-                </button>
-              )}
             </li>
           </ul>
 
