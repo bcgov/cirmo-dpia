@@ -29,19 +29,23 @@ const ViewCPOReview = (props: ICPOReviewProps) => {
   const [reviewNote, setReviewNote] = useState(
     Object(pia.review?.cpo)?.[cpoId].reviewNote || '',
   );
+
   const [editReviewNote, setEditReviewNote] = useState(false);
+
   const handleSubmit = () => {
     const review = { isAcknowledged: acknowledged, reviewNote };
     stateChangeHandler(review, `cpo.${cpoId}`, true);
   };
+
   const handleClear = () => {
     stateChangeHandler(null, `cpo.${cpoId}`, true);
   };
 
+  const privilegedToEdit =
+    getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview ?? false;
+
   const canEditReview =
-    reviewGuid === getGUID() &&
-    !printPreview &&
-    (getUserPrivileges(pia)?.Pages?.review?.params?.editCpoReview ?? false);
+    reviewGuid === getGUID() && !printPreview && privilegedToEdit;
 
   return (
     <div className="d-grid gap-3">
