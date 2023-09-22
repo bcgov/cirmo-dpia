@@ -70,7 +70,7 @@
     "vite": "3.2.7",
     "wdio-cucumberjs-json-reporter": "5.1.7",
     "wdio-geckodriver-service": "5.0.2",
-    "wdio-wait-for": "3.0.6"
+    "wdio-wait-for": "3.0.7"
   },
   "husky": {
     "hooks": {
