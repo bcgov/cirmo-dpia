@@ -29,19 +29,23 @@ const ViewMPOReview = (props: IMPOReviewProps) => {
   const [reviewNote, setReviewNote] = useState(
     pia.review?.mpo?.reviewNote || '',
   );
+
   const [editReviewNote, setEditReviewNote] = useState(false);
+
   const handleSubmit = () => {
     const review = { isAcknowledged: acknowledged, reviewNote };
     stateChangeHandler(review, `mpo`, true);
   };
+
   const handleClear = () => {
     stateChangeHandler(null, `mpo`, true);
   };
 
+  const privilegedToEdit =
+    getUserPrivileges(pia)?.Pages?.review?.params?.editMpoReview ?? false;
+
   const canEditReview =
-    reviewGuid === getGUID() &&
-    !printPreview &&
-    (getUserPrivileges(pia)?.Pages?.review?.params?.editMpoReview ?? false);
+    reviewGuid === getGUID() && !printPreview && privilegedToEdit;
 
   return (
     <div className="d-grid gap-3">

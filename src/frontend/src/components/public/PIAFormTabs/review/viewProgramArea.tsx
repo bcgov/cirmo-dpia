@@ -18,11 +18,14 @@ interface IViewProgramAreaReviewProps {
 const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
   const { pia, printPreview, stateChangeHandler, role } = props;
 
-  const reviewedByDisplayName = Object(props.pia?.review?.mpo)
-    ?.reviewedByDisplayName;
+  const reviewedByDisplayName = Object(
+    props.pia?.review?.programArea?.reviews,
+  )?.[role]?.reviewedByDisplayName;
 
-  const reviewedAt = Object(props.pia?.review?.mpo)?.reviewedAt;
-  const reviewGuid = Object(props.pia?.review?.mpo)?.reviewedByGuid;
+  const reviewedAt = Object(props.pia?.review?.programArea?.reviews)?.[role]
+    ?.reviewedAt;
+  const reviewGuid = Object(props.pia?.review?.programArea?.reviews)?.[role]
+    ?.reviewedByGuid;
 
   /**
    * Local state for the checkbox and review note
@@ -46,11 +49,12 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
     stateChangeHandler(null, `programArea.reviews.${role}`, true);
   };
 
+  const privilegedToEdit =
+    getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReview ??
+    false;
+
   const canEditReview =
-    reviewGuid === getGUID() &&
-    !printPreview &&
-    (getUserPrivileges(pia)?.Pages?.review?.params?.editProgramAreaReviewers ??
-      false);
+    reviewGuid === getGUID() && !printPreview && privilegedToEdit;
 
   return (
     <div className="d-grid gap-3">
@@ -71,6 +75,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
             <div>
               <ViewReviewSection
                 pia={pia}
+                role={role}
                 printPreview
                 editReviewNote={editReviewNote}
                 setEditReviewNote={setEditReviewNote}
@@ -95,6 +100,7 @@ const ViewProgramAreaReview = (props: IViewProgramAreaReviewProps) => {
         <div className="mt-2 pb-2">
           <ViewReviewSection
             pia={pia}
+            role={role}
             editReviewNote={editReviewNote}
             setEditReviewNote={setEditReviewNote}
             isAcknowledged={acknowledged}

@@ -92,7 +92,7 @@ const NextStepsPI = (navigateFn: PIFlow) => {
     stateChangeHandler('modalShow', false);
     if (nextStepAction.value === 'complete') {
       /* set status to edit in progress */
-      piaStateChangeHandler(PiaStatuses.EDIT_IN_PROGRESS, 'status');
+      piaStateChangeHandler(PiaStatuses.MPO_REVIEW, 'status');
     } else {
       piaStateChangeHandler(PiaStatuses.INCOMPLETE, 'status');
     }
