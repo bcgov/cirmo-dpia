@@ -21,13 +21,14 @@ import {
 import InputText from '../../../common/InputText/InputText';
 
 const PPQ = ({ printPreview }: IPPQProps) => {
+  // Import context and access control
   const { pia, piaStateChangeHandler, isReadOnly, accessControl } =
     useContext<IPiaFormContext>(PiaFormContext);
 
-  // Check for any access control restrictions
+  // Enforce any access control restrictions
   if (accessControl) accessControl();
 
-  // Initialize default state for PPQ using useMemo for performance optimization
+  // Initialize default state for PPQ, using useMemo for performance
   const defaultState: IPPQ = useMemo(
     () => ({
       hasCommonProgram: false,
@@ -50,177 +51,143 @@ const PPQ = ({ printPreview }: IPPQProps) => {
     [],
   );
 
-  // Get initial form state from pia.ppq or use default state
+  // Initialize the form with either default state or pre-existing state from pia.ppq
   const initialFormState = useMemo(
-    () => pia.ppq || defaultState, // Use pia.ppq if it exists, otherwise use defaultState
-    [defaultState, pia.ppq], // Re-calculate initialFormState whenever defaultState or pia.ppq changes
+    () => pia.ppq || defaultState,
+    [defaultState, pia.ppq],
   );
 
-  // Initialize ppqForm state
+  // Manage form state using React's useState hook
   const [ppqForm, setPpqForm] = useState<IPPQ>(initialFormState);
 
-  /**
-   * Update ppqForm state
-   * @param value - The new value for the state
-   * @param key - The key of the state to be updated
-   */
+  // Function to handle state changes for ppqForm
   const stateChangeHandler = (value: any, key: keyof IPPQ) => {
-    // Update the ppqForm state using the setNestedReactState function
     setNestedReactState(setPpqForm, key, value);
   };
 
   // State for character count
   const [charCount, setCharCount] = useState<number>(0);
+
   // Max character count for initiative summary
   const MAX_CHAR_COUNT = 500;
 
+  // Manage state for operational and enactment PIAs
   const [operationalPIAs, setOperationalPIAs] = useState<string[]>([]);
   const [enactmentPIAs, setEnactmentPIAs] = useState<string[]>([]);
 
+  // Function to add a new operational PIA
   const addOperationalPIA = () => {
-    // Retrieve the current input value
     const newPIA = ppqForm?.relatedOperationalPias || '';
-
-    // Check if the input is empty or contains only whitespace
-    if (newPIA.trim() === '') {
-      return; // Exit the function if empty
-    }
-
-    // Add the new PIA to your existing list (assuming you have a state called operationalPIAs)
-    // Replace setOperationalPIAs with the actual function you use to update the state
+    if (newPIA.trim() === '') return;
     setOperationalPIAs([...operationalPIAs, newPIA]);
-
-    // Reset the relatedOperationalPias field to an empty string
     stateChangeHandler('', 'relatedOperationalPias');
   };
 
+  // Function to remove an operational PIA by its index
   const removeOperationalPIA = (index: number) => {
     const newList = [...operationalPIAs];
     newList.splice(index, 1);
     setOperationalPIAs(newList);
   };
+
+  // Function to add a new enactment PIA
   const addEnactmentPIA = () => {
     const newEnactmentPIA = ppqForm?.relatedEnactmentPias || '';
-    if (newEnactmentPIA.trim() === '') {
-      return;
-    }
+    if (newEnactmentPIA.trim() === '') return;
     setEnactmentPIAs([...enactmentPIAs, newEnactmentPIA]);
     stateChangeHandler('', 'relatedEnactmentPias');
   };
 
+  // Function to remove an enactment PIA by its index
   const removeEnactmentPIA = (index: number) => {
     const newList = [...enactmentPIAs];
     newList.splice(index, 1);
     setEnactmentPIAs(newList);
   };
 
-  /**
-   * Handles the change event for the initiative summary.
-   *
-   * @param {string} value - The new value for the initiative summary.
-   * @return {void}
-   */
+  // Handle character count in Initiative Summary
   const handleInitiativeSummaryChange = (value = '') => {
     stateChangeHandler(value, 'pidInitiativeSummary');
     setCharCount(value.length);
   };
 
-  /**
-   * Returns a message displaying the number of characters left or the maximum character count.
-   *
-   * @return {string} - The message displaying the number of characters left or the maximum character count.
-   */
+  // Display remaining character count or maximum limit
   const getCharDisplayMessage = () =>
     charCount === 0
       ? `${MAX_CHAR_COUNT} characters max`
       : `${MAX_CHAR_COUNT - charCount} characters left`;
 
+  // Proposed deadline radio button options
   const ProposedDeadlineRadio = [
-    // Option 1: Yes
     {
       index: 1,
-      value: YesNoInput.YES, // Value of the radio button
-      groupName: 'proposed-deadline-radio', // Name of the radio button group
-      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.YES, // Check if this option is the default
-      changeHandler: (
-        e: any, // Event handler for when the radio button is changed
-      ) => stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'), // Call the stateChangeHandler function with the new value
+      value: YesNoInput.YES,
+      groupName: 'proposed-deadline-radio',
+      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.YES,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
     },
-    // Option 2: No
     {
       index: 2,
-      value: YesNoInput.NO, // Value of the radio button
-      groupName: 'proposed-deadline-radio', // Name of the radio button group
-      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.NO, // Check if this option is the default
-      changeHandler: (
-        e: any, // Event handler for when the radio button is changed
-      ) => stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'), // Call the stateChangeHandler function with the new value
+      value: YesNoInput.NO,
+      groupName: 'proposed-deadline-radio',
+      isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.NO,
+      changeHandler: (e: any) =>
+        stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
     },
   ];
 
-  // This useEffect hook is responsible for passing updated data to the parent component.
-  // It triggers the piaStateChangeHandler function only if there are changes between the initialFormState and ppqForm.
-
-  /**
-   * useEffect hook to handle auto-saving of data changes.
-   * @param {Function} piaStateChangeHandler - The function to handle state changes in the parent component.
-   * @param {object} ppqForm - The current form state.
-   * @param {object} initialFormState - The initial form state.
-   */
+  // This useEffect hook is responsible for passing updated data to the parent component. It triggers the piaStateChangeHandler function only if there are changes between the initialFormState and ppqForm.
   useEffect(() => {
-    // Check if there are changes between the initialFormState and ppqForm using deepEqual.
     if (!deepEqual(initialFormState, ppqForm)) {
-      // Trigger the piaStateChangeHandler function with the updated ppqForm and 'ppq' as the type.
       piaStateChangeHandler(ppqForm, 'ppq');
     }
   }, [piaStateChangeHandler, ppqForm, initialFormState]);
 
   return (
     <>
-      {/* Render a level 2 heading for the results */}
+      {/* Level 2 heading for the results section */}
       <h2 className="results-header">
-        {/* Make the heading text bold */}
-        <b>
-          {/* Display the title from the Messages.Headings.Title object */}
-          {Messages.Headings.Title.en}
-        </b>
+        <b>{Messages.Headings.Title.en}</b>
       </h2>
-      <p className="pb-4"> {Messages.Headings.Description.en}</p>
+      {/* Description text */}
+      <p className="pb-4">{Messages.Headings.Description.en}</p>
+
+      {/* Main card container */}
       <section className="drop-shadow card p-4 p-md-5">
+        {/* Conditional header based on 'isReadOnly' */}
         {!isReadOnly ? (
-          // Render a paragraph with bold text if not read-only
           <p>
             <strong>{Messages.InitiativeFactorsHeading.en} </strong>
           </p>
         ) : (
-          // Render a level 4 heading if read-only
           <h4>{Messages.InitiativeFactorsHeading.en}</h4>
         )}
+
+        {/* Render checkboxes for various factors */}
         <div className="row">
-          {OtherFactor.map((factor, index) => {
-            return (
-              // Render a checkbox for each factor in OtherFactor array
-              <Checkbox
-                key={index}
-                checked={!!ppqForm?.[factor.value as keyof IPPQ] || false}
-                isLink={false}
-                value={factor.value}
-                label={factor.label}
-                tooltip={factor.tooltip}
-                tooltipText={factor.tooltipText}
-                onChange={(event) => {
-                  if (isReadOnly) return;
-                  stateChangeHandler(
-                    event.target.checked,
-                    factor.value as keyof IPPQ,
-                  );
-                }}
-                readOnly={isReadOnly}
-              />
-            );
-          })}
+          {OtherFactor.map((factor, index) => (
+            // Create a checkbox for each factor
+            <Checkbox
+              key={index}
+              checked={!!ppqForm?.[factor.value as keyof IPPQ] || false}
+              isLink={false}
+              value={factor.value}
+              label={factor.label}
+              tooltip={factor.tooltip}
+              tooltipText={factor.tooltipText}
+              onChange={(event) => {
+                if (isReadOnly) return;
+                stateChangeHandler(
+                  event.target.checked,
+                  factor.value as keyof IPPQ,
+                );
+              }}
+              readOnly={isReadOnly}
+            />
+          ))}
+          {/* Conditionally display Markdown editor or preview */}
           {!isReadOnly ? (
-            // Render a Markdown editor if hasInitiativeOther is true
             ppqForm?.hasInitiativeOther && (
               <MDEditor
                 preview="edit"
@@ -233,7 +200,6 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               />
             )
           ) : ppqForm?.hasInitiativeOther ? (
-            // Render a Markdown preview if hasInitiativeOther is true and initiativeOtherDetails is not empty
             ppqForm?.initiativeOtherDetails &&
             ppqForm?.initiativeOtherDetails !== '' ? (
               <div className="px-4">
@@ -243,59 +209,53 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 />
               </div>
             ) : (
-              // Render "Not answered" if initiativeOtherDetails is empty
               <p>
                 <i>Not answered</i>
               </p>
             )
           ) : null}
         </div>
+        {/* Render deadline info, conditional on printPreview and isReadOnly */}
         {!printPreview && (
           <div className="form-group mt-4">
-            {!isReadOnly ? (
-              // Render a paragraph with bold text if not read-only
-              <p>
-                <strong> {Messages.DeadlineDateHeading.en}</strong>
-              </p>
-            ) : (
-              // Render a level 4 heading if read-only
+            {isReadOnly ? (
               <h4>{Messages.DeadlineDateHeading.en}</h4>
-            )}
-            {!isReadOnly ? (
-              // Render radio buttons for each item in ProposedDeadlineRadio array
-              ProposedDeadlineRadio.map((radio, index) => (
-                <Radio key={index} {...radio} />
-              ))
             ) : (
-              // Render the first character of proposedDeadlineAvailable in lowercase if read-only
+              <p>
+                <strong>{Messages.DeadlineDateHeading.en}</strong>
+              </p>
+            )}
+            {isReadOnly ? (
               <p>
                 {ppqForm?.proposedDeadlineAvailable?.charAt(0)}
                 {ppqForm?.proposedDeadlineAvailable?.slice(1).toLowerCase()}
               </p>
+            ) : (
+              ProposedDeadlineRadio.map((radio, index) => (
+                <Radio key={index} {...radio} />
+              ))
             )}
           </div>
         )}
-        {/*
-  This code block conditionally renders two form groups based on the value of `ppqForm?.proposedDeadlineAvailable`.
-  If `ppqForm?.proposedDeadlineAvailable` is equal to `YesNoInput.YES`, the form groups are rendered, otherwise they are skipped.
-*/}
+
+        {/* Show Proposed Deadline and Reason if 'proposedDeadlineAvailable' is YES */}
         {ppqForm?.proposedDeadlineAvailable === YesNoInput.YES && (
           <>
-            {/* Form group for the proposed deadline date */}
+            {/* Form Group for Proposed Deadline */}
             <div className="form-group mt-4 mb-4 col-md-3">
               {!isReadOnly ? (
-                /* Label for the deadline date input */
+                // Label for the date input in editable mode
                 <label id="deadline-date-label">
                   {Messages.ProposedDeadLineHeading.en}
                   <span className="error-text "> (required)</span>
                 </label>
               ) : (
-                /* Heading for the deadline date */
+                // Heading for the date input in read-only mode
                 <h4> {Messages.ProposedDeadLineHeading.en}</h4>
               )}
               {!isReadOnly ? (
                 <>
-                  {/* Custom input date component */}
+                  {/* Custom Date Input Component */}
                   <CustomInputDate
                     key="proposedDeadlineDate"
                     selected={
@@ -313,7 +273,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                   />
                 </>
               ) : (
-                /* Display the proposed deadline date if available, otherwise display "Not answered" */
+                // Show date value if available, otherwise show "Not answered"
                 <div>
                   {pia.ppq?.proposedDeadline &&
                   pia.ppq?.proposedDeadline !== '' ? (
@@ -326,21 +286,21 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 </div>
               )}
             </div>
-            {/* Form group for the deadline reason */}
+            {/* Form Group for Deadline Reason */}
             <div className="form-group mt-4 mb-4">
               {!isReadOnly ? (
-                /* Label for the deadline reason input */
+                // Label for the reason input in editable mode
                 <label id="start-date-label">
                   {Messages.DeadlineReasonHeading.en}
                   <span className="error-text "> (required)</span>
                 </label>
               ) : (
-                /* Heading for the deadline reason */
+                // Heading for the reason input in read-only mode
                 <h4> {Messages.DeadlineReasonHeading.en}</h4>
               )}
               {!isReadOnly ? (
                 <>
-                  {/* Markdown editor component for editing the deadline reason */}
+                  {/* Markdown Editor for Deadline Reason */}
                   <MDEditor
                     preview="edit"
                     defaultTabEnable={true}
@@ -351,9 +311,10 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                   />
                 </>
               ) : ppqForm.proposedDeadlineReason ? (
-                /* Display the rendered markdown of the deadline reason if available, otherwise display "Not answered" */
+                // Show Markdown rendering of Deadline Reason if available
                 <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
               ) : (
+                // Show "Not answered" if Deadline Reason is empty
                 <p>
                   <i>Not answered</i>
                 </p>
@@ -361,10 +322,11 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             </div>
           </>
         )}
-        {/* Render the form group for the initiative summary. */}
+
+        {/* Form group for Initiative Summary */}
         <div className="form-group mt-4 mb-4">
           {!isReadOnly ? (
-            // Render the label for the initiative summary with a link
+            // Show label with link and character count for editable mode
             <label id="pidInitiativeSummary">
               {Messages.InitiativeSummaryHeading.en.firstText}
               <a
@@ -379,11 +341,11 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               <span> ({getCharDisplayMessage()}) </span>
             </label>
           ) : (
-            // Render the heading for the initiative summary
+            // Show heading for read-only mode
             <h4> {Messages.InitiativeSummaryHeading.en.fullText}</h4>
           )}
           {!isReadOnly ? (
-            // Render the MDEditor for editing the initiative summary
+            // Show Markdown editor for editable mode
             <MDEditor
               preview="edit"
               defaultTabEnable={true}
@@ -393,24 +355,29 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               textareaProps={{ maxLength: MAX_CHAR_COUNT }}
             />
           ) : ppqForm.pidInitiativeSummary ? (
-            // Render the markdown preview of the initiative summary
+            // Show Markdown preview for read-only mode if available
             <MDEditor.Markdown
               source={ppqForm.pidInitiativeSummary}
               aria-label="Initiative Summary Textarea Input Preview"
             />
           ) : (
-            // Render "Not answered" message if the initiative summary is empty
+            // Show 'Not answered' for read-only mode if no data available
             <p>
               <i>Not answered</i>
             </p>
           )}
         </div>
+        {/* Form Group for Related Operational PIAs */}
         <div className="form-group mt-4">
+          {/* Check if the form is in read-only mode */}
           {!isReadOnly ? (
             <>
+              {/* Label for related operational PIA input */}
               <label>{Messages.RelatedOperationalPIAHeading.en.title}</label>
+
+              {/* Container for the related operational PIA input field */}
               <div className="card p-3 pb-5 border border-2 mb-4">
-                {/* InputText component for entering related operational PIA */}
+                {/* Text Input for entering related operational PIA */}
                 <InputText
                   label={Messages.RelatedOperationalPIAHeading.en.inputTitle}
                   id="relatedOperationalPias"
@@ -423,8 +390,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     Messages.RelatedOperationalPIAHeading.en.inputPlaceholder
                   }
                 />
+
+                {/* Button to add a new related operational PIA */}
                 <div className="mt-3">
-                  {/* Button to add the related operational PIA */}
                   <button
                     className="bcgovbtn bcgovbtn__secondary"
                     onClick={addOperationalPIA}
@@ -439,17 +407,23 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           )}
         </div>
 
+        {/* Display the list of added operational PIAs */}
         {operationalPIAs.length > 0 ? (
           <div className="form-group mb-4">
+            {/* Label for the list of operational PIAs */}
             <label className="px-4">
               {Messages.RelatedOperationalPIAHeading.en.inputTitle}
             </label>
+            {/* Decorative horizontal divider */}
             <div className="horizontal-divider-yellow mt-1 mb-1"></div>
 
+            {/* Map over the array of operational PIAs */}
             {operationalPIAs.map((operationalPia, index) => (
               <div key={index} className="mb-0">
                 <div className="d-flex justify-content-between align-items-center align-content-center">
+                  {/* Display each operational PIA */}
                   <div className="px-4">{operationalPia}</div>
+                  {/* Button to remove an operational PIA (Only if not in read-only mode) */}
                   {!isReadOnly && (
                     <button
                       className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
@@ -459,6 +433,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     </button>
                   )}
                 </div>
+                {/* Decorative horizontal divider */}
                 <div className="horizontal-divider-grey mt-2 mb-2"></div>
               </div>
             ))}
@@ -469,12 +444,16 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           </p>
         ) : null}
 
+        {/* Form Group for Related Enactment PIAs */}
         <div className="form-group mt-4">
+          {/* Conditional label or heading based on read-only status */}
           {!isReadOnly ? (
             <>
               <label>{Messages.RelatedEnactmentPIAHeading.en.title}</label>
+
+              {/* Input container for related enactment PIA */}
               <div className="card p-3 pb-5 border border-2 mb-4">
-                {/* InputText component for entering related enactment PIA */}
+                {/* Text input for entering related enactment PIA */}
                 <InputText
                   label={Messages.RelatedEnactmentPIAHeading.en.inputTitle}
                   id="relatedEnactmentPias"
@@ -487,8 +466,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     Messages.RelatedEnactmentPIAHeading.en.inputPlaceholder
                   }
                 />
+
+                {/* Button to add a new related enactment PIA */}
                 <div className="mt-3">
-                  {/* Button to add the related enactment PIA */}
                   <button
                     className="bcgovbtn bcgovbtn__secondary"
                     onClick={addEnactmentPIA}
@@ -502,18 +482,22 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             <h4>{Messages.RelatedEnactmentPIAHeading.en.title}</h4>
           )}
         </div>
-
+        {/* Display list of related enactment PIAs if any exist */}
         {enactmentPIAs.length > 0 ? (
           <div className="form-group mb-4">
+            {/* Label for the list of related enactment PIAs */}
             <label className="px-4">
               {Messages.RelatedEnactmentPIAHeading.en.inputTitle}
             </label>
+            {/* Decorative horizontal divider */}
             <div className="horizontal-divider-yellow mt-1 mb-1"></div>
-
+            {/* List each related enactment PIA */}
             {enactmentPIAs.map((enactmentPia, index) => (
               <div key={index} className="mb-0">
                 <div className="d-flex justify-content-between align-items-center align-content-center">
+                  {/* Display each related enactment PIA */}
                   <div className="px-4">{enactmentPia}</div>
+                  {/* Delete button for each related enactment PIA (Only if not read-only) */}
                   {!isReadOnly && (
                     <button
                       className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
@@ -523,6 +507,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     </button>
                   )}
                 </div>
+                {/* Decorative horizontal divider */}
                 <div className="horizontal-divider-grey mt-2 mb-2"></div>
               </div>
             ))}
@@ -532,22 +517,19 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             <i>Not answered</i>
           </p>
         ) : null}
-
+        {/* Form Group for Additional Information */}
         <div className="form-group mt-4">
-          {/* Conditional rendering of label or heading based on 'isReadOnly' */}
+          {/* Choose label or heading depending on 'isReadOnly' status */}
           {!isReadOnly ? (
-            // Label for input field
             <label id="additionalInformation">
               {Messages.AdditionalInfoHeading.en}
             </label>
           ) : (
-            // Heading for read-only mode
-            <h4> {Messages.AdditionalInfoHeading.en}</h4>
+            <h4>{Messages.AdditionalInfoHeading.en}</h4>
           )}
 
-          {/* Conditional rendering of MDEditor based on 'isReadOnly' */}
+          {/* Markdown editor for additional information */}
           {!isReadOnly ? (
-            // MDEditor for editable mode
             <MDEditor
               preview="edit"
               defaultTabEnable={true}
@@ -558,13 +540,11 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               aria-label="Other CPO Consideration Textarea Input"
             />
           ) : ppqForm.otherCpoConsideration ? (
-            // MDEditor preview for read-only mode
             <MDEditor.Markdown
               source={ppqForm.otherCpoConsideration}
               aria-label="Other CPO Consideration Textarea Input Preview"
             />
           ) : (
-            // Placeholder for empty input in read-only mode
             <p>
               <i>Not answered</i>
             </p>
