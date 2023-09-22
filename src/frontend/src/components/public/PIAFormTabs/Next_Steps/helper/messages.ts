@@ -47,7 +47,7 @@ export default {
         en: `To continue drafting this PIA without your MPO’s help, select “Stay in Incomplete status”. Your PIA will be visible to only you, the drafter. At any point, if you submit your PIA, your MPO will be able to view it. Your PIA does not have to be complete for you to submit it to your MPO.`,
       },
       paragraph2: {
-        en: `To continue drafting with your MPOs help, select “Submit to MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`,
+        en: `To continue drafting with your MPOs help, select “Share with my MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`,
       },
       Primary: {
         en: `Stay in Incomplete status`,
