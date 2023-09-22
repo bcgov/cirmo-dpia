@@ -13,8 +13,8 @@ export interface IPPQ {
   proposedDeadlineReason?: string;
   otherCpoConsideration?: string;
   pidInitiativeSummary?: string;
-  relatedOperationalPias?: string;
-  relatedEnactmentPias?: string;
+  relatedOperationalPias?: string[];
+  relatedEnactmentPias?: string[];
 }
 export interface IPPQProps {
   printPreview?: boolean;

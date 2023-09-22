@@ -45,8 +45,8 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       proposedDeadlineReason: '',
       otherCpoConsideration: '',
       pidInitiativeSummary: '',
-      relatedOperationalPias: '',
-      relatedEnactmentPias: '',
+      relatedOperationalPias: [],
+      relatedEnactmentPias: [],
     }),
     [],
   );
@@ -72,37 +72,41 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const MAX_CHAR_COUNT = 500;
 
   // Manage state for operational and enactment PIAs
-  const [operationalPIAs, setOperationalPIAs] = useState<string[]>([]);
-  const [enactmentPIAs, setEnactmentPIAs] = useState<string[]>([]);
+  const [operationalPIA, setOperationalPIA] = useState<string>('');
+  const [enactmentPIA, setEnactmentPIA] = useState<string>('');
 
   // Function to add a new operational PIA
   const addOperationalPIA = () => {
-    const newPIA = ppqForm?.relatedOperationalPias || '';
-    if (newPIA.trim() === '') return;
-    setOperationalPIAs([...operationalPIAs, newPIA]);
-    stateChangeHandler('', 'relatedOperationalPias');
+    if (operationalPIA.trim() === '') return;
+    stateChangeHandler(
+      [...(ppqForm.relatedOperationalPias ?? []), operationalPIA],
+      'relatedOperationalPias',
+    );
+    setOperationalPIA('');
   };
 
   // Function to remove an operational PIA by its index
   const removeOperationalPIA = (index: number) => {
-    const newList = [...operationalPIAs];
-    newList.splice(index, 1);
-    setOperationalPIAs(newList);
+    const newList = ppqForm.relatedOperationalPias?.filter(
+      (_, i) => i !== index,
+    );
+    stateChangeHandler(newList, 'relatedOperationalPias');
   };
 
   // Function to add a new enactment PIA
   const addEnactmentPIA = () => {
-    const newEnactmentPIA = ppqForm?.relatedEnactmentPias || '';
-    if (newEnactmentPIA.trim() === '') return;
-    setEnactmentPIAs([...enactmentPIAs, newEnactmentPIA]);
-    stateChangeHandler('', 'relatedEnactmentPias');
+    if (enactmentPIA.trim() === '') return;
+    stateChangeHandler(
+      [...(ppqForm.relatedEnactmentPias ?? []), enactmentPIA],
+      'relatedEnactmentPias',
+    );
+    setEnactmentPIA('');
   };
 
   // Function to remove an enactment PIA by its index
   const removeEnactmentPIA = (index: number) => {
-    const newList = [...enactmentPIAs];
-    newList.splice(index, 1);
-    setEnactmentPIAs(newList);
+    const newList = ppqForm.relatedEnactmentPias?.filter((_, i) => i !== index);
+    stateChangeHandler(newList, 'relatedEnactmentPias');
   };
 
   // Handle character count in Initiative Summary
@@ -380,11 +384,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 {/* Text Input for entering related operational PIA */}
                 <InputText
                   label={Messages.RelatedOperationalPIAHeading.en.inputTitle}
-                  id="relatedOperationalPias"
-                  value={ppqForm?.relatedOperationalPias || ''}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'relatedOperationalPias')
-                  }
+                  id="relatedOperationalPia"
+                  value={operationalPIA || ''}
+                  onChange={(e) => setOperationalPIA(e.target.value || '')}
                   required={false}
                   placeholder={
                     Messages.RelatedOperationalPIAHeading.en.inputPlaceholder
@@ -408,7 +410,8 @@ const PPQ = ({ printPreview }: IPPQProps) => {
         </div>
 
         {/* Display the list of added operational PIAs */}
-        {operationalPIAs.length > 0 ? (
+        {ppqForm?.relatedOperationalPias &&
+        ppqForm?.relatedOperationalPias?.length > 0 ? (
           <div className="form-group mb-4">
             {/* Label for the list of operational PIAs */}
             <label className="px-4">
@@ -418,7 +421,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             <div className="horizontal-divider-yellow mt-1 mb-1"></div>
 
             {/* Map over the array of operational PIAs */}
-            {operationalPIAs.map((operationalPia, index) => (
+            {ppqForm?.relatedOperationalPias?.map((operationalPia, index) => (
               <div key={index} className="mb-0">
                 <div className="d-flex justify-content-between align-items-center align-content-center">
                   {/* Display each operational PIA */}
@@ -456,11 +459,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 {/* Text input for entering related enactment PIA */}
                 <InputText
                   label={Messages.RelatedEnactmentPIAHeading.en.inputTitle}
-                  id="relatedEnactmentPias"
-                  value={ppqForm?.relatedEnactmentPias || ''}
-                  onChange={(e) =>
-                    stateChangeHandler(e.target.value, 'relatedEnactmentPias')
-                  }
+                  id="relatedEnactmentPia"
+                  value={enactmentPIA || ''}
+                  onChange={(e) => setEnactmentPIA(e.target.value || '')}
                   required={false}
                   placeholder={
                     Messages.RelatedEnactmentPIAHeading.en.inputPlaceholder
@@ -483,7 +484,8 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           )}
         </div>
         {/* Display list of related enactment PIAs if any exist */}
-        {enactmentPIAs.length > 0 ? (
+        {ppqForm?.relatedEnactmentPias &&
+        ppqForm?.relatedEnactmentPias?.length > 0 ? (
           <div className="form-group mb-4">
             {/* Label for the list of related enactment PIAs */}
             <label className="px-4">
@@ -492,7 +494,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             {/* Decorative horizontal divider */}
             <div className="horizontal-divider-yellow mt-1 mb-1"></div>
             {/* List each related enactment PIA */}
-            {enactmentPIAs.map((enactmentPia, index) => (
+            {ppqForm?.relatedEnactmentPias?.map((enactmentPia, index) => (
               <div key={index} className="mb-0">
                 <div className="d-flex justify-content-between align-items-center align-content-center">
                   {/* Display each related enactment PIA */}
