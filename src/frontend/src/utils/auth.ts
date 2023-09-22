@@ -12,6 +12,8 @@ export enum TokenStorageKeys {
   TOKENS_LAST_REFRESHED_AT = 'tokensLastRefreshedAt',
   LAST_ACTIVITY_AT = 'lastActivityAt',
   IS_AUTO_LOGOUT_WARNING_POPUP_OPEN = 'isAutoLogoutWarningPopupOpen',
+  POST_LOGIN_REDIRECT_URL = 'postLoginRedirectUrl',
+  FRESH_LOGIN_STATE = 'freshLoginState',
 }
 
 export enum ConfigStorageKeys {
@@ -32,6 +34,23 @@ export const isAuthenticated = () => {
   if (accessToken && accessTokenExpiry && +accessTokenExpiry > now) {
     return true;
   }
+
+  // Set post login redirect url
+  const freshLoginState = AppStorage.getItem(
+    TokenStorageKeys.FRESH_LOGIN_STATE,
+  );
+  if (
+    !freshLoginState &&
+    window.location.pathname !== '' &&
+    window.location.pathname !== '/' &&
+    window.location.pathname !== '/not-authorized' &&
+    window.location.pathname !== 'pia/list' &&
+    !window.location.pathname.includes('pia-list?session_state')
+  )
+    AppStorage.setItem(
+      TokenStorageKeys.POST_LOGIN_REDIRECT_URL,
+      window.location.href,
+    );
 
   return false;
 };
@@ -74,10 +93,24 @@ export const getAuthTokens = () => {
   };
 };
 
+export const login = () => {
+  AppStorage.setItem(TokenStorageKeys.FRESH_LOGIN_STATE, true);
+  window.location.href = API_ROUTES.KEYCLOAK_LOGIN;
+};
+
 export const logMeOut = async (unauthorized = false, cb?: () => void) => {
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const unauthRedirectUrl = `${baseUrl}/not-authorized`;
-  const loginRedirectUrl = `${baseUrl}/`;
+  const unauthRedirectUrl = `${window.location.origin}/not-authorized`;
+  const loginRedirectUrl = `${window.location.origin}/`;
+
+  // Set post login redirect url
+  let postLoginRedirectUrl;
+  if (
+    window.location.pathname !== '' &&
+    window.location.pathname !== '/' &&
+    window.location.pathname !== '/not-authorized' &&
+    window.location.pathname !== 'pia/list'
+  )
+    postLoginRedirectUrl = window.location.href;
 
   const redirectUrl = unauthorized ? unauthRedirectUrl : loginRedirectUrl;
 
@@ -102,6 +135,11 @@ export const logMeOut = async (unauthorized = false, cb?: () => void) => {
     window.location.href = `${logoutUrlResponse.siteMinderUrl}${logoutUrlResponse.keycloakUrl}`;
 
   clearStorage();
+
+  AppStorage.setItem(
+    TokenStorageKeys.POST_LOGIN_REDIRECT_URL,
+    postLoginRedirectUrl,
+  );
 
   cb?.();
 };

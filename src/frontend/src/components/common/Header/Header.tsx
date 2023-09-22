@@ -12,6 +12,7 @@ import { useFetchKeycloakUserInfo } from '../../../hooks/userFetchKeycloakUserIn
 import { AuthContext } from '../../../hooks/useAuth';
 import {
   logMeOut,
+  login,
   ConfigStorageKeys,
   isAuthenticated,
   storeAuthTokens,
@@ -97,10 +98,6 @@ function Header() {
       );
     }
   }, [accessToken, keycloakUserDetail, userInfoError]);
-
-  const login = () => {
-    win.location = API_ROUTES.KEYCLOAK_LOGIN;
-  };
 
   const logout = async () => {
     setAuthenticated(false);
