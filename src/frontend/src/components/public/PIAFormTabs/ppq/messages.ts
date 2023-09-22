@@ -32,14 +32,14 @@ export default {
     en: {
       title: `Are there any related operational PIAs? Please do not include enactment PIAs.`,
       inputTitle: `PIA title and file number`,
-      inputPlaceholder: `Sample input`,
+      inputPlaceholder: `PIA title (file number)`,
     },
   },
   RelatedEnactmentPIAHeading: {
     en: {
       title: `Are there any related enactment PIAs?`,
       inputTitle: `PIA title and file number`,
-      inputPlaceholder: `Sample input`,
+      inputPlaceholder: `PIA title (file number)`,
     },
   },
   AdditionalInfoHeading: {
