@@ -66,10 +66,10 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   };
 
   // State for character count
-  const [charCount, setCharCount] = useState<number>(0);
+  const [pidSummaryCharCount, setpidSummaryCharCount] = useState<number>(0);
 
   // Max character count for initiative summary
-  const MAX_CHAR_COUNT = 500;
+  const maxPidSummaryCharCount = 500;
 
   // Manage state for operational and enactment PIAs
   const [operationalPIA, setOperationalPIA] = useState<string>('');
@@ -112,14 +112,14 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   // Handle character count in Initiative Summary
   const handleInitiativeSummaryChange = (value = '') => {
     stateChangeHandler(value, 'pidInitiativeSummary');
-    setCharCount(value.length);
+    setpidSummaryCharCount(value.length);
   };
 
   // Display remaining character count or maximum limit
-  const getCharDisplayMessage = () =>
-    charCount === 0
-      ? `${MAX_CHAR_COUNT} characters max`
-      : `${MAX_CHAR_COUNT - charCount} characters left`;
+  const getPidSummaryCharDisplayMessage = () =>
+    pidSummaryCharCount === 0
+      ? `${maxPidSummaryCharCount} characters max`
+      : `${maxPidSummaryCharCount - pidSummaryCharCount} characters left`;
 
   // Proposed deadline radio button options
   const ProposedDeadlineRadio = [
@@ -342,7 +342,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 <FontAwesomeIcon className="ms-1" icon={faUpRightFromSquare} />
               </a>
               {Messages.InitiativeSummaryHeading.en.secondText}
-              <span> ({getCharDisplayMessage()}) </span>
+              <span> ({getPidSummaryCharDisplayMessage()}) </span>
             </label>
           ) : (
             // Show heading for read-only mode
@@ -356,7 +356,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               value={ppqForm?.pidInitiativeSummary || ''}
               onChange={(value) => handleInitiativeSummaryChange(value || '')}
               aria-label="Initiative Summary Textarea Input"
-              textareaProps={{ maxLength: MAX_CHAR_COUNT }}
+              textareaProps={{ maxLength: maxPidSummaryCharCount }}
             />
           ) : ppqForm.pidInitiativeSummary ? (
             // Show Markdown preview for read-only mode if available
