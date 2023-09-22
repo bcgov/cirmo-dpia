@@ -208,41 +208,6 @@ const PIAFormPage = () => {
     }));
   };
 
-  /**
-   * @description - Check if the PIA is in an editable status
-   * @returns {boolean}
-   */
-
-  const checkEditableStatus = () => {
-    // the root cause is when the page loading, the pia does not exist,so it will
-    // use empty state object, which  this function always return true.
-    if (
-      pia?.status === PiaStatuses.INCOMPLETE ||
-      pia?.status === PiaStatuses.EDIT_IN_PROGRESS
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   * @description - Navigate to the intake page upon status change to an
-   *                editable status or if the user changes the mode
-   */
-
-  useEffect(() => {
-    // for create new pia and next step page, bypass the check
-    if (pathname === routes.PIA_NEW) return;
-    if (pathname.split('/').includes('nextSteps')) return;
-    // temp fix, just use id instead of pia.id to make sure the app does not broken right now
-    if (checkEditableStatus() && mode === 'edit') {
-      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: id || pia?.id }));
-    } else if (checkEditableStatus() && mode === 'view') {
-      navigate(buildDynamicPath(routes.PIA_INTAKE_VIEW, { id: id || pia?.id }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia.status, mode]);
-
   const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
 
   useEffect(() => {
@@ -526,7 +491,6 @@ const PIAFormPage = () => {
       console.error('PIA id not found');
       return;
     }
-    // the status will change to enum when Brandon pr merged
     if (pia.status === PiaStatuses.MPO_REVIEW) {
       handleShowModal('edit');
     } else {
@@ -634,12 +598,8 @@ const PIAFormPage = () => {
               ? PiaStatuses.EDIT_IN_PROGRESS
               : pia?.status,
         });
-        if (pia?.id && !pathname?.split('/').includes('review')) {
-          const regex = /(?<=\/)view/g;
-          navigate(pathname.replace(regex, 'edit'));
-        } else {
-          navigate(-1);
-        }
+        const regex = /(?<=\/)view/g;
+        navigate(pathname.replace(regex, 'edit'));
       } else if (buttonValue === 'save') {
         const newPia = await upsertAndUpdatePia();
         if (newPia?.id) {
