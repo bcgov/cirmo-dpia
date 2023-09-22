@@ -56,7 +56,9 @@ class submitPage extends Page {
     return $("//label[contains(text(),'Ministry')]/../div/select");
   }
   get Titlelabel() {
-    return $("//label[contains(text(),'Title')]/following-sibling::input");
+    return $(
+      "//label[contains(text(),'Initiative title')]/following-sibling::input",
+    );
   }
   get Branchlabel() {
     return $("//label[contains(text(),'Branch')]/following-sibling::input");
