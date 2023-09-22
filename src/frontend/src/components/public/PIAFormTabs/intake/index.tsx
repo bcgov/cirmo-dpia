@@ -112,7 +112,7 @@ export const PIAFormIntake = () => {
           >
             <div className="row">
               <InputText
-                label="Title"
+                label="Initiative title"
                 value={intakeForm?.title}
                 onChange={(e) => stateChangeHandler(e.target.value, 'title')}
                 required={true}
