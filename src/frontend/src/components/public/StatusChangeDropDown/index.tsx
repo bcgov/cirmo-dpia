@@ -110,6 +110,7 @@ function StatusChangeDropDown({
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              onKeyUp={() => itemRefs.current[0]?.focus()}
             >
               <div
                 className={`statusBlock statusBlock--active ${
