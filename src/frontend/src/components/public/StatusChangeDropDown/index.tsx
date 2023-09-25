@@ -94,28 +94,32 @@ function StatusChangeDropDown({
     itemRefs.current[selectedStatusIndex]?.focus();
   }, [selectedStatusIndex]);
 
-  const DropdownStatusItems = () => {
-    return statuses.map((statuskey, index) => (
-      <li
-        key={index}
-        ref={(element) => (itemRefs.current[index] = element)}
-        tabIndex={index === selectedStatusIndex ? 0 : -1}
-        onKeyDown={(event) => handleKeyDown(event, statuskey)}
-        onKeyUp={(event) => handleKeyUp(event)}
-        onClick={() => {
-          populateModal(pia, statuskey.status, changeStatusFn);
-        }}
-        className="dropdown-item-container"
-      >
-        <div
-          className={`dropdown-item statusBlock ${
-            statusList(null)[statuskey.status].class
-          }`}
-        >
-          {statusList(null)[statuskey.status].title}
-        </div>
-      </li>
-    ));
+  const DropdownStatusList = () => {
+    return (
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        {statuses.map((statuskey, index) => (
+          <li
+            key={index}
+            ref={(element) => (itemRefs.current[index] = element)}
+            tabIndex={index === selectedStatusIndex ? 0 : -1}
+            onKeyDown={(event) => handleKeyDown(event, statuskey)}
+            onKeyUp={(event) => handleKeyUp(event)}
+            onClick={() => {
+              populateModal(pia, statuskey.status, changeStatusFn);
+            }}
+            className="dropdown-item-container"
+          >
+            <div
+              className={`dropdown-item statusBlock ${
+                statusList(null)[statuskey.status].class
+              }`}
+            >
+              {statusList(null)[statuskey.status].title}
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -142,12 +146,7 @@ function StatusChangeDropDown({
               <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
             </button>
             {pia.status && pia.status in statusList(null) ? (
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton1"
-              >
-                <DropdownStatusItems />
-              </ul>
+              <DropdownStatusList />
             ) : (
               ''
             )}
