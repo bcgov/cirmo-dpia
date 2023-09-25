@@ -59,6 +59,17 @@ function StatusChangeDropDown({
 
   const { hasStatusDropdown, statuses } = checkPrivileges();
 
+  const handleKeyDown = (
+    event: React.KeyboardEvent,
+    statuskey: ChangeStatus,
+  ) => {
+    // Check if "Enter" key is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      populateModal(pia, statuskey.status, changeStatusFn);
+    }
+  };
+
   return (
     <>
       <label htmlFor="status-dropdown">Status</label>
@@ -92,6 +103,8 @@ function StatusChangeDropDown({
                   {statuses.map((statuskey, index) => (
                     <li
                       key={index}
+                      tabIndex={0}
+                      onKeyDown={(event) => handleKeyDown(event, statuskey)}
                       onClick={() => {
                         populateModal(pia, statuskey.status, changeStatusFn);
                       }}
