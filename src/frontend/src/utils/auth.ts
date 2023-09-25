@@ -102,16 +102,6 @@ export const logMeOut = async (unauthorized = false, cb?: () => void) => {
   const unauthRedirectUrl = `${window.location.origin}/not-authorized`;
   const loginRedirectUrl = `${window.location.origin}/`;
 
-  // Set post login redirect url
-  let postLoginRedirectUrl;
-  if (
-    window.location.pathname !== '' &&
-    window.location.pathname !== '/' &&
-    window.location.pathname !== '/not-authorized' &&
-    window.location.pathname !== 'pia/list'
-  )
-    postLoginRedirectUrl = window.location.href;
-
   const redirectUrl = unauthorized ? unauthRedirectUrl : loginRedirectUrl;
 
   interface LogoutUrlResponse {
@@ -135,11 +125,6 @@ export const logMeOut = async (unauthorized = false, cb?: () => void) => {
     window.location.href = `${logoutUrlResponse.siteMinderUrl}${logoutUrlResponse.keycloakUrl}`;
 
   clearStorage();
-
-  AppStorage.setItem(
-    TokenStorageKeys.POST_LOGIN_REDIRECT_URL,
-    postLoginRedirectUrl,
-  );
 
   cb?.();
 };
