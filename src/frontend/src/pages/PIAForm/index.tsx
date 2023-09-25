@@ -167,7 +167,7 @@ const PIAFormPage = () => {
       setIsFirstSave(false);
       if (!pia?.id) {
         navigate(
-          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+          buildDynamicPath(pathname.replace('view', 'edit'), {
             id: updatedPia.id,
           }),
         );
@@ -494,9 +494,12 @@ const PIAFormPage = () => {
     if (pia.status === PiaStatuses.MPO_REVIEW) {
       handleShowModal('edit');
     } else {
-      navigate(buildDynamicPath(routes.PIA_INTAKE_EDIT, { id: pia.id }), {
-        state: pia,
-      });
+      navigate(
+        buildDynamicPath(pathname.replace('view', 'edit'), { id: pia.id }),
+        {
+          state: pia,
+        },
+      );
     }
   };
   const handleStatusChange = async (status: string) => {
@@ -598,8 +601,7 @@ const PIAFormPage = () => {
               ? PiaStatuses.EDIT_IN_PROGRESS
               : pia?.status,
         });
-        const regex = /(?<=\/)view/g;
-        navigate(pathname.replace(regex, 'edit'));
+        navigate(pathname.replace('view', 'edit'));
       } else if (buttonValue === 'save') {
         const newPia = await upsertAndUpdatePia();
         if (newPia?.id) {
@@ -673,7 +675,7 @@ const PIAFormPage = () => {
         }
 
         navigate(
-          buildDynamicPath(routes.PIA_INTAKE_EDIT, {
+          buildDynamicPath(pathname.replace('view', 'edit'), {
             id: updatedPia.id,
           }),
         );
