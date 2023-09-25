@@ -23,7 +23,6 @@ function PIASubHeader({
   mode = 'edit',
   lastSaveAlertInfo,
   isValidationFailed,
-  onSaveChangeClick = () => {},
   onEditClick = () => {},
   onSubmitClick = () => {},
 }: PIASubHeaderProps) {

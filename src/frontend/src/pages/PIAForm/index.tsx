@@ -689,11 +689,6 @@ const PIAFormPage = () => {
     setShowPiaModal(false);
   };
 
-  const handleSaveChanges = () => {
-    // the save button now only handle save action
-    handleShowModal('save');
-  };
-
   //
   // Form Submission Handler
   //
@@ -912,7 +907,6 @@ const PIAFormPage = () => {
         primaryButtonText={submitButtonText}
         isValidationFailed={isValidationFailed}
         mode={mode}
-        onSaveChangeClick={handleSaveChanges}
         handleStatusChange={handleStatusChange}
         onEditClick={handleEdit}
         onSubmitClick={handleValidation}
