@@ -9,6 +9,7 @@ import {
   getUserPrivileges,
   getUserPrivilegesByStatus,
 } from '../../../utils/statusList/common';
+import { useEffect, useRef, useState } from 'react';
 
 /* create a function to push unique status object into an array */
 // TODO: Remove this function in favour of using a Set with reduce
@@ -59,16 +60,43 @@ function StatusChangeDropDown({
 
   const { hasStatusDropdown, statuses } = checkPrivileges();
 
+  const itemRefs = useRef<HTMLLIElement[] | null[]>([]);
+  const [selectedStatusIndex, setSelectedStatusIndex] = useState<number>(0);
+
   const handleKeyDown = (
     event: React.KeyboardEvent,
     statuskey: ChangeStatus,
   ) => {
+    event.preventDefault();
     // Check if "Enter" key is pressed
     if (event.key === 'Enter') {
-      event.preventDefault();
       populateModal(pia, statuskey.status, changeStatusFn);
     }
   };
+
+  const handleKeyUp = (event: React.KeyboardEvent) => {
+    event.preventDefault();
+    // Check if "Down" key is pressed
+    if (event.key === 'ArrowDown') {
+      setSelectedStatusIndex((prev) => {
+        if (prev === statuses.length - 1) {
+          return 0; // Wrap around to the start
+        }
+        return prev + 1; // Move to the next status
+      });
+    } else if (event.key === 'ArrowUp') {
+      setSelectedStatusIndex((prev) => {
+        if (prev - 1 < 0) {
+          return statuses.length - 1; // Wrap around to the end
+        }
+        return prev - 1; // Move to the prev status
+      });
+    }
+  };
+
+  useEffect(() => {
+    itemRefs.current[selectedStatusIndex]?.focus();
+  }, [selectedStatusIndex]);
 
   return (
     <>
@@ -103,8 +131,10 @@ function StatusChangeDropDown({
                   {statuses.map((statuskey, index) => (
                     <li
                       key={index}
-                      tabIndex={0}
+                      ref={(element) => (itemRefs.current[index] = element)}
+                      tabIndex={index === selectedStatusIndex ? 0 : -1}
                       onKeyDown={(event) => handleKeyDown(event, statuskey)}
+                      onKeyUp={(event) => handleKeyUp(event)}
                       onClick={() => {
                         populateModal(pia, statuskey.status, changeStatusFn);
                       }}
