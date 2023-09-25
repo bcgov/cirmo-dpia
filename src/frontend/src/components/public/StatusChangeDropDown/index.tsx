@@ -11,50 +11,34 @@ import {
 } from '../../../utils/statusList/common';
 import { useEffect, useRef, useState } from 'react';
 
-/* create a function to push unique status object into an array */
-// TODO: Remove this function in favour of using a Set with reduce
-function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
-  let isUnique = true;
-  statuses.forEach((statusObj) => {
-    if (statusObj.status === status.status) {
-      isUnique = false;
-    }
-  });
-  if (isUnique) {
-    statuses.push(status);
-  }
-}
-
 function StatusChangeDropDown({
   pia,
   changeStatusFn,
 }: IStatusChangeDropDownProps) {
-  /* This function checks if the user has the privilege to change the status
-   * of the PIA. It checks the user's role against the statusList and the
-   * Privileges object. If the user's role is in the Privileges object, it
-   * checks if the changeStatus is not empty. If it is not empty, it returns
-   * true. Otherwise, it returns false.
-   */
+  // Check which statuses the user can change to.
   const checkPrivileges = () => {
-    const statuses: ChangeStatus[] = [];
+    // Use a Map to ensure unique status values.
+    // The key will be the status string, and the value will be the entire ChangeStatus object.
+    const statusesMap: Map<string, ChangeStatus> = new Map();
 
-    let hasStatusDropdown = false;
-    /* check if the changeStatus is not empty */
-    if (
-      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0
-    ) {
-      hasStatusDropdown = true;
-      const statusArr = getUserPrivileges(pia)?.changeStatus ?? [];
+    const canChangeStatus =
+      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0;
 
-      /* This function will push unique status object into the statuses array */
-      // TODO: See above todo for pushUniqueStatus ⬆️  🤮
-      statusArr.forEach((status: ChangeStatus) => {
-        pushUniqueStatus(statuses, status);
-      });
-    }
+    // Retrieve the array of possible status changes.
+    const changeStatusArr = getUserPrivileges(pia)?.changeStatus ?? [];
+
+    // For each status object in the changeStatus array...
+    changeStatusArr.forEach((status: ChangeStatus) => {
+      // If this specific status string hasn't been seen before...
+      if (!statusesMap.has(status.status)) {
+        // Add it to the map. This ensures each status string is unique.
+        statusesMap.set(status.status, status);
+      }
+    });
+
     return {
-      hasStatusDropdown,
-      statuses,
+      hasStatusDropdown: canChangeStatus,
+      statuses: Array.from(statusesMap.values()),
     };
   };
 
