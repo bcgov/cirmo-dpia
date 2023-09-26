@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from '@nestjs/class-validator';
-import { UserTypesEnum } from 'src/common/enums/users.enum';
-import { IFormField } from 'src/common/interfaces/form-field.interface';
-import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { UserTypesEnum } from '../../../../common/enums/users.enum';
+import { IFormField } from '../../../../common/interfaces/form-field.interface';
+import { validateRoleForFormField } from '../../../../common/validators/form-field-role.validator';
 
 export class CollectionNotice {
   @IsString()
