@@ -1,42 +1,23 @@
-# Description
+<!--  
+PR Title format:  
+JIRA_BOARD_ABBREVIATION-JIRA_TASK_NUMBER: TITLE_OF_JIRA_TASK  
+-->
 
-This PR includes the following proposed change(s):
+## 🎯 Summary
 
-- {List all the changes, if possible add the jira ticket #}
+<!-- COMPLETE JIRA LINK BELOW -->  
+[UTOPIA-](https://apps.itsm.gov.bc.ca/jira/browse/UTOPIA-)
 
-## Type of change
+<!-- PROVIDE BELOW an explanation of your changes and any images to support your explanation -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Refactoring / Documentation
-- [ ] Updating Testing Framework(s)
-- [ ] Version change
 
-## How Has This Been Tested?
+## 🔰 Checklist
 
-Please describe the tests that you ran to verify your changes.
+- [ ] I have read and agree with the following checklist and am following the guidelines in our [Code of Conduct](/CODE_OF_CONDUCT.md) document.
 
-## Development Dependency Working Agreement
-- [ ] My code DOES NOT include the importing of new dependencies into the DPIA ecosystem
-- [ ] My code DOES include the importing of new dependencies into the DPIA ecosystem
-**If new dependencies are being introduced to the DPIA ecosystem:**
-- [ ] The functionality of the dependency drastically reduces code complexity and makes my changes more easily maintainable and readable 
-- [ ] The dependency being introduced does not contain multiple layers of nested dependencies introducing maintainability complexity to the DPIA ecosystem
-
-## Frontend Development Changes
-- [ ] N/A
-- [ ] I have performed a self-review of my own code
-- [ ] I have made corresponding changes to project documentation or diagrams that reflect my changes
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] My code follows Airbnb React Style Guidelines
-
-## API Development Changes
-- [ ] N/A
-- [ ] I have performed a self-review of my own code
-- [ ] My code follows standards and practices outlined in the BC Government API Development Guidelines
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] My changes includes Swagger documentation updates that reflect the changes I am introducing
-
-## Definition of Done
-
-![Definition of Done](https://raw.githubusercontent.com/bcgov/cirmo-dpia/main/.github/assets/DoD.jpg)
+> - I have performed a self-review of my code.
+> - I have commented my code, particularly in hard-to-understand areas.
+> - I have made corresponding changes to the documentation where required.
+> - I have tested my changes to the best of my ability.
+> - I have consulted with the team if introducing a new dependency.
+> - My changes generate no new warnings.
