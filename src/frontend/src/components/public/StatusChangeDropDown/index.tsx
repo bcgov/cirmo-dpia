@@ -9,55 +9,118 @@ import {
   getUserPrivileges,
   getUserPrivilegesByStatus,
 } from '../../../utils/statusList/common';
-
-/* create a function to push unique status object into an array */
-// TODO: Remove this function in favour of using a Set with reduce
-function pushUniqueStatus(statuses: ChangeStatus[], status: ChangeStatus) {
-  let isUnique = true;
-  statuses.forEach((statusObj) => {
-    if (statusObj.status === status.status) {
-      isUnique = false;
-    }
-  });
-  if (isUnique) {
-    statuses.push(status);
-  }
-}
+import { useEffect, useRef, useState } from 'react';
 
 function StatusChangeDropDown({
   pia,
   changeStatusFn,
 }: IStatusChangeDropDownProps) {
-  /* This function checks if the user has the privilege to change the status
-   * of the PIA. It checks the user's role against the statusList and the
-   * Privileges object. If the user's role is in the Privileges object, it
-   * checks if the changeStatus is not empty. If it is not empty, it returns
-   * true. Otherwise, it returns false.
-   */
+  // Check which statuses the user can change to.
   const checkPrivileges = () => {
-    const statuses: ChangeStatus[] = [];
+    // Use a Map to ensure unique status values.
+    // The key will be the status string, and the value will be the entire ChangeStatus object.
+    const statusesMap: Map<string, ChangeStatus> = new Map();
 
-    let hasStatusDropdown = false;
-    /* check if the changeStatus is not empty */
-    if (
-      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0
-    ) {
-      hasStatusDropdown = true;
-      const statusArr = getUserPrivileges(pia)?.changeStatus ?? [];
+    const canChangeStatus =
+      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0;
 
-      /* This function will push unique status object into the statuses array */
-      // TODO: See above todo for pushUniqueStatus ⬆️  🤮
-      statusArr.forEach((status: ChangeStatus) => {
-        pushUniqueStatus(statuses, status);
-      });
-    }
+    // Retrieve the array of possible status changes.
+    const changeStatusArr = getUserPrivileges(pia)?.changeStatus ?? [];
+
+    // For each status object in the changeStatus array...
+    changeStatusArr.forEach((status: ChangeStatus) => {
+      // If this specific status string hasn't been seen before...
+      if (!statusesMap.has(status.status)) {
+        // Add it to the map. This ensures each status string is unique.
+        statusesMap.set(status.status, status);
+      }
+    });
+
     return {
-      hasStatusDropdown,
-      statuses,
+      hasStatusDropdown: canChangeStatus,
+      statuses: Array.from(statusesMap.values()),
     };
   };
-
   const { hasStatusDropdown, statuses } = checkPrivileges();
+
+  // Track selected status when using keyboard naviagation.
+  const itemRefs = useRef<HTMLLIElement[] | null[]>([]);
+  const [selectedStatusIndex, setSelectedStatusIndex] = useState<number>(0);
+
+  const handleNavigation = (direction: string) => {
+    if (direction === 'down') {
+      // Key pressed down or right.
+      setSelectedStatusIndex((prev) => {
+        if (prev === statuses.length - 1) {
+          return 0; // Wrap around to the start
+        }
+        return prev + 1; // Move to the next status
+      });
+    } else if (direction == 'up') {
+      // Key pressed up or left.
+      setSelectedStatusIndex((prev) => {
+        if (prev - 1 < 0) {
+          return statuses.length - 1; // Wrap around to the end
+        }
+        return prev - 1; // Move to the prev status
+      });
+    }
+  };
+
+  const handleKeyUp = (event: React.KeyboardEvent) => {
+    event.preventDefault();
+    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+      handleNavigation('down');
+    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+      handleNavigation('up');
+    }
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent,
+    statuskey: ChangeStatus,
+  ) => {
+    event.preventDefault();
+    // Check if "Enter" key is pressed
+    if (event.key === 'Enter') {
+      populateModal(pia, statuskey.status, changeStatusFn);
+    }
+  };
+
+  // Focus on the first item in the dropdown list.
+  const setInitialFocus = () => itemRefs.current[0]?.focus();
+
+  useEffect(() => {
+    itemRefs.current[selectedStatusIndex]?.focus();
+  }, [selectedStatusIndex]);
+
+  const DropdownStatusList = () => {
+    return (
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        {statuses.map((statuskey, index) => (
+          <li
+            key={index}
+            ref={(element) => (itemRefs.current[index] = element)}
+            tabIndex={index === selectedStatusIndex ? 0 : -1}
+            onKeyDown={(event) => handleKeyDown(event, statuskey)}
+            onKeyUp={(event) => handleKeyUp(event)}
+            onClick={() => {
+              populateModal(pia, statuskey.status, changeStatusFn);
+            }}
+            className="dropdown-item-container"
+          >
+            <div
+              className={`dropdown-item statusBlock ${
+                statusList(null)[statuskey.status].class
+              }`}
+            >
+              {statusList(null)[statuskey.status].title}
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
     <>
@@ -71,61 +134,32 @@ function StatusChangeDropDown({
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              onKeyUp={setInitialFocus}
             >
               <div
                 className={`statusBlock statusBlock--active ${
                   pia.status && statusList(null)[pia.status].class
                 }`}
               >
-                {pia.status
-                  ? statusList(null)[pia.status].title
-                  : statusList(null)[PiaStatuses.INCOMPLETE].title}
+                {statusList(null)[pia?.status ?? PiaStatuses.INCOMPLETE].title}
               </div>
               <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
             </button>
-            {pia.status ? (
-              pia.status in statusList(null) ? (
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton1"
-                >
-                  {statuses.map((statuskey, index) => (
-                    <li
-                      key={index}
-                      onClick={() => {
-                        populateModal(pia, statuskey.status, changeStatusFn);
-                      }}
-                      className="dropdown-item-container"
-                    >
-                      <div
-                        className={`dropdown-item statusBlock ${
-                          statusList(null)[statuskey.status].class
-                        }`}
-                      >
-                        {statusList(null)[statuskey.status].title}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                ''
-              )
+            {pia.status && pia.status in statusList(null) ? (
+              <DropdownStatusList />
             ) : (
               ''
             )}
           </div>
-        ) : pia.status ? (
-          pia.status in statusList(null) ? (
+        ) : (
+          pia.status &&
+          pia.status in statusList(null) && (
             <div
               className={`statusBlock ${statusList(null)[pia.status].class}`}
             >
               {pia.status ? statusList(null)[pia.status].title : 'Completed'}
             </div>
-          ) : (
-            ''
           )
-        ) : (
-          ''
         )}
       </div>
     </>
