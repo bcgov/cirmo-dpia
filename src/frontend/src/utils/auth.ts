@@ -166,7 +166,7 @@ export const refreshAuthTokens = async () => {
 };
 
 /**
- * Redirects the user to the forbidden page if 'hasPermission' is false; otherwise, redirects to the home page.
+ * Redirects the user to the forbidden page
  */
 export const redirectForbiddenPage = async () => {
   window.location.href = `${window.location.origin}/forbidden`;
