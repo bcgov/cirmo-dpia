@@ -43,6 +43,6 @@ export default {
     },
   },
   AdditionalInfoHeading: {
-    en: `Are there any related PIAs, or anything else the CPO should consider when reviewing this PIA?`,
+    en: `Is there anything else CPO should consider when reviewing this PIA?`,
   },
 };
