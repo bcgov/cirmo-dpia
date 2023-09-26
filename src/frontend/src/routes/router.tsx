@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import NotFound from '../components/common/NotFound';
 import Unauthorized from '../components/common/Unauthorized';
+import Forbidden from '../components/common/Forbidden';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
@@ -147,6 +148,7 @@ const Router = () => {
       </Route>
 
       <Route path="/not-authorized" element={<Unauthorized />} />
+      <Route path="/forbidden" element={<Forbidden />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

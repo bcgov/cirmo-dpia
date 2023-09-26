@@ -47,4 +47,5 @@ export const routes = {
   PIA_LIST: '/pia/list',
   NOT_FOUND: '/not-found',
   NOT_AUTHORIZED: '/not-authorized',
+  FORBIDDEN: '/forbidden',
 };

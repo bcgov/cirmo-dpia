@@ -179,3 +179,57 @@ export const refreshAuthTokens = async () => {
   // return failure [caller of the method may need to redirect user to the login page]
   return false;
 };
+
+/**
+ * Redirects the user to the forbidden page if 'hasPermission' is false; otherwise, redirects to the home page.
+ * @param hasPermission - A boolean flag indicating whether the user has permission (true) or not (false).
+ */
+export const handleForbiddenAccess = async (hasPermission = true) => {
+  const forbiddenRedirectUrl = `${window.location.origin}/forbidden`;
+  const loginRedirectUrl = `${window.location.origin}/`;
+
+  const redirectUrl = hasPermission ? loginRedirectUrl : forbiddenRedirectUrl;
+
+  window.location.href = redirectUrl;
+
+  // Set post login redirect url
+  // let postLoginRedirectUrl;
+  // if (
+  //   window.location.pathname !== '' &&
+  //   window.location.pathname !== '/' &&
+  //   window.location.pathname !== '/not-authorized' &&
+  //   window.location.pathname !== '/forbidden' &&
+  //   window.location.pathname !== 'pia/list'
+  // )
+  //   postLoginRedirectUrl = window.location.href;
+  //   console.log("postLoginRedirectUrl : "+postLoginRedirectUrl);
+
+  // interface LogoutUrlResponse {
+  //   siteMinderUrl: string;
+  //   keycloakUrl: string;
+  // }
+
+  // const logoutUrlResponse: LogoutUrlResponse = await HttpRequest.get(
+  //   API_ROUTES.KEYCLOAK_LOGOUT,
+  //   {},
+  //   {},
+  //   true,
+  //   {
+  //     id_token: AppStorage.getItem(TokenStorageKeys.ID_TOKEN),
+  //     redirect_url: redirectUrl,
+  //   },
+  // );
+
+  // in case user is already logged out, skip logout call as this will result in an error if logout is attempted twice
+  // if (isAuthenticated())
+  //   window.location.href = `${logoutUrlResponse.siteMinderUrl}${logoutUrlResponse.keycloakUrl}`;
+
+  // clearStorage();
+
+  // AppStorage.setItem(
+  //   TokenStorageKeys.POST_LOGIN_REDIRECT_URL,
+  //   postLoginRedirectUrl,
+  // );
+
+  //cb?.();
+};
