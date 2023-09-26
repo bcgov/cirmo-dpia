@@ -10,7 +10,7 @@ import {
 import { GovMinistriesEnum } from '../../../common/enums/gov-ministries.enum';
 import { PiaTypesEnum } from '../../../common/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../../common/enums/delegated-review-types.enum';
-import { DateStringValidator } from 'src/common/validators/date-string.validator';
+import { DateStringValidator } from '../../../common/validators/date-string.validator';
 
 export class PpqPostDTO {
   @IsString()
