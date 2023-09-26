@@ -20,7 +20,7 @@ const Forbidden = () => {
             You do not have permission to view this page.
           </h3>
         </div>
-        <div className="row d-flex justify-content-center forbidden-container">
+        <div className="row d-flex justify-content-center mt-3">
           <Link className="bcgovbtn bcgovbtn__primary " to="/pia/list">
             Back to Active PIAs
           </Link>

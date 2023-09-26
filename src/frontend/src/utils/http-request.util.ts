@@ -1,4 +1,4 @@
-import { logMeOut, handleForbiddenAccess, TokenStorageKeys } from './auth';
+import { logMeOut, redirectForbiddenPage, TokenStorageKeys } from './auth';
 import { AppStorage } from './storage';
 
 interface IHttpRequestOptions {
@@ -80,8 +80,8 @@ export class HttpRequest {
 
       console.error(error.message);
 
-      // log the user out if the authentication token is no longer valid
-      handleForbiddenAccess(false);
+      // redirect to forbidden page if the response code is 403
+      redirectForbiddenPage();
 
       throw error;
     }
