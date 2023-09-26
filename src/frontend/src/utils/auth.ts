@@ -164,3 +164,10 @@ export const refreshAuthTokens = async () => {
   // return failure [caller of the method may need to redirect user to the login page]
   return false;
 };
+
+/**
+ * Redirects the user to the forbidden page
+ */
+export const redirectForbiddenPage = async () => {
+  window.location.href = `${window.location.origin}/forbidden`;
+};
