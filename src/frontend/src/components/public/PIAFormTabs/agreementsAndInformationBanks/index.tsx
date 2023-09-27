@@ -78,6 +78,8 @@ const PIAAgreementsAndInformationBanks = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'involve-isa-radio',
+      groupLabel:
+        'Does your initiative involve an information sharing agreement (ISA)?',
       isDefault:
         agreementsAndInformationBanksForm?.informationSharingAgreement
           ?.doesInvolveISA === YesNoInput.YES,
@@ -91,6 +93,8 @@ const PIAAgreementsAndInformationBanks = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'involve-isa-radio',
+      groupLabel:
+        'Does your initiative involve an information sharing agreement (ISA)?',
       isDefault:
         agreementsAndInformationBanksForm?.informationSharingAgreement
           ?.doesInvolveISA === YesNoInput.NO,
@@ -107,6 +111,8 @@ const PIAAgreementsAndInformationBanks = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'will-resultPIB-radio',
+      groupLabel:
+        'Will your initiative result in a personal information bank (PIB)?',
       isDefault:
         agreementsAndInformationBanksForm?.personalInformationBanks
           ?.willResultInPIB === YesNoInput.YES,
@@ -120,6 +126,8 @@ const PIAAgreementsAndInformationBanks = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'will-resultPIB-radio',
+      groupLabel:
+        'Will your initiative result in a personal information bank (PIB)?',
       isDefault:
         agreementsAndInformationBanksForm?.personalInformationBanks
           ?.willResultInPIB === YesNoInput.NO,

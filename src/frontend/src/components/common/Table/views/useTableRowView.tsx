@@ -72,6 +72,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               e.preventDefault();
               props.addEmptyRow();
             }}
+            aria-label={props.addRowBtnLabel ?? 'Add more risks'}
             className="bcgovbtn bcgovbtn__tertiary bold min-gap"
           >
             {props.addRowBtnLabel}

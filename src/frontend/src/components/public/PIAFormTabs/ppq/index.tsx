@@ -127,6 +127,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       index: 1,
       value: YesNoInput.YES,
       groupName: 'proposed-deadline-radio',
+      groupLabel: 'Is there a proposed deadline for this review?',
       isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.YES,
       changeHandler: (e: any) =>
         stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
@@ -135,6 +136,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       index: 2,
       value: YesNoInput.NO,
       groupName: 'proposed-deadline-radio',
+      groupLabel: 'Is there a proposed deadline for this review?',
       isDefault: ppqForm?.proposedDeadlineAvailable === YesNoInput.NO,
       changeHandler: (e: any) =>
         stateChangeHandler(e.target.value, 'proposedDeadlineAvailable'),
@@ -398,6 +400,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                   <button
                     className="bcgovbtn bcgovbtn__secondary"
                     onClick={addOperationalPIA}
+                    aria-label="Add Operational PIA"
                   >
                     Add
                   </button>
@@ -431,6 +434,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     <button
                       className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
                       onClick={() => removeOperationalPIA(index)}
+                      aria-label="Remove Operational PIA"
                     >
                       <FontAwesomeIcon icon={faTrash} size="lg" />
                     </button>
@@ -473,6 +477,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                   <button
                     className="bcgovbtn bcgovbtn__secondary"
                     onClick={addEnactmentPIA}
+                    aria-label="Add Enactment PIA"
                   >
                     Add
                   </button>
@@ -504,6 +509,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     <button
                       className="bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--negative"
                       onClick={() => removeEnactmentPIA(index)}
+                      aria-label="Remove Enactment PIA"
                     >
                       <FontAwesomeIcon icon={faTrash} size="lg" />
                     </button>

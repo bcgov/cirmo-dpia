@@ -99,7 +99,7 @@ const InputText = ({
     required,
     disabled: isDisabled,
     readOnly: isAccessLink,
-    'aria-label': inputId,
+    'aria-label': required && label ? `${label} (required)` : label ?? inputId,
     maxLength,
   };
 
