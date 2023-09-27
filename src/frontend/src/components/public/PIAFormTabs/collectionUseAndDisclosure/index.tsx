@@ -20,7 +20,6 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
-import '../../PIAFormTabs/collectionUseAndDisclosure/_collectionUseAndDisclosure.scss';
 
 const PIACollectionUseAndDisclosure = ({
   showComments = true,
