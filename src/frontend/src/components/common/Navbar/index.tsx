@@ -40,6 +40,7 @@ function NavBar({
                   <NavLink
                     id={page.navId}
                     role="navItem"
+                    aria-label={page.label}
                     tabIndex={rovingTabIndex && index > 0 ? -1 : 0}
                     className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
                       page.link === currentPath ? 'active' : ''

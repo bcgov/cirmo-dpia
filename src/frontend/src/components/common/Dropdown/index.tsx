@@ -25,7 +25,7 @@ const Dropdown = ({
             value={value}
             onChange={changeHandler}
             required={required}
-            aria-label={id}
+            aria-label={label ?? id}
           >
             <option key={id} value="">
               {placeholder || 'Select one'}

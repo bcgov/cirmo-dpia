@@ -69,6 +69,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'haveProcessinPlace',
+      groupLabel:
+        'Do you have a process in place to correct personal information?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
           YesNoInput.YES ||
@@ -80,6 +82,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'haveProcessinPlace',
+      groupLabel:
+        'Do you have a process in place to correct personal information?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
         YesNoInput.NO,
@@ -93,6 +97,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'WillDocument',
+      groupLabel:
+        "If you can't correct personal data, FOIPPA mandates noting the correction request on the record; will you ensure this documentation?",
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
           YesNoInput.YES ||
@@ -104,6 +110,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'WillDocument',
+      groupLabel:
+        "If you can't correct personal data, FOIPPA mandates noting the correction request on the record; will you ensure this documentation?",
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
         YesNoInput.NO,
@@ -117,6 +125,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'WillconductNotifications',
+      groupLabel:
+        "If someone requests a correction and you've shared their data in the past year, FOIPPA mandates notifying the third party; will you ensure compliance?",
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction
           ?.willConductNotifications === YesNoInput.YES ||
@@ -132,6 +142,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'WillconductNotifications',
+      groupLabel:
+        "If someone requests a correction and you've shared their data in the past year, FOIPPA mandates notifying the third party; will you ensure compliance?",
       isDefault:
         accuracyCorrectionAndRetentionForm?.correction
           ?.willConductNotifications === YesNoInput.NO,
@@ -148,6 +160,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'WillProvideInformation',
+      groupLabel:
+        'Does your initiative use personal information to make decisions that directly affect an individual?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
           YesNoInput.YES ||
@@ -159,6 +173,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'WillProvideInformation',
+      groupLabel:
+        'Does your initiative use personal information to make decisions that directly affect an individual?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
         YesNoInput.NO,
@@ -172,6 +188,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'HaveApprovedInfoSchedule',
+      groupLabel:
+        'Do you have an approved information schedule in place related to personal information used to make decisions?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.retention
           ?.haveApprovedInfoSchedule === YesNoInput.YES ||
@@ -187,6 +205,8 @@ export const AccuracyCorrectionAndRetention = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'HaveApprovedInfoSchedule',
+      groupLabel:
+        'Do you have an approved information schedule in place related to personal information used to make decisions?',
       isDefault:
         accuracyCorrectionAndRetentionForm?.retention
           ?.haveApprovedInfoSchedule === YesNoInput.NO,

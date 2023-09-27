@@ -177,6 +177,7 @@ const StoringPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'pi-outside-canada',
+      groupLabel: 'Is any personal information stored outside of Canada?',
       isDefault:
         storingPersonalInformationForm.personalInformation
           .storedOutsideCanada === YesNoInput.YES,
@@ -190,6 +191,7 @@ const StoringPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'pi-outside-canada',
+      groupLabel: 'Is any personal information stored outside of Canada?',
       isDefault:
         storingPersonalInformationForm.personalInformation
           .storedOutsideCanada === YesNoInput.NO,
@@ -209,6 +211,8 @@ const StoringPersonalInformation = ({
         storingPersonalInformationForm.sensitivePersonalInformation
           .doesInvolve === YesNoInput.YES,
       groupName: 'sensitive-pi-involved',
+      groupLabel:
+        'Does your initiative involve sensitive personal information?',
       changeHandler: (e: any) =>
         stateChangeHandler(
           e.target.value,
@@ -219,6 +223,8 @@ const StoringPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-involved',
+      groupLabel:
+        'Does your initiative involve sensitive personal information?',
       isDefault:
         storingPersonalInformationForm.sensitivePersonalInformation
           .doesInvolve === YesNoInput.NO,
@@ -235,6 +241,8 @@ const StoringPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'sensitive-pi-disclosed-outside-canada',
+      groupLabel:
+        'Is the sensitive personal information being disclosed outside of Canada under FOIPPA section 33(2)(f)?',
       isDefault:
         storingPersonalInformationForm.sensitivePersonalInformation
           .disclosedOutsideCanada === YesNoInput.YES,
@@ -248,6 +256,8 @@ const StoringPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-disclosed-outside-canada',
+      groupLabel:
+        'Is the sensitive personal information being disclosed outside of Canada under FOIPPA section 33(2)(f)?',
       isDefault:
         storingPersonalInformationForm.sensitivePersonalInformation
           .disclosedOutsideCanada === YesNoInput.NO,
@@ -264,6 +274,8 @@ const StoringPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'relying-on-existing-contract',
+      groupLabel:
+        'Are you relying on an existing contract, such as an enterprise offering from the Office of the Chief Information Officer (OCIO)?',
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.contract
           .relyOnExistingContract === YesNoInput.YES,
@@ -277,6 +289,8 @@ const StoringPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'relying-on-existing-contract',
+      groupLabel:
+        'Are you relying on an existing contract, such as an enterprise offering from the Office of the Chief Information Officer (OCIO)?',
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.contract
           .relyOnExistingContract === YesNoInput.NO,
@@ -293,6 +307,8 @@ const StoringPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'sensitive-pi-stored-by-service-provider',
+      groupLabel:
+        'Is the sensitive personal information stored by a service provider?',
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.storage
           .sensitiveInfoStoredByServiceProvider === YesNoInput.YES,
@@ -306,6 +322,8 @@ const StoringPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'sensitive-pi-stored-by-service-provider',
+      groupLabel:
+        'Is the sensitive personal information stored by a service provider?',
       isDefault:
         storingPersonalInformationForm.disclosuresOutsideCanada.storage
           .sensitiveInfoStoredByServiceProvider === YesNoInput.NO,

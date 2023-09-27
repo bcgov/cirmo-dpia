@@ -72,6 +72,8 @@ export const SecurityPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'InvolveDigitalTools',
+      groupLabel:
+        'Does your initiative involve digital tools, databases or information systems?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems
           ?.toolsAndAssessment?.involveDigitalToolsAndSystems ===
@@ -86,6 +88,8 @@ export const SecurityPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'InvolveDigitalTools',
+      groupLabel:
+        'Does your initiative involve digital tools, databases or information systems?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems
           ?.toolsAndAssessment?.involveDigitalToolsAndSystems === YesNoInput.NO,
@@ -102,6 +106,8 @@ export const SecurityPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'SecurityAssessment',
+      groupLabel:
+        'Do you or will you have a security assessment to help you ensure the initiative meets the reasonable security requirements of FOIPPA section 30?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems
           ?.toolsAndAssessment?.haveSecurityAssessment === YesNoInput.YES,
@@ -115,6 +121,8 @@ export const SecurityPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'SecurityAssessment',
+      groupLabel:
+        'Do you or will you have a security assessment to help you ensure the initiative meets the reasonable security requirements of FOIPPA section 30?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems
           ?.toolsAndAssessment?.haveSecurityAssessment === YesNoInput.NO,
@@ -131,6 +139,8 @@ export const SecurityPersonalInformation = ({
       index: 1,
       value: YesNoInput.YES,
       groupName: 'Storage',
+      groupLabel:
+        'Are all digital records stored on government servers and are all physical records stored in government offices with government security?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems?.storage
           ?.onGovServers === YesNoInput.YES,
@@ -144,6 +154,8 @@ export const SecurityPersonalInformation = ({
       index: 2,
       value: YesNoInput.NO,
       groupName: 'Storage',
+      groupLabel:
+        'Are all digital records stored on government servers and are all physical records stored in government offices with government security?',
       isDefault:
         securityPersonalInformationForm?.digitalToolsAndSystems?.storage
           ?.onGovServers === YesNoInput.NO,

@@ -18,6 +18,7 @@ const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
     <div className="d-flex justify-content-center mt-4">
       <button
         type="button"
+        aria-label="View comments"
         className="bcgovbtn bcgovbtn__tertiary bold"
         onClick={openSidebar}
       >
