@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import MDEditor, { commands } from '@uiw/react-md-editor';
+import MDEditor from '@uiw/react-md-editor';
 import { isMPORole } from '../../../../utils/user';
 
 import {
