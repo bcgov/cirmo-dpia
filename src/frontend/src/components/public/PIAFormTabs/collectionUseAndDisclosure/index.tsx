@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import { isMPORole } from '../../../../utils/user';
 
 import {
@@ -89,6 +89,20 @@ const PIACollectionUseAndDisclosure = ({
         collectionUseAndDisclosureForm,
         'collectionUseAndDisclosure',
       );
+    }
+
+    // Disabled editor buttons if the user does not have the MPORole.
+    if (isMPORole() === false) {
+      // If the current user does not have the MPORole,
+      // select button elements inside #collectionNoticeMPO .w-md-editor-toolbar li.
+      const buttons = document.querySelectorAll<HTMLButtonElement>(
+        '#collectionNoticeMPO .w-md-editor-toolbar li > button',
+      );
+
+      // Iterate over all button elements and set the 'disabled' attribute to true.
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
     }
   }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
 
