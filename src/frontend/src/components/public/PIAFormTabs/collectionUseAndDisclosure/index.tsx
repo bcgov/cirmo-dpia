@@ -92,18 +92,15 @@ const PIACollectionUseAndDisclosure = ({
     }
 
     // Disabled editor buttons if the user does not have the MPORole.
-    if (isMPORole() === false) {
-      // If the current user does not have the MPORole,
-      // select button elements inside #collectionNoticeMPO .w-md-editor-toolbar li.
-      const buttons = document.querySelectorAll<HTMLButtonElement>(
-        '#collectionNoticeMPO .w-md-editor-toolbar li > button',
-      );
+    // Select button elements inside #collectionNoticeMPO .w-md-editor-toolbar li.
+    const buttons = document.querySelectorAll<HTMLButtonElement>(
+      '#collectionNoticeMPO .w-md-editor-toolbar li > button',
+    );
 
-      // Iterate over all button elements and set the 'disabled' attribute to true.
-      buttons.forEach((button) => {
-        button.disabled = true;
-      });
-    }
+    // Iterate over all button elements and set the 'disabled' attribute based on the user's role.
+    buttons.forEach((button) => {
+      button.disabled = !isMPORole() ? true : false;
+    });
   }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
 
   return (
