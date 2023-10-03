@@ -35,9 +35,8 @@ export class CommentsService {
   async findOneBy(
     where: FindOptionsWhere<CommentEntity>,
   ): Promise<CommentEntity> {
-    const comment: CommentEntity = await this.commentRepository.findOneBy(
-      where,
-    );
+    const comment: CommentEntity =
+      await this.commentRepository.findOneBy(where);
 
     // If the record is not found, throw an exception
     if (!comment) {
