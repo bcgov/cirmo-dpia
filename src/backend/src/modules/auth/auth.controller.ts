@@ -36,9 +36,8 @@ export class AuthController {
   @ApiOkResponse({ description: 'Get access token payload with credentials' })
   async getAccessToken(@Body('code') code: string) {
     if (!code) return;
-    const keycloakToken: KeycloakToken = await this.authService.getAccessToken(
-      code,
-    );
+    const keycloakToken: KeycloakToken =
+      await this.authService.getAccessToken(code);
     return keycloakToken;
   }
 
