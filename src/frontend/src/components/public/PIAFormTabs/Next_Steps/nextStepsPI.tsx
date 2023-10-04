@@ -64,6 +64,10 @@ const NextStepsPI = (navigateFn: PIFlow) => {
             statusChange: PiaStatuses.EDIT_IN_PROGRESS,
           },
         });
+
+        // Update pia.isNextStepsSeenForDelegatedFlow to true
+        piaStateChangeHandler(true, 'isNextStepsSeenForDelegatedFlow');
+
         break;
       case 'incomplete':
         setNextStepAction({
