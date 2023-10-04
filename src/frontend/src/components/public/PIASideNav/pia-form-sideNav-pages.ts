@@ -25,9 +25,8 @@ export const PiaFormSideNavPages = (
   // 1. hasAddedPiToDataElements is not false.
   // 2. Either isNextStepsSeenForNonDelegatedFlow is true, or isNextStepsSeenForDelegatedFlow is true.
   const showPostIntakeTabs =
-    (pia?.hasAddedPiToDataElements !== false &&
-      pia?.isNextStepsSeenForNonDelegatedFlow) ||
-    pia?.isNextStepsSeenForDelegatedFlow;
+    pia?.hasAddedPiToDataElements !== false &&
+    pia?.isNextStepsSeenForNonDelegatedFlow;
 
   const checkPIANonDelegateFlow = (): boolean => {
     return (

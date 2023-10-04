@@ -66,8 +66,8 @@ const NextStepsPI = (navigateFn: PIFlow) => {
         });
 
         // This code changes the state when the "Share MPO" button is clicked
-        // in order to make the delegated full PIA visible on the tab.
-        piaStateChangeHandler(true, 'isNextStepsSeenForDelegatedFlow');
+        // in order to make the non delegated full PIA visible on the tab.
+        piaStateChangeHandler(true, 'isNextStepsSeenForNonDelegatedFlow');
 
         break;
       case 'incomplete':
