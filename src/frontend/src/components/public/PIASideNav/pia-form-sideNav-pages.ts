@@ -21,11 +21,13 @@ export const PiaFormSideNavPages = (
   const { pathname } = useLocation();
 
   // This will change once Next Steps tab is implemented
+  // This code determines whether to show post-intake tabs based on two conditions:
+  // 1. hasAddedPiToDataElements is not false.
+  // 2. Either isNextStepsSeenForNonDelegatedFlow is true, or isNextStepsSeenForDelegatedFlow is true.
   const showPostIntakeTabs =
-    ((pia?.hasAddedPiToDataElements === true ||
-      pia?.hasAddedPiToDataElements === null) &&
-      pia?.isNextStepsSeenForNonDelegatedFlow === true) ||
-    pia?.isNextStepsSeenForDelegatedFlow === true;
+    (pia?.hasAddedPiToDataElements !== false &&
+      pia?.isNextStepsSeenForNonDelegatedFlow) ||
+    pia?.isNextStepsSeenForDelegatedFlow;
 
   const checkPIANonDelegateFlow = (): boolean => {
     return (
