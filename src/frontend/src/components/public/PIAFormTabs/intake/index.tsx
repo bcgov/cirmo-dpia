@@ -412,6 +412,7 @@ export const PIAFormIntake = () => {
                   disabled={isReadOnly}
                   type="radio"
                   name="pi-options-radio"
+                  aria-label={`Did you list personal information in the last question? ${option.key}`}
                   value={option.key}
                   onChange={handlePIOptionChange}
                   checked={option.value === pia?.hasAddedPiToDataElements}
