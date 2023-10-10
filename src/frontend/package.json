@@ -26,11 +26,11 @@
     "@uiw/react-md-editor": "3.23.6",
     "breakpoint-sass": "3.0.0",
     "react": "18.2.0",
-    "react-datepicker": "4.18.0",
+    "react-datepicker": "4.20.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.16.0",
     "react-tooltip": "4.4.2",
-    "sass": "1.68.0"
+    "sass": "1.69.1"
   },
   "devDependencies": {
     "@babel/core": "7.23.0",
