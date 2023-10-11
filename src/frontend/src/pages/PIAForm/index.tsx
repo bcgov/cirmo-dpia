@@ -3,7 +3,6 @@ import {
   PIOptions,
   SubmitButtonTextEnum,
 } from '../../constant/constant';
-import Messages from './messages';
 import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
@@ -349,6 +348,10 @@ const PIAFormPage = () => {
   // Event Handlers
   //
 
+  /**
+   * Populate the PIA modal with data from the provided modal object.
+   * @param {object} modal - The modal object containing data to populate the modal for submit all status except PIAIntake.
+   */
   const populateModalFn = (modal: object) => {
     setPiaModalTitleText(Object(modal).title);
     setPiaModalParagraph(Object(modal).description);
@@ -356,104 +359,77 @@ const PIAFormPage = () => {
     setPiaModalCancelLabel(Object(modal).cancelLabel);
   };
 
+  /**
+   * Handle the display of modals based on the given modal type.
+   * @param {string} modalType - The type of modal to display.
+   * @param {string} conflictUser - Optional conflict user (used for 'conflict' modal).
+   */
   const handleShowModal = (modalType: string, conflictUser = '') => {
     switch (modalType) {
-      case 'cancel':
-        setPiaModalConfirmLabel(Messages.Modal.Cancel.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.Cancel.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.Cancel.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.Cancel.ParagraphText.en);
-        setPiaModalButtonValue('cancel');
-        break;
-      case 'save':
-        setPiaModalConfirmLabel(Messages.Modal.Save.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.Save.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.Save.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.Save.ParagraphText.en);
-        setPiaModalButtonValue('save');
-        break;
-      case 'edit':
+      case 'edit': {
         /* Using the state table, we can determine which modal to show based on the status of the PIA
            This will keep the modal text in one place and allow for easy updates in the future
            and will make the whole app consistent.
         */
         PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn);
-        setPiaModalButtonValue('edit');
+        setPiaModalButtonValue(modalType);
         break;
-      case 'submitPiaIntake':
-        setPiaModalConfirmLabel(Messages.Modal.SubmitPiaIntake.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.SubmitPiaIntake.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.SubmitPiaIntake.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.SubmitPiaIntake.ParagraphText.en);
-        setPiaModalButtonValue('submitPiaIntake');
+      }
+      case 'submitPiaIntake': {
+        PopulateModal(
+          pia,
+          pia?.hasAddedPiToDataElements === false
+            ? PiaStatuses.MPO_REVIEW
+            : PiaStatuses.INCOMPLETE,
+          populateModalFn,
+        );
+        setPiaModalButtonValue(modalType);
         break;
-      case 'submitPiaForm':
-        setPiaModalConfirmLabel(Messages.Modal.SubmitPiaForm.ConfirmLabel.en);
-        setPiaModalCancelLabel(Messages.Modal.SubmitPiaForm.CancelLabel.en);
-        setPiaModalTitleText(Messages.Modal.SubmitPiaForm.TitleText.en);
-        setPiaModalParagraph(Messages.Modal.SubmitPiaForm.ParagraphText.en);
+      }
+      case 'submitPiaForm': {
+        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn);
         setPiaModalButtonValue('submitPiaForm');
         break;
-      case 'SubmitForCPOReview':
-        setPiaModalConfirmLabel(
-          Messages.Modal.SubmitForCPOReview.ConfirmLabel.en,
-        );
-        setPiaModalCancelLabel(
-          Messages.Modal.SubmitForCPOReview.CancelLabel.en,
-        );
-        setPiaModalTitleText(Messages.Modal.SubmitForCPOReview.TitleText.en);
-        setPiaModalParagraph(
-          Messages.Modal.SubmitForCPOReview.ParagraphText.en,
-        );
-        setPiaModalButtonValue('SubmitForCPOReview');
+      }
+      case 'SubmitForCPOReview': {
+        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn);
+        setPiaModalButtonValue(modalType);
         break;
-      case 'SubmitForFinalReview':
-        setPiaModalConfirmLabel(
-          Messages.Modal.SubmitForFinalReview.ConfirmLabel.en,
-        );
-        setPiaModalCancelLabel(
-          Messages.Modal.SubmitForFinalReview.CancelLabel.en,
-        );
-        setPiaModalTitleText(Messages.Modal.SubmitForFinalReview.TitleText.en);
-        setPiaModalParagraph(
-          Messages.Modal.SubmitForFinalReview.ParagraphText.en,
-        );
-        setPiaModalButtonValue('SubmitForFinalReview');
+      }
+      case 'SubmitForFinalReview': {
+        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn);
+        setPiaModalButtonValue(modalType);
         break;
-      case 'SubmitForPendingCompletion':
+      }
+      case 'SubmitForPendingCompletion': {
         PopulateModal(pia, PiaStatuses.PENDING_COMPLETION, populateModalFn);
         setPiaModalButtonValue(modalType);
         break;
-      case 'conflict':
-        setPiaModalConfirmLabel(Messages.Modal.Conflict.ConfirmLabel.en);
-        setPiaModalTitleText(
-          Messages.Modal.Conflict.TitleText.en.replace('${user}', conflictUser),
-        );
-        setPiaModalParagraph(
-          Messages.Modal.Conflict.ParagraphText.en.replace(
-            '${user}',
-            conflictUser,
-          ),
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      case 'autoSaveFailed':
-        setPiaModalConfirmLabel(Messages.Modal.AutoSaveFailed.ConfirmLabel.en);
-        setPiaModalTitleText(Messages.Modal.AutoSaveFailed.TitleText.en);
-        setPiaModalParagraph(
-          Messages.Modal.AutoSaveFailed.ParagraphText.en.replace(
-            '${time}',
-            getShortTime(pia?.updatedAt),
-          ),
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      case 'completePIA':
+      }
+      case 'completePIA': {
         PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn);
         setPiaModalButtonValue(modalType);
         break;
-      default:
+      }
+      case 'conflict': {
+        PopulateModal(pia, '_conflict', populateModalFn, '', conflictUser);
+        setPiaModalButtonValue(modalType);
         break;
+      }
+      case 'autoSaveFailed': {
+        const autoSaveFailedTime = getShortTime(pia?.updatedAt);
+        PopulateModal(
+          pia,
+          '_autoSaveFailed',
+          populateModalFn,
+          autoSaveFailedTime,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      default: {
+        break;
+      }
     }
     setShowPiaModal(true);
   };
@@ -553,8 +529,8 @@ const PIAFormPage = () => {
         if (
           (updatedPia?.id &&
             updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
-            (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value ||
-              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) ||
+            (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value || //  key: "yes", value: true
+              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) || //  key: "I'm not sure", value: null
           (updatedPia?.id &&
             updatedPia?.isNextStepsSeenForDelegatedFlow === true &&
             updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
@@ -583,16 +559,6 @@ const PIAFormPage = () => {
               id: updatedPia.id,
             }),
           );
-        }
-      } else if (buttonValue === 'cancel') {
-        if (pia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: pia.id,
-            }),
-          );
-        } else {
-          navigate(-1);
         }
       } else if (buttonValue === 'edit') {
         await upsertAndUpdatePia({
@@ -661,10 +627,6 @@ const PIAFormPage = () => {
             }),
           );
         }
-      } else if (buttonValue === 'conflict') {
-        // noop
-      } else if (buttonValue === 'autoSaveFailed') {
-        // noop
       } else {
         // edit
         const updatedPia = await upsertAndUpdatePia();

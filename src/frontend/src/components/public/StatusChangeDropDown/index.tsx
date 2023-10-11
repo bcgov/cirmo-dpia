@@ -30,7 +30,8 @@ function StatusChangeDropDown({
     // For each status object in the changeStatus array...
     changeStatusArr.forEach((status: ChangeStatus) => {
       // If this specific status string hasn't been seen before...
-      if (!statusesMap.has(status.status)) {
+      // And exclude the current status when generating the dropdown menu
+      if (!statusesMap.has(status.status) && status.status != pia.status) {
         // Add it to the map. This ensures each status string is unique.
         statusesMap.set(status.status, status);
       }
