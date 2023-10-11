@@ -692,51 +692,35 @@ const PIAFormPage = () => {
   //
   // Form Submission Handler
   //
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // if the user is in pia intake tab, then show submit pia intake; else submit full form
+    // Determine which modal to show based on `pia` status.
+    const modalMapping = {
+      [PiaStatuses.MPO_REVIEW]:
+        pia?.hasAddedPiToDataElements === false
+          ? 'SubmitForFinalReview'
+          : 'SubmitForCPOReview',
+      [PiaStatuses.CPO_REVIEW]: 'SubmitForFinalReview',
+      [PiaStatuses.FINAL_REVIEW]: 'SubmitForPendingCompletion',
+      [PiaStatuses.PENDING_COMPLETION]: 'completePIA',
+    };
+
     if (
       pia?.isNextStepsSeenForDelegatedFlow === false &&
       pia?.isNextStepsSeenForNonDelegatedFlow === false
     ) {
       handleShowModal('submitPiaIntake');
     } else {
-      if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        if (pia?.hasAddedPiToDataElements === false) {
-          handleShowModal('SubmitForFinalReview');
-        } else {
-          handleShowModal('SubmitForCPOReview');
-        }
-      } else if (pia?.status === PiaStatuses.CPO_REVIEW) {
-        handleShowModal('SubmitForFinalReview');
-      } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
-        handleShowModal('SubmitForPendingCompletion');
-      } else if (pia?.status === PiaStatuses.PENDING_COMPLETION) {
-        handleShowModal('completePIA');
-      } else {
-        handleShowModal('submitPiaForm');
-      }
+      handleShowModal(
+        pia?.status
+          ? modalMapping[pia.status as keyof typeof modalMapping]
+          : 'submitPiaForm',
+      );
     }
   };
-  /*
-   * @Description - This function is used to validate the form
-   * and display a red border around the invalid fields
-   * and scroll to the first invalid field.
-   *
-   * @param submit event - the event that triggered the validation
-   *
-   * How it works: The function loops through the form fields and checks if they are valid.
-   * If they are not valid, it adds the class 'is-invalid' to the field and scrolls to the first invalid field.
-   * If the field is a rich text editor <MD-Editor>, it adds the class 'form-control' to the field.
-   * This is because the rich text editor is a div and not an input field.
-   * The class 'is-invalid' is used to display the red border.
-   *
-   */
-  const handleValidation = (event: any) => {
-    let invalid = false;
-    let formId = '';
-    // Reset error messages
+
+  const resetUI = () => {
     const reset = document.getElementsByClassName('is-invalid');
     if (reset) {
       [...reset].forEach((el) => {
@@ -752,52 +736,94 @@ const PIAFormPage = () => {
         el.classList.remove('form-control');
       });
     }
-    if (!pia?.title) {
-      invalid = true;
-      formId = 'title';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaTitle: 'Error: Please enter a title.',
-      }));
-    }
-    if (!pia?.ministry) {
-      invalid = true;
-      formId = 'ministry-select';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaMinistry: 'Error: Please select a ministry.',
-      }));
-    }
-    if (!pia?.branch) {
-      invalid = true;
-      formId = 'branch';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaBranch: 'Error: Please enter a branch.',
-      }));
-    }
+  };
 
-    if (!pia?.initiativeDescription) {
-      invalid = true;
-      formId = 'initiativeDescription';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaInitialDescription: 'Error: Please describe your initiative.',
-      }));
-    }
+  const validateForm = () => {
+    let isValid = true;
+    let formId = '';
 
-    if (invalid) {
-      const ele = document.getElementById(formId);
-      if (ele) {
-        window.scrollTo(ele.offsetLeft, ele.offsetTop - 160);
-        ele.className += ' is-invalid form-control';
+    type ValidationRule = {
+      key: keyof IPiaForm;
+      validationKey: string;
+      msg: string;
+    };
+
+    const validations: ValidationRule[] = [
+      {
+        key: 'title',
+        validationKey: 'piaTitle',
+        msg: 'Error: Please enter a title.',
+      },
+      {
+        key: 'ministry',
+        validationKey: 'piaMinistry',
+        msg: 'Error: Please select a ministry.',
+      },
+      {
+        key: 'branch',
+        validationKey: 'piaBranch',
+        msg: 'Error: Please enter a branch.',
+      },
+      {
+        key: 'initiativeDescription',
+        validationKey: 'piaInitialDescription',
+        msg: 'Error: Please describe your initiative.',
+      },
+    ];
+
+    for (const { key, validationKey, msg } of validations) {
+      if (!pia?.[key]) {
+        isValid = false;
+        formId = key;
+        setValidationMessages((prevState) => ({
+          ...prevState,
+          [validationKey]: msg,
+        }));
+        break;
       }
+    }
+
+    return { isValid, formId, validationMessages };
+  };
+
+  const highlightInvalidField = (formId: string) => {
+    const element = document.getElementById(formId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.className += ' is-invalid form-control';
+    }
+  };
+
+  /*
+   * @Description - This function is used to validate the form
+   * and display a red border around the invalid fields
+   * and scroll to the first invalid field.
+   *
+   * @param submit event - the event that triggered the validation
+   *
+   * How it works: The function loops through the form fields and checks if they are valid.
+   * If they are not valid, it adds the class 'is-invalid' to the field and scrolls to the first invalid field.
+   * If the field is a rich text editor <MD-Editor>, it adds the class 'form-control' to the field.
+   * This is because the rich text editor is a div and not an input field.
+   * The class 'is-invalid' is used to display the red border.
+   *
+   */
+  const handleValidation = (event: any) => {
+    resetUI();
+
+    // Validate the form
+    const { isValid, formId } = validateForm();
+
+    // Update UI based on validation
+    if (!isValid) {
+      highlightInvalidField(formId);
       event.preventDefault();
       event.stopPropagation();
     } else {
       handleSubmit(event);
     }
   };
+
   const alertUserLeave = useCallback(
     (e: any) => {
       // if no changes in the form recently, do not show warning leaving the page
