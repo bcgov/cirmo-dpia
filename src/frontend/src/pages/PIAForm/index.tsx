@@ -371,7 +371,12 @@ const PIAFormPage = () => {
            This will keep the modal text in one place and allow for easy updates in the future
            and will make the whole app consistent.
         */
-        PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn);
+        PopulateModal(
+          pia,
+          PiaStatuses.EDIT_IN_PROGRESS,
+          populateModalFn,
+          'submit',
+        );
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -382,37 +387,50 @@ const PIAFormPage = () => {
             ? PiaStatuses.MPO_REVIEW
             : PiaStatuses.INCOMPLETE,
           populateModalFn,
+          'submit',
         );
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'submitPiaForm': {
-        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn);
+        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, 'submit');
         setPiaModalButtonValue('submitPiaForm');
         break;
       }
       case 'SubmitForCPOReview': {
-        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn);
+        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, 'submit');
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'SubmitForFinalReview': {
-        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn);
+        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, 'submit');
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'SubmitForPendingCompletion': {
-        PopulateModal(pia, PiaStatuses.PENDING_COMPLETION, populateModalFn);
+        PopulateModal(
+          pia,
+          PiaStatuses.PENDING_COMPLETION,
+          populateModalFn,
+          'submit',
+        );
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'completePIA': {
-        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn);
+        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, 'submit');
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'conflict': {
-        PopulateModal(pia, '_conflict', populateModalFn, '', conflictUser);
+        PopulateModal(
+          pia,
+          '_conflict',
+          populateModalFn,
+          'submit',
+          '',
+          conflictUser,
+        );
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -422,6 +440,7 @@ const PIAFormPage = () => {
           pia,
           '_autoSaveFailed',
           populateModalFn,
+          'submit',
           autoSaveFailedTime,
         );
         setPiaModalButtonValue(modalType);

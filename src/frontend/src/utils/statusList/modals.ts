@@ -80,7 +80,7 @@ export const defaultEmptyModal: Modal = {
 };
 
 export const submitPiaIntakeModal: Modal = {
-  title: 'Submit for PIA Intake?',
+  title: 'Submit PIA Intake?',
   description: 'Are you sure you want to submit your PIA intake?',
   confirmLabel: 'Yes, submit',
   cancelLabel: 'Cancel',

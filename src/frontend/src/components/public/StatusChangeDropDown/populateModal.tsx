@@ -24,6 +24,7 @@ const PopulateModal = (
   pia: IPiaForm,
   nextStatus: string,
   changeStatusFn: ImodalCB,
+  from: string, // Added event variable whether this is from dropdown or submit behavior
   time?: string, // Added optional time parameter passed for the auto-save failed modal
   conflictUser?: string, // Added optional conflict user for the conflict modal
 ) => {
@@ -37,7 +38,7 @@ const PopulateModal = (
       ...autoSaveFailedModal,
       description: autoSaveFailedModal.description.replace('${time}', time),
     };
-    changeStatusFn(autoSaveFailedModalWithTime, nextStatus);
+    changeStatusFn(autoSaveFailedModalWithTime, nextStatus, from);
     return;
   }
 
@@ -48,23 +49,24 @@ const PopulateModal = (
       title: conflictModal.title.replace('${user}', conflictUser),
       description: conflictModal.description.replace('${user}', conflictUser),
     };
-    changeStatusFn(conflictModalWithUser, nextStatus);
+    changeStatusFn(conflictModalWithUser, nextStatus, from);
     return;
   }
 
   if (
-    'changeStatus' in Object(statusList(pia)[currentStatus].Privileges)[role]
+    'changeStatus' in
+    Object(statusList(pia, from)[currentStatus].Privileges)[role]
   ) {
     if (
-      Object(statusList(pia)[currentStatus].Privileges)[role].changeStatus
+      Object(statusList(pia, from)[currentStatus].Privileges)[role].changeStatus
         .length !== 0
     ) {
-      Object(statusList(pia)[currentStatus].Privileges)[
+      Object(statusList(pia, from)[currentStatus].Privileges)[
         role
       ].changeStatus.forEach((status: ChangeStatus) => {
         if (status.status === nextStatus) {
           if (status.modal) {
-            changeStatusFn(Object(status).modal, nextStatus);
+            changeStatusFn(Object(status).modal, nextStatus, from);
             useDefault = false;
           }
         }
@@ -72,7 +74,11 @@ const PopulateModal = (
     }
   }
   if (useDefault) {
-    changeStatusFn(Object(statusList(null)[nextStatus]).modal, nextStatus);
+    changeStatusFn(
+      Object(statusList(null)[nextStatus]).modal,
+      nextStatus,
+      from,
+    );
   }
 };
 

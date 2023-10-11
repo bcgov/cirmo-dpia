@@ -10,9 +10,9 @@ import {
 } from './statuses/index';
 import { StatusList } from './types';
 
-export const statusList = (pia: IPiaForm | null): StatusList => {
+export const statusList = (pia: IPiaForm | null, from?: string): StatusList => {
   return {
-    INCOMPLETE: incompleteStatus(pia),
+    INCOMPLETE: incompleteStatus(pia, from),
     EDIT_IN_PROGRESS: editInProgressStatus(),
     MPO_REVIEW: mpoReviewStatus(pia),
     CPO_REVIEW: cpoReviewStatus(),

@@ -11,7 +11,7 @@ import {
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/BannerStatus/messages';
 
-export const incompleteStatus = (pia: IPiaForm | null) => {
+export const incompleteStatus = (pia: IPiaForm | null, from?: string) => {
   return {
     title: 'Incomplete',
     class: 'statusBlock__incomplete',
@@ -32,7 +32,8 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           },
           {
             status: 'MPO_REVIEW', // change to MPO_REVIEW
-            modal: defaultMPOReviewModal,
+            modal:
+              from === 'submit' ? submitPiaIntakeModal : defaultMPOReviewModal,
           },
           {
             status: 'CPO_REVIEW', // change to CPO_REVIEW
@@ -41,9 +42,7 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           {
             status: 'INCOMPLETE', // change to INCOMPLETE
             modal:
-              pia?.hasAddedPiToDataElements === false
-                ? defaultIncompleteModal
-                : submitPiaIntakeModal,
+              from === 'submit' ? submitPiaIntakeModal : defaultIncompleteModal,
           },
         ],
       },
@@ -52,7 +51,8 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
         changeStatus: [
           {
             status: 'MPO_REVIEW',
-            modal: defaultMPOReviewModal,
+            modal:
+              from === 'submit' ? submitPiaIntakeModal : defaultMPOReviewModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',
@@ -65,9 +65,7 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           {
             status: 'INCOMPLETE',
             modal:
-              pia?.hasAddedPiToDataElements === false
-                ? defaultIncompleteModal
-                : submitPiaIntakeModal,
+              from === 'submit' ? submitPiaIntakeModal : defaultIncompleteModal,
           },
         ],
       },

@@ -11,5 +11,5 @@ export interface IStatusChangeDropDownProps {
    information and the status that was selected
    */
 export interface ImodalCB {
-  (modal: object, status: string): void;
+  (modal: object, status: string, from: string): void;
 }
