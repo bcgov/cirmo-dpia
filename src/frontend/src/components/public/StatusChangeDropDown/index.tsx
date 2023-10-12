@@ -1,14 +1,14 @@
 import { ChangeStatus } from '../../../utils/statusList/types';
-import { statusList } from '../../../utils/statusList/statusList';
+import {
+  statusList,
+  getUserPrivileges,
+  getUserPrivilegesByStatus,
+} from '../../../utils/statusList/common';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IStatusChangeDropDownProps } from './interface';
 import populateModal from './populateModal';
-import {
-  getUserPrivileges,
-  getUserPrivilegesByStatus,
-} from '../../../utils/statusList/common';
 import { useEffect, useRef, useState } from 'react';
 
 function StatusChangeDropDown({
@@ -21,8 +21,13 @@ function StatusChangeDropDown({
     // The key will be the status string, and the value will be the entire ChangeStatus object.
     const statusesMap: Map<string, ChangeStatus> = new Map();
 
-    const canChangeStatus =
-      (getUserPrivilegesByStatus(pia.status)?.changeStatus ?? [])?.length > 0;
+    const canChangeStatus = (() => {
+      const piaStatus = getUserPrivilegesByStatus(pia.status);
+      return (
+        piaStatus?.showDropdownMenu !== false &&
+        (piaStatus?.changeStatus ?? [])?.length > 0
+      );
+    })();
 
     // Retrieve the array of possible status changes.
     const changeStatusArr = getUserPrivileges(pia)?.changeStatus ?? [];
@@ -84,7 +89,7 @@ function StatusChangeDropDown({
     event.preventDefault();
     // Check if "Enter" key is pressed
     if (event.key === 'Enter') {
-      populateModal(pia, statuskey.status, changeStatusFn);
+      populateModal(pia, statuskey.status, changeStatusFn, false);
     }
   };
 
@@ -131,7 +136,12 @@ function StatusChangeDropDown({
                     onKeyDown={(event) => handleKeyDown(event, statuskey)}
                     onKeyUp={(event) => handleKeyUp(event)}
                     onClick={() => {
-                      populateModal(pia, statuskey.status, changeStatusFn);
+                      populateModal(
+                        pia,
+                        statuskey.status,
+                        changeStatusFn,
+                        false,
+                      );
                     }}
                     className="dropdown-item-container"
                   >

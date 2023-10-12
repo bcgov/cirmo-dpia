@@ -1,6 +1,6 @@
 import { getUserRole } from '../../../utils/user';
-import { ChangeStatus } from '../../../utils/statusList/types';
-import { statusList } from '../../../utils/statusList/statusList';
+import { ChangeStatus, Privileges } from '../../../utils/statusList/types';
+import { statusList } from '../../../utils/statusList/common';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { ImodalCB } from './interface';
 import {
@@ -24,21 +24,20 @@ const PopulateModal = (
   pia: IPiaForm,
   nextStatus: string,
   changeStatusFn: ImodalCB,
-  from: string, // Added event variable whether this is from dropdown or submit behavior
+  isSubmit: boolean, // Indicates whether this action is triggered by a form submission (true) or a dropdown selection (false)
   time?: string, // Added optional time parameter passed for the auto-save failed modal
   conflictUser?: string, // Added optional conflict user for the conflict modal
 ) => {
   const role = getUserRole();
   let useDefault = true;
   const currentStatus = pia.status || 'Completed';
-
   // Handle autoSaveFailed modal with time
   if (nextStatus === '_autoSaveFailed' && time) {
     const autoSaveFailedModalWithTime = {
       ...autoSaveFailedModal,
       description: autoSaveFailedModal.description.replace('${time}', time),
     };
-    changeStatusFn(autoSaveFailedModalWithTime, nextStatus, from);
+    changeStatusFn(autoSaveFailedModalWithTime, nextStatus);
     return;
   }
 
@@ -49,36 +48,36 @@ const PopulateModal = (
       title: conflictModal.title.replace('${user}', conflictUser),
       description: conflictModal.description.replace('${user}', conflictUser),
     };
-    changeStatusFn(conflictModalWithUser, nextStatus, from);
+    changeStatusFn(conflictModalWithUser, nextStatus);
     return;
   }
 
-  if (
-    'changeStatus' in
-    Object(statusList(pia, from)[currentStatus].Privileges)[role]
-  ) {
-    if (
-      Object(statusList(pia, from)[currentStatus].Privileges)[role].changeStatus
-        .length !== 0
-    ) {
-      Object(statusList(pia, from)[currentStatus].Privileges)[
-        role
-      ].changeStatus.forEach((status: ChangeStatus) => {
-        if (status.status === nextStatus) {
-          if (status.modal) {
-            changeStatusFn(Object(status).modal, nextStatus, from);
-            useDefault = false;
-          }
-        }
-      });
-    }
-  }
-  if (useDefault) {
-    changeStatusFn(
-      Object(statusList(null)[nextStatus]).modal,
-      nextStatus,
-      from,
+  // Refactored code by eliminating duplication and enhancing modal setup logic with the getStatusByRole function
+  const getStatusByRole = (privileges: Privileges) => {
+    const privilege = Object(privileges)[role];
+    const statusArray =
+      'changeStatus' in privilege && privilege.changeStatus.length !== 0
+        ? privilege.changeStatus
+        : [];
+    return statusArray.filter(
+      (status: ChangeStatus) =>
+        status.status === nextStatus && (status.modal || status.submitModal),
     );
+  };
+
+  getStatusByRole(statusList(pia)[currentStatus].Privileges).forEach(
+    (status: ChangeStatus) => {
+      // Select the appropriate modal based on isSubmit
+      changeStatusFn(
+        Object(status)[isSubmit ? 'submitModal' : 'modal'],
+        nextStatus,
+      );
+      useDefault = false;
+    },
+  );
+
+  if (useDefault) {
+    changeStatusFn(Object(statusList(null)[nextStatus]).modal, nextStatus);
   }
 };
 

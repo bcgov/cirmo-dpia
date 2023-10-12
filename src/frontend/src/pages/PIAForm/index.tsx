@@ -32,7 +32,7 @@ import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
-import { statusList } from '../../utils/statusList/statusList';
+import { statusList } from '../../utils/statusList/common';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -371,12 +371,7 @@ const PIAFormPage = () => {
            This will keep the modal text in one place and allow for easy updates in the future
            and will make the whole app consistent.
         */
-        PopulateModal(
-          pia,
-          PiaStatuses.EDIT_IN_PROGRESS,
-          populateModalFn,
-          'submit',
-        );
+        PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -387,23 +382,23 @@ const PIAFormPage = () => {
             ? PiaStatuses.MPO_REVIEW
             : PiaStatuses.INCOMPLETE,
           populateModalFn,
-          'submit',
+          true,
         );
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'submitPiaForm': {
-        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, 'submit');
+        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, true);
         setPiaModalButtonValue('submitPiaForm');
         break;
       }
       case 'SubmitForCPOReview': {
-        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, 'submit');
+        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'SubmitForFinalReview': {
-        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, 'submit');
+        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -412,13 +407,13 @@ const PIAFormPage = () => {
           pia,
           PiaStatuses.PENDING_COMPLETION,
           populateModalFn,
-          'submit',
+          true,
         );
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'completePIA': {
-        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, 'submit');
+        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -427,7 +422,7 @@ const PIAFormPage = () => {
           pia,
           '_conflict',
           populateModalFn,
-          'submit',
+          false,
           '',
           conflictUser,
         );
@@ -440,7 +435,7 @@ const PIAFormPage = () => {
           pia,
           '_autoSaveFailed',
           populateModalFn,
-          'submit',
+          false,
           autoSaveFailedTime,
         );
         setPiaModalButtonValue(modalType);
@@ -675,7 +670,6 @@ const PIAFormPage = () => {
   //
   const handleSubmit = (event: any) => {
     event.preventDefault();
-
     // if the user is in pia intake tab, then show submit pia intake; else submit full form
     if (
       pia?.isNextStepsSeenForDelegatedFlow === false &&

@@ -11,7 +11,7 @@ import {
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/BannerStatus/messages';
 
-export const incompleteStatus = (pia: IPiaForm | null, from?: string) => {
+export const incompleteStatus = (pia: IPiaForm | null) => {
   return {
     title: 'Incomplete',
     class: 'statusBlock__incomplete',
@@ -25,24 +25,25 @@ export const incompleteStatus = (pia: IPiaForm | null, from?: string) => {
         showSubmitButton: true,
         changeStatus: [
           {
-            status: 'EDIT_IN_PROGRESS', // change to EDIT_IN_PROGRESS
+            status: 'EDIT_IN_PROGRESS',
             modal: checkReviewStatus(pia)
               ? resetReviewEditInPRogressModal
               : defaultEditInProgressModal,
           },
           {
-            status: 'MPO_REVIEW', // change to MPO_REVIEW
-            modal:
-              from === 'submit' ? submitPiaIntakeModal : defaultMPOReviewModal,
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
-            status: 'CPO_REVIEW', // change to CPO_REVIEW
+            status: 'CPO_REVIEW',
             modal: defaultCPOReviewModal,
           },
           {
-            status: 'INCOMPLETE', // change to INCOMPLETE
-            modal:
-              from === 'submit' ? submitPiaIntakeModal : defaultIncompleteModal,
+            // Added for submitModal scenarios; dropdown display is irrelevant.
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
           },
         ],
       },
@@ -51,8 +52,8 @@ export const incompleteStatus = (pia: IPiaForm | null, from?: string) => {
         changeStatus: [
           {
             status: 'MPO_REVIEW',
-            modal:
-              from === 'submit' ? submitPiaIntakeModal : defaultMPOReviewModal,
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',
@@ -64,19 +65,32 @@ export const incompleteStatus = (pia: IPiaForm | null, from?: string) => {
           },
           {
             status: 'INCOMPLETE',
-            modal:
-              from === 'submit' ? submitPiaIntakeModal : defaultIncompleteModal,
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
           },
         ],
       },
       DRAFTER: {
         showSubmitButton: true,
+        showDropdownMenu: false, // Hides the dropdown menu for this role's scenario.
         Pages: {
           review: {
             accessControl: false,
           },
         },
-        changeStatus: [],
+        changeStatus: [
+          // Added for submitModal scenarios; dropdown display is irrelevant.
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
+          },
+          {
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
+          },
+        ],
       },
     },
   };

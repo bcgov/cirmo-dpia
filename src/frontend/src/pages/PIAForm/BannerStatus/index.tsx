@@ -1,7 +1,7 @@
 import { IBannerStatusProps } from './interfaces';
 import Callout from '../../../components/common/Callout';
 import { getUserRole } from '../../../utils/user';
-import { statusList } from '../../../utils/statusList/statusList';
+import { statusList } from '../../../utils/statusList/common';
 const BannerStatus = ({ pia }: IBannerStatusProps) => {
   const populateBanner = () => {
     const currentStatus = pia.status || 'Completed';

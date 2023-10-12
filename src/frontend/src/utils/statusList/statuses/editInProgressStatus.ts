@@ -3,6 +3,7 @@ import {
   defaultCPOReviewModal,
   defaultIncompleteModal,
   defaultMPOReviewModal,
+  submitPiaIntakeModal,
 } from '../modals';
 
 export const editInProgressStatus = () => {
@@ -41,6 +42,7 @@ export const editInProgressStatus = () => {
           {
             status: 'MPO_REVIEW',
             modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
             status: 'CPO_REVIEW',
@@ -54,6 +56,7 @@ export const editInProgressStatus = () => {
           {
             status: 'MPO_REVIEW',
             modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
             status: 'INCOMPLETE',
