@@ -34,6 +34,7 @@ import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 import { statusList } from '../../utils/statusList/statusList';
+import useAutoSave from '../../utils/autosave';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -154,37 +155,31 @@ const PIAFormPage = () => {
   const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
 
-    if (!hasExplicitChanges && !hasFormChanged()) {
-      // only expected fields have changes; no need call update
-      return pia;
-    }
+    if (!hasExplicitChanges && !hasFormChanged()) return pia;
 
-    // Notify snowplow that status has been changed, and you are finished with the current status.
-    // Going from MPO_REVIEW to CPO_REVIEW tells snowplow: MPO_REVIEW-COMPLETED.
-    if (changes.status !== undefined && pia.status !== changes.status)
+    // Notify snowplow if status changed
+    if (changes.status !== undefined && pia.status !== changes.status) {
       sendSnowplowStatusChangeCall(true);
-
-    let updatedPia: IPiaForm;
-
-    if (pia?.id) {
-      updatedPia = await HttpRequest.patch<IPiaForm>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-        { ...pia, ...changes },
-      );
-    } else {
-      updatedPia = await HttpRequest.post<IPiaForm>(API_ROUTES.PIA_INTAKE, {
-        ...pia,
-        ...changes,
-      });
     }
 
+    // Perform the HTTP request
+    const apiUrl = pia?.id
+      ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
+      : API_ROUTES.PIA_INTAKE;
+    const requestData = { ...pia, ...changes };
+
+    const updatedPia = pia?.id
+      ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
+      : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
+
+    // Update last saved alert info
     setLastSaveAlertInfo({
       type: 'success',
       message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
       show: true,
     });
 
-    // if first time save, update stale state to the latest state, else keep the previous state for comparisons
+    // Handle first-time save
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
@@ -199,9 +194,8 @@ const PIAFormPage = () => {
       setStalePia(pia);
     }
 
+    // Update the state and reset flags
     setPia(updatedPia);
-
-    // reset flags after successful save
     setIsAutoSaveFailedPopupShown(false);
     setIsConflict(false);
 
@@ -823,43 +817,6 @@ const PIAFormPage = () => {
   const pages = PiaFormSideNavPages(pia, mode === 'edit' ? true : false, false);
 
   useEffect(() => {
-    const autoSave = async () => {
-      setIsEagerSave(false);
-      if (isConflict) return; //noop if already a conflict
-
-      try {
-        await upsertAndUpdatePia();
-      } catch (e: any) {
-        setLastSaveAlertInfo({
-          type: 'danger',
-          message: `Unable to auto-save. Last saved at ${getShortTime(
-            pia.updatedAt,
-          )}.`,
-          show: true,
-        });
-        if (e?.cause?.status === 409) {
-          setIsConflict(true);
-          handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
-        } else if (!isAutoSaveFailedPopupShown) {
-          handleShowModal('autoSaveFailed');
-          setIsAutoSaveFailedPopupShown(true);
-        }
-      }
-    };
-
-    if (isEagerSave) {
-      autoSave();
-      return;
-    }
-
-    const autoSaveTimer = setTimeout(() => {
-      autoSave();
-    }, 500);
-
-    return () => clearTimeout(autoSaveTimer);
-  });
-
-  useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
     return () => {
       window.removeEventListener('beforeunload', alertUserLeave);
@@ -879,6 +836,20 @@ const PIAFormPage = () => {
       setFormReadOnly(true);
     }
   }, [pia?.status, id, pathname]);
+
+  useAutoSave({
+    setIsEagerSave,
+    isEagerSave,
+    isConflict,
+    setIsConflict,
+    getShortTime,
+    upsertAndUpdatePia,
+    pia,
+    setLastSaveAlertInfo,
+    handleShowModal,
+    isAutoSaveFailedPopupShown,
+    setIsAutoSaveFailedPopupShown,
+  });
 
   return (
     <>
