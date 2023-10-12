@@ -68,28 +68,51 @@ const PIAFormPage = () => {
   const { id } = useParams();
   const { pathname, search } = useLocation();
 
+  // State related to PIA Form
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
+  const [stalePia, setStalePia] = useState(emptyState);
+  const [pia, setPia] = useState(emptyState);
+  const [initialPiaStateFetched, setInitialPiaStateFetched] = useState(false);
+  const [isFirstSave, setIsFirstSave] = useState(true);
 
-  const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
-  const [pia, setPia] = useState<IPiaForm>(emptyState);
-
-  // if id is provided, fetch initial and updated state from db
-  const [initialPiaStateFetched, setInitialPiaStateFetched] =
-    useState<boolean>(false);
-
-  // if id not provided, keep default empty state; and track first save
-  const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
-
-  const [isConflict, setIsConflict] = useState<boolean>(false);
-  const [isEagerSave, setIsEagerSave] = useState<boolean>(false);
+  // State related to form status
+  const [formReadOnly, setFormReadOnly] = useState(true);
+  const [isConflict, setIsConflict] = useState(false);
+  const [isEagerSave, setIsEagerSave] = useState(false);
   const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
     useState<boolean>(false);
 
+  // State related to Modals and Messages
+  const [showPiaModal, setShowPiaModal] = useState(false);
+  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState('');
+  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState('');
+  const [piaModalTitleText, setPiaModalTitleText] = useState('');
+  const [piaModalParagraph, setPiaModalParagraph] = useState('');
+  const [piaModalButtonValue, setPiaModalButtonValue] = useState('');
+
+  // State related to Comments
+  const [isRightOpen, setIsRightOpen] = useState(false);
+  const [isLeftOpen, setIsLeftOpen] = useState(true);
+  const [commentCount, setCommentCount] = useState<CommentCount>({});
+  const [selectedSection, setSelectedSection] = useState<PiaSections>();
+  const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
+    useState(0);
+
+  // State related to Intake and Validation
+  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState(false);
+  const [validationMessages, setValidationMessages] =
+    useState<PiaValidationMessage>({});
+  const [submitButtonText, setSubmitButtonText] = useState(
+    SubmitButtonTextEnum.INTAKE,
+  );
+  const [message, setMessage] = useState('');
+  const [validationFailedMessage, setValidationFailedMessage] = useState('');
+  const [isValidationFailed, setIsValidationFailed] = useState(false);
   const [lastSaveAlertInfo, setLastSaveAlertInfo] =
     useState<ILastSaveAlterInfo>({
       message: '',
@@ -208,8 +231,6 @@ const PIAFormPage = () => {
     }));
   };
 
-  const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
-
   useEffect(() => {
     if (mode !== 'edit') {
       setFormReadOnly(true);
@@ -217,19 +238,6 @@ const PIAFormPage = () => {
       setFormReadOnly(false);
     }
   }, [mode]);
-
-  /**
-   * Comments State
-   */
-  const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
-  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(true);
-  const [commentCount, setCommentCount] = useState<CommentCount>({});
-
-  /**
-   * This variable is used to determine which section to show comments for.
-   * by default give it a value
-   */
-  const [selectedSection, setSelectedSection] = useState<PiaSections>();
 
   /**
    * Async callback for getting commentCount within a useEffect hook
@@ -267,9 +275,6 @@ const PIAFormPage = () => {
     }
   }, [getCommentCount]);
 
-  const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
-    useState(0);
-
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
     if (isOpen === true && isLeftOpen === true) {
@@ -286,11 +291,6 @@ const PIAFormPage = () => {
     getCommentCount();
   };
 
-  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
-
-  const [validationMessages, setValidationMessages] =
-    useState<PiaValidationMessage>({});
-
   useEffect(() => {
     if (
       pia?.isNextStepsSeenForDelegatedFlow ||
@@ -302,9 +302,6 @@ const PIAFormPage = () => {
     pia?.isNextStepsSeenForDelegatedFlow,
     pia?.isNextStepsSeenForNonDelegatedFlow,
   ]);
-
-  const [submitButtonText, setSubmitButtonText] =
-    useState<SubmitButtonTextEnum>(SubmitButtonTextEnum.INTAKE);
 
   useEffect(
     () =>
@@ -322,28 +319,12 @@ const PIAFormPage = () => {
     }
   }, [mode, navigate, pia?.id, pia?.status]);
 
-  const [message, setMessage] = useState<string>('');
-
-  const [validationFailedMessage, setValidationFailedMessage] =
-    useState<string>('');
-  const [isValidationFailed, setIsValidationFailed] = useState(false);
-
   useEffect(() => {
     if (isValidationFailed)
       setValidationFailedMessage(
         'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
       );
   }, [isValidationFailed]);
-
-  //
-  // Modal State
-  //
-  const [showPiaModal, setShowPiaModal] = useState<boolean>(false);
-  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState<string>('');
-  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState<string>('');
-  const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
-  const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
-  const [piaModalButtonValue, setPiaModalButtonValue] = useState<string>('');
 
   //
   // Event Handlers
@@ -374,8 +355,8 @@ const PIAFormPage = () => {
         break;
       case 'edit':
         /* Using the state table, we can determine which modal to show based on the status of the PIA
-           This will keep the modal text in one place and allow for easy updates in the future
-           and will make the whole app consistent.
+          This will keep the modal text in one place and allow for easy updates in the future
+          and will make the whole app consistent.
         */
         PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn);
         setPiaModalButtonValue('edit');
