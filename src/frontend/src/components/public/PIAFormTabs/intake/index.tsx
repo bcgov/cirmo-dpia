@@ -16,6 +16,7 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import GeneralInformation from './components/GeneralInformation';
+import PIAInitiativeDescription from './components/PIAInitiativeDescription';
 
 export const PIAFormIntake = () => {
   const {
@@ -171,69 +172,14 @@ export const PIAFormIntake = () => {
         )}
       </section>
 
-      <section className="section__padding-block">
-        <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
-        <div
-          className={`drop-shadow card p-4 p-md-5 ${
-            selectedSection &&
-            selectedSection ===
-              PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION
-              ? 'section-focus'
-              : ''
-          }`}
-        >
-          {!isReadOnly ? (
-            <p>
-              <strong>
-                {Messages.InitiativeDescriptionSection.Question.en}
-                <span className="error-text "> (required)</span>
-              </strong>
-            </p>
-          ) : (
-            <h4> {Messages.InitiativeDescriptionSection.Question.en}</h4>
-          )}
-          {!isReadOnly && (
-            <p className="form__helper-text">
-              {Messages.InitiativeDescriptionSection.HelperText.en}
-            </p>
-          )}
-          <div className="richText" id="initiativeDescription">
-            {(isReadOnly && !intakeForm.initiativeDescription) ||
-            (isReadOnly && intakeForm.initiativeDescription === '') ? (
-              <p>
-                <i>Not answered</i>
-              </p>
-            ) : isReadOnly ? (
-              <MDEditor.Markdown
-                source={intakeForm.initiativeDescription}
-                aria-label="Initiative Description Textarea Input Preview"
-              />
-            ) : (
-              <MDEditor
-                preview="edit"
-                defaultTabEnable={true}
-                value={intakeForm?.initiativeDescription}
-                onChange={(value) =>
-                  stateChangeHandler(value, 'initiativeDescription')
-                }
-                aria-label="Initiative Description Textarea Input"
-              />
-            )}
-            {!isReadOnly && validationMessage.piaInitialDescription && (
-              <p className="error-text ">
-                {validationMessage.piaInitialDescription}
-              </p>
-            )}
-          </div>
-
-          <ViewComments
-            count={
-              commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
-            }
-            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION}
-          />
-        </div>
-      </section>
+      <PIAInitiativeDescription
+        isReadOnly={isReadOnly}
+        intakeForm={intakeForm}
+        stateChangeHandler={stateChangeHandler}
+        validationMessage={validationMessage}
+        selectedSection={selectedSection}
+        commentCount={commentCount}
+      />
 
       <section className="section__padding-block">
         <div
