@@ -2,10 +2,7 @@ import React from 'react';
 import Messages from '../helper/messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-
-interface GeneralInformationProps {
-  isReadOnly: boolean;
-}
+import { GeneralInformationProps } from '../pia-form-intake.interface';
 
 const GeneralInformation: React.FC<GeneralInformationProps> = ({
   isReadOnly,

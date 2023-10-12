@@ -1,20 +1,11 @@
 import React from 'react';
-import { IPiaFormIntake } from '../pia-form-intake.interface';
-import Messages from '../helper/messages';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
+import Messages from '../helper/messages';
+import { PIAInitiativeDescriptionProps } from '../pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
-interface Props {
-  isReadOnly: boolean;
-  intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  validationMessage: any;
-  selectedSection?: PiaSections;
-  commentCount: any;
-}
-
-const PIAInitiativeDescription: React.FC<Props> = ({
+const PIAInitiativeDescription: React.FC<PIAInitiativeDescriptionProps> = ({
   isReadOnly,
   intakeForm,
   stateChangeHandler,
