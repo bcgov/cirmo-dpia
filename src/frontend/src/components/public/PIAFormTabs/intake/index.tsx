@@ -15,6 +15,7 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import GeneralInformation from './components/GeneralInformation';
 
 export const PIAFormIntake = () => {
   const {
@@ -64,34 +65,7 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <section>
-        <h2>{Messages.PiaIntakeHeader.H1Text.en} </h2>
-        {!isReadOnly && (
-          <>
-            <h3>{Messages.PiaIntakeHeader.H2Text.en} </h3>
-            <ul>
-              {Messages.PiaIntakeHeader.ListText.map((item, index) => (
-                <li key={index}>
-                  {item.en}
-                  {item.linkHref && item.linkText && (
-                    <a
-                      href={item.linkHref}
-                      rel="noreferrer external"
-                      target="_blank"
-                    >
-                      {item.linkText}
-                      <FontAwesomeIcon
-                        className="ms-1"
-                        icon={faUpRightFromSquare}
-                      />
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </section>
+      <GeneralInformation isReadOnly={isReadOnly} />
 
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
