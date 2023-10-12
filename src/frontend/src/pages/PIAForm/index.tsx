@@ -837,6 +837,7 @@ const PIAFormPage = () => {
     }
   }, [pia?.status, id, pathname]);
 
+  // Call the useAutoSave hook
   useAutoSave({
     setIsEagerSave,
     isEagerSave,

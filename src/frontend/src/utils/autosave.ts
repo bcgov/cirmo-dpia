@@ -1,21 +1,21 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, Dispatch, SetStateAction } from 'react';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { SupportedAlertTypes } from '../components/common/Alert/interfaces';
 
+type SetState<T> = Dispatch<SetStateAction<T>>;
+
 type AutoSaveProps = {
-  setIsEagerSave: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEagerSave: SetState<boolean>;
   isEagerSave: boolean;
   isConflict: boolean;
-  setIsConflict: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsConflict: SetState<boolean>;
   getShortTime: (date?: Date) => string;
   upsertAndUpdatePia: (changes?: Partial<IPiaForm>) => Promise<IPiaForm>;
   pia: IPiaForm;
-  setLastSaveAlertInfo: React.Dispatch<
-    React.SetStateAction<ILastSaveAlterInfo>
-  >;
+  setLastSaveAlertInfo: SetState<ILastSaveAlterInfo>;
   handleShowModal: (modalType: string, optionalData?: any) => void;
   isAutoSaveFailedPopupShown: boolean;
-  setIsAutoSaveFailedPopupShown: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAutoSaveFailedPopupShown: SetState<boolean>;
 };
 
 interface ILastSaveAlterInfo {
@@ -44,45 +44,42 @@ const useAutoSave = ({
     try {
       await upsertAndUpdatePia();
     } catch (e: any) {
-      setLastSaveAlertInfo({
-        type: 'danger',
-        message: `Unable to auto-save. Last saved at ${getShortTime(
-          pia.updatedAt,
-        )}.`,
-        show: true,
-      });
-      if (e?.cause?.status === 409) {
+      const message = `Unable to auto-save. Last saved at ${getShortTime(
+        pia.updatedAt,
+      )}.`;
+      const causeStatus = e?.cause?.status;
+      if (causeStatus === 409) {
         setIsConflict(true);
         handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
       } else if (!isAutoSaveFailedPopupShown) {
         handleShowModal('autoSaveFailed');
         setIsAutoSaveFailedPopupShown(true);
       }
+      setLastSaveAlertInfo({
+        type: 'danger',
+        message,
+        show: true,
+      });
     }
   }, [
     setIsEagerSave,
-    setIsConflict,
     isConflict,
-    upsertAndUpdatePia,
-    setLastSaveAlertInfo,
+    setIsConflict,
     getShortTime,
+    upsertAndUpdatePia,
     pia,
+    setLastSaveAlertInfo,
     handleShowModal,
     isAutoSaveFailedPopupShown,
     setIsAutoSaveFailedPopupShown,
   ]);
 
   useEffect(() => {
-    if (isEagerSave) {
-      autoSave();
-      return;
-    }
+    const autoSaveTimer = isEagerSave ? 0 : 500;
 
-    const autoSaveTimer = setTimeout(() => {
-      autoSave();
-    }, 500);
+    const timerId = setTimeout(autoSave, autoSaveTimer);
 
-    return () => clearTimeout(autoSaveTimer);
+    return () => clearTimeout(timerId);
   }, [isEagerSave, autoSave]);
 };
 
