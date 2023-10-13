@@ -2,10 +2,12 @@ import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
-import { PIAInitiativeDescriptionProps } from '../pia-form-intake.interface';
+import { IntakeInitiativeDescriptionProps } from '../pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
-const PIAInitiativeDescription: React.FC<PIAInitiativeDescriptionProps> = ({
+const IntakeInitiativeDescription: React.FC<
+  IntakeInitiativeDescriptionProps
+> = ({
   isReadOnly,
   intakeForm,
   stateChangeHandler,
@@ -70,4 +72,4 @@ const PIAInitiativeDescription: React.FC<PIAInitiativeDescriptionProps> = ({
   );
 };
 
-export default PIAInitiativeDescription;
+export default IntakeInitiativeDescription;

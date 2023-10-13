@@ -15,9 +15,10 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
-import GeneralInformation from './components/GeneralInformation';
-import PIAInitiativeDescription from './components/PIAInitiativeDescription';
-import InitiativeScopeSection from './components/InitiativeScopeSection';
+import IntakeGeneralInformation from './components/IntakeGeneralInformation';
+import IntakeInitiativeDescription from './components/IntakeInitiativeDescription';
+import InitiativeScopeSection from './components/IntakeInitiativeScope';
+import IntakeInitiativeDetails from './components/IntakeInitiativeDetails';
 
 export const PIAFormIntake = () => {
   const {
@@ -67,7 +68,7 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <GeneralInformation isReadOnly={isReadOnly} />
+      <IntakeGeneralInformation isReadOnly={isReadOnly} />
 
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>
@@ -173,7 +174,7 @@ export const PIAFormIntake = () => {
         )}
       </section>
 
-      <PIAInitiativeDescription
+      <IntakeInitiativeDescription
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
         stateChangeHandler={stateChangeHandler}
@@ -184,70 +185,19 @@ export const PIAFormIntake = () => {
 
       <InitiativeScopeSection
         isReadOnly={isReadOnly}
-        selectedSection={selectedSection}
         intakeForm={intakeForm}
         stateChangeHandler={stateChangeHandler}
+        selectedSection={selectedSection}
         commentCount={commentCount}
       />
 
-      <section className="section__padding-block">
-        <div
-          className={`drop-shadow card p-4 p-md-5  ${
-            selectedSection &&
-            selectedSection ===
-              PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED
-              ? 'section-focus'
-              : ''
-          }`}
-        >
-          {!isReadOnly ? (
-            <p className="form__h2">
-              <strong>
-                {Messages.InitiativeDataElementsSection.H2Text.en}
-              </strong>
-            </p>
-          ) : (
-            <h4>{Messages.InitiativeDataElementsSection.H2Text.en} </h4>
-          )}
-          {!isReadOnly && (
-            <p className="form__helper-text">
-              {Messages.InitiativeDataElementsSection.HelperText.en}
-            </p>
-          )}
-          <div className="richText" id="dataElementsInvolved">
-            {(isReadOnly && !intakeForm.dataElementsInvolved) ||
-            (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
-              <p>
-                <i>Not answered</i>
-              </p>
-            ) : isReadOnly ? (
-              <MDEditor.Markdown
-                source={intakeForm.dataElementsInvolved}
-                aria-label="Data Elements Involved Textarea Input Preview"
-              />
-            ) : (
-              <MDEditor
-                preview="edit"
-                value={intakeForm?.dataElementsInvolved}
-                defaultTabEnable={true}
-                onChange={(value) =>
-                  stateChangeHandler(value, 'dataElementsInvolved')
-                }
-                aria-label="Data Elements Involved Textarea Input"
-              />
-            )}
-          </div>
-
-          <ViewComments
-            count={
-              commentCount?.[
-                PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED
-              ]
-            }
-            path={PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED}
-          />
-        </div>
-      </section>
+      <IntakeInitiativeDetails
+        isReadOnly={isReadOnly}
+        intakeForm={intakeForm}
+        stateChangeHandler={stateChangeHandler}
+        selectedSection={selectedSection}
+        commentCount={commentCount}
+      />
 
       <section className="section__padding-block">
         <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>

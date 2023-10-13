@@ -2,9 +2,9 @@ import React from 'react';
 import Messages from '../helper/messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { GeneralInformationProps } from '../pia-form-intake.interface';
+import { IntakeGeneralInformationProps } from '../pia-form-intake.interface';
 
-const GeneralInformation: React.FC<GeneralInformationProps> = ({
+const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
   isReadOnly,
 }) => {
   const renderListItems = () => {
@@ -34,4 +34,4 @@ const GeneralInformation: React.FC<GeneralInformationProps> = ({
   );
 };
 
-export default GeneralInformation;
+export default IntakeGeneralInformation;

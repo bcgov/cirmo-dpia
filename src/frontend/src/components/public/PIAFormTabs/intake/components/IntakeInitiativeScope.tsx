@@ -2,10 +2,10 @@ import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
-import { InitiativeScopeSectionProps } from '../pia-form-intake.interface';
+import { IntakeInitiativeScopeProps } from '../pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
-const InitiativeScopeSection: React.FC<InitiativeScopeSectionProps> = ({
+const InitiativeScopeSection: React.FC<IntakeInitiativeScopeProps> = ({
   isReadOnly,
   selectedSection,
   intakeForm,
