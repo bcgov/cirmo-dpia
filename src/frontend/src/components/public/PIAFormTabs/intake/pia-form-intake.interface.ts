@@ -19,11 +19,11 @@ export interface IPiaFormIntake {
   riskMitigation?: string | undefined;
 }
 
-export interface GeneralInformationProps {
+export interface IntakeGeneralInformationProps {
   isReadOnly: boolean;
 }
 
-export interface PIAInitiativeDescriptionProps {
+export interface IntakeInitiativeDescriptionProps {
   isReadOnly: boolean;
   intakeForm: IPiaFormIntake;
   stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
@@ -32,7 +32,15 @@ export interface PIAInitiativeDescriptionProps {
   commentCount: any;
 }
 
-export interface InitiativeScopeSectionProps {
+export interface IntakeInitiativeScopeProps {
+  isReadOnly: boolean;
+  selectedSection?: PiaSections;
+  intakeForm: IPiaFormIntake;
+  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
+  commentCount: any;
+}
+
+export interface IntakeInitiativeDetailsProps {
   isReadOnly: boolean;
   selectedSection?: PiaSections;
   intakeForm: IPiaFormIntake;
