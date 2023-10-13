@@ -20,7 +20,7 @@ export interface IPiaFormIntake {
   riskMitigation?: string | undefined;
 }
 
-export interface IntakeGeneralInformationProps {
+export interface PIAInformationProps {
   isReadOnly: IPiaFormContext['isReadOnly'];
 }
 

@@ -12,7 +12,7 @@ import {
 } from '../../../../contexts/PiaFormContext';
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
-import IntakeGeneralInformation from './components/IntakeGeneralInformation';
+import PIAInformation from './components/PIAInformation';
 import IntakeInitiativeDescription from './components/IntakeInitiativeDescription';
 import IntakeInitiativeScope from './components/IntakeInitiativeScope';
 import IntakeInitiativeDetails from './components/IntakeInitiativeDetails';
@@ -66,7 +66,7 @@ export const PIAFormIntake = () => {
 
   return (
     <>
-      <IntakeGeneralInformation isReadOnly={isReadOnly} />
+      <PIAInformation isReadOnly={isReadOnly} />
 
       <section className="section__padding-block">
         <h3>{Messages.GeneralInfoSection.H2Text.en}</h3>

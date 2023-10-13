@@ -2,11 +2,9 @@ import React from 'react';
 import Messages from '../helper/messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { IntakeGeneralInformationProps } from '../pia-form-intake.interface';
+import { PIAInformationProps } from '../pia-form-intake.interface';
 
-const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
-  isReadOnly,
-}) => {
+const PIAInformation: React.FC<PIAInformationProps> = ({ isReadOnly }) => {
   const renderListItems = () => {
     return Messages.PiaIntakeHeader.ListText.map((item, index) => (
       <li key={index}>
@@ -34,4 +32,4 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
   );
 };
 
-export default IntakeGeneralInformation;
+export default PIAInformation;
