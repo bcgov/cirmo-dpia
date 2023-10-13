@@ -1,6 +1,7 @@
 import { GovMinistriesEnum } from '../../../../types/enums/gov-ministries.enum';
 import { ChangeEvent } from 'react';
 import { IPiaFormContext } from '../../../../contexts/PiaFormContext';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 
 export interface IPiaFormIntake {
   title?: string;
@@ -22,6 +23,17 @@ export interface IPiaFormIntake {
 
 export interface PIAInformationProps {
   isReadOnly: IPiaFormContext['isReadOnly'];
+}
+
+export interface IntakeGeneralInformationProps {
+  isReadOnly: IPiaFormContext['isReadOnly'];
+  selectedSection?: IPiaFormContext['selectedSection'];
+  intakeForm: IPiaFormIntake;
+  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
+  commentCount?: IPiaFormContext['commentCount'];
+  validationMessage: IPiaFormContext['validationMessage'];
+  pia: IPiaFormContext['pia'];
+  path: PiaSections | undefined;
 }
 
 export interface IntakeInitiativeDescriptionProps {
