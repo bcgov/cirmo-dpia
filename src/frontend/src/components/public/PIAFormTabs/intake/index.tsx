@@ -13,6 +13,7 @@ import IntakeInitiativeDetails from './components/IntakeInitiativeDetails';
 import IntakePersonalInformation from './components/IntakePersonalInformation';
 
 export const PIAFormIntake = () => {
+  // Get the PIA form context from the parent component
   const {
     pia,
     selectedSection,
@@ -23,29 +24,37 @@ export const PIAFormIntake = () => {
     commentCount,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
+  // Call the access control function if it exists
   if (accessControl) accessControl();
 
+  // Initialize the intake form state with the exported intake from PIA
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),
   );
 
+  // Handle changes to the intake form state
   const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
+    // Update the intake form state
     setIntakeForm((state) => ({
       ...state,
       [key]: value,
     }));
+    // Call the PIA form context state change handler
     piaStateChangeHandler(value, key);
   };
 
+  // Handle changes to the "Has added PI to data elements" option
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    event.target.value === 'Yes'
-      ? stateChangeHandler(true, 'hasAddedPiToDataElements')
-      : event.target.value === "I'm not sure"
-      ? stateChangeHandler(null, 'hasAddedPiToDataElements')
-      : stateChangeHandler(false, 'hasAddedPiToDataElements');
+    // Update the "Has added PI to data elements" option based on the selected value
+    if (event.target.value === 'Yes') {
+      stateChangeHandler(true, 'hasAddedPiToDataElements');
+    } else if (event.target.value === "I'm not sure") {
+      stateChangeHandler(null, 'hasAddedPiToDataElements');
+    } else {
+      stateChangeHandler(false, 'hasAddedPiToDataElements');
+    }
 
-    // ensuring we see the NextSteps page every time user switches from a delegated to a non-delegated flow AND vice-versa
+    // Ensure that the NextSteps page is seen every time the user switches from a delegated to a non-delegated flow and vice versa
     if (
       ((pia?.hasAddedPiToDataElements === true ||
         pia?.hasAddedPiToDataElements === null) &&
@@ -60,8 +69,10 @@ export const PIAFormIntake = () => {
 
   return (
     <>
+      {/* Render the PIA information section */}
       <PIAInformation isReadOnly={isReadOnly} />
 
+      {/* Render the intake general information section */}
       <IntakeGeneralInformation
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
@@ -73,6 +84,7 @@ export const PIAFormIntake = () => {
         path={selectedSection}
       />
 
+      {/* Render the intake initiative description section */}
       <IntakeInitiativeDescription
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
@@ -82,6 +94,7 @@ export const PIAFormIntake = () => {
         commentCount={commentCount}
       />
 
+      {/* Render the intake initiative scope section */}
       <IntakeInitiativeScope
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
@@ -90,6 +103,7 @@ export const PIAFormIntake = () => {
         commentCount={commentCount}
       />
 
+      {/* Render the intake initiative details section */}
       <IntakeInitiativeDetails
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
@@ -98,6 +112,7 @@ export const PIAFormIntake = () => {
         commentCount={commentCount}
       />
 
+      {/* Render the intake personal information section */}
       <IntakePersonalInformation
         isReadOnly={isReadOnly}
         intakeForm={intakeForm}
