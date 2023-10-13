@@ -1,5 +1,6 @@
-import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { GovMinistriesEnum } from '../../../../types/enums/gov-ministries.enum';
+import { ChangeEvent } from 'react';
+import { IPiaFormContext } from '../../../../contexts/PiaFormContext';
 
 export interface IPiaFormIntake {
   title?: string;
@@ -20,30 +21,40 @@ export interface IPiaFormIntake {
 }
 
 export interface IntakeGeneralInformationProps {
-  isReadOnly: boolean;
+  isReadOnly: IPiaFormContext['isReadOnly'];
 }
 
 export interface IntakeInitiativeDescriptionProps {
-  isReadOnly: boolean;
+  isReadOnly: IPiaFormContext['isReadOnly'];
+  selectedSection?: IPiaFormContext['selectedSection'];
   intakeForm: IPiaFormIntake;
   stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  validationMessage: any;
-  selectedSection?: PiaSections;
-  commentCount: any;
+  commentCount?: IPiaFormContext['commentCount'];
+  validationMessage: IPiaFormContext['validationMessage'];
 }
 
 export interface IntakeInitiativeScopeProps {
-  isReadOnly: boolean;
-  selectedSection?: PiaSections;
+  isReadOnly: IPiaFormContext['isReadOnly'];
+  selectedSection?: IPiaFormContext['selectedSection'];
   intakeForm: IPiaFormIntake;
   stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount: any;
+  commentCount?: IPiaFormContext['commentCount'];
 }
 
 export interface IntakeInitiativeDetailsProps {
-  isReadOnly: boolean;
-  selectedSection?: PiaSections;
+  isReadOnly: IPiaFormContext['isReadOnly'];
+  selectedSection?: IPiaFormContext['selectedSection'];
   intakeForm: IPiaFormIntake;
   stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount: any;
+  commentCount?: IPiaFormContext['commentCount'];
+}
+
+export interface IntakePersonalInformationProps {
+  isReadOnly: IPiaFormContext['isReadOnly'];
+  selectedSection?: IPiaFormContext['selectedSection'];
+  intakeForm: IPiaFormIntake;
+  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
+  commentCount?: IPiaFormContext['commentCount'];
+  pia: IPiaFormContext['pia'];
+  handlePIOptionChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }

@@ -5,7 +5,7 @@ import Messages from '../helper/messages';
 import { IntakeInitiativeScopeProps } from '../pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
-const InitiativeScopeSection: React.FC<IntakeInitiativeScopeProps> = ({
+const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
   isReadOnly,
   selectedSection,
   intakeForm,
@@ -65,4 +65,4 @@ const InitiativeScopeSection: React.FC<IntakeInitiativeScopeProps> = ({
   );
 };
 
-export default InitiativeScopeSection;
+export default IntakeInitiativeScope;
