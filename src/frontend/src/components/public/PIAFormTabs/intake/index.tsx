@@ -35,10 +35,7 @@ export const PIAFormIntake = () => {
   // Handle changes to the intake form state
   const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
     // Update the intake form state
-    setIntakeForm((state) => ({
-      ...state,
-      [key]: value,
-    }));
+    setIntakeForm((state) => ({ ...state, [key]: value }));
     // Call the PIA form context state change handler
     piaStateChangeHandler(value, key);
   };
@@ -46,21 +43,21 @@ export const PIAFormIntake = () => {
   // Handle changes to the "Has added PI to data elements" option
   const handlePIOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Update the "Has added PI to data elements" option based on the selected value
-    if (event.target.value === 'Yes') {
-      stateChangeHandler(true, 'hasAddedPiToDataElements');
-    } else if (event.target.value === "I'm not sure") {
-      stateChangeHandler(null, 'hasAddedPiToDataElements');
-    } else {
-      stateChangeHandler(false, 'hasAddedPiToDataElements');
-    }
+    const value =
+      event.target.value === 'Yes'
+        ? true
+        : event.target.value === "I'm not sure"
+        ? null
+        : false;
+    stateChangeHandler(value, 'hasAddedPiToDataElements');
 
     // Ensure that the NextSteps page is seen every time the user switches from a delegated to a non-delegated flow and vice versa
+    const hasAddedPiToDataElements = pia?.hasAddedPiToDataElements;
     if (
-      ((pia?.hasAddedPiToDataElements === true ||
-        pia?.hasAddedPiToDataElements === null) &&
-        event.target.value === 'No') ||
-      (pia?.hasAddedPiToDataElements === false &&
-        (event.target.value === 'Yes' || event.target.value === "I'm not sure"))
+      ((hasAddedPiToDataElements === true ||
+        hasAddedPiToDataElements === null) &&
+        value === false) ||
+      (hasAddedPiToDataElements === false && (value === true || value === null))
     ) {
       piaStateChangeHandler(false, 'isNextStepsSeenForNonDelegatedFlow');
       piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
