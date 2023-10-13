@@ -1,5 +1,5 @@
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
-import { IPiaFormIntake } from '../pia-form-intake.interface';
+import { IPiaFormIntake } from './pia-form-intake.interface';
 
 export const exportIntakeFromPia = (pia: IPiaForm): IPiaFormIntake => {
   if (!pia) return {};

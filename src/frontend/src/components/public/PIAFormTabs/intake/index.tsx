@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
-import { IPiaFormIntake } from './pia-form-intake.interface';
+import { IPiaFormIntake } from './helper/pia-form-intake.interface';
 import {
   IPiaFormContext,
   PiaFormContext,

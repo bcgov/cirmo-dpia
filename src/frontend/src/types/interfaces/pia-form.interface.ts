@@ -1,4 +1,4 @@
-import { IPiaFormIntake } from '../../components/public/PIAFormTabs/intake/pia-form-intake.interface';
+import { IPiaFormIntake } from '../../components/public/PIAFormTabs/intake/helper/pia-form-intake.interface';
 import { IAccuracyCorrectionAndRetention } from '../../components/public/PIAFormTabs/accuracyRetention/accuracy-retention-interface';
 import { IAdditionalRisks } from '../../components/public/PIAFormTabs/additionalRisks/AdditionalRisks';
 import { ISecurityPersonalInformation } from '../../components/public/PIAFormTabs/securityPersonalInformation/security-personal-info-interface';

@@ -2,7 +2,7 @@ import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
-import { IntakeInitiativeDescriptionProps } from '../pia-form-intake.interface';
+import { IntakeInitiativeDescriptionProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
 const IntakeInitiativeDescription: React.FC<

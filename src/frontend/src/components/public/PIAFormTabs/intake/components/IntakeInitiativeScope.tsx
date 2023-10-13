@@ -2,7 +2,7 @@ import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
-import { IntakeInitiativeScopeProps } from '../pia-form-intake.interface';
+import { IntakeInitiativeScopeProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
 const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({

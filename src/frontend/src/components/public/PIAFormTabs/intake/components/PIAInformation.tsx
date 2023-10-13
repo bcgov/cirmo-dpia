@@ -2,7 +2,7 @@ import React from 'react';
 import Messages from '../helper/messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { PIAInformationProps } from '../pia-form-intake.interface';
+import { PIAInformationProps } from '../helper/pia-form-intake.interface';
 
 const PIAInformation: React.FC<PIAInformationProps> = ({ isReadOnly }) => {
   const renderListItems = () => {

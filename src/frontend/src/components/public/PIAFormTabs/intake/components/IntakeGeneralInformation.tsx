@@ -4,7 +4,7 @@ import { MinistryList } from '../../../../../constant/constant';
 import { dateToString } from '../../../../../utils/date';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 import Messages from '../helper/messages';
-import { IntakeGeneralInformationProps } from '../pia-form-intake.interface';
+import { IntakeGeneralInformationProps } from '../helper/pia-form-intake.interface';
 import Dropdown from '../../../../common/Dropdown';
 import InputText from '../../../../common/InputText/InputText';
 

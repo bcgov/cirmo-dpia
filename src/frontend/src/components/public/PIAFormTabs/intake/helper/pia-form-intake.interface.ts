@@ -1,7 +1,7 @@
-import { GovMinistriesEnum } from '../../../../types/enums/gov-ministries.enum';
+import { GovMinistriesEnum } from '../../../../../types/enums/gov-ministries.enum';
 import { ChangeEvent } from 'react';
-import { IPiaFormContext } from '../../../../contexts/PiaFormContext';
-import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import { IPiaFormContext } from '../../../../../contexts/PiaFormContext';
+import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
 export interface IPiaFormIntake {
   title?: string;

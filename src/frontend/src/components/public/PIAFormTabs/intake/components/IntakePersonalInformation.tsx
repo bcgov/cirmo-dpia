@@ -2,7 +2,7 @@ import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
-import { IntakePersonalInformationProps } from '../pia-form-intake.interface';
+import { IntakePersonalInformationProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 import { PIOptions } from '../../../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
