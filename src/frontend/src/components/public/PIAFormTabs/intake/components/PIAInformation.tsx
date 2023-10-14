@@ -5,10 +5,15 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PIAInformationProps } from '../helper/pia-form-intake.interface';
 
 const PIAInformation: React.FC<PIAInformationProps> = ({ isReadOnly }) => {
+  // Destructure messages from the Messages object
+  const { H1Text, H2Text, ListText } = Messages.PiaIntakeHeader;
+
+  // Function to render the list items
   const renderListItems = () => {
-    return Messages.PiaIntakeHeader.ListText.map((item, index) => (
+    return ListText.map((item, index) => (
       <li key={index}>
         {item.en}
+        {/* If the item has a link, render the link */}
         {item.linkHref && item.linkText && (
           <a href={item.linkHref} rel="noreferrer external" target="_blank">
             {item.linkText}
@@ -21,10 +26,12 @@ const PIAInformation: React.FC<PIAInformationProps> = ({ isReadOnly }) => {
 
   return (
     <section>
-      <h2>{Messages.PiaIntakeHeader.H1Text.en}</h2>
+      {/* Render the section heading */}
+      <h2>{H1Text.en}</h2>
+      {/* If the form is editable, render the list */}
       {!isReadOnly && (
         <>
-          <h3>{Messages.PiaIntakeHeader.H2Text.en}</h3>
+          <h3>{H2Text.en}</h3>
           <ul>{renderListItems()}</ul>
         </>
       )}
