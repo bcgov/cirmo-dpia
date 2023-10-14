@@ -8,6 +8,11 @@ import { PIOptions } from '../../../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
+// Destructure the messages object for better readability
+const { SectionHeading, HelperText, Question, LinkText } =
+  Messages.InitiativePISection;
+
+// The main component for the Intake Personal Information section
 const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
   isReadOnly,
   selectedSection,
@@ -17,24 +22,29 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
   pia,
   handlePIOptionChange,
 }) => {
+  // Render component
   return (
     <section className="section__padding-block">
-      <h3>{Messages.InitiativePISection.SectionHeading.en}</h3>
+      {/* Section Heading */}
+      <h3>{SectionHeading.en}</h3>
+
       <div
-        className={`drop-shadow card p-4 p-md-5  ${
-          selectedSection &&
+        className={`drop-shadow card p-4 p-md-5 ${
           selectedSection === PiaSections.INTAKE_PERSONAL_INFORMATION
             ? 'section-focus'
             : ''
         }`}
       >
-        {!isReadOnly ? (
-          <p>
-            <strong>{Messages.InitiativePISection.Question.en}</strong>
-          </p>
+        {/* Render the question heading */}
+        {isReadOnly ? (
+          <h4>{Question.en}</h4>
         ) : (
-          <h4> {Messages.InitiativePISection.Question.en}</h4>
+          <p>
+            <strong>{Question.en}</strong>
+          </p>
         )}
+
+        {/* Render the helper text with external link */}
         {!isReadOnly && (
           <p className="form__helper-text">
             <a
@@ -42,15 +52,16 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
               rel="noreferrer external"
               target="_blank"
             >
-              {Messages.InitiativePISection.LinkText.en}
+              {LinkText.en}
               &nbsp;
               <FontAwesomeIcon icon={faUpRightFromSquare} />
             </a>
             &nbsp;
-            {Messages.InitiativePISection.HelperText.en}
+            {HelperText.en}
           </p>
         )}
 
+        {/* Render the radio options for personal information */}
         {!isReadOnly ? (
           PIOptions.map((option, index) => (
             <label key={index} className="form__input-label input-label-row">
@@ -73,16 +84,18 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
             )?.key || ''}
           </p>
         )}
+
+        {/* Render the risk mitigation section */}
         {intakeForm?.hasAddedPiToDataElements === false && (
           <div className="section__padding-block">
-            {!isReadOnly ? (
+            {isReadOnly ? (
+              <h4>{Messages.InitiativeRiskReductionSection.H2Text.en}</h4>
+            ) : (
               <p>
                 <strong>
                   {Messages.InitiativeRiskReductionSection.H2Text.en}
                 </strong>
               </p>
-            ) : (
-              <h4> {Messages.InitiativeRiskReductionSection.H2Text.en} </h4>
             )}
             {!isReadOnly && (
               <p className="form__helper-text">
@@ -115,6 +128,7 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
           </div>
         )}
 
+        {/* Component to display comments */}
         <ViewComments
           count={commentCount?.[PiaSections.INTAKE_PERSONAL_INFORMATION]}
           path={PiaSections.INTAKE_PERSONAL_INFORMATION}
