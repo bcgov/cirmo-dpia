@@ -15,6 +15,7 @@ const IntakeInitiativeDescription: React.FC<
   selectedSection,
   commentCount,
 }) => {
+  // Render the initiative description field
   const initiativeDescription = isReadOnly ? (
     intakeForm.initiativeDescription || <i>Not answered</i>
   ) : (
@@ -27,6 +28,7 @@ const IntakeInitiativeDescription: React.FC<
     />
   );
 
+  // Main component render function
   return (
     <section className="section__padding-block">
       <h3>{Messages.InitiativeDescriptionSection.SectionHeading.en}</h3>
@@ -37,23 +39,30 @@ const IntakeInitiativeDescription: React.FC<
             : ''
         }`}
       >
-        {!isReadOnly ? (
+        {/* Render the question heading */}
+        {isReadOnly ? (
+          <h4>{Messages.InitiativeDescriptionSection.Question.en}</h4>
+        ) : (
           <p>
             <strong>
               {Messages.InitiativeDescriptionSection.Question.en}
               <span className="error-text "> (required)</span>
             </strong>
           </p>
-        ) : (
-          <h4>{Messages.InitiativeDescriptionSection.Question.en}</h4>
         )}
+
+        {/* Render the helper text */}
         {!isReadOnly && (
           <p className="form__helper-text">
             {Messages.InitiativeDescriptionSection.HelperText.en}
           </p>
         )}
+
+        {/* Render the initiative description field */}
         <div className="richText" id="initiativeDescription">
           {initiativeDescription}
+
+          {/* Render the error message */}
           {!isReadOnly && validationMessage.piaInitialDescription && (
             <p className="error-text ">
               {validationMessage.piaInitialDescription}
@@ -61,6 +70,7 @@ const IntakeInitiativeDescription: React.FC<
           )}
         </div>
 
+        {/* Component to display comments */}
         <ViewComments
           count={
             commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
