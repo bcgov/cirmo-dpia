@@ -18,55 +18,36 @@ export interface IPiaFormIntake {
   initiativeScope?: string;
   dataElementsInvolved?: string;
   hasAddedPiToDataElements?: boolean | null;
-  riskMitigation?: string | undefined;
+  riskMitigation?: string;
 }
 
 export interface PIAInformationProps {
   isReadOnly: IPiaFormContext['isReadOnly'];
 }
 
-export interface IntakeGeneralInformationProps {
-  isReadOnly: IPiaFormContext['isReadOnly'];
+export interface IntakeInitiativeScopeProps extends PIAInformationProps {
   selectedSection?: IPiaFormContext['selectedSection'];
   intakeForm: IPiaFormIntake;
   stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
   commentCount?: IPiaFormContext['commentCount'];
+}
+
+export interface IntakeGeneralInformationProps
+  extends IntakeInitiativeScopeProps {
   validationMessage: IPiaFormContext['validationMessage'];
   pia: IPiaFormContext['pia'];
-  path: PiaSections | undefined;
+  path?: PiaSections;
 }
 
-export interface IntakeInitiativeDescriptionProps {
-  isReadOnly: IPiaFormContext['isReadOnly'];
-  selectedSection?: IPiaFormContext['selectedSection'];
-  intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount?: IPiaFormContext['commentCount'];
+export interface IntakeInitiativeDescriptionProps
+  extends IntakeInitiativeScopeProps {
   validationMessage: IPiaFormContext['validationMessage'];
 }
 
-export interface IntakeInitiativeScopeProps {
-  isReadOnly: IPiaFormContext['isReadOnly'];
-  selectedSection?: IPiaFormContext['selectedSection'];
-  intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount?: IPiaFormContext['commentCount'];
-}
+export type IntakeInitiativeDetailsProps = IntakeInitiativeScopeProps;
 
-export interface IntakeInitiativeDetailsProps {
-  isReadOnly: IPiaFormContext['isReadOnly'];
-  selectedSection?: IPiaFormContext['selectedSection'];
-  intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount?: IPiaFormContext['commentCount'];
-}
-
-export interface IntakePersonalInformationProps {
-  isReadOnly: IPiaFormContext['isReadOnly'];
-  selectedSection?: IPiaFormContext['selectedSection'];
-  intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
-  commentCount?: IPiaFormContext['commentCount'];
+export interface IntakePersonalInformationProps
+  extends IntakeInitiativeScopeProps {
   pia: IPiaFormContext['pia'];
   handlePIOptionChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
