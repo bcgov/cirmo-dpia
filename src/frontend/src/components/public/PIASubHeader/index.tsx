@@ -12,10 +12,8 @@ import { routes } from '../../../constant/routes';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
-import {
-  statusList,
-  getUserPrivileges,
-} from '../../../utils/statusList/common';
+import { getUserPrivileges } from '../../../utils/statusList/common';
+import { statusList } from '../../../utils/statusList/statusList';
 import { IReviewSection } from '../PIAFormTabs/review/interfaces';
 
 function PIASubHeader({

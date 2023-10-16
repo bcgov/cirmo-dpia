@@ -1,6 +1,6 @@
 import { getUserRole } from '../../../utils/user';
 import { ChangeStatus, Privileges } from '../../../utils/statusList/types';
-import { statusList } from '../../../utils/statusList/common';
+import { statusList } from '../../../utils/statusList/statusList';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { ImodalCB } from './interface';
 import {

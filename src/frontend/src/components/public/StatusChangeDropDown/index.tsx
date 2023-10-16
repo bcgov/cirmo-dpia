@@ -1,9 +1,9 @@
 import { ChangeStatus } from '../../../utils/statusList/types';
 import {
-  statusList,
   getUserPrivileges,
   getUserPrivilegesByStatus,
 } from '../../../utils/statusList/common';
+import { statusList } from '../../../utils/statusList/statusList';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { PiaStatuses } from '../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,10 +22,10 @@ function StatusChangeDropDown({
     const statusesMap: Map<string, ChangeStatus> = new Map();
 
     const canChangeStatus = (() => {
-      const piaStatus = getUserPrivilegesByStatus(pia.status);
+      const privileges = getUserPrivilegesByStatus(pia.status);
       return (
-        piaStatus?.showDropdownMenu !== false &&
-        (piaStatus?.changeStatus ?? [])?.length > 0
+        privileges?.showDropdownMenu !== false &&
+        (privileges?.changeStatus ?? [])?.length > 0
       );
     })();
 

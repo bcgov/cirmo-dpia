@@ -9,7 +9,7 @@ import Modal from '../../../components/common/Modal';
 import Messages from './messages';
 import { useLocation } from 'react-router-dom';
 import { getGUID } from '../../../utils/user';
-import { statusList } from '../../../utils/statusList/common';
+import { statusList } from '../../../utils/statusList/statusList';
 const CommentSidebar = ({
   pia,
   piaId,
