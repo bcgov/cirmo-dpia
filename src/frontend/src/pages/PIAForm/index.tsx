@@ -687,7 +687,12 @@ const PIAFormPage = () => {
    * The class 'is-invalid' is used to display the red border.
    *
    */
-  const handleValidation = (event: any) => {
+  type HandleValidationProps = {
+    event?: any;
+    status?: string;
+  };
+
+  const handleValidation = ({ event, status }: HandleValidationProps) => {
     resetUI({
       setValidationMessages,
       setIsValidationFailed,
@@ -701,8 +706,12 @@ const PIAFormPage = () => {
     // Update UI based on validation
     if (!isValid) {
       highlightInvalidField(formId, document);
-      event.preventDefault();
-      event.stopPropagation();
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    } else if (status) {
+      handleStatusChange(status);
     } else {
       handleSubmit(event);
     }
@@ -793,9 +802,9 @@ const PIAFormPage = () => {
         primaryButtonText={submitButtonText}
         isValidationFailed={isValidationFailed}
         mode={mode}
-        handleStatusChange={handleStatusChange}
+        handleStatusChange={(status) => handleValidation({ status })}
         onEditClick={handleEdit}
-        onSubmitClick={handleValidation}
+        onSubmitClick={(event) => handleValidation({ event })}
       />
       <div className="bcgovPageContainer background background__form wrapper pe-0">
         {message && (
