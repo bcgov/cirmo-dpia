@@ -346,7 +346,12 @@ const PIAFormPage = () => {
           This will keep the modal text in one place and allow for easy updates in the future
           and will make the whole app consistent.
         */
-        PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn, true);
+        PopulateModal(
+          pia,
+          PiaStatuses.EDIT_IN_PROGRESS,
+          populateModalFn,
+          false,
+        );
         setPiaModalButtonValue(modalType);
         break;
       }
