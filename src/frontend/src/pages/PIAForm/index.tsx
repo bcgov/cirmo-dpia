@@ -34,6 +34,8 @@ import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 import { statusList } from '../../utils/statusList/statusList';
 import useAutoSave from '../../utils/autosave';
+import { validateForm } from './utils/validateForm';
+import { highlightInvalidField, resetUI } from './utils/validationUI';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -671,80 +673,6 @@ const PIAFormPage = () => {
     }
   };
 
-  const resetUI = () => {
-    const reset = document.getElementsByClassName('is-invalid');
-    if (reset) {
-      [...reset].forEach((el) => {
-        el.classList.remove('is-invalid');
-      });
-      setValidationMessages({});
-      setIsValidationFailed(false);
-      setValidationFailedMessage('');
-    }
-    const richText = document.getElementsByClassName('richText');
-    if (richText) {
-      [...richText].forEach((el) => {
-        el.classList.remove('form-control');
-      });
-    }
-  };
-
-  const validateForm = () => {
-    let isValid = true;
-    let formId = '';
-
-    type ValidationRule = {
-      key: keyof IPiaForm;
-      validationKey: string;
-      msg: string;
-    };
-
-    const validations: ValidationRule[] = [
-      {
-        key: 'title',
-        validationKey: 'piaTitle',
-        msg: 'Error: Please enter a title.',
-      },
-      {
-        key: 'ministry',
-        validationKey: 'piaMinistry',
-        msg: 'Error: Please select a ministry.',
-      },
-      {
-        key: 'branch',
-        validationKey: 'piaBranch',
-        msg: 'Error: Please enter a branch.',
-      },
-      {
-        key: 'initiativeDescription',
-        validationKey: 'piaInitialDescription',
-        msg: 'Error: Please describe your initiative.',
-      },
-    ];
-
-    for (const { key, validationKey, msg } of validations) {
-      if (!pia?.[key]) {
-        isValid = false;
-        formId = key;
-        setValidationMessages((prevState) => ({
-          ...prevState,
-          [validationKey]: msg,
-        }));
-        break;
-      }
-    }
-
-    return { isValid, formId, validationMessages };
-  };
-
-  const highlightInvalidField = (formId: string) => {
-    const element = document.getElementById(formId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.className += ' is-invalid form-control';
-    }
-  };
-
   /*
    * @Description - This function is used to validate the form
    * and display a red border around the invalid fields
@@ -760,14 +688,19 @@ const PIAFormPage = () => {
    *
    */
   const handleValidation = (event: any) => {
-    resetUI();
+    resetUI({
+      setValidationMessages,
+      setIsValidationFailed,
+      setValidationFailedMessage,
+      doc: document,
+    });
 
     // Validate the form
-    const { isValid, formId } = validateForm();
+    const { isValid, formId } = validateForm({ pia, setValidationMessages });
 
     // Update UI based on validation
     if (!isValid) {
-      highlightInvalidField(formId);
+      highlightInvalidField(formId, document);
       event.preventDefault();
       event.stopPropagation();
     } else {
