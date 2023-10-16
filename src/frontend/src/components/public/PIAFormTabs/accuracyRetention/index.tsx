@@ -1,6 +1,6 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import Messages from './helper/messages';
+import Messages from './helpers/messages';
 import {
   IAccuracyCorrectionAndRetention,
   AccuracyCorrectionAndRetentionProps,
@@ -17,6 +17,7 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Radio from '../../../common/Radio';
+import { getHaveProcessInPlace } from './helpers/haveProcessInPlaceHelper';
 
 export const AccuracyCorrectionAndRetention = ({
   showComments = true,
@@ -64,33 +65,10 @@ export const AccuracyCorrectionAndRetention = ({
     setNestedReactState(setAccuracyCorrectionAndRetentionForm, path, value);
   };
 
-  const haveProcessinPlace = [
-    {
-      index: 1,
-      value: YesNoInput.YES,
-      groupName: 'haveProcessinPlace',
-      groupLabel:
-        'Do you have a process in place to correct personal information?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
-          YesNoInput.YES ||
-        !accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'correction.haveProcessInPlace'),
-    },
-    {
-      index: 2,
-      value: YesNoInput.NO,
-      groupName: 'haveProcessinPlace',
-      groupLabel:
-        'Do you have a process in place to correct personal information?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction?.haveProcessInPlace ===
-        YesNoInput.NO,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'correction.haveProcessInPlace'),
-    },
-  ];
+  const haveProcessinPlace = getHaveProcessInPlace(
+    accuracyCorrectionAndRetentionForm,
+    stateChangeHandler,
+  );
 
   const WillDocument = [
     {
