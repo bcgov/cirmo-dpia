@@ -51,3 +51,8 @@ export interface CorrectionSectionProps {
   willDocument: RadioArray;
   willConductNotifications: RadioArray;
 }
+
+export interface PersonalInformationSectionProps extends AccuracySectionProps {
+  willProvideInformation: RadioArray;
+  haveApprovedInfoSchedule: RadioArray;
+}
