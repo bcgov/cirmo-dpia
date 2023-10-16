@@ -784,19 +784,17 @@ const PIAFormPage = () => {
 
       /*
       For cross-browser support
-
+  
       This function uses e.returnValue, which has been deprecated for 9+ years.
       The reason for this usage is to support Chrome which only behaves as expected when using this value.
-
+  
       Below are a couple of references on this topic.
-
+  
       References:
       - https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
       - https://contest-server.cs.uchicago.edu/ref/JavaScript/developer.mozilla.org/en-US/docs/Web/API/Event/returnValue.html
-    */
+      */
       e.returnValue = true;
-
-      e.defaultPrevented = true;
     },
     [hasFormChanged],
   );
