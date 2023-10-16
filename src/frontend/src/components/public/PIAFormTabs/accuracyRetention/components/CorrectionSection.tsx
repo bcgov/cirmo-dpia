@@ -16,221 +16,179 @@ export const CorrectionSection: React.FC<CorrectionSectionProps> = ({
   haveProcessinPlace,
   willDocument,
   willConductNotifications,
-}) => (
-  <section className="section__padding-block">
-    <h3 className="form__h2">
-      {Messages.FormElements.RequestCorrection.H2Text.en}
-    </h3>
-    <div
-      className={`drop-shadow card p-4 p-md-5 ${
-        selectedSection &&
-        selectedSection ===
-          PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
-          ? 'section-focus'
-          : ''
-      }`}
-    >
-      {!isReadOnly ? (
-        <>
-          <p>
-            <strong>
-              {
-                Messages.FormElements.RequestCorrection.haveProcessinPlace
-                  .Question.en
-              }
-            </strong>
-          </p>
-          <p>
-            <a
-              href={
-                Messages.FormElements.RequestCorrection.haveProcessinPlace
-                  .HelperText.LinkHref
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {
-                Messages.FormElements.RequestCorrection.haveProcessinPlace
-                  .HelperText.LinkText.en
-              }
-              <FontAwesomeIcon icon={faUpRightFromSquare} />
-            </a>
-            {
-              Messages.FormElements.RequestCorrection.haveProcessinPlace
-                .HelperText.en
-            }
-          </p>
-        </>
-      ) : (
-        <h4>
-          {
-            Messages.FormElements.RequestCorrection.haveProcessinPlace.Question
-              .en
-          }
-        </h4>
-      )}
-      {!isReadOnly ? (
-        haveProcessinPlace.map((radio, index) => (
-          <Radio key={index} {...radio} />
-        ))
-      ) : (
-        <p>
-          {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace?.charAt(
-            0,
-          )}
-          {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace
-            ?.slice(1)
-            .toLowerCase()}
-        </p>
-      )}
+}) => {
+  // Destructure messages from the Messages object
+  const { RequestCorrection } = Messages.FormElements;
 
-      <div className="section__padding-block">
+  // Define the class name for the section
+  const sectionClassName = `drop-shadow card p-4 p-md-5 ${
+    selectedSection === PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+      ? 'section-focus'
+      : ''
+  }`;
+
+  return (
+    <section className="section__padding-block">
+      <h3 className="form__h2">{RequestCorrection.H2Text.en}</h3>
+      <div className={sectionClassName}>
+        {/* Render the question and helper text */}
         {!isReadOnly ? (
-          <p>
-            <strong>
-              {
-                Messages.FormElements.RequestCorrection.willDocument.Question
-                  .PartOne.en
-              }
+          <>
+            <p>
+              <strong>
+                {RequestCorrection.haveProcessinPlace.Question.en}
+              </strong>
+            </p>
+            <p>
               <a
-                href={
-                  Messages.FormElements.RequestCorrection.willDocument.Question
-                    .LinkHref
-                }
+                href={RequestCorrection.haveProcessinPlace.HelperText.LinkHref}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {
-                  Messages.FormElements.RequestCorrection.willDocument.Question
-                    .LinkText.en
-                }
+                {RequestCorrection.haveProcessinPlace.HelperText.LinkText.en}
                 <FontAwesomeIcon icon={faUpRightFromSquare} />
               </a>
-              {
-                Messages.FormElements.RequestCorrection.willDocument.Question
-                  .PartTwo.en
-              }
-            </strong>
-          </p>
+              {RequestCorrection.haveProcessinPlace.HelperText.en}
+            </p>
+          </>
         ) : (
-          <h4>
-            {
-              Messages.FormElements.RequestCorrection.willDocument.Question
-                .PartOne.en
-            }
-            <a
-              href={
-                Messages.FormElements.RequestCorrection.willDocument.Question
-                  .LinkHref
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {
-                Messages.FormElements.RequestCorrection.willDocument.Question
-                  .LinkText.en
-              }
-              <FontAwesomeIcon icon={faUpRightFromSquare} />
-            </a>
-            {
-              Messages.FormElements.RequestCorrection.willDocument.Question
-                .PartTwo.en
-            }
-          </h4>
+          <h4>{RequestCorrection.haveProcessinPlace.Question.en}</h4>
         )}
-        {!isReadOnly ? (
-          willDocument.map((radio, index) => <Radio key={index} {...radio} />)
-        ) : (
-          <p>
-            {accuracyCorrectionAndRetentionForm.correction.willDocument?.charAt(
-              0,
-            )}
-            {accuracyCorrectionAndRetentionForm.correction.willDocument
-              ?.slice(1)
-              .toLowerCase()}
-          </p>
-        )}
-      </div>
 
-      <div className="section__padding-block">
+        {/* Render the radio buttons for haveProcessinPlace */}
         {!isReadOnly ? (
-          <p>
-            <strong>
-              {
-                Messages.FormElements.RequestCorrection.willConductNotifications
-                  .Question.PartOne.en
-              }
-              <a
-                href={
-                  Messages.FormElements.RequestCorrection
-                    .willConductNotifications.Question.LinkHref
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {
-                  Messages.FormElements.RequestCorrection
-                    .willConductNotifications.Question.LinkText.en
-                }
-                <FontAwesomeIcon icon={faUpRightFromSquare} />
-              </a>
-              {
-                Messages.FormElements.RequestCorrection.willConductNotifications
-                  .Question.PartTwo.en
-              }
-            </strong>
-          </p>
-        ) : (
-          <h4>
-            {
-              Messages.FormElements.RequestCorrection.willConductNotifications
-                .Question.PartOne.en
-            }
-            <a
-              href={
-                Messages.FormElements.RequestCorrection.willConductNotifications
-                  .Question.LinkHref
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {
-                Messages.FormElements.RequestCorrection.willConductNotifications
-                  .Question.LinkText.en
-              }
-              <FontAwesomeIcon icon={faUpRightFromSquare} />
-            </a>
-            {
-              Messages.FormElements.RequestCorrection.willConductNotifications
-                .Question.PartTwo.en
-            }
-          </h4>
-        )}
-        {!isReadOnly ? (
-          willConductNotifications.map((radio, index) => (
+          haveProcessinPlace.map((radio, index) => (
             <Radio key={index} {...radio} />
           ))
         ) : (
           <p>
-            {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications?.charAt(
+            {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace?.charAt(
               0,
             )}
-            {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications
+            {accuracyCorrectionAndRetentionForm.correction.haveProcessInPlace
               ?.slice(1)
               .toLowerCase()}
           </p>
         )}
+
+        {/* Render the document question and helper text */}
+        <div className="section__padding-block">
+          {!isReadOnly ? (
+            <p>
+              <strong>
+                {RequestCorrection.willDocument.Question.PartOne.en}
+                <a
+                  href={RequestCorrection.willDocument.Question.LinkHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {RequestCorrection.willDocument.Question.LinkText.en}
+                  <FontAwesomeIcon icon={faUpRightFromSquare} />
+                </a>
+                {RequestCorrection.willDocument.Question.PartTwo.en}
+              </strong>
+            </p>
+          ) : (
+            <h4>
+              {RequestCorrection.willDocument.Question.PartOne.en}
+              <a
+                href={RequestCorrection.willDocument.Question.LinkHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {RequestCorrection.willDocument.Question.LinkText.en}
+                <FontAwesomeIcon icon={faUpRightFromSquare} />
+              </a>
+              {RequestCorrection.willDocument.Question.PartTwo.en}
+            </h4>
+          )}
+
+          {/* Render the radio buttons for willDocument */}
+          {!isReadOnly ? (
+            willDocument.map((radio, index) => <Radio key={index} {...radio} />)
+          ) : (
+            <p>
+              {accuracyCorrectionAndRetentionForm.correction.willDocument?.charAt(
+                0,
+              )}
+              {accuracyCorrectionAndRetentionForm.correction.willDocument
+                ?.slice(1)
+                .toLowerCase()}
+            </p>
+          )}
+        </div>
+
+        {/* Render the notifications question and helper text */}
+        <div className="section__padding-block">
+          {!isReadOnly ? (
+            <p>
+              <strong>
+                {RequestCorrection.willConductNotifications.Question.PartOne.en}
+                <a
+                  href={
+                    RequestCorrection.willConductNotifications.Question.LinkHref
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {
+                    RequestCorrection.willConductNotifications.Question.LinkText
+                      .en
+                  }
+                  <FontAwesomeIcon icon={faUpRightFromSquare} />
+                </a>
+                {RequestCorrection.willConductNotifications.Question.PartTwo.en}
+              </strong>
+            </p>
+          ) : (
+            <h4>
+              {RequestCorrection.willConductNotifications.Question.PartOne.en}
+              <a
+                href={
+                  RequestCorrection.willConductNotifications.Question.LinkHref
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {
+                  RequestCorrection.willConductNotifications.Question.LinkText
+                    .en
+                }
+                <FontAwesomeIcon icon={faUpRightFromSquare} />
+              </a>
+              {RequestCorrection.willConductNotifications.Question.PartTwo.en}
+            </h4>
+          )}
+
+          {/* Render the radio buttons for willConductNotifications */}
+          {!isReadOnly ? (
+            willConductNotifications.map((radio, index) => (
+              <Radio key={index} {...radio} />
+            ))
+          ) : (
+            <p>
+              {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications?.charAt(
+                0,
+              )}
+              {accuracyCorrectionAndRetentionForm.correction?.willConductNotifications
+                ?.slice(1)
+                .toLowerCase()}
+            </p>
+          )}
+        </div>
+
+        {/* Render the comments section */}
+        {showComments && (
+          <ViewComments
+            count={
+              commentCount?.[
+                PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
+              ]
+            }
+            path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
+          />
+        )}
       </div>
-      {showComments && (
-        <ViewComments
-          count={
-            commentCount?.[
-              PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION
-            ]
-          }
-          path={PiaSections.ACCURACY_CORRECTION_AND_RETENTION_CORRECTION}
-        />
-      )}
-    </div>
-  </section>
-);
+    </section>
+  );
+};
