@@ -8,6 +8,7 @@ import {
   defaultMPOReviewModal,
   resetReviewEditInPRogressModal,
   resetReviewIncompleteModal,
+  submitPiaIntakeModal,
 } from '../modals';
 
 export const mpoReviewStatus = (pia: IPiaForm | null) => {
@@ -47,8 +48,15 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
               : defaultEditInProgressModal,
           },
           {
+            // Added for submitModal scenarios; dropdown display is irrelevant.
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
+          },
+          {
             status: 'CPO_REVIEW',
             modal: defaultCPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
         ],
       },

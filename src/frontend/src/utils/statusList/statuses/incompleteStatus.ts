@@ -7,6 +7,7 @@ import {
   defaultIncompleteModal,
   defaultMPOReviewModal,
   resetReviewEditInPRogressModal,
+  submitPiaIntakeModal,
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/BannerStatus/messages';
 
@@ -32,10 +33,17 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           {
             status: 'MPO_REVIEW',
             modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
             status: 'CPO_REVIEW',
             modal: defaultCPOReviewModal,
+          },
+          {
+            // Added for submitModal scenarios; dropdown display is irrelevant.
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
           },
         ],
       },
@@ -45,6 +53,7 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           {
             status: 'MPO_REVIEW',
             modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',
@@ -54,16 +63,34 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
             status: 'CPO_REVIEW',
             modal: defaultCPOReviewModal,
           },
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
+          },
         ],
       },
       DRAFTER: {
         showSubmitButton: true,
+        showDropdownMenu: false, // Hides the dropdown menu for this role's scenario.
         Pages: {
           review: {
             accessControl: false,
           },
         },
-        changeStatus: [],
+        changeStatus: [
+          // Added for submitModal scenarios; dropdown display is irrelevant.
+          {
+            status: 'INCOMPLETE',
+            modal: defaultIncompleteModal,
+            submitModal: submitPiaIntakeModal,
+          },
+          {
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
+          },
+        ],
       },
     },
   };

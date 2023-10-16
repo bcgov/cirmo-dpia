@@ -28,6 +28,7 @@ export type Privileges = {
     banner?: string;
     Pages?: PageAccessControl;
     showSubmitButton?: boolean;
+    showDropdownMenu?: boolean;
   };
 };
 
@@ -41,6 +42,7 @@ export interface Modal {
 export interface ChangeStatus {
   status: string;
   modal: Modal;
+  submitModal?: Modal;
 }
 
 export interface StatusList {
