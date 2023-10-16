@@ -1,12 +1,9 @@
-import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helpers/messages';
 import {
   IAccuracyCorrectionAndRetention,
   AccuracyCorrectionAndRetentionProps,
 } from './accuracy-retention-interface';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { deepEqual } from '../../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
@@ -14,9 +11,6 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
-import ViewComments from '../../../common/ViewComment';
-import { PiaSections } from '../../../../types/enums/pia-sections.enum';
-import Radio from '../../../common/Radio';
 import { getHaveProcessInPlace } from './helpers/haveProcessInPlaceHelper';
 import { getWillDocument } from './helpers/willDocumentHelper';
 import { getWillConductNotifications } from './helpers/willConductNotificationsHelper';
@@ -29,6 +23,7 @@ import { PersonalInformationSection } from './components/PersonalInformationSect
 export const AccuracyCorrectionAndRetention = ({
   showComments = true,
 }: AccuracyCorrectionAndRetentionProps) => {
+  // Get the PIA form context
   const {
     pia,
     commentCount,
@@ -38,8 +33,10 @@ export const AccuracyCorrectionAndRetention = ({
     accessControl,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
+  // Call the access control function if it exists
   if (accessControl) accessControl();
 
+  // Define the default state for the accuracy, correction, and retention sections
   const defaultState: IAccuracyCorrectionAndRetention = useMemo(
     () => ({
       accuracy: {
@@ -59,45 +56,48 @@ export const AccuracyCorrectionAndRetention = ({
     [],
   );
 
+  // Get the initial form state from the PIA context
   const initialFormState = useMemo(
     () => pia.accuracyCorrectionAndRetention || defaultState,
     [defaultState, pia.accuracyCorrectionAndRetention],
   );
+
+  // Define the state for the accuracy, correction, and retention sections
   const [
     accuracyCorrectionAndRetentionForm,
     setAccuracyCorrectionAndRetentionForm,
   ] = useState<IAccuracyCorrectionAndRetention>(initialFormState);
 
+  // Define the state change handler function
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setAccuracyCorrectionAndRetentionForm, path, value);
   };
 
+  // Get the values for the "have process in place", "will document", and "will conduct notifications" fields
   const haveProcessinPlace = getHaveProcessInPlace(
     accuracyCorrectionAndRetentionForm,
     stateChangeHandler,
   );
-
   const willDocument = getWillDocument(
     accuracyCorrectionAndRetentionForm,
     stateChangeHandler,
   );
-
   const willConductNotifications = getWillConductNotifications(
     accuracyCorrectionAndRetentionForm,
     stateChangeHandler,
   );
 
+  // Get the values for the "will provide information" and "have approved information schedule" fields
   const willProvideInformation = getWillProvideInformation(
     accuracyCorrectionAndRetentionForm,
     stateChangeHandler,
   );
-
   const haveApprovedInfoSchedule = getHaveApprovedInfoSchedule(
     accuracyCorrectionAndRetentionForm,
     stateChangeHandler,
   );
 
-  // passing updated data to parent for auto-save to work efficiently only if there are changes
+  // Pass the updated data to the parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
     if (!deepEqual(initialFormState, accuracyCorrectionAndRetentionForm)) {
       piaStateChangeHandler(
@@ -114,9 +114,11 @@ export const AccuracyCorrectionAndRetention = ({
   return (
     <>
       <form>
+        {/* Render the page title and description */}
         <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
 
+        {/* Render the accuracy section */}
         <AccuracySection
           accuracyCorrectionAndRetentionForm={
             accuracyCorrectionAndRetentionForm
@@ -128,6 +130,7 @@ export const AccuracyCorrectionAndRetention = ({
           stateChangeHandler={stateChangeHandler}
         />
 
+        {/* Render the correction section */}
         <CorrectionSection
           accuracyCorrectionAndRetentionForm={
             accuracyCorrectionAndRetentionForm
@@ -141,6 +144,7 @@ export const AccuracyCorrectionAndRetention = ({
           willConductNotifications={willConductNotifications}
         />
 
+        {/* Render the personal information section */}
         <PersonalInformationSection
           accuracyCorrectionAndRetentionForm={
             accuracyCorrectionAndRetentionForm
