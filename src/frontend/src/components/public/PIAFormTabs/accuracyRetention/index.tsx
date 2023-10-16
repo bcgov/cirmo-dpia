@@ -18,6 +18,7 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Radio from '../../../common/Radio';
 import { getHaveProcessInPlace } from './helpers/haveProcessInPlaceHelper';
+import { getWillDocument } from './helpers/willDocumentHelper';
 
 export const AccuracyCorrectionAndRetention = ({
   showComments = true,
@@ -70,35 +71,12 @@ export const AccuracyCorrectionAndRetention = ({
     stateChangeHandler,
   );
 
-  const WillDocument = [
-    {
-      index: 1,
-      value: YesNoInput.YES,
-      groupName: 'WillDocument',
-      groupLabel:
-        "If you can't correct personal data, FOIPPA mandates noting the correction request on the record; will you ensure this documentation?",
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
-          YesNoInput.YES ||
-        !accuracyCorrectionAndRetentionForm?.correction?.willDocument,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'correction.willDocument'),
-    },
-    {
-      index: 2,
-      value: YesNoInput.NO,
-      groupName: 'WillDocument',
-      groupLabel:
-        "If you can't correct personal data, FOIPPA mandates noting the correction request on the record; will you ensure this documentation?",
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction?.willDocument ===
-        YesNoInput.NO,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'correction.willDocument'),
-    },
-  ];
+  const willDocument = getWillDocument(
+    accuracyCorrectionAndRetentionForm,
+    stateChangeHandler,
+  );
 
-  const WillconductNotifications = [
+  const willConductNotifications = [
     {
       index: 1,
       value: YesNoInput.YES,
@@ -133,7 +111,7 @@ export const AccuracyCorrectionAndRetention = ({
     },
   ];
 
-  const WillProvideInformation = [
+  const willProvideInformation = [
     {
       index: 1,
       value: YesNoInput.YES,
@@ -161,7 +139,7 @@ export const AccuracyCorrectionAndRetention = ({
     },
   ];
 
-  const HaveApprovedInfoSchedule = [
+  const haveApprovedInfoSchedule = [
     {
       index: 1,
       value: YesNoInput.YES,
@@ -411,7 +389,7 @@ export const AccuracyCorrectionAndRetention = ({
                 </h4>
               )}
               {!isReadOnly ? (
-                WillDocument.map((radio, index) => (
+                willDocument.map((radio, index) => (
                   <Radio key={index} {...radio} />
                 ))
               ) : (
@@ -481,7 +459,7 @@ export const AccuracyCorrectionAndRetention = ({
                 </h4>
               )}
               {!isReadOnly ? (
-                WillconductNotifications.map((radio, index) => (
+                willConductNotifications.map((radio, index) => (
                   <Radio key={index} {...radio} />
                 ))
               ) : (
@@ -539,7 +517,7 @@ export const AccuracyCorrectionAndRetention = ({
               </h4>
             )}
             {!isReadOnly ? (
-              WillProvideInformation.map((radio, index) => (
+              willProvideInformation.map((radio, index) => (
                 <Radio key={index} {...radio} />
               ))
             ) : (
@@ -621,7 +599,7 @@ export const AccuracyCorrectionAndRetention = ({
                   </h4>
                 )}
                 {!isReadOnly ? (
-                  HaveApprovedInfoSchedule.map((radio, index) => (
+                  haveApprovedInfoSchedule.map((radio, index) => (
                     <Radio key={index} {...radio} />
                   ))
                 ) : (
