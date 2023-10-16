@@ -19,6 +19,9 @@ import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Radio from '../../../common/Radio';
 import { getHaveProcessInPlace } from './helpers/haveProcessInPlaceHelper';
 import { getWillDocument } from './helpers/willDocumentHelper';
+import { getWillConductNotifications } from './helpers/willConductNotificationsHelper';
+import { getWillProvideInformation } from './helpers/willProvideInformationHelper';
+import { getHaveApprovedInfoSchedule } from './helpers/haveApprovedInfoScheduleHelper';
 
 export const AccuracyCorrectionAndRetention = ({
   showComments = true,
@@ -76,103 +79,20 @@ export const AccuracyCorrectionAndRetention = ({
     stateChangeHandler,
   );
 
-  const willConductNotifications = [
-    {
-      index: 1,
-      value: YesNoInput.YES,
-      groupName: 'WillconductNotifications',
-      groupLabel:
-        "If someone requests a correction and you've shared their data in the past year, FOIPPA mandates notifying the third party; will you ensure compliance?",
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction
-          ?.willConductNotifications === YesNoInput.YES ||
-        !accuracyCorrectionAndRetentionForm?.correction
-          ?.willConductNotifications,
-      changeHandler: (e: any) =>
-        stateChangeHandler(
-          e.target.value,
-          'correction.willConductNotifications',
-        ),
-    },
-    {
-      index: 2,
-      value: YesNoInput.NO,
-      groupName: 'WillconductNotifications',
-      groupLabel:
-        "If someone requests a correction and you've shared their data in the past year, FOIPPA mandates notifying the third party; will you ensure compliance?",
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.correction
-          ?.willConductNotifications === YesNoInput.NO,
-      changeHandler: (e: any) =>
-        stateChangeHandler(
-          e.target.value,
-          'correction.willConductNotifications',
-        ),
-    },
-  ];
+  const willConductNotifications = getWillConductNotifications(
+    accuracyCorrectionAndRetentionForm,
+    stateChangeHandler,
+  );
 
-  const willProvideInformation = [
-    {
-      index: 1,
-      value: YesNoInput.YES,
-      groupName: 'WillProvideInformation',
-      groupLabel:
-        'Does your initiative use personal information to make decisions that directly affect an individual?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-          YesNoInput.YES ||
-        !accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'retention.usePIForDecision'),
-    },
-    {
-      index: 2,
-      value: YesNoInput.NO,
-      groupName: 'WillProvideInformation',
-      groupLabel:
-        'Does your initiative use personal information to make decisions that directly affect an individual?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.retention?.usePIForDecision ===
-        YesNoInput.NO,
-      changeHandler: (e: any) =>
-        stateChangeHandler(e.target.value, 'retention.usePIForDecision'),
-    },
-  ];
+  const willProvideInformation = getWillProvideInformation(
+    accuracyCorrectionAndRetentionForm,
+    stateChangeHandler,
+  );
 
-  const haveApprovedInfoSchedule = [
-    {
-      index: 1,
-      value: YesNoInput.YES,
-      groupName: 'HaveApprovedInfoSchedule',
-      groupLabel:
-        'Do you have an approved information schedule in place related to personal information used to make decisions?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.retention
-          ?.haveApprovedInfoSchedule === YesNoInput.YES ||
-        !accuracyCorrectionAndRetentionForm?.retention
-          ?.haveApprovedInfoSchedule,
-      changeHandler: (e: any) =>
-        stateChangeHandler(
-          e.target.value,
-          'retention.haveApprovedInfoSchedule',
-        ),
-    },
-    {
-      index: 2,
-      value: YesNoInput.NO,
-      groupName: 'HaveApprovedInfoSchedule',
-      groupLabel:
-        'Do you have an approved information schedule in place related to personal information used to make decisions?',
-      isDefault:
-        accuracyCorrectionAndRetentionForm?.retention
-          ?.haveApprovedInfoSchedule === YesNoInput.NO,
-      changeHandler: (e: any) =>
-        stateChangeHandler(
-          e.target.value,
-          'retention.haveApprovedInfoSchedule',
-        ),
-    },
-  ];
+  const haveApprovedInfoSchedule = getHaveApprovedInfoSchedule(
+    accuracyCorrectionAndRetentionForm,
+    stateChangeHandler,
+  );
 
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
