@@ -8,12 +8,11 @@ import {
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
 import { setNestedReactState } from '../../../../utils/object-modification.util';
-import PendingReview from './pendingReview';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { getUserPrivileges } from '../../../../utils/statusList/common';
 import { MPOReviewSection } from './MPOReviewSection';
 import { CPOReviewSection } from './CPOReviewSection';
-import { ProgramAreaReviewSection } from './ProgramAreaReviewSection';
+import { ProgramAreaReviewSection } from './PAReviewSection';
 
 export interface IReviewProps {
   printPreview?: boolean;
@@ -22,6 +21,7 @@ export interface IReviewProps {
 const PIAReview = ({ printPreview }: IReviewProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
+
   const initialFormState: IReview = useMemo(
     () => ({
       programArea: {
@@ -38,16 +38,10 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
   );
 
   const [updatePia, setUpdatePia] = useState(false);
+  const [mandatoryADM, setMandatoryADM] = useState(false);
   const [reviewForm, setReviewForm] = useState<IReview>(
     pia.review || initialFormState,
   );
-  // For requirement
-  // if  PIA Part 4 Assessment(storing personal information tab) (PIDSOC),
-  // If Assessment of Disclosures Outside of Canada is filled out in PIA,
-  // ADM(Assistant Deputy Minister) is a preselected role and can not be delete
-  // we need to distinguish user select ADM role vs system pre-select ADM
-
-  const [mandatoryADM, setMandatoryADM] = useState(false);
 
   const stateChangeHandler = (value: any, path: string, callApi?: boolean) => {
     setNestedReactState(setReviewForm, path, value);
@@ -137,8 +131,8 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
     reviewForm.programArea?.selectedRoles,
   ]);
 
+  // Review page privileges.
   const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
-
   const showCpoReview = reviewPageParams?.showCpoReview ?? false;
   const showMpoReview = reviewPageParams?.showMpoReview ?? false;
   const showProgramAreaReview =
@@ -160,7 +154,9 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
       {/* Show PendingReview when printPreview prop is true and showPrintPreview is false */}
       {printPreview && !showPrintPreview ? (
-        <PendingReview />
+        <div className="review-container ">
+          <div className=" ">Pending review</div>
+        </div>
       ) : (
         <>
           {showProgramAreaReview && (

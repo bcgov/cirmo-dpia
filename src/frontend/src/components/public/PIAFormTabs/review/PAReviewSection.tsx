@@ -1,14 +1,14 @@
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import messages from './messages';
 import { IReview } from './interfaces';
-import Dropdown from '../../../../components/common/Dropdown';
+import Dropdown from '../../../common/Dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getUserPrivileges } from '../../../../utils/statusList/common';
-import DisplayProgramArea from './ProgamArea/displayProgramArea';
-import InputText from '../../../../components/common/InputText/InputText';
+import InputText from '../../../common/InputText/InputText';
 import { ApprovalRoles } from '../../../../constant/constant';
+import { ProgramAreaDisplay } from './PADisplay';
 
 interface IPAReviewProps {
   pia: IPiaForm;
@@ -29,22 +29,13 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
     stateChangeHandler,
   } = props;
 
-  const [rolesSelect, setRolesSelect] = useState<string>('');
-  const [rolesInput, setRolesInput] = useState<string>('');
-  const [editProgramAreaReviewers, setEditProgramAreaReviewers] =
-    useState<boolean>(false);
+  // Review page privileges:
   const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
-  const editProgramAreaReviewersCheck =
+  const canEditProgramAreaReviewers =
     reviewPageParams?.editProgramAreaReviewers ?? false;
 
-  useEffect(() => {
-    /* One can only edit Progam Area section if you are in a particular status
-     * The information related to editing this section is retrieved from the statusList
-     */
-    setEditProgramAreaReviewers(editProgramAreaReviewersCheck);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia?.status]);
-
+  const [rolesSelect, setRolesSelect] = useState<string>('');
+  const [rolesInput, setRolesInput] = useState<string>('');
   const [showAddRolesArea, setShowAddRolesArea] = useState<boolean>(false);
 
   const AddHideRolesToggle = () => {
@@ -125,17 +116,18 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
 
       <section className="drop-shadow card p-4 p-md-5">
         {/* Program Area reviews */}
-        <DisplayProgramArea
+        <ProgramAreaDisplay
           reviewForm={reviewForm}
           pia={pia}
           stateChangeHandler={stateChangeHandler}
           mandatoryADM={mandatoryADM}
+          printPreview={printPreview ?? false}
         />
 
         <div className="horizontal-divider mt-5 mb-5"></div>
 
         {/* Add roles section */}
-        {editProgramAreaReviewers && (
+        {canEditProgramAreaReviewers && (
           <div className="data-table__container">
             <AddHideRolesToggle />
 
