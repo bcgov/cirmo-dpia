@@ -9,11 +9,11 @@ import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 
 export const AccuracySection: React.FC<AccuracySectionProps> = ({
   accuracyCorrectionAndRetentionForm,
-  stateChangeHandler,
   showComments,
   commentCount,
   isReadOnly,
   selectedSection,
+  stateChangeHandler,
 }) => (
   <section className="section__padding-block ">
     <h3 className="form__h2">{Messages.FormElements.Accuracy.H2Text.en}</h3>
