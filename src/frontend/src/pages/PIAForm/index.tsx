@@ -33,6 +33,7 @@ import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 import { statusList } from '../../utils/statusList/statusList';
+import useAutoSave from '../../utils/autosave';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -67,28 +68,51 @@ const PIAFormPage = () => {
   const { id } = useParams();
   const { pathname, search } = useLocation();
 
+  // State related to PIA Form
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
+  const [stalePia, setStalePia] = useState(emptyState);
+  const [pia, setPia] = useState(emptyState);
+  const [initialPiaStateFetched, setInitialPiaStateFetched] = useState(false);
+  const [isFirstSave, setIsFirstSave] = useState(true);
 
-  const [stalePia, setStalePia] = useState<IPiaForm>(emptyState);
-  const [pia, setPia] = useState<IPiaForm>(emptyState);
-
-  // if id is provided, fetch initial and updated state from db
-  const [initialPiaStateFetched, setInitialPiaStateFetched] =
-    useState<boolean>(false);
-
-  // if id not provided, keep default empty state; and track first save
-  const [isFirstSave, setIsFirstSave] = useState<boolean>(true);
-
-  const [isConflict, setIsConflict] = useState<boolean>(false);
-  const [isEagerSave, setIsEagerSave] = useState<boolean>(false);
+  // State related to form status
+  const [formReadOnly, setFormReadOnly] = useState(true);
+  const [isConflict, setIsConflict] = useState(false);
+  const [isEagerSave, setIsEagerSave] = useState(false);
   const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
     useState<boolean>(false);
 
+  // State related to Modals and Messages
+  const [showPiaModal, setShowPiaModal] = useState(false);
+  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState('');
+  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState('');
+  const [piaModalTitleText, setPiaModalTitleText] = useState('');
+  const [piaModalParagraph, setPiaModalParagraph] = useState('');
+  const [piaModalButtonValue, setPiaModalButtonValue] = useState('');
+
+  // State related to Comments
+  const [isRightOpen, setIsRightOpen] = useState(false);
+  const [isLeftOpen, setIsLeftOpen] = useState(true);
+  const [commentCount, setCommentCount] = useState<CommentCount>({});
+  const [selectedSection, setSelectedSection] = useState<PiaSections>();
+  const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
+    useState(0);
+
+  // State related to Intake and Validation
+  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState(false);
+  const [validationMessages, setValidationMessages] =
+    useState<PiaValidationMessage>({});
+  const [submitButtonText, setSubmitButtonText] = useState(
+    SubmitButtonTextEnum.INTAKE,
+  );
+  const [message, setMessage] = useState('');
+  const [validationFailedMessage, setValidationFailedMessage] = useState('');
+  const [isValidationFailed, setIsValidationFailed] = useState(false);
   const [lastSaveAlertInfo, setLastSaveAlertInfo] =
     useState<ILastSaveAlterInfo>({
       message: '',
@@ -130,37 +154,31 @@ const PIAFormPage = () => {
   const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
 
-    if (!hasExplicitChanges && !hasFormChanged()) {
-      // only expected fields have changes; no need call update
-      return pia;
-    }
+    if (!hasExplicitChanges && !hasFormChanged()) return pia;
 
-    // Notify snowplow that status has been changed, and you are finished with the current status.
-    // Going from MPO_REVIEW to CPO_REVIEW tells snowplow: MPO_REVIEW-COMPLETED.
-    if (changes.status !== undefined && pia.status !== changes.status)
+    // Notify snowplow if status changed
+    if (changes.status !== undefined && pia.status !== changes.status) {
       sendSnowplowStatusChangeCall(true);
-
-    let updatedPia: IPiaForm;
-
-    if (pia?.id) {
-      updatedPia = await HttpRequest.patch<IPiaForm>(
-        API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`),
-        { ...pia, ...changes },
-      );
-    } else {
-      updatedPia = await HttpRequest.post<IPiaForm>(API_ROUTES.PIA_INTAKE, {
-        ...pia,
-        ...changes,
-      });
     }
 
+    // Perform the HTTP request
+    const apiUrl = pia?.id
+      ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
+      : API_ROUTES.PIA_INTAKE;
+    const requestData = { ...pia, ...changes };
+
+    const updatedPia = pia?.id
+      ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
+      : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
+
+    // Update last saved alert info
     setLastSaveAlertInfo({
       type: 'success',
       message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
       show: true,
     });
 
-    // if first time save, update stale state to the latest state, else keep the previous state for comparisons
+    // Handle first-time save
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
@@ -175,9 +193,8 @@ const PIAFormPage = () => {
       setStalePia(pia);
     }
 
+    // Update the state and reset flags
     setPia(updatedPia);
-
-    // reset flags after successful save
     setIsAutoSaveFailedPopupShown(false);
     setIsConflict(false);
 
@@ -207,8 +224,6 @@ const PIAFormPage = () => {
     }));
   };
 
-  const [formReadOnly, setFormReadOnly] = useState<boolean>(true);
-
   useEffect(() => {
     if (mode !== 'edit') {
       setFormReadOnly(true);
@@ -216,19 +231,6 @@ const PIAFormPage = () => {
       setFormReadOnly(false);
     }
   }, [mode]);
-
-  /**
-   * Comments State
-   */
-  const [isRightOpen, setIsRightOpen] = useState<boolean>(false);
-  const [isLeftOpen, setIsLeftOpen] = useState<boolean>(true);
-  const [commentCount, setCommentCount] = useState<CommentCount>({});
-
-  /**
-   * This variable is used to determine which section to show comments for.
-   * by default give it a value
-   */
-  const [selectedSection, setSelectedSection] = useState<PiaSections>();
 
   /**
    * Async callback for getting commentCount within a useEffect hook
@@ -266,9 +268,6 @@ const PIAFormPage = () => {
     }
   }, [getCommentCount]);
 
-  const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
-    useState(0);
-
   const piaCollapsibleChangeHandler = (isOpen: boolean) => {
     setIsRightOpen(isOpen);
     if (isOpen === true && isLeftOpen === true) {
@@ -285,11 +284,6 @@ const PIAFormPage = () => {
     getCommentCount();
   };
 
-  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState<boolean>(false);
-
-  const [validationMessages, setValidationMessages] =
-    useState<PiaValidationMessage>({});
-
   useEffect(() => {
     if (
       pia?.isNextStepsSeenForDelegatedFlow ||
@@ -301,9 +295,6 @@ const PIAFormPage = () => {
     pia?.isNextStepsSeenForDelegatedFlow,
     pia?.isNextStepsSeenForNonDelegatedFlow,
   ]);
-
-  const [submitButtonText, setSubmitButtonText] =
-    useState<SubmitButtonTextEnum>(SubmitButtonTextEnum.INTAKE);
 
   useEffect(
     () =>
@@ -321,28 +312,12 @@ const PIAFormPage = () => {
     }
   }, [mode, navigate, pia?.id, pia?.status]);
 
-  const [message, setMessage] = useState<string>('');
-
-  const [validationFailedMessage, setValidationFailedMessage] =
-    useState<string>('');
-  const [isValidationFailed, setIsValidationFailed] = useState(false);
-
   useEffect(() => {
     if (isValidationFailed)
       setValidationFailedMessage(
         'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
       );
   }, [isValidationFailed]);
-
-  //
-  // Modal State
-  //
-  const [showPiaModal, setShowPiaModal] = useState<boolean>(false);
-  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState<string>('');
-  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState<string>('');
-  const [piaModalTitleText, setPiaModalTitleText] = useState<string>('');
-  const [piaModalParagraph, setPiaModalParagraph] = useState<string>('');
-  const [piaModalButtonValue, setPiaModalButtonValue] = useState<string>('');
 
   //
   // Event Handlers
@@ -368,8 +343,8 @@ const PIAFormPage = () => {
     switch (modalType) {
       case 'edit': {
         /* Using the state table, we can determine which modal to show based on the status of the PIA
-           This will keep the modal text in one place and allow for easy updates in the future
-           and will make the whole app consistent.
+          This will keep the modal text in one place and allow for easy updates in the future
+          and will make the whole app consistent.
         */
         PopulateModal(pia, PiaStatuses.EDIT_IN_PROGRESS, populateModalFn, true);
         setPiaModalButtonValue(modalType);
@@ -784,19 +759,17 @@ const PIAFormPage = () => {
 
       /*
       For cross-browser support
-
+  
       This function uses e.returnValue, which has been deprecated for 9+ years.
       The reason for this usage is to support Chrome which only behaves as expected when using this value.
-
+  
       Below are a couple of references on this topic.
-
+  
       References:
       - https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
       - https://contest-server.cs.uchicago.edu/ref/JavaScript/developer.mozilla.org/en-US/docs/Web/API/Event/returnValue.html
-    */
+      */
       e.returnValue = true;
-
-      e.defaultPrevented = true;
     },
     [hasFormChanged],
   );
@@ -815,43 +788,6 @@ const PIAFormPage = () => {
   });
 
   const pages = PiaFormSideNavPages(pia, mode === 'edit' ? true : false, false);
-
-  useEffect(() => {
-    const autoSave = async () => {
-      setIsEagerSave(false);
-      if (isConflict) return; //noop if already a conflict
-
-      try {
-        await upsertAndUpdatePia();
-      } catch (e: any) {
-        setLastSaveAlertInfo({
-          type: 'danger',
-          message: `Unable to auto-save. Last saved at ${getShortTime(
-            pia.updatedAt,
-          )}.`,
-          show: true,
-        });
-        if (e?.cause?.status === 409) {
-          setIsConflict(true);
-          handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
-        } else if (!isAutoSaveFailedPopupShown) {
-          handleShowModal('autoSaveFailed');
-          setIsAutoSaveFailedPopupShown(true);
-        }
-      }
-    };
-
-    if (isEagerSave) {
-      autoSave();
-      return;
-    }
-
-    const autoSaveTimer = setTimeout(() => {
-      autoSave();
-    }, 500);
-
-    return () => clearTimeout(autoSaveTimer);
-  });
 
   useEffect(() => {
     window.addEventListener('beforeunload', alertUserLeave);
@@ -873,6 +809,21 @@ const PIAFormPage = () => {
       setFormReadOnly(true);
     }
   }, [pia?.status, id, pathname]);
+
+  // Call the useAutoSave hook
+  useAutoSave({
+    setIsEagerSave,
+    isEagerSave,
+    isConflict,
+    setIsConflict,
+    getShortTime,
+    upsertAndUpdatePia,
+    pia,
+    setLastSaveAlertInfo,
+    handleShowModal,
+    isAutoSaveFailedPopupShown,
+    setIsAutoSaveFailedPopupShown,
+  });
 
   return (
     <>
