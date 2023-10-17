@@ -25,6 +25,7 @@ import { AppStorage } from '../../../utils/storage';
 function Header() {
   const navigate = useNavigate();
   const { setAuthenticated } = useContext(AuthContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
   const [accessToken, setAccessToken] = useState<string | null>(
     AppStorage.getItem<string>(TokenStorageKeys.ACCESS_TOKEN) || null,
@@ -64,7 +65,7 @@ function Header() {
 
   // https://github.com/microsoft/TypeScript/issues/48949
   // workaround
-  const win: Window = window;
+  // const win: Window = window;
   /**
    * Notes:
    * this uesEffect hook use a special trick to bypass react feature that will

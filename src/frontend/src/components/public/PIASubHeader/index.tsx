@@ -41,6 +41,7 @@ function PIASubHeader({
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [statusLocal, setStatusLocal] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
   const [accessCode, setAccessCode] = useState<string>('');
 
