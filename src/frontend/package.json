@@ -19,7 +19,7 @@
     "wdio-test": "wdio run ./wdio.conf.js --baseUrl=\"https://test.pia.gov.bc.ca\" --suite e2e"
   },
   "dependencies": {
-    "@bcgov/bc-sans": "1.0.1",
+    "@bcgov/bc-sans": "2.1.0",
     "@fortawesome/fontawesome-svg-core": "6.4.2",
     "@fortawesome/free-solid-svg-icons": "6.4.2",
     "@fortawesome/react-fontawesome": "0.2.0",
@@ -57,7 +57,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "geckodriver": "4.2.1",
     "husky": "8.0.3",
-    "lint-staged": "15.0.1",
+    "lint-staged": "14.0.1",
     "multiple-cucumber-html-reporter": "3.5.0",
     "prettier": "3.0.3",
     "stylelint": "15.11.0",
