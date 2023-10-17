@@ -354,7 +354,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
             stateChangeHandler={stateChangeHandler}
           />
           {pia?.review?.cpo ? (
-            Object.entries(pia?.review?.cpo)?.map(([cpoId, reviewSection]) => (
+            Object.entries(pia?.review?.cpo)?.map(([cpoId]) => (
               <>
                 <ViewCPOReview
                   pia={pia}
