@@ -1,4 +1,4 @@
-import { ITextInputProps } from './AgreementsAndInformationBanks';
+import { ITextInputProps } from './IAgreementsInfo-interface';
 
 const ISAInputText = ({ pia }: ITextInputProps) => {
   return (
