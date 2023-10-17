@@ -16,8 +16,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
+  place-content: center;
 }
 
 .login-sub-container {
