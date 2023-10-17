@@ -52,6 +52,7 @@ export interface StatusList {
     buttonText?: SubmitButtonTextEnum;
     banner?: string;
     modal: Modal;
+    submitModalType?: string;
     Privileges: Privileges;
     Pages?: PageAccessControl;
     finalReviewCompleted?: boolean;

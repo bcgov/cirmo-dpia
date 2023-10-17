@@ -19,6 +19,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
     // in MPO status the button text will different
     buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultMPOReviewModal,
+    submitModalType:
+      pia?.hasAddedPiToDataElements === false
+        ? 'SubmitForFinalReview'
+        : 'SubmitForCPOReview',
     Privileges: {
       MPO: {
         showSubmitButton: true,

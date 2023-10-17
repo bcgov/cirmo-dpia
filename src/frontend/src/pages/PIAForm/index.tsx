@@ -648,27 +648,15 @@ const PIAFormPage = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Determine which modal to show based on `pia` status.
-    const modalMapping = {
-      [PiaStatuses.MPO_REVIEW]:
-        pia?.hasAddedPiToDataElements === false
-          ? 'SubmitForFinalReview'
-          : 'SubmitForCPOReview',
-      [PiaStatuses.CPO_REVIEW]: 'SubmitForFinalReview',
-      [PiaStatuses.FINAL_REVIEW]: 'SubmitForPendingCompletion',
-      [PiaStatuses.PENDING_COMPLETION]: 'completePIA',
-    };
-
     if (
-      pia?.isNextStepsSeenForDelegatedFlow === false &&
-      pia?.isNextStepsSeenForNonDelegatedFlow === false
+      (pia?.isNextStepsSeenForDelegatedFlow === false &&
+        pia?.isNextStepsSeenForNonDelegatedFlow === false) ||
+      !pia.status
     ) {
       handleShowModal('submitPiaIntake');
     } else {
       handleShowModal(
-        pia?.status
-          ? modalMapping[pia.status as keyof typeof modalMapping]
-          : 'submitPiaForm',
+        statusList?.(pia)?.[pia?.status]?.submitModalType ?? 'submitPiaForm',
       );
     }
   };
