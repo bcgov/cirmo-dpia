@@ -34,6 +34,8 @@ import { isCPORole } from '../../utils/user';
 import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 import { statusList } from '../../utils/statusList/statusList';
 import useAutoSave from '../../utils/autosave';
+import { validateForm } from './utils/validateForm';
+import { highlightInvalidField, resetUI } from './utils/validationUI';
 
 export type PiaStateChangeHandlerType = (
   value: any,
@@ -648,32 +650,22 @@ const PIAFormPage = () => {
   //
   // Form Submission Handler
   //
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // if the user is in pia intake tab, then show submit pia intake; else submit full form
+
     if (
-      pia?.isNextStepsSeenForDelegatedFlow === false &&
-      pia?.isNextStepsSeenForNonDelegatedFlow === false
+      (pia?.isNextStepsSeenForDelegatedFlow === false &&
+        pia?.isNextStepsSeenForNonDelegatedFlow === false) ||
+      !pia.status
     ) {
       handleShowModal('submitPiaIntake');
     } else {
-      if (pia?.status === PiaStatuses.MPO_REVIEW) {
-        if (pia?.hasAddedPiToDataElements === false) {
-          handleShowModal('SubmitForFinalReview');
-        } else {
-          handleShowModal('SubmitForCPOReview');
-        }
-      } else if (pia?.status === PiaStatuses.CPO_REVIEW) {
-        handleShowModal('SubmitForFinalReview');
-      } else if (pia?.status === PiaStatuses.FINAL_REVIEW) {
-        handleShowModal('SubmitForPendingCompletion');
-      } else if (pia?.status === PiaStatuses.PENDING_COMPLETION) {
-        handleShowModal('completePIA');
-      } else {
-        handleShowModal('submitPiaForm');
-      }
+      handleShowModal(
+        statusList?.(pia)?.[pia?.status]?.submitModalType ?? 'submitPiaForm',
+      );
     }
   };
+
   /*
    * @Description - This function is used to validate the form
    * and display a red border around the invalid fields
@@ -688,71 +680,36 @@ const PIAFormPage = () => {
    * The class 'is-invalid' is used to display the red border.
    *
    */
-  const handleValidation = (event: any) => {
-    let invalid = false;
-    let formId = '';
-    // Reset error messages
-    const reset = document.getElementsByClassName('is-invalid');
-    if (reset) {
-      [...reset].forEach((el) => {
-        el.classList.remove('is-invalid');
-      });
-      setValidationMessages({});
-      setIsValidationFailed(false);
-      setValidationFailedMessage('');
-    }
-    const richText = document.getElementsByClassName('richText');
-    if (richText) {
-      [...richText].forEach((el) => {
-        el.classList.remove('form-control');
-      });
-    }
-    if (!pia?.title) {
-      invalid = true;
-      formId = 'title';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaTitle: 'Error: Please enter a title.',
-      }));
-    }
-    if (!pia?.ministry) {
-      invalid = true;
-      formId = 'ministry-select';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaMinistry: 'Error: Please select a ministry.',
-      }));
-    }
-    if (!pia?.branch) {
-      invalid = true;
-      formId = 'branch';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaBranch: 'Error: Please enter a branch.',
-      }));
-    }
+  type HandleValidationProps = {
+    event?: any;
+    status?: string;
+  };
 
-    if (!pia?.initiativeDescription) {
-      invalid = true;
-      formId = 'initiativeDescription';
-      setValidationMessages((prevState) => ({
-        ...prevState,
-        piaInitialDescription: 'Error: Please describe your initiative.',
-      }));
-    }
+  const handleValidation = ({ event, status }: HandleValidationProps) => {
+    resetUI({
+      setValidationMessages,
+      setIsValidationFailed,
+      setValidationFailedMessage,
+      doc: document,
+    });
 
-    if (invalid) {
-      const ele = document.getElementById(formId);
-      if (ele) {
-        window.scrollTo(ele.offsetLeft, ele.offsetTop - 160);
-        ele.className += ' is-invalid form-control';
+    // Validate the form
+    const { isValid, formId } = validateForm({ pia, setValidationMessages });
+
+    // Update UI based on validation
+    if (!isValid) {
+      highlightInvalidField(formId, document);
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
       }
-      event.preventDefault();
-      event.stopPropagation();
+    } else if (status) {
+      handleStatusChange(status);
     } else {
       handleSubmit(event);
     }
   };
+
   const alertUserLeave = useCallback(
     (e: any) => {
       // if no changes in the form recently, do not show warning leaving the page
@@ -838,9 +795,9 @@ const PIAFormPage = () => {
         primaryButtonText={submitButtonText}
         isValidationFailed={isValidationFailed}
         mode={mode}
-        handleStatusChange={handleStatusChange}
+        handleStatusChange={(status) => handleValidation({ status })}
         onEditClick={handleEdit}
-        onSubmitClick={handleValidation}
+        onSubmitClick={(event) => handleValidation({ event })}
       />
       <div className="bcgovPageContainer background background__form wrapper pe-0">
         {message && (

@@ -6,6 +6,7 @@ export const pendingCompletionStatus = () => {
     title: 'Pending completion',
     class: 'statusBlock__pending-completion',
     modal: defaultPendingCompletionModal,
+    submitModalType: 'completePIA',
     comments: false,
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
     Privileges: {
