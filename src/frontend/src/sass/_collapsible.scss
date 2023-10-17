@@ -16,12 +16,10 @@
 
   .collapsible__icon--closed {
     font-size: x-large;
-    padding-inline-end: 1rem;
-    padding-block-start: 0.6rem;
+    padding: 0.6rem 1rem 0 0;
 
     &-right {
-      padding-inline-end: 0;
-      padding-inline-start: 1rem;
+      padding: 0.6rem 0 0 1rem;
     }
   }
 
