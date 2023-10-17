@@ -1,6 +1,7 @@
 import { YesNoInput } from '../../../../../types/enums/yes-no.enum';
 import { IAgreementsAndInformationBanks } from './IAgreementsInfo-interface';
 
+// Helper function to generate an array of radio options for ISA (Information Sharing Agreement)
 export const getInvolvesRadioHelper = (
   agreementsAndInformationBanksForm: IAgreementsAndInformationBanks,
   stateChangeHandler: (value: any, path: string) => void,

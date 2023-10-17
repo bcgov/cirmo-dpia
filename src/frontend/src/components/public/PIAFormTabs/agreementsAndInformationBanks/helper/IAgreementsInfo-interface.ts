@@ -39,8 +39,10 @@ interface IRadioItem {
   changeHandler: (e: any) => void;
 }
 
+// Define a type for an array of radio items
 type RadioArray = IRadioItem[];
 
+// Define props for the Information Sharing Agreement section
 export interface InformationSharingAgreementProps {
   agreementsAndInformationBanksForm: IAgreementsAndInformationBanks;
   pia: IPiaForm;
@@ -52,6 +54,7 @@ export interface InformationSharingAgreementProps {
   InvolvesRadioHelper: RadioArray;
 }
 
+// Define props for the Personal Information Banks section
 export interface PersonalInformationBanksProps {
   agreementsAndInformationBanksForm: IAgreementsAndInformationBanks;
   pia: IPiaForm;

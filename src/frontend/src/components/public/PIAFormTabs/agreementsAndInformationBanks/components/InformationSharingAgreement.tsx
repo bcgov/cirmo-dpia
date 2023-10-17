@@ -10,6 +10,8 @@ import CustomInputDate from '../../../../common/CustomInputDate';
 import ISAInputText from '../helper/viewISATextInput';
 import ViewComments from '../../../../common/ViewComment';
 import { InformationSharingAgreementProps } from '../helper/IAgreementsInfo-interface';
+
+// Define a functional component for the Information Sharing Agreement section
 export const InformationSharingAgreementSection: React.FC<
   InformationSharingAgreementProps
 > = ({
@@ -56,7 +58,6 @@ export const InformationSharingAgreementSection: React.FC<
             </p>
           )}
         </div>
-
         {agreementsAndInformationBanksForm?.informationSharingAgreement
           ?.doesInvolveISA === YesNoInput.YES && (
           <div>

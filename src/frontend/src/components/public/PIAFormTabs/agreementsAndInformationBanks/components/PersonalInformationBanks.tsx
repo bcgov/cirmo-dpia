@@ -9,6 +9,7 @@ import InputText from '../../../../common/InputText/InputText';
 import ViewComments from '../../../../common/ViewComment';
 import PIBInputText from '../helper/viewPIBTextInput';
 
+// Define a functional component for the Personal Information Banks section
 const PersonalInformationBanksSection: React.FC<
   PersonalInformationBanksProps
 > = ({

@@ -1,5 +1,6 @@
 import { ITextInputProps } from './IAgreementsInfo-interface';
 
+// Define a functional component for rendering read-only information in the Personal Information Banks (PIB) section
 const PIBInputText = ({ pia }: ITextInputProps) => {
   return (
     <div>

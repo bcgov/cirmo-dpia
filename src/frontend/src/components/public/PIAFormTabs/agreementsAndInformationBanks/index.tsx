@@ -16,6 +16,7 @@ import PersonalInformationBanksSection from './components/PersonalInformationBan
 import { getInvolvesRadioHelper } from './helper/involveIsaRadioHelper';
 import { getWillResultPIBRadio } from './helper/willResultPIBRadioHelper';
 
+// This functional component represents a section of a larger form for managing agreements and information banks.
 export const PIAAgreementsAndInformationBanks = ({
   showComments = true,
 }: PIAAgreementsAndInformationBanksProps) => {
@@ -28,6 +29,7 @@ export const PIAAgreementsAndInformationBanks = ({
     accessControl,
   } = useContext<IPiaFormContext>(PiaFormContext);
 
+  // Check for access control and execute if defined
   if (accessControl) accessControl();
 
   // Initialize the default state for agreements and information banks using the useMemo hook
