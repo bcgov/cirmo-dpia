@@ -52,20 +52,6 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
     );
   };
 
-  const AddRoleButton = () => {
-    return (
-      <button
-        className="bcgovbtn bcgovbtn__secondary mt-3"
-        onClick={() => {
-          addRole(ApprovalRoles[rolesSelect]);
-          setRolesSelect('');
-        }}
-      >
-        Add
-      </button>
-    );
-  };
-
   const AddRoleInput = () => {
     return (
       <div className="p-2 col-md-5">
@@ -75,9 +61,20 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
             messages.PiaReviewHeader.ProgramAreaSection.Input.EnterRoleTitle.en
           }
           value={rolesInput}
-          onChange={(e) => setRolesInput(e.target.value)}
+          onChange={(e) => {
+            e.preventDefault();
+            setRolesInput(e.target.value);
+          }}
         />
-        <AddRoleButton />
+        <button
+          className="bcgovbtn bcgovbtn__secondary mt-3"
+          onClick={() => {
+            addRole(rolesInput);
+            setRolesInput('');
+          }}
+        >
+          Add
+        </button>
       </div>
     );
   };
@@ -102,7 +99,15 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
           value={rolesSelect}
           changeHandler={(e) => setRolesSelect(e.target.value)}
         />
-        <AddRoleButton />
+        <button
+          className="bcgovbtn bcgovbtn__secondary mt-3"
+          onClick={() => {
+            addRole(ApprovalRoles[rolesSelect]);
+            setRolesSelect('');
+          }}
+        >
+          Add
+        </button>
       </div>
     );
   };
