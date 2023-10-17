@@ -1,14 +1,12 @@
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import messages from './messages';
 import { IReview } from './interfaces';
-import Dropdown from '../../../common/Dropdown';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { getUserPrivileges } from '../../../../utils/statusList/common';
-import InputText from '../../../common/InputText/InputText';
-import { ApprovalRoles } from '../../../../constant/constant';
-import { ProgramAreaDisplay } from './PADisplay';
+import { ProgramAreaDisplay } from './ProgramArea/PADisplay';
+import { AddRoleInput } from './ProgramArea/AddRoleInput';
+import { AddRoleDropdown } from './ProgramArea/AddRoleDropdown';
+import { AddHideRolesToggle } from './ProgramArea/AddHideRolesToggle';
 
 interface IPAReviewProps {
   pia: IPiaForm;
@@ -38,80 +36,6 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
   const [rolesInput, setRolesInput] = useState<string>('');
   const [showAddRolesArea, setShowAddRolesArea] = useState<boolean>(false);
 
-  const AddHideRolesToggle = () => {
-    return (
-      <section className="d-flex justify-content-center">
-        <button
-          className="bcgovbtn bcgovbtn__tertiary bold"
-          onClick={() => setShowAddRolesArea(!showAddRolesArea)}
-        >
-          {!showAddRolesArea ? 'Add a role' : 'Hide Roles'}
-          <FontAwesomeIcon icon={faPlus} className="ml-2" />
-        </button>
-      </section>
-    );
-  };
-
-  const AddRoleInput = () => {
-    return (
-      <div className="p-2 col-md-5">
-        <InputText
-          id="programArea"
-          label={
-            messages.PiaReviewHeader.ProgramAreaSection.Input.EnterRoleTitle.en
-          }
-          value={rolesInput}
-          onChange={(e) => {
-            e.preventDefault();
-            setRolesInput(e.target.value);
-          }}
-        />
-        <button
-          className="bcgovbtn bcgovbtn__secondary mt-3"
-          onClick={() => {
-            addRole(rolesInput);
-            setRolesInput('');
-          }}
-        >
-          Add
-        </button>
-      </div>
-    );
-  };
-
-  const AddRoleDropdown = () => {
-    return (
-      <div className="p-2 col-md-5">
-        <Dropdown
-          id="programArea"
-          label="Select a role from the list"
-          options={Object.keys(ApprovalRoles)
-            .filter(
-              (role) =>
-                !reviewForm.programArea?.selectedRoles?.includes(
-                  ApprovalRoles[role],
-                ),
-            )
-            .map((role: string) => ({
-              value: role,
-              label: ApprovalRoles[role],
-            }))}
-          value={rolesSelect}
-          changeHandler={(e) => setRolesSelect(e.target.value)}
-        />
-        <button
-          className="bcgovbtn bcgovbtn__secondary mt-3"
-          onClick={() => {
-            addRole(ApprovalRoles[rolesSelect]);
-            setRolesSelect('');
-          }}
-        >
-          Add
-        </button>
-      </div>
-    );
-  };
-
   return (
     <>
       <h3>{messages.PiaReviewHeader.ProgramAreaSection.Title.en}</h3>
@@ -134,15 +58,27 @@ export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
         {/* Add roles section */}
         {canEditProgramAreaReviewers && (
           <div className="data-table__container">
-            <AddHideRolesToggle />
+            <AddHideRolesToggle
+              setShowAddRolesArea={setShowAddRolesArea}
+              showAddRolesArea={showAddRolesArea}
+            />
 
             {showAddRolesArea && (
               <div className="d-flex">
-                <AddRoleDropdown />
+                <AddRoleDropdown
+                  reviewForm={reviewForm}
+                  rolesSelect={rolesSelect}
+                  setRolesSelect={setRolesSelect}
+                  addRole={addRole}
+                />
                 <div className="p-2 col-md-2 d-flex justify-content-center align-items-center">
                   Or
                 </div>
-                <AddRoleInput />
+                <AddRoleInput
+                  rolesInput={rolesInput}
+                  setRolesInput={setRolesInput}
+                  addRole={addRole}
+                />
               </div>
             )}
           </div>

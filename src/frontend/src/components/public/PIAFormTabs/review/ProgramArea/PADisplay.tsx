@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ApprovalRoles } from '../../../../constant/constant';
+import { ApprovalRoles } from '../../../../../constant/constant';
 
-import messages from './messages';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { IReview } from './interfaces';
+import messages from '../messages';
+import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
+import { IReview } from '../interfaces';
 import {
   IPiaFormContext,
   PiaFormContext,
-} from '../../../../contexts/PiaFormContext';
+} from '../../../../../contexts/PiaFormContext';
 import { useCallback, useContext } from 'react';
-import { getUserPrivilegesByStatus } from '../../../../utils/statusList/common';
+import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 import { ProgramAreaReviewCard } from './PAReviewCard';
 
 export interface IDisplayProgramAreaProps {

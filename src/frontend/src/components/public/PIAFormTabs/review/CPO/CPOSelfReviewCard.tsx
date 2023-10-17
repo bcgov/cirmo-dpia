@@ -1,9 +1,9 @@
-import { getGUID } from '../../../../utils/user';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { ReviewCard } from './ReviewCard';
-import { getUserPrivileges } from '../../../../utils/statusList/common';
+import { getGUID } from '../../../../../utils/user';
+import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
+import { ReviewCard } from '../ReviewCard/ReviewCard';
+import { getUserPrivileges } from '../../../../../utils/statusList/common';
 import { useState } from 'react';
-import messages from './messages';
+import messages from '../messages';
 
 interface ICPOReviewProps {
   pia: IPiaForm;
@@ -32,6 +32,7 @@ export const CPOSelfReviewCard = (props: ICPOReviewProps) => {
     !printPreview && privilegedToEdit && !acknowledged,
   );
 
+  // Make read-only when canEditReview is false.
   const canEditReview = !printPreview && privilegedToEdit;
 
   const handleSubmit = () => {

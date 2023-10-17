@@ -1,8 +1,8 @@
 import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { ReviewCard } from './ReviewCard';
+import { ReviewCard } from './ReviewCard/ReviewCard';
 import { getGUID, isCPORole } from '../../../../utils/user';
 import messages from './messages';
-import { CPOSelfReviewCard } from './CPOSelfReviewCard';
+import { CPOSelfReviewCard } from './CPO/CPOSelfReviewCard';
 
 interface ICPOReviewProps {
   pia: IPiaForm;

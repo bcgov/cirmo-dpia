@@ -1,7 +1,7 @@
-import { getUserPrivileges } from '../../../../utils/statusList/common';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import { ReviewCard } from './ReviewCard';
-import messages from './messages';
+import { getUserPrivileges } from '../../../../../utils/statusList/common';
+import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
+import { ReviewCard } from '../ReviewCard/ReviewCard';
+import messages from '../messages';
 import { useState } from 'react';
 
 type PAReviewProps = {
@@ -33,6 +33,7 @@ export const ProgramAreaReviewCard = (props: PAReviewProps) => {
     !printPreview && privilegedToEdit && !acknowledged,
   );
 
+  // Make read-only when canEditReview is false.
   const canEditReview = !printPreview && privilegedToEdit;
 
   const handleSubmit = () => {

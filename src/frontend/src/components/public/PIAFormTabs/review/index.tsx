@@ -133,6 +133,7 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   // Review page privileges.
   const reviewPageParams = getUserPrivileges(pia)?.Pages?.review?.params;
+  const showPrintPreview = reviewPageParams?.showPrintPreview ?? false;
   const showCpoReview = reviewPageParams?.showCpoReview ?? false;
   const showMpoReview = reviewPageParams?.showMpoReview ?? false;
   const showProgramAreaReview =
@@ -140,9 +141,6 @@ const PIAReview = ({ printPreview }: IReviewProps) => {
 
   const hasCPOReviews =
     pia?.review?.cpo && Object.entries(pia?.review?.cpo).length > 0;
-
-  const showPrintPreview =
-    getUserPrivileges(pia)?.Pages?.review?.params?.showPrintPreview ?? false;
 
   return (
     <>
