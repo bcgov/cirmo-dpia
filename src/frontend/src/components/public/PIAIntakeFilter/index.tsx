@@ -10,6 +10,7 @@ import Dropdown from '../../common/Dropdown';
 import { IPIAIntakeFilterProps } from './interfaces';
 
 const PIAIntakeFilter = (props: IPIAIntakeFilterProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterByMinistry, setFilterByMinistry] = useState<string>(
     searchParams.get('filterByMinistry') || '',

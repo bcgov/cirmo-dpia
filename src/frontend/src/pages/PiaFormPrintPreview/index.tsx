@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom';
 import Spinner from '../../components/common/Spinner';
 import { AccuracyCorrectionAndRetention } from '../../components/public/PIAFormTabs/accuracyRetention';
 import PIAAdditionalRisks from '../../components/public/PIAFormTabs/additionalRisks';
-import PIAAgreementsAndInformationBanks from '../../components/public/PIAFormTabs/agreementsAndInformationBanks';
+import { PIAAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks';
 import PIACollectionUseAndDisclosure from '../../components/public/PIAFormTabs/collectionUseAndDisclosure';
 import { SecurityPersonalInformation } from '../../components/public/PIAFormTabs/securityPersonalInformation';
 import StoringPersonalInformation from '../../components/public/PIAFormTabs/storingPersonalInformation';

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 
 const IntakeDetails = (pia: IPiaForm) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );

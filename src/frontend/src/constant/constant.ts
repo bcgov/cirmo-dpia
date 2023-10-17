@@ -285,6 +285,7 @@ export enum TextInputEnum {
 
 export enum SubmitButtonTextEnum {
   INTAKE = 'Submit',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   FORM = 'Submit',
   FINISH_REVIEW = 'Finish review',
   COMPLETE_PIA = 'Complete PIA',

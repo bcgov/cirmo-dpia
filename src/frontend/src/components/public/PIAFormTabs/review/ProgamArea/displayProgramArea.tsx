@@ -23,8 +23,7 @@ export interface IDisplayProgramAreaProps {
 }
 
 const DisplayProgramArea = (props: IDisplayProgramAreaProps) => {
-  const { pia, piaStateChangeHandler } =
-    useContext<IPiaFormContext>(PiaFormContext);
+  const { piaStateChangeHandler } = useContext<IPiaFormContext>(PiaFormContext);
 
   // From statusList.
   const reviewPagePrivilegeParams = getUserPrivilegesByStatus(

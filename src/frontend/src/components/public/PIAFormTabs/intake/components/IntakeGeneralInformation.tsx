@@ -19,6 +19,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
   path,
 }) => {
   // State to hold the full name of the selected ministry
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [piaMinistryFullName, setPiaMinistryFullName] = useState(
     MinistryList.find((item) => item.value === pia.ministry)?.label || '',
   );
