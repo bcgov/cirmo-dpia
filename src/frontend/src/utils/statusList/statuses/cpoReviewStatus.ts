@@ -14,6 +14,7 @@ export const cpoReviewStatus = () => {
     comments: true,
     buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultCPOReviewModal,
+    submitModalType: 'SubmitForFinalReview',
     Privileges: {
       MPO: {
         banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
