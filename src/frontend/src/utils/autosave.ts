@@ -33,6 +33,7 @@ const useAutoSave = ({
   isAutoSaveFailedPopupShown,
   setIsAutoSaveFailedPopupShown,
 }: AutoSaveProps) => {
+  // Define the `autoSave` function
   useEffect(() => {
     const autoSave = async () => {
       setIsEagerSave(false);
@@ -41,6 +42,7 @@ const useAutoSave = ({
       try {
         await upsertAndUpdatePia();
       } catch (e: any) {
+        // Handle the error if the update fails
         setLastSaveAlertInfo({
           type: 'danger',
           message: `Unable to auto-save. Last saved at ${getShortTime(
