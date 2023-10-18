@@ -139,7 +139,7 @@ const PIAFormPage = () => {
       schema: 'iglu:ca.bc.gov.cirmo/dpia_progress/jsonschema/1-0-0',
       data: {
         id: pia?.id,
-        title: pia?.title,
+        title: pia?.title?.slice(0, 64),
         state: completedStatus ? `${pia?.status}-COMPLETED` : pia?.status,
         ministry: pia?.ministry,
         branch: pia?.branch,
