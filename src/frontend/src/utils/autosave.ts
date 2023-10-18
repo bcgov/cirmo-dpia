@@ -42,15 +42,17 @@ const useAutoSave = ({
       try {
         await upsertAndUpdatePia();
       } catch (e: any) {
-        // Handle the error if the update fails
+        const message = `Unable to auto-save. Last saved at ${getShortTime(
+          pia.updatedAt,
+        )}.`;
+        const causeStatus = e?.cause?.status;
         setLastSaveAlertInfo({
           type: 'danger',
-          message: `Unable to auto-save. Last saved at ${getShortTime(
-            pia.updatedAt,
-          )}.`,
+          message,
           show: true,
         });
-        if (e?.cause?.status === 409) {
+        // Handle the error if the update fails
+        if (causeStatus === 409) {
           setIsConflict(true);
           handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
         } else if (!isAutoSaveFailedPopupShown) {
@@ -71,6 +73,7 @@ const useAutoSave = ({
     }
   }, [
     setIsEagerSave,
+    isEagerSave,
     isConflict,
     setIsConflict,
     getShortTime,
@@ -80,7 +83,6 @@ const useAutoSave = ({
     handleShowModal,
     isAutoSaveFailedPopupShown,
     setIsAutoSaveFailedPopupShown,
-    isEagerSave,
   ]);
 };
 
