@@ -36,7 +36,7 @@ const useAutoSave = ({
   useEffect(() => {
     const autoSave = async () => {
       setIsEagerSave(false);
-      if (isConflict) return; //noop if already a conflict
+      if (isConflict) return;
 
       try {
         await upsertAndUpdatePia();
