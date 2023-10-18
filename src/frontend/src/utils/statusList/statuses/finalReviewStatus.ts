@@ -10,6 +10,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
     class: 'statusBlock__finalReview',
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
     modal: defaultFinalReviewModal,
+    submitModalType: 'SubmitForPendingCompletion',
     finalReviewCompleted: finalReviewCompleted(pia),
     Privileges: {
       MPO: {

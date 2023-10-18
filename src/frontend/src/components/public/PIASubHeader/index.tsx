@@ -12,9 +12,9 @@ import { routes } from '../../../constant/routes';
 import { HttpRequest } from '../../../utils/http-request.util';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
+import { getUserPrivileges } from '../../../utils/statusList/common';
 import { statusList } from '../../../utils/statusList/statusList';
 import { IReviewSection } from '../PIAFormTabs/review/interfaces';
-import { getUserPrivileges } from '../../../utils/statusList/common';
 
 function PIASubHeader({
   pia,
@@ -41,6 +41,7 @@ function PIASubHeader({
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [statusLocal, setStatusLocal] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
   const [accessCode, setAccessCode] = useState<string>('');
 

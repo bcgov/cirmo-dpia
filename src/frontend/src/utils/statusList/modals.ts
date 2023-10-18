@@ -43,7 +43,7 @@ export const resetReviewEditInPRogressModal: Modal = {
 export const defaultCPOReviewModal: Modal = {
   title: 'Submit for CPO review?',
   description:
-    'An analyst from the Corporate Privacy Office branch will be able to review and edit your PIA.',
+    'Your status will be changed to CPO review. A CPO analyst will be able to review your PIA.',
   confirmLabel: 'Yes, submit',
   cancelLabel: 'Cancel',
 };
@@ -76,5 +76,28 @@ export const defaultEmptyModal: Modal = {
   title: '',
   description: '',
   confirmLabel: '',
+  cancelLabel: '',
+};
+
+export const submitPiaIntakeModal: Modal = {
+  title: 'Submit PIA Intake?',
+  description: 'Are you sure you want to submit your PIA intake?',
+  confirmLabel: 'Yes, submit',
+  cancelLabel: 'Cancel',
+};
+
+export const autoSaveFailedModal: Modal = {
+  title: 'Auto-save failed',
+  description:
+    'This document was last saved at ${time}. Before you leave the page, ensure you capture any unsaved work you don’t want to lose. Any unsaved changes will be lost.',
+  confirmLabel: 'Okay',
+  cancelLabel: '',
+};
+
+export const conflictModal: Modal = {
+  title: '${user} is editing this PIA',
+  description:
+    'Please reach out to ${user} for further questions. Refresh to view any changes.',
+  confirmLabel: 'Back to view',
   cancelLabel: '',
 };

@@ -1,5 +1,6 @@
-import { ITextInputProps } from './AgreementsAndInformationBanks';
+import { ITextInputProps } from './IAgreementsInfo-interface';
 
+// Define a functional component for rendering read-only information in the Information Sharing Agreement section
 const ISAInputText = ({ pia }: ITextInputProps) => {
   return (
     <div>

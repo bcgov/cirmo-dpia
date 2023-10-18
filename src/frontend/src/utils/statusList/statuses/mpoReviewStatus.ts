@@ -8,6 +8,7 @@ import {
   defaultMPOReviewModal,
   resetReviewEditInPRogressModal,
   resetReviewIncompleteModal,
+  submitPiaIntakeModal,
 } from '../modals';
 
 export const mpoReviewStatus = (pia: IPiaForm | null) => {
@@ -18,6 +19,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
     // in MPO status the button text will different
     buttonText: checkButtonText(pia) || SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultMPOReviewModal,
+    submitModalType:
+      pia?.hasAddedPiToDataElements === false
+        ? 'SubmitForFinalReview'
+        : 'SubmitForCPOReview',
     Privileges: {
       MPO: {
         showSubmitButton: true,
@@ -47,8 +52,15 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
               : defaultEditInProgressModal,
           },
           {
+            // Added for submitModal scenarios; dropdown display is irrelevant.
+            status: 'MPO_REVIEW',
+            modal: defaultMPOReviewModal,
+            submitModal: submitPiaIntakeModal,
+          },
+          {
             status: 'CPO_REVIEW',
             modal: defaultCPOReviewModal,
+            submitModal: submitPiaIntakeModal,
           },
         ],
       },
