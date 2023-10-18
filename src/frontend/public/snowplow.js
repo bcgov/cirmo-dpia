@@ -24,7 +24,13 @@
   'https://www2.gov.bc.ca/StaticWebResources/static/sp/sp-2-14-0.js',
   'snowplow',
 );
-var collector = 'spm.apps.gov.bc.ca';
+const origin = window.location.origin;
+var collector =
+  origin.includes('localhost') ||
+  origin.includes('dev') ||
+  origin.includes('test')
+    ? 'spm.apps.gov.bc.ca'
+    : 'spt.apps.gov.bc.ca';
 window.snowplow('newTracker', 'rt', collector, {
   appId: 'Snowplow_standalone_PIA',
   cookieLifetime: 86400 * 548,
