@@ -11,6 +11,7 @@ export type PageAccessControl = {
 export type PageParamProperties = ReviewPageParams;
 
 export interface ReviewPageParams {
+  showPrintPreview?: boolean;
   showProgramAreaReview?: boolean;
   showMpoReview?: boolean;
   showCpoReview?: boolean;

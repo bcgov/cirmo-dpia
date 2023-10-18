@@ -19,6 +19,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
           review: {
             accessControl: true,
             params: {
+              showPrintPreview: true,
               showProgramAreaReview: true,
               showMpoReview: true,
               showCpoReview: true,
@@ -65,6 +66,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
           review: {
             accessControl: true,
             params: {
+              showPrintPreview: true,
               showProgramAreaReview: true,
               showMpoReview: true,
               showCpoReview: true,
@@ -120,6 +122,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
           review: {
             accessControl: true,
             params: {
+              showPrintPreview: true,
               showProgramAreaReview: true,
               showMpoReview: true,
               showCpoReview: true,

@@ -16,6 +16,7 @@ export const pendingCompletionStatus = () => {
           review: {
             accessControl: true,
             params: {
+              showPrintPreview: true,
               showProgramAreaReview: true,
               showMpoReview: true,
               showCpoReview: true,
@@ -29,6 +30,7 @@ export const pendingCompletionStatus = () => {
           review: {
             accessControl: true,
             params: {
+              showPrintPreview: true,
               showProgramAreaReview: true,
               showMpoReview: true,
               showCpoReview: true,
@@ -92,7 +94,10 @@ export const pendingCompletionStatus = () => {
         Pages: {
           review: {
             accessControl: true,
-            showProgramAreaReview: true,
+            params: {
+              showPrintPreview: true,
+              showProgramAreaReview: true,
+            },
           },
         },
       },
