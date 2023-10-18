@@ -1,4 +1,4 @@
-import { useEffect, useCallback, Dispatch, SetStateAction } from 'react';
+import { useEffect, Dispatch, SetStateAction } from 'react';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { ILastSaveAlterInfo } from '../pages/PIAForm';
 
@@ -33,30 +33,39 @@ const useAutoSave = ({
   isAutoSaveFailedPopupShown,
   setIsAutoSaveFailedPopupShown,
 }: AutoSaveProps) => {
-  // Define the `autoSave` function
-  const autoSave = useCallback(async () => {
-    setIsEagerSave(false);
-    if (isConflict) return;
+  useEffect(() => {
+    const autoSave = async () => {
+      setIsEagerSave(false);
+      if (isConflict) return; //noop if already a conflict
 
-    try {
-      await upsertAndUpdatePia(); // Update the PIA form
-    } catch (e: any) {
-      const message = `Unable to auto-save. Last saved at ${getShortTime(
-        pia.updatedAt,
-      )}.`;
-      const causeStatus = e?.cause?.status;
-      if (causeStatus === 409) {
-        setIsConflict(true);
-        handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
-      } else if (!isAutoSaveFailedPopupShown) {
-        handleShowModal('autoSaveFailed');
-        setIsAutoSaveFailedPopupShown(true);
+      try {
+        await upsertAndUpdatePia();
+      } catch (e: any) {
+        setLastSaveAlertInfo({
+          type: 'danger',
+          message: `Unable to auto-save. Last saved at ${getShortTime(
+            pia.updatedAt,
+          )}.`,
+          show: true,
+        });
+        if (e?.cause?.status === 409) {
+          setIsConflict(true);
+          handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
+        } else if (!isAutoSaveFailedPopupShown) {
+          handleShowModal('autoSaveFailed');
+          setIsAutoSaveFailedPopupShown(true);
+        }
       }
-      setLastSaveAlertInfo({
-        type: 'danger',
-        message,
-        show: true,
-      });
+    };
+
+    if (isEagerSave) {
+      autoSave();
+    } else {
+      const autoSaveTimer = setTimeout(() => {
+        autoSave();
+      }, 3000);
+
+      return () => clearTimeout(autoSaveTimer);
     }
   }, [
     setIsEagerSave,
@@ -69,16 +78,8 @@ const useAutoSave = ({
     handleShowModal,
     isAutoSaveFailedPopupShown,
     setIsAutoSaveFailedPopupShown,
+    isEagerSave,
   ]);
-
-  // Define the autoSaveTimer useEffect
-  useEffect(() => {
-    const autoSaveTimer = isEagerSave ? 0 : 500;
-
-    const timerId = setTimeout(autoSave, autoSaveTimer);
-
-    return () => clearTimeout(timerId);
-  }, [isEagerSave, autoSave]);
 };
 
 export default useAutoSave;
