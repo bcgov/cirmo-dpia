@@ -1,4 +1,5 @@
-const convertToISODate = (object: any) => {
+// Check if object is a date and convert to ISO string.
+export const convertToISODate = (object: any) => {
   if (object instanceof Date) {
     return object.toISOString();
   }
@@ -6,6 +7,7 @@ const convertToISODate = (object: any) => {
   return object;
 };
 
+// Check if two objects are equal.
 export const deepEqual = (
   object1: any,
   object2: any,
