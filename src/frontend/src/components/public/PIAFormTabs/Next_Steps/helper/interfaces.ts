@@ -1,4 +1,4 @@
-import { PiaStatuses } from '../../../../constant/constant';
+import { PiaStatuses } from '../../../../../constant/constant';
 
 export interface IModalObject {
   modalShow: boolean;
@@ -16,4 +16,8 @@ export interface IModalObject {
   action: {
     statusChange: PiaStatuses;
   };
+}
+
+export interface PIFlow {
+  navigateFn: (url: string) => void;
 }
