@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PiaTypesEnum } from 'src/common/enums/pia-types.enum';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
-import { deepEqual } from 'src/common/utils/object-comparison.util';
+import { deepEqual } from 'src/common/utils/objectComparison';
 import { UpdatePiaIntakeDto } from '../dto/update-pia-intake.dto';
 import { PiaIntakeEntity } from '../entities/pia-intake.entity';
 import { piaStatusMetadata } from '../metadata/pia-status.metadata';

@@ -1,6 +1,7 @@
 import { ForbiddenException } from '@nestjs/common';
 import { UserTypesEnum } from '../enums/users.enum';
 import { IFormField } from '../interfaces/form-field.interface';
+import { isMatching } from '../utils/checkMatching';
 
 /**
  * @method validateRoleForFormField
@@ -24,14 +25,13 @@ export const validateRoleForFormField = <T>(
     if (updatedValue === null) return; // Allow nulls for other types
   }
 
-  // Checking primitives matching;
-  // TO introduce object matching, if needed
-  if (updatedValue === storedValue) return; // if value is not updated by the current user;
-
-  if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
-
   // Client is not updating the field, return.
   if (updatedValue === undefined) return;
+
+  // Check if values match, meaning value is not updated.
+  if (isMatching(updatedValue, storedValue)) return;
+
+  if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
 
   // if not null; allow only specific roles access
   const intersectingUserTypes = metadata.allowedUserTypesEdit.filter((type) =>
