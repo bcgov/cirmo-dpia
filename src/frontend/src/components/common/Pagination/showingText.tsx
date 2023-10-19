@@ -1,4 +1,4 @@
-import { ListPageNumberProps } from './interfaces';
+import { ListPageNumberProps } from './helpers/interfaces';
 
 const ShowingText = (props: ListPageNumberProps) => {
   return (

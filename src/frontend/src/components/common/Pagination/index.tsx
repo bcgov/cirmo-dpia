@@ -1,14 +1,7 @@
 import ListPageNumber from './listPageNumber';
 import ShowingText from './showingText';
 import RowsPerPage from './rowsPerPage';
-
-type PaginationProps = {
-  currentPage: number;
-  totalEntries: number;
-  pageSize: number;
-  changePage: (page: number) => void;
-  changePageSize: (pageSize: number) => void;
-};
+import { PaginationProps } from './helpers/types';
 
 const Pagination = ({
   currentPage,
