@@ -1,6 +1,7 @@
 import { ForbiddenException } from '@nestjs/common';
 import { UserTypesEnum } from '../enums/users.enum';
 import { IFormField } from '../interfaces/form-field.interface';
+import { arraysEqual } from '../utils/arraysEqual';
 
 /**
  * @method validateRoleForFormField
@@ -24,8 +25,15 @@ export const validateRoleForFormField = <T>(
     if (updatedValue === null) return; // Allow nulls for other types
   }
 
-  // Checking primitives matching;
-  // TO introduce object matching, if needed
+  // Check array matching.
+  if (
+    Array.isArray(updatedValue) &&
+    Array.isArray(storedValue) &&
+    arraysEqual(updatedValue, storedValue)
+  )
+    return; // if value is not updated by the current user;
+
+  // Checking primitives matching.
   if (updatedValue === storedValue) return; // if value is not updated by the current user;
 
   if (!metadata?.allowedUserTypesEdit) return; // if allowedUserTypesEdit is null, all roles can edit this field/key
