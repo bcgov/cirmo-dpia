@@ -1,6 +1,11 @@
-import { arraysEqual } from './arraysEqual';
-import { deepEqual } from './object-comparison.util';
+import { deepEqual } from './objectComparison';
 
+// Check if two arrays are of same length and share equal values.
+export const arraysEqual = (a, b) => {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+};
+
+// Check if two variables are equal.
 export const isMatching = (value1, value2) => {
   // Check object matching.
   if (
