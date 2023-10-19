@@ -623,6 +623,10 @@ const PIAFormPage = () => {
             }),
           );
         }
+      } else if (buttonValue === 'conflict') {
+        // noop
+      } else if (buttonValue === 'autoSaveFailed') {
+        // noop
       } else {
         // edit
         const updatedPia = await upsertAndUpdatePia();
