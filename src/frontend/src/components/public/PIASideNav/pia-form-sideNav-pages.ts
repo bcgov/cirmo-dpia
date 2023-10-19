@@ -23,10 +23,13 @@ export const PiaFormSideNavPages = (
   // This will change once Next Steps tab is implemented
   // This code determines whether to show post-intake tabs based on two conditions:
   // 1. hasAddedPiToDataElements is not false.
-  // 2. Either isNextStepsSeenForNonDelegatedFlow is true, or isNextStepsSeenForDelegatedFlow is true.
-  const showPostIntakeTabs =
-    pia?.hasAddedPiToDataElements !== false &&
-    pia?.isNextStepsSeenForNonDelegatedFlow;
+  // 2. Either isNextStepsSeenForNonDelegatedFlow is true
+  const showPostIntakeTabs = (): boolean => {
+    return (
+      pia?.hasAddedPiToDataElements !== false &&
+      (pia?.isNextStepsSeenForNonDelegatedFlow || false)
+    );
+  };
 
   const checkPIANonDelegateFlow = (): boolean => {
     return (
@@ -133,7 +136,7 @@ if it is ++ or -- operater navigate to the previous or next tab
         isEditMode ? routes.PIA_DISCLOSURE_EDIT : routes.PIA_DISCLOSURE_VIEW,
         { id: pia?.id },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         next: {
           condition: true,
@@ -156,7 +159,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         next: {
           condition: true,
@@ -179,7 +182,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         next: {
           condition: true,
@@ -202,7 +205,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         next: {
           condition: true,
@@ -225,7 +228,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         next: {
           condition: true,
@@ -248,7 +251,7 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs(),
       state: {
         ...(userIsAdmin
           ? {
@@ -269,7 +272,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: userIsAdmin && showPostIntakeTabs,
+      enable: userIsAdmin && showPostIntakeTabs(),
     },
     ...(userIsAdmin
       ? [
@@ -282,7 +285,7 @@ if it is ++ or -- operater navigate to the previous or next tab
                 id: pia?.id,
               },
             ),
-            enable: showPostIntakeTabs,
+            enable: showPostIntakeTabs(),
             state: {
               prev: {
                 condition: true,
