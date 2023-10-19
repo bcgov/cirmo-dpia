@@ -1,22 +1,10 @@
 import { useEffect, useState } from 'react';
 import { deepEqual } from '../../../utils/object-comparison.util';
 import { setNestedReactState } from '../../../utils/object-modification.util';
-import { ColumnMetaData, RowData, TabularData } from './interfaces';
+import { RowData, TableProps, TabularData } from './interfaces';
 import { TableViewProps } from './views/table-view-props.interface';
 import { UseTableRowView } from './views/useTableRowView';
 import { UseTableStandardView } from './views/useTableStandardView';
-
-export interface TableProps {
-  columnsMeta: Array<ColumnMetaData>;
-  data?: TabularData;
-  allowRowAdd?: boolean;
-  addRowBtnLabel?: string;
-  allowRowDelete?: boolean;
-  readOnly?: boolean;
-  numberedLabelPrefix?: string;
-  onChangeHandler?: (updatedData: TabularData) => void;
-  format?: 'standard' | 'row';
-}
 
 export const Table = ({
   columnsMeta = [],

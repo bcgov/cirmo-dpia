@@ -14,3 +14,15 @@ export interface ColumnMetaData {
 export type RowData = Record<string, string>;
 
 export type TabularData = Array<RowData>;
+
+export interface TableProps {
+  columnsMeta: Array<ColumnMetaData>;
+  data?: TabularData;
+  allowRowAdd?: boolean;
+  addRowBtnLabel?: string;
+  allowRowDelete?: boolean;
+  readOnly?: boolean;
+  numberedLabelPrefix?: string;
+  onChangeHandler?: (updatedData: TabularData) => void;
+  format?: 'standard' | 'row';
+}
