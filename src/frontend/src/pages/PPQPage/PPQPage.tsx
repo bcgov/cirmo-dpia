@@ -1,18 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-
 import ppqImg from '../../assets/ppq_homepage.svg';
 import piaImg from '../../assets/pia_intake.svg';
-
 import { Link } from 'react-router-dom';
 import messages from './messages';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import { routes } from '../../constant/routes';
 import { useEffect } from 'react';
+import { IComponentProps } from './interfaces';
 
-export interface IComponentProps {
-  showMPOContents: boolean;
-}
 function PPQLandingPage(props: IComponentProps) {
   const { showMPOContents } = props;
   useEffect(() => {
