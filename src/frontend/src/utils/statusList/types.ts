@@ -28,6 +28,7 @@ export type Privileges = {
     changeStatus?: Array<ChangeStatus>;
     banner?: string;
     Pages?: PageAccessControl;
+    showEditButton?: boolean;
     showSubmitButton?: boolean;
     showDropdownMenu?: boolean;
   };

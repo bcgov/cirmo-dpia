@@ -31,7 +31,7 @@ function PIASubHeader({
   const host = window.location.host;
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-
+  console.log('pathname : ' + pathname?.split('/').includes('review'));
   //
   // Modal State
   //
@@ -53,6 +53,7 @@ function PIASubHeader({
     useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
+  const [enableEditButton, setEnableEditButton] = useState<boolean>(false);
 
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
@@ -211,20 +212,50 @@ function PIASubHeader({
     primaryButtonText,
   ]);
 
+  // const showEditButton = () => {
+  //   // we may revisit this part later for standard PIA
+  //   console.log("getUserPrivileges(pia)?.Pages?.showEditButton : "+pia?.review?.mpo);
+  //   if (
+  //     (mode === 'view' &&
+  //       (pia.status === PiaStatuses.FINAL_REVIEW ||
+  //         pia.status === PiaStatuses.COMPLETE ||
+  //         pia.status === PiaStatuses.CPO_REVIEW ||
+  //         (pia.status === PiaStatuses.MPO_REVIEW&&pathname?.split('/').includes('review'))
+  //         )) ||
+  //     nextStepAction ||
+  //     mode === 'edit'
+  //   ){
+  //     return false;
+  //   }
+
+  //   return true;
+  // };
+
   const showEditButton = () => {
-    // we may revisit this part later for standard PIA
+    // This section may need further review for standard PIA
+
+    // Check if the privilege for showing the edit button is available
+    const showEditButtonPrivilege =
+      getUserPrivileges(pia)?.showEditButton || false;
+
+    // Check if the current page is the review page
+    const isReviewPage = pathname?.split('/').includes('review');
+
+    // Determine the conditions for showing or hiding the edit button
     if (
-      (mode === 'view' &&
-        (pia.status === PiaStatuses.FINAL_REVIEW ||
-          pia.status === PiaStatuses.COMPLETE ||
-          pia.status === PiaStatuses.CPO_REVIEW)) ||
+      (mode === 'view' && !showEditButtonPrivilege) ||
+      isReviewPage ||
       nextStepAction ||
       mode === 'edit'
-    )
+    ) {
+      // Hide the edit button
       return false;
-
+    }
+    // Show the edit button
     return true;
   };
+
+  //const privilegeShowEdit= getUserPrivileges(pia)?showEditButton;
   const showSubmitButton = () => {
     return getUserPrivileges(pia)?.showSubmitButton;
   };

@@ -22,6 +22,7 @@ export const editInProgressStatus = () => {
     Privileges: {
       MPO: {
         showSubmitButton: true,
+        showEditButton: true,
         Pages: {
           review: {
             accessControl: true,
@@ -52,6 +53,7 @@ export const editInProgressStatus = () => {
       },
       CPO: {
         showSubmitButton: true,
+        showEditButton: true,
         changeStatus: [
           {
             status: 'MPO_REVIEW',
@@ -70,6 +72,7 @@ export const editInProgressStatus = () => {
       },
       DRAFTER: {
         showSubmitButton: true,
+        showEditButton: true,
         Pages: {
           review: {
             accessControl: false,
