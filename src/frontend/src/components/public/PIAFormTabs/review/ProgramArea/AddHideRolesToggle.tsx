@@ -1,11 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dispatch } from 'react';
-
-type AddHideRolesToggleProps = {
-  setShowAddRolesArea: Dispatch<React.SetStateAction<boolean>>;
-  showAddRolesArea: boolean;
-};
+import { AddHideRolesToggleProps } from '../helpers/types';
 
 export const AddHideRolesToggle = (props: AddHideRolesToggleProps) => {
   const { setShowAddRolesArea, showAddRolesArea } = props;

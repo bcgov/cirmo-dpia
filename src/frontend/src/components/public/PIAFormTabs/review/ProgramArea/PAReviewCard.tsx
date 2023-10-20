@@ -1,15 +1,8 @@
 import { getUserPrivileges } from '../../../../../utils/statusList/common';
-import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { ReviewCard } from '../ReviewCard/ReviewCard';
-import messages from '../messages';
+import messages from '../helpers/messages';
 import { useState } from 'react';
-
-type PAReviewProps = {
-  pia: IPiaForm;
-  printPreview?: boolean;
-  role: string;
-  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
-};
+import { PAReviewProps } from '../helpers/types';
 
 export const ProgramAreaReviewCard = (props: PAReviewProps) => {
   const { pia, printPreview, role, stateChangeHandler } = props;

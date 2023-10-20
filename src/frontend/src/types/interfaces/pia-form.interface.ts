@@ -6,7 +6,7 @@ import { ICollectionUseAndDisclosure } from '../../components/public/PIAFormTabs
 import { IAgreementsAndInformationBanks } from '../../components/public/PIAFormTabs/agreementsAndInformationBanks/helper/IAgreementsInfo-interface';
 import { IStoringPersonalInformation } from '../../components/public/PIAFormTabs/storingPersonalInformation/interfaces';
 import { IPPQ } from '../../components/public/PIAFormTabs/ppq/interfaces';
-import { IReview } from '../../components/public/PIAFormTabs/review/interfaces';
+import { IReview } from '../../components/public/PIAFormTabs/review/helpers/interfaces';
 
 export interface IPiaForm extends IPiaFormIntake {
   id?: number;

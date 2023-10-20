@@ -1,7 +1,7 @@
-import messages from './messages';
+import messages from './helpers/messages';
 import { ApprovalRoles } from '../../../../constant/constant';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { IReview } from './interfaces';
+import { IReview, IPIAReviewProps } from './helpers/interfaces';
 import { isCPORole } from '../../../../utils/user';
 import {
   IPiaFormContext,
@@ -14,11 +14,7 @@ import { MPOReviewSection } from './MPOReviewSection';
 import { CPOReviewSection } from './CPOReviewSection';
 import { ProgramAreaReviewSection } from './PAReviewSection';
 
-export interface IReviewProps {
-  printPreview?: boolean;
-}
-
-const PIAReview = ({ printPreview }: IReviewProps) => {
+const PIAReview = ({ printPreview }: IPIAReviewProps) => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
 

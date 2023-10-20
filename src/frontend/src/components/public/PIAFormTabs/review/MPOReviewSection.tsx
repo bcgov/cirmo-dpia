@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { ReviewCard } from './ReviewCard/ReviewCard';
 import { getUserPrivileges } from '../../../../utils/statusList/common';
 import { getGUID } from '../../../../utils/user';
-import messages from './messages';
-
-interface IMPOReviewProps {
-  pia: IPiaForm;
-  printPreview?: boolean;
-  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
-}
+import { IMPOReviewProps } from './helpers/interfaces';
+import messages from './helpers/messages';
 
 export const MPOReviewSection = (props: IMPOReviewProps) => {
   const { pia, printPreview, stateChangeHandler } = props;

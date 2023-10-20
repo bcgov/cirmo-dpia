@@ -1,10 +1,6 @@
 import { faFileEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dispatch, SetStateAction } from 'react';
-
-type EditReviewButtonProps = {
-  setEditMode: Dispatch<SetStateAction<boolean>>;
-};
+import { EditReviewButtonProps } from '../helpers/types';
 
 export const EditReviewButton = (props: EditReviewButtonProps) => {
   const { setEditMode } = props;

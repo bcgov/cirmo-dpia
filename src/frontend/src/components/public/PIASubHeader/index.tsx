@@ -14,7 +14,7 @@ import { API_ROUTES } from '../../../constant/apiRoutes';
 import Messages from './messages';
 import { getUserPrivileges } from '../../../utils/statusList/common';
 import { statusList } from '../../../utils/statusList/statusList';
-import { IReviewSection } from '../PIAFormTabs/review/interfaces';
+import { IReviewSection } from '../PIAFormTabs/review/helpers/interfaces';
 
 function PIASubHeader({
   pia,

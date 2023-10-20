@@ -1,12 +1,5 @@
 import Checkbox from '../../../../../components/common/Checkbox';
-import { Dispatch, SetStateAction } from 'react';
-
-type IsAcknowledgedCheckboxProps = {
-  isAcknowledged: boolean;
-  checkBoxLabel: string;
-  editMode: boolean;
-  setAcknowledged: Dispatch<SetStateAction<boolean>>;
-};
+import { IsAcknowledgedCheckboxProps } from '../helpers/types';
 
 export const IsAcknowledgedCheckbox = (props: IsAcknowledgedCheckboxProps) => {
   const {
