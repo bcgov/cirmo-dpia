@@ -232,13 +232,7 @@ function PIASubHeader({
   return (
     <div className="subheader-container wrapper">
       <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
-      <div
-        className={
-          nextStepAction
-            ? 'other__elements-nextstep-container'
-            : 'other__elements-container'
-        }
-      >
+      <div className="other__elements-container">
         <div className="mx-1">
           <StatusChangeDropDown
             pia={pia}
