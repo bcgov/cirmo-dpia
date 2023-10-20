@@ -1,5 +1,5 @@
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
-import { PiaValidationMessage } from '..';
+import { PiaValidationMessage } from '../helpers/interfaces';
 import { SetStateAction } from 'react';
 
 export type ValidateFormProps = {
@@ -19,3 +19,11 @@ export type ResetUIProps = {
   setValidationFailedMessage: (value: SetStateAction<string>) => void;
   doc: Document;
 };
+
+export type PiaStateChangeHandlerType = (
+  value: any,
+  key: keyof IPiaForm,
+  isEager?: boolean,
+) => any;
+
+export type PiaFormOpenMode = 'edit' | 'view';

@@ -11,7 +11,6 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
 import { deepEqual } from '../../utils/object-comparison.util';
-import { SupportedAlertTypes } from '../../components/common/Alert/interfaces';
 import { getShortTime } from '../../utils/date';
 import PIASubHeader from '../../components/public/PIASubHeader';
 import PIASideNav from '../../components/public/PIASideNav';
@@ -36,34 +35,8 @@ import { statusList } from '../../utils/statusList/statusList';
 import useAutoSave from '../../utils/autosave';
 import { validateForm } from './utils/validateForm';
 import { highlightInvalidField, resetUI } from './utils/validationUI';
-
-export type PiaStateChangeHandlerType = (
-  value: any,
-  key: keyof IPiaForm,
-  isEager?: boolean,
-) => any;
-
-export type PiaFormOpenMode = 'edit' | 'view';
-
-export interface PiaValidationMessage {
-  piaTitle?: string | null;
-  piaMinistry?: string | null;
-  piaBranch?: string | null;
-  piaInitialDescription?: string | null;
-  ppqProposeDeadline?: string | null;
-  ppqProposeDeadlineReason?: string | null;
-}
-
-export enum PiaFormSubmissionTypeEnum {
-  PI,
-  DELEGATED,
-}
-
-export interface ILastSaveAlterInfo {
-  message: string;
-  type: SupportedAlertTypes;
-  show: boolean;
-}
+import { PiaValidationMessage, ILastSaveAlterInfo } from './helpers/interfaces';
+import { PiaFormOpenMode } from './helpers/types';
 
 const PIAFormPage = () => {
   const navigate = useNavigate();

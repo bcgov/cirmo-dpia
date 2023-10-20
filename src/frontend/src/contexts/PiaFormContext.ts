@@ -1,8 +1,6 @@
 import { createContext } from 'react';
-import {
-  PiaStateChangeHandlerType,
-  PiaValidationMessage,
-} from '../pages/PIAForm';
+import { PiaValidationMessage } from '../pages/PIAForm/helpers/interfaces';
+import { PiaStateChangeHandlerType } from '../pages/PIAForm/helpers/types';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 import { CommentCount } from '../components/common/ViewComment/interfaces';
 import { PiaSections } from '../types/enums/pia-sections.enum';
