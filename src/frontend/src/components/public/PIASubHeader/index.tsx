@@ -31,7 +31,7 @@ function PIASubHeader({
   const host = window.location.host;
 
   const nextStepAction = pathname?.split('/').includes('nextSteps');
-  console.log('pathname : ' + pathname?.split('/').includes('review'));
+
   //
   // Modal State
   //
