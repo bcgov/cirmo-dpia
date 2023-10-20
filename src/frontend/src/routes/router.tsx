@@ -10,7 +10,7 @@ import PIAFormPage from '../pages/PIAForm';
 import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage/PIAIntakeResultsPage';
 import PIAActiveList from '../pages/PIAActiveListPage';
 import PIACompletedList from '../pages/PIACompletedList';
-import PPQConnectPage from '../pages/PPQConnectPage';
+import PPQConnectPage from '../pages/PPQConnectPage/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import StoringPersonalInformation from '../components/public/PIAFormTabs/storingPersonalInformation';

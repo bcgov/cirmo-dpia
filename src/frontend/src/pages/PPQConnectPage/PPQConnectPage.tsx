@@ -1,10 +1,6 @@
-import PPQConnect from '../components/public/PPQConnect';
-import { IPPQResult } from '../types/interfaces/ppq-result.interface';
+import PPQConnect from '../../components/public/PPQConnect';
 import { useLocation } from 'react-router-dom';
-
-interface IPagePropState {
-  result: IPPQResult;
-}
+import { IPagePropState } from './interfaces';
 
 const PPQConnectPage = () => {
   const location = useLocation();
