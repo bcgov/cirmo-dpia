@@ -1,4 +1,4 @@
-import { IBannerStatusProps } from './interfaces';
+import { IBannerStatusProps } from '../helpers/interfaces';
 import Callout from '../../../components/common/Callout';
 import { getUserRole } from '../../../utils/user';
 import { statusList } from '../../../utils/statusList/statusList';
