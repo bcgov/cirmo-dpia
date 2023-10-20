@@ -1,12 +1,4 @@
-import { SetStateAction } from 'react';
-import { PiaValidationMessage } from '..';
-
-type ResetUIProps = {
-  setValidationMessages: (value: SetStateAction<PiaValidationMessage>) => void;
-  setIsValidationFailed: (value: SetStateAction<boolean>) => void;
-  setValidationFailedMessage: (value: SetStateAction<string>) => void;
-  doc: Document;
-};
+import { ResetUIProps } from '../helpers/types';
 
 export const resetUI = (props: ResetUIProps) => {
   const {
