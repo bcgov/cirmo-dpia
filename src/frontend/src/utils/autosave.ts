@@ -67,7 +67,7 @@ const useAutoSave = ({
     } else {
       const autoSaveTimer = setTimeout(() => {
         autoSave();
-      }, 500);
+      }, 1500);
 
       return () => clearTimeout(autoSaveTimer);
     }
