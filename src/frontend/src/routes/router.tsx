@@ -7,7 +7,7 @@ import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
 
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAFormPage from '../pages/PIAForm';
-import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
+import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage/PIAIntakeResultsPage';
 import PIAActiveList from '../pages/PIAActiveListPage';
 import PIACompletedList from '../pages/PIACompletedList';
 import PPQConnectPage from '../pages/PPQConnectPage';

@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import PIAIntakeResults from '../components/public/PIAIntakeResults';
-import { IPiaForm } from '../types/interfaces/pia-form.interface';
+import PIAIntakeResults from '../../components/public/PIAIntakeResults';
+import { IPiaForm } from '../../types/interfaces/pia-form.interface';
 
 interface IPagePropState {
   result: IPiaForm;
