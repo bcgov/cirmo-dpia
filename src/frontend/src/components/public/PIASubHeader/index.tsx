@@ -212,25 +212,6 @@ function PIASubHeader({
     primaryButtonText,
   ]);
 
-  // const showEditButton = () => {
-  //   // we may revisit this part later for standard PIA
-  //   console.log("getUserPrivileges(pia)?.Pages?.showEditButton : "+pia?.review?.mpo);
-  //   if (
-  //     (mode === 'view' &&
-  //       (pia.status === PiaStatuses.FINAL_REVIEW ||
-  //         pia.status === PiaStatuses.COMPLETE ||
-  //         pia.status === PiaStatuses.CPO_REVIEW ||
-  //         (pia.status === PiaStatuses.MPO_REVIEW&&pathname?.split('/').includes('review'))
-  //         )) ||
-  //     nextStepAction ||
-  //     mode === 'edit'
-  //   ){
-  //     return false;
-  //   }
-
-  //   return true;
-  // };
-
   const showEditButton = () => {
     // This section may need further review for standard PIA
 
