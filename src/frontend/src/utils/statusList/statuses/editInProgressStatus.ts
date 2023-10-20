@@ -55,6 +55,7 @@ export const editInProgressStatus = () => {
         showSubmitButton: true,
         Pages: {
           review: {
+            accessControl: false,
             showEditButton: true,
           },
         },

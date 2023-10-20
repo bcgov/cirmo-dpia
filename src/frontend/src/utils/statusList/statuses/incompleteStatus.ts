@@ -25,6 +25,7 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
         showSubmitButton: true,
         Pages: {
           review: {
+            accessControl: false,
             showEditButton: true,
           },
         },
@@ -56,6 +57,7 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
         showSubmitButton: true,
         Pages: {
           review: {
+            accessControl: false,
             showEditButton: true,
           },
         },
