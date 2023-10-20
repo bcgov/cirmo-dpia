@@ -47,7 +47,7 @@ export const PIANextSteps = () => {
           piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
         }
       }
-    }, 1);
+    }, 100);
 
     /* This is to prevent this function being called for every update as
     this is only required to be called once when the component is mounted */
