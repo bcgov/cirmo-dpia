@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/named
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export interface CardArrayProps {

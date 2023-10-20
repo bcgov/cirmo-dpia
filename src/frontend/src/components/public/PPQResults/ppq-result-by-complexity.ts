@@ -3,24 +3,10 @@ import {
   faHandsHelping,
   faFileSignature,
   faFileDownload,
-  // eslint-disable-next-line import/named
-  IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { PiaComplexity } from '../../../types/enums/pia-complexity.enum';
 import PpqResultText from './messages';
-
-interface PpqResultPage {
-  [key: string]: {
-    id: number;
-    icon: IconDefinition;
-    title: string;
-    text: string;
-    button: boolean;
-    buttonText?: string;
-    buttonIcon?: IconDefinition;
-    buttonUrl?: string;
-  };
-}
+import { PpqResultPage } from './interfaces';
 
 const ppqResultTemplate: PpqResultPage = {
   complexity: {
