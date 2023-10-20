@@ -53,7 +53,6 @@ function PIASubHeader({
     useState<boolean>(false);
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
-  const [enableEditButton, setEnableEditButton] = useState<boolean>(false);
 
   const changeStatusFn = (modal: object, status: string) => {
     setModalTitleText(Object(modal).title);
