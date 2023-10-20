@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { IPPQResult } from '../../../types/interfaces/ppq-result.interface';
 import { API_ROUTES } from '../../../constant/apiRoutes';
 import {
   FileDownload,
@@ -12,10 +11,7 @@ import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
 import MDEditor from '@uiw/react-md-editor';
-
-interface IComponentProps {
-  result: IPPQResult;
-}
+import { IComponentProps } from './interfaces';
 
 const PPQConnect = (props: IComponentProps) => {
   const { result } = props;

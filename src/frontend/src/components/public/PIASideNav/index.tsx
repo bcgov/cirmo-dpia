@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../../common/Navbar';
 import { PiaFormSideNavPages } from './pia-form-sideNav-pages';
-import { SideNavProps } from './interface';
+import { SideNavProps } from './interfaces';
 
 const PiaSideNav = ({ pia, isNewForm, isReadOnly }: SideNavProps) => {
   // check if in edit mode, redirect to navigate related links
