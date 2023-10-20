@@ -27,7 +27,7 @@ export type PageParamProperties<P extends Page> = P extends 'review'
   : undefined;
 
 export type ReviewPageParams = {
-  showPrintPreview?: boolean; // Show print preview or show 'Pending Reviw'.
+  showPrintPreview?: boolean; // Show print preview or show 'Pending Review'.
   showProgramAreaReview?: boolean; // Show Program Area review section.
   showMpoReview?: boolean; // Show MPO review section.
   showCpoReview?: boolean; // Show CPO review section.
