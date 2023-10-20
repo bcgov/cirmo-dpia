@@ -216,7 +216,7 @@ function PIASubHeader({
 
     // Check if the privilege for showing the edit button is available
     const showEditButtonPrivilege =
-      getUserPrivileges(pia)?.showEditButton || false;
+      getUserPrivileges(pia)?.Pages?.review.showEditButton || false;
 
     // Check if the current page is the review page
     const isReviewPage = pathname?.split('/').includes('review');

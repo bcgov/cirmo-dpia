@@ -26,10 +26,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
     Privileges: {
       MPO: {
         showSubmitButton: true,
-        showEditButton: true,
         Pages: {
           review: {
             accessControl: true,
+            showEditButton: true,
             params: {
               showProgramAreaReview: true,
               showMpoReview: true,
@@ -66,10 +66,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         ],
       },
       CPO: {
-        showEditButton: true,
         Pages: {
           review: {
             accessControl: true,
+            showEditButton: true,
             params: {
               showProgramAreaReview: true,
               showMpoReview: true,
@@ -96,10 +96,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         ],
       },
       DRAFTER: {
-        showEditButton: true,
         Pages: {
           review: {
             accessControl: false,
+            showEditButton: true,
           },
         },
         changeStatus: [

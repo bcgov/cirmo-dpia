@@ -3,6 +3,7 @@ import { SubmitButtonTextEnum } from '../../constant/constant';
 export type PageAccessControl = {
   [page: string]: {
     accessControl: boolean;
+    showEditButton?: boolean;
     params?: PageParamProperties;
   };
 };
@@ -28,7 +29,6 @@ export type Privileges = {
     changeStatus?: Array<ChangeStatus>;
     banner?: string;
     Pages?: PageAccessControl;
-    showEditButton?: boolean;
     showSubmitButton?: boolean;
     showDropdownMenu?: boolean;
   };
