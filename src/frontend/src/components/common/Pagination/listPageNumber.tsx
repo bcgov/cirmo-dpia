@@ -1,5 +1,5 @@
-import { ListPageNumberProps } from './interfaces';
-import { PaginationDirection } from './enums';
+import { ListPageNumberProps } from './helpers/interfaces';
+import { PaginationDirection } from './helpers/enums';
 import PaginationButton from './button';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 

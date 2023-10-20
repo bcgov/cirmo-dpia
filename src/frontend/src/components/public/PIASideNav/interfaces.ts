@@ -8,6 +8,7 @@
 * The active is used to set the active attribute on the item in the side nav. This is used to highlight 
   the current active item in the side nav.
 */
+import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 
 export interface SideNavAttributes {
   [name: string]: {
@@ -19,4 +20,10 @@ export interface SideNavAttributes {
     active: boolean;
     activeclass: string;
   };
+}
+
+export interface SideNavProps {
+  pia: IPiaForm;
+  isNewForm: boolean;
+  isReadOnly: boolean;
 }

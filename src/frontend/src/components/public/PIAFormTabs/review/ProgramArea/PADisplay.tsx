@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApprovalRoles } from '../../../../../constant/constant';
 
-import messages from '../messages';
-import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
-import { IReview } from '../interfaces';
+import messages from '../helpers/messages';
+import { IDisplayProgramAreaProps } from '../helpers/interfaces';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -12,14 +11,6 @@ import {
 import { useCallback, useContext } from 'react';
 import { getUserPrivilegesByStatus } from '../../../../../utils/statusList/common';
 import { ProgramAreaReviewCard } from './PAReviewCard';
-
-export interface IDisplayProgramAreaProps {
-  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
-  pia: IPiaForm;
-  reviewForm: IReview;
-  mandatoryADM: boolean;
-  printPreview: boolean;
-}
 
 export const ProgramAreaDisplay = (props: IDisplayProgramAreaProps) => {
   const { stateChangeHandler, pia, reviewForm, mandatoryADM, printPreview } =

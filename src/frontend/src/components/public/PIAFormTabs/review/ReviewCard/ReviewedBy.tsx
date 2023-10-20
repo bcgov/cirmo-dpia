@@ -1,7 +1,4 @@
-type ReviewedByProps = {
-  isAcknowledged: boolean;
-  reviewedByDisplayName: string;
-};
+import { ReviewedByProps } from '../helpers/types';
 
 export const ReviewedBy = (props: ReviewedByProps) => {
   const { isAcknowledged, reviewedByDisplayName } = props;

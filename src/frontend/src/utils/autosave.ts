@@ -1,6 +1,6 @@
 import { useEffect, Dispatch, SetStateAction } from 'react';
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
-import { ILastSaveAlterInfo } from '../pages/PIAForm';
+import { ILastSaveAlterInfo } from '../pages/PIAForm/helpers/interfaces';
 
 // Define the type for the `SetState` function
 type SetState<T> = Dispatch<SetStateAction<T>>;

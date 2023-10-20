@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PaginationButtonProps } from './interfaces';
-import { PaginationDirection } from './enums';
+import { PaginationButtonProps } from './helpers/interfaces';
+import { PaginationDirection } from './helpers/enums';
 import { useEffect, useState } from 'react';
 
 const PaginationButton = (props: PaginationButtonProps) => {

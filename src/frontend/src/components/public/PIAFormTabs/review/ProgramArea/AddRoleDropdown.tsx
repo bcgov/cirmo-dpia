@@ -1,14 +1,6 @@
 import Dropdown from '../../../../../components/common/Dropdown';
 import { ApprovalRoles } from '../../../../../constant/constant';
-import { IReview } from '../interfaces';
-import { Dispatch } from 'react';
-
-type AddRoleDropdownProps = {
-  reviewForm: IReview;
-  rolesSelect: string;
-  setRolesSelect: Dispatch<React.SetStateAction<string>>;
-  addRole: (role: string) => void;
-};
+import { AddRoleDropdownProps } from '../helpers/types';
 
 export const AddRoleDropdown = (props: AddRoleDropdownProps) => {
   const { reviewForm, rolesSelect, setRolesSelect, addRole } = props;

@@ -1,21 +1,11 @@
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
-import messages from './messages';
-import { IReview } from './interfaces';
+import messages from './helpers/messages';
 import { useState } from 'react';
 import { getUserPrivileges } from '../../../../utils/statusList/common';
 import { ProgramAreaDisplay } from './ProgramArea/PADisplay';
 import { AddRoleInput } from './ProgramArea/AddRoleInput';
 import { AddRoleDropdown } from './ProgramArea/AddRoleDropdown';
 import { AddHideRolesToggle } from './ProgramArea/AddHideRolesToggle';
-
-interface IPAReviewProps {
-  pia: IPiaForm;
-  printPreview?: boolean;
-  addRole: (role: string) => void;
-  reviewForm: IReview;
-  mandatoryADM: boolean;
-  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
-}
+import { IPAReviewProps } from './helpers/interfaces';
 
 export const ProgramAreaReviewSection = (props: IPAReviewProps) => {
   const {

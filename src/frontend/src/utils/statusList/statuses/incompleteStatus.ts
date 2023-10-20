@@ -9,7 +9,7 @@ import {
   resetReviewEditInPRogressModal,
   submitPiaIntakeModal,
 } from '../modals';
-import { BannerText } from '../../../pages/PIAForm/BannerStatus/messages';
+import { BannerText } from '../../../pages/PIAForm/helpers/messages';
 
 export const incompleteStatus = (pia: IPiaForm | null) => {
   return {

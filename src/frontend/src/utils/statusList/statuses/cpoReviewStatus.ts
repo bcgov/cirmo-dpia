@@ -4,7 +4,7 @@ import {
   defaultEditInProgressModal,
   defaultIncompleteModal,
 } from '../modals';
-import { BannerText } from '../../../pages/PIAForm/BannerStatus/messages';
+import { BannerText } from '../../../pages/PIAForm/helpers/messages';
 
 export const cpoReviewStatus = () => {
   return {

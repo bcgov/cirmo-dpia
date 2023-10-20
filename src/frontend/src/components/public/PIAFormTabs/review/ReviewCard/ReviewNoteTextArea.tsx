@@ -1,14 +1,4 @@
-import { Dispatch, MouseEventHandler, SetStateAction } from 'react';
-
-type ReviewNoteTextAreaProps = {
-  reviewNote: string;
-  setReviewNote: Dispatch<SetStateAction<string>>;
-  onClearClick: MouseEventHandler<HTMLButtonElement>;
-  isAcknowledged: boolean;
-  reviewNoteRequired: boolean;
-  setEditMode: Dispatch<SetStateAction<boolean>>;
-  onConfirmClick: MouseEventHandler<HTMLButtonElement>;
-};
+import { ReviewNoteTextAreaProps } from '../helpers/types';
 
 export const ReviewNoteTextArea = (props: ReviewNoteTextAreaProps) => {
   const {

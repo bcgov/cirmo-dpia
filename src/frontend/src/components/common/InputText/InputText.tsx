@@ -1,38 +1,9 @@
-import {
-  ChangeEventHandler,
-  MouseEventHandler,
-  FocusEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { convertLabelToId } from '../../../utils/helper.util';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputEnum } from '../../../constant/constant';
-import { TextType } from '../../../types/types/text.type';
-
-interface InputTextProps {
-  id?: string;
-  label?: string;
-  helperText?: string;
-  linkText?: string;
-  linkHref?: string;
-  hasIcon?: boolean;
-  type?: TextType;
-  className?: string;
-  value?: string | null;
-  placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onEnter?: MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  required?: boolean;
-  labelSide?: 'top' | 'left';
-  isDisabled?: boolean;
-  readOnly?: boolean;
-  isAccessLink?: boolean;
-  maxLength?: number;
-}
+import { InputTextProps } from './interfaces';
 
 const InputText = ({
   id = '',

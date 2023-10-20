@@ -1,14 +1,8 @@
-import { IPiaForm } from '../../../../types/interfaces/pia-form.interface';
 import { ReviewCard } from './ReviewCard/ReviewCard';
 import { getGUID, isCPORole } from '../../../../utils/user';
-import messages from './messages';
+import messages from './helpers/messages';
 import { CPOSelfReviewCard } from './CPO/CPOSelfReviewCard';
-
-interface ICPOReviewProps {
-  pia: IPiaForm;
-  printPreview?: boolean;
-  stateChangeHandler: (value: any, path: string, callApi?: boolean) => void;
-}
+import { ICPOReviewProps } from './helpers/interfaces';
 
 export const CPOReviewSection = (props: ICPOReviewProps) => {
   const { pia, printPreview, stateChangeHandler } = props;

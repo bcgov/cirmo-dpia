@@ -1,9 +1,5 @@
 import { dateToString } from '../../../../../utils/date';
-
-type DateReviewedProps = {
-  isAcknowledged: boolean;
-  reviewedAtTime: string;
-};
+import { DateReviewedProps } from '../helpers/types';
 
 export const DateReviewed = (props: DateReviewedProps) => {
   const { isAcknowledged, reviewedAtTime } = props;

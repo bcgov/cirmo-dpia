@@ -1,22 +1,9 @@
-import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
-import { PiaValidationMessage } from '..';
-import { SetStateAction } from 'react';
-
-type ValidateFormProps = {
-  pia: IPiaForm;
-  setValidationMessages: (value: SetStateAction<PiaValidationMessage>) => void;
-};
+import { ValidateFormProps, ValidationRule } from '../helpers/types';
 
 export const validateForm = (props: ValidateFormProps) => {
   const { pia, setValidationMessages } = props;
   let isValid = true;
   let formId = '';
-
-  type ValidationRule = {
-    key: keyof IPiaForm;
-    validationKey: string;
-    msg: string;
-  };
 
   const validations: ValidationRule[] = [
     {

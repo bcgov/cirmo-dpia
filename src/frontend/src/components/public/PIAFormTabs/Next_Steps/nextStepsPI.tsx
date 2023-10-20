@@ -1,6 +1,6 @@
 import messages from './helper/messages';
 import Modal from '../../../common/Modal';
-import { IModalObject } from './interfaces';
+import { IModalObject, PIFlow } from './helper/interfaces';
 import { PiaStatuses } from '../../../../constant/constant';
 import { useContext, useState } from 'react';
 import { routes } from '../../../../constant/routes';
@@ -8,10 +8,6 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
-
-interface PIFlow {
-  navigateFn: (url: string) => void;
-}
 
 const NextStepsPI = (navigateFn: PIFlow) => {
   const { pia, piaStateChangeHandler } =

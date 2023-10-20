@@ -1,26 +1,9 @@
-import { Dispatch, MouseEventHandler, SetStateAction } from 'react';
 import { ReviewedBy } from './ReviewedBy';
 import { DateReviewed } from './DateReviewed';
 import { EditReviewButton } from './EditReviewButton';
 import { ReviewNote } from './ReviewNote';
 import { IsAcknowledgedCheckbox } from './IsAcknowledgedCheckbox';
-
-interface IReviewProps {
-  editMode: boolean;
-  setEditMode?: Dispatch<SetStateAction<boolean>>;
-  isAcknowledged: boolean;
-  setAcknowledged?: Dispatch<SetStateAction<boolean>>;
-  reviewNote: string;
-  setReviewNote?: Dispatch<SetStateAction<string>>;
-  role?: string;
-  reviewedAtTime?: string;
-  reviewedByDisplayName?: string;
-  checkBoxLabel: string;
-  canEditReview?: boolean;
-  reviewNoteRequired?: boolean;
-  onConfirmClick?: MouseEventHandler<HTMLButtonElement>;
-  onClearClick?: MouseEventHandler<HTMLButtonElement>;
-}
+import { IReviewProps } from '../helpers/interfaces';
 
 export const ReviewCard = (props: IReviewProps) => {
   const {

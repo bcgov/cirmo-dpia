@@ -1,12 +1,6 @@
-import { Dispatch } from 'react';
 import InputText from '../../../../../components/common/InputText/InputText';
-import messages from '../messages';
-
-type AddRoleInputProps = {
-  rolesInput: string;
-  setRolesInput: Dispatch<React.SetStateAction<string>>;
-  addRole: (role: string) => void;
-};
+import messages from '../helpers/messages';
+import { AddRoleInputProps } from '../helpers/types';
 
 export const AddRoleInput = (props: AddRoleInputProps) => {
   const { rolesInput, setRolesInput, addRole } = props;

@@ -4,13 +4,12 @@ import Unauthorized from '../components/common/Unauthorized';
 import Forbidden from '../components/common/Forbidden';
 import { PIAFormIntake } from '../components/public/PIAFormTabs/intake';
 import { PIANextSteps } from '../components/public/PIAFormTabs/Next_Steps';
-
 import LandingPage from '../pages/LandingPage/LandingPage';
 import PIAFormPage from '../pages/PIAForm';
-import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage';
+import PIAIntakeResultsPage from '../pages/PIAIntakeResultsPage/PIAIntakeResultsPage';
 import PIAActiveList from '../pages/PIAActiveListPage';
 import PIACompletedList from '../pages/PIACompletedList';
-import PPQConnectPage from '../pages/PPQConnectPage';
+import PPQConnectPage from '../pages/PPQConnectPage/PPQConnectPage';
 import PPQFormPage from '../pages/PPQFormPage/PPQFormPage';
 import PPQLandingPage from '../pages/PPQPage/PPQPage';
 import StoringPersonalInformation from '../components/public/PIAFormTabs/storingPersonalInformation';
