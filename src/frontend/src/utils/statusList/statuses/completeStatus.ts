@@ -6,6 +6,7 @@ export const completeStatus = () => {
     class: 'statusBlock__completed',
     modal: defaultCompleteModal,
     comments: false,
+    readOnly: true, // READ ONLY for entire status.
     Privileges: {
       MPO: {
         changeStatus: [],
@@ -18,6 +19,9 @@ export const completeStatus = () => {
               showMpoReview: true,
               showCpoReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },
@@ -32,6 +36,9 @@ export const completeStatus = () => {
               showCpoReview: true,
             },
           },
+          nextSteps: {
+            accessControl: true,
+          },
         },
       },
       DRAFTER: {
@@ -42,6 +49,9 @@ export const completeStatus = () => {
               showPrintPreview: true,
               showProgramAreaReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },

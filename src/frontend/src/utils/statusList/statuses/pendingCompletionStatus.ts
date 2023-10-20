@@ -9,6 +9,7 @@ export const pendingCompletionStatus = () => {
     submitModalType: 'completePIA',
     comments: false,
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
+    readOnly: true, // READ ONLY on entire status.
     Privileges: {
       MPO: {
         changeStatus: [],
@@ -21,6 +22,9 @@ export const pendingCompletionStatus = () => {
               showMpoReview: true,
               showCpoReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },
@@ -35,6 +39,9 @@ export const pendingCompletionStatus = () => {
               showMpoReview: true,
               showCpoReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
         changeStatus: [
@@ -98,6 +105,9 @@ export const pendingCompletionStatus = () => {
               showPrintPreview: true,
               showProgramAreaReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },
