@@ -235,7 +235,6 @@ function PIASubHeader({
     return true;
   };
 
-  //const privilegeShowEdit= getUserPrivileges(pia)?showEditButton;
   const showSubmitButton = () => {
     return getUserPrivileges(pia)?.showSubmitButton;
   };
