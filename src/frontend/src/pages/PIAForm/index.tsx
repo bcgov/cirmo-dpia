@@ -671,6 +671,10 @@ const PIAFormPage = () => {
 
     // Update UI based on validation
     if (!isValid) {
+      setValidationFailedMessage(
+        'PIA cannot be submitted due to missing required fields on the PIA Intake page. Please enter a response to all required fields.',
+      );
+
       highlightInvalidField(formId, document);
       if (event) {
         event.preventDefault();
