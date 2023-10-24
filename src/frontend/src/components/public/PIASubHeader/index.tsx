@@ -226,7 +226,7 @@ function PIASubHeader({
     return true;
   };
   const showSubmitButton = () => {
-    return getUserPrivileges(pia)?.showSubmitButton;
+    return getUserPrivileges(pia)?.showSubmitButton ?? false;
   };
 
   return (
