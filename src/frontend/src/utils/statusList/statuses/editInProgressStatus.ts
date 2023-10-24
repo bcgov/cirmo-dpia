@@ -24,14 +24,11 @@ export const editInProgressStatus = () => {
         showSubmitButton: true,
         Pages: {
           review: {
+            accessControl: false,
+          },
+          nextSteps: {
             accessControl: true,
-            params: {
-              showProgramAreaReview: true,
-              showMpoReview: true,
-              editProgramAreaReviewers: true,
-              editMpoReview: false,
-              editCpoReview: false,
-            },
+            readOnly: true,
           },
         },
         changeStatus: [
@@ -52,6 +49,18 @@ export const editInProgressStatus = () => {
       },
       CPO: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+          ppq: {
+            accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
+          },
+        },
         changeStatus: [
           {
             status: 'MPO_REVIEW',
@@ -73,6 +82,10 @@ export const editInProgressStatus = () => {
         Pages: {
           review: {
             accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
           },
         },
         changeStatus: [

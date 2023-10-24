@@ -4,23 +4,18 @@
  * till the complete feature is implemented we can control what is disaplayed in the side nav
  */
 
-import { isDrafterRole } from '../../../utils/user';
 import { routes } from '../../../constant/routes';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../../utils/path';
 import { INavbarItem } from '../../common/Navbar/interfaces';
-import { useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
-import { reviewAccessControl } from '../PIAFormTabs/review/accessControl';
+import { getUserPrivileges } from '../../../utils/statusList/common';
+import { Page } from '../../../utils/statusList/types';
 
 export const PiaFormSideNavPages = (
   pia: IPiaForm,
   isEditMode = false,
   isNewForm = false,
 ): INavbarItem[] => {
-  const { pathname } = useLocation();
-
-  // This will change once Next Steps tab is implemented
   // This code determines whether to show post-intake tabs based on two conditions:
   // 1. hasAddedPiToDataElements is not false.
   // 2. Either isNextStepsSeenForNonDelegatedFlow is true
@@ -51,16 +46,10 @@ export const PiaFormSideNavPages = (
     }
   };
 
-  const enableReview = (): boolean => reviewAccessControl(pia?.status);
-
-  const checkNextSteps = (): boolean => {
-    if (
-      pathname === buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id })
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  // Does the user have access to the page.
+  const accessControl = (page: Page): boolean => {
+    const pagePrivileges = getUserPrivileges(pia)?.Pages?.[page];
+    return pagePrivileges?.accessControl ?? true; // Default to have access.
   };
 
   const nextStepsNavigation = () => {
@@ -72,27 +61,25 @@ export const PiaFormSideNavPages = (
       return true;
     }
     if (pia?.hasAddedPiToDataElements == false) {
-      return enableReview();
+      return accessControl('review');
     }
   };
 
-  const userIsAdmin = useMemo(() => !isDrafterRole(), []);
-
   /* 
-* if null the states are not used
-if string then the state needs to find the label string
-if it is ++ or -- operater navigate to the previous or next tab
-*/
+  if null the states are not used
+  if string then the state needs to find the label string
+  if it is ++ or -- operater navigate to the previous or next tab
+  */
 
   return [
     {
       id: 1,
       label: 'PIA Intake',
       link: buildDynamicPath(intakeLink, { id: pia?.id }),
-      enable: true, // always show
+      enable: accessControl('intake'),
       state: {
         next: {
-          condition: enableReview(),
+          condition: accessControl('review'),
           action: checkPIANonDelegateFlow() ? NextStepsDefaultPage() : 'Review',
         },
       },
@@ -101,14 +88,16 @@ if it is ++ or -- operater navigate to the previous or next tab
       id: 2,
       label: 'Next steps',
       link: buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id }),
-      enable: checkNextSteps(), // enable them in subsequent tickets
+      enable: accessControl('nextSteps'),
       state: {
         next: {
           condition: nextStepsNavigation(),
           action:
             pia.hasAddedPiToDataElements == false
               ? 'Review'
-              : 'Collection, use and disclosure',
+              : accessControl('collectionUseAndDisclosure')
+              ? 'Collection, use and disclosure'
+              : 'Next steps',
         },
         prev: {
           condition: true,
@@ -127,7 +116,7 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: enableReview(),
+      enable: accessControl('review'),
     },
     {
       id: 5,
@@ -136,11 +125,14 @@ if it is ++ or -- operater navigate to the previous or next tab
         isEditMode ? routes.PIA_DISCLOSURE_EDIT : routes.PIA_DISCLOSURE_VIEW,
         { id: pia?.id },
       ),
-      enable: showPostIntakeTabs(),
+      enable:
+        showPostIntakeTabs() && accessControl('collectionUseAndDisclosure'),
       state: {
         next: {
           condition: true,
-          action: +1,
+          action: accessControl('storingPersonalInformation')
+            ? +1
+            : 'Next steps',
         },
         prev: {
           condition: true,
@@ -159,11 +151,14 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs(),
+      enable:
+        showPostIntakeTabs() && accessControl('storingPersonalInformation'),
       state: {
         next: {
           condition: true,
-          action: +1,
+          action: accessControl('securityOfPersonalInformation')
+            ? +1
+            : 'Next steps',
         },
         prev: {
           condition: true,
@@ -182,11 +177,14 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs(),
+      enable:
+        showPostIntakeTabs() && accessControl('securityOfPersonalInformation'),
       state: {
         next: {
           condition: true,
-          action: +1,
+          action: accessControl('accuracyCorrectionAndRetention')
+            ? +1
+            : 'Next steps',
         },
         prev: {
           condition: true,
@@ -205,11 +203,14 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs(),
+      enable:
+        showPostIntakeTabs() && accessControl('accuracyCorrectionAndRetention'),
       state: {
         next: {
           condition: true,
-          action: +1,
+          action: accessControl('agreementsAndInformationBanks')
+            ? +1
+            : 'Next steps',
         },
         prev: {
           condition: true,
@@ -228,11 +229,12 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs(),
+      enable:
+        showPostIntakeTabs() && accessControl('agreementsAndInformationBanks'),
       state: {
         next: {
           condition: true,
-          action: +1,
+          action: accessControl('additionalRisks') ? +1 : 'Next steps',
         },
         prev: {
           condition: true,
@@ -251,16 +253,14 @@ if it is ++ or -- operater navigate to the previous or next tab
           id: pia?.id,
         },
       ),
-      enable: showPostIntakeTabs(),
+      enable: showPostIntakeTabs() && accessControl('additionalRisks'),
       state: {
-        ...(userIsAdmin
-          ? {
-              next: {
-                condition: true,
-                action: 'PIA Pathway Questionnaire',
-              },
-            }
-          : {}),
+        next: {
+          condition: true,
+          action: accessControl('ppq')
+            ? 'PIA Pathway Questionnaire'
+            : 'Next steps',
+        },
         prev: {
           condition: true,
           action: -1,
@@ -272,40 +272,38 @@ if it is ++ or -- operater navigate to the previous or next tab
       isDivider: true, // divider
       label: '',
       link: '',
-      enable: userIsAdmin && showPostIntakeTabs(),
+      enable:
+        (accessControl('ppq') || accessControl('review')) &&
+        showPostIntakeTabs(),
     },
-    ...(userIsAdmin
-      ? [
-          {
-            id: 12,
-            label: 'PIA Pathway Questionnaire',
-            link: buildDynamicPath(
-              isEditMode ? routes.PIA_PPQ_EDIT : routes.PIA_PPQ_VIEW,
-              {
-                id: pia?.id,
-              },
-            ),
-            enable: showPostIntakeTabs(),
-            state: {
-              prev: {
-                condition: true,
-                action: 'Additional risks',
-              },
-              next: {
-                condition: true,
-                action: +1,
-              },
-            },
-          },
-        ]
-      : []),
+    {
+      id: 12,
+      label: 'PIA Pathway Questionnaire',
+      link: buildDynamicPath(
+        isEditMode ? routes.PIA_PPQ_EDIT : routes.PIA_PPQ_VIEW,
+        {
+          id: pia?.id,
+        },
+      ),
+      enable: showPostIntakeTabs() && accessControl('ppq'),
+      state: {
+        prev: {
+          condition: true,
+          action: 'Additional risks',
+        },
+        next: {
+          condition: true,
+          action: accessControl('review') ? +1 : 'Next steps',
+        },
+      },
+    },
     {
       id: 13,
       label: 'Review',
       link: buildDynamicPath(routes.PIA_REVIEW, {
         id: pia?.id,
       }),
-      enable: enableReview(),
+      enable: accessControl('review'),
       state: {
         prev: {
           condition: true,

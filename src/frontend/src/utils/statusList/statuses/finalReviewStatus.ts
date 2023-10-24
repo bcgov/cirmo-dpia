@@ -12,6 +12,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
     modal: defaultFinalReviewModal,
     submitModalType: 'SubmitForPendingCompletion',
     finalReviewCompleted: finalReviewCompleted(pia),
+    readOnly: true, // READ ONLY for entire status.
     Privileges: {
       MPO: {
         showSubmitButton: true,
@@ -25,6 +26,9 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
               showCpoReview: true,
               editProgramAreaReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
         changeStatus: [
@@ -72,6 +76,12 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
               showCpoReview: true,
               editProgramAreaReview: true,
             },
+          },
+          ppq: {
+            accessControl: true,
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
         changeStatus: [
@@ -128,6 +138,9 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
               showCpoReview: true,
               editProgramAreaReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },

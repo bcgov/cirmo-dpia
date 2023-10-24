@@ -29,6 +29,7 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         Pages: {
           review: {
             accessControl: true,
+            readOnly: true,
             params: {
               showProgramAreaReview: true,
               showMpoReview: true,
@@ -36,6 +37,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
               editMpoReview: true,
               editCpoReview: false,
             },
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
           },
         },
         changeStatus: [
@@ -68,10 +73,19 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         Pages: {
           review: {
             accessControl: true,
+            readOnly: true,
             params: {
               showProgramAreaReview: true,
               showMpoReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
+          },
+          ppq: {
+            accessControl: true,
+            readOnly: true,
           },
         },
         changeStatus: [
@@ -97,6 +111,11 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         Pages: {
           review: {
             accessControl: false,
+            readOnly: true,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
           },
         },
         changeStatus: [

@@ -159,7 +159,7 @@ const PIAFormPage = () => {
       setIsFirstSave(false);
       if (!pia?.id) {
         navigate(
-          buildDynamicPath(pathname.replace('view', 'edit'), {
+          buildDynamicPath(pathname.replace('/view', '/edit'), {
             id: updatedPia.id,
           }),
         );
@@ -440,7 +440,7 @@ const PIAFormPage = () => {
       handleShowModal('edit');
     } else {
       navigate(
-        buildDynamicPath(pathname.replace('view', 'edit'), { id: pia.id }),
+        buildDynamicPath(pathname.replace('/view', '/edit'), { id: pia.id }),
         {
           state: pia,
         },
@@ -475,7 +475,7 @@ const PIAFormPage = () => {
         (status === PiaStatuses.EDIT_IN_PROGRESS ||
           status === PiaStatuses.INCOMPLETE)
       ) {
-        navigate(pathname.replace('review', 'intake'), { replace: true });
+        navigate(pathname.replace('/review', '/intake'), { replace: true });
       }
     } catch (err: any) {
       setMessage(err.message || 'Something went wrong. Please try again.');
@@ -537,12 +537,12 @@ const PIAFormPage = () => {
               ? PiaStatuses.EDIT_IN_PROGRESS
               : pia?.status,
         });
-        navigate(pathname.replace('view', 'edit'));
+        navigate(pathname.replace('/view', '/edit'));
       } else if (buttonValue === 'save') {
         const newPia = await upsertAndUpdatePia();
         if (newPia?.id) {
           navigate(
-            buildDynamicPath(pathname.replace('edit', 'view'), {
+            buildDynamicPath(pathname.replace('/edit', '/view'), {
               id: pia.id,
             }),
           );
@@ -607,7 +607,7 @@ const PIAFormPage = () => {
         }
 
         navigate(
-          buildDynamicPath(pathname.replace('view', 'edit'), {
+          buildDynamicPath(pathname.replace('/view', '/edit'), {
             id: updatedPia.id,
           }),
         );
@@ -746,7 +746,7 @@ const PIAFormPage = () => {
       pathname?.split('/').includes('edit')
     ) {
       // change edit to view
-      pathname?.replace('edit', 'view');
+      pathname?.replace('/edit', '/view');
       setFormReadOnly(true);
     }
   }, [pia?.status, id, pathname]);

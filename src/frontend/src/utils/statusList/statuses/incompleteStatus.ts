@@ -23,6 +23,15 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
       MPO: {
         banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
+          },
+        },
         changeStatus: [
           {
             status: 'EDIT_IN_PROGRESS',
@@ -49,6 +58,18 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
       },
       CPO: {
         showSubmitButton: true,
+        Pages: {
+          review: {
+            accessControl: false,
+          },
+          ppq: {
+            accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
+          },
+        },
         changeStatus: [
           {
             status: 'MPO_REVIEW',
@@ -76,6 +97,10 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
         Pages: {
           review: {
             accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
+            readOnly: true,
           },
         },
         changeStatus: [

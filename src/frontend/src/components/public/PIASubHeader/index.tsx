@@ -15,6 +15,7 @@ import Messages from './messages';
 import { getUserPrivileges } from '../../../utils/statusList/common';
 import { statusList } from '../../../utils/statusList/statusList';
 import { IReviewSection } from '../PIAFormTabs/review/helpers/interfaces';
+import { Page } from '../../../utils/statusList/types';
 
 function PIASubHeader({
   pia,
@@ -212,19 +213,20 @@ function PIASubHeader({
   ]);
 
   const showEditButton = () => {
-    // we may revisit this part later for standard PIA
-    if (
-      (mode === 'view' &&
-        (pia.status === PiaStatuses.FINAL_REVIEW ||
-          pia.status === PiaStatuses.COMPLETE ||
-          pia.status === PiaStatuses.CPO_REVIEW)) ||
-      nextStepAction ||
-      mode === 'edit'
-    )
-      return false;
+    const currentPage = window.location.pathname.split('/')[3];
+    const pagePrivileges = getUserPrivileges(pia)?.Pages?.[currentPage as Page];
+
+    // Read only mode for entire status.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const statusReadOnly = statusList(pia)?.[pia.status!]?.readOnly ?? false;
+    // Read only mode for current page.
+    const pageReadOnly = pagePrivileges?.readOnly ?? false;
+
+    if (statusReadOnly || pageReadOnly || mode === 'edit') return false;
 
     return true;
   };
+
   const showSubmitButton = () => {
     return getUserPrivileges(pia)?.showSubmitButton ?? false;
   };

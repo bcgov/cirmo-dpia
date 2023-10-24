@@ -15,6 +15,7 @@ export const cpoReviewStatus = () => {
     buttonText: SubmitButtonTextEnum.FINISH_REVIEW,
     modal: defaultCPOReviewModal,
     submitModalType: 'SubmitForFinalReview',
+    readOnly: true, // READ ONLY for entire status.
     Privileges: {
       MPO: {
         banner: BannerText.CPOReviewStatusCalloutText.MPO.en,
@@ -27,6 +28,9 @@ export const cpoReviewStatus = () => {
               showMpoReview: true,
               showCpoReview: true,
             },
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },
@@ -43,6 +47,12 @@ export const cpoReviewStatus = () => {
               editMpoReview: false,
               editCpoReview: true,
             },
+          },
+          ppq: {
+            accessControl: true,
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
         changeStatus: [
@@ -70,6 +80,9 @@ export const cpoReviewStatus = () => {
         Pages: {
           review: {
             accessControl: false,
+          },
+          nextSteps: {
+            accessControl: true,
           },
         },
       },

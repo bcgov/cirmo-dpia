@@ -1,25 +1,43 @@
 import { SubmitButtonTextEnum } from '../../constant/constant';
 
-export type PageAccessControl = {
-  [page: string]: {
-    accessControl: boolean;
-    params?: PageParamProperties;
-  };
+// Page corresponds with the url route.
+export type Page =
+  | 'intake'
+  | 'nextSteps'
+  | 'collectionUseAndDisclosure'
+  | 'storingPersonalInformation'
+  | 'securityOfPersonalInformation'
+  | 'accuracyCorrectionAndRetention'
+  | 'agreementsAndInformationBanks'
+  | 'additionalRisks'
+  | 'review'
+  | 'ppq';
+
+export type PageProperties = {
+  accessControl: boolean; // If page can be accessed.
+  readOnly?: boolean; // Don't allow editing (except special cases like Review page)
+  params?: PageParamProperties<Page>;
+};
+
+export type Pages = {
+  [page in Page]?: PageProperties;
 };
 
 // Add page param interfaces for each page.
-export type PageParamProperties = ReviewPageParams;
+export type PageParamProperties<P extends Page> = P extends 'review'
+  ? ReviewPageParams
+  : undefined;
 
-export interface ReviewPageParams {
-  showPrintPreview?: boolean;
-  showProgramAreaReview?: boolean;
-  showMpoReview?: boolean;
-  showCpoReview?: boolean;
-  editProgramAreaReviewers?: boolean;
-  editMpoReview?: boolean;
-  editCpoReview?: boolean;
-  editProgramAreaReview?: boolean;
-}
+export type ReviewPageParams = {
+  showPrintPreview?: boolean; // Show print preview or show 'Pending Review'.
+  showProgramAreaReview?: boolean; // Show Program Area review section.
+  showMpoReview?: boolean; // Show MPO review section.
+  showCpoReview?: boolean; // Show CPO review section.
+  editProgramAreaReviewers?: boolean; // Adding and deleting of program area roles.
+  editMpoReview?: boolean; // Edit MPO review card.
+  editCpoReview?: boolean; // Edit CPO review card.
+  editProgramAreaReview?: boolean; // Edit Program Area review card.
+};
 
 export type UserRole = 'MPO' | 'CPO' | 'DRAFTER';
 
@@ -27,7 +45,7 @@ export type Privileges = {
   [role in UserRole]?: {
     changeStatus?: Array<ChangeStatus>;
     banner?: string;
-    Pages?: PageAccessControl;
+    Pages?: Pages;
     showSubmitButton?: boolean;
     showDropdownMenu?: boolean;
   };
@@ -55,11 +73,9 @@ export interface StatusList {
     modal: Modal;
     submitModalType?: string;
     Privileges: Privileges;
-    Pages?: PageAccessControl;
     finalReviewCompleted?: boolean;
     comments: boolean;
-    showCPOReview?: boolean;
-    showMPOReview?: boolean;
+    readOnly?: boolean;
   };
 }
 
