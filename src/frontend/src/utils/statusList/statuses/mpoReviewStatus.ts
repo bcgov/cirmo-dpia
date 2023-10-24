@@ -117,6 +117,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
             accessControl: true,
             readOnly: true,
           },
+          ppq: {
+            accessControl: true,
+            readOnly: true,
+          },
         },
         changeStatus: [
           {
