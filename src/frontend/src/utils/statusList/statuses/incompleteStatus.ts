@@ -102,6 +102,9 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
             accessControl: true,
             readOnly: true,
           },
+          ppq: {
+            accessControl: false,
+          },
         },
         changeStatus: [
           // Added for submitModal scenarios; dropdown display is irrelevant.

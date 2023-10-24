@@ -84,6 +84,10 @@ export const cpoReviewStatus = () => {
           nextSteps: {
             accessControl: true,
           },
+          ppq: {
+            accessControl: true,
+            readOnly: true,
+          },
         },
       },
     },
