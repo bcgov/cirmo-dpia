@@ -1,9 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEnvelope,
+  faUser,
+  faUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import hypothesis from '../../assets/public_homepage/hypothesis.svg';
 import vision from '../../assets/public_homepage/vision.svg';
 import problem from '../../assets/public_homepage/problem.svg';
 import Callout from '../../components/common/Callout';
+import Messages from './messages';
 import { Link } from 'react-router-dom';
 import hero from '../../assets/public_homepage/hero.svg';
 import { isAuthenticated, login } from '../../utils/auth';
@@ -14,13 +19,31 @@ function LandingPage() {
       <section className="hero-section wrapper">
         <div data-cy="landing" className="hero-content">
           <img className="d-xxl-none" src={hero} alt="Fill out PIA" />
-          <h1>Digital Privacy Impact Assessment (DPIA)</h1>
+          <h1>{Messages.PageTitle.en}</h1>
           <p>
-            The Government of BC is creating a flagship Digital Privacy Impact
-            Assessment (DPIA). This project will leverage service design
-            findings to build a novel product that reimagines the Privacy Impact
-            Assessment (PIA) tools to support streamlined business processes and
-            improved user experience.
+            {Messages.PageDescriptionParagraphOne.PartOne.en}
+            <a
+              href={Messages.PageDescriptionParagraphOne.LinkHref.en}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {Messages.PageDescriptionParagraphOne.LinkText.en}
+              <FontAwesomeIcon icon={faUpRightFromSquare} />
+            </a>
+            {Messages.PageDescriptionParagraphOne.PartTwo.en}
+          </p>
+          <br />
+          <p>
+            {Messages.PageDescriptionParagraphTwo.PartOne.en}
+            <a
+              href={Messages.PageDescriptionParagraphTwo.LinkHref.en}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {Messages.PageDescriptionParagraphTwo.LinkText.en}
+              <FontAwesomeIcon icon={faUpRightFromSquare} />
+            </a>
+            {Messages.PageDescriptionParagraphTwo.PartTwo.en}
           </p>
           <div data-cy="contact-btn" className="ctas">
             {!isAuthenticated() && (
@@ -28,13 +51,13 @@ function LandingPage() {
                 className="bcgovbtn bcgovbtn__primary"
                 onClick={() => login()}
               >
-                Log in with IDIR
+                {Messages.Authenticated.No.Text.en}
                 <FontAwesomeIcon className="icon" icon={faUser} />
               </button>
             )}
             {isAuthenticated() && (
               <Link className="bcgovbtn bcgovbtn__primary" to="/pia">
-                Access App
+                {Messages.Authenticated.Yes.Text.en}
               </Link>
             )}
             <a
@@ -42,64 +65,47 @@ function LandingPage() {
               data-cy="email"
               className="bcgovbtn bcgovbtn__secondary"
             >
-              Contact <FontAwesomeIcon className="icon" icon={faEnvelope} />
+              {Messages.Contact.Text.en}{' '}
+              <FontAwesomeIcon className="icon" icon={faEnvelope} />
             </a>
           </div>
         </div>
       </section>
       <section className="what-is-a-pia">
-        <h2>What is a Privacy Impact Assessment</h2>
-        <p>
-          A PIA is a step-by-step review process to make sure you protect the
-          personal information you collect, use or disclose in your project.
-          Doing a PIA can help protect privacy and build public trust by being
-          clear about what information government is collecting, who has access
-          to it, and where and how it’s stored.
-        </p>
-        <a href="https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/privacy-impact-assessmentS">
-          Learn about the current PIA process
+        <h2>{Messages.WhatIsAPia.Title.en}</h2>
+        <p>{Messages.WhatIsAPia.Description.en}</p>
+        <a
+          href={Messages.WhatIsAPia.LinkHref.en}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {Messages.WhatIsAPia.LinkText.en}
+          <FontAwesomeIcon icon={faUpRightFromSquare} />
         </a>
       </section>
       <section className="landing-page-callout-container">
-        <Callout text="These are draft statements and may change and evolve with feedback from interested parties." />
+        <Callout text={Messages.Callout.Text.en} />
       </section>
       <section className="info-section wrapper">
         <div className="problem-subsec">
           <img src={problem} alt="Web Search" />
           <div className="info-subsec-text">
-            <h2>Problem</h2>
-            <p>
-              The Corporate Privacy Office (CPO) has the mandate to review all
-              PIAs for BC government ministries. The CPO has seen a 686%
-              increase in PIAs submitted for review in within a 10 year period.
-              While the increase in volume is exponential, the statistics do not
-              reflect the pressures that result from increased complexity of PIA
-              submissions.{' '}
-            </p>
+            <h2>{Messages.Problem.Title.en}</h2>
+            <p>{Messages.Problem.Description.en}</p>
           </div>
         </div>
         <div className="hypothesis-subsec">
           <img src={hypothesis} alt="New Ideas" />
           <div className="info-subsec-text">
-            <h2>Hypothesis</h2>
-            <p>
-              The DPIA will alleviate unsustainable workload pressures, connect
-              siloed information, support innovation, reduce repetition in the
-              PIA process and enable compliance with legislated PIA
-              requirements.
-            </p>
+            <h2>{Messages.Hypothesis.Title.en}</h2>
+            <p>{Messages.Hypothesis.Description.en}</p>
           </div>
         </div>
         <div className="vision-subsec">
           <img src={vision} alt="Shared Goals" />
           <div className="info-subsec-text">
-            <h2>Vision</h2>
-            <p>
-              The DPIA will be an integrated, guided, online tool for the for
-              anyone working in a BC ministry that needs to complete a PIA.
-              Digitizing the PIA will create a streamlined experience that
-              enables a culture of privacy and innovation.
-            </p>
+            <h2>{Messages.Vision.Title.en}</h2>
+            <p>{Messages.Vision.Description.en}</p>
           </div>
         </div>
       </section>

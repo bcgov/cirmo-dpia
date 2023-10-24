@@ -29,10 +29,6 @@
     align-items: end;
     justify-content: flex-end;
   }
-
-  .other__elements-nextstep-container {
-    display: flex;
-  }
 }
 
 .subheader {
@@ -42,8 +38,4 @@
   max-width: 80%;
   list-style: none;
   margin-bottom: 0;
-
-  & :first-child {
-    // padding-left: 0;
-  }
 }
