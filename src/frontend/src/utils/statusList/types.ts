@@ -14,11 +14,13 @@ export type Page =
   | 'ppq';
 
 export type PageProperties = {
-  [page in Page]: {
-    accessControl: boolean; // If page can be accessed.
-    readOnly?: boolean; // Don't allow editing (except special cases like Review page)
-    params?: PageParamProperties<page>;
-  };
+  accessControl: boolean; // If page can be accessed.
+  readOnly?: boolean; // Don't allow editing (except special cases like Review page)
+  params?: PageParamProperties<Page>;
+};
+
+export type Pages = {
+  [page in Page]?: PageProperties;
 };
 
 // Add page param interfaces for each page.
@@ -43,7 +45,7 @@ export type Privileges = {
   [role in UserRole]?: {
     changeStatus?: Array<ChangeStatus>;
     banner?: string;
-    Pages?: PageProperties;
+    Pages?: Pages;
     showSubmitButton?: boolean;
     showDropdownMenu?: boolean;
   };
