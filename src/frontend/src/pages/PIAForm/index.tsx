@@ -626,6 +626,7 @@ const PIAFormPage = () => {
   //
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    upsertAndUpdatePia();
 
     if (
       (pia?.isNextStepsSeenForDelegatedFlow === false &&
