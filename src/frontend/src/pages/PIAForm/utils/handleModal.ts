@@ -24,67 +24,49 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
   const [piaModalButtonValue, setPiaModalButtonValue] = useState('');
 
   const populateModalFn = (modal: object) => {
-    setPiaModalTitleText(Object(modal).title);
-    setPiaModalParagraph(Object(modal).description);
-    setPiaModalConfirmLabel(Object(modal).confirmLabel);
-    setPiaModalCancelLabel(Object(modal).cancelLabel);
+    const { title, description, confirmLabel, cancelLabel } = Object(modal);
+    setPiaModalTitleText(title);
+    setPiaModalParagraph(description);
+    setPiaModalConfirmLabel(confirmLabel);
+    setPiaModalCancelLabel(cancelLabel);
   };
 
   const handleShowModal = (modalType: string, conflictUser = '') => {
+    const statusMap: Record<string, string> = {
+      edit: PiaStatuses.EDIT_IN_PROGRESS,
+      submitPiaForm: PiaStatuses.MPO_REVIEW,
+      SubmitForCPOReview: PiaStatuses.CPO_REVIEW,
+      SubmitForFinalReview: PiaStatuses.FINAL_REVIEW,
+      SubmitForPendingCompletion: PiaStatuses.PENDING_COMPLETION,
+      completePIA: PiaStatuses.COMPLETE,
+    };
+
+    const shouldUseFalseFlag = ['edit', 'conflict', 'autoSaveFailed'].includes(
+      modalType,
+    );
+
     switch (modalType) {
-      case 'edit': {
-        /* Using the state table, we can determine which modal to show based on the status of the PIA
-          This will keep the modal text in one place and allow for easy updates in the future
-          and will make the whole app consistent.
-        */
+      case 'edit':
+      case 'submitPiaForm':
+      case 'SubmitForCPOReview':
+      case 'SubmitForFinalReview':
+      case 'SubmitForPendingCompletion':
+      case 'completePIA': {
         PopulateModal(
           pia,
-          PiaStatuses.EDIT_IN_PROGRESS,
+          statusMap[modalType],
           populateModalFn,
-          false,
+          !shouldUseFalseFlag,
         );
         setPiaModalButtonValue(modalType);
         break;
       }
       case 'submitPiaIntake': {
-        PopulateModal(
-          pia,
+        const status =
           pia?.hasAddedPiToDataElements === false
             ? PiaStatuses.MPO_REVIEW
-            : PiaStatuses.INCOMPLETE,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'submitPiaForm': {
-        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue('submitPiaForm');
-        break;
-      }
-      case 'SubmitForCPOReview': {
-        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForFinalReview': {
-        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForPendingCompletion': {
-        PopulateModal(
-          pia,
-          PiaStatuses.PENDING_COMPLETION,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'completePIA': {
-        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, true);
+            : PiaStatuses.INCOMPLETE;
+        PopulateModal(pia, status, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
       }
@@ -113,7 +95,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         break;
       }
       default: {
-        break;
+        return;
       }
     }
     setShowPiaModal(true);
