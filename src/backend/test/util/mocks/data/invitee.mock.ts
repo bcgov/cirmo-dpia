@@ -22,8 +22,6 @@ const pia = {
   saveId: 1,
   submittedAt: new Date(),
   isActive: true,
-  isNextStepsSeenForDelegatedFlow: false,
-  isNextStepsSeenForNonDelegatedFlow: false,
 } as PiaIntakeEntity;
 
 export const inviteeEntityMock: InviteeEntity = {

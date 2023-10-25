@@ -47,8 +47,6 @@ const PIAFormPage = () => {
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
-    isNextStepsSeenForDelegatedFlow: false,
-    isNextStepsSeenForNonDelegatedFlow: false,
   };
   const [stalePia, setStalePia] = useState(emptyState);
   const [pia, setPia] = useState(emptyState);
@@ -79,7 +77,6 @@ const PIAFormPage = () => {
     useState(0);
 
   // State related to Intake and Validation
-  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState(false);
   const [validationMessages, setValidationMessages] =
     useState<PiaValidationMessage>({});
   const [submitButtonText, setSubmitButtonText] = useState(
@@ -258,18 +255,6 @@ const PIAFormPage = () => {
   const commentChangeHandler = () => {
     getCommentCount();
   };
-
-  useEffect(() => {
-    if (
-      pia?.isNextStepsSeenForDelegatedFlow ||
-      pia?.isNextStepsSeenForNonDelegatedFlow
-    ) {
-      setIsIntakeSubmitted(true);
-    }
-  }, [
-    pia?.isNextStepsSeenForDelegatedFlow,
-    pia?.isNextStepsSeenForNonDelegatedFlow,
-  ]);
 
   useEffect(
     () =>
@@ -498,12 +483,12 @@ const PIAFormPage = () => {
         });
         if (
           (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
             (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value || //  key: "yes", value: true
-              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) || //  key: "I'm not sure", value: null
+              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value) &&
+            !window.location.pathname.includes('new/intake')) || //  key: "I'm not sure", value: null
           (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForDelegatedFlow === true &&
-            updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
+            updatedPia?.hasAddedPiToDataElements === PIOptions[1].value &&
+            !window.location.pathname.includes('new/intake'))
         ) {
           navigate(
             buildDynamicPath(routes.PIA_VIEW, {
@@ -628,11 +613,7 @@ const PIAFormPage = () => {
     event.preventDefault();
     await upsertAndUpdatePia();
 
-    if (
-      (pia?.isNextStepsSeenForDelegatedFlow === false &&
-        pia?.isNextStepsSeenForNonDelegatedFlow === false) ||
-      !pia.status
-    ) {
+    if (!pia.status || window.location.pathname.includes('new/intake')) {
       handleShowModal('submitPiaIntake');
     } else {
       handleShowModal(
@@ -847,11 +828,7 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            <PIANavButton
-              pages={pages}
-              isIntakeSubmitted={isIntakeSubmitted}
-              isDelegate={pia.hasAddedPiToDataElements === false}
-            />
+            <PIANavButton pages={pages} />
           </section>
           <div
             className={`container__side--form bg-white ms-3 justify-self-start position-fixed overflow-y-scroll pe-4 ${

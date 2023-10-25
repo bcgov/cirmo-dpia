@@ -107,8 +107,6 @@ export const piaStatusMetadata: Partial<
       overrides: {
         pia: {
           review: true,
-          isNextStepsSeenForDelegatedFlow: true,
-          isNextStepsSeenForNonDelegatedFlow: true,
         },
         comment: {
           add: true,

@@ -50,18 +50,6 @@ export const PIAFormIntake = () => {
         ? null
         : false;
     stateChangeHandler(value, 'hasAddedPiToDataElements');
-
-    // Ensure that the NextSteps page is seen every time the user switches from a delegated to a non-delegated flow and vice versa
-    const hasAddedPiToDataElements = pia?.hasAddedPiToDataElements;
-    if (
-      ((hasAddedPiToDataElements === true ||
-        hasAddedPiToDataElements === null) &&
-        value === false) ||
-      (hasAddedPiToDataElements === false && (value === true || value === null))
-    ) {
-      piaStateChangeHandler(false, 'isNextStepsSeenForNonDelegatedFlow');
-      piaStateChangeHandler(false, 'isNextStepsSeenForDelegatedFlow');
-    }
   };
 
   return (

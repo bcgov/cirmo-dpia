@@ -17,7 +17,3 @@ export interface IModalObject {
     statusChange: PiaStatuses;
   };
 }
-
-export interface PIFlow {
-  navigateFn: (url: string) => void;
-}
