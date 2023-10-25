@@ -15,15 +15,18 @@ import { PiaStatuses } from '../constant/constant';
 import useHandleModal from '../pages/PIAForm/utils/handleModal';
 
 const useAutoSave = () => {
-  // Define the state variables
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
+
+  // Define initial state
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
+
+  // Define state variables
   const [pia, setPia] = useState(emptyState);
   const [stalePia, setStalePia] = useState(emptyState);
   const [isEagerSave, setIsEagerSave] = useState(false);
@@ -31,7 +34,7 @@ const useAutoSave = () => {
   const [isFirstSave, setIsFirstSave] = useState(true);
   const [isValidationFailed, setIsValidationFailed] = useState(false);
   const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
-    useState<boolean>(false);
+    useState(false);
   const [lastSaveAlertInfo, setLastSaveAlertInfo] =
     useState<ILastSaveAlterInfo>({
       message: '',
@@ -39,44 +42,40 @@ const useAutoSave = () => {
       show: false,
     });
 
-  const { sendSnowplowStatusChangeCall } = useSnowPlow({
-    pia,
-  });
+  // Initialize Snowplow tracking
+  const { sendSnowplowStatusChangeCall } = useSnowPlow({ pia });
 
-  // Define the `hasFormChanged` function
-  const hasFormChanged = useCallback(() => {
-    return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
-  }, [pia, stalePia]);
+  // Check if form has changed
+  const hasFormChanged = useCallback(
+    () => !deepEqual(stalePia, pia, ['updatedAt', 'saveId']),
+    [pia, stalePia],
+  );
 
-  // Define the `upsertAndUpdatePia` function
+  // Upsert and update PIA form
   const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
     const hasExplicitChanges = Object.keys(changes).length > 0;
-
     if (!hasExplicitChanges && !hasFormChanged()) return pia;
 
-    // Notify snowplow if status changed
     if (changes.status !== undefined && pia.status !== changes.status) {
       sendSnowplowStatusChangeCall(true);
     }
 
-    // Perform the HTTP request
     const apiUrl = pia?.id
       ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
       : API_ROUTES.PIA_INTAKE;
     const requestData = { ...pia, ...changes };
-
     const updatedPia = pia?.id
       ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
       : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
 
-    // Update last saved alert info
+    // Show success message
     setLastSaveAlertInfo({
       type: 'success',
       message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
       show: true,
     });
 
-    // Handle first-time save
+    // Update stale PIA form
     if (isFirstSave) {
       setStalePia(updatedPia);
       setIsFirstSave(false);
@@ -91,7 +90,7 @@ const useAutoSave = () => {
       setStalePia(pia);
     }
 
-    // Update the state and reset flags
+    // Update PIA form and reset state variables
     setPia(updatedPia);
     setIsAutoSaveFailedPopupShown(false);
     setIsConflict(false);
@@ -99,8 +98,10 @@ const useAutoSave = () => {
     return updatedPia;
   };
 
+  // Handle modals
   const { handleShowModal } = useHandleModal({ pia, upsertAndUpdatePia });
 
+  // Fetch and update PIA form
   const fetchAndUpdatePia = async (piaId: string) => {
     const currentPia = pia;
     const updatedPia = (
@@ -109,9 +110,7 @@ const useAutoSave = () => {
         {},
         {},
         true,
-        {
-          invite: search.split('=')[1],
-        },
+        { invite: search.split('=')[1] },
       )
     ).data;
     setStalePia(currentPia);
@@ -129,7 +128,7 @@ const useAutoSave = () => {
     return updatedPia;
   };
 
-  // Define the `autoSave` function
+  // Auto-save PIA form
   useEffect(() => {
     const autoSave = async () => {
       setIsEagerSave(false);
@@ -142,12 +141,7 @@ const useAutoSave = () => {
           pia.updatedAt,
         )}.`;
         const causeStatus = e?.cause?.status;
-        setLastSaveAlertInfo({
-          type: 'danger',
-          message,
-          show: true,
-        });
-        // Handle the error if the update fails
+        setLastSaveAlertInfo({ type: 'danger', message, show: true });
         if (causeStatus === 409) {
           setIsConflict(true);
           handleShowModal('conflict', e?.cause?.data?.updatedByDisplayName);
@@ -169,7 +163,7 @@ const useAutoSave = () => {
     }
   });
 
-  // Return the state variables and functions
+  // Return state variables and functions
   return {
     setIsEagerSave,
     isEagerSave,
