@@ -1,6 +1,6 @@
 import messages from './helper/messages';
 import Modal from '../../../common/Modal';
-import { IModalObject, PIFlow } from './helper/interfaces';
+import { IModalObject } from './helper/interfaces';
 import { PiaStatuses } from '../../../../constant/constant';
 import { useContext, useState } from 'react';
 import { routes } from '../../../../constant/routes';
@@ -8,10 +8,22 @@ import {
   IPiaFormContext,
   PiaFormContext,
 } from '../../../../contexts/PiaFormContext';
+import { useNavigate } from 'react-router-dom';
+import { buildDynamicPath } from '../../../../utils/path';
 
-const NextStepsPI = (navigateFn: PIFlow) => {
+const NextStepsPI = () => {
   const { pia, piaStateChangeHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
+
+  const navigate = useNavigate();
+  const navigateFn = async (url: string) => {
+    navigate(
+      buildDynamicPath(url, {
+        id: pia.id,
+        title: pia.title,
+      }),
+    );
+  };
 
   const nextStepmodalObject: IModalObject = {
     modalShow: false,
@@ -60,11 +72,6 @@ const NextStepsPI = (navigateFn: PIFlow) => {
             statusChange: PiaStatuses.EDIT_IN_PROGRESS,
           },
         });
-
-        // This code changes the state when the "Share MPO" button is clicked
-        // in order to make the non delegated full PIA visible on the tab.
-        piaStateChangeHandler(true, 'isNextStepsSeenForNonDelegatedFlow');
-
         break;
       case 'incomplete':
         setNextStepAction({
@@ -97,7 +104,7 @@ const NextStepsPI = (navigateFn: PIFlow) => {
     } else {
       piaStateChangeHandler(PiaStatuses.INCOMPLETE, 'status');
     }
-    navigateFn.navigateFn(routes.PIA_DISCLOSURE_EDIT);
+    navigateFn(routes.PIA_DISCLOSURE_EDIT);
   };
 
   const handleModalCancel = () => {

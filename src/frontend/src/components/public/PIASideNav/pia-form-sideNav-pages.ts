@@ -16,21 +16,14 @@ export const PiaFormSideNavPages = (
   isEditMode = false,
   isNewForm = false,
 ): INavbarItem[] => {
-  // This code determines whether to show post-intake tabs based on two conditions:
-  // 1. hasAddedPiToDataElements is not false.
-  // 2. Either isNextStepsSeenForNonDelegatedFlow is true
   const showPostIntakeTabs = (): boolean => {
-    return (
-      pia?.hasAddedPiToDataElements !== false &&
-      (pia?.isNextStepsSeenForNonDelegatedFlow || false)
-    );
+    return pia?.hasAddedPiToDataElements !== false;
   };
 
   const checkPIANonDelegateFlow = (): boolean => {
     return (
-      pia?.isNextStepsSeenForNonDelegatedFlow === true &&
-      (pia?.hasAddedPiToDataElements === true ||
-        pia?.hasAddedPiToDataElements === null)
+      pia?.hasAddedPiToDataElements === true ||
+      pia?.hasAddedPiToDataElements === null
     );
   };
 
@@ -88,7 +81,9 @@ export const PiaFormSideNavPages = (
       id: 2,
       label: 'Next steps',
       link: buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, { id: pia?.id }),
-      enable: accessControl('nextSteps'),
+      enable:
+        accessControl('nextSteps') &&
+        !window.location.pathname.includes('new/intake'),
       state: {
         next: {
           condition: nextStepsNavigation(),
