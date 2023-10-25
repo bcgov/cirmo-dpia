@@ -23,6 +23,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
   const [piaModalParagraph, setPiaModalParagraph] = useState('');
   const [piaModalButtonValue, setPiaModalButtonValue] = useState('');
 
+  // Function to populate the modal with data
   const populateModalFn = (modal: object) => {
     const { title, description, confirmLabel, cancelLabel } = Object(modal);
     setPiaModalTitleText(title);
@@ -31,6 +32,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     setPiaModalCancelLabel(cancelLabel);
   };
 
+  // Function to handle showing the modal
   const handleShowModal = (modalType: string, conflictUser = '') => {
     const statusMap: Record<string, string> = {
       edit: PiaStatuses.EDIT_IN_PROGRESS,
@@ -46,6 +48,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     );
 
     switch (modalType) {
+      // For these modal types, call the PopulateModal function with the appropriate parameters
       case 'edit':
       case 'submitPiaForm':
       case 'SubmitForCPOReview':
@@ -62,6 +65,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         break;
       }
       case 'submitPiaIntake': {
+        // For this modal type, determine the status based on whether PI has been added to data elements
         const status =
           pia?.hasAddedPiToDataElements === false
             ? PiaStatuses.MPO_REVIEW
@@ -71,6 +75,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         break;
       }
       case 'conflict': {
+        // For this modal type, call the PopulateModal function with the appropriate parameters
         PopulateModal(
           pia,
           '_conflict',
@@ -83,6 +88,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         break;
       }
       case 'autoSaveFailed': {
+        // For this modal type, call the PopulateModal function with the appropriate parameters
         const autoSaveFailedTime = getShortTime(pia?.updatedAt);
         PopulateModal(
           pia,
@@ -101,6 +107,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     setShowPiaModal(true);
   };
 
+  // Function to handle closing the modal
   const handleModalClose = async (event: any) => {
     setShowPiaModal(false);
     // call backend patch endpoint to save the change
@@ -108,6 +115,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
 
     const buttonValue = event.target.value;
     try {
+      // Handle each button value separately
       if (buttonValue === 'submitPiaIntake') {
         const updatedPia = await upsertAndUpdatePia({
           status:
@@ -115,6 +123,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
               ? PiaStatuses.MPO_REVIEW
               : PiaStatuses.INCOMPLETE,
         });
+        // Navigate to the appropriate page based on the updated PIA status
         if (
           (updatedPia?.id &&
             updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
@@ -236,6 +245,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     }
   };
 
+  // Function to handle cancelling the modal
   const handleModalCancel = () => {
     setShowPiaModal(false);
   };
