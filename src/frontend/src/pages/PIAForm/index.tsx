@@ -10,7 +10,6 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
-import { deepEqual } from '../../utils/object-comparison.util';
 import { getShortTime } from '../../utils/date';
 import PIASubHeader from '../../components/public/PIASubHeader';
 import PIASideNav from '../../components/public/PIASideNav';
@@ -35,7 +34,7 @@ import { statusList } from '../../utils/statusList/statusList';
 import useAutoSave from '../../utils/autosave';
 import { validateForm } from './utils/validateForm';
 import { highlightInvalidField, resetUI } from './utils/validationUI';
-import { PiaValidationMessage, ILastSaveAlterInfo } from './helpers/interfaces';
+import { PiaValidationMessage } from './helpers/interfaces';
 import { PiaFormOpenMode } from './helpers/types';
 
 const PIAFormPage = () => {
@@ -50,17 +49,11 @@ const PIAFormPage = () => {
     isNextStepsSeenForDelegatedFlow: false,
     isNextStepsSeenForNonDelegatedFlow: false,
   };
-  const [stalePia, setStalePia] = useState(emptyState);
   const [pia, setPia] = useState(emptyState);
   const [initialPiaStateFetched, setInitialPiaStateFetched] = useState(false);
-  const [isFirstSave, setIsFirstSave] = useState(true);
 
   // State related to form status
   const [formReadOnly, setFormReadOnly] = useState(true);
-  const [isConflict, setIsConflict] = useState(false);
-  const [isEagerSave, setIsEagerSave] = useState(false);
-  const [isAutoSaveFailedPopupShown, setIsAutoSaveFailedPopupShown] =
-    useState<boolean>(false);
 
   // State related to Modals and Messages
   const [showPiaModal, setShowPiaModal] = useState(false);
@@ -88,22 +81,12 @@ const PIAFormPage = () => {
   const [message, setMessage] = useState('');
   const [validationFailedMessage, setValidationFailedMessage] = useState('');
   const [isValidationFailed, setIsValidationFailed] = useState(false);
-  const [lastSaveAlertInfo, setLastSaveAlertInfo] =
-    useState<ILastSaveAlterInfo>({
-      message: '',
-      type: 'success',
-      show: false,
-    });
 
   const mode: PiaFormOpenMode =
     pathname?.split('/').includes('view') ||
     pia.status === PiaStatuses.CPO_REVIEW
       ? 'view'
       : 'edit';
-
-  const hasFormChanged = useCallback(() => {
-    return !deepEqual(stalePia, pia, ['updatedAt', 'saveId']);
-  }, [pia, stalePia]);
 
   // Send analytics data to snowplow.
   // completedStatus is true when moving from one status to another.
@@ -126,55 +109,127 @@ const PIAFormPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pia?.id, pia?.status]);
 
-  const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
-    const hasExplicitChanges = Object.keys(changes).length > 0;
-
-    if (!hasExplicitChanges && !hasFormChanged()) return pia;
-
-    // Notify snowplow if status changed
-    if (changes.status !== undefined && pia.status !== changes.status) {
-      sendSnowplowStatusChangeCall(true);
-    }
-
-    // Perform the HTTP request
-    const apiUrl = pia?.id
-      ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
-      : API_ROUTES.PIA_INTAKE;
-    const requestData = { ...pia, ...changes };
-
-    const updatedPia = pia?.id
-      ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
-      : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
-
-    // Update last saved alert info
-    setLastSaveAlertInfo({
-      type: 'success',
-      message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
-      show: true,
-    });
-
-    // Handle first-time save
-    if (isFirstSave) {
-      setStalePia(updatedPia);
-      setIsFirstSave(false);
-      if (!pia?.id) {
-        navigate(
-          buildDynamicPath(pathname.replace('/view', '/edit'), {
-            id: updatedPia.id,
-          }),
-        );
-      }
-    } else {
-      setStalePia(pia);
-    }
-
-    // Update the state and reset flags
-    setPia(updatedPia);
-    setIsAutoSaveFailedPopupShown(false);
-    setIsConflict(false);
-
-    return updatedPia;
+  /**
+   * Populate the PIA modal with data from the provided modal object.
+   * @param {object} modal - The modal object containing data to populate the modal for submit all status except PIAIntake.
+   */
+  const populateModalFn = (modal: object) => {
+    setPiaModalTitleText(Object(modal).title);
+    setPiaModalParagraph(Object(modal).description);
+    setPiaModalConfirmLabel(Object(modal).confirmLabel);
+    setPiaModalCancelLabel(Object(modal).cancelLabel);
   };
+
+  /**
+   * Handle the display of modals based on the given modal type.
+   * @param {string} modalType - The type of modal to display.
+   * @param {string} conflictUser - Optional conflict user (used for 'conflict' modal).
+   */
+  const handleShowModal = (modalType: string, conflictUser = '') => {
+    switch (modalType) {
+      case 'edit': {
+        /* Using the state table, we can determine which modal to show based on the status of the PIA
+          This will keep the modal text in one place and allow for easy updates in the future
+          and will make the whole app consistent.
+        */
+        PopulateModal(
+          pia,
+          PiaStatuses.EDIT_IN_PROGRESS,
+          populateModalFn,
+          false,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'submitPiaIntake': {
+        PopulateModal(
+          pia,
+          pia?.hasAddedPiToDataElements === false
+            ? PiaStatuses.MPO_REVIEW
+            : PiaStatuses.INCOMPLETE,
+          populateModalFn,
+          true,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'submitPiaForm': {
+        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, true);
+        setPiaModalButtonValue('submitPiaForm');
+        break;
+      }
+      case 'SubmitForCPOReview': {
+        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, true);
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'SubmitForFinalReview': {
+        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, true);
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'SubmitForPendingCompletion': {
+        PopulateModal(
+          pia,
+          PiaStatuses.PENDING_COMPLETION,
+          populateModalFn,
+          true,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'completePIA': {
+        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, true);
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'conflict': {
+        PopulateModal(
+          pia,
+          '_conflict',
+          populateModalFn,
+          false,
+          '',
+          conflictUser,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      case 'autoSaveFailed': {
+        const autoSaveFailedTime = getShortTime(pia?.updatedAt);
+        PopulateModal(
+          pia,
+          '_autoSaveFailed',
+          populateModalFn,
+          false,
+          autoSaveFailedTime,
+        );
+        setPiaModalButtonValue(modalType);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    setShowPiaModal(true);
+  };
+
+  // Call the useAutoSave hook
+  const {
+    setIsEagerSave,
+    lastSaveAlertInfo,
+    setStalePia,
+    hasFormChanged,
+    upsertAndUpdatePia,
+  } = useAutoSave({
+    pia,
+    handleShowModal,
+    sendSnowplowStatusChangeCall,
+    navigate,
+    pathname,
+    emptyState,
+    setPia,
+  });
 
   const piaStateChangeHandler = (
     value: any,
@@ -297,111 +352,6 @@ const PIAFormPage = () => {
   //
   // Event Handlers
   //
-
-  /**
-   * Populate the PIA modal with data from the provided modal object.
-   * @param {object} modal - The modal object containing data to populate the modal for submit all status except PIAIntake.
-   */
-  const populateModalFn = (modal: object) => {
-    setPiaModalTitleText(Object(modal).title);
-    setPiaModalParagraph(Object(modal).description);
-    setPiaModalConfirmLabel(Object(modal).confirmLabel);
-    setPiaModalCancelLabel(Object(modal).cancelLabel);
-  };
-
-  /**
-   * Handle the display of modals based on the given modal type.
-   * @param {string} modalType - The type of modal to display.
-   * @param {string} conflictUser - Optional conflict user (used for 'conflict' modal).
-   */
-  const handleShowModal = (modalType: string, conflictUser = '') => {
-    switch (modalType) {
-      case 'edit': {
-        /* Using the state table, we can determine which modal to show based on the status of the PIA
-          This will keep the modal text in one place and allow for easy updates in the future
-          and will make the whole app consistent.
-        */
-        PopulateModal(
-          pia,
-          PiaStatuses.EDIT_IN_PROGRESS,
-          populateModalFn,
-          false,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'submitPiaIntake': {
-        PopulateModal(
-          pia,
-          pia?.hasAddedPiToDataElements === false
-            ? PiaStatuses.MPO_REVIEW
-            : PiaStatuses.INCOMPLETE,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'submitPiaForm': {
-        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue('submitPiaForm');
-        break;
-      }
-      case 'SubmitForCPOReview': {
-        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForFinalReview': {
-        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForPendingCompletion': {
-        PopulateModal(
-          pia,
-          PiaStatuses.PENDING_COMPLETION,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'completePIA': {
-        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'conflict': {
-        PopulateModal(
-          pia,
-          '_conflict',
-          populateModalFn,
-          false,
-          '',
-          conflictUser,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'autoSaveFailed': {
-        const autoSaveFailedTime = getShortTime(pia?.updatedAt);
-        PopulateModal(
-          pia,
-          '_autoSaveFailed',
-          populateModalFn,
-          false,
-          autoSaveFailedTime,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    setShowPiaModal(true);
-  };
 
   const fetchAndUpdatePia = async (piaId: string) => {
     const currentPia = pia;
@@ -751,21 +701,6 @@ const PIAFormPage = () => {
       setFormReadOnly(true);
     }
   }, [pia?.status, id, pathname]);
-
-  // Call the useAutoSave hook
-  useAutoSave({
-    setIsEagerSave,
-    isEagerSave,
-    isConflict,
-    setIsConflict,
-    getShortTime,
-    upsertAndUpdatePia,
-    pia,
-    setLastSaveAlertInfo,
-    handleShowModal,
-    isAutoSaveFailedPopupShown,
-    setIsAutoSaveFailedPopupShown,
-  });
 
   return (
     <>
