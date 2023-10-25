@@ -1,9 +1,11 @@
 import { IPiaForm } from '../types/interfaces/pia-form.interface';
 
+// Define the props for the `useSnowPlow` hook
 type SnowPlowProps = {
   pia: IPiaForm;
 };
 
+// Define the `useSnowPlow` hook
 const useSnowPlow = ({ pia }: SnowPlowProps) => {
   const sendSnowplowStatusChangeCall = (completedStatus?: boolean) => {
     window.snowplow('trackSelfDescribingEvent', {
@@ -17,6 +19,8 @@ const useSnowPlow = ({ pia }: SnowPlowProps) => {
       },
     });
   };
+
+  // Return the `sendSnowplowStatusChangeCall` function
   return { sendSnowplowStatusChangeCall };
 };
 
