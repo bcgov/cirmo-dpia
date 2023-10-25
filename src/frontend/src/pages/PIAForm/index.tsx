@@ -1,8 +1,4 @@
-import {
-  PiaStatuses,
-  PIOptions,
-  SubmitButtonTextEnum,
-} from '../../constant/constant';
+import { PiaStatuses, SubmitButtonTextEnum } from '../../constant/constant';
 import { useCallback, useEffect, useState } from 'react';
 import Alert from '../../components/common/Alert';
 import { HttpRequest } from '../../utils/http-request.util';
@@ -10,13 +6,9 @@ import { API_ROUTES } from '../../constant/apiRoutes';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { routes } from '../../constant/routes';
 import Modal from '../../components/common/Modal';
-import { getShortTime } from '../../utils/date';
 import PIASubHeader from '../../components/public/PIASubHeader';
 import PIASideNav from '../../components/public/PIASideNav';
-import {
-  IPiaForm,
-  IPiaFormResponse,
-} from '../../types/interfaces/pia-form.interface';
+import { IPiaForm } from '../../types/interfaces/pia-form.interface';
 import { buildDynamicPath } from '../../utils/path';
 import Spinner from '../../components/common/Spinner';
 import PIANavButton from '../../components/public/PIANavButton';
@@ -29,39 +21,25 @@ import CommentSidebar from '../../components/public/CommentsSidebar';
 import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/user';
-import PopulateModal from '../../components/public/StatusChangeDropDown/populateModal';
 import { statusList } from '../../utils/statusList/statusList';
 import useAutoSave from '../../utils/autosave';
 import { validateForm } from './utils/validateForm';
 import { highlightInvalidField, resetUI } from './utils/validationUI';
 import { PiaValidationMessage } from './helpers/interfaces';
-import { PiaFormOpenMode } from './helpers/types';
+import { HandleValidationProps, PiaFormOpenMode } from './helpers/types';
+import useSnowPlow from '../../utils/snowplow';
+import useHandleModal from './utils/handleModal';
 
 const PIAFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
 
   // State related to PIA Form
-  const emptyState: IPiaForm = {
-    hasAddedPiToDataElements: true,
-    status: PiaStatuses.INCOMPLETE,
-    isNextStepsSeenForDelegatedFlow: false,
-    isNextStepsSeenForNonDelegatedFlow: false,
-  };
-  const [pia, setPia] = useState(emptyState);
   const [initialPiaStateFetched, setInitialPiaStateFetched] = useState(false);
 
   // State related to form status
   const [formReadOnly, setFormReadOnly] = useState(true);
-
-  // State related to Modals and Messages
-  const [showPiaModal, setShowPiaModal] = useState(false);
-  const [piaModalConfirmLabel, setPiaModalConfirmLabel] = useState('');
-  const [piaModalCancelLabel, setPiaModalCancelLabel] = useState('');
-  const [piaModalTitleText, setPiaModalTitleText] = useState('');
-  const [piaModalParagraph, setPiaModalParagraph] = useState('');
-  const [piaModalButtonValue, setPiaModalButtonValue] = useState('');
 
   // State related to Comments
   const [isRightOpen, setIsRightOpen] = useState(false);
@@ -78,141 +56,7 @@ const PIAFormPage = () => {
   const [submitButtonText, setSubmitButtonText] = useState(
     SubmitButtonTextEnum.INTAKE,
   );
-  const [message, setMessage] = useState('');
   const [validationFailedMessage, setValidationFailedMessage] = useState('');
-  const [isValidationFailed, setIsValidationFailed] = useState(false);
-
-  const mode: PiaFormOpenMode =
-    pathname?.split('/').includes('view') ||
-    pia.status === PiaStatuses.CPO_REVIEW
-      ? 'view'
-      : 'edit';
-
-  // Send analytics data to snowplow.
-  // completedStatus is true when moving from one status to another.
-  const sendSnowplowStatusChangeCall = (completedStatus?: boolean) => {
-    window.snowplow('trackSelfDescribingEvent', {
-      schema: 'iglu:ca.bc.gov.cirmo/dpia_progress/jsonschema/1-0-0',
-      data: {
-        id: pia?.id,
-        title: pia?.title?.slice(0, 64),
-        state: completedStatus ? `${pia?.status}-COMPLETED` : pia?.status,
-        ministry: pia?.ministry,
-        branch: pia?.branch,
-      },
-    });
-  };
-
-  // Send snowplow call when pia is first created with an id or when status is changed.
-  useEffect(() => {
-    if (pia.id) sendSnowplowStatusChangeCall();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pia?.id, pia?.status]);
-
-  /**
-   * Populate the PIA modal with data from the provided modal object.
-   * @param {object} modal - The modal object containing data to populate the modal for submit all status except PIAIntake.
-   */
-  const populateModalFn = (modal: object) => {
-    setPiaModalTitleText(Object(modal).title);
-    setPiaModalParagraph(Object(modal).description);
-    setPiaModalConfirmLabel(Object(modal).confirmLabel);
-    setPiaModalCancelLabel(Object(modal).cancelLabel);
-  };
-
-  /**
-   * Handle the display of modals based on the given modal type.
-   * @param {string} modalType - The type of modal to display.
-   * @param {string} conflictUser - Optional conflict user (used for 'conflict' modal).
-   */
-  const handleShowModal = (modalType: string, conflictUser = '') => {
-    switch (modalType) {
-      case 'edit': {
-        /* Using the state table, we can determine which modal to show based on the status of the PIA
-          This will keep the modal text in one place and allow for easy updates in the future
-          and will make the whole app consistent.
-        */
-        PopulateModal(
-          pia,
-          PiaStatuses.EDIT_IN_PROGRESS,
-          populateModalFn,
-          false,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'submitPiaIntake': {
-        PopulateModal(
-          pia,
-          pia?.hasAddedPiToDataElements === false
-            ? PiaStatuses.MPO_REVIEW
-            : PiaStatuses.INCOMPLETE,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'submitPiaForm': {
-        PopulateModal(pia, PiaStatuses.MPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue('submitPiaForm');
-        break;
-      }
-      case 'SubmitForCPOReview': {
-        PopulateModal(pia, PiaStatuses.CPO_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForFinalReview': {
-        PopulateModal(pia, PiaStatuses.FINAL_REVIEW, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'SubmitForPendingCompletion': {
-        PopulateModal(
-          pia,
-          PiaStatuses.PENDING_COMPLETION,
-          populateModalFn,
-          true,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'completePIA': {
-        PopulateModal(pia, PiaStatuses.COMPLETE, populateModalFn, true);
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'conflict': {
-        PopulateModal(
-          pia,
-          '_conflict',
-          populateModalFn,
-          false,
-          '',
-          conflictUser,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      case 'autoSaveFailed': {
-        const autoSaveFailedTime = getShortTime(pia?.updatedAt);
-        PopulateModal(
-          pia,
-          '_autoSaveFailed',
-          populateModalFn,
-          false,
-          autoSaveFailedTime,
-        );
-        setPiaModalButtonValue(modalType);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    setShowPiaModal(true);
-  };
 
   // Call the useAutoSave hook
   const {
@@ -221,15 +65,44 @@ const PIAFormPage = () => {
     setStalePia,
     hasFormChanged,
     upsertAndUpdatePia,
-  } = useAutoSave({
+    fetchAndUpdatePia,
+    isValidationFailed,
+    setIsValidationFailed,
     pia,
-    handleShowModal,
-    sendSnowplowStatusChangeCall,
-    navigate,
-    pathname,
-    emptyState,
     setPia,
+  } = useAutoSave();
+
+  // Call the useHandleModal hook
+  const {
+    handleShowModal,
+    handleModalClose,
+    handleModalCancel,
+    message,
+    setMessage,
+    piaModalConfirmLabel,
+    showPiaModal,
+    piaModalCancelLabel,
+    piaModalTitleText,
+    piaModalParagraph,
+    piaModalButtonValue,
+  } = useHandleModal({ pia, upsertAndUpdatePia });
+
+  const mode: PiaFormOpenMode =
+    pathname?.split('/').includes('view') ||
+    pia.status === PiaStatuses.CPO_REVIEW
+      ? 'view'
+      : 'edit';
+
+  // Call the useSnowPlow hook
+  const { sendSnowplowStatusChangeCall } = useSnowPlow({
+    pia,
   });
+
+  // Send snowplow call when pia is first created with an id or when status is changed.
+  useEffect(() => {
+    if (pia.id) sendSnowplowStatusChangeCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pia?.id, pia?.status]);
 
   const piaStateChangeHandler = (
     value: any,
@@ -262,9 +135,7 @@ const PIAFormPage = () => {
     }
   }, [mode]);
 
-  /**
-   * Async callback for getting commentCount within a useEffect hook
-   */
+  //Async callback for getting commentCount within a useEffect hook
   const getCommentCount = useCallback(async () => {
     const count: CommentCount = await HttpRequest.get(
       API_ROUTES.GET_COMMENTS_COUNT,
@@ -287,9 +158,8 @@ const PIAFormPage = () => {
       mode === 'view' ? 'View PIA' : 'Edit PIA'
     } - Digital Privacy Impact Assessment (DPIA)`;
   }, [mode]); // Empty array ensures this runs once on mount and unmount
-  /**
-   * Update the comment count object to pass into the every tab
-   */
+
+  //Update the comment count object to pass into the every tab
   useEffect(() => {
     try {
       getCommentCount();
@@ -352,35 +222,6 @@ const PIAFormPage = () => {
   //
   // Event Handlers
   //
-
-  const fetchAndUpdatePia = async (piaId: string) => {
-    const currentPia = pia;
-    const updatedPia = (
-      await HttpRequest.get<IPiaFormResponse>(
-        API_ROUTES.GET_PIA_INTAKE.replace(':id', `${piaId}`),
-        {},
-        {},
-        true,
-        {
-          invite: search.split('=')[1],
-        },
-      )
-    ).data;
-    setStalePia(currentPia);
-    setPia(updatedPia);
-    setIsValidationFailed(
-      updatedPia.branch === null ||
-        updatedPia.branch === '' ||
-        updatedPia.ministry === null ||
-        updatedPia.title === null ||
-        updatedPia.title === '' ||
-        updatedPia.initiativeDescription === null ||
-        updatedPia.initiativeDescription === '',
-    );
-
-    return updatedPia;
-  };
-
   const handleEdit = () => {
     if (!pia?.id) {
       console.error('PIA id not found');
@@ -432,145 +273,6 @@ const PIAFormPage = () => {
     }
   };
 
-  const handleModalClose = async (event: any) => {
-    setShowPiaModal(false);
-    // call backend patch endpoint to save the change
-    event.preventDefault();
-
-    const buttonValue = event.target.value;
-    try {
-      if (buttonValue === 'submitPiaIntake') {
-        const updatedPia = await upsertAndUpdatePia({
-          status:
-            pia?.hasAddedPiToDataElements === false
-              ? PiaStatuses.MPO_REVIEW
-              : PiaStatuses.INCOMPLETE,
-        });
-        if (
-          (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
-            (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value || //  key: "yes", value: true
-              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) || //  key: "I'm not sure", value: null
-          (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForDelegatedFlow === true &&
-            updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
-        ) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        } else {
-          navigate(
-            buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
-              id: updatedPia.id,
-              title: updatedPia.title,
-            }),
-          );
-        }
-      } else if (buttonValue === 'submitPiaForm') {
-        const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.MPO_REVIEW,
-        });
-
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
-      } else if (buttonValue === 'edit') {
-        await upsertAndUpdatePia({
-          status:
-            pia?.status === PiaStatuses.MPO_REVIEW
-              ? PiaStatuses.EDIT_IN_PROGRESS
-              : pia?.status,
-        });
-        navigate(pathname.replace('/view', '/edit'));
-      } else if (buttonValue === 'save') {
-        const newPia = await upsertAndUpdatePia();
-        if (newPia?.id) {
-          navigate(
-            buildDynamicPath(pathname.replace('/edit', '/view'), {
-              id: pia.id,
-            }),
-          );
-        }
-      } else if (buttonValue === 'SubmitForCPOReview') {
-        const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.CPO_REVIEW,
-        });
-
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
-      } else if (buttonValue === 'SubmitForFinalReview') {
-        const updatedPia = await upsertAndUpdatePia({
-          // here not sure what status for this one, need to discuss
-
-          status: PiaStatuses.FINAL_REVIEW,
-        });
-
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
-      } else if (buttonValue === 'completePIA') {
-        const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.COMPLETE,
-        });
-        // need to revisit this part, current route to pia_intake tab
-        // when complete PIA story done, will go to Complete PIA list page
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
-      } else if (buttonValue === 'SubmitForPendingCompletion') {
-        const updatedPia = await upsertAndUpdatePia({
-          status: PiaStatuses.PENDING_COMPLETION,
-        });
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
-      } else {
-        // edit
-        const updatedPia = await upsertAndUpdatePia();
-
-        if (!updatedPia.id) {
-          console.error('Invalid PIA id');
-          throw new Error();
-        }
-
-        navigate(
-          buildDynamicPath(pathname.replace('/view', '/edit'), {
-            id: updatedPia.id,
-          }),
-        );
-      }
-    } catch (err: any) {
-      setMessage(err.message || 'Something went wrong. Please try again.');
-    }
-  };
-
-  const handleModalCancel = () => {
-    setShowPiaModal(false);
-  };
-
   //
   // Form Submission Handler
   //
@@ -605,10 +307,6 @@ const PIAFormPage = () => {
    * The class 'is-invalid' is used to display the red border.
    *
    */
-  type HandleValidationProps = {
-    event?: any;
-    status?: string;
-  };
 
   const handleValidation = ({ event, status }: HandleValidationProps) => {
     resetUI({
