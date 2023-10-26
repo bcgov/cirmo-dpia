@@ -81,10 +81,6 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
             modal: defaultEditInProgressModal,
           },
           {
-            status: 'CPO_REVIEW',
-            modal: defaultCPOReviewModal,
-          },
-          {
             status: 'INCOMPLETE',
             modal: defaultIncompleteModal,
             submitModal: submitPiaIntakeModal,

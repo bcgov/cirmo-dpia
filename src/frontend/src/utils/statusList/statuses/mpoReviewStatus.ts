@@ -90,10 +90,6 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         },
         changeStatus: [
           {
-            status: 'CPO_REVIEW',
-            modal: defaultCPOReviewModal,
-          },
-          {
             status: 'INCOMPLETE',
             modal: checkReviewStatus(pia)
               ? resetReviewIncompleteModal
