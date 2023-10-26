@@ -28,8 +28,17 @@ function PPQLandingPage(props: IComponentProps) {
                 <b>{messages.PIAIntakeHeading.en}</b>
               </h2>
               <br />
-              <p>{messages.PIAIntakeDescriptionText.en}</p>
-
+              <p>
+                {messages.PIAIntakeDescriptionText.TextOne.en}
+                <a
+                  href={messages.PIAIntakeDescriptionText.LinkHref.en}
+                  rel="noreferrer external"
+                  target="_blank"
+                >
+                  {messages.PIAIntakeDescriptionText.LinkText.en}
+                </a>
+                {messages.PIAIntakeDescriptionText.TextTwo.en}
+              </p>
               <div data-cy="ppq-btn">
                 <Link
                   to={routes.PIA_NEW}
