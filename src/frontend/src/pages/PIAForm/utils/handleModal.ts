@@ -126,11 +126,11 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         // Navigate to the appropriate page based on the updated PIA status
         if (
           (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForNonDelegatedFlow === true &&
+            !window.location.pathname.includes('new/intake') &&
             (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value || //  key: "yes", value: true
               updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) || //  key: "I'm not sure", value: null
           (updatedPia?.id &&
-            updatedPia?.isNextStepsSeenForDelegatedFlow === true &&
+            !window.location.pathname.includes('new/intake') &&
             updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
         ) {
           navigate(

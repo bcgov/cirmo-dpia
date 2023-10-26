@@ -50,7 +50,6 @@ const PIAFormPage = () => {
     useState(0);
 
   // State related to Intake and Validation
-  const [isIntakeSubmitted, setIsIntakeSubmitted] = useState(false);
   const [validationMessages, setValidationMessages] =
     useState<PiaValidationMessage>({});
   const [submitButtonText, setSubmitButtonText] = useState(
@@ -103,6 +102,12 @@ const PIAFormPage = () => {
     if (pia.id) sendSnowplowStatusChangeCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pia?.id, pia?.status]);
+
+  // Scroll to top of page.
+  useEffect(() => {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.pathname]);
 
   const piaStateChangeHandler = (
     value: any,
@@ -183,18 +188,6 @@ const PIAFormPage = () => {
   const commentChangeHandler = () => {
     getCommentCount();
   };
-
-  useEffect(() => {
-    if (
-      pia?.isNextStepsSeenForDelegatedFlow ||
-      pia?.isNextStepsSeenForNonDelegatedFlow
-    ) {
-      setIsIntakeSubmitted(true);
-    }
-  }, [
-    pia?.isNextStepsSeenForDelegatedFlow,
-    pia?.isNextStepsSeenForNonDelegatedFlow,
-  ]);
 
   useEffect(
     () =>
@@ -280,11 +273,7 @@ const PIAFormPage = () => {
     event.preventDefault();
     await upsertAndUpdatePia();
 
-    if (
-      (pia?.isNextStepsSeenForDelegatedFlow === false &&
-        pia?.isNextStepsSeenForNonDelegatedFlow === false) ||
-      !pia.status
-    ) {
+    if (window.location.pathname.includes('new/intake') || !pia.status) {
       handleShowModal('submitPiaIntake');
     } else {
       handleShowModal(
@@ -480,11 +469,7 @@ const PIAFormPage = () => {
                 </div>
               </div>
             )}
-            <PIANavButton
-              pages={pages}
-              isIntakeSubmitted={isIntakeSubmitted}
-              isDelegate={pia.hasAddedPiToDataElements === false}
-            />
+            <PIANavButton pages={pages} />
           </section>
           <div
             className={`container__side--form bg-white ms-3 justify-self-start position-fixed overflow-y-scroll pe-4 ${

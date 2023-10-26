@@ -25,8 +25,6 @@ export interface IPiaForm extends IPiaFormIntake {
   agreementsAndInformationBanks?: IAgreementsAndInformationBanks;
   collectionUseAndDisclosure?: ICollectionUseAndDisclosure;
   storingPersonalInformation?: IStoringPersonalInformation;
-  isNextStepsSeenForDelegatedFlow?: boolean;
-  isNextStepsSeenForNonDelegatedFlow?: boolean;
 }
 
 export interface IPiaFormResponse {
