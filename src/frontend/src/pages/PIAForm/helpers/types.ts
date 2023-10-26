@@ -27,3 +27,8 @@ export type PiaStateChangeHandlerType = (
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';
+
+export type HandleValidationProps = {
+  event?: any;
+  status?: string;
+};

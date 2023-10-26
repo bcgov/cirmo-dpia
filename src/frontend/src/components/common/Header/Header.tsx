@@ -21,6 +21,7 @@ import {
 import { getAccessToken } from '../../../utils/getAccessToken';
 import { IConfig } from '../../../types/interfaces/config.interface';
 import { AppStorage } from '../../../utils/storage';
+import useAutoSave from '../../../utils/autosave';
 
 function Header() {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ function Header() {
   const { keycloakUserDetail, error: userInfoError } = useFetchKeycloakUserInfo(
     accessToken || null,
   );
+
+  const { upsertAndUpdatePia } = useAutoSave();
 
   const startFetching = useCallback(async () => {
     if (didAuthRef.current === false) {
@@ -110,9 +113,15 @@ function Header() {
     await logout();
     setShowModal(false);
   };
-  const showModalDialog = () => {
+
+  const showModalDialog = async () => {
+    const regex = /\/pia\/\d+/;
+    if (window.location.pathname.match(regex)) {
+      await upsertAndUpdatePia();
+    }
     setShowModal(true);
   };
+
   const cancelModalDialog = () => {
     setShowModal(false);
   };
