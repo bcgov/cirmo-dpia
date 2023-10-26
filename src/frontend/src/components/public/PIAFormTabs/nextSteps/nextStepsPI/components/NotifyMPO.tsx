@@ -5,7 +5,7 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 export const NotifyMPO = () => {
   return (
     <div className="section__padding-block">
-      <h4>{messages.FullPIA.NotifyMPO.heading.en}</h4>
+      <h3>{messages.FullPIA.NotifyMPO.heading.en}</h3>
       <div className="bg-white drop-shadow section__padding-block section__padding-inline drop-stadow  section-border-radius">
         <p>
           {messages.FullPIA.NotifyMPO.descriptionPart1.en}

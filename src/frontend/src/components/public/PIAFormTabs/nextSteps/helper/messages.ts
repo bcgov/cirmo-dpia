@@ -77,5 +77,13 @@ export default {
         en: `Privacy.Helpline@gov.bc.ca`,
       },
     },
+    PIALifecycle: {
+      heading: {
+        en: 'PIA lifecycle',
+      },
+      subheading: {
+        en: 'The diagram below outlines the steps it takes to complete a PIA.',
+      },
+    },
   },
 };
