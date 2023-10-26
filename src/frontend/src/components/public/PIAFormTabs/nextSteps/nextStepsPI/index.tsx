@@ -12,6 +12,7 @@ import { SubmitForMPO } from './components/SubmitForMPO';
 const NextStepsPI = () => {
   const { pia } = useContext<IPiaFormContext>(PiaFormContext);
 
+// Show different text based on status.
   return (
     <section className="">
       {pia?.status === PiaStatuses.INCOMPLETE && (
