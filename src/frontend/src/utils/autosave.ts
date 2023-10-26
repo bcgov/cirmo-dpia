@@ -22,8 +22,6 @@ const useAutoSave = () => {
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
     status: PiaStatuses.INCOMPLETE,
-    isNextStepsSeenForDelegatedFlow: false,
-    isNextStepsSeenForNonDelegatedFlow: false,
   };
 
   // Define state variables

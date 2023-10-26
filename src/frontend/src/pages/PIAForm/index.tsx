@@ -103,6 +103,12 @@ const PIAFormPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pia?.id, pia?.status]);
 
+  // Scroll to top of page.
+  useEffect(() => {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.pathname]);
+
   const piaStateChangeHandler = (
     value: any,
     key: keyof IPiaForm,
