@@ -113,11 +113,15 @@ function Header() {
     await logout();
     setShowModal(false);
   };
+
   const showModalDialog = async () => {
-    if (!window.location.pathname.includes('/pia/list'))
+    const regex = /\/pia\/\d+/;
+    if (window.location.pathname.match(regex)) {
       await upsertAndUpdatePia();
+    }
     setShowModal(true);
   };
+
   const cancelModalDialog = () => {
     setShowModal(false);
   };
