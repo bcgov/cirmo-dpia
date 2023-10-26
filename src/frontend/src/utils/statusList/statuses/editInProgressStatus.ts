@@ -71,10 +71,6 @@ export const editInProgressStatus = () => {
             status: 'INCOMPLETE',
             modal: defaultIncompleteModal,
           },
-          {
-            status: 'CPO_REVIEW',
-            modal: defaultCPOReviewModal,
-          },
         ],
       },
       DRAFTER: {
