@@ -114,7 +114,8 @@ function Header() {
     setShowModal(false);
   };
   const showModalDialog = async () => {
-    await upsertAndUpdatePia();
+    if (!window.location.pathname.includes('/pia/list'))
+      await upsertAndUpdatePia();
     setShowModal(true);
   };
   const cancelModalDialog = () => {
