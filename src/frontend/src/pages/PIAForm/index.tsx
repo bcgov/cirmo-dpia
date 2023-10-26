@@ -279,6 +279,11 @@ const PIAFormPage = () => {
       );
   }, [isValidationFailed]);
 
+  useEffect(() => {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.pathname]);
+
   //
   // Event Handlers
   //

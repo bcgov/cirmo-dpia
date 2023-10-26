@@ -36,42 +36,45 @@ export default {
         en: `Fill out the full PIA`,
       },
       description: {
-        en: `As public servants, we must protect any personal information we collect, use, store and share. Doing a PIA can help you protect privacy and build public trust by being clear about what information you're collecting, who has access to it, and where and how it's stored.`,
+        en: `You have identified that your initiative involves or may involve personal information. As public servants, we must protect any personal information we collect, use, store and share. Doing a PIA can help you protect privacy and build public trust by being clear about what information you're collecting, who has access to it, and where and how it's stored.`,
       },
     },
-    ChooseFollowing: {
+    SubmitForMPO: {
       heading: {
-        en: `Choose one of the following:`,
+        en: `Submit your PIA to collaborate with your MPO (Ministry Privacy Office)`,
       },
-      paragraph1: {
-        en: `To continue drafting this PIA without your MPO’s help, select “Stay in Incomplete status”. Your PIA will be visible to only you, the drafter. At any point, if you submit your PIA, your MPO will be able to view it. Your PIA does not have to be complete for you to submit it to your MPO.`,
+      descriptionPart1: {
+        en: `PIA writing is a collaborative process. There are questions on the full PIA form that you may not know the answer to yet, or may need assistance from a privacy expert to understand. Click 'Submit' at any time to let you MPO analyst know it is ready for their review or that you need their help. You do `,
       },
-      paragraph2: {
-        en: `To continue drafting with your MPOs help, select “Share with my MPO”. Your PIA will become visible to your MPO and they will be able to help answer questions and make suggestions about your PIA as you go through the process of writing it.`,
+      descriptionPart2: {
+        en: 'not',
       },
-      Primary: {
-        en: `Stay in Incomplete status`,
-      },
-      Secondary: {
-        en: `Share with my MPO`,
+      descriptionPart3: {
+        en: ' need to complete all fields before you can click submit!',
       },
     },
-    Modal: {
-      share: {
-        title: {
-          en: 'Share with MPO?',
-        },
-        description: {
-          en: 'Your Ministry Privacy Officer (MPO) will be able to review and edit in order to help you with the PIA process.',
-        },
+    NotifyMPO: {
+      heading: {
+        en: 'Notify your MPO',
       },
-      incomplete: {
-        title: {
-          en: 'Stay in Incomplete status?',
-        },
-        description: {
-          en: 'Only you will be able to view or edit the PIA.',
-        },
+      descriptionPart1: {
+        en: `The next step is to send an email to your ministry privacy officer and let them know you have completed the PIA intake. `,
+      },
+      link: {
+        en: `Find your MPO here.`,
+        href: 'https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers',
+      },
+      descriptionPart2: {
+        en: ' Your MPO will make sure your answers are complete, and they may ask for more information.',
+      },
+      descriptionPart3: {
+        en: "Can't find what you're looking for? Contact the Privacy Helpline.",
+      },
+      telephone: {
+        en: `250 356-1851`,
+      },
+      email: {
+        en: `Privacy.Helpline@gov.bc.ca`,
       },
     },
   },
