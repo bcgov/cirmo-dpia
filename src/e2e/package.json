@@ -3,18 +3,18 @@
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
-		"playwright-local": "playwright test",
-		"playwright-local-ui": "playwright test --ui",
-		"playwright-local-debug": "playwright test --debug",
-		"playwright-dev": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.DEV_URL)\") playwright test",
-		"playwright-dev-ui": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.DEV_URL)\") playwright test --ui",
-		"playwright-dev-debug": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.DEV_URL)\") playwright test --debug",
-		"playwright-test": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.TEST_URL)\") playwright test",
-		"playwright-test-ui": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.TEST_URL)\") playwright test --ui",
-		"playwright-test-debug": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.TEST_URL)\") playwright test --debug",
-		"playwright-prod": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.PROD_URL)\") playwright test",
-		"playwright-prod-ui": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.PROD_URL)\") playwright test --ui",
-		"playwright-prod-debug": "PLAYWRIGHT_BASE_URL=$(node -e \"console.log(require('dotenv').config().parsed.PROD_URL)\") playwright test --debug"
+		"playwright-local": "BASE_URL=http://localhost:8080 playwright test",
+		"playwright-local-ui": "BASE_URL=http://localhost:8080 playwright test --ui",
+		"playwright-local-debug": "BASE_URL=http://localhost:8080 playwright test --debug",
+		"playwright-dev": "BASE_URL=https://dev.pia.gov.bc.ca playwright test",
+		"playwright-dev-ui": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --ui",
+		"playwright-dev-debug": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --debug",
+		"playwright-test": "BASE_URL=https://test.pia.gov.bc.ca playwright test",
+		"playwright-test-ui": "BASE_URL=https://test.pia.gov.bc.ca playwright test --ui",
+		"playwright-test-debug": "BASE_URL=https://test.pia.gov.bc.ca playwright test --debug",
+		"playwright-prod": "BASE_URL=https://pia.gov.bc.ca playwright test",
+		"playwright-prod-ui": "BASE_URL=https://pia.gov.bc.ca playwright test --ui",
+		"playwright-prod-debug": "BASE_URL=https://pia.gov.bc.ca playwright test --debug"
 	},
 	"dependencies": {
 		"dotenv": "16.3.1"
