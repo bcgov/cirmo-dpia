@@ -8,18 +8,18 @@ export const defaultMPOReviewModal: Modal = {
   cancelLabel: 'Cancel',
 };
 
-export const defaultIncompleteModal: Modal = {
-  title: 'Change status to “Incomplete”?',
+export const defaultDraftingInProgressModal: Modal = {
+  title: 'Change status to “Drafting in Progress”?',
   description:
     'Only the original PIA drafter will be able to view or edit the PIA.',
   confirmLabel: 'Yes, continue',
   cancelLabel: 'Cancel',
 };
 
-export const resetReviewIncompleteModal: Modal = {
+export const resetReviewDraftingInProgressModal: Modal = {
   title: 'Unlock PIA? Reviews will not be saved.',
   description:
-    'Changing status to Incomplete will erase all data in the “Review” section and all reviewers will have to complete this section again.',
+    'Changing status to “Drafting in Progress” will erase all data in the “Review” section and all reviewers will have to complete this section again.',
   confirmLabel: 'Yes, unlock',
   cancelLabel: 'Cancel',
 };

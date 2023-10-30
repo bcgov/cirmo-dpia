@@ -1,7 +1,7 @@
 import { SubmitButtonTextEnum } from '../../../constant/constant';
 import {
   defaultCPOReviewModal,
-  defaultIncompleteModal,
+  defaultDraftingInProgressModal,
   defaultMPOReviewModal,
   submitPiaIntakeModal,
 } from '../modals';
@@ -33,8 +33,8 @@ export const editInProgressStatus = () => {
         },
         changeStatus: [
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
           },
           {
             status: 'MPO_REVIEW',
@@ -68,8 +68,8 @@ export const editInProgressStatus = () => {
             submitModal: submitPiaIntakeModal,
           },
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
           },
         ],
       },
@@ -86,8 +86,8 @@ export const editInProgressStatus = () => {
         },
         changeStatus: [
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
           },
         ],
       },

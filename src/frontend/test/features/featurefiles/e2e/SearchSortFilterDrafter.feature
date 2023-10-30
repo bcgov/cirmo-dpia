@@ -49,8 +49,8 @@ Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
      Given I am on the login page
      And I click on "Log in with IDIR" button
      When I login with user <username> having role <role>
-     Then I click on the filter "Any Status" and select "Incomplete"
-     And Verify if the status is only "Incomplete"
+     Then I click on the filter "Any Status" and select "Drafting in Progress"
+     And Verify if the status is only "Drafting in Progress"
 
      Examples:
       | username | role    | 
@@ -74,7 +74,7 @@ Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
      Given I am on the login page
      And I click on "Log in with IDIR" button
      When I login with user <username> having role <role>
-     Then I click on the filter "Any Status" and select "Incomplete"
+     Then I click on the filter "Any Status" and select "Drafting in Progress"
      Then I enter "SearchTestData" in searchbar
      And Verify if the title is "SearchTestData"
 
@@ -88,11 +88,11 @@ Feature: UTOPIA-584 Drafter: Search, sort, filter list of PIAs
      Given I am on the login page
      And I click on "Log in with IDIR" button
      When I login with user <username> having role <role>
-     Then I click on the filter "Any Status" and select "Incomplete"
+     Then I click on the filter "Any Status" and select "Drafting in Progress"
      Then I enter "SearchTestData" in searchbar
      And Verify if the title is "SearchTestData"
      And I click on "Clear search" button
-     And Verify if the status is only "Incomplete"
+     And Verify if the status is only "Drafting in Progress"
 
 
      Examples:

@@ -23,7 +23,7 @@ Feature: UTOPIA-631 MPO:View PIA details
     And Await SavedAt function 
     And I click on "Active PIAs" tab
     And Search with title
-    And Verify if the status is only "Incomplete"
+    And Verify if the status is only "Drafting in Progress"
   
     
 

@@ -33,11 +33,11 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
         },
         changeStatus: [
           {
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             modal: {
               title: 'Unlock PIA? Reviews will not be saved.',
               description:
-                'Changing status to Incomplete will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+                'Changing status to "Drafting in Progress" will erase all data in the "Review" section and all reviewers will have to complete this section again.',
               confirmLabel: 'Yes, unlock',
               cancelLabel: 'Cancel',
             },
@@ -96,11 +96,11 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
             },
           },
           {
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             modal: {
               title: 'Unlock PIA? Reviews will not be saved.',
               description:
-                'Changing status to Incomplete will erase all data in the "Review" section and all reviewers will have to complete this section again.',
+                'Changing status to "Drafting in Progress" will erase all data in the "Review" section and all reviewers will have to complete this section again.',
               confirmLabel: 'Yes, unlock',
               cancelLabel: 'Cancel',
             },

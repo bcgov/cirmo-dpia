@@ -192,7 +192,7 @@ const PIAFormPage = () => {
   useEffect(
     () =>
       setSubmitButtonText(
-        statusList(pia)[pia?.status || 'incomplete'].buttonText ||
+        statusList(pia)[pia?.status || 'DRAFTING_IN_PROGRESS'].buttonText ||
           SubmitButtonTextEnum.FORM,
       ),
     [pia, pia.status],
@@ -252,12 +252,12 @@ const PIAFormPage = () => {
       // this fix by move the page to pia list table instead of stay in pia view page.
       if (isCPORole()) navigate(routes.PIA_LIST, { replace: true });
 
-      // For a delegate PIA, change from final review to incomplete/dit_in_progress status
+      // For a delegate PIA, change from final review to DRAFTING_IN_PROGRESS/dit_in_progress status
       // will hide review tab so we need to redirect path to intake
       if (
         pathname?.split('/').includes('review') &&
         (status === PiaStatuses.EDIT_IN_PROGRESS ||
-          status === PiaStatuses.INCOMPLETE)
+          status === PiaStatuses.DRAFTING_IN_PROGRESS)
       ) {
         navigate(pathname.replace('/review', '/intake'), { replace: true });
       }
@@ -376,10 +376,10 @@ const PIAFormPage = () => {
   }, [alertUserLeave, hasFormChanged]);
 
   // Prevent URL manipulation to edit a PIA
-  // if the PIA is not in INCOMPLETE or EDIT_IN_PROGRESS status
+  // if the PIA is not in DRAFTING_IN_PROGRESS or EDIT_IN_PROGRESS status
   useEffect(() => {
     if (
-      pia?.status !== PiaStatuses.INCOMPLETE &&
+      pia?.status !== PiaStatuses.DRAFTING_IN_PROGRESS &&
       pia?.status !== PiaStatuses.EDIT_IN_PROGRESS &&
       pathname?.split('/').includes('edit')
     ) {

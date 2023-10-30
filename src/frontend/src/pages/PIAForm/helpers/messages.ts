@@ -15,9 +15,9 @@ export const BannerText = {
       en: `This PIA is being reviewed by the Corporate Privacy Office (CPO). A CPO analyst will contact you with any questions.`,
     },
   },
-  InCompleteStatusCalloutText: {
+  DraftingInProgressStatusCalloutText: {
     Drafter: {
-      en: `Your PIA is in Incomplete status. Your Ministry Privacy Office (MPO) will only be able to view and help you with this PIA after you click “Submit”.`,
+      en: `Your PIA is in 'Drafting in Progress' status. Your Ministry Privacy Office (MPO) will only be able to view and help you with this PIA after you click “Submit”.`,
     },
   },
 };

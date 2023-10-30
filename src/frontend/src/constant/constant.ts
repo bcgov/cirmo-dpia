@@ -183,7 +183,7 @@ export const MinistryList = [
 ].sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
 
 export const PiaStatusList = [
-  { label: 'Incomplete', value: 'INCOMPLETE' },
+  { label: 'Drafting In Progress', value: 'DRAFTING_IN_PROGRESS' },
   { label: 'Edit In Progress', value: 'EDIT_IN_PROGRESS' },
   { label: 'MPO Review', value: 'MPO_REVIEW' },
   { label: 'CPO Review', value: 'CPO_REVIEW' },
@@ -250,7 +250,7 @@ export const PIOptions = [
 export const YesNoInputOptions = ['Yes', 'No'];
 
 export enum PiaStatuses {
-  INCOMPLETE = 'INCOMPLETE',
+  DRAFTING_IN_PROGRESS = 'DRAFTING_IN_PROGRESS',
   EDIT_IN_PROGRESS = 'EDIT_IN_PROGRESS',
   MPO_REVIEW = 'MPO_REVIEW',
   CPO_REVIEW = 'CPO_REVIEW',
