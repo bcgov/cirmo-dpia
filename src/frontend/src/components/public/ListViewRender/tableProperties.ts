@@ -7,6 +7,7 @@ export interface TableHeadingPropertiesType {
   };
 }
 
+// sortValue is of type PiaSorting
 export const tableHeadingProperties: TableHeadingPropertiesType = {
   title: {
     title: 'Title',
@@ -16,7 +17,7 @@ export const tableHeadingProperties: TableHeadingPropertiesType = {
   updatedAt: {
     title: 'Last modified',
     sorting: true,
-    sortValue: 0,
+    sortValue: -1,
   },
   drafterName: {
     title: 'Drafter',
