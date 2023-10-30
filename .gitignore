@@ -19,7 +19,8 @@ src/backend/coverage
 ###############################################################################
 src/frontend/node_modules
 src/backend/node_modules
-
+src/e2e/node_modules/
+node_modules
 
 ###############################################################################
 ##                                  Web App                                  ##
@@ -65,6 +66,6 @@ src/frontend/builds/css/*
 ###############################################################################
 ##                                  Testing                                  ##
 ###############################################################################
-src/frontend/test-results/
-src/frontend/playwright-report/
-src/frontend/playwright/.cache/
+src/e2e/test-results/
+src/e2e/playwright-report/
+src/e2e/playwright/.cache/
