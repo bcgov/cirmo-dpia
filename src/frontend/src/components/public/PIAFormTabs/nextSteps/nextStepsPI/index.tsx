@@ -1,5 +1,5 @@
 import { PiaStatuses } from '../../../../../constant/constant';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -8,10 +8,12 @@ import { FillOutFullPIA } from './components/FillOutFullPIA';
 import { NotifyMPO } from './components/NotifyMPO';
 import { PIALifecycle } from './components/PIALifecycle';
 import { SubmitForMPO } from './components/SubmitForMPO';
+import { NextStepsPIProps } from '../helper/interfaces';
 
-const NextStepsPI = () => {
+const NextStepsPI: React.FC<NextStepsPIProps> = ({
+  hasAddedPiToDataElements,
+}) => {
   const { pia } = useContext<IPiaFormContext>(PiaFormContext);
-
   // Show different text based on status.
   return (
     <section className="">
@@ -22,7 +24,7 @@ const NextStepsPI = () => {
         </>
       )}
       {pia?.status === PiaStatuses.MPO_REVIEW && <NotifyMPO />}
-      <PIALifecycle />
+      <PIALifecycle hasAddedPiToDataElements={hasAddedPiToDataElements} />
     </section>
   );
 };

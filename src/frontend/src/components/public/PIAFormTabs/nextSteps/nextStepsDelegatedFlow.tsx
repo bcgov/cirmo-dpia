@@ -1,8 +1,13 @@
+import React from 'react';
 import messages from './helper/messages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { PIALifecycle } from '../../../public/PIAFormTabs/nextSteps/nextStepsPI/components/PIALifecycle';
+import { NextStepsDelegatedFlowProps } from '../../../public/PIAFormTabs/nextSteps/helper/interfaces';
 
-const NextStepsDelegatedFlow = () => {
+const NextStepsDelegatedFlow: React.FC<NextStepsDelegatedFlowProps> = ({
+  hasAddedPiToDataElements,
+}) => {
   return (
     <>
       <section className="bg-white drop-shadow section__padding-block section__padding-inline drop-stadow section__margin-block  section-border-radius">
@@ -33,6 +38,7 @@ const NextStepsDelegatedFlow = () => {
           </div>
         </p>
       </section>
+      <PIALifecycle hasAddedPiToDataElements={hasAddedPiToDataElements} />
     </>
   );
 };

@@ -10,15 +10,17 @@ import {
 
 export const PIANextSteps = () => {
   const { pia } = useContext<IPiaFormContext>(PiaFormContext);
-
+  const hasAddedPiToDataElement = pia?.hasAddedPiToDataElements || false; // Provide a default value if it's null or undefined
   return (
     <div className="nextSteps">
       <h2> {messages.PageTitle.en} </h2>
       {pia?.hasAddedPiToDataElements === true ||
       pia?.hasAddedPiToDataElements === null ? (
-        <NextStepsPI />
+        <NextStepsPI hasAddedPiToDataElements={hasAddedPiToDataElement} />
       ) : (
-        <NextStepsDelegatedFlow />
+        <NextStepsDelegatedFlow
+          hasAddedPiToDataElements={hasAddedPiToDataElement}
+        />
       )}
     </div>
   );
