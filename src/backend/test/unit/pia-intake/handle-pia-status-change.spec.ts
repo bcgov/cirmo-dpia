@@ -8,7 +8,7 @@ import { handlePiaStatusChange } from 'src/modules/pia-intake/helper/handle-pia-
 import { piaIntakeEntityMock } from 'test/util/mocks/data/pia-intake.mock';
 
 describe(`handlePiaStatusChange method`, () => {
-  it('succeeds to delete review section of a Delegate PIA if MPO changes status from FINAL_REVIEW to INCOMPLETE', async () => {
+  it('succeeds to delete review section of a Delegate PIA if MPO changes status from FINAL_REVIEW to DRAFTING_IN_PROGRESS', async () => {
     const userType: Array<UserTypesEnum> = [UserTypesEnum.MPO];
 
     const storedValue: PiaIntakeEntity = {
@@ -28,7 +28,7 @@ describe(`handlePiaStatusChange method`, () => {
     };
 
     const updatedValue: UpdatePiaIntakeDto = {
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       saveId: 10,
       review: {
         mpo: {
@@ -137,7 +137,7 @@ describe(`handlePiaStatusChange method`, () => {
     expect(updatedValue.review).not.toBe(null);
   });
 
-  it('fails and DOES NOT delete review section of a delegate PIA if user OTHER THAN MPO changes status from FINAL_REVIEW to INCOMPLETE', async () => {
+  it('fails and DOES NOT delete review section of a delegate PIA if user OTHER THAN MPO changes status from FINAL_REVIEW to DRAFTING_IN_PROGRESS', async () => {
     const userType: Array<UserTypesEnum> = [UserTypesEnum.CPO];
 
     const storedValue: PiaIntakeEntity = {
@@ -157,7 +157,7 @@ describe(`handlePiaStatusChange method`, () => {
     };
 
     const updatedValue: UpdatePiaIntakeDto = {
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       saveId: 10,
       review: {
         mpo: {

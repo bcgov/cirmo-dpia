@@ -6,7 +6,7 @@
  *
  * allowed transitions                |   MPO   |   CPO   |  Drafter |  Invited_User  | Delegated Review?  |   Action
  * -------------------                |   ----  |   ---   |  ------- |  ------------  | ----------------   |   ------
- * FINAL_REVIEW -> INCOMPLETE         |   Yes   |   NO    | NO       |        NO      | YES                |  delete review section
+ * FINAL_REVIEW -> DRAFTING_INPROGRESS|   Yes   |   NO    | NO       |        NO      | YES                |  delete review section
  * FINAL_REVIEW -> EDIT_IN_PROGRESS   |   Yes   |   NO    | NO       |        NO      | YES                |  delete review section
  * FINAL_REVIEW -> MPO_REVIEW         |   Yes   |   NO    | NO       |        NO      | YES                |  N/A
  *
@@ -69,7 +69,7 @@ interface IStatusMetadata {
 export const piaStatusMetadata: Partial<
   Record<PiaIntakeStatusEnum, IStatusMetadata>
 > = {
-  [PiaIntakeStatusEnum.INCOMPLETE]: {
+  [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
     updates: {
       allow: true,
     },
@@ -90,7 +90,7 @@ export const piaStatusMetadata: Partial<
       allow: true,
     },
     transition: {
-      [PiaIntakeStatusEnum.INCOMPLETE]: {
+      [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
         allow: true,
       },
       [PiaIntakeStatusEnum.MPO_REVIEW]: {
@@ -115,7 +115,7 @@ export const piaStatusMetadata: Partial<
       },
     },
     transition: {
-      [PiaIntakeStatusEnum.INCOMPLETE]: {
+      [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
         allow: true,
         actions: [
           {
@@ -175,7 +175,7 @@ export const piaStatusMetadata: Partial<
       ],
     },
     transition: {
-      [PiaIntakeStatusEnum.INCOMPLETE]: {
+      [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
         allow: true,
         actions: [
           {
@@ -222,7 +222,7 @@ export const piaStatusMetadata: Partial<
       },
     },
     transition: {
-      [PiaIntakeStatusEnum.INCOMPLETE]: {
+      [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
         allow: true,
         // allow if any of the below conditions completely satisfies
         conditions: [
@@ -320,7 +320,7 @@ export const piaStatusMetadata: Partial<
       allow: false,
     },
     transition: {
-      [PiaIntakeStatusEnum.INCOMPLETE]: {
+      [PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS]: {
         allow: true,
         conditions: [
           {

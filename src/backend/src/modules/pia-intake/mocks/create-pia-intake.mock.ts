@@ -7,7 +7,7 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   title: 'Test PIA for screening King Richard',
   ministry: GovMinistriesEnum.TOURISM_ARTS_CULTURE_AND_SPORT,
   branch: 'Entertainment',
-  status: PiaIntakeStatusEnum.INCOMPLETE,
+  status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
   leadName: 'King Richard',
   leadTitle: 'Chief Guiding Officer',
   leadEmail: 'king@test.bc.gov.in',
