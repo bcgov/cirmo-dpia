@@ -69,7 +69,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
         const status =
           pia?.hasAddedPiToDataElements === false
             ? PiaStatuses.MPO_REVIEW
-            : PiaStatuses.INCOMPLETE;
+            : PiaStatuses.DRAFTING_IN_PROGRESS;
         PopulateModal(pia, status, populateModalFn, true);
         setPiaModalButtonValue(modalType);
         break;
@@ -121,7 +121,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
           status:
             pia?.hasAddedPiToDataElements === false
               ? PiaStatuses.MPO_REVIEW
-              : PiaStatuses.INCOMPLETE,
+              : PiaStatuses.DRAFTING_IN_PROGRESS,
         });
         // Navigate to the appropriate page based on the updated PIA status
         if (

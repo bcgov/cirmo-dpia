@@ -32,10 +32,10 @@ export const handlePiaStatusChange = (
   // No status change // no action
   if (!updatedStatus || updatedStatus === storedStatus) return;
 
-  // first status of PIA should be INCOMPLETE
+  // first status of PIA should be Drafting In Progress
   if (
     storedStatus === null &&
-    updatedStatus !== PiaIntakeStatusEnum.INCOMPLETE
+    updatedStatus !== PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS
   ) {
     throwStatusChangeError('Cannot move a fresh PIA to an Incomplete status');
   }

@@ -119,7 +119,11 @@ function StatusChangeDropDown({
                   pia.status && statusList(null)[pia.status].class
                 }`}
               >
-                {statusList(null)[pia?.status ?? PiaStatuses.INCOMPLETE].title}
+                {
+                  statusList(null)[
+                    pia?.status ?? PiaStatuses.DRAFTING_IN_PROGRESS
+                  ].title
+                }
               </div>
               <FontAwesomeIcon className="dropdown-icon" icon={faChevronDown} />
             </button>

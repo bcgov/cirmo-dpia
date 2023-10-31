@@ -1,4 +1,4 @@
-export { incompleteStatus } from './incompleteStatus';
+export { draftingInProgressStatus } from './draftingInProgressStatus';
 export { editInProgressStatus } from './editInProgressStatus';
 export { mpoReviewStatus } from './mpoReviewStatus';
 export { cpoReviewStatus } from './cpoReviewStatus';

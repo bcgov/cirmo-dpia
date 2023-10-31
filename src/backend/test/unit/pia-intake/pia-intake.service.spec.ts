@@ -731,15 +731,15 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 5-1 : user is MPO; filter by PIA status(incomplete) with Sort
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(incomplete)]', async () => {
+    // scenario 5-1 : user is MPO; filter by PIA status(DRAFTING_IN_PROGRESS) with Sort
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(DRAFTING_IN_PROGRESS)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         sortBy: 'updatedAt',
         sortOrder: SortOrderEnum.ASC,
       };
@@ -758,14 +758,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
         ],
         order: {
@@ -786,8 +786,8 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 5-2 : user is MPO; filter by PIA status(non-incomplete) with Sort
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete)]', async () => {
+    // scenario 5-2 : user is MPO; filter by PIA status(non-DRAFTING_IN_PROGRESS) with Sort
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-DRAFTING_IN_PROGRESS)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -854,7 +854,7 @@ describe('PiaIntakeService', () => {
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -871,14 +871,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
         ],
         order: {
@@ -899,15 +899,15 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 7-1: user is MPO ; filter by PIA status (incomplete) and ministry
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(incomplete) and ministry]', async () => {
+    // scenario 7-1: user is MPO ; filter by PIA status (DRAFTING_IN_PROGRESS) and ministry
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(DRAFTING_IN_PROGRESS) and ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
       };
 
@@ -925,7 +925,7 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
             ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
           {
@@ -933,7 +933,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
             ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
@@ -954,8 +954,8 @@ describe('PiaIntakeService', () => {
       };
       expect(result).toEqual(expectedResult);
     });
-    // scenario 7-2: user is MPO ; filter by PIA status (non-incomplete) and ministry
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(except incomplete) and ministry]', async () => {
+    // scenario 7-2: user is MPO ; filter by PIA status (non-DRAFTING_IN_PROGRESS) and ministry
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(except DRAFTING_IN_PROGRESS) and ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -1023,7 +1023,7 @@ describe('PiaIntakeService', () => {
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.ONLYMYPIAS,
@@ -1043,7 +1043,7 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
             ministry: GovMinistriesEnum.CITIZENS_SERVICES,
           },
         ],
@@ -1065,7 +1065,7 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 9: user is MPO; filter by PIA status[incomplete] and ministry[own] and not current user's pia -- only invited PIAs
+    // scenario 9: user is MPO; filter by PIA status[DRAFTING_IN_PROGRESS] and ministry[own] and not current user's pia -- only invited PIAs
     it('succeeds calling the database repository with correct data for MPO role [filter by pia status and ministry and exclude current user pia]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
@@ -1073,7 +1073,7 @@ describe('PiaIntakeService', () => {
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         filterByMinistry: GovMinistriesEnum.CITIZENS_SERVICES,
         filterPiaDrafterByCurrentUser:
           PiaFilterDrafterByCurrentUserEnum.EXCLUDEMYPIAS,
@@ -1095,7 +1095,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             ministry: 'CITIZENS_SERVICES',
             createdByGuid: Not(user.idir_user_guid),
           },
@@ -1186,7 +1186,7 @@ describe('PiaIntakeService', () => {
         searchText: 'Will Smith',
         page: 1,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -1204,7 +1204,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             title: ILike('%Will Smith%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
@@ -1212,13 +1212,13 @@ describe('PiaIntakeService', () => {
               createdByGuid: user.idir_user_guid,
             },
             title: ILike('%Will Smith%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             drafterName: ILike('%Will Smith%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
@@ -1226,7 +1226,7 @@ describe('PiaIntakeService', () => {
               createdByGuid: user.idir_user_guid,
             },
             drafterName: ILike('%Will Smith%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
         ],
         order: {
@@ -1247,8 +1247,8 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 11-1 MPO user searchText and filter by status (incomplete)
-    it('succeeds when user is an MPO and [searchText is provided and filter by status(incomplete)]', async () => {
+    // scenario 11-1 MPO user searchText and filter by status (DRAFTING_IN_PROGRESS)
+    it('succeeds when user is an MPO and [searchText is provided and filter by status(DRAFTING_IN_PROGRESS)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -1256,7 +1256,7 @@ describe('PiaIntakeService', () => {
         searchText: 'King Richard',
         page: 1,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -1274,7 +1274,7 @@ describe('PiaIntakeService', () => {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             title: ILike('%King Richard%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
@@ -1282,13 +1282,13 @@ describe('PiaIntakeService', () => {
               createdByGuid: user.idir_user_guid,
             },
             title: ILike('%King Richard%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
             drafterName: ILike('%King Richard%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
           {
             isActive: true,
@@ -1296,7 +1296,7 @@ describe('PiaIntakeService', () => {
               createdByGuid: user.idir_user_guid,
             },
             drafterName: ILike('%King Richard%'),
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
           },
         ],
         order: {
@@ -1317,8 +1317,8 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 11-2 MPO user searchText and filter by status (except incomplete)
-    it('succeeds when user is an MPO and [searchText is provided and filter by status(Non-incomplete)]', async () => {
+    // scenario 11-2 MPO user searchText and filter by status (except DRAFTING_IN_PROGRESS)
+    it('succeeds when user is an MPO and [searchText is provided and filter by status(Non-DRAFTING_IN_PROGRESS)]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
@@ -1406,7 +1406,7 @@ describe('PiaIntakeService', () => {
       const query: PiaIntakeFindQuery = {
         page: 5,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         filterByMinistry: GovMinistriesEnum.FORESTS,
       };
 
@@ -1424,7 +1424,7 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
             ministry: GovMinistriesEnum.FORESTS,
           },
           {
@@ -1432,7 +1432,7 @@ describe('PiaIntakeService', () => {
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
             ministry: GovMinistriesEnum.FORESTS,
           },
         ],
@@ -1454,7 +1454,7 @@ describe('PiaIntakeService', () => {
     });
 
     // scenario 12 -2 MPO user can not filter other ministry pia but can see their PIA submit to this ministry
-    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-incomplete) and not their ministry]', async () => {
+    it('succeeds calling the database repository with correct data for MPO role [filter by pia status(non-DRAFTING_IN_PROGRESS) and not their ministry]', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.MPO_CITZ];
       const query: PiaIntakeFindQuery = {
@@ -1639,15 +1639,15 @@ describe('PiaIntakeService', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    // scenario 15: User is a CPO with filter status=INCOMPLETE
-    it('succeeds when the user is a CPO with filter status=INCOMPLETE', async () => {
+    // scenario 15: User is a CPO with filter status=DRAFTING_IN_PROGRESS
+    it('succeeds when the user is a CPO with filter status=DRAFTING_IN_PROGRESS', async () => {
       const user: KeycloakUser = { ...keycloakUserMock };
       const userRoles = [RolesEnum.CPO];
       const piaIntakeEntity = { ...piaIntakeEntityMock };
       const query: PiaIntakeFindQuery = {
         page: 1,
         pageSize: 12,
-        filterByStatus: PiaIntakeStatusEnum.INCOMPLETE,
+        filterByStatus: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       };
 
       piaIntakeRepository.findAndCount = jest.fn(async () => {
@@ -1664,14 +1664,14 @@ describe('PiaIntakeService', () => {
           {
             isActive: true,
             createdByGuid: user.idir_user_guid,
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
           {
             isActive: true,
             invitee: {
               createdByGuid: user.idir_user_guid,
             },
-            status: PiaIntakeStatusEnum.INCOMPLETE,
+            status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
           },
         ],
         order: {
@@ -2202,7 +2202,7 @@ describe('PiaIntakeService', () => {
     it('fails when the function throws an exception', async () => {
       const piaIntakeMock = { ...piaIntakeEntityMock };
       const updatePiaIntakeDto = {
-        status: PiaIntakeStatusEnum.INCOMPLETE,
+        status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         saveId: 1,
       };
       const user: KeycloakUser = { ...keycloakUserMock };
@@ -2247,7 +2247,7 @@ describe('PiaIntakeService', () => {
       const piaIntakeROMock = { ...getPiaIntakeROMock };
 
       const updatePiaIntakeDto = {
-        status: PiaIntakeStatusEnum.INCOMPLETE,
+        status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         saveId: 1,
       };
       const user: KeycloakUser = { ...keycloakUserMock };

@@ -36,9 +36,9 @@
   min-height: 24px;
 }
 
-.statusBlock__incomplete {
-  background-color: $bg-incomplete;
-  color: $fg-incomplete;
+.statusBlock__draftingInProgress {
+  background-color: $bg-draftingInProgress;
+  color: $fg-draftingInProgress;
 }
 
 .statusBlock__MPOReview {
