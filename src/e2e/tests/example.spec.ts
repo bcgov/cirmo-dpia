@@ -7,6 +7,7 @@ test('has title', async ({ page }) => {
   await expect(page).toHaveTitle('Digital Privacy Impact Assessment (DPIA)');
 });
 
+// eslint-disable-next-line playwright/expect-expect
 test('Log in with IDIR', async ({ page }) => {
   await page.goto('/');
   await page
@@ -14,5 +15,5 @@ test('Log in with IDIR', async ({ page }) => {
     .getByRole('button', { name: 'Log in with IDIR' })
     .click();
 
-  await page.getByText('IDIR Username');
+  page.getByText('IDIR Username');
 });
