@@ -2,6 +2,11 @@ import { useState, useRef } from 'react';
 import { TooltipProps } from '../Tooltip/interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
+/**
+ * Tooltip component that provides additional information on hover.
+ * @param {TooltipProps} props - Props for the Tooltip component.
+ */
 export const Tooltip = (props: TooltipProps) => {
   const { children, content, direction, id } = props;
   const [visible, setVisible] = useState(false);
@@ -15,6 +20,7 @@ export const Tooltip = (props: TooltipProps) => {
       ref={ref}
     >
       <div className={`tooltip-content-wrapper tooltip-${direction}`}>
+        {/* tooltip Icon */}
         <FontAwesomeIcon
           data-tip={content}
           data-for={id}
@@ -22,6 +28,7 @@ export const Tooltip = (props: TooltipProps) => {
           icon={faInfoCircle}
         />
         {children}
+        {/* tooltip content */}
         {visible && <div className="tooltip-content">{content}</div>}
       </div>
     </div>

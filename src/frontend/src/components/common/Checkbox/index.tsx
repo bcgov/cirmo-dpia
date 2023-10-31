@@ -45,12 +45,7 @@ const Checkbox = ({
         )}
       </label>
       {!tooltip ? null : (
-        <Tooltip
-          id={value}
-          content={tooltipText}
-          direction="right"
-          className="tooltip"
-        ></Tooltip>
+        <Tooltip id={value} content={tooltipText} direction="right" />
       )}
     </div>
   );
