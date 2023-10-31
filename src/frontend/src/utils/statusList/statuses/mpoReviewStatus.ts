@@ -4,10 +4,10 @@ import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import {
   defaultCPOReviewModal,
   defaultEditInProgressModal,
-  defaultIncompleteModal,
+  defaultDraftingInProgressModal,
   defaultMPOReviewModal,
   resetReviewEditInPRogressModal,
-  resetReviewIncompleteModal,
+  resetReviewDraftingInProgressModal,
   submitPiaIntakeModal,
 } from '../modals';
 
@@ -45,10 +45,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         },
         changeStatus: [
           {
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             modal: checkReviewStatus(pia)
-              ? resetReviewIncompleteModal
-              : defaultIncompleteModal,
+              ? resetReviewDraftingInProgressModal
+              : defaultDraftingInProgressModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',
@@ -90,10 +90,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
         },
         changeStatus: [
           {
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             modal: checkReviewStatus(pia)
-              ? resetReviewIncompleteModal
-              : defaultIncompleteModal,
+              ? resetReviewDraftingInProgressModal
+              : defaultDraftingInProgressModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',
@@ -126,10 +126,10 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
               : defaultEditInProgressModal,
           },
           {
-            status: 'INCOMPLETE',
+            status: 'DRAFTING_IN_PROGRESS',
             modal: checkReviewStatus(pia)
-              ? resetReviewIncompleteModal
-              : defaultIncompleteModal,
+              ? resetReviewDraftingInProgressModal
+              : defaultDraftingInProgressModal,
           },
         ],
       },

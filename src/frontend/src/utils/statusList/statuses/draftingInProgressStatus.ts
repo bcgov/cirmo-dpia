@@ -4,24 +4,24 @@ import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import {
   defaultCPOReviewModal,
   defaultEditInProgressModal,
-  defaultIncompleteModal,
+  defaultDraftingInProgressModal,
   defaultMPOReviewModal,
   resetReviewEditInPRogressModal,
   submitPiaIntakeModal,
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/helpers/messages';
 
-export const incompleteStatus = (pia: IPiaForm | null) => {
+export const draftingInProgressStatus = (pia: IPiaForm | null) => {
   return {
-    title: 'Incomplete',
-    class: 'statusBlock__incomplete',
-    banner: BannerText.InCompleteStatusCalloutText.Drafter.en,
+    title: 'Drafting in Progress',
+    class: 'statusBlock__draftingInProgress',
+    banner: BannerText.DraftingInProgressStatusCalloutText.Drafter.en,
     buttonText: SubmitButtonTextEnum.FORM,
-    modal: defaultIncompleteModal,
+    modal: defaultDraftingInProgressModal,
     comments: true,
     Privileges: {
       MPO: {
-        banner: BannerText.InCompleteStatusCalloutText.Drafter.en, //incomplete only have one banner for both mpo and drafter
+        banner: BannerText.DraftingInProgressStatusCalloutText.Drafter.en, //DRAFTING_IN_PROGRESS only have one banner for both mpo and drafter
         showSubmitButton: true,
         Pages: {
           review: {
@@ -50,8 +50,8 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
           },
           {
             // Added for submitModal scenarios; dropdown display is irrelevant.
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
             submitModal: submitPiaIntakeModal,
           },
         ],
@@ -81,8 +81,8 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
             modal: defaultEditInProgressModal,
           },
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
             submitModal: submitPiaIntakeModal,
           },
         ],
@@ -105,8 +105,8 @@ export const incompleteStatus = (pia: IPiaForm | null) => {
         changeStatus: [
           // Added for submitModal scenarios; dropdown display is irrelevant.
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
             submitModal: submitPiaIntakeModal,
           },
           {

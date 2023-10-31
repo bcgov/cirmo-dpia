@@ -1,0 +1,34 @@
+{
+	"name": "dpia-e2e",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+		"playwright-local": "BASE_URL=http://localhost:8080 playwright test",
+		"playwright-local-ui": "BASE_URL=http://localhost:8080 playwright test --ui",
+		"playwright-local-debug": "BASE_URL=http://localhost:8080 playwright test --debug",
+		"playwright-dev": "BASE_URL=https://dev.pia.gov.bc.ca playwright test",
+		"playwright-dev-ui": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --ui",
+		"playwright-dev-debug": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --debug",
+		"playwright-test": "BASE_URL=https://test.pia.gov.bc.ca playwright test",
+		"playwright-test-ui": "BASE_URL=https://test.pia.gov.bc.ca playwright test --ui",
+		"playwright-test-debug": "BASE_URL=https://test.pia.gov.bc.ca playwright test --debug",
+		"playwright-prod": "BASE_URL=https://pia.gov.bc.ca playwright test",
+		"playwright-prod-ui": "BASE_URL=https://pia.gov.bc.ca playwright test --ui",
+		"playwright-prod-debug": "BASE_URL=https://pia.gov.bc.ca playwright test --debug"
+	},
+	"dependencies": {
+		"dotenv": "16.3.1"
+	},
+	"devDependencies": {
+		"@playwright/test": "1.39.0",
+		"@types/node": "20.8.9",
+		"@typescript-eslint/eslint-plugin": "6.9.1",
+		"@typescript-eslint/parser": "6.9.1",
+		"eslint": "8.52.0",
+		"eslint-config-prettier": "9.0.0",
+		"eslint-plugin-import": "2.29.0",
+		"eslint-plugin-playwright": "0.18.0",
+		"eslint-plugin-prettier": "5.0.1",
+		"prettier": "3.0.3"
+	}
+}

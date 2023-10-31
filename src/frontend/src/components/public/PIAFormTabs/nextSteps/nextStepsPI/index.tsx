@@ -17,7 +17,7 @@ const NextStepsPI: React.FC<NextStepsPIProps> = ({
   // Show different text based on status.
   return (
     <section className="">
-      {pia?.status === PiaStatuses.INCOMPLETE && (
+      {pia?.status === PiaStatuses.DRAFTING_IN_PROGRESS && (
         <>
           <FillOutFullPIA />
           <SubmitForMPO />

@@ -78,7 +78,7 @@ export class PiaIntakeService {
 
     this.updateCpoReviews(createPiaIntakeDto, null, user);
 
-    // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be incomplete / Edits in progress only]
+    // TODO: add status restrictions: User can't create/edit PIA in *_REVIEW status [should be DRAFTING_IN_PROGRESS / Edits in progress only]
 
     const piaInfoForm: PiaIntakeEntity = await this.piaIntakeRepository.save({
       ...createPiaIntakeDto,
@@ -255,11 +255,11 @@ export class PiaIntakeService {
     });
 
     // Scenario 2: As an MPO, retrieve all pia-intakes submitted to my ministry for review
-    // MPO only can see all the non-incomplete PIAs per requirement
+    // MPO only can see all the non-DRAFTING_IN_PROGRESS PIAs per requirement
     if (mpoMinistries?.length) {
       if (
         (query.filterByStatus &&
-          query.filterByStatus === PiaIntakeStatusEnum.INCOMPLETE) ||
+          query.filterByStatus === PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS) ||
         (query.filterByMinistry &&
           !mpoMinistries.includes(query.filterByMinistry))
       ) {
@@ -267,7 +267,7 @@ export class PiaIntakeService {
       } else {
         const allStatuses = Object.values(PiaIntakeStatusEnum);
         const exceptions = [
-          PiaIntakeStatusEnum.INCOMPLETE, // can never see PIAs of other users in Incomplete status
+          PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS, // can never see PIAs of other users in D.I.P. status
           PiaIntakeStatusEnum.COMPLETE, // can only see complete if explicitly requested
         ];
         const statusIn = allStatuses.filter((s) => !exceptions.includes(s));
@@ -284,7 +284,7 @@ export class PiaIntakeService {
     if (isCPO) {
       const allStatuses = Object.values(PiaIntakeStatusEnum);
       const excludedStatuses = [
-        PiaIntakeStatusEnum.INCOMPLETE,
+        PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
         PiaIntakeStatusEnum.EDIT_IN_PROGRESS,
         PiaIntakeStatusEnum.MPO_REVIEW,
       ];

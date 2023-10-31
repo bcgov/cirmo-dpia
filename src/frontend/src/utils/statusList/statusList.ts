@@ -4,7 +4,7 @@ import {
   cpoReviewStatus,
   editInProgressStatus,
   finalReviewStatus,
-  incompleteStatus,
+  draftingInProgressStatus,
   mpoReviewStatus,
   pendingCompletionStatus,
 } from './statuses/index';
@@ -12,7 +12,7 @@ import { StatusList } from './types';
 
 export const statusList = (pia: IPiaForm | null): StatusList => {
   return {
-    INCOMPLETE: incompleteStatus(pia),
+    DRAFTING_IN_PROGRESS: draftingInProgressStatus(pia),
     EDIT_IN_PROGRESS: editInProgressStatus(),
     MPO_REVIEW: mpoReviewStatus(pia),
     CPO_REVIEW: cpoReviewStatus(),

@@ -71,7 +71,7 @@ describe('`handlePiaUpdates` method', () => {
   it('fails and throw Forbidden exception when updates are not allowed in the status', () => {
     const updatedValue: UpdatePiaIntakeDto = {
       saveId: 1,
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       title: 'TEST',
     };
 
@@ -91,7 +91,7 @@ describe('`handlePiaUpdates` method', () => {
     }
 
     expect(checkUpdatePermissionsSpy).toBeCalledWith({
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       updatedPiaKeys: ['title'],
     });
     expect(validateConditionsAnySpy).not.toBeCalled();
@@ -100,7 +100,7 @@ describe('`handlePiaUpdates` method', () => {
   it('fails and throw Forbidden exception when updates are ALLOWED in the status, BUT one of the condition NOT met', () => {
     const updatedValue: UpdatePiaIntakeDto = {
       saveId: 1,
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       title: 'TEST',
     };
 
@@ -124,7 +124,7 @@ describe('`handlePiaUpdates` method', () => {
     }
 
     expect(checkUpdatePermissionsSpy).toBeCalledWith({
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       updatedPiaKeys: ['title'],
     });
     expect(validateConditionsAnySpy).toBeCalled();
@@ -132,7 +132,7 @@ describe('`handlePiaUpdates` method', () => {
 
   it('passes and performs validations when changes are allowed and conditions are met', () => {
     const updatedValue: UpdatePiaIntakeDto = {
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       title: 'TEST',
       saveId: 1,
     };
@@ -155,7 +155,7 @@ describe('`handlePiaUpdates` method', () => {
     );
 
     expect(checkUpdatePermissionsSpy).toBeCalledWith({
-      status: PiaIntakeStatusEnum.INCOMPLETE,
+      status: PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS,
       updatedPiaKeys: ['title'],
     });
     expect(validateConditionsAnySpy).toBeCalled();

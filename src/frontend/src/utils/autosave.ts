@@ -21,7 +21,7 @@ const useAutoSave = () => {
   // Define initial state
   const emptyState: IPiaForm = {
     hasAddedPiToDataElements: true,
-    status: PiaStatuses.INCOMPLETE,
+    status: PiaStatuses.DRAFTING_IN_PROGRESS,
   };
 
   // Define state variables

@@ -2,7 +2,7 @@ import { SubmitButtonTextEnum } from '../../../constant/constant';
 import {
   defaultCPOReviewModal,
   defaultEditInProgressModal,
-  defaultIncompleteModal,
+  defaultDraftingInProgressModal,
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/helpers/messages';
 
@@ -67,8 +67,8 @@ export const cpoReviewStatus = () => {
             },
           },
           {
-            status: 'INCOMPLETE',
-            modal: defaultIncompleteModal,
+            status: 'DRAFTING_IN_PROGRESS',
+            modal: defaultDraftingInProgressModal,
           },
           {
             status: 'EDIT_IN_PROGRESS',

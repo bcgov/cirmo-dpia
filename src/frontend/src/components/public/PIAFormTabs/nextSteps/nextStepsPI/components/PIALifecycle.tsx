@@ -15,13 +15,13 @@ export const PIALifecycle: React.FC<PIALifecycleProps> = ({
       <div className="bg-white drop-shadow section__padding-block section__padding-inline drop-stadow  section-border-radius">
         {hasAddedPiToDataElements ? (
           <img // Display the Infographic Standard PIA image
-            className="rounded mx-auto d-block "
+            className="rounded mx-auto d-block infographic-diagram"
             src={InfographicStandardPIAImg}
             alt="Infographic for Standard PIA"
           />
         ) : (
           <img // Display the Infographic Delegated PIA image
-            className="rounded mx-auto d-block "
+            className="rounded mx-auto d-block infographic-diagram"
             src={InfographicDelegatedPIAImg}
             alt="Infographic for Delegated PIA"
           />
