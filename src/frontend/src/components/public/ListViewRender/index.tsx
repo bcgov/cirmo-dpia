@@ -31,8 +31,8 @@ const ListViewRender = (props: IListViewRenderProps) => {
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [SortBy, setSortBy] = useState('');
-  const [SortOrder, setSortOrder] = useState(0);
+  const [SortBy, setSortBy] = useState('updatedAt');
+  const [SortOrder, setSortOrder] = useState(-1);
   const [currentPage, setcurrentPage] = useState(1);
   const [headings, setHeading] = useState(tableHeadingProperties);
   const [PageSizedefault, setPageSizedefault] = useState(10);
