@@ -40,7 +40,7 @@
     "@types/react-datepicker": "4.19.1",
     "@types/react-dom": "18.2.14",
     "@typescript-eslint/eslint-plugin": "6.9.0",
-    "@typescript-eslint/parser": "6.9.0",
+    "@typescript-eslint/parser": "6.9.1",
     "@vitejs/plugin-react": "4.1.0",
     "@wdio/cli": "8.16.11",
     "@wdio/cucumber-framework": "8.16.11",
