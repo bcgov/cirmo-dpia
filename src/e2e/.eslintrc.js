@@ -10,6 +10,7 @@ module.exports = {
     'plugin:playwright/recommended',
     'plugin:import/recommended',
     'plugin:prettier/recommended',
+    "plugin:import/typescript",
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
