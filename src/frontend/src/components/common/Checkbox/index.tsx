@@ -21,6 +21,8 @@ const Checkbox = ({
     setIsChecked(defaultChecked);
   }, [defaultChecked]);
 
+  const showIcon = true; // Define a boolean variable here to control the icon
+
   return (
     <div className="checkbox-wrapper">
       <label className="input-label">
@@ -45,7 +47,12 @@ const Checkbox = ({
         )}
       </label>
       {!tooltip ? null : (
-        <Tooltip id={value} content={tooltipText} direction="right" />
+        <Tooltip
+          label={label}
+          content={tooltipText}
+          direction="right"
+          showIcon={showIcon}
+        />
       )}
     </div>
   );

@@ -7,8 +7,9 @@ import { ReactNode } from 'react';
  * @property {'top' | 'right' | 'bottom' | 'left'} direction - The direction in which the tooltip should appear.
  */
 export type TooltipProps = {
-  id?: string;
+  label?: string;
   children?: ReactNode;
   content?: string;
   direction: 'top' | 'right' | 'bottom' | 'left';
+  showIcon?: boolean;
 };

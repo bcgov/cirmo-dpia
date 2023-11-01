@@ -8,7 +8,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
  * @param {TooltipProps} props - Props for the Tooltip component.
  */
 export const Tooltip = (props: TooltipProps) => {
-  const { children, content, direction, id } = props;
+  const { label, children, content, direction, showIcon } = props;
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
 
@@ -20,13 +20,15 @@ export const Tooltip = (props: TooltipProps) => {
       ref={ref}
     >
       <div className={`tooltip-content-wrapper tooltip-${direction}`}>
-        {/* tooltip Icon */}
-        <FontAwesomeIcon
-          data-tip={content}
-          data-for={id}
-          className="tooltipIcon"
-          icon={faInfoCircle}
-        />
+        {/* Conditional rendering of the tooltip Icon */}
+        {showIcon && (
+          <FontAwesomeIcon
+            data-tip={content}
+            data-for={label}
+            className="tooltipIcon"
+            icon={faInfoCircle}
+          />
+        )}
         {children}
         {/* tooltip content */}
         {visible && <div className="tooltip-content">{content}</div>}
