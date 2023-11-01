@@ -1,0 +1,93 @@
+/* Styling for the tooltip icon */
+.tooltipIcon {
+  margin-top: 0.5em;
+  color: #1a5a96 !important;
+}
+
+.tooltop-container {
+  position: absolute;
+}
+
+.tooltip-content-wrapper {
+  position: relative;
+  width: 415px;
+}
+
+/* Styling for the tooltip content */
+.tooltip-content {
+  position: absolute;
+  color: #fff;
+  background-color: #1a5a96;
+  width: 100%;
+  padding: 8px 30px 8px 15px !important;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Right Direction */
+.tooltip-right .tooltip-content {
+  left: 30px;
+  top: -150%;
+}
+
+.tooltip-right .tooltip-content::before {
+  position: absolute;
+  content: '';
+  top: 50% !important;
+  left: -12px !important;
+  transform: translateY(-50%) !important;
+  border-color: transparent #1a5a96 transparent transparent !important;
+  border-width: 6px;
+  border-style: solid;
+}
+
+/* Bottom Direction */
+.tooltip-bottom .tooltip-content {
+  top: 120%;
+  left: -49.5%;
+}
+
+.tooltip-bottom .tooltip-content::before {
+  position: absolute;
+  content: '';
+  top: -14% !important;
+  left: 50.3%;
+  transform: translateX(-10%) !important;
+  border-color: transparent transparent #1a5a96 transparent !important;
+  border-width: 6px;
+  border-style: solid;
+}
+
+/* Top Direction */
+.tooltip-top .tooltip-content {
+  bottom: 100%;
+  transform: translateX(-50%);
+}
+
+.tooltip-top .tooltip-content::before {
+  position: absolute;
+  content: '';
+  bottom: -13% !important;
+  left: 50.3%;
+  transform: translateX(-10%) !important;
+  border-color: #1a5a96 transparent transparent transparent !important;
+  border-width: 6px;
+  border-style: solid;
+}
+
+/* Left Direction */
+.tooltip-left .tooltip-content {
+  left: -105%;
+  top: -110%;
+}
+
+.tooltip-left .tooltip-content::before {
+  position: absolute;
+  content: '';
+  top: 50% !important;
+  right: -13px;
+  transform: translateX(-10%) !important;
+  border-color: transparent transparent transparent #1a5a96 !important;
+  border-width: 6px;
+  border-style: solid;
+}

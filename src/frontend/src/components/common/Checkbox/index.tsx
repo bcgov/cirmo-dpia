@@ -1,8 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { ICheckbox } from './interfaces';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import Tooltip from 'react-tooltip';
+import { Tooltip } from '../Tooltip/index';
 
 const Checkbox = ({
   label,
@@ -22,6 +20,8 @@ const Checkbox = ({
     /* If checked is reset or set externally, update the state */
     setIsChecked(defaultChecked);
   }, [defaultChecked]);
+
+  const showIcon = true; // Define a boolean variable here to control the icon
 
   return (
     <div className="checkbox-wrapper">
@@ -47,24 +47,12 @@ const Checkbox = ({
         )}
       </label>
       {!tooltip ? null : (
-        <>
-          <FontAwesomeIcon
-            data-tip={tooltipText}
-            data-for={value}
-            className="cb-info-icon"
-            icon={faInfoCircle}
-          />
-          <Tooltip
-            className="tooltip"
-            id={value}
-            place="right"
-            effect="solid"
-            arrowColor="#1A5A96"
-            getContent={() => {
-              return <div>{tooltipText}</div>;
-            }}
-          />
-        </>
+        <Tooltip
+          label={label}
+          content={tooltipText}
+          direction="right"
+          showIcon={showIcon}
+        />
       )}
     </div>
   );
