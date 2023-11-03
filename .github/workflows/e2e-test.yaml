@@ -5,11 +5,9 @@ on:
     inputs:
       environment:
         description: "Select Dev or Test environment"
-        type: choice
+        required: true
+        type: string
         default: "APP-Dev"
-        options:
-          - APP-Dev
-          - APP-Test
     secrets:
       DRAFT_IDIR_PASSWORD:
         required: true
@@ -21,11 +19,9 @@ on:
     inputs:
       environment:
         description: "Select Dev or Test environment"
-        type: choice
+        required: true
+        type: string
         default: "APP-Dev"
-        options:
-          - APP-Dev
-          - APP-Test
 
 jobs:
   e2e-test:
@@ -45,10 +41,13 @@ jobs:
 
       - name: Set Test Command
         run: |
-          if [ "${{ inputs.environment }}" == 'APP-Dev' ]; then
+          if [ "${{ inputs.environment }}" = "APP-Dev" ]; then
             echo "TEST_CMD=npm run playwright-dev" >> $GITHUB_ENV
-          elif [ "${{ inputs.environment }}" == 'APP-Test' ]; then
+          elif [ "${{ inputs.environment }}" = "APP-Test" ]; then
             echo "TEST_CMD=npm run playwright-test" >> $GITHUB_ENV
+          else
+            echo "Error: Unknown environment '${{ inputs.environment }}'" >&2
+            exit 1
           fi
 
       - name: Echo Test Command
