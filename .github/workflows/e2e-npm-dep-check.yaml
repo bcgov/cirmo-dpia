@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checkout branch.
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Run NodeJS script to check for latest npm dependency versions and capture output.
       - name: Run NPM DEP Check Node.js script
