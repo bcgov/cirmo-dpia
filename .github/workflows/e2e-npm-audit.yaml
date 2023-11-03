@@ -1,0 +1,27 @@
+name: NPM Audit - e2e
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  scan:
+    name: npm audit
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Repository
+      - uses: actions/checkout@v3
+
+      # Install e2e Dependencies
+      - name: install dependencies
+        run: |
+          cd src/e2e/
+          npm ci
+
+      # Checkout for moderate or higher vulnerabilities in e2e package.json
+      - uses: oke-py/npm-audit-action@v2
+        with:
+          audit_level: high
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_directory: src/e2e
