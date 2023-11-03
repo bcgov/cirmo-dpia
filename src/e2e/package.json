@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "lint": "eslint 'tests/**/*.ts{,x}'",
     "playwright-local": "BASE_URL=http://localhost:8080 playwright test",
     "playwright-local-ui": "BASE_URL=http://localhost:8080 playwright test --ui",
     "playwright-local-debug": "BASE_URL=http://localhost:8080 playwright test --debug",
