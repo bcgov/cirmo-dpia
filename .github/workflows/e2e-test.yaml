@@ -57,6 +57,7 @@ jobs:
         run: |
           cd src/e2e
           npm ci
+          npx playwright install 
 
       - name: Run Playwright Test
         run: |
