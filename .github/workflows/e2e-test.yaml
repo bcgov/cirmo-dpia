@@ -41,11 +41,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.9.0
-
       - name: Set Test Command
         run: |
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
@@ -73,7 +68,7 @@ jobs:
           cd src/e2e
           $TEST_CMD
 
-      - name: Upload Test Artifacts
+      - name: Create Playwright Report
         if: always()
         uses: actions/upload-artifact@v3
         with:
