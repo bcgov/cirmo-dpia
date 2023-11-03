@@ -18,6 +18,6 @@ jobs:
         
       - name: Install project dependencies, run lint
         run: |
-          cd src/frontend
+          cd src/e2e
           npm ci
           npm run lint
