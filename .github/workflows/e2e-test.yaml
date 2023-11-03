@@ -1,0 +1,72 @@
+name: "E2E Test Run with Playwright"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Select Dev or Test environment"
+        type: choice
+        default: "APP-Dev"
+        options:
+          - APP-Dev
+          - APP-Test
+    secrets:
+      DRAFT_IDIR_PASSWORD:
+        required: true
+      MPO_IDIR_PASSWORD:
+        required: true
+      CPO_IDIR_PASSWORD:
+        required: true
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select Dev or Test environment"
+        type: choice
+        default: "APP-Dev"
+        options:
+          - APP-Dev
+          - APP-Test
+
+jobs:
+  e2e-test:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    env:
+      DRAFT_IDIR_USERNAME: dond
+      DRAFT_IDIR_PASSWORD: ${{ secrets.DRAFT_IDIR_PASSWORD }}
+      MPO_IDIR_USERNAME: dorgale
+      MPO_IDIR_PASSWORD: ${{ secrets.MPO_IDIR_PASSWORD }}
+      CPO_IDIR_USERNAME: andya
+      CPO_IDIR_PASSWORD: ${{ secrets.CPO_IDIR_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Test Command
+        run: |
+          if [ "${{ inputs.environment }}" == 'APP-Dev' ]; then
+            echo "TEST_CMD=npm run playwright-dev" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == 'APP-Test' ]; then
+            echo "TEST_CMD=npm run playwright-test" >> $GITHUB_ENV
+          fi
+
+      - name: Echo Test Command
+        run: echo $TEST_CMD
+
+      - name: Navigate to e2e folder and Install Dependencies
+        run: |
+          cd src/e2e
+          npm ci
+
+      - name: Run Playwright Test
+        run: |
+          cd src/e2e
+          $TEST_CMD
+
+      - name: Upload Test Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-artifacts
+          path: ./src/e2e/test-results/
