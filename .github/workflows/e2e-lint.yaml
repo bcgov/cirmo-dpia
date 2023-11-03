@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install project dependencies, run lint
         run: |
