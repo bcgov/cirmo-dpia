@@ -25,7 +25,7 @@ on:
 
 jobs:
   e2e-test:
-    environment: ${{ inputs.environment }}
+    environment: ${{ (github.ref == 'refs/heads/UTOPIA-1474' && 'APP-Dev') || inputs.environment }}
     runs-on: ubuntu-latest
     env:
       DRAFT_IDIR_USERNAME: dond
