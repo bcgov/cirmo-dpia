@@ -1,4 +1,4 @@
-name: NPM Audit - e2e
+name: "E2E NPM Audit"
 
 on:
   pull_request:

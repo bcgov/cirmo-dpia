@@ -1,8 +1,8 @@
-name: e2e NPM Dependency Updates
+name: "E2E NPM Dependency Updates"
 
 on:
   schedule:
-    - cron: '0 16 * * 2' # Every Tuesday at 8:00-9:00am Pacific Time.
+    - cron: "0 16 * * 2" # Every Tuesday at 8:00-9:00am Pacific Time.
   workflow_dispatch:
 
 # START HERE! v
@@ -11,8 +11,8 @@ on:
 # By default, PATH_TO_PACKAGE_JSON is root level.
 
 env:
-  PATH_TO_PACKAGE_JSON: 'src/e2e' # Directory of package.json relative to root.
-  ISSUE_TITLE: 'e2e NPM Dependency Updates' # Title of Issue displayed in Issues tab in GitHub.
+  PATH_TO_PACKAGE_JSON: "src/e2e" # Directory of package.json relative to root.
+  ISSUE_TITLE: "e2e NPM Dependency Updates" # Title of Issue displayed in Issues tab in GitHub.
 
 jobs:
   check-versions:
