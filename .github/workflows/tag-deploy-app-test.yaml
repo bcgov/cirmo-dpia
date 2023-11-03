@@ -173,36 +173,15 @@ jobs:
           ./.github/helpers/cleanup-rc.sh
 
   TEST-e2e:
-    runs-on: ubuntu-latest
-    environment: APP-Test
     needs: [ TEST-cleanup ]
-    steps:
+    uses: ./.github/workflows/e2e-test.yaml
+    with:
+      environment: "APP-Test"
+    secrets:
+      DRAFT_IDIR_PASSWORD: ${{ secrets.DRAFT_IDIR_PASSWORD }}
+      MPO_IDIR_PASSWORD: ${{ secrets.MPO_IDIR_PASSWORD }}
+      CPO_IDIR_PASSWORD: ${{ secrets.CPO_IDIR_PASSWORD }}
 
-    # Checkout Repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    # Navigate to frontend dir, install dependencies, execute WebDriverIO command
-    - name: Setup and Execute WebDriverIO e2e test suite
-      shell: bash
-      env:
-        mpoPass : ${{ secrets.MPO_IDIR_PASSWORD }}
-        cpoPass : ${{ secrets.CPO_IDIR_PASSWORD }}
-        drafterPass : ${{ secrets.DRAFT_IDIR_PASSWORD }}
-      run: |
-        cd ./src/frontend
-        npm install
-        mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass npm run wdio-test
-
-    #Generate Cucumber report and upload artifact  
-    - name: Generate Cucumber report and upload artifact
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: cucumber-artifact
-        path: ./src/frontend/test/reporter/htmlreport/     
 
   TEST-Success-Notify:
     runs-on: ubuntu-latest
