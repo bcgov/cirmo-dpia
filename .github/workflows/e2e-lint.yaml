@@ -1,0 +1,23 @@
+name: 'e2e Pull Request Lint'
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/e2e/**"
+  workflow_dispatch:
+
+jobs: 
+  App-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Install project dependencies, run lint
+        run: |
+          cd src/frontend
+          npm ci
+          npm run lint
