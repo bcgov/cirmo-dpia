@@ -41,9 +41,9 @@ jobs:
 
       - name: Set Test Command
         run: |
-          if [ "${{ inputs.environment }}" = "APP-Dev" ]; then
+          if [[ "${{ inputs.environment }}" == "APP-Dev" ]]; then
             echo "TEST_CMD=npm run playwright-dev" >> $GITHUB_ENV
-          elif [ "${{ inputs.environment }}" = "APP-Test" ]; then
+          elif [[ "${{ inputs.environment }}" == "APP-Test" ]]; then
             echo "TEST_CMD=npm run playwright-test" >> $GITHUB_ENV
           else
             echo "Error: Unknown environment '${{ inputs.environment }}'" >&2
@@ -64,9 +64,10 @@ jobs:
           cd src/e2e
           $TEST_CMD
 
-      - name: Upload Test Artifacts
+      - name: Create Playwright Report
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-artifacts
-          path: ./src/e2e/test-results/
+          name: playwright-report
+          path: ./src/e2e/playwright-report/
+          retention-days: 30
