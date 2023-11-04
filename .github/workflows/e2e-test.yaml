@@ -41,9 +41,9 @@ jobs:
 
       - name: Set Test Command
         run: |
-          if [[ "${{ inputs.environment }}" == 'APP-Dev' ]]; then
+          if [[ "${{ inputs.environment }}" == "APP-Dev" ]]; then
             echo "TEST_CMD=npm run playwright-dev" >> $GITHUB_ENV
-          elif [[ "${{ inputs.environment }}" == 'APP-Test' ]]; then
+          elif [[ "${{ inputs.environment }}" == "APP-Test" ]]; then
             echo "TEST_CMD=npm run playwright-test" >> $GITHUB_ENV
           else
             echo "Error: Unknown environment '${{ inputs.environment }}'" >&2
