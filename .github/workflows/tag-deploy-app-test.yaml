@@ -8,7 +8,6 @@ jobs:
     environment: APP-Test
     runs-on: ubuntu-latest
     steps:
-
       # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -20,14 +19,14 @@ jobs:
         env:
           OPENSHIFT_USER: github-actions
           OPENSHIFT_NAMESPACE: b996e6-tools
-        with: 
+        with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
           openshift_token: ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
           namespace: b996e6-tools
-            
+
       # Login to BC Gov Docker Image Repository
       - name: Login to Openshift Docker
-        run : |
+        run: |
           docker login ${{ secrets.OPENSHIFT4_PUBLIC_IMAGE_REPOSITORY_BASE_URL }} -u ${{ secrets.OPENSHIFT4_TOOLS_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_TOOLS_SA_PASSWORD }}
 
       # Tag dev image with test to promote deployment
@@ -38,7 +37,7 @@ jobs:
           IMAGESTREAM_DESTINATION: "app-test"
         run: |
           ./.github/helpers/tag-imagestream.sh
-      
+
       # Logout of Docker Openshift before Working in Artifactory
       - name: Docker Logout of Openshift Repository
         run: |
@@ -54,7 +53,7 @@ jobs:
 
       # Tag dev image with test tag in ARTIFACTORY to promote deployment
       - name: Update tag for Artifactory
-        env: 
+        env:
           ARTPROJ_PROJECT_URL: "${{ secrets.ARTPROJ_PROJECT_URL }}"
           ARTPROJ_REPOSITORY: "daa7-dpia-image-repository"
           SOURCE_IMAGE_NAME: app-dev
@@ -70,21 +69,20 @@ jobs:
   TEST-deploy:
     runs-on: ubuntu-latest
     environment: APP-Test
-    needs: [ TEST-tag-dpia-app-image ]
+    needs: [TEST-tag-dpia-app-image]
     steps:
-    
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Login to Openshift Silver Cluster
         uses: redhat-actions/oc-login@v1
         env:
           OPENSHIFT_USER: github-actions
           OPENSHIFT_NAMESPACE: b996e6-test
-        with: 
+        with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
           openshift_token: ${{ secrets.OPENSHIFT4_TEST_SA_PASSWORD }}
           namespace: b996e6-test
@@ -109,12 +107,11 @@ jobs:
     environment:
       name: APP-Test
       url: https://test.pia.gov.bc.ca/
-    needs: [ TEST-deploy ]
+    needs: [TEST-deploy]
     steps:
-    
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -123,12 +120,12 @@ jobs:
         env:
           OPENSHIFT_USER: github-actions
           OPENSHIFT_NAMESPACE: b996e6-test
-        with: 
+        with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
           openshift_token: ${{ secrets.OPENSHIFT4_TEST_SA_PASSWORD }}
           namespace: b996e6-test
-            
-      # Use application health helper script to monitor readiness/liveness probe response post deployment  
+
+      # Use application health helper script to monitor readiness/liveness probe response post deployment
       - name: Health Check TEST deployment
         env:
           NAMESPACE: "${{ secrets.OPENSHIFT_TEST_NAMESPACE }}"
@@ -139,12 +136,11 @@ jobs:
   TEST-cleanup:
     runs-on: ubuntu-latest
     environment: APP-Test
-    needs: [ TEST-health-check ]
+    needs: [TEST-health-check]
     steps:
-
       # Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -153,7 +149,7 @@ jobs:
         env:
           OPENSHIFT_USER: github-actions
           OPENSHIFT_NAMESPACE: b996e6-test
-        with: 
+        with:
           openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
           openshift_token: ${{ secrets.OPENSHIFT4_TEST_SA_PASSWORD }}
           namespace: b996e6-test
@@ -173,41 +169,19 @@ jobs:
           ./.github/helpers/cleanup-rc.sh
 
   TEST-e2e:
-    runs-on: ubuntu-latest
-    environment: APP-Test
-    needs: [ TEST-cleanup ]
-    steps:
-
-    # Checkout Repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    # Navigate to frontend dir, install dependencies, execute WebDriverIO command
-    - name: Setup and Execute WebDriverIO e2e test suite
-      shell: bash
-      env:
-        mpoPass : ${{ secrets.MPO_IDIR_PASSWORD }}
-        cpoPass : ${{ secrets.CPO_IDIR_PASSWORD }}
-        drafterPass : ${{ secrets.DRAFT_IDIR_PASSWORD }}
-      run: |
-        cd ./src/frontend
-        npm install
-        mpoPass=$mpoPass cpoPass=$cpoPass drafterPass=$drafterPass npm run wdio-test
-
-    #Generate Cucumber report and upload artifact  
-    - name: Generate Cucumber report and upload artifact
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: cucumber-artifact
-        path: ./src/frontend/test/reporter/htmlreport/     
+    needs: [TEST-cleanup]
+    uses: ./.github/workflows/e2e-test.yaml
+    with:
+      environment: "APP-Test"
+    secrets:
+      DRAFT_IDIR_PASSWORD: ${{ secrets.DRAFT_IDIR_PASSWORD }}
+      MPO_IDIR_PASSWORD: ${{ secrets.MPO_IDIR_PASSWORD }}
+      CPO_IDIR_PASSWORD: ${{ secrets.CPO_IDIR_PASSWORD }}
 
   TEST-Success-Notify:
     runs-on: ubuntu-latest
     environment: APP-Test
-    needs: [ TEST-e2e ]
+    needs: [TEST-e2e]
     steps:
       - name: Message Teams Channel on Success
         run: |
@@ -237,4 +211,3 @@ jobs:
             "title": "FAILURE! WebApp Deployment to the PIA ${{ secrets.ENVIRONMENT }} Environment has failed.",
             "text": "The PIA WebApp has NOT been built and deployed to the ${{ secrets.LICENSE_PLATE }} ${{ secrets.ENVIRONMENT }} environment.\n\n Please review the Github Action for this deployment (here)[${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}].",
           }'
-

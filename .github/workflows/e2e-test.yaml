@@ -1,0 +1,73 @@
+name: "E2E Test Run with Playwright"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Select Dev or Test environment"
+        required: true
+        type: string
+        default: "APP-Dev"
+    secrets:
+      DRAFT_IDIR_PASSWORD:
+        required: true
+      MPO_IDIR_PASSWORD:
+        required: true
+      CPO_IDIR_PASSWORD:
+        required: true
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select Dev or Test environment"
+        required: true
+        type: string
+        default: "APP-Dev"
+
+jobs:
+  e2e-test:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    env:
+      DRAFT_IDIR_USERNAME: dond
+      DRAFT_IDIR_PASSWORD: ${{ secrets.DRAFT_IDIR_PASSWORD }}
+      MPO_IDIR_USERNAME: dorgale
+      MPO_IDIR_PASSWORD: ${{ secrets.MPO_IDIR_PASSWORD }}
+      CPO_IDIR_USERNAME: andya
+      CPO_IDIR_PASSWORD: ${{ secrets.CPO_IDIR_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Test Command
+        run: |
+          if [[ "${{ inputs.environment }}" == "APP-Dev" ]]; then
+            echo "TEST_CMD=npm run playwright-dev" >> $GITHUB_ENV
+          elif [[ "${{ inputs.environment }}" == "APP-Test" ]]; then
+            echo "TEST_CMD=npm run playwright-test" >> $GITHUB_ENV
+          else
+            echo "Error: Unknown environment '${{ inputs.environment }}'" >&2
+            exit 1
+          fi
+
+      - name: Echo Test Command
+        run: echo $TEST_CMD
+
+      - name: Navigate to e2e folder and Install Dependencies
+        run: |
+          cd src/e2e
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run Playwright Test
+        run: |
+          cd src/e2e
+          $TEST_CMD
+
+      - name: Create Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: ./src/e2e/playwright-report/
+          retention-days: 30
