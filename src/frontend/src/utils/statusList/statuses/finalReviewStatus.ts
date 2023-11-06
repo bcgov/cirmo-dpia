@@ -2,6 +2,7 @@ import { finalReviewCompleted } from '../utils';
 import { SubmitButtonTextEnum } from '../../../constant/constant';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 import { defaultFinalReviewModal } from '../modals';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const finalReviewStatus = (pia: IPiaForm | null) => {
   return {
@@ -13,6 +14,7 @@ export const finalReviewStatus = (pia: IPiaForm | null) => {
     submitModalType: 'SubmitForPendingCompletion',
     finalReviewCompleted: finalReviewCompleted(pia),
     readOnly: true, // READ ONLY for entire status.
+    tooltip: Tooltip.FinalReview.tooltipText,
     Privileges: {
       MPO: {
         showSubmitButton: true,

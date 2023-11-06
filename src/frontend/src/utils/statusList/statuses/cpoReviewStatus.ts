@@ -5,6 +5,7 @@ import {
   defaultDraftingInProgressModal,
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/helpers/messages';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const cpoReviewStatus = () => {
   return {
@@ -16,6 +17,7 @@ export const cpoReviewStatus = () => {
     modal: defaultCPOReviewModal,
     submitModalType: 'SubmitForFinalReview',
     readOnly: true, // READ ONLY for entire status.
+    tooltip: Tooltip.CPOReview.tooltipText,
     Privileges: {
       MPO: {
         banner: BannerText.CPOReviewStatusCalloutText.MPO.en,

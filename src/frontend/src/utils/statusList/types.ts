@@ -76,6 +76,7 @@ export interface StatusList {
     finalReviewCompleted?: boolean;
     comments: boolean;
     readOnly?: boolean;
+    tooltip?: string;
   };
 }
 

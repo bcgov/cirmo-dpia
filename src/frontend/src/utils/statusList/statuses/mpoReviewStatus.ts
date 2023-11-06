@@ -10,6 +10,7 @@ import {
   resetReviewDraftingInProgressModal,
   submitPiaIntakeModal,
 } from '../modals';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const mpoReviewStatus = (pia: IPiaForm | null) => {
   return {
@@ -23,6 +24,7 @@ export const mpoReviewStatus = (pia: IPiaForm | null) => {
       pia?.hasAddedPiToDataElements === false
         ? 'SubmitForFinalReview'
         : 'SubmitForCPOReview',
+    tooltip: Tooltip.MPOReview.tooltipText,
     Privileges: {
       MPO: {
         showSubmitButton: true,
