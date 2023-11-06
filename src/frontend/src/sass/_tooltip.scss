@@ -4,90 +4,117 @@
   color: #1a5a96 !important;
 }
 
-.tooltop-container {
-  position: absolute;
-}
-
-.tooltip-content-wrapper {
+.tooltip-container {
   position: relative;
-  width: 415px;
+  display: inline-block;
+  margin-left: 3px;
 }
 
-/* Styling for the tooltip content */
 .tooltip-content {
   position: absolute;
-  color: #fff;
-  background-color: #1a5a96;
   width: 100%;
-  padding: 8px 30px 8px 15px !important;
-  border-radius: 5px;
-  font-weight: bold;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px; /* distance from the trigger element */
+  padding: 8px;
+  background-color: #1a5a96;
+  color: white;
+  border-radius: 4px;
+  z-index: 1000;
+  max-width: 810px;
+  min-width: 410px;
+  opacity: 1;
 }
 
-/* Right Direction */
-.tooltip-right .tooltip-content {
-  left: 30px;
-  top: -150%;
-}
-
-.tooltip-right .tooltip-content::before {
-  position: absolute;
+.tooltip-content::before {
   content: '';
-  top: 50% !important;
-  left: -12px !important;
-  transform: translateY(-50%) !important;
-  border-color: transparent #1a5a96 transparent transparent !important;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   border-width: 6px;
   border-style: solid;
-}
-
-/* Bottom Direction */
-.tooltip-bottom .tooltip-content {
-  top: 120%;
-  left: -49.5%;
-}
-
-.tooltip-bottom .tooltip-content::before {
-  position: absolute;
-  content: '';
-  top: -14% !important;
-  left: 50.3%;
-  transform: translateX(-10%) !important;
-  border-color: transparent transparent #1a5a96 transparent !important;
-  border-width: 6px;
-  border-style: solid;
+  border-color: #1a5a96 transparent transparent transparent;
 }
 
 /* Top Direction */
 .tooltip-top .tooltip-content {
   bottom: 100%;
+  left: 50%;
   transform: translateX(-50%);
+  margin-bottom: 8px;
 }
 
 .tooltip-top .tooltip-content::before {
   position: absolute;
-  content: '';
-  bottom: -13% !important;
-  left: 50.3%;
-  transform: translateX(-10%) !important;
-  border-color: #1a5a96 transparent transparent transparent !important;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   border-width: 6px;
   border-style: solid;
+  border-color: #1a5a96 transparent transparent transparent;
+}
+
+/* Right Direction */
+.tooltip-right .tooltip-content {
+  bottom: 50%;
+  left: 100%; /* Position to the right of the trigger element */
+  transform: translateY(50%) translateX(8px); /* Adjust the position and distance */
+  margin-bottom: 0; /* Remove the margin to avoid space between the trigger and tooltip */
+}
+
+.tooltip-right .tooltip-content::before {
+  position: absolute;
+  top: 50%;
+  left: -2.5%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #1a5a96 transparent transparent; /* Adjust the border-color to match the direction */
+}
+
+/* Bottom Direction */
+.tooltip-bottom .tooltip-content {
+  top: 100%; /* Position below the trigger element */
+  left: -200px; /* Center horizontally with respect to the trigger element */
+  transform: translateX(-50%);
+  margin-top: 8px; /* Adjust the distance from the trigger element */
+  width: 750px;
+  height: 535px;
+}
+
+.tooltip-bottom .tooltip-content::before {
+  content: '';
+  position: absolute;
+  top: -2%; /* Position above the tooltip content */
+  left: 77.7%; /* Center horizontally with respect to the trigger element */
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #1a5a96 transparent; /* Adjust the border-color for the arrow */
 }
 
 /* Left Direction */
 .tooltip-left .tooltip-content {
-  left: -105%;
-  top: -110%;
+  top: 50%; /* Center vertically with respect to the trigger element */
+  left: -460px; /* Position to the left of the trigger element */
+  transform: translateY(-50%) translateX(-8px); /* Adjust the position and distance */
+  width: 210px;
+  height: 82px;
 }
 
 .tooltip-left .tooltip-content::before {
-  position: absolute;
   content: '';
-  top: 50% !important;
-  right: -13px;
-  transform: translateX(-10%) !important;
-  border-color: transparent transparent transparent #1a5a96 !important;
+  position: absolute;
+  top: 50%; /* Center vertically with respect to the trigger element */
+  left: 100%; /* Position to the left of the tooltip content */
+  transform: translateY(-50%);
   border-width: 6px;
   border-style: solid;
+  border-color: transparent transparent transparent #1a5a96; /* Adjust the border-color for the arrow */
+}
+
+p {
+  font-weight: normal;
 }

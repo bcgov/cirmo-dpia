@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IStatusChangeDropDownProps } from './interface';
 import populateModal from './populateModal';
 import { useEffect, useRef, useState } from 'react';
+import { Tooltip } from '../../common/Tooltip/index';
 
 function StatusChangeDropDown({
   pia,
@@ -100,9 +101,18 @@ function StatusChangeDropDown({
     itemRefs.current[selectedStatusIndex]?.focus();
   }, [selectedStatusIndex]);
 
+  const showIcon = true; // Define a boolean variable here to control the icon'
   return (
     <>
       <label htmlFor="status-dropdown">Status</label>
+      {pia.status && (
+        <Tooltip
+          label={pia.status}
+          content={statusList(null)[pia.status].tooltip}
+          direction={'right'}
+          showIcon={showIcon}
+        />
+      )}
       <div id="status-dropdown" className="dropdownSatusContainer">
         {hasStatusDropdown ? (
           <div className="dropdown">

@@ -1,4 +1,5 @@
 import { defaultCompleteModal } from '../modals';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const completeStatus = () => {
   return {
@@ -7,6 +8,7 @@ export const completeStatus = () => {
     modal: defaultCompleteModal,
     comments: false,
     readOnly: true, // READ ONLY for entire status.
+    tooltip: Tooltip.Complete.tooltipText,
     Privileges: {
       MPO: {
         changeStatus: [],

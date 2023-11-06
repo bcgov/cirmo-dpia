@@ -10,6 +10,7 @@ import {
   submitPiaIntakeModal,
 } from '../modals';
 import { BannerText } from '../../../pages/PIAForm/helpers/messages';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const draftingInProgressStatus = (pia: IPiaForm | null) => {
   return {
@@ -19,6 +20,7 @@ export const draftingInProgressStatus = (pia: IPiaForm | null) => {
     buttonText: SubmitButtonTextEnum.FORM,
     modal: defaultDraftingInProgressModal,
     comments: true,
+    tooltip: Tooltip.DraftingInProgress.tooltipText,
     Privileges: {
       MPO: {
         banner: BannerText.DraftingInProgressStatusCalloutText.Drafter.en, //DRAFTING_IN_PROGRESS only have one banner for both mpo and drafter

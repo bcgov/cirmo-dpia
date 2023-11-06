@@ -5,6 +5,7 @@ import {
   defaultMPOReviewModal,
   submitPiaIntakeModal,
 } from '../modals';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const editInProgressStatus = () => {
   return {
@@ -12,6 +13,7 @@ export const editInProgressStatus = () => {
     buttonText: SubmitButtonTextEnum.FORM,
     comments: true,
     class: 'statusBlock__edit',
+    tooltip: Tooltip.EditInProgress.tooltipText,
     modal: {
       title: 'Change status to “Edit in progress”?',
       description:

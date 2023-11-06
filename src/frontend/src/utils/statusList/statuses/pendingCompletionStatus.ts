@@ -1,5 +1,6 @@
 import { SubmitButtonTextEnum } from '../../../constant/constant';
 import { defaultPendingCompletionModal } from '../modals';
+import Tooltip from '../../../components/common/Tooltip/messages';
 
 export const pendingCompletionStatus = () => {
   return {
@@ -10,6 +11,7 @@ export const pendingCompletionStatus = () => {
     comments: false,
     buttonText: SubmitButtonTextEnum.COMPLETE_PIA,
     readOnly: true, // READ ONLY on entire status.
+    tooltip: Tooltip.PendingCompletion.tooltipText,
     Privileges: {
       MPO: {
         changeStatus: [],
