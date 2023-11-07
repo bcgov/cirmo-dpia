@@ -8,7 +8,7 @@ This directory contains the end-to-end (E2E) tests for our frontend application,
 
 ### Prerequisites
 
-- Node.js (version 16 or higher)
+- Node.js (version **16** or higher)
 - Ensure `.env` file has been properly created using the `.env-template` file
 
 ### Installation
@@ -33,32 +33,32 @@ Place new test files in the appropriate folder within the `tests` directory. Fol
 
 Craft your test files for clarity and efficiency using these guidelines:
 
-1. **Imports**: Bring in Playwright's `test` and `expect` from `@playwright/test`, alongside any utility functions or Page Objects for encapsulating common actions and configurations.
+1. ***Imports***: Bring in Playwright's `test` and `expect` from `@playwright/test`, alongside any utility functions or Page Objects for encapsulating common actions and configurations.
 
-2. **Environment Setup**: Directly import environment variables, like credentials, from `env.ts` to keep tests dynamic and secure.
+2. ***Environment Setup***: Directly import environment variables, like credentials, from `env.ts` to keep tests dynamic and secure.
 
-3. **Test Suites**: Define related tests within `test.describe` blocks for better organization and shared setup/teardown operations.
+3. ***Test Suites***: Define related tests within `test.describe` blocks for better organization and shared setup/teardown operations.
 
-4. **Individual Tests**: Use `test` blocks within suites to craft descriptive and focused test cases.
+4. ***Individual Tests***: Use `test` blocks within suites to craft descriptive and focused test cases.
 
-5. **Setup and Teardown**: Employ `test.beforeEach` and `test.afterEach` for consistent test initialization and cleanup actions.
+5. ***Setup and Teardown***: Employ `test.beforeEach` and `test.afterEach` for consistent test initialization and cleanup actions.
 
-6. **Navigation and URLs**: Stick with `page.goto('/')` for root URL navigation and `page.goto('/path')` for subpaths, leveraging the `BASE_URL` variable for environment-specific URLs.
+6. ***Navigation and URLs***: Stick with `page.goto('/')` for root URL navigation and `page.goto('/path')` for subpaths, leveraging the `BASE_URL` variable for environment-specific URLs.
 
-7. **Assertions**: Ensure assertions are expressive and detailed with the `expect` library, covering the full range of expected element states and interactions.
+7. ***Assertions***: Ensure assertions are expressive and detailed with the `expect` library, covering the full range of expected element states and interactions.
 
 
 ### Best Practices
 
-- **Clear Test Descriptions**: Articulate the intention and expected outcome in your test names.
+- ***Clear Test Descriptions***: Articulate the intention and expected outcome in your test names.
 
-- **Error Handling**: Implement tests to handle errors gracefully, with explicit messages aiding debuggability.
+- ***Error Handling***: Implement tests to handle errors gracefully, with explicit messages aiding debuggability.
 
-- **Test Isolation**: Maintain test independence to facilitate parallel execution and reduce test flakiness.
+- ***Test Isolation***: Maintain test independence to facilitate parallel execution and reduce test flakiness.
 
-- **Page Object Models**: Encapsulate complex interactions in Page Object models to minimize repetition and improve test clarity.
+- ***Page Object Models***: Encapsulate complex interactions in Page Object models to minimize repetition and improve test clarity.
 
-- **Async Await**: Ensure all asynchronous operations complete by properly awaiting Playwright's promises.
+- ***Async Await***: Ensure all asynchronous operations complete by properly awaiting Playwright's promises.
 
 For more detailed options and implementations, refer to the Playwright [Writing tests](https://playwright.dev/docs/writing-tests) and [Generating tests](https://playwright.dev/docs/codegen-intro) documentation.
 
@@ -132,21 +132,21 @@ The following is the structure of the E2E tests in this directory:
 
 ```plaintext
 e2e/
-├── playwright-report/         # Generated reports from Playwright runs
-├── test-results/              # Results from tests (may include screenshots and videos)
-├── tests/                     # Test specification files
-│   └── exampleDrafterPia.spec.ts # Test for the Example Drafter PIA feature
-├── .env                       # Environment variables for the tests
-├── .env-template              # Template for .env file
-├── .eslintrc.js               # ESLint configuration
-├── .eslintignore              # Files and folders to be ignored by ESLint
-├── .prettierrc                # Prettier code formatting configuration
-├── .prettierignore            # Files and folders to be ignored by Prettier
-├── env.ts                     # TypeScript file for managing environment variables
-├── package.json               # NPM package configuration for the project
-├── package-lock.json          # Locked versions of the npm dependencies
-├── playwright.config.ts       # Configuration file for Playwright
-├── README.md                  # This documentation
-├── tsconfig.json              # TypeScript configuration for the tests
-├── tsconfig.eslint.json       # TypeScript configuration for ESLint
-└── tsconfig.node.json         # TypeScript configuration for Node.js specific files
+├── playwright-report/                     # Generated reports from Playwright runs
+├── test-results/                          # Results from tests (may include screenshots and videos)
+├── tests/                                 # Test specification files
+│   └── exampleDrafterPia.spec.ts          # Test for the Example Drafter PIA feature
+├── .env                                   # Environment variables for the tests
+├── .env-template                          # Template for .env file
+├── .eslintrc.js                           # ESLint configuration
+├── .eslintignore                          # Files and folders to be ignored by ESLint
+├── .prettierrc                            # Prettier code formatting configuration
+├── .prettierignore                        # Files and folders to be ignored by Prettier
+├── env.ts                                 # TypeScript file for managing environment variables
+├── package.json                           # NPM package configuration for the project
+├── package-lock.json                      # Locked versions of the npm dependencies
+├── playwright.config.ts                   # Configuration file for Playwright
+├── README.md                              # This documentation
+├── tsconfig.json                          # TypeScript configuration for the tests
+├── tsconfig.eslint.json                   # TypeScript configuration for ESLint
+└── tsconfig.node.json                     # TypeScript configuration for Node.js specific files
