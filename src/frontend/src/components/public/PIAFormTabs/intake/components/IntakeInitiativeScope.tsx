@@ -1,9 +1,9 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
 import { IntakeInitiativeScopeProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
   isReadOnly,
@@ -18,30 +18,19 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
       ? 'section-focus'
       : '';
 
-  // Render the appropriate initiative scope content based on `isReadOnly` and `intakeForm`
-  const renderInitiativeScope = () => {
-    if (isReadOnly) {
-      return intakeForm.initiativeScope ? (
-        <MDEditor.Markdown
-          source={intakeForm.initiativeScope}
-          aria-label="Initiative Scope Textarea Input Preview"
-        />
-      ) : (
-        <p>
-          <i>Not answered</i>
-        </p>
-      );
-    }
-    return (
-      <MDEditor
-        preview="edit"
-        value={intakeForm?.initiativeScope}
-        defaultTabEnable={true}
-        onChange={(value) => stateChangeHandler(value, 'initiativeScope')}
-        aria-label="Initiative Scope Textarea Input"
-      />
-    );
-  };
+  // State for initiativeScope text editor.
+  const [initiativeScope, setInitiativeScope] = useState(
+    intakeForm?.initiativeScope ?? '',
+  );
+
+  // Update form state.
+  useEffect(() => {
+    stateChangeHandler(initiativeScope, 'initiativeScope');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initiativeScope]);
+
+  // Show the editor unless isReadOnly and initiativeScope is empty.
+  const showEditor = !(isReadOnly && initiativeScope === '');
 
   return (
     <section className="section__padding-block">
@@ -65,7 +54,16 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
 
         {/* Render initiative scope */}
         <div className="richText" id="initiativeScope">
-          {renderInitiativeScope()}
+          {showEditor ? (
+            <RichTextEditor
+              content={initiativeScope}
+              setContent={setInitiativeScope}
+              readOnly={isReadOnly}
+              aria-label="Initiative Scope Textarea Input"
+            />
+          ) : (
+            <i>Not answered</i>
+          )}
         </div>
 
         {/* Component to display comments */}

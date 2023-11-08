@@ -1,9 +1,9 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
 import { IntakeInitiativeDescriptionProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 // Destructure the messages object for better readability
 const { SectionHeading, Question, HelperText } =
@@ -20,20 +20,20 @@ const IntakeInitiativeDescription: React.FC<
   selectedSection,
   commentCount,
 }) => {
-  // Determine the content to render for the Initiative Description
-  const initiativeDescription = isReadOnly ? (
-    intakeForm.initiativeDescription || <i>Not answered</i>
-  ) : (
-    <MDEditor
-      preview="edit"
-      defaultTabEnable={true}
-      value={intakeForm?.initiativeDescription}
-      onChange={(value) => stateChangeHandler(value, 'initiativeDescription')}
-      aria-label="Initiative Description Textarea Input"
-    />
+  // State for initiativeDescription text editor.
+  const [initiativeDescription, setInitiativeDescription] = useState(
+    intakeForm?.initiativeDescription ?? '',
   );
 
-  // Main component rendering logic
+  // Update form state.
+  useEffect(() => {
+    stateChangeHandler(initiativeDescription, 'initiativeDescription');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initiativeDescription]);
+
+  // Show the editor unless isReadOnly and initialiveDescription is empty.
+  const showEditor = !(isReadOnly && initiativeDescription === '');
+
   return (
     <section className="section__padding-block">
       {/* Render the section heading */}
@@ -64,7 +64,16 @@ const IntakeInitiativeDescription: React.FC<
 
         {/* Render the main content */}
         <div className="richText" id="initiativeDescription">
-          {initiativeDescription}
+          {showEditor ? (
+            <RichTextEditor
+              content={initiativeDescription}
+              setContent={setInitiativeDescription}
+              readOnly={isReadOnly}
+              aria-label="Initiative Description Textarea Input"
+            />
+          ) : (
+            <i>Not answered</i>
+          )}
 
           {/* Render error message if any */}
           {!isReadOnly && validationMessage.piaInitialDescription && (
