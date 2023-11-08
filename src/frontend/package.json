@@ -19,6 +19,7 @@
     "wdio-test": "wdio run ./wdio.conf.js --baseUrl=\"https://test.pia.gov.bc.ca\" --suite e2e"
   },
   "dependencies": {
+    "@bcgov/citz-imb-richtexteditor": "https://github.com/bcgov/citz-imb-richtexteditor/releases/download/v1.2.0/bcgov-citz-imb-richtexteditor-1.2.0.tgz",
     "@bcgov/bc-sans": "2.1.0",
     "@fortawesome/fontawesome-svg-core": "6.4.2",
     "@fortawesome/free-solid-svg-icons": "6.4.2",
