@@ -29,12 +29,12 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
 
   // State for riskMitigation text editor.
   const [riskMitigation, setRiskMitigation] = useState(
-    intakeForm?.riskMitigation ?? '',
+    intakeForm?.riskMitigation?.content ?? '',
   );
 
   // Update form state.
   useEffect(() => {
-    stateChangeHandler(riskMitigation, 'riskMitigation');
+    stateChangeHandler(riskMitigation, 'riskMitigation', 'content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riskMitigation]);
 

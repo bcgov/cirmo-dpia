@@ -23,12 +23,12 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
 
   // State for dataElementsInvolved text editor.
   const [dataElementsInvolved, setDataElementsInvolved] = useState(
-    intakeForm?.dataElementsInvolved ?? '',
+    intakeForm?.dataElementsInvolved?.content ?? '',
   );
 
   // Update form state.
   useEffect(() => {
-    stateChangeHandler(dataElementsInvolved, 'dataElementsInvolved');
+    stateChangeHandler(dataElementsInvolved, 'dataElementsInvolved', 'content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataElementsInvolved]);
 

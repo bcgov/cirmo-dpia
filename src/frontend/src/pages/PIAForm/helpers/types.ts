@@ -24,6 +24,7 @@ export type PiaStateChangeHandlerType = (
   value: any,
   key: keyof IPiaForm,
   isEager?: boolean,
+  nestedKey?: any,
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';

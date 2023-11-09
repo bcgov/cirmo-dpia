@@ -20,12 +20,12 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
 
   // State for initiativeScope text editor.
   const [initiativeScope, setInitiativeScope] = useState(
-    intakeForm?.initiativeScope ?? '',
+    intakeForm?.initiativeScope?.content ?? '',
   );
 
   // Update form state.
   useEffect(() => {
-    stateChangeHandler(initiativeScope, 'initiativeScope');
+    stateChangeHandler(initiativeScope, 'initiativeScope', 'content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initiativeScope]);
 

@@ -22,12 +22,16 @@ const IntakeInitiativeDescription: React.FC<
 }) => {
   // State for initiativeDescription text editor.
   const [initiativeDescription, setInitiativeDescription] = useState(
-    intakeForm?.initiativeDescription ?? '',
+    intakeForm?.initiativeDescription?.content ?? '',
   );
 
   // Update form state.
   useEffect(() => {
-    stateChangeHandler(initiativeDescription, 'initiativeDescription');
+    stateChangeHandler(
+      initiativeDescription,
+      'initiativeDescription',
+      'content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initiativeDescription]);
 
