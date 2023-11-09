@@ -1,7 +1,7 @@
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { MinistryList, PIOptions } from '../../../../../constant/constant';
 import { useState } from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const IntakeDetails = (pia: IPiaForm) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,19 +21,31 @@ const IntakeDetails = (pia: IPiaForm) => {
       <div>
         <h4>What is the initiative</h4>
         <p>
-          <MDEditor.Markdown source={pia?.initiativeDescription} />
+          <RichTextEditor
+            content={pia?.initiativeDescription?.content ?? ''}
+            setContent={setPiaMinistryFullName}
+            readOnly={true}
+          />
         </p>
       </div>
       <div>
         <h4>PIA Scope</h4>
         <p>
-          <MDEditor.Markdown source={pia?.initiativeScope} />
+          <RichTextEditor
+            content={pia?.initiativeScope?.content ?? ''}
+            setContent={setPiaMinistryFullName}
+            readOnly={true}
+          />
         </p>
       </div>
       <div>
         <h4>Data or information elements invovled in the initiative</h4>
         <p>
-          <MDEditor.Markdown source={pia?.dataElementsInvolved} />
+          <RichTextEditor
+            content={pia?.dataElementsInvolved?.content ?? ''}
+            setContent={setPiaMinistryFullName}
+            readOnly={true}
+          />
         </p>
       </div>
       <div>
@@ -50,7 +62,11 @@ const IntakeDetails = (pia: IPiaForm) => {
           be reduced
         </h4>
         <p>
-          <MDEditor.Markdown source={pia?.riskMitigation} />
+          <RichTextEditor
+            content={pia?.riskMitigation?.content ?? ''}
+            setContent={setPiaMinistryFullName}
+            readOnly={true}
+          />
         </p>
       </div>
     </>
