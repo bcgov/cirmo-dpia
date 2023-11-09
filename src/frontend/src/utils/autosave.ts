@@ -119,8 +119,8 @@ const useAutoSave = () => {
         updatedPia.ministry === null ||
         updatedPia.title === null ||
         updatedPia.title === '' ||
-        updatedPia.initiativeDescription === null ||
-        updatedPia.initiativeDescription === '',
+        updatedPia.initiativeDescription?.content === null ||
+        updatedPia.initiativeDescription?.content === '',
     );
 
     return updatedPia;
