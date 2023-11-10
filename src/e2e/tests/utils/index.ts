@@ -12,3 +12,7 @@ export {
   cpoUsername,
   cpoPassword,
 } from './env/env';
+
+//8 character UUID generator
+export { generateUUID } from './uuid/uuid';
+export { searchUUID } from './uuid/uuidSearch';
