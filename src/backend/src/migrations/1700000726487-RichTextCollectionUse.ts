@@ -18,13 +18,13 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
       `UPDATE "pia-intake" SET "temp_collectionUse_mpoInput" = "collection_use_and_disclosure"->'collectionNotice'->>'mpoInput'`,
     );
 
-    // Populate the jsonb with the data from the temporary columns
+    // Change jsonb properties from type string to object
     await queryRunner.query(
       `UPDATE "pia-intake"
       SET "collection_use_and_disclosure" = jsonb_set(
         "collection_use_and_disclosure",
         '{collectionNotice, drafterInput}',
-        jsonb_build_object('content', "temp_collectionUse_drafterInput")
+        '{"content": ""}'::jsonb
       )`,
     );
     await queryRunner.query(
@@ -32,7 +32,25 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
       SET "collection_use_and_disclosure" = jsonb_set(
         "collection_use_and_disclosure",
         '{collectionNotice, mpoInput}',
-        jsonb_build_object('content', "temp_collectionUse_mpoInput")
+        '{"content": ""}'::jsonb
+      )`,
+    );
+
+    // Populate the jsonb with the data from the temporary columns
+    await queryRunner.query(
+      `UPDATE "pia-intake"
+      SET "collection_use_and_disclosure" = jsonb_set(
+        "collection_use_and_disclosure",
+        '{collectionNotice, drafterInput, content}',
+        to_jsonb("temp_collectionUse_drafterInput")
+      )`,
+    );
+    await queryRunner.query(
+      `UPDATE "pia-intake"
+      SET "collection_use_and_disclosure" = jsonb_set(
+        "collection_use_and_disclosure",
+        '{collectionNotice, mpoInput, content}',
+        to_jsonb("temp_collectionUse_mpoInput")
       )`,
     );
 
@@ -46,7 +64,7 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // Add temporary columns to store the JSON content as text
+    // Re-add temporary columns
     await queryRunner.query(
       `ALTER TABLE "pia-intake" ADD "temp_collectionUse_drafterInput" text`,
     );
@@ -54,7 +72,7 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
       `ALTER TABLE "pia-intake" ADD "temp_collectionUse_mpoInput" text`,
     );
 
-    // Copy the 'content' from the JSONB columns to the temporary text columns
+    // Extract the content from JSONB and store in temporary columns
     await queryRunner.query(
       `UPDATE "pia-intake" SET "temp_collectionUse_drafterInput" = "collection_use_and_disclosure"->'collectionNotice'->'drafterInput'->>'content'`,
     );
@@ -62,22 +80,22 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
       `UPDATE "pia-intake" SET "temp_collectionUse_mpoInput" = "collection_use_and_disclosure"->'collectionNotice'->'mpoInput'->>'content'`,
     );
 
-    // Revert the types to text
+    // Revert the JSONB properties to type string using the temporary column values
     await queryRunner.query(
       `UPDATE "pia-intake"
-       SET "collection_use_and_disclosure" = jsonb_set(
-         "collection_use_and_disclosure",
-         '{collectionNotice, drafterInput}',
-         '"temp_collectionUse_drafterInput"'::jsonb
-       )`,
+      SET "collection_use_and_disclosure" = jsonb_set(
+        "collection_use_and_disclosure",
+        '{collectionNotice, drafterInput}',
+        to_jsonb("temp_collectionUse_drafterInput")
+      )`,
     );
     await queryRunner.query(
       `UPDATE "pia-intake"
-       SET "collection_use_and_disclosure" = jsonb_set(
-         "collection_use_and_disclosure",
-         '{collectionNotice, mpoInput}',
-         '"temp_collectionUse_mpoInput"'::jsonb
-       )`,
+      SET "collection_use_and_disclosure" = jsonb_set(
+        "collection_use_and_disclosure",
+        '{collectionNotice, mpoInput}',
+        to_jsonb("temp_collectionUse_mpoInput")
+      )`,
     );
 
     // Drop the temporary columns
