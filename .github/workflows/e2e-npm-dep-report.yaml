@@ -1,4 +1,4 @@
-name: "E2E NPM Dependency Updates"
+name: E2E NPM Dependency Report
 
 on:
   schedule:
@@ -12,7 +12,7 @@ on:
 
 env:
   PATH_TO_PACKAGE_JSON: "src/e2e" # Directory of package.json relative to root.
-  ISSUE_TITLE: "e2e NPM Dependency Updates" # Title of Issue displayed in Issues tab in GitHub.
+  ISSUE_TITLE: "E2E NPM Dependency Report" # Title of Issue displayed in Issues tab in GitHub.
 
 jobs:
   check-versions:
@@ -68,7 +68,7 @@ jobs:
 
       # Checkout branch.
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install @octokit/rest npm package for making GitHub rest API requests.
       - name: Install @octokit/rest npm

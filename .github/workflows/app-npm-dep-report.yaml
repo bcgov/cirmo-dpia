@@ -1,4 +1,4 @@
-name: API NPM Dependency Updates
+name: App NPM Dependency Report
 
 on:
   schedule:
@@ -11,8 +11,8 @@ on:
 # By default, PATH_TO_PACKAGE_JSON is root level.
 
 env:
-  PATH_TO_PACKAGE_JSON: 'src/backend' # Directory of package.json relative to root.
-  ISSUE_TITLE: 'Backend NPM Dependency Updates' # Title of Issue displayed in Issues tab in GitHub.
+  PATH_TO_PACKAGE_JSON: 'src/frontend' # Directory of package.json relative to root.
+  ISSUE_TITLE: 'Frontend NPM Dependency Report' # Title of Issue displayed in Issues tab in GitHub.
 
 jobs:
   check-versions:
@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checkout branch.
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Run NodeJS script to check for latest npm dependency versions and capture output.
       - name: Run NPM DEP Check Node.js script
@@ -68,7 +68,7 @@ jobs:
 
       # Checkout branch.
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install @octokit/rest npm package for making GitHub rest API requests.
       - name: Install @octokit/rest npm
