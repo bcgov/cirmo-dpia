@@ -40,7 +40,10 @@ const PIACollectionUseAndDisclosure = ({
       steps: [
         { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
       ],
-      collectionNotice: { drafterInput: '', mpoInput: '' },
+      collectionNotice: {
+        drafterInput: { content: '' },
+        mpoInput: { content: '' },
+      },
     }),
     [],
   );
@@ -58,11 +61,14 @@ const PIACollectionUseAndDisclosure = ({
 
   // State for rich text editors.
   const [drafterCollectionNotice, setDrafterCollectionNotice] = useState(
-    collectionUseAndDisclosureForm?.collectionNotice?.drafterInput ?? '',
+    collectionUseAndDisclosureForm?.collectionNotice?.drafterInput?.content ??
+      '',
   );
   const [mpoCollectionNotice, setMpoCollectionNotice] = useState(
-    collectionUseAndDisclosureForm?.collectionNotice?.mpoInput ?? '',
+    collectionUseAndDisclosureForm?.collectionNotice?.mpoInput?.content ?? '',
   );
+
+  console.log(collectionUseAndDisclosureForm?.collectionNotice?.drafterInput);
 
   const columns: Array<ColumnMetaData> = [
     {
@@ -94,12 +100,15 @@ const PIACollectionUseAndDisclosure = ({
   useEffect(() => {
     stateChangeHandler(
       drafterCollectionNotice,
-      'collectionNotice.drafterInput',
+      'collectionNotice.drafterInput.content',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drafterCollectionNotice]);
   useEffect(() => {
-    stateChangeHandler(mpoCollectionNotice, 'collectionNotice.mpoInput');
+    stateChangeHandler(
+      mpoCollectionNotice,
+      'collectionNotice.mpoInput.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mpoCollectionNotice]);
 

@@ -68,7 +68,7 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
        SET "collection_use_and_disclosure" = jsonb_set(
          "collection_use_and_disclosure",
          '{collectionNotice, drafterInput}',
-         to_jsonb("temp_collectionUse_drafterInput"::text)
+         '"temp_collectionUse_drafterInput"'::jsonb
        )`,
     );
     await queryRunner.query(
@@ -76,7 +76,7 @@ export class RichTextCollectionUse1700000726487 implements MigrationInterface {
        SET "collection_use_and_disclosure" = jsonb_set(
          "collection_use_and_disclosure",
          '{collectionNotice, mpoInput}',
-         to_jsonb("temp_collectionUse_mpoInput"::text)
+         '"temp_collectionUse_mpoInput"'::jsonb
        )`,
     );
 

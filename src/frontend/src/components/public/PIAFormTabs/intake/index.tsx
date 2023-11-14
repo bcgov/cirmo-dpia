@@ -1,9 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
-import {
-  IPiaFormIntake,
-  RichTextContent,
-} from './helper/pia-form-intake.interface';
+import { IPiaFormIntake } from './helper/pia-form-intake.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -14,6 +11,7 @@ import IntakeInitiativeDescription from './components/IntakeInitiativeDescriptio
 import IntakeInitiativeScope from './components/IntakeInitiativeScope';
 import IntakeInitiativeDetails from './components/IntakeInitiativeDetails';
 import IntakePersonalInformation from './components/IntakePersonalInformation';
+import { RichTextContent } from '../types';
 
 export const PIAFormIntake = () => {
   // Get the PIA form context from the parent component
