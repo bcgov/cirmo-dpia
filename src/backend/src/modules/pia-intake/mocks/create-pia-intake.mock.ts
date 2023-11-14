@@ -50,8 +50,8 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       },
     ],
     collectionNotice: {
-      drafterInput: 'Test Input',
-      mpoInput: null,
+      drafterInput: { content: 'Test Input' },
+      mpoInput: { content: null },
     },
   },
   storingPersonalInformation: {

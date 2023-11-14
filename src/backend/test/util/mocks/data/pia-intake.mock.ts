@@ -57,8 +57,8 @@ const piaIntakeDataMock = {
       },
     ],
     collectionNotice: {
-      drafterInput: 'Test Input',
-      mpoInput: 'Updated Input',
+      drafterInput: { content: 'Test Input' },
+      mpoInput: { content: 'Updated Input' },
     },
   },
   storingPersonalInformation: {
@@ -205,8 +205,8 @@ const collectionUseAndDisclosureWithDrafterPermissions = {
       },
     ],
     collectionNotice: {
-      drafterInput: 'Test Input',
-      mpoInput: null,
+      drafterInput: { content: 'Test Input' },
+      mpoInput: { content: null },
     },
   },
 };
