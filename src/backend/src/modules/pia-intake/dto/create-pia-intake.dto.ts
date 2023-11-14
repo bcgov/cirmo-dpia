@@ -21,6 +21,7 @@ import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-in
 import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
 import { Ppq } from '../jsonb-classes/ppq';
 import { Review } from '../jsonb-classes/review';
+import { RichTextContent } from '../jsonb-classes/intake/rich-text-content';
 
 export class CreatePiaIntakeDto {
   @IsString()
@@ -77,32 +78,35 @@ export class CreatePiaIntakeDto {
   })
   leadEmail: string;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
+  @Type(() => RichTextContent)
   @ApiProperty({
-    type: String,
+    type: RichTextContent,
     required: false,
     example: piaIntakeEntityMock.initiativeDescription,
   })
-  initiativeDescription: string;
+  initiativeDescription: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
+  @Type(() => RichTextContent)
   @ApiProperty({
-    type: String,
+    type: RichTextContent,
     required: false,
     example: piaIntakeEntityMock.initiativeScope,
   })
-  initiativeScope: string;
+  initiativeScope: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
+  @Type(() => RichTextContent)
   @ApiProperty({
-    type: String,
+    type: RichTextContent,
     required: false,
     example: piaIntakeEntityMock.dataElementsInvolved,
   })
-  dataElementsInvolved: string;
+  dataElementsInvolved: RichTextContent;
 
   @IsBoolean()
   @IsOptional()
@@ -113,14 +117,15 @@ export class CreatePiaIntakeDto {
   })
   hasAddedPiToDataElements: boolean;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
+  @Type(() => RichTextContent)
   @ApiProperty({
-    type: String,
+    type: RichTextContent,
     required: false,
     example: piaIntakeEntityMock.riskMitigation,
   })
-  riskMitigation: string;
+  riskMitigation: RichTextContent;
 
   @IsEnum(PiaIntakeStatusEnum)
   @IsOptional()

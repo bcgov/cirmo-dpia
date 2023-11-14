@@ -14,12 +14,17 @@ export interface IPiaFormIntake {
   leadEmail?: string;
   mpoName?: string;
   mpoEmail?: string;
-  initiativeDescription?: string;
-  initiativeScope?: string;
-  dataElementsInvolved?: string;
+  initiativeDescription?: RichTextContent;
+  initiativeScope?: RichTextContent;
+  dataElementsInvolved?: RichTextContent;
   hasAddedPiToDataElements?: boolean | null;
-  riskMitigation?: string;
+  riskMitigation?: RichTextContent;
 }
+
+// For saving rich text editor content and changes.
+export type RichTextContent = {
+  content: string;
+};
 
 export interface PIAInformationProps {
   isReadOnly: IPiaFormContext['isReadOnly'];
@@ -28,7 +33,11 @@ export interface PIAInformationProps {
 export interface IntakeInitiativeScopeProps extends PIAInformationProps {
   selectedSection?: IPiaFormContext['selectedSection'];
   intakeForm: IPiaFormIntake;
-  stateChangeHandler: (value: any, key: keyof IPiaFormIntake) => void;
+  stateChangeHandler: (
+    value: any,
+    key: keyof IPiaFormIntake,
+    nestedKey?: keyof RichTextContent,
+  ) => void;
   commentCount?: IPiaFormContext['commentCount'];
 }
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
 import { IntakePersonalInformationProps } from '../helper/pia-form-intake.interface';
@@ -7,6 +6,7 @@ import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 import { PIOptions } from '../../../../../constant/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 // Extracting message constants for better readability and code reuse
 const { SectionHeading, HelperText, Question, LinkText } =
@@ -26,6 +26,20 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
     selectedSection === PiaSections.INTAKE_PERSONAL_INFORMATION
       ? 'section-focus'
       : '';
+
+  // State for riskMitigation text editor.
+  const [riskMitigation, setRiskMitigation] = useState(
+    intakeForm?.riskMitigation?.content ?? '',
+  );
+
+  // Update form state.
+  useEffect(() => {
+    stateChangeHandler(riskMitigation, 'riskMitigation', 'content');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [riskMitigation]);
+
+  // Show the editor unless isReadOnly and riskMitigation is empty.
+  const showEditor = !(isReadOnly && riskMitigation === '');
 
   return (
     <section className="section__padding-block">
@@ -97,27 +111,15 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
               </p>
             )}
             <div className="richText" id="riskMitigation">
-              {isReadOnly &&
-              (!intakeForm.riskMitigation ||
-                intakeForm.riskMitigation === '') ? (
-                <p>
-                  <i>Not answered</i>
-                </p>
-              ) : isReadOnly ? (
-                <MDEditor.Markdown
-                  source={intakeForm.riskMitigation}
-                  aria-label="Risk Mitigation Textarea Input Preview"
-                />
-              ) : (
-                <MDEditor
-                  preview="edit"
-                  value={intakeForm?.riskMitigation}
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    stateChangeHandler(value, 'riskMitigation')
-                  }
+              {showEditor ? (
+                <RichTextEditor
+                  content={riskMitigation}
+                  setContent={setRiskMitigation}
+                  readOnly={isReadOnly}
                   aria-label="Risk Mitigation Textarea Input"
                 />
+              ) : (
+                <i>Not answered</i>
               )}
             </div>
           </div>

@@ -2652,10 +2652,10 @@ describe('PiaIntakeService', () => {
         ...{
           updatedAt: null,
           ministry: 'Tourism, Arts, Culture and Sport',
-          initiativeDescription: null,
-          initiativeScope: null,
-          dataElementsInvolved: null,
-          riskMitigation: null,
+          initiativeDescription: { content: null },
+          initiativeScope: { content: null },
+          dataElementsInvolved: { content: null },
+          riskMitigation: { content: null },
         },
       };
 

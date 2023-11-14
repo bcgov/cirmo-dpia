@@ -1,6 +1,9 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
-import { IPiaFormIntake } from './helper/pia-form-intake.interface';
+import {
+  IPiaFormIntake,
+  RichTextContent,
+} from './helper/pia-form-intake.interface';
 import {
   IPiaFormContext,
   PiaFormContext,
@@ -33,11 +36,23 @@ export const PIAFormIntake = () => {
   );
 
   // Handle changes to the intake form state
-  const stateChangeHandler = (value: any, key: keyof IPiaFormIntake) => {
-    // Update the intake form state
-    setIntakeForm((state) => ({ ...state, [key]: value }));
-    // Call the PIA form context state change handler
-    piaStateChangeHandler(value, key);
+  const stateChangeHandler = (
+    value: any,
+    key: keyof IPiaFormIntake,
+    nestedKey?: keyof RichTextContent,
+  ) => {
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (!!nestedKey) {
+      // Update the intake form state
+      setIntakeForm((state) => ({ ...state, [key]: { [nestedKey]: value } }));
+      // Call the PIA form context state change handler
+      piaStateChangeHandler(value, key, undefined, nestedKey);
+    } else {
+      // Update the intake form state
+      setIntakeForm((state) => ({ ...state, [key]: value }));
+      // Call the PIA form context state change handler
+      piaStateChangeHandler(value, key);
+    }
   };
 
   // Handle changes to the "Has added PI to data elements" option

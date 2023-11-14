@@ -1,9 +1,9 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helper/messages';
 import { IntakeInitiativeDetailsProps } from '../helper/pia-form-intake.interface';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 // Destructure the messages object for better readability
 const { H2Text, HelperText } = Messages.InitiativeDataElementsSection;
@@ -21,29 +21,20 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
     selectedSection ===
     PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED;
 
-  // Generate content based on whether it's read-only mode or not
-  const content =
-    (isReadOnly && !intakeForm.dataElementsInvolved) ||
-    (isReadOnly && intakeForm.dataElementsInvolved === '') ? (
-      <p>
-        <i>Not answered</i>
-      </p>
-    ) : isReadOnly ? (
-      <MDEditor.Markdown
-        source={intakeForm.dataElementsInvolved}
-        aria-label="Data Elements Involved Textarea Input Preview"
-      />
-    ) : (
-      <MDEditor
-        preview="edit"
-        value={intakeForm?.dataElementsInvolved}
-        defaultTabEnable={true}
-        onChange={(value) => stateChangeHandler(value, 'dataElementsInvolved')}
-        aria-label="Data Elements Involved Textarea Input"
-      />
-    );
+  // State for dataElementsInvolved text editor.
+  const [dataElementsInvolved, setDataElementsInvolved] = useState(
+    intakeForm?.dataElementsInvolved?.content ?? '',
+  );
 
-  // Main render function for the component
+  // Update form state.
+  useEffect(() => {
+    stateChangeHandler(dataElementsInvolved, 'dataElementsInvolved', 'content');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataElementsInvolved]);
+
+  // Show the editor unless isReadOnly and dataElementsInvolved is empty.
+  const showEditor = !(isReadOnly && dataElementsInvolved === '');
+
   return (
     <section className="section__padding-block">
       <div
@@ -65,7 +56,16 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
 
         {/* Render the content */}
         <div className="richText" id="dataElementsInvolved">
-          {content}
+          {showEditor ? (
+            <RichTextEditor
+              content={dataElementsInvolved}
+              setContent={setDataElementsInvolved}
+              readOnly={isReadOnly}
+              aria-label="Data Elements Involved Textarea Input"
+            />
+          ) : (
+            <i>Not answered</i>
+          )}
         </div>
 
         {/* Render comments */}

@@ -442,18 +442,26 @@ export class PiaIntakeService {
       ...{
         updatedAt: shortDate(piaIntakeForm.updatedAt),
         ministry: ministry || '',
-        initiativeDescription: piaIntakeForm.initiativeDescription
-          ? marked.parse(piaIntakeForm.initiativeDescription)
-          : '',
-        initiativeScope: piaIntakeForm.initiativeScope
-          ? marked.parse(piaIntakeForm.initiativeScope)
-          : '',
-        dataElementsInvolved: piaIntakeForm.dataElementsInvolved
-          ? marked.parse(piaIntakeForm.dataElementsInvolved)
-          : '',
-        riskMitigation: piaIntakeForm.riskMitigation
-          ? marked.parse(piaIntakeForm.riskMitigation)
-          : '',
+        initiativeDescription: {
+          content: piaIntakeForm.initiativeDescription
+            ? marked.parse(piaIntakeForm.initiativeDescription.content)
+            : '',
+        },
+        initiativeScope: {
+          content: piaIntakeForm.initiativeScope
+            ? marked.parse(piaIntakeForm.initiativeScope.content)
+            : '',
+        },
+        dataElementsInvolved: {
+          content: piaIntakeForm.dataElementsInvolved
+            ? marked.parse(piaIntakeForm.dataElementsInvolved.content)
+            : '',
+        },
+        riskMitigation: {
+          content: piaIntakeForm.riskMitigation
+            ? marked.parse(piaIntakeForm.riskMitigation.content)
+            : '',
+        },
       },
     };
 
