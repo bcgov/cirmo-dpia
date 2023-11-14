@@ -60,7 +60,7 @@
     "@types/node": "20.8.10",
     "@types/pug": "2.0.6",
     "@typescript-eslint/eslint-plugin": "6.10.0",
-    "@typescript-eslint/parser": "6.10.0",
+    "@typescript-eslint/parser": "6.11.0",
     "eslint": "8.53.0",
     "eslint-config-airbnb-typescript": "17.1.0",
     "eslint-config-prettier": "9.0.0",
