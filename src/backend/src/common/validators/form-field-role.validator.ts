@@ -18,9 +18,12 @@ export const validateRoleForFormField = <T>(
 ) => {
   metadata = { isRichText: false, type: 'text', ...metadata }; // assigning defaults; gets overridden if provided with metadata
 
-  // Fist save checks
+  // First save checks
   if (storedValue === undefined) {
     if (metadata.type === 'text' && updatedValue === '') return; // Allow empty strings on first save
+    if (metadata.type === 'object' && metadata.isRichText) {
+      if (updatedValue.content === '') return; // Allow empty string on first save for rich text.
+    }
 
     if (updatedValue === null) return; // Allow nulls for other types
   }

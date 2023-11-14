@@ -21,7 +21,7 @@ import { StoringPersonalInformation } from '../jsonb-classes/storing-personal-in
 import { piaIntakeEntityMock } from '../mocks/create-pia-intake.mock';
 import { Ppq } from '../jsonb-classes/ppq';
 import { Review } from '../jsonb-classes/review';
-import { RichTextContent } from '../jsonb-classes/intake/rich-text-content';
+import { RichTextContent } from '../jsonb-classes/rich-text-content';
 
 export class CreatePiaIntakeDto {
   @IsString()

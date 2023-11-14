@@ -11,7 +11,7 @@ import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-i
 import { Ppq } from '../jsonb-classes/ppq';
 import { InviteeEntity } from 'src/modules/invitees/entities/invitee.entity';
 import { Review } from '../jsonb-classes/review';
-import { RichTextContent } from '../jsonb-classes/intake/rich-text-content';
+import { RichTextContent } from '../jsonb-classes/rich-text-content';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
