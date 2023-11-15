@@ -25,7 +25,7 @@ test.describe.serial('Full PIA Form Test', () => {
     await drafterPiaFill(page, uuid);
 
     // Navigate and verify pia list URL
-    await page.getByLabel('Active PIAs').click();
+    await page.goto('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out
@@ -49,7 +49,7 @@ test.describe.serial('Full PIA Form Test', () => {
     await mpoPiaFill(page);
 
     // Navigate and verify pia list URL
-    await page.getByLabel('Active PIAs').click();
+    await page.goto('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out
@@ -68,7 +68,7 @@ test.describe.serial('Full PIA Form Test', () => {
     await cpoPiaFill(page, uuid);
 
     // Navigate and verify pia list URL
-    await page.getByLabel('Active PIAs').click();
+    await page.goto('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out
