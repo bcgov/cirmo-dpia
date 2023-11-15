@@ -2,6 +2,7 @@ import { GovMinistriesEnum } from '../../../../../types/enums/gov-ministries.enu
 import { ChangeEvent } from 'react';
 import { IPiaFormContext } from '../../../../../contexts/PiaFormContext';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextContent } from '../../types';
 
 export interface IPiaFormIntake {
   title?: string;
@@ -20,11 +21,6 @@ export interface IPiaFormIntake {
   hasAddedPiToDataElements?: boolean | null;
   riskMitigation?: RichTextContent;
 }
-
-// For saving rich text editor content and changes.
-export type RichTextContent = {
-  content: string;
-};
 
 export interface PIAInformationProps {
   isReadOnly: IPiaFormContext['isReadOnly'];

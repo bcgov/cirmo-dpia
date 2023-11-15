@@ -255,8 +255,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I do not have privilege to edit this',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I do not have privilege to edit this' },
           },
         },
       };
@@ -288,8 +288,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I now have privilege to edit this',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I now have privilege to edit this' },
           },
         },
       };
@@ -2395,8 +2395,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I do not have access to update this field',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I do not have access to update this field' },
           },
         },
         saveId: 10,
@@ -2444,8 +2444,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I now DO have access to update this field',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I now DO have access to update this field' },
           },
         },
         saveId: 10,

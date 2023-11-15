@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './messages';
-import MDEditor from '@uiw/react-md-editor';
 import { isMPORole } from '../../../../utils/user';
 
 import {
@@ -20,6 +19,7 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const PIACollectionUseAndDisclosure = ({
   showComments = true,
@@ -40,7 +40,10 @@ const PIACollectionUseAndDisclosure = ({
       steps: [
         { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
       ],
-      collectionNotice: { drafterInput: '', mpoInput: '' },
+      collectionNotice: {
+        drafterInput: { content: '' },
+        mpoInput: { content: '' },
+      },
     }),
     [],
   );
@@ -55,6 +58,17 @@ const PIACollectionUseAndDisclosure = ({
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setCollectionUseAndDisclosureForm, path, value);
   };
+
+  // State for rich text editors.
+  const [drafterCollectionNotice, setDrafterCollectionNotice] = useState(
+    collectionUseAndDisclosureForm?.collectionNotice?.drafterInput?.content ??
+      '',
+  );
+  const [mpoCollectionNotice, setMpoCollectionNotice] = useState(
+    collectionUseAndDisclosureForm?.collectionNotice?.mpoInput?.content ?? '',
+  );
+
+  console.log(collectionUseAndDisclosureForm?.collectionNotice?.drafterInput);
 
   const columns: Array<ColumnMetaData> = [
     {
@@ -81,6 +95,29 @@ const PIACollectionUseAndDisclosure = ({
       type: TextInputEnum.INPUT_TEXT,
     },
   ];
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(
+      drafterCollectionNotice,
+      'collectionNotice.drafterInput.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drafterCollectionNotice]);
+  useEffect(() => {
+    stateChangeHandler(
+      mpoCollectionNotice,
+      'collectionNotice.mpoInput.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mpoCollectionNotice]);
+
+  // Show the editor unless isReadOnly and drafterCollectionNotice is empty.
+  const showEditorDrafterNotice = !(
+    isReadOnly && drafterCollectionNotice === ''
+  );
+  // Show the editor unless isReadOnly and mpoCollectionNotice is empty.
+  const showEditorMpoNotice = !(isReadOnly && mpoCollectionNotice === '');
 
   // passing updated data to parent for auto-save to work efficiently only if there are changes
   useEffect(() => {
@@ -181,34 +218,15 @@ const PIACollectionUseAndDisclosure = ({
             </div>
           )}
           <div className="richText" id="drafterDisclosure">
-            {(isReadOnly &&
-              !collectionUseAndDisclosureForm.collectionNotice.drafterInput) ||
-            (isReadOnly &&
-              collectionUseAndDisclosureForm.collectionNotice.drafterInput ===
-                '') ? (
-              <p>
-                <i>Not answered </i>
-              </p>
-            ) : isReadOnly ? (
-              <MDEditor.Markdown
-                source={
-                  collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
-                }
-                aria-label="Collection Notice Drafter Textarea Input Preview"
-              />
-            ) : (
-              <MDEditor
-                id="collectionNoticeDrafter"
-                preview="edit"
-                value={
-                  collectionUseAndDisclosureForm?.collectionNotice?.drafterInput
-                }
-                defaultTabEnable={true}
-                onChange={(value) => {
-                  stateChangeHandler(value, 'collectionNotice.drafterInput');
-                }}
+            {showEditorDrafterNotice ? (
+              <RichTextEditor
+                content={drafterCollectionNotice}
+                setContent={setDrafterCollectionNotice}
+                readOnly={isReadOnly}
                 aria-label="Collection Notice Drafter Textarea Input"
               />
+            ) : (
+              <i>Not answered</i>
             )}
           </div>
         </div>
@@ -223,34 +241,15 @@ const PIACollectionUseAndDisclosure = ({
             </h4>
           )}
           <div className="richText pb-4" id="MPOCommentsDisclosure">
-            {(isReadOnly &&
-              !collectionUseAndDisclosureForm.collectionNotice.mpoInput) ||
-            (isReadOnly &&
-              collectionUseAndDisclosureForm.collectionNotice.mpoInput ===
-                '') ? (
-              <p>
-                <i>Not answered</i>
-              </p>
-            ) : isReadOnly ? (
-              <MDEditor.Markdown
-                source={
-                  collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
-                }
-                aria-label="Collection Notice MPO Textarea Input Preview"
-              />
-            ) : (
-              <MDEditor
-                id="collectionNoticeMPO"
-                preview={isMPORole() ? 'edit' : 'preview'}
-                value={
-                  collectionUseAndDisclosureForm?.collectionNotice?.mpoInput
-                }
-                defaultTabEnable={true}
-                onChange={(value) => {
-                  stateChangeHandler(value, 'collectionNotice.mpoInput');
-                }}
+            {showEditorMpoNotice ? (
+              <RichTextEditor
+                content={mpoCollectionNotice}
+                setContent={setMpoCollectionNotice}
+                readOnly={isReadOnly}
                 aria-label="Collection Notice MPO Textarea Input"
               />
+            ) : (
+              <i>Not answered</i>
             )}
           </div>
         </div>

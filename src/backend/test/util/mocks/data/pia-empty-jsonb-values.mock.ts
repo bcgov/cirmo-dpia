@@ -2,8 +2,8 @@ export const emptyJsonbValues = {
   collectionUseAndDisclosure: {
     steps: [],
     collectionNotice: {
-      drafterInput: null,
-      mpoInput: null,
+      drafterInput: { content: null },
+      mpoInput: { content: null },
     },
   },
   storingPersonalInformation: {

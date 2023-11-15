@@ -1,3 +1,5 @@
+import { RichTextContent } from '../types';
+
 export interface ICollectionUseAndDisclosure {
   steps: Array<StepInput>;
 
@@ -11,8 +13,8 @@ export interface StepInput extends Record<string, string> {
   OtherInput: string;
 }
 export interface CollectionNoticeInput {
-  drafterInput?: string;
-  mpoInput?: string;
+  drafterInput?: RichTextContent;
+  mpoInput?: RichTextContent;
 }
 
 export interface PIACollectionUseAndDisclosureProps {

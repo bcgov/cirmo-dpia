@@ -1,28 +1,29 @@
-import { IsOptional, IsString } from '@nestjs/class-validator';
+import { IsObject, IsOptional } from '@nestjs/class-validator';
 import { UserTypesEnum } from '../../../../common/enums/users.enum';
 import { IFormField } from '../../../../common/interfaces/form-field.interface';
 import { validateRoleForFormField } from '../../../../common/validators/form-field-role.validator';
+import { RichTextContent } from '../rich-text-content';
 
 export class CollectionNotice {
-  @IsString()
+  @IsObject()
   @IsOptional()
-  drafterInput?: string;
+  drafterInput?: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  mpoInput?: string;
+  mpoInput?: RichTextContent;
 }
 
 export const CollectionNoticeMetadata: Array<IFormField<CollectionNotice>> = [
   {
     key: 'drafterInput',
-    type: 'text',
+    type: 'object',
     isRichText: true,
     allowedUserTypesEdit: null, // any user can edit this field
   },
   {
     key: 'mpoInput',
-    type: 'text',
+    type: 'object',
     isRichText: true,
     allowedUserTypesEdit: [UserTypesEnum.MPO], // only MPO users can edit this field
   },
