@@ -68,8 +68,6 @@ const PIACollectionUseAndDisclosure = ({
     collectionUseAndDisclosureForm?.collectionNotice?.mpoInput?.content ?? '',
   );
 
-  console.log(collectionUseAndDisclosureForm?.collectionNotice?.drafterInput);
-
   const columns: Array<ColumnMetaData> = [
     {
       key: 'drafterInput',
