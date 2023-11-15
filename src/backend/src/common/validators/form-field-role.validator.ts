@@ -22,7 +22,8 @@ export const validateRoleForFormField = <T>(
   if (storedValue === undefined) {
     if (metadata.type === 'text' && updatedValue === '') return; // Allow empty strings on first save
     if (metadata.type === 'object' && metadata.isRichText) {
-      if (updatedValue.content === '') return; // Allow empty string on first save for rich text.
+      // Allow empty string on first save for rich text.
+      if (updatedValue.content === '' || updatedValue.content === null) return;
     }
 
     if (updatedValue === null) return; // Allow nulls for other types
