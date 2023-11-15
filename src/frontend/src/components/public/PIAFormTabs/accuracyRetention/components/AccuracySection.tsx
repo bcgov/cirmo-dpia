@@ -1,11 +1,11 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helpers/messages';
 import { AccuracySectionProps } from '../accuracy-retention-interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 export const AccuracySection: React.FC<AccuracySectionProps> = ({
   accuracyCorrectionAndRetentionForm,
@@ -24,6 +24,20 @@ export const AccuracySection: React.FC<AccuracySectionProps> = ({
       ? 'section-focus'
       : ''
   }`;
+
+  // State for rich text editor.
+  const [accuracyDescription, setAccuracyDescription] = useState(
+    accuracyCorrectionAndRetentionForm?.accuracy?.description ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(accuracyDescription, 'accuracy.description');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accuracyDescription]);
+
+  // Show the editor unless isReadOnly and accuracyDescription is empty.
+  const showEditor = !(isReadOnly && accuracyDescription === '');
 
   return (
     <section className="section__padding-block ">
@@ -53,25 +67,15 @@ export const AccuracySection: React.FC<AccuracySectionProps> = ({
 
         {/* Render the accuracy description */}
         <div>
-          {!isReadOnly ? (
-            <MDEditor
-              preview="edit"
-              defaultTabEnable={true}
-              value={accuracyCorrectionAndRetentionForm?.accuracy?.description}
-              onChange={(value) =>
-                stateChangeHandler(value, 'accuracy.description')
-              }
+          {showEditor ? (
+            <RichTextEditor
+              content={accuracyDescription}
+              setContent={setAccuracyDescription}
+              readOnly={isReadOnly}
               aria-label="Accuracy Description Textarea Input"
             />
-          ) : accuracyCorrectionAndRetentionForm.accuracy?.description ? (
-            <MDEditor.Markdown
-              source={accuracyCorrectionAndRetentionForm.accuracy?.description}
-              aria-label="Accuracy Description Textarea Input Preview"
-            />
           ) : (
-            <p>
-              <i>Not answered</i>
-            </p>
+            <i>Not answered</i>
           )}
         </div>
 

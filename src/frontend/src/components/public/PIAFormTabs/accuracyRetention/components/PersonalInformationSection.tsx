@@ -1,5 +1,4 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import Radio from '../../../../common/Radio';
 import ViewComments from '../../../../common/ViewComment';
 import Messages from '../helpers/messages';
@@ -8,6 +7,7 @@ import { PersonalInformationSectionProps } from '../accuracy-retention-interface
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 export const PersonalInformationSection: React.FC<
   PersonalInformationSectionProps
@@ -30,6 +30,20 @@ export const PersonalInformationSection: React.FC<
       ? 'section-focus'
       : ''
   }`;
+
+  // State for rich text editor.
+  const [describeRetention, setDescribeRetention] = useState(
+    accuracyCorrectionAndRetentionForm?.retention?.describeRetention ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(describeRetention, 'retention.describeRetention');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [describeRetention]);
+
+  // Show the editor unless isReadOnly and describeRetention is empty.
+  const showEditor = !(isReadOnly && describeRetention === '');
 
   return (
     <section className="section__padding-block">
@@ -172,32 +186,15 @@ export const PersonalInformationSection: React.FC<
                     </h4>
                   )}
                   {/* Render the MDEditor for describeRetention */}
-                  {!isReadOnly ? (
-                    <MDEditor
-                      preview="edit"
-                      defaultTabEnable={true}
-                      value={
-                        accuracyCorrectionAndRetentionForm?.retention
-                          ?.describeRetention || undefined
-                      }
-                      onChange={(value) =>
-                        stateChangeHandler(value, 'retention.describeRetention')
-                      }
+                  {showEditor ? (
+                    <RichTextEditor
+                      content={describeRetention}
+                      setContent={setDescribeRetention}
+                      readOnly={isReadOnly}
                       aria-label="Describe Retention Textarea Input"
                     />
-                  ) : accuracyCorrectionAndRetentionForm.retention
-                      .describeRetention ? (
-                    <MDEditor.Markdown
-                      source={
-                        accuracyCorrectionAndRetentionForm.retention
-                          .describeRetention
-                      }
-                      aria-label="Describe Retention Textarea Input Preview"
-                    />
                   ) : (
-                    <p>
-                      <i>Not answered</i>
-                    </p>
+                    <i>Not answered</i>
                   )}
                 </div>
               )}
