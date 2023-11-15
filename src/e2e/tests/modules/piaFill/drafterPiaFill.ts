@@ -4,6 +4,7 @@ import { Page, expect } from '@playwright/test';
 Test code for Drafter PIA form filling. This function fills out the full PIA Form. It then submits the form and checks if the page redirects to '/intake/view'.
 */
 export async function drafterPiaFill(page: Page, uuid?: string) {
+  //PIA Intake Form Tab
   await page.getByLabel('Initiative title (required)').click();
   await page.getByLabel('Initiative title (required)').fill(`TEST_${uuid}`);
   await page.getByLabel('Ministry').selectOption('CITIZENS_SERVICES');
@@ -47,7 +48,11 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     );
   await page.getByLabel('Submit Button').click();
   await page.getByLabel('Yes, submit').click();
+
+  // Next Steps Tab
   await page.getByLabel('Next Button').click();
+
+  // Collection, use and disclosure Tab
   await page.getByLabel('Describe the step').click();
   await page
     .getByLabel('Describe the step')
@@ -81,6 +86,8 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
     );
   await page.getByLabel('Next Button').click();
+
+  // Storing Personal Information Form Tab
   await page.getByRole('textbox').click();
   await page
     .getByRole('textbox')
@@ -220,8 +227,43 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     .getByLabel('Enterprise Service Access Details Textarea Input')
     .getByRole('textbox')
     .fill(
-      "  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').click();\n  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.');",
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
     );
+
+  await page
+    .locator('form div')
+    .filter({
+      hasText:
+        'Are you relying on an existing contract, such as an enterprise offering from the',
+    })
+    .getByLabel('View comments')
+    .click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByLabel('Comment Options Button').first().click();
+  await page
+    .getByRole('list', { name: 'Comment Options Menu' })
+    .locator('button')
+    .click();
+  await page.getByLabel('Delete', { exact: true }).click();
   await page
     .getByLabel('Unauthorized Access Measures Textarea Input')
     .getByRole('textbox')
@@ -230,7 +272,7 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     .getByLabel('Unauthorized Access Measures Textarea Input')
     .getByRole('textbox')
     .fill(
-      "  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').click();\n  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.');",
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
     );
   await page
     .getByLabel('Track Access Details Textarea Input')
@@ -240,7 +282,7 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     .getByLabel('Track Access Details Textarea Input')
     .getByRole('textbox')
     .fill(
-      "  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').click();\n  await page.getByLabel('Contractual Terms Textarea Input').getByRole('textbox').fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.');",
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
     );
   await page.getByLabel('Impact to individuals').click();
   await page.getByLabel('Privacy risk', { exact: true }).click();
@@ -425,8 +467,10 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     .fill(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
     );
+  await page.getByLabel('Delete row button').nth(2).click();
   await page.getByLabel('Next Button').click();
 
+  // Security of Personal Information Form Tab
   await page
     .getByLabel(
       'We allow employees in only certain roles access to information',
@@ -441,7 +485,32 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     .fill(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
     );
+  await page.getByLabel('View comments').nth(1).click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByPlaceholder('Write a comment...').click();
+  await page
+    .getByPlaceholder('Write a comment...')
+    .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await page.getByLabel('Add New Comment Button').click();
+  await page.getByLabel('Comment Options Button').first().click();
+  await page
+    .getByRole('list', { name: 'Comment Options Menu' })
+    .locator('button')
+    .click();
+  await page.getByLabel('Delete', { exact: true }).click();
+  await page.locator('.collapsible__header').first().click();
   await page.getByLabel('Next Button').click();
+
+  // Accuracy, Correction and Retention Form Tab
   await page.getByRole('textbox').click();
   await page
     .getByRole('textbox')
@@ -479,6 +548,8 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
     );
   await page.getByLabel('Next Button').click();
+
+  // Agreements and information banks Form Tab
   await page
     .getByLabel('Information Sharing Agreement Textarea Input')
     .getByRole('textbox')
@@ -584,6 +655,8 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     )
     .fill('Lorem ipsum dolor');
   await page.getByLabel('Next Button').click();
+
+  // Additional Risks Form Tab
   await page.getByLabel('Possible risk').click();
   await page
     .getByLabel('Possible risk')
