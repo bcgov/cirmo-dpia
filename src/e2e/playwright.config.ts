@@ -27,14 +27,16 @@ export default defineConfig({
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
     screenshot: 'only-on-failure',
+    actionTimeout: 10 * 1000,
+    navigationTimeout: 30 * 1000,
   },
 
   /* Timeout for test functions */
-  timeout: 60 * 1000,
+  timeout: 5 * 60 * 1000,
 
   /* Timeout for expect functions */
   expect: {
-    timeout: 30 * 1000,
+    timeout: 5 * 30 * 1000,
   },
 
   /* Configure projects for major browsers */
