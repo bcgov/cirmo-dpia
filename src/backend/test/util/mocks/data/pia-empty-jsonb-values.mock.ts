@@ -45,14 +45,14 @@ export const emptyJsonbValues = {
       },
       storage: {
         onGovServers: null,
-        whereDetails: null,
+        whereDetails: { content: null },
       },
     },
     accessToPersonalInformation: {
       onlyCertainRolesAccessInformation: null,
       accessApproved: null,
       useAuditLogs: null,
-      additionalStrategies: null,
+      additionalStrategies: { content: null },
     },
   },
   accuracyCorrectionAndRetention: {

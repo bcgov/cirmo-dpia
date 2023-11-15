@@ -1,4 +1,3 @@
-import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Messages from './helper/messages';
 import {
@@ -18,6 +17,7 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import Radio from '../../../common/Radio';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 export const SecurityPersonalInformation = ({
   showComments = true,
@@ -42,14 +42,14 @@ export const SecurityPersonalInformation = ({
         },
         storage: {
           onGovServers: YesNoInput.YES,
-          whereDetails: '',
+          whereDetails: { content: '' },
         },
       },
       accessToPersonalInformation: {
         onlyCertainRolesAccessInformation: YesNoInput.NO,
         accessApproved: YesNoInput.NO,
         useAuditLogs: YesNoInput.NO,
-        additionalStrategies: '',
+        additionalStrategies: { content: '' },
       },
     }),
     [],
@@ -66,6 +66,39 @@ export const SecurityPersonalInformation = ({
   const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setSecurityPersonalInformationForm, path, value);
   };
+
+  // State for rich text editors.
+  const [whereDetails, setWhereDetails] = useState(
+    securityPersonalInformationForm?.digitalToolsAndSystems?.storage
+      ?.whereDetails?.content ?? '',
+  );
+  const [additionalStrategies, setAdditionalStrategies] = useState(
+    securityPersonalInformationForm?.accessToPersonalInformation
+      .additionalStrategies?.content ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(
+      whereDetails,
+      'digitalToolsAndSystems.storage.whereDetails.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [whereDetails]);
+  useEffect(() => {
+    stateChangeHandler(
+      additionalStrategies,
+      'accessToPersonalInformation.additionalStrategies.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [additionalStrategies]);
+
+  // Show the editor unless isReadOnly and whereDetails is empty.
+  const showEditorWhereDetails = !(isReadOnly && whereDetails === '');
+  // Show the editor unless isReadOnly and additionalStrategies is empty.
+  const showEditorAdditionalStrategies = !(
+    isReadOnly && additionalStrategies === ''
+  );
 
   const InvolveDigitalTools = [
     {
@@ -414,35 +447,15 @@ export const SecurityPersonalInformation = ({
                       }
                     </h4>
                   )}
-                  {!isReadOnly ? (
-                    <MDEditor
-                      preview="edit"
-                      defaultTabEnable={true}
-                      value={
-                        securityPersonalInformationForm?.digitalToolsAndSystems
-                          ?.storage?.whereDetails || ''
-                      }
-                      onChange={(value) =>
-                        stateChangeHandler(
-                          value,
-                          'digitalToolsAndSystems.storage.whereDetails',
-                        )
-                      }
+                  {showEditorWhereDetails ? (
+                    <RichTextEditor
+                      content={whereDetails}
+                      setContent={setWhereDetails}
+                      readOnly={isReadOnly}
                       aria-label="Digital Tools and Systems Storage Where Details Input"
                     />
-                  ) : securityPersonalInformationForm.digitalToolsAndSystems
-                      .storage.whereDetails ? (
-                    <MDEditor.Markdown
-                      source={
-                        securityPersonalInformationForm?.digitalToolsAndSystems
-                          ?.storage?.whereDetails
-                      }
-                      aria-label="Digital Tools and Systems Storage Where Details Input Preview"
-                    />
                   ) : (
-                    <p>
-                      <i>Not answered</i>
-                    </p>
+                    <i>Not answered</i>
                   )}
                 </div>
               )}
@@ -562,35 +575,15 @@ export const SecurityPersonalInformation = ({
                   }
                 </h4>
               )}
-              {!isReadOnly ? (
-                <MDEditor
-                  preview="edit"
-                  defaultTabEnable={true}
-                  value={
-                    securityPersonalInformationForm.accessToPersonalInformation
-                      .additionalStrategies || ''
-                  }
-                  onChange={(value) =>
-                    stateChangeHandler(
-                      value,
-                      'accessToPersonalInformation.additionalStrategies',
-                    )
-                  }
+              {showEditorAdditionalStrategies ? (
+                <RichTextEditor
+                  content={additionalStrategies}
+                  setContent={setAdditionalStrategies}
+                  readOnly={isReadOnly}
                   aria-label="Access to Personal Information Additional Strategies Input"
                 />
-              ) : securityPersonalInformationForm.accessToPersonalInformation
-                  .additionalStrategies ? (
-                <MDEditor.Markdown
-                  source={
-                    securityPersonalInformationForm.accessToPersonalInformation
-                      .additionalStrategies
-                  }
-                  aria-label="Access to Personal Information Additional Strategies Input Preview"
-                />
               ) : (
-                <p>
-                  <i>Not answered</i>
-                </p>
+                <i>Not answered</i>
               )}
             </div>
             {showComments && (
