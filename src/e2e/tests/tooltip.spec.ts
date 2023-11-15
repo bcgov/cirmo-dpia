@@ -48,11 +48,14 @@ for (const user of userRoles) {
     // Log in as the current user
     await user.login(page);
 
+    // Click on 'Create new' and then 'Start PIA Intake'
     await page.getByLabel('Create new').click();
     await page.getByRole('link', { name: 'Start PIA Intake' }).click();
 
+    // Hover over the SVG to display the tooltip
     await page.locator('div').locator('svg').nth(1).hover();
 
+    // Verify the tooltip text
     await expect(
       page.getByText(
         'This PIA has not been submitted and is only visible to its drafter. Submit at any time to get help or a review from the MPO.',
@@ -61,17 +64,20 @@ for (const user of userRoles) {
       'This PIA has not been submitted and is only visible to its drafter. Submit at any time to get help or a review from the MPO.',
     );
 
-    // Fill out the basic PIA form
+    // Fill out the basic PIA form using the unique identifier
     await basicPiaFill(page, uuid);
 
-    // using the unique identifier search for the PIA and open it
+    // Search for the PIA and open it
     await searchUUID(page, uuid);
 
+    // Click on 'Submit Button' and confirm submission
     await page.getByLabel('Submit Button').click();
     await page.getByLabel('Yes, submit').click();
 
+    // Hover over the SVG to display the tooltip
     await page.locator('div').locator('svg').nth(1).hover();
 
+    // Verify the tooltip text
     await expect(
       page.getByText(
         'This PIA is ready for a review by the MPO (Ministry Privacy Office).',
@@ -80,12 +86,15 @@ for (const user of userRoles) {
       'This PIA is ready for a review by the MPO (Ministry Privacy Office).',
     );
 
+    // Click on 'More options', 'Edit Button', and confirm continuation
     await page.getByLabel('More options').click();
     await page.getByLabel('Edit Button').click();
     await page.getByLabel('Yes, continue').click();
 
+    // Hover over the SVG to display the tooltip
     await page.locator('div').locator('svg').nth(1).hover();
 
+    // Verify the tooltip text
     await expect(
       page.getByText(
         'This PIA has been shared with the MPO (Ministry Privacy Office) and they are able to view and guide you as you make changes.',
@@ -94,6 +103,7 @@ for (const user of userRoles) {
       'This PIA has been shared with the MPO (Ministry Privacy Office) and they are able to view and guide you as you make changes.',
     );
 
+    // Click on 'Submit Button' and confirm submission
     await page.getByLabel('Submit Button').click();
     await page.getByLabel('Yes, submit').click();
 
