@@ -42,14 +42,14 @@ export const SecurityPersonalInformation = ({
         },
         storage: {
           onGovServers: YesNoInput.YES,
-          whereDetails: '',
+          whereDetails: { content: '' },
         },
       },
       accessToPersonalInformation: {
         onlyCertainRolesAccessInformation: YesNoInput.NO,
         accessApproved: YesNoInput.NO,
         useAuditLogs: YesNoInput.NO,
-        additionalStrategies: '',
+        additionalStrategies: { content: '' },
       },
     }),
     [],
@@ -70,25 +70,25 @@ export const SecurityPersonalInformation = ({
   // State for rich text editors.
   const [whereDetails, setWhereDetails] = useState(
     securityPersonalInformationForm?.digitalToolsAndSystems?.storage
-      ?.whereDetails ?? '',
+      ?.whereDetails?.content ?? '',
   );
   const [additionalStrategies, setAdditionalStrategies] = useState(
     securityPersonalInformationForm?.accessToPersonalInformation
-      .additionalStrategies ?? '',
+      .additionalStrategies?.content ?? '',
   );
 
   // Update form state on rich text editor changes.
   useEffect(() => {
     stateChangeHandler(
       whereDetails,
-      'digitalToolsAndSystems.storage.whereDetails',
+      'digitalToolsAndSystems.storage.whereDetails.content',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [whereDetails]);
   useEffect(() => {
     stateChangeHandler(
       additionalStrategies,
-      'accessToPersonalInformation.additionalStrategies',
+      'accessToPersonalInformation.additionalStrategies.content',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [additionalStrategies]);
