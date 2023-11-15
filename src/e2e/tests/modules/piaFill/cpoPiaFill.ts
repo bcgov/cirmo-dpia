@@ -193,12 +193,13 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Final Review Form Tab
   // Check for autosave
-  await expect(
-    page
-      .locator('div')
-      .filter({ hasText: /^Saved at/ })
-      .nth(1),
-  ).toHaveText(/^Saved at/);
+  const locator = page
+    .locator('div')
+    .filter({ hasText: /^Saved at/ })
+    .nth(1);
+  await locator.waitFor({ state: 'visible', timeout: 30000 });
+  await expect(locator).toHaveText(/^Saved at/);
+
   await page.getByLabel('Next Button').click();
   await page.getByLabel('Review', { exact: true }).click();
   await page
@@ -276,12 +277,8 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Pending Completion Form Tab
   // Check for autosave
-  await expect(
-    page
-      .locator('div')
-      .filter({ hasText: /^Saved at/ })
-      .nth(1),
-  ).toHaveText(/^Saved at/);
+  await locator.waitFor({ state: 'visible', timeout: 30000 });
+  await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('Review', { exact: true }).click();
   await page.getByLabel('Submit Button').click();
@@ -289,12 +286,9 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Complete Form Tab
   // Check for autosave
-  await expect(
-    page
-      .locator('div')
-      .filter({ hasText: /^Saved at/ })
-      .nth(1),
-  ).toHaveText(/^Saved at/);
+  await locator.waitFor({ state: 'visible', timeout: 30000 });
+  await expect(locator).toHaveText(/^Saved at/);
+
   await page.getByLabel('Next steps').click();
   await page.getByLabel('Collection, use and disclosure').click();
   await page.getByLabel('Storing personal information').click();

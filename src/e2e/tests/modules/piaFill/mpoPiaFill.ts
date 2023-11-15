@@ -307,12 +307,12 @@ export async function mpoPiaFill(page: Page) {
   await page.getByRole('button', { name: 'Confirm' }).click();
 
   // Check for autosave
-  await expect(
-    page
-      .locator('div')
-      .filter({ hasText: /^Saved at/ })
-      .nth(1),
-  ).toHaveText(/^Saved at/);
+  const locator = page
+    .locator('div')
+    .filter({ hasText: /^Saved at/ })
+    .nth(1);
+  await locator.waitFor({ state: 'visible', timeout: 30000 });
+  await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('PIA Intake').click();
   await page.getByLabel('Submit Button').click();
