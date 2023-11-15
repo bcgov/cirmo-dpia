@@ -9,12 +9,38 @@ export async function basicPiaFill(page: Page, uuid?: string) {
   await page.getByLabel('Ministry').selectOption('CITIZENS_SERVICES');
   await page.getByLabel('Branch (required)').click();
   await page.getByLabel('Branch (required)').fill('IMB');
+  await page.getByLabel('Initiative lead name').click();
+  await page.getByLabel('Initiative lead name').fill('Test Tester');
+  await page.getByLabel('Initiative lead email').click();
+  await page.getByLabel('Initiative lead email').fill('tester@email.com');
+  await page.getByLabel('Initiative lead title').click();
+  await page.getByLabel('Initiative lead title').fill('Tester');
   await page
     .getByLabel('Initiative Description Textarea Input')
     .getByRole('textbox')
     .click();
   await page
     .getByLabel('Initiative Description Textarea Input')
+    .getByRole('textbox')
+    .fill(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
+    );
+  await page
+    .getByLabel('Initiative Scope Textarea Input')
+    .getByRole('textbox')
+    .click();
+  await page
+    .getByLabel('Initiative Scope Textarea Input')
+    .getByRole('textbox')
+    .fill(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
+    );
+  await page
+    .getByLabel('Data Elements Involved Textarea Input')
+    .getByRole('textbox')
+    .click();
+  await page
+    .getByLabel('Data Elements Involved Textarea Input')
     .getByRole('textbox')
     .fill(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
