@@ -35,17 +35,15 @@ Craft your test files for clarity and efficiency using these guidelines:
 
 1. ***Imports***: Bring in Playwright's `test` and `expect` from `@playwright/test`, alongside any utility functions or Page Objects for encapsulating common actions and configurations.
 
-2. ***Environment Setup***: Directly import environment variables, like credentials, from `env.ts` to keep tests dynamic and secure.
+2. ***Test Suites***: Define related tests within `test.describe` blocks for better organization and shared setup/teardown operations.
 
-3. ***Test Suites***: Define related tests within `test.describe` blocks for better organization and shared setup/teardown operations.
+3. ***Individual Tests***: Use `test` blocks within suites to craft descriptive and focused test cases.
 
-4. ***Individual Tests***: Use `test` blocks within suites to craft descriptive and focused test cases.
+4. ***Setup and Teardown***: Employ `test.beforeEach` and `test.afterEach` for consistent test initialization and cleanup actions, including credentials.
 
-5. ***Setup and Teardown***: Employ `test.beforeEach` and `test.afterEach` for consistent test initialization and cleanup actions.
+5. ***Navigation and URLs***: Stick with `page.goto('/')` for root URL navigation and `page.goto('/path')` for subpaths, leveraging the `BASE_URL` variable for environment-specific URLs.
 
-6. ***Navigation and URLs***: Stick with `page.goto('/')` for root URL navigation and `page.goto('/path')` for subpaths, leveraging the `BASE_URL` variable for environment-specific URLs.
-
-7. ***Assertions***: Ensure assertions are expressive and detailed with the `expect` library, covering the full range of expected element states and interactions.
+6. ***Assertions***: Ensure assertions are expressive and detailed with the `expect` library, covering the full range of expected element states and interactions.
 
 
 ### Best Practices
@@ -132,21 +130,46 @@ The following is the structure of the E2E tests in this directory:
 
 ```plaintext
 e2e/
-├── playwright-report/                     # Generated reports from Playwright runs
-├── test-results/                          # Results from tests (may include screenshots and videos)
-├── tests/                                 # Test specification files
-│   └── exampleDrafterPia.spec.ts          # Test for the Example Drafter PIA feature
-├── .env                                   # Environment variables for the tests
-├── .env-template                          # Template for .env file
-├── .eslintrc.js                           # ESLint configuration
-├── .eslintignore                          # Files and folders to be ignored by ESLint
-├── .prettierrc                            # Prettier code formatting configuration
-├── .prettierignore                        # Files and folders to be ignored by Prettier
-├── env.ts                                 # TypeScript file for managing environment variables
-├── package.json                           # NPM package configuration for the project
-├── package-lock.json                      # Locked versions of the npm dependencies
-├── playwright.config.ts                   # Configuration file for Playwright
-├── README.md                              # This documentation
-├── tsconfig.json                          # TypeScript configuration for the tests
-├── tsconfig.eslint.json                   # TypeScript configuration for ESLint
-└── tsconfig.node.json                     # TypeScript configuration for Node.js specific files
+│
+├── playwright-report/                      # Generated reports from Playwright test runs
+├── test-results/                           # Output of tests, such as logs and result files
+│
+├── tests/                                  # Main test directory containing all test suites
+│   ├── modules/                            # Modular test files for testing specific components
+│   │   ├── piaFill/                        # Test suites related to 'piaFill' functionality
+│   │   │   ├── basicPiaFill.ts             # Basic test cases for piaFill
+│   │   │   ├── cpoPiaFill.ts               # Test cases for 'cpo' role interactions with piaFill
+│   │   │   ├── drafterPiaFill.ts           # Test cases for 'drafter' role interactions with piaFill
+│   │   │   ├── mpoPiaFill.ts               # Test cases for 'mpo' role interactions with piaFill
+│   │   │   └── index.ts                    # Index file to export piaFill test modules
+│   │   │
+│   │   └── utils/                          # Utility functions and helpers for tests
+│   │       ├── auth/                       # Authentication helpers for different user roles
+│   │       │   ├── cpoAuth.ts              # Auth functions for 'cpo' role
+│   │       │   ├── drafterAuth.ts          # Auth functions for 'drafter' role
+│   │       │   └── mpoAuth.ts              # Auth functions for 'mpo' role
+│   │       │
+│   │       └── uuid/                       # UUID generation and search functions
+│   │           ├── uuid.ts                 # Functions for UUID generation
+│   │           ├── uuidSearch.ts           # Functions for searching using UUID
+│   │           └── index.ts                # Index file to export uuid utilities
+│   │
+│   ├── authorized.spec.ts                  # Tests for authorized access scenarios
+│   ├── autosave.spec.ts                    # Tests for autosave functionality
+│   ├── comments.spec.ts                    # Tests for comment functionality
+│   ├── filter.spec.ts                      # Tests for filtering capabilities
+│   ├── fullPia.spec.ts                     # Comprehensive tests covering the full PIA process
+│   ├── keyboard.spec.ts                    # Tests for keyboard navigation and shortcuts
+│   ├── landingPage.spec.ts                 # Tests for the landing page
+│   ├── orderedList.spec.ts                 # Tests for ordered list features
+│   ├── search.spec.ts                      # Tests for search functionality
+│   ├── textEditor.spec.ts                  # Tests for text editor interactions
+│   └── unauthorized.spec.ts                # Tests for unauthorized access scenarios
+│
+├── .env                                    # Environment variables for the e2e tests
+├── .env-template                           # Template for the environment variables
+├── .eslintrc.js                            # ESLint configuration for linting TypeScript files
+├── .prettierrc                             # Prettier configuration for code formatting
+├── package.json                            # NPM package file with dependencies and scripts
+├── playwright.config.ts                    # Playwright configuration for the e2e tests
+└── tsconfig.json                           # TypeScript configuration for the e2e tests
