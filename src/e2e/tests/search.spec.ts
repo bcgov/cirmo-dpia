@@ -15,13 +15,13 @@ const userRoles = [
   { role: 'CPO', login: cpoLogin, logout },
 ];
 
-// Generate a unique identifier for the test run
-const uuid = generateUUID();
-
 // Loop over each user role
 for (const user of userRoles) {
   // Define a test for each user role
   test(`Search PIAs as ${user.role}`, async ({ page }) => {
+    // Generate a unique identifier for the test run
+    const uuid = generateUUID();
+
     // Log in as the current user
     await user.login(page);
 

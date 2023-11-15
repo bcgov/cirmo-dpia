@@ -16,11 +16,11 @@ const userRoles = [
   { role: 'CPO', login: cpoLogin, logout },
 ];
 
-// Generate a unique identifier for the test run
-const uuid = generateUUID();
-
 // Loop over each user role
 for (const user of userRoles) {
+  // Generate a unique identifier for the test run
+  const uuid = generateUUID();
+
   // Define a test for each user role
   test(`Tooltip on active PIA page as ${user.role}`, async ({ page }) => {
     // Log in as the current user
@@ -73,6 +73,7 @@ for (const user of userRoles) {
     // Click on 'Submit Button' and confirm submission
     await page.getByLabel('Submit Button').click();
     await page.getByLabel('Yes, submit').click();
+    await page.getByLabel('More options').click();
 
     // Hover over the SVG to display the tooltip
     await page.locator('div').locator('svg').nth(1).hover();
@@ -90,6 +91,7 @@ for (const user of userRoles) {
     await page.getByLabel('More options').click();
     await page.getByLabel('Edit Button').click();
     await page.getByLabel('Yes, continue').click();
+    await page.getByLabel('More options').click();
 
     // Hover over the SVG to display the tooltip
     await page.locator('div').locator('svg').nth(1).hover();
