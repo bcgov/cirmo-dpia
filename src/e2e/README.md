@@ -157,7 +157,7 @@ e2e/
 │   │   │   ├── cpoAuth.ts                # Login function for users with the 'CPO' role.
 │   │   │   ├── drafterAuth.ts            # Login function for users with the 'Drafter' role.
 │   │   │   └── mpoAuth.ts                # Login function for users with the 'MPO' role.
-│   │   ├── env/                         # File related to environment variables.
+│   │   ├── env/                          # File related to environment variables.
 │   │   │   └── env.ts                    # Retrieve usernames and passwords from environment variables.
 │   │   ├── uuid/                         # Functions related to UUID operations within tests.
 │   │   │   ├── uuid.ts                   # Function to generate UUIDs for test data.
