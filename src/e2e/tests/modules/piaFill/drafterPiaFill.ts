@@ -1,5 +1,8 @@
 import { Page, expect } from '@playwright/test';
 
+/* 
+Test code for Drafter PIA form filling. This function fills out the full PIA Form. It then submits the form and checks if the page redirects to '/intake/view'.
+*/
 export async function drafterPiaFill(page: Page, uuid?: string) {
   await page.getByLabel('Initiative title (required)').click();
   await page.getByLabel('Initiative title (required)').fill(`TEST_${uuid}`);

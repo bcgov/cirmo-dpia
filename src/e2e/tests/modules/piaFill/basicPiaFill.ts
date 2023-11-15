@@ -1,5 +1,8 @@
 import { Page, expect } from '@playwright/test';
 
+/* 
+Test code for basic PIA form filling. This function fills out the 'Initiative title', 'Ministry', and 'Branch' fields, as well as a description in the 'Initiative Description Textarea Input'. It then submits the form and checks if the page redirects to '/nextSteps/edit'.
+*/
 export async function basicPiaFill(page: Page, uuid?: string) {
   await page.getByLabel('Initiative title (required)').click();
   await page.getByLabel('Initiative title (required)').fill(`TEST_${uuid}`);
