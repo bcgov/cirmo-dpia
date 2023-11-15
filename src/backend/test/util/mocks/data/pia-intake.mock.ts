@@ -115,14 +115,14 @@ const piaIntakeDataMock = {
       },
       storage: {
         onGovServers: YesNoInput.NO,
-        whereDetails: 'on AWS Cloud',
+        whereDetails: { content: 'on AWS Cloud' },
       },
     },
     accessToPersonalInformation: {
       onlyCertainRolesAccessInformation: YesNoInput.YES,
       accessApproved: YesNoInput.YES,
       useAuditLogs: YesNoInput.NO,
-      additionalStrategies: 'PEM file access',
+      additionalStrategies: { content: 'PEM file access' },
     },
   },
   accuracyCorrectionAndRetention: {
