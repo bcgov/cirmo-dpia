@@ -11,7 +11,7 @@ const userRoles = [
 // Loop over each user role
 for (const user of userRoles) {
   // Define a test for each user role
-  test(`test unauthorized page as ${user.role}`, async ({ page }) => {
+  test(`Unauthorized page as ${user.role}`, async ({ page }) => {
     // Log in as the current user
     await user.login(page);
 

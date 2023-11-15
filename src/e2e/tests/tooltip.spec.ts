@@ -22,7 +22,7 @@ const uuid = generateUUID();
 // Loop over each user role
 for (const user of userRoles) {
   // Define a test for each user role
-  test(`test tooltip on active PIA page as ${user.role}`, async ({ page }) => {
+  test(`Tooltip on active PIA page as ${user.role}`, async ({ page }) => {
     // Log in as the current user
     await user.login(page);
 
@@ -44,7 +44,7 @@ for (const user of userRoles) {
   });
 
   // Define a test for each user role
-  test(`test tooltip on PIA Intake form as ${user.role}`, async ({ page }) => {
+  test(`Tooltip on PIA Intake form as ${user.role}`, async ({ page }) => {
     // Log in as the current user
     await user.login(page);
 
