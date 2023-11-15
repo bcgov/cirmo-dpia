@@ -170,7 +170,7 @@ e2e/
 │   ├── filter.spec.ts                    # Tests to validate filtering logic and UI components.
 │   ├── fullPia.spec.ts                   # Complete test suite for end-to-end 'pia' process validation.
 │   ├── landingPage.spec.ts               # Tests the functionality and elements of the landing page.
-│   ├── orderedList.spec.ts               # Tests for features related to ordered lists in the app.
+│   ├── sort.spec.ts                      # Tests for features related to sorting PIA table in the app.
 │   ├── search.spec.ts                    # Tests the search functionality, including edge cases and search accuracy.
 │   ├── tooltip.spec.ts                   # Tests the integration and functionality of the tooltip within the app.
 │   └── unauthorized.spec.ts              # Tests to ensure unauthorized users cannot access restricted areas.
