@@ -12,6 +12,9 @@ export async function searchUUID(page: Page, uuid: string) {
 
   await page.getByRole('cell', { name: `TEST_${uuid}` }).click();
 
+  //check for and expect to have the right url
+  await expect(page).toHaveURL(/\/intake\/view$/);
+
   //check for and expect title to have the right name
   await expect(page.getByRole('heading', { name: `TEST_${uuid}` })).toHaveText(
     `TEST_${uuid}`,
