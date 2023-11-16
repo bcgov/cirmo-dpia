@@ -1,5 +1,4 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import Radio from '../../../../common/Radio';
 import { YesNoInput } from '../../../../../types/enums/yes-no.enum';
 import Messages from './../helper/messages';
@@ -10,6 +9,7 @@ import CustomInputDate from '../../../../common/CustomInputDate';
 import ISAInputText from '../helper/viewISATextInput';
 import ViewComments from '../../../../common/ViewComment';
 import { InformationSharingAgreementProps } from '../helper/IAgreementsInfo-interface';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 // Define a functional component for the Information Sharing Agreement section
 export const InformationSharingAgreementSection: React.FC<
@@ -24,6 +24,24 @@ export const InformationSharingAgreementSection: React.FC<
   commentCount,
   InvolvesRadioHelper,
 }) => {
+  // State for rich text editors.
+  const [isaDescription, setIsaDescription] = useState(
+    agreementsAndInformationBanksForm?.informationSharingAgreement?.description
+      ?.content ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(
+      isaDescription,
+      'informationSharingAgreement.description.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isaDescription]);
+
+  // Show the editor unless isReadOnly and description is empty.
+  const showEditorIsaDescription = !(isReadOnly && isaDescription === '');
+
   return (
     <section
       className={`drop-shadow card p-4 p-md-5 ${
@@ -69,36 +87,15 @@ export const InformationSharingAgreementSection: React.FC<
               ) : (
                 <h4> {Messages.InvolveISA.Section.DescriptionISA.en}</h4>
               )}
-              {!isReadOnly ? (
-                <MDEditor
-                  id="isaDescription"
-                  defaultTabEnable={true}
-                  preview="edit"
-                  value={
-                    agreementsAndInformationBanksForm
-                      ?.informationSharingAgreement?.description || ''
-                  }
-                  onChange={(value) =>
-                    stateChangeHandler(
-                      value,
-                      'informationSharingAgreement.description',
-                    )
-                  }
+              {showEditorIsaDescription ? (
+                <RichTextEditor
+                  content={isaDescription}
+                  setContent={setIsaDescription}
+                  readOnly={isReadOnly}
                   aria-label="Information Sharing Agreement Textarea Input"
                 />
-              ) : agreementsAndInformationBanksForm.informationSharingAgreement
-                  .description ? (
-                <MDEditor.Markdown
-                  source={
-                    agreementsAndInformationBanksForm
-                      .informationSharingAgreement.description
-                  }
-                  aria-label="Information Sharing Agreement Textarea Input Preview"
-                />
               ) : (
-                <p>
-                  <i>Not answered</i>
-                </p>
+                <i>Not answered</i>
               )}
             </div>
             {!isReadOnly ? (

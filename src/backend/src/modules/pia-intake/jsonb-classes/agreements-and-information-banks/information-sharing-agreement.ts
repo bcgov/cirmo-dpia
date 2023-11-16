@@ -1,20 +1,22 @@
 import {
   IsEnum,
+  IsObject,
   IsOptional,
   IsString,
   Validate,
 } from '@nestjs/class-validator';
 import { DateStringValidator } from '../../../../common/validators/date-string.validator';
 import { YesNoInput } from '../../../../common/enums/yes-no-input.enum';
+import { RichTextContent } from '../rich-text-content';
 
 export class InformationSharingAgreement {
   @IsEnum(YesNoInput)
   @IsOptional()
   doesInvolveISA?: YesNoInput;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  description?: string;
+  description?: RichTextContent;
 
   @IsString()
   @IsOptional()

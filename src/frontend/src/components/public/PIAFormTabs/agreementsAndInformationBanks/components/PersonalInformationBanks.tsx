@@ -1,5 +1,4 @@
-import React from 'react';
-import MDEditor from '@uiw/react-md-editor';
+import React, { useEffect, useState } from 'react';
 import Radio from '../../../../common/Radio';
 import { YesNoInput } from '../../../../../types/enums/yes-no.enum';
 import { PersonalInformationBanksProps } from '../helper/IAgreementsInfo-interface';
@@ -8,6 +7,7 @@ import { PiaSections } from '../../../../../types/enums/pia-sections.enum';
 import InputText from '../../../../common/InputText/InputText';
 import ViewComments from '../../../../common/ViewComment';
 import PIBInputText from '../helper/viewPIBTextInput';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 // Define a functional component for the Personal Information Banks section
 const PersonalInformationBanksSection: React.FC<
@@ -22,6 +22,24 @@ const PersonalInformationBanksSection: React.FC<
   commentCount,
   WillResultPIBRadio,
 }) => {
+  // State for rich text editors.
+  const [plbDescription, setPlbDescription] = useState(
+    agreementsAndInformationBanksForm?.personalInformationBanks.description
+      .content ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(
+      plbDescription,
+      'personalInformationBanks.description.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plbDescription]);
+
+  // Show the editor unless isReadOnly and description is empty.
+  const showEditorPlbDescription = !(isReadOnly && plbDescription === '');
+
   return (
     <section
       className={`drop-shadow card p-4 p-md-5 ${
@@ -70,36 +88,15 @@ const PersonalInformationBanksSection: React.FC<
                     {Messages.ResultingPIB.Section.QuestionPIBDescription.en}
                   </h4>
                 )}
-                {!isReadOnly ? (
-                  <MDEditor
-                    id="pibDescriptionType"
-                    defaultTabEnable={true}
-                    preview="edit"
-                    value={
-                      agreementsAndInformationBanksForm
-                        ?.personalInformationBanks?.description || ''
-                    }
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value,
-                        'personalInformationBanks.description',
-                      )
-                    }
+                {showEditorPlbDescription ? (
+                  <RichTextEditor
+                    content={plbDescription}
+                    setContent={setPlbDescription}
+                    readOnly={isReadOnly}
                     aria-label="Personal Information Bank Textarea Input"
                   />
-                ) : agreementsAndInformationBanksForm.personalInformationBanks
-                    .description ? (
-                  <MDEditor.Markdown
-                    source={
-                      agreementsAndInformationBanksForm
-                        ?.personalInformationBanks?.description
-                    }
-                    aria-label="Personal Information Bank Textarea Input Preview"
-                  />
                 ) : (
-                  <p>
-                    <i>Not answered</i>
-                  </p>
+                  <i>Not answered</i>
                 )}
               </div>
               {!isReadOnly ? (
