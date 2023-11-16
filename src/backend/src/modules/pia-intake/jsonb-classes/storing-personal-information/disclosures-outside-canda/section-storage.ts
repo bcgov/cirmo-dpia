@@ -1,12 +1,14 @@
 import {
   IsArray,
   IsEnum,
+  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
+import { RichTextContent } from '../../rich-text-content';
 
 class ServiceProviderDetails {
   @IsString()
@@ -31,11 +33,11 @@ export class DisclosureStorage {
   @Type(() => ServiceProviderDetails)
   serviceProviderList: Array<ServiceProviderDetails>;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  disclosureDetails?: string;
+  disclosureDetails?: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  contractualTerms?: string;
+  contractualTerms?: RichTextContent;
 }
