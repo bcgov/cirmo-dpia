@@ -33,12 +33,16 @@ export const PersonalInformationSection: React.FC<
 
   // State for rich text editor.
   const [describeRetention, setDescribeRetention] = useState(
-    accuracyCorrectionAndRetentionForm?.retention?.describeRetention ?? '',
+    accuracyCorrectionAndRetentionForm?.retention?.describeRetention?.content ??
+      '',
   );
 
   // Update form state on rich text editor changes.
   useEffect(() => {
-    stateChangeHandler(describeRetention, 'retention.describeRetention');
+    stateChangeHandler(
+      describeRetention,
+      'retention.describeRetention.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [describeRetention]);
 

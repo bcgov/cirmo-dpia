@@ -40,7 +40,7 @@ export const AccuracyCorrectionAndRetention = ({
   const defaultState: IAccuracyCorrectionAndRetention = useMemo(
     () => ({
       accuracy: {
-        description: '',
+        description: { content: '' },
       },
       correction: {
         haveProcessInPlace: YesNoInput.YES,
@@ -50,7 +50,7 @@ export const AccuracyCorrectionAndRetention = ({
       retention: {
         usePIForDecision: YesNoInput.YES,
         haveApprovedInfoSchedule: YesNoInput.YES,
-        describeRetention: '',
+        describeRetention: { content: '' },
       },
     }),
     [],
@@ -113,7 +113,7 @@ export const AccuracyCorrectionAndRetention = ({
 
   return (
     <>
-      <form>
+      <>
         {/* Render the page title and description */}
         <h2>{Messages.PageTitle.en}</h2>
         <p>{Messages.PageDescription.en}</p>
@@ -157,7 +157,7 @@ export const AccuracyCorrectionAndRetention = ({
           willProvideInformation={willProvideInformation}
           haveApprovedInfoSchedule={haveApprovedInfoSchedule}
         />
-      </form>
+      </>
     </>
   );
 };

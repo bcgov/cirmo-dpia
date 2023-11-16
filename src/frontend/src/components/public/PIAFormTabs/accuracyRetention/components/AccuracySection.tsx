@@ -27,12 +27,12 @@ export const AccuracySection: React.FC<AccuracySectionProps> = ({
 
   // State for rich text editor.
   const [accuracyDescription, setAccuracyDescription] = useState(
-    accuracyCorrectionAndRetentionForm?.accuracy?.description ?? '',
+    accuracyCorrectionAndRetentionForm?.accuracy?.description?.content ?? '',
   );
 
   // Update form state on rich text editor changes.
   useEffect(() => {
-    stateChangeHandler(accuracyDescription, 'accuracy.description');
+    stateChangeHandler(accuracyDescription, 'accuracy.description.content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accuracyDescription]);
 
