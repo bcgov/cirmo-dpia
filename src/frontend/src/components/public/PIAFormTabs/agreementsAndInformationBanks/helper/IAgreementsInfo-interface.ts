@@ -1,11 +1,12 @@
 import { YesNoInput } from '../../../../../types/enums/yes-no.enum';
 import { IPiaFormContext } from '../../../../../contexts/PiaFormContext';
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
+import { RichTextContent } from '../../types';
 
 export interface IAgreementsAndInformationBanks {
   personalInformationBanks: {
     willResultInPIB: string;
-    description: string;
+    description: RichTextContent;
     mainMinistryOrAgencyInvolved: string;
     otherGroupsInvolved?: string;
     contactTitle: string;
@@ -13,7 +14,7 @@ export interface IAgreementsAndInformationBanks {
   };
   informationSharingAgreement: {
     doesInvolveISA: string;
-    description: string;
+    description: RichTextContent;
     mainMinistryOrAgencyInvolved?: string;
     otherGroupsInvolved: string;
     contactTitle: string;

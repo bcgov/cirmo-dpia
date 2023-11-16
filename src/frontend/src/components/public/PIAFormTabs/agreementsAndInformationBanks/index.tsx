@@ -37,7 +37,7 @@ export const PIAAgreementsAndInformationBanks = ({
     () => ({
       personalInformationBanks: {
         willResultInPIB: YesNoInput.YES,
-        description: '',
+        description: { content: '' },
         mainMinistryOrAgencyInvolved: '',
         otherGroupsInvolved: '',
         contactTitle: '',
@@ -45,7 +45,7 @@ export const PIAAgreementsAndInformationBanks = ({
       },
       informationSharingAgreement: {
         doesInvolveISA: YesNoInput.YES,
-        description: '',
+        description: { content: '' },
         mainMinistryOrAgencyInvolved: '',
         otherGroupsInvolved: '',
         contactTitle: '',

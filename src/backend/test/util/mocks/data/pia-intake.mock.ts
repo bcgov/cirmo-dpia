@@ -145,7 +145,7 @@ const piaIntakeDataMock = {
   agreementsAndInformationBanks: {
     informationSharingAgreement: {
       doesInvolveISA: YesNoInput.YES,
-      description: 'Some cloud agreement',
+      description: { content: 'Some cloud agreement' },
       mainMinistryOrAgencyInvolved: 'Citizen Services',
       otherGroupsInvolved: 'Forests, Alpha',
       contactTitle: 'John Doe',
@@ -155,7 +155,7 @@ const piaIntakeDataMock = {
     },
     personalInformationBanks: {
       willResultInPIB: YesNoInput.YES,
-      description: 'Name and address of the user',
+      description: { content: 'Name and address of the user' },
       mainMinistryOrAgencyInvolved: 'Citizen Services',
       otherGroupsInvolved: 'Forests, Alpha',
       contactTitle: 'John Doe',
