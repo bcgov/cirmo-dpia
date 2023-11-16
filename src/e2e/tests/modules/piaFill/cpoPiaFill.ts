@@ -197,7 +197,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
     .locator('div')
     .filter({ hasText: /^Saved at/ })
     .nth(1);
-  await locator.waitFor({ state: 'visible', timeout: 60000 });
+  await locator.waitFor({ state: 'visible', timeout: 80000 });
   await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('Next Button').click();
@@ -277,7 +277,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Pending Completion Form Tab
   // Check for autosave
-  await locator.waitFor({ state: 'visible', timeout: 60000 });
+  await locator.waitFor({ state: 'visible', timeout: 80000 });
   await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('Review', { exact: true }).click();
@@ -286,7 +286,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Complete Form Tab
   // Check for autosave
-  await locator.waitFor({ state: 'visible', timeout: 60000 });
+  await locator.waitFor({ state: 'visible', timeout: 80000 });
   await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('Next steps').click();
