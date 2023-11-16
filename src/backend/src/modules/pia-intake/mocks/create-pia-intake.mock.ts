@@ -57,7 +57,7 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   storingPersonalInformation: {
     personalInformation: {
       storedOutsideCanada: YesNoInput.YES,
-      whereDetails: 'USA',
+      whereDetails: { content: 'USA' },
     },
     sensitivePersonalInformation: {
       doesInvolve: YesNoInput.YES,
@@ -73,18 +73,20 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
             details: 'Stored in cloud',
           },
         ],
-        disclosureDetails: 'S3 storage in us-east-1: US East (N. Virginia)',
-        contractualTerms: 'None',
+        disclosureDetails: {
+          content: 'S3 storage in us-east-1: US East (N. Virginia)',
+        },
+        contractualTerms: { content: 'None' },
       },
       contract: {
         relyOnExistingContract: YesNoInput.YES,
-        enterpriseServiceAccessDetails: 'S3',
+        enterpriseServiceAccessDetails: { content: 'S3' },
       },
       controls: {
-        unauthorizedAccessMeasures: 'IAM rules are in effect',
+        unauthorizedAccessMeasures: { content: 'IAM rules are in effect' },
       },
       trackAccess: {
-        trackAccessDetails: 'IAM',
+        trackAccessDetails: { content: 'IAM' },
       },
       risks: {
         privacyRisks: [
