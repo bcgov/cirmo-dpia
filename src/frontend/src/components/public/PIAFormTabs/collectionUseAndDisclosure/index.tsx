@@ -243,7 +243,7 @@ const PIACollectionUseAndDisclosure = ({
               <RichTextEditor
                 content={mpoCollectionNotice}
                 setContent={setMpoCollectionNotice}
-                readOnly={isReadOnly}
+                readOnly={!isMPORole() || isReadOnly}
                 aria-label="Collection Notice MPO Textarea Input"
               />
             ) : (
