@@ -717,12 +717,11 @@ const StoringPersonalInformation = ({
                         {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
                       </h4>
                     )}
-                    {/* TODO: Implement logic to enable writing in the RichTextEditor only when the user has the MPO role. */}
-                    {showEditorDisclosureDetails && isMPORole() ? (
+                    {showEditorDisclosureDetails ? (
                       <RichTextEditor
                         content={disclosureDetails}
                         setContent={setDisclosureDetails}
-                        readOnly={isReadOnly}
+                        readOnly={!isMPORole() || isReadOnly}
                         aria-label="Disclosures Details Input Preview"
                       />
                     ) : (
