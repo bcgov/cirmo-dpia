@@ -19,7 +19,9 @@ export default {
   },
   StepDetails: {
     StepTwo: {
-      en: `Email the PPQ and PIA intake form (if applicable) to the Corporate Privacy Office (CPO) at [PIA.Intake@gov.bc.ca](mailto:pia.intake@gov.bc.ca)`,
+      en: `Email the PPQ and PIA intake form (if applicable) to the Corporate Privacy Office (CPO) at `,
+      email: `PIA.Intake@gov.bc.ca`,
+      mailToLink: `mailto:pia.intake@gov.bc.ca`,
     },
     StepThree: {
       en: `The CPO will send you a file number, and a PIA analyst will contact you with any questions.`,
