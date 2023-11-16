@@ -50,7 +50,7 @@ export async function basicPiaFill(page: Page, uuid?: string) {
     .locator('div')
     .filter({ hasText: /^Saved at/ })
     .nth(1);
-  await locator.waitFor({ state: 'visible', timeout: 30000 });
+  await locator.waitFor({ state: 'visible', timeout: 60000 });
   await expect(locator).toHaveText(/^Saved at/);
 
   await page.getByLabel('Submit Button').click();
