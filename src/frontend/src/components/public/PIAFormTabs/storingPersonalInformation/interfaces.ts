@@ -1,4 +1,5 @@
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import { RichTextContent } from '../types';
 
 export type PrivacyRisk = {
   risk: string;
@@ -18,7 +19,7 @@ export type ServiceProviderDetails = {
 export interface IStoringPersonalInformation {
   personalInformation: {
     storedOutsideCanada: YesNoInput;
-    whereDetails: string;
+    whereDetails: RichTextContent;
   };
   sensitivePersonalInformation: {
     doesInvolve: YesNoInput;
@@ -28,18 +29,18 @@ export interface IStoringPersonalInformation {
     storage: {
       sensitiveInfoStoredByServiceProvider: YesNoInput;
       serviceProviderList: Array<ServiceProviderDetails>;
-      disclosureDetails: string;
-      contractualTerms: string;
+      disclosureDetails: RichTextContent;
+      contractualTerms: RichTextContent;
     };
     contract: {
       relyOnExistingContract: YesNoInput;
-      enterpriseServiceAccessDetails: string;
+      enterpriseServiceAccessDetails: RichTextContent;
     };
     controls: {
-      unauthorizedAccessMeasures: string;
+      unauthorizedAccessMeasures: RichTextContent;
     };
     trackAccess: {
-      trackAccessDetails: string;
+      trackAccessDetails: RichTextContent;
     };
     risks: {
       privacyRisks: Array<PrivacyRisk>;
