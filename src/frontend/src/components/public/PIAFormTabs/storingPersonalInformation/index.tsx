@@ -1,4 +1,3 @@
-import MDEditor from '@uiw/react-md-editor';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { isMPORole } from '../../../../utils/user';
@@ -21,6 +20,7 @@ import {
 import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import Callout from '../../../common/Callout';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const StoringPersonalInformation = ({
   showComments = true,
@@ -39,7 +39,7 @@ const StoringPersonalInformation = ({
   const personalInformation = useMemo(
     () => ({
       storedOutsideCanada: YesNoInput.YES,
-      whereDetails: '',
+      whereDetails: { content: '' },
     }),
     [],
   );
@@ -57,18 +57,18 @@ const StoringPersonalInformation = ({
       storage: {
         sensitiveInfoStoredByServiceProvider: YesNoInput.YES,
         serviceProviderList: [{ name: '', cloudInfraName: '', details: '' }],
-        disclosureDetails: '',
-        contractualTerms: '',
+        disclosureDetails: { content: '' },
+        contractualTerms: { content: '' },
       },
       contract: {
         relyOnExistingContract: YesNoInput.YES,
-        enterpriseServiceAccessDetails: '',
+        enterpriseServiceAccessDetails: { content: '' },
       },
       controls: {
-        unauthorizedAccessMeasures: '',
+        unauthorizedAccessMeasures: { content: '' },
       },
       trackAccess: {
-        trackAccessDetails: '',
+        trackAccessDetails: { content: '' },
       },
       risks: {
         privacyRisks: [
@@ -111,15 +111,95 @@ const StoringPersonalInformation = ({
     setNestedReactState(setStoringPersonalInformationForm, path, value);
   };
 
-  // passing updated data to parent for auto-save to work efficiently only if there are changes
+  // State for rich text editors.
+  const [whereDetails, setWhereDetails] = useState(
+    storingPersonalInformationForm?.personalInformation.whereDetails?.content ??
+      '',
+  );
+  const [disclosureDetails, setDisclosureDetails] = useState(
+    storingPersonalInformationForm?.disclosuresOutsideCanada?.storage
+      .disclosureDetails?.content ?? '',
+  );
+  const [contractualTerms, setContractualTerms] = useState(
+    storingPersonalInformationForm?.disclosuresOutsideCanada?.storage
+      .contractualTerms?.content ?? '',
+  );
+  const [enterpriseServiceAccessDetails, setEnterpriseServiceAccessDetails] =
+    useState(
+      storingPersonalInformationForm?.disclosuresOutsideCanada?.contract
+        .enterpriseServiceAccessDetails?.content ?? '',
+    );
+  const [unauthorizedAccessMeasures, setUnauthorizedAccessMeasures] = useState(
+    storingPersonalInformationForm?.disclosuresOutsideCanada?.controls
+      .unauthorizedAccessMeasures?.content ?? '',
+  );
+  const [trackAccessDetails, setTrackAccessDetails] = useState(
+    storingPersonalInformationForm?.disclosuresOutsideCanada?.trackAccess
+      .trackAccessDetails.content ?? '',
+  );
+
+  // Update form state on rich text editor changes.
   useEffect(() => {
-    if (!deepEqual(initialFormState, storingPersonalInformationForm)) {
-      piaStateChangeHandler(
-        storingPersonalInformationForm,
-        'storingPersonalInformation',
-      );
-    }
-  }, [piaStateChangeHandler, storingPersonalInformationForm, initialFormState]);
+    stateChangeHandler(
+      whereDetails,
+      'personalInformation.whereDetails.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [whereDetails]);
+  useEffect(() => {
+    stateChangeHandler(
+      disclosureDetails,
+      'disclosuresOutsideCanada.storage.disclosureDetails.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disclosureDetails]);
+  useEffect(() => {
+    stateChangeHandler(
+      contractualTerms,
+      'disclosuresOutsideCanada.storage.contractualTerms.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contractualTerms]);
+  useEffect(() => {
+    stateChangeHandler(
+      enterpriseServiceAccessDetails,
+      'disclosuresOutsideCanada.contract.enterpriseServiceAccessDetails.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enterpriseServiceAccessDetails]);
+  useEffect(() => {
+    stateChangeHandler(
+      unauthorizedAccessMeasures,
+      'disclosuresOutsideCanada.controls.unauthorizedAccessMeasures.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unauthorizedAccessMeasures]);
+  useEffect(() => {
+    stateChangeHandler(
+      trackAccessDetails,
+      'disclosuresOutsideCanada.trackAccess.trackAccessDetails.content',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackAccessDetails]);
+
+  // Show the editor unless isReadOnly and whereDetails is empty.
+  const showEditorWhereDetails = !(isReadOnly && whereDetails === '');
+  //Show the editor unless isReadOnly and disclosureDetails is empty.
+  const showEditorDisclosureDetails = !(isReadOnly && disclosureDetails === '');
+  // Show the editor unless isReadOnly and contractualTerm is empty.
+  const showEditorContractualTerms = !(isReadOnly && contractualTerms === '');
+  // Show the editor unless isReadOnly and EnterpriseServiceAccessDetail is empty.
+  const showEditorEnterpriseServiceAccessDetails = !(
+    isReadOnly && enterpriseServiceAccessDetails === ''
+  );
+  // Show the editor unless isReadOnly and disclosureDetails is empty.
+  const showEditorUnauthorizedAccessMeasures = !(
+    isReadOnly && unauthorizedAccessMeasures === ''
+  );
+  // Show the editor unless isReadOnly and disclosureDetails is empty.
+  const showEditorTrackAccessDetails = !(
+    isReadOnly && trackAccessDetails === ''
+  );
 
   const disclosuresOutsideCanadaStorageServiceProviderListColumns: Array<ColumnMetaData> =
     [
@@ -335,8 +415,18 @@ const StoringPersonalInformation = ({
     },
   ];
 
+  // passing updated data to parent for auto-save to work efficiently only if there are changes
+  useEffect(() => {
+    if (!deepEqual(initialFormState, storingPersonalInformationForm)) {
+      piaStateChangeHandler(
+        storingPersonalInformationForm,
+        'storingPersonalInformation',
+      );
+    }
+  }, [piaStateChangeHandler, storingPersonalInformationForm, initialFormState]);
+
   return (
-    <form>
+    <>
       <h2>{Messages.Heading.H2Text.en}</h2>
       <p>{Messages.Heading.PText.en}</p>
       <section className="form__section">
@@ -381,35 +471,15 @@ const StoringPersonalInformation = ({
               ) : (
                 <h4>{Messages.PersonalInformation.StoredWhere.en}</h4>
               )}
-              {!isReadOnly ? (
-                <MDEditor
-                  preview="edit"
-                  value={
-                    storingPersonalInformationForm.personalInformation
-                      .whereDetails
-                  }
-                  defaultTabEnable={true}
-                  onChange={(value) =>
-                    stateChangeHandler(
-                      value || '',
-                      'personalInformation.whereDetails',
-                    )
-                  }
-                  aria-label="Personal Information storage location details"
-                />
-              ) : storingPersonalInformationForm.personalInformation
-                  .whereDetails ? (
-                <MDEditor.Markdown
-                  source={
-                    storingPersonalInformationForm.personalInformation
-                      .whereDetails
-                  }
+              {showEditorWhereDetails ? (
+                <RichTextEditor
+                  content={whereDetails}
+                  setContent={setWhereDetails}
+                  readOnly={isReadOnly}
                   aria-label="Personal Information storage location details"
                 />
               ) : (
-                <p>
-                  <i>Not answered</i>
-                </p>
+                <i>Not answered</i>
               )}
             </div>
           )}
@@ -647,35 +717,16 @@ const StoringPersonalInformation = ({
                         {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
                       </h4>
                     )}
-                    {!isReadOnly ? (
-                      <MDEditor
-                        preview={isMPORole() ? 'edit' : 'preview'}
-                        value={
-                          storingPersonalInformationForm
-                            .disclosuresOutsideCanada.storage.disclosureDetails
-                        }
-                        defaultTabEnable={true}
-                        onChange={(value) =>
-                          stateChangeHandler(
-                            value || '',
-                            'disclosuresOutsideCanada.storage.disclosureDetails',
-                          )
-                        }
-                        aria-label="Disclosures Details Textarea Input"
-                      />
-                    ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                        .storage.disclosureDetails ? (
-                      <MDEditor.Markdown
-                        source={
-                          storingPersonalInformationForm
-                            .disclosuresOutsideCanada.storage.disclosureDetails
-                        }
+                    {/* TODO: Implement logic to enable writing in the RichTextEditor only when the user has the MPO role. */}
+                    {showEditorDisclosureDetails && isMPORole() ? (
+                      <RichTextEditor
+                        content={disclosureDetails}
+                        setContent={setDisclosureDetails}
+                        readOnly={isReadOnly}
                         aria-label="Disclosures Details Input Preview"
                       />
                     ) : (
-                      <p>
-                        <i>Not answered</i>
-                      </p>
+                      <i>Not answered</i>
                     )}
                   </div>
                 )}
@@ -752,35 +803,15 @@ const StoringPersonalInformation = ({
                       {Messages.AssessmentOfDisclosures.ContractualTerms.en}
                     </h4>
                   )}
-                  {!isReadOnly ? (
-                    <MDEditor
-                      preview="edit"
-                      value={
-                        storingPersonalInformationForm.disclosuresOutsideCanada
-                          .storage.contractualTerms
-                      }
-                      defaultTabEnable={true}
-                      onChange={(value) =>
-                        stateChangeHandler(
-                          value || '',
-                          'disclosuresOutsideCanada.storage.contractualTerms',
-                        )
-                      }
+                  {showEditorContractualTerms ? (
+                    <RichTextEditor
+                      content={contractualTerms}
+                      setContent={setContractualTerms}
+                      readOnly={isReadOnly}
                       aria-label="Contractual Terms Textarea Input"
                     />
-                  ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                      .storage.contractualTerms ? (
-                    <MDEditor.Markdown
-                      source={
-                        storingPersonalInformationForm.disclosuresOutsideCanada
-                          .storage.contractualTerms
-                      }
-                      aria-label="Contractual Terms Input Preview"
-                    />
                   ) : (
-                    <p>
-                      <i>Not answered</i>
-                    </p>
+                    <i>Not answered</i>
                   )}
                 </div>
                 {showComments && (
@@ -844,37 +875,15 @@ const StoringPersonalInformation = ({
                     ) : (
                       <h4>{Messages.Contract.EnterpriseService.en}</h4>
                     )}
-                    {!isReadOnly ? (
-                      <MDEditor
-                        preview={'edit'}
-                        value={
-                          storingPersonalInformationForm
-                            .disclosuresOutsideCanada.contract
-                            .enterpriseServiceAccessDetails || ''
-                        }
-                        defaultTabEnable={true}
-                        onChange={(value) =>
-                          stateChangeHandler(
-                            value || '',
-                            'disclosuresOutsideCanada.contract.enterpriseServiceAccessDetails',
-                          )
-                        }
-                        aria-label="Enterprise Service Access Details Textarea Input"
-                      />
-                    ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                        .contract.enterpriseServiceAccessDetails ? (
-                      <MDEditor.Markdown
-                        source={
-                          storingPersonalInformationForm
-                            .disclosuresOutsideCanada.contract
-                            .enterpriseServiceAccessDetails || ''
-                        }
+                    {showEditorEnterpriseServiceAccessDetails ? (
+                      <RichTextEditor
+                        content={enterpriseServiceAccessDetails}
+                        setContent={setEnterpriseServiceAccessDetails}
+                        readOnly={isReadOnly}
                         aria-label="Enterprise Service Access Details Preview"
                       />
                     ) : (
-                      <p>
-                        <i>Not answered</i>
-                      </p>
+                      <i>Not answered</i>
                     )}
                     {showComments && (
                       <ViewComments
@@ -910,35 +919,15 @@ const StoringPersonalInformation = ({
                 ) : (
                   <h4>{Messages.Controls.WhatControlsAreInPlace.en}</h4>
                 )}
-                {!isReadOnly ? (
-                  <MDEditor
-                    preview={'edit'}
-                    value={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .controls.unauthorizedAccessMeasures
-                    }
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value || '',
-                        'disclosuresOutsideCanada.controls.unauthorizedAccessMeasures',
-                      )
-                    }
-                    aria-label="Unauthorized Access Measures Textarea Input"
-                  />
-                ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                    .controls.unauthorizedAccessMeasures ? (
-                  <MDEditor.Markdown
-                    source={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .controls.unauthorizedAccessMeasures
-                    }
-                    aria-label="Unauthorized Access Measures Preview"
+                {showEditorUnauthorizedAccessMeasures ? (
+                  <RichTextEditor
+                    content={unauthorizedAccessMeasures}
+                    setContent={setUnauthorizedAccessMeasures}
+                    readOnly={isReadOnly}
+                    aria-label="Personal Information storage location details"
                   />
                 ) : (
-                  <p>
-                    <i>Not answered</i>
-                  </p>
+                  <i>Not answered</i>
                 )}
                 {showComments && (
                   <ViewComments
@@ -972,35 +961,15 @@ const StoringPersonalInformation = ({
                 ) : (
                   <h4>{Messages.TrackAccess.TrackAccessDetails.en}</h4>
                 )}
-                {!isReadOnly ? (
-                  <MDEditor
-                    preview={'edit'}
-                    value={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .trackAccess.trackAccessDetails
-                    }
-                    defaultTabEnable={true}
-                    onChange={(value) =>
-                      stateChangeHandler(
-                        value || '',
-                        'disclosuresOutsideCanada.trackAccess.trackAccessDetails',
-                      )
-                    }
-                    aria-label="Track Access Details Textarea Input"
-                  />
-                ) : storingPersonalInformationForm.disclosuresOutsideCanada
-                    .trackAccess.trackAccessDetails ? (
-                  <MDEditor.Markdown
-                    source={
-                      storingPersonalInformationForm.disclosuresOutsideCanada
-                        .trackAccess.trackAccessDetails
-                    }
+                {showEditorTrackAccessDetails ? (
+                  <RichTextEditor
+                    content={trackAccessDetails}
+                    setContent={setTrackAccessDetails}
+                    readOnly={isReadOnly}
                     aria-label="Track Access Details Preview"
                   />
                 ) : (
-                  <p>
-                    <i>Not answered</i>
-                  </p>
+                  <i>Not answered</i>
                 )}
                 {showComments && (
                   <ViewComments
@@ -1032,9 +1001,9 @@ const StoringPersonalInformation = ({
                     <p className="text__font-weight--700">
                       {Messages.Risks.DescribePrivacyRisks.en}
                     </p>
-                    <MDEditor.Markdown
+                    <div className="pb-4">
                       source={Messages.Risks.DescribePrivacyRisks.HelperText.en}
-                    />
+                    </div>
                   </>
                 ) : (
                   <h4>{Messages.Risks.DescribePrivacyRisks.en}</h4>
@@ -1081,7 +1050,7 @@ const StoringPersonalInformation = ({
             </section>
           </>
         )}
-    </form>
+    </>
   );
 };
 
