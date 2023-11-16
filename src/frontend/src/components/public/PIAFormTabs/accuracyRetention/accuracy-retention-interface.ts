@@ -1,9 +1,10 @@
 import { IPiaFormContext } from '../../../../contexts/PiaFormContext';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
+import { RichTextContent } from '../types';
 
 export interface IAccuracyCorrectionAndRetention {
   accuracy: {
-    description: string;
+    description: RichTextContent;
   };
   correction: {
     haveProcessInPlace: string;
@@ -13,7 +14,7 @@ export interface IAccuracyCorrectionAndRetention {
   retention: {
     usePIForDecision: string;
     haveApprovedInfoSchedule: string;
-    describeRetention: string;
+    describeRetention: RichTextContent;
   };
 }
 

@@ -57,7 +57,7 @@ export const emptyJsonbValues = {
   },
   accuracyCorrectionAndRetention: {
     accuracy: {
-      description: null,
+      description: { content: null },
     },
     correction: {
       haveProcessInPlace: null,
@@ -67,7 +67,7 @@ export const emptyJsonbValues = {
     retention: {
       usePIForDecision: null,
       haveApprovedInfoSchedule: null,
-      describeRetention: null,
+      describeRetention: { content: null },
     },
   },
   agreementsAndInformationBanks: {

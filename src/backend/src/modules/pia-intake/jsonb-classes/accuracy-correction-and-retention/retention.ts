@@ -1,5 +1,6 @@
-import { IsEnum, IsOptional, IsString } from '@nestjs/class-validator';
+import { IsEnum, IsObject, IsOptional } from '@nestjs/class-validator';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
+import { RichTextContent } from '../rich-text-content';
 
 export class Retention {
   @IsEnum(YesNoInput)
@@ -10,7 +11,7 @@ export class Retention {
   @IsOptional()
   haveApprovedInfoSchedule?: YesNoInput;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  describeRetention?: string;
+  describeRetention?: RichTextContent;
 }

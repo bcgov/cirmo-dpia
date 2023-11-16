@@ -129,7 +129,7 @@ const piaIntakeDataMock = {
   },
   accuracyCorrectionAndRetention: {
     accuracy: {
-      description: 'Integrate with 3rd party validators',
+      description: { content: 'Integrate with 3rd party validators' },
     },
     correction: {
       haveProcessInPlace: YesNoInput.YES,
@@ -139,7 +139,7 @@ const piaIntakeDataMock = {
     retention: {
       usePIForDecision: YesNoInput.YES,
       haveApprovedInfoSchedule: YesNoInput.NO,
-      describeRetention: 'will store in S3 Glacier Deep Archive',
+      describeRetention: { content: 'will store in S3 Glacier Deep Archive' },
     },
   },
   agreementsAndInformationBanks: {
