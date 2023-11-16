@@ -24,8 +24,8 @@ const PersonalInformationBanksSection: React.FC<
 }) => {
   // State for rich text editors.
   const [plbDescription, setPlbDescription] = useState(
-    agreementsAndInformationBanksForm?.personalInformationBanks.description
-      .content ?? '',
+    agreementsAndInformationBanksForm?.personalInformationBanks?.description
+      ?.content ?? '',
   );
 
   // Update form state on rich text editor changes.
