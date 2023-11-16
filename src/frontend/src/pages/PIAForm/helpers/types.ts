@@ -11,6 +11,7 @@ export type ValidationRule = {
   key: keyof IPiaForm;
   validationKey: string;
   msg: string;
+  richText?: boolean;
 };
 
 export type ResetUIProps = {
