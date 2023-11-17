@@ -9,7 +9,27 @@ spec:
     users:
     - name: brandon.bouchard@gov.bc.ca
       role: ROLE_TEAM_EDIT
+    - name: adam.kroon@gov.bc.ca
+      role: ROLE_TEAM_EDIT
+    - name: chris.mcglone@gov.bc.ca
+      role: ROLE_TEAM_EDIT
+    - name: paul.baker@gov.bc.ca
+      role: ROLE_TEAM_EDIT
+    - name: sylar.1.zhang@gov.bc.ca
+      role: ROLE_TEAM_EDIT
     - name: braden.mitchell@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: noor.chasib@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: sarah.son@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: andrew.hopewell@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: vanessa.steffens@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: matthew.morris@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: alexander.punnett@gov.bc.ca
       role: ROLE_TEAM_STANDARD
     - name: peggy.king@gov.bc.ca
       role: ROLE_TEAM_READ
