@@ -64,6 +64,10 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const stateChangeHandler = (value: any, key: keyof IPPQ) => {
     setNestedReactState(setPpqForm, key, value);
   };
+  // Function to handle text editor state changes for ppqForm
+  const textEditorStateChangeHandler = (value: any, path: string) => {
+    setNestedReactState(setPpqForm, path, value);
+  };
 
   // State for character count
   const [pidSummaryCharCount, setpidSummaryCharCount] = useState<number>(0);
@@ -84,13 +88,21 @@ const PPQ = ({ printPreview }: IPPQProps) => {
 
   // Update form state on rich text editor changes.
   useEffect(() => {
-    stateChangeHandler(initiativeOtherDetails, 'initiativeOtherDetails');
+    textEditorStateChangeHandler(
+      initiativeOtherDetails,
+      'initiativeOtherDetails.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initiativeOtherDetails]);
+
   useEffect(() => {
-    stateChangeHandler(proposedDeadlineReason, 'proposedDeadlineReason');
+    textEditorStateChangeHandler(
+      proposedDeadlineReason,
+      'proposedDeadlineReason.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proposedDeadlineReason]);
+
   useEffect(() => {
     // Get the pidcurrent length of the pidInitiativeSummary state.
     const currentLength = pidInitiativeSummary.length;
@@ -109,11 +121,18 @@ const PPQ = ({ printPreview }: IPPQProps) => {
     }
 
     // Call the stateChangeHandler to update the pidInitiativeSummary state.
-    stateChangeHandler(pidInitiativeSummary, 'pidInitiativeSummary');
+    textEditorStateChangeHandler(
+      pidInitiativeSummary,
+      'pidInitiativeSummary.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pidInitiativeSummary]);
+
   useEffect(() => {
-    stateChangeHandler(otherCpoConsideration, 'otherCpoConsideration');
+    textEditorStateChangeHandler(
+      otherCpoConsideration,
+      'otherCpoConsideration.content',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otherCpoConsideration]);
 
