@@ -39,12 +39,12 @@ const PPQ = ({ printPreview }: IPPQProps) => {
       hasBcServicesCardOnboarding: false,
       hasAiOrMl: false,
       hasInitiativeOther: false,
-      initiativeOtherDetails: '',
+      initiativeOtherDetails: { content: '' },
       proposedDeadlineAvailable: YesNoInput.YES,
       proposedDeadline: null,
-      proposedDeadlineReason: '',
-      otherCpoConsideration: '',
-      pidInitiativeSummary: '',
+      proposedDeadlineReason: { content: '' },
+      otherCpoConsideration: { content: '' },
+      pidInitiativeSummary: { content: '' },
       relatedOperationalPias: [],
       relatedEnactmentPias: [],
     }),
@@ -70,16 +70,16 @@ const PPQ = ({ printPreview }: IPPQProps) => {
 
   // State for rich text editors.
   const [initiativeOtherDetails, setInitiativeOtherDetails] = useState(
-    ppqForm?.initiativeOtherDetails ?? '',
+    ppqForm?.initiativeOtherDetails?.content ?? '',
   );
   const [proposedDeadlineReason, setProposedDeadlineReason] = useState(
-    ppqForm?.proposedDeadlineReason ?? '',
+    ppqForm?.proposedDeadlineReason?.content ?? '',
   );
   const [pidInitiativeSummary, setPidInitiativeSummary] = useState(
-    ppqForm?.pidInitiativeSummary ?? '',
+    ppqForm?.pidInitiativeSummary?.content ?? '',
   );
   const [otherCpoConsideration, setOtherCpoConsideration] = useState(
-    ppqForm?.otherCpoConsideration ?? '',
+    ppqForm?.otherCpoConsideration?.content ?? '',
   );
 
   // Update form state on rich text editor changes.
@@ -92,8 +92,24 @@ const PPQ = ({ printPreview }: IPPQProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proposedDeadlineReason]);
   useEffect(() => {
+    // Get the pidcurrent length of the pidInitiativeSummary state.
+    const currentLength = pidInitiativeSummary.length;
+
+    // If the current length is greater than 500.
+    if (currentLength > 500) {
+      // Truncate the string to 500 characters.
+      const truncatedSummary = pidInitiativeSummary.slice(0, 500);
+      // Set the truncated string as the new state.
+      setPidInitiativeSummary(truncatedSummary);
+      // Set the character count to 500.
+      setpidSummaryCharCount(500);
+    } else {
+      // If the current length is 500 or less, set the character count to the current length.
+      setpidSummaryCharCount(currentLength);
+    }
+
+    // Call the stateChangeHandler to update the pidInitiativeSummary state.
     stateChangeHandler(pidInitiativeSummary, 'pidInitiativeSummary');
-    setpidSummaryCharCount(pidInitiativeSummary.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pidInitiativeSummary]);
   useEffect(() => {
@@ -370,7 +386,9 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           {showEditorPidInitiativeSummary ? (
             <RichTextEditor
               content={pidInitiativeSummary}
-              setContent={setPidInitiativeSummary}
+              setContent={(content) => {
+                setPidInitiativeSummary(content);
+              }}
               readOnly={isReadOnly}
               aria-label="Initiative Summary Textarea Input"
             />
