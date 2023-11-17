@@ -10,34 +10,42 @@ const userRoles = [
 
 // Loop over each user role
 for (const user of userRoles) {
-  // Define a test for each user role
   test(`Unauthorized page as ${user.role}`, async ({ page }) => {
     // Log in as the current user
     await user.login(page);
 
-    // Verify that the user is redirected to the PIA list page after logging in
+    // Wait for and verify redirection to the PIA list page after logging in
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Verify that the 'Active PIAs' heading is displayed on the PIA list page
-    await expect(page.getByRole('heading', { name: 'Active PIAs' })).toHaveText(
-      'Active PIAs',
-    );
+    const activePIAsHeading = page.getByRole('heading', {
+      name: 'Active PIAs',
+    });
+    await activePIAsHeading.waitFor({ state: 'visible' });
+    await expect(activePIAsHeading).toHaveText('Active PIAs');
 
     // Log out as the current user
     await user.logout(page);
 
-    // Verify that the user is redirected to the home page
+    // Wait for and verify redirection to the home page
+    await page.waitForURL('/');
     await expect(page).toHaveURL('/');
 
-    // try to navigate to the PIA list page
+    // Navigate to the PIA list page
     await page.goto('/pia/list');
 
-    // Verify that the user is redirected to the 'not authorized' page
+    // Wait for and verify redirection to the 'not authorized' page
+    await page.waitForURL('/not-authorized');
     await expect(page).toHaveURL('/not-authorized');
 
-    // Verify that the '401: Authorization required' heading is displayed on the 'not authorized' page
-    await expect(
-      page.getByRole('heading', { name: '401: Authorization required' }),
-    ).toHaveText('401: Authorization required');
+    // Verify that the '401: Authorization required' heading is displayed
+    const authorizationRequiredHeading = page.getByRole('heading', {
+      name: '401: Authorization required',
+    });
+    await authorizationRequiredHeading.waitFor({ state: 'visible' });
+    await expect(authorizationRequiredHeading).toHaveText(
+      '401: Authorization required',
+    );
   });
 }

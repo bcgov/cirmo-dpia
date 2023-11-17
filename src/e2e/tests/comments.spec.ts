@@ -22,82 +22,71 @@ const uuid = generateUUID();
 for (const user of userRoles) {
   // Define a test for each user role
   test(`Add multiple comments as ${user.role}`, async ({ page }) => {
-    // Log in as the current user
+    // User logs in
     await user.login(page);
 
-    // Click on 'Create new' and then 'Start PIA Intake'
-    await page.getByLabel('Create new').click();
-    await page.getByRole('link', { name: 'Start PIA Intake' }).click();
+    // Navigate to 'Create new' and initiate 'Start PIA Intake'
+    const createNewButton = page.getByLabel('Create new');
+    await createNewButton.waitFor({ state: 'visible' });
+    await createNewButton.click();
 
-    // Fill out the basic PIA form using the unique identifier
+    const startPiaIntakeLink = page.getByRole('link', {
+      name: 'Start PIA Intake',
+    });
+    await startPiaIntakeLink.waitFor({ state: 'visible' });
+    await startPiaIntakeLink.click();
+
+    // Fill out the PIA form using a unique identifier
     await basicPiaFill(page, uuid);
-    await page.getByLabel('PIA Intake').click();
 
-    // Click on 'View comments' for section 1
-    await page.getByLabel('View comments').first().click();
-    // Click on the comment input field and add a comment 10 times
-    for (let i = 1; i <= 10; i++) {
-      await page.getByPlaceholder('Write a comment...').click();
-      await page
-        .getByPlaceholder('Write a comment...')
-        .fill(`${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
-      await page.getByLabel('Add New Comment Button').click();
+    // Navigate to PIA Intake section
+    const piaIntakeButton = page.getByLabel('PIA Intake');
+    await piaIntakeButton.waitFor({ state: 'visible' });
+    await piaIntakeButton.click();
+
+    // Loop to add comments to multiple sections
+    for (let section = 0; section < 4; section++) {
+      // Open the comment section
+      const viewCommentsButton = page.getByLabel('View comments').nth(section);
+      await viewCommentsButton.waitFor({ state: 'visible' });
+      await viewCommentsButton.click();
+
+      // Add comments in the opened section
+      for (let i = 1; i <= 10 - section; i++) {
+        const commentInput = page.getByPlaceholder('Write a comment...');
+        await commentInput.waitFor({ state: 'visible' });
+        await commentInput.click();
+        await commentInput.fill(
+          `${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
+        );
+
+        const addCommentButton = page.getByLabel('Add New Comment Button');
+        await addCommentButton.waitFor({ state: 'visible' });
+        await addCommentButton.click();
+      }
+
+      // Verify if the last comment was added successfully
+      const lastComment = page.locator(
+        `div:nth-child(${10 - section}) > div:nth-child(2)`,
+      );
+      await lastComment.waitFor({ state: 'visible' });
+      await expect(lastComment).toHaveText(
+        `${
+          10 - section
+        } Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
+      );
     }
-    // Check if the last comment was added successfully
-    await expect(
-      page.locator('div:nth-child(10) > div:nth-child(2)'),
-    ).toHaveText('10 Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 
-    // Click on 'View comments' for section 2
-    await page.getByLabel('View comments').nth(1).click();
-    // Click on the comment input field and add a comment 9 times
-    for (let i = 1; i <= 9; i++) {
-      await page.getByPlaceholder('Write a comment...').click();
-      await page
-        .getByPlaceholder('Write a comment...')
-        .fill(`${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
-      await page.getByLabel('Add New Comment Button').click();
-    }
-    // Check if the last comment was added successfully
-    await expect(
-      page.locator('div:nth-child(9) > div:nth-child(2)'),
-    ).toHaveText('9 Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+    // Submit the form and confirm submission
+    const submitButton = page.getByLabel('Submit Button');
+    await submitButton.waitFor({ state: 'visible' });
+    await submitButton.click();
 
-    // Click on 'View comments' for section 3
-    await page.getByLabel('View comments').nth(2).click();
-    // Click on the comment input field and add a comment 8 times
-    for (let i = 1; i <= 8; i++) {
-      await page.getByPlaceholder('Write a comment...').click();
-      await page
-        .getByPlaceholder('Write a comment...')
-        .fill(`${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
-      await page.getByLabel('Add New Comment Button').click();
-    }
-    // Check if the last comment was added successfully
-    await expect(
-      page.locator('div:nth-child(8) > div:nth-child(2)'),
-    ).toHaveText('8 Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+    const confirmSubmitButton = page.getByLabel('Yes, submit');
+    await confirmSubmitButton.waitFor({ state: 'visible' });
+    await confirmSubmitButton.click();
 
-    // Click on 'View comments' for section 4
-    await page.getByLabel('View comments').nth(3).click();
-    // Click on the comment input field and add a comment 7 times
-    for (let i = 1; i <= 7; i++) {
-      await page.getByPlaceholder('Write a comment...').click();
-      await page
-        .getByPlaceholder('Write a comment...')
-        .fill(`${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
-      await page.getByLabel('Add New Comment Button').click();
-    }
-    // Check if the last comment was added successfully
-    await expect(
-      page.locator('div:nth-child(7) > div:nth-child(2)'),
-    ).toHaveText('7 Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-
-    // Click on 'Submit Button' and confirm submission
-    await page.getByLabel('Submit Button').click();
-    await page.getByLabel('Yes, submit').click();
-
-    // Log out as the current user
+    // User logs out
     await user.logout(page);
   });
 }

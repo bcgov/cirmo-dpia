@@ -26,56 +26,71 @@ for (const user of userRoles) {
     await user.login(page);
 
     // Click on 'Create new' and then 'Start PIA Intake'
-    await page.getByLabel('Create new').click();
-    await page.getByRole('link', { name: 'Start PIA Intake' }).click();
+    const createNewButton = page.getByLabel('Create new');
+    await createNewButton.waitFor({ state: 'visible' });
+    await createNewButton.click();
+
+    const startPiaIntakeLink = page.getByRole('link', {
+      name: 'Start PIA Intake',
+    });
+    await startPiaIntakeLink.waitFor({ state: 'visible' });
+    await startPiaIntakeLink.click();
 
     // Fill out the basic PIA form using the unique identifier
     await basicPiaFill(page, uuid);
 
     // Navigate to the PIA list page
     await page.goto('/pia/list');
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Click on the search input field
-    await page.getByPlaceholder('Search by title or drafter').click();
+    const searchInput = page.getByPlaceholder('Search by title or drafter');
+    await searchInput.waitFor({ state: 'visible' });
+    await searchInput.click();
 
     // Fill the search input field with the unique identifier
-    await page
-      .getByPlaceholder('Search by title or drafter')
-      .fill(`TEST_${uuid}`);
+    await searchInput.fill(`TEST_${uuid}`);
 
     // Click the search submit button
-    await page.getByLabel('Search submit button').click();
+    const searchSubmitButton = page.getByLabel('Search submit button');
+    await searchSubmitButton.waitFor({ state: 'visible' });
+    await searchSubmitButton.click();
 
     // Find the cell corresponding to the searched PIA
-    await expect(page.getByRole('cell', { name: `TEST_${uuid}` })).toHaveText(
-      `TEST_${uuid}`,
-    );
+    const searchedCell = page.getByRole('cell', { name: `TEST_${uuid}` });
+    await searchedCell.waitFor({ state: 'visible' });
+    await expect(searchedCell).toHaveText(`TEST_${uuid}`);
 
     // Clear the search
-    await page.getByLabel('Clear search button').click();
+    const clearSearchButton = page.getByLabel('Clear search button');
+    await clearSearchButton.waitFor({ state: 'visible' });
+    await clearSearchButton.click();
 
     // Click on the search input field again
-    await page.getByPlaceholder('Search by title or drafter').click();
+    await searchInput.click();
 
     // Fill the search input field with the unique identifier again
-    await page
-      .getByPlaceholder('Search by title or drafter')
-      .fill(`TEST_${uuid}`);
+    await searchInput.fill(`TEST_${uuid}`);
 
     // Click the search submit button again
-    await page.getByLabel('Search submit button').click();
+    await searchSubmitButton.click();
 
     // Click on the cell corresponding to the searched PIA
-    await page.getByRole('cell', { name: `TEST_${uuid}` }).click();
+    const searchedCellClicked = page.getByRole('cell', {
+      name: `TEST_${uuid}`,
+    });
+    await searchedCellClicked.waitFor({ state: 'visible' });
+    await searchedCellClicked.click();
 
     // Check and expect the URL to be on the PIA intake view page
+    await page.waitForURL(/\/intake\/view$/);
     await expect(page).toHaveURL(/\/intake\/view$/);
 
     // Check and expect the heading (title) to match the unique identifier
-    await expect(
-      page.getByRole('heading', { name: `TEST_${uuid}` }),
-    ).toHaveText(`TEST_${uuid}`);
+    const heading = page.getByRole('heading', { name: `TEST_${uuid}` });
+    await heading.waitFor({ state: 'visible' });
+    await expect(heading).toHaveText(`TEST_${uuid}`);
 
     // Log out as the current user
     await user.logout(page);

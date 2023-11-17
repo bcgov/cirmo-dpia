@@ -9,61 +9,35 @@ test.describe.serial('Filter PIAs Test', () => {
     await drafterLogin(page);
 
     // Verify PIA list URL
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select the 'Drafting in Progress' option from the status dropdown
-    await page
-      .getByLabel('pia-status-select')
-      .selectOption('DRAFTING_IN_PROGRESS');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByStatus=DRAFTING_IN_PROGRESS',
-    );
+    // Mapping of status options to their expected URLs
+    const statusOptionsToURLs = {
+      DRAFTING_IN_PROGRESS: '/pia/list?filterByStatus=DRAFTING_IN_PROGRESS',
+      EDIT_IN_PROGRESS: '/pia/list?filterByStatus=EDIT_IN_PROGRESS',
+      MPO_REVIEW: '/pia/list?filterByStatus=MPO_REVIEW',
+      CPO_REVIEW: '/pia/list?filterByStatus=CPO_REVIEW',
+      PENDING_COMPLETION: '/pia/list?filterByStatus=PENDING_COMPLETION',
+      FINAL_REVIEW: '/pia/list?filterByStatus=FINAL_REVIEW',
+    };
 
-    // Select the 'Edit in Progress' option from the status dropdown
-    await page.getByLabel('pia-status-select').selectOption('EDIT_IN_PROGRESS');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=EDIT_IN_PROGRESS');
+    for (const [status, expectedURL] of Object.entries(statusOptionsToURLs)) {
+      const statusSelect = page.getByLabel('pia-status-select');
+      await statusSelect.waitFor({ state: 'visible' });
+      await statusSelect.selectOption(status);
 
-    // Select the 'MPO Review' option from the status dropdown
-    await page.getByLabel('pia-status-select').selectOption('MPO_REVIEW');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=MPO_REVIEW');
+      await page.waitForURL(expectedURL);
+      await expect(page).toHaveURL(expectedURL);
+    }
 
-    // Select the 'CPO Review' option from the status dropdown
-    await page.getByLabel('pia-status-select').selectOption('CPO_REVIEW');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=CPO_REVIEW');
-
-    // Select the 'Pending Completion' option from the status dropdown
-    await page
-      .getByLabel('pia-status-select')
-      .selectOption('PENDING_COMPLETION');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=PENDING_COMPLETION');
-
-    // Select the 'Final Review' option from the status dropdown
-    await page.getByLabel('pia-status-select').selectOption('FINAL_REVIEW');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=FINAL_REVIEW');
-
-    // Select an empty option from the status dropdown
-    await page.getByLabel('pia-status-select').selectOption('');
-    // Verify that the URL reflects the removal of the filter
-    await expect(page).toHaveURL('/pia/list');
-
-    // Select 'Drafting in Progress' again from the status dropdown
-    await page
-      .getByLabel('pia-status-select')
-      .selectOption('DRAFTING_IN_PROGRESS');
-    // Verify that the URL reflects the selected filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByStatus=DRAFTING_IN_PROGRESS',
-    );
-
-    // Click the 'Clear filters' button
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify that the URL reflects the removal of the filter
+    // Click the 'Clear filters' button and verify the URL
+    const clearFiltersButton = page.getByRole('button', {
+      name: 'Clear filters',
+    });
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out
@@ -75,128 +49,143 @@ test.describe.serial('Filter PIAs Test', () => {
     // Log in as an MPO
     await mpoLogin(page);
 
-    // Verify pia list URL
+    // Verify PIA list URL
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select the 'Drafting in Progress' status option
-    await page
-      .getByLabel('pia-status-select')
-      .selectOption('DRAFTING_IN_PROGRESS');
-    // Verify URL update for 'Drafting in Progress' status filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByStatus=DRAFTING_IN_PROGRESS',
-    );
+    // Define the status options and expected URLs for filtering
+    const filterOptions = [
+      {
+        label: 'EDIT_IN_PROGRESS',
+        expectedURL: '/pia/list?filterByStatus=EDIT_IN_PROGRESS',
+      },
+      {
+        label: 'MPO_REVIEW',
+        expectedURL: '/pia/list?filterByStatus=MPO_REVIEW',
+      },
+      {
+        label: 'FINAL_REVIEW',
+        expectedURL: '/pia/list?filterByStatus=FINAL_REVIEW',
+      },
+    ];
 
-    // Select the 'Edit in Progress' status option
-    await page.getByLabel('pia-status-select').selectOption('EDIT_IN_PROGRESS');
-    // Verify URL update for 'Edit in Progress' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=EDIT_IN_PROGRESS');
+    for (const option of filterOptions) {
+      const statusSelect = page.getByLabel('pia-status-select');
+      await statusSelect.waitFor({ state: 'visible' });
+      await statusSelect.selectOption(option.label);
 
-    // Select the 'MPO Review' status option
-    await page.getByLabel('pia-status-select').selectOption('MPO_REVIEW');
-    // Verify URL update for 'MPO Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=MPO_REVIEW');
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+    // Click the 'Clear filters' button and verify the URL is reset
+    const clearFiltersButton = page.getByRole('button', {
+      name: 'Clear filters',
+    });
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select 'Agriculture and Food' from Ministry dropdown
-    await page
-      .getByLabel('ministry-select')
-      .selectOption('AGRICULTURE_AND_FOOD');
-    // Verify URL update for 'Agriculture and Food' ministry filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=AGRICULTURE_AND_FOOD',
-    );
+    // Select and verify different ministry filters
+    const ministryOptions = [
+      {
+        label: 'AGRICULTURE_AND_FOOD',
+        expectedURL: '/pia/list?filterByMinistry=AGRICULTURE_AND_FOOD',
+      },
+      {
+        label: 'ATTORNEY_GENERAL',
+        expectedURL: '/pia/list?filterByMinistry=ATTORNEY_GENERAL',
+      },
+      {
+        label: 'CITIZENS_SERVICES',
+        expectedURL: '/pia/list?filterByMinistry=CITIZENS_SERVICES',
+      },
+    ];
 
-    // Select 'Attorney General' from Ministry dropdown
-    await page.getByLabel('ministry-select').selectOption('ATTORNEY_GENERAL');
-    // Verify URL update for 'Attorney General' ministry filter
-    await expect(page).toHaveURL('/pia/list?filterByMinistry=ATTORNEY_GENERAL');
+    for (const option of ministryOptions) {
+      const ministrySelect = page.getByLabel('ministry-select');
+      await ministrySelect.waitFor({ state: 'visible' });
+      await ministrySelect.selectOption(option.label);
 
-    // Select 'Citizens Services' from Ministry dropdown
-    await page.getByLabel('ministry-select').selectOption('CITIZENS_SERVICES');
-    // Verify URL update for 'Citizens Services' ministry filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=CITIZENS_SERVICES',
-    );
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select 'Exclude my PIAs' from drafter filter
-    await page
-      .getByLabel('drafter-filter-select')
-      .selectOption('excludeMyPias');
-    // Verify URL update for 'Exclude my PIAs' drafter filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias',
-    );
+    // Select and verify different drafter filters
+    const drafterOptions = [
+      {
+        label: 'excludeMyPias',
+        expectedURL: '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias',
+      },
+      {
+        label: 'onlyMyPias',
+        expectedURL: '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias',
+      },
+    ];
 
-    // Select 'Only my PIAs' from drafter filter
-    await page.getByLabel('drafter-filter-select').selectOption('onlyMyPias');
-    // Verify URL update for 'Only my PIAs' drafter filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias',
-    );
+    for (const option of drafterOptions) {
+      const drafterSelect = page.getByLabel('drafter-filter-select');
+      await drafterSelect.waitFor({ state: 'visible' });
+      await drafterSelect.selectOption(option.label);
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
+
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select the 'CPO Review' status option
-    await page.getByLabel('pia-status-select').selectOption('CPO_REVIEW');
-    // Verify URL update for 'CPO Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=CPO_REVIEW');
+    // Define filter combinations and their expected URLs
+    const filterCombinations = [
+      {
+        status: 'MPO_REVIEW',
+        ministry: 'HEALTH',
+        drafter: 'onlyMyPias',
+        expectedURL:
+          '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias&filterByStatus=MPO_REVIEW&filterByMinistry=HEALTH',
+      },
+      {
+        status: 'FINAL_REVIEW',
+        ministry: 'FORESTS',
+        drafter: 'excludeMyPias',
+        expectedURL:
+          '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias&filterByStatus=FINAL_REVIEW&filterByMinistry=FORESTS',
+      },
+    ];
 
-    // Select 'Health' from Ministry dropdown with 'CPO Review' status
-    await page.getByLabel('ministry-select').selectOption('HEALTH');
-    // Verify URL update for 'Health' ministry and 'CPO Review' status filters
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=HEALTH&filterByStatus=CPO_REVIEW',
-    );
+    for (const {
+      status,
+      ministry,
+      drafter,
+      expectedURL,
+    } of filterCombinations) {
+      await page.getByLabel('pia-status-select').selectOption(status);
+      await page.getByLabel('ministry-select').selectOption(ministry);
+      await page.getByLabel('drafter-filter-select').selectOption(drafter);
 
-    // Select 'Only my PIAs' from drafter filter with 'CPO Review' status and 'Health' ministry
-    await page.getByLabel('drafter-filter-select').selectOption('onlyMyPias');
-    // Verify URL update for combined filters of drafter, status, and ministry
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias&filterByStatus=CPO_REVIEW&filterByMinistry=HEALTH',
-    );
+      await page.waitForURL(expectedURL);
+      await expect(page).toHaveURL(expectedURL);
 
-    // Click the 'Clear filters' button
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify that the URL reflects the removal of the filter
-    await expect(page).toHaveURL('/pia/list');
+      // Clear filters after checking each combination
+      await page.getByRole('button', { name: 'Clear filters' }).click();
+      await page.waitForURL('/pia/list');
+      await expect(page).toHaveURL('/pia/list');
+    }
 
-    // Select the 'Final Review' status option
-    await page.getByLabel('pia-status-select').selectOption('FINAL_REVIEW');
-    // Verify URL update for 'Final Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=FINAL_REVIEW');
-
-    // Select 'Forests' from Ministry dropdown with 'Final Review' status
-    await page.getByLabel('ministry-select').selectOption('FORESTS');
-    // Verify URL update for 'Forests' ministry and 'Final Review' status filters
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=FORESTS&filterByStatus=FINAL_REVIEW',
-    );
-
-    // Select 'Exclude my PIAs' from drafter filter with 'Final Review' status and 'Forests' ministry
-    await page
-      .getByLabel('drafter-filter-select')
-      .selectOption('excludeMyPias');
-    // Verify URL update for combined filters of drafter, status, and ministry
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias&filterByStatus=FINAL_REVIEW&filterByMinistry=FORESTS',
-    );
-
-    // Click the 'Clear filters' button
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify that the URL reflects the removal of the filter
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out
@@ -205,131 +194,146 @@ test.describe.serial('Filter PIAs Test', () => {
 
   // Test with CPO role
   test('Filter PIAs as CPO', async ({ page }) => {
-    // Log in as a CPO
+    // Log in as an CPO
     await cpoLogin(page);
 
-    // Verify pia list URL
+    // Verify PIA list URL
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select the 'Drafting in Progress' status option
-    await page
-      .getByLabel('pia-status-select')
-      .selectOption('DRAFTING_IN_PROGRESS');
-    // Verify URL update for 'Drafting in Progress' status filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByStatus=DRAFTING_IN_PROGRESS',
-    );
+    // Define the status options and expected URLs for filtering
+    const filterOptions = [
+      {
+        label: 'EDIT_IN_PROGRESS',
+        expectedURL: '/pia/list?filterByStatus=EDIT_IN_PROGRESS',
+      },
+      {
+        label: 'CPO_REVIEW',
+        expectedURL: '/pia/list?filterByStatus=CPO_REVIEW',
+      },
+      {
+        label: 'FINAL_REVIEW',
+        expectedURL: '/pia/list?filterByStatus=FINAL_REVIEW',
+      },
+    ];
 
-    // Select the 'Edit in Progress' status option
-    await page.getByLabel('pia-status-select').selectOption('EDIT_IN_PROGRESS');
-    // Verify URL update for 'Edit in Progress' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=EDIT_IN_PROGRESS');
+    for (const option of filterOptions) {
+      const statusSelect = page.getByLabel('pia-status-select');
+      await statusSelect.waitFor({ state: 'visible' });
+      await statusSelect.selectOption(option.label);
 
-    // Select the 'MPO Review' status option
-    await page.getByLabel('pia-status-select').selectOption('MPO_REVIEW');
-    // Verify URL update for 'MPO Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=MPO_REVIEW');
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+    // Click the 'Clear filters' button and verify the URL is reset
+    const clearFiltersButton = page.getByRole('button', {
+      name: 'Clear filters',
+    });
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select 'Agriculture and Food' from Ministry dropdown
-    await page
-      .getByLabel('ministry-select')
-      .selectOption('AGRICULTURE_AND_FOOD');
-    // Verify URL update for 'Agriculture and Food' ministry filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=AGRICULTURE_AND_FOOD',
-    );
+    // Select and verify different ministry filters
+    const ministryOptions = [
+      {
+        label: 'AGRICULTURE_AND_FOOD',
+        expectedURL: '/pia/list?filterByMinistry=AGRICULTURE_AND_FOOD',
+      },
+      {
+        label: 'ATTORNEY_GENERAL',
+        expectedURL: '/pia/list?filterByMinistry=ATTORNEY_GENERAL',
+      },
+      {
+        label: 'CITIZENS_SERVICES',
+        expectedURL: '/pia/list?filterByMinistry=CITIZENS_SERVICES',
+      },
+    ];
 
-    // Select 'Attorney General' from Ministry dropdown
-    await page.getByLabel('ministry-select').selectOption('ATTORNEY_GENERAL');
-    // Verify URL update for 'Attorney General' ministry filter
-    await expect(page).toHaveURL('/pia/list?filterByMinistry=ATTORNEY_GENERAL');
+    for (const option of ministryOptions) {
+      const ministrySelect = page.getByLabel('ministry-select');
+      await ministrySelect.waitFor({ state: 'visible' });
+      await ministrySelect.selectOption(option.label);
 
-    // Select 'Citizens Services' from Ministry dropdown
-    await page.getByLabel('ministry-select').selectOption('CITIZENS_SERVICES');
-    // Verify URL update for 'Citizens Services' ministry filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=CITIZENS_SERVICES',
-    );
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select 'Exclude my PIAs' from drafter filter
-    await page
-      .getByLabel('drafter-filter-select')
-      .selectOption('excludeMyPias');
-    // Verify URL update for 'Exclude my PIAs' drafter filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias',
-    );
+    // Select and verify different drafter filters
+    const drafterOptions = [
+      {
+        label: 'excludeMyPias',
+        expectedURL: '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias',
+      },
+      {
+        label: 'onlyMyPias',
+        expectedURL: '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias',
+      },
+    ];
 
-    // Select 'Only my PIAs' from drafter filter
-    await page.getByLabel('drafter-filter-select').selectOption('onlyMyPias');
-    // Verify URL update for 'Only my PIAs' drafter filter
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias',
-    );
+    for (const option of drafterOptions) {
+      const drafterSelect = page.getByLabel('drafter-filter-select');
+      await drafterSelect.waitFor({ state: 'visible' });
+      await drafterSelect.selectOption(option.label);
 
-    // Clear all filters
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify URL update reflecting no filters
+      await page.waitForURL(option.expectedURL);
+      await expect(page).toHaveURL(option.expectedURL);
+    }
+
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
-    // Select the 'CPO Review' status option
-    await page.getByLabel('pia-status-select').selectOption('CPO_REVIEW');
-    // Verify URL update for 'CPO Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=CPO_REVIEW');
+    // Define filter combinations and their expected URLs
+    const filterCombinations = [
+      {
+        status: 'CPO_REVIEW',
+        ministry: 'HEALTH',
+        drafter: 'onlyMyPias',
+        expectedURL:
+          '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias&filterByStatus=CPO_REVIEW&filterByMinistry=HEALTH',
+      },
+      {
+        status: 'FINAL_REVIEW',
+        ministry: 'FORESTS',
+        drafter: 'excludeMyPias',
+        expectedURL:
+          '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias&filterByStatus=FINAL_REVIEW&filterByMinistry=FORESTS',
+      },
+    ];
 
-    // Select 'Health' from Ministry dropdown with 'CPO Review' status
-    await page.getByLabel('ministry-select').selectOption('HEALTH');
-    // Verify URL update for 'Health' ministry and 'CPO Review' status filters
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=HEALTH&filterByStatus=CPO_REVIEW',
-    );
+    for (const {
+      status,
+      ministry,
+      drafter,
+      expectedURL,
+    } of filterCombinations) {
+      await page.getByLabel('pia-status-select').selectOption(status);
+      await page.getByLabel('ministry-select').selectOption(ministry);
+      await page.getByLabel('drafter-filter-select').selectOption(drafter);
 
-    // Select 'Only my PIAs' from drafter filter with 'CPO Review' status and 'Health' ministry
-    await page.getByLabel('drafter-filter-select').selectOption('onlyMyPias');
-    // Verify URL update for combined filters of drafter, status, and ministry
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=onlyMyPias&filterByStatus=CPO_REVIEW&filterByMinistry=HEALTH',
-    );
+      await page.waitForURL(expectedURL);
+      await expect(page).toHaveURL(expectedURL);
 
-    // Click the 'Clear filters' button
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify that the URL reflects the removal of the filter
-    await expect(page).toHaveURL('/pia/list');
+      // Clear filters after checking each combination
+      await page.getByRole('button', { name: 'Clear filters' }).click();
+      await page.waitForURL('/pia/list');
+      await expect(page).toHaveURL('/pia/list');
+    }
 
-    // Select the 'Final Review' status option
-    await page.getByLabel('pia-status-select').selectOption('FINAL_REVIEW');
-    // Verify URL update for 'Final Review' status filter
-    await expect(page).toHaveURL('/pia/list?filterByStatus=FINAL_REVIEW');
-
-    // Select 'Forests' from Ministry dropdown with 'Final Review' status
-    await page.getByLabel('ministry-select').selectOption('FORESTS');
-    // Verify URL update for 'Forests' ministry and 'Final Review' status filters
-    await expect(page).toHaveURL(
-      '/pia/list?filterByMinistry=FORESTS&filterByStatus=FINAL_REVIEW',
-    );
-
-    // Select 'Exclude my PIAs' from drafter filter with 'Final Review' status and 'Forests' ministry
-    await page
-      .getByLabel('drafter-filter-select')
-      .selectOption('excludeMyPias');
-    // Verify URL update for combined filters of drafter, status, and ministry
-    await expect(page).toHaveURL(
-      '/pia/list?filterPiaDrafterByCurrentUser=excludeMyPias&filterByStatus=FINAL_REVIEW&filterByMinistry=FORESTS',
-    );
-
-    // Click the 'Clear filters' button
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-    // Verify that the URL reflects the removal of the filter
+    // Click the 'Clear filters' button and verify the URL is reset
+    await clearFiltersButton.waitFor({ state: 'visible' });
+    await clearFiltersButton.click();
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Log out

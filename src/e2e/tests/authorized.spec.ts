@@ -15,13 +15,16 @@ for (const user of userRoles) {
     // Log in as the current user
     await user.login(page);
 
-    // Verify that the user is redirected to the PIA list page after logging in
+    // Wait for and verify that the user is redirected to the PIA list page after logging in
+    await page.waitForURL('/pia/list');
     await expect(page).toHaveURL('/pia/list');
 
     // Verify that the 'Active PIAs' heading is displayed on the PIA list page
-    await expect(page.getByRole('heading', { name: 'Active PIAs' })).toHaveText(
-      'Active PIAs',
-    );
+    const activePIAsHeading = page.getByRole('heading', {
+      name: 'Active PIAs',
+    });
+    await activePIAsHeading.waitFor({ state: 'visible' });
+    await expect(activePIAsHeading).toHaveText('Active PIAs');
 
     // Log out as the current user
     await user.logout(page);

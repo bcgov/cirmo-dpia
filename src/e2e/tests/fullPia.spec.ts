@@ -18,8 +18,15 @@ test.describe.serial('Full PIA Form Test', () => {
     // Log in as a Drafter
     await drafterLogin(page);
 
-    await page.getByLabel('Create new').click();
-    await page.getByRole('link', { name: 'Start PIA Intake' }).click();
+    const createNewButton = page.getByLabel('Create new');
+    await createNewButton.waitFor({ state: 'visible' });
+    await createNewButton.click();
+
+    const startPiaIntakeLink = page.getByRole('link', {
+      name: 'Start PIA Intake',
+    });
+    await startPiaIntakeLink.waitFor({ state: 'visible' });
+    await startPiaIntakeLink.click();
 
     // Fill out the PIA form
     await drafterPiaFill(page, uuid);
@@ -41,8 +48,13 @@ test.describe.serial('Full PIA Form Test', () => {
     await searchUUID(page, uuid);
 
     // change to edit in progress
-    await page.getByLabel('Edit Button').click();
-    await page.getByLabel('Yes, continue').click();
+    const editButton = page.getByLabel('Edit Button');
+    await editButton.waitFor({ state: 'visible' });
+    await editButton.click();
+
+    const continueButton = page.getByLabel('Yes, continue');
+    await continueButton.waitFor({ state: 'visible' });
+    await continueButton.click();
     await expect(page).toHaveURL(/\/intake\/edit$/);
 
     //fill out the PIA form. expect an autosave and submit the form and expect an intake view url

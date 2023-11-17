@@ -8,21 +8,28 @@ export async function mpoLogin(page: Page) {
     await page.goto('/');
 
     // Click on the 'Log in with IDIR' button
-    await page
+    const loginButton = page
       .locator('#main-content')
-      .getByRole('button', { name: 'Log in with IDIR' })
-      .click();
+      .getByRole('button', { name: 'Log in with IDIR' });
+    await loginButton.waitFor({ state: 'visible' });
+    await loginButton.click();
 
     // Enter the MPO username
-    await page.locator('#user').click();
-    await page.locator('#user').fill(mpoUsername);
+    const userField = page.locator('#user');
+    await userField.waitFor({ state: 'visible' });
+    await userField.click();
+    await userField.fill(mpoUsername);
 
     // Enter the MPO password
-    await page.getByLabel('Password').click();
-    await page.getByLabel('Password').fill(mpoPassword);
+    const passwordField = page.getByLabel('Password');
+    await passwordField.waitFor({ state: 'visible' });
+    await passwordField.click();
+    await passwordField.fill(mpoPassword);
 
     // Click on the 'Continue' button to log in
-    await page.getByRole('button', { name: 'Continue' }).click();
+    const continueButton = page.getByRole('button', { name: 'Continue' });
+    await continueButton.waitFor({ state: 'visible' });
+    await continueButton.click();
 
     // Verify that the user is redirected to the PIA list page after logging in
     await expect(page).toHaveURL('/pia/list');
@@ -31,7 +38,9 @@ export async function mpoLogin(page: Page) {
     await page.goto('/');
 
     // Click on the 'Access App' button
-    await page.getByRole('link', { name: 'Access App' }).click();
+    const accessAppLink = page.getByRole('link', { name: 'Access App' });
+    await accessAppLink.waitFor({ state: 'visible' });
+    await accessAppLink.click();
 
     // Verify that the user is redirected to the PIA list page after logging in
     await expect(page).toHaveURL('/pia/list');
