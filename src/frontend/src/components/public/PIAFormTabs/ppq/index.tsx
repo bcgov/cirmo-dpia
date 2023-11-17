@@ -9,7 +9,6 @@ import {
 import Checkbox from '../../../common/Checkbox';
 import Radio from '../../../common/Radio';
 import CustomInputDate from '../../../common/CustomInputDate';
-import MDEditor from '@uiw/react-md-editor';
 import { YesNoInput } from '../../../../types/enums/yes-no.enum';
 import { dateToString, stringToDate } from '../../../../utils/date';
 import { deepEqual } from '../../../../utils/object-comparison.util';
@@ -19,6 +18,7 @@ import {
   faUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import InputText from '../../../common/InputText/InputText';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const PPQ = ({ printPreview }: IPPQProps) => {
   // Import context and access control
@@ -68,6 +68,58 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   // State for character count
   const [pidSummaryCharCount, setpidSummaryCharCount] = useState<number>(0);
 
+  // State for rich text editors.
+  const [initiativeOtherDetails, setInitiativeOtherDetails] = useState(
+    ppqForm?.initiativeOtherDetails ?? '',
+  );
+  const [proposedDeadlineReason, setProposedDeadlineReason] = useState(
+    ppqForm?.proposedDeadlineReason ?? '',
+  );
+  const [pidInitiativeSummary, setPidInitiativeSummary] = useState(
+    ppqForm?.pidInitiativeSummary ?? '',
+  );
+  const [otherCpoConsideration, setOtherCpoConsideration] = useState(
+    ppqForm?.otherCpoConsideration ?? '',
+  );
+
+  // Update form state on rich text editor changes.
+  useEffect(() => {
+    stateChangeHandler(initiativeOtherDetails, 'initiativeOtherDetails');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initiativeOtherDetails]);
+  useEffect(() => {
+    stateChangeHandler(proposedDeadlineReason, 'proposedDeadlineReason');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [proposedDeadlineReason]);
+  useEffect(() => {
+    stateChangeHandler(pidInitiativeSummary, 'pidInitiativeSummary');
+    setpidSummaryCharCount(pidInitiativeSummary.length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pidInitiativeSummary]);
+  useEffect(() => {
+    stateChangeHandler(otherCpoConsideration, 'otherCpoConsideration');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otherCpoConsideration]);
+
+  // Show the editor unless isReadOnly, ppqForm?.hasInitiativeOther and initiativeOtherDetails is empty.
+  const showEditorInitiativeOtherDetails = !(
+    isReadOnly &&
+    ppqForm?.hasInitiativeOther &&
+    initiativeOtherDetails === ''
+  );
+  // Show the editor unless isReadOnly and proposedDeadlineReason is empty.
+  const showEditorProposedDeadlineReason = !(
+    isReadOnly && proposedDeadlineReason === ''
+  );
+  // Show the editor unless isReadOnly and pidInitiativeSummary is empty.
+  const showEditorPidInitiativeSummary = !(
+    isReadOnly && pidInitiativeSummary === ''
+  );
+  // Show the editor unless isReadOnly and otherCpoConsideration is empty.
+  const showEditorOtherCpoConsideration = !(
+    isReadOnly && otherCpoConsideration === ''
+  );
+
   // Max character count for initiative summary
   const maxPidSummaryCharCount = 500;
 
@@ -107,12 +159,6 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const removeEnactmentPIA = (index: number) => {
     const newList = ppqForm.relatedEnactmentPias?.filter((_, i) => i !== index);
     stateChangeHandler(newList, 'relatedEnactmentPias');
-  };
-
-  // Handle character count in Initiative Summary
-  const handleInitiativeSummaryChange = (value = '') => {
-    stateChangeHandler(value, 'pidInitiativeSummary');
-    setpidSummaryCharCount(value.length);
   };
 
   // Display remaining character count or maximum limit
@@ -192,34 +238,16 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               readOnly={isReadOnly}
             />
           ))}
-          {/* Conditionally display Markdown editor or preview */}
-          {!isReadOnly ? (
-            ppqForm?.hasInitiativeOther && (
-              <MDEditor
-                preview="edit"
-                defaultTabEnable={true}
-                value={ppqForm?.initiativeOtherDetails || ''}
-                onChange={(value) =>
-                  stateChangeHandler(value, 'initiativeOtherDetails')
-                }
-                aria-label="Initiative Other Details Input"
-              />
-            )
-          ) : ppqForm?.hasInitiativeOther ? (
-            ppqForm?.initiativeOtherDetails &&
-            ppqForm?.initiativeOtherDetails !== '' ? (
-              <div className="px-4">
-                <MDEditor.Markdown
-                  source={ppqForm.initiativeOtherDetails}
-                  aria-label="Initiative Other Details Input Preview"
-                />
-              </div>
-            ) : (
-              <p>
-                <i>Not answered</i>
-              </p>
-            )
-          ) : null}
+          {showEditorInitiativeOtherDetails ? (
+            <RichTextEditor
+              content={initiativeOtherDetails}
+              setContent={setInitiativeOtherDetails}
+              readOnly={isReadOnly}
+              aria-label="Initiative Other Details Input"
+            />
+          ) : (
+            <i>Not answered</i>
+          )}
         </div>
         {/* Render deadline info, conditional on printPreview and isReadOnly */}
         {!printPreview && (
@@ -304,26 +332,15 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 // Heading for the reason input in read-only mode
                 <h4> {Messages.DeadlineReasonHeading.en}</h4>
               )}
-              {!isReadOnly ? (
-                <>
-                  {/* Markdown Editor for Deadline Reason */}
-                  <MDEditor
-                    preview="edit"
-                    defaultTabEnable={true}
-                    value={ppqForm?.proposedDeadlineReason || ''}
-                    onChange={(value) =>
-                      stateChangeHandler(value, 'proposedDeadlineReason')
-                    }
-                  />
-                </>
-              ) : ppqForm.proposedDeadlineReason ? (
-                // Show Markdown rendering of Deadline Reason if available
-                <MDEditor.Markdown source={ppqForm.proposedDeadlineReason} />
+              {showEditorProposedDeadlineReason ? (
+                <RichTextEditor
+                  content={proposedDeadlineReason}
+                  setContent={setProposedDeadlineReason}
+                  readOnly={isReadOnly}
+                  aria-label="Proposed Deadline Reason Textarea Input"
+                />
               ) : (
-                // Show "Not answered" if Deadline Reason is empty
-                <p>
-                  <i>Not answered</i>
-                </p>
+                <i>Not answered</i>
               )}
             </div>
           </>
@@ -350,27 +367,15 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             // Show heading for read-only mode
             <h4> {Messages.InitiativeSummaryHeading.en.fullText}</h4>
           )}
-          {!isReadOnly ? (
-            // Show Markdown editor for editable mode
-            <MDEditor
-              preview="edit"
-              defaultTabEnable={true}
-              value={ppqForm?.pidInitiativeSummary || ''}
-              onChange={(value) => handleInitiativeSummaryChange(value || '')}
+          {showEditorPidInitiativeSummary ? (
+            <RichTextEditor
+              content={pidInitiativeSummary}
+              setContent={setPidInitiativeSummary}
+              readOnly={isReadOnly}
               aria-label="Initiative Summary Textarea Input"
-              textareaProps={{ maxLength: maxPidSummaryCharCount }}
-            />
-          ) : ppqForm.pidInitiativeSummary ? (
-            // Show Markdown preview for read-only mode if available
-            <MDEditor.Markdown
-              source={ppqForm.pidInitiativeSummary}
-              aria-label="Initiative Summary Textarea Input Preview"
             />
           ) : (
-            // Show 'Not answered' for read-only mode if no data available
-            <p>
-              <i>Not answered</i>
-            </p>
+            <i>Not answered</i>
           )}
         </div>
         {/* Form Group for Related Operational PIAs */}
@@ -537,25 +542,15 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           )}
 
           {/* Markdown editor for additional information */}
-          {!isReadOnly ? (
-            <MDEditor
-              preview="edit"
-              defaultTabEnable={true}
-              value={ppqForm?.otherCpoConsideration || ''}
-              onChange={(value) =>
-                stateChangeHandler(value, 'otherCpoConsideration')
-              }
+          {showEditorOtherCpoConsideration ? (
+            <RichTextEditor
+              content={otherCpoConsideration}
+              setContent={setOtherCpoConsideration}
+              readOnly={isReadOnly}
               aria-label="Other CPO Consideration Textarea Input"
             />
-          ) : ppqForm.otherCpoConsideration ? (
-            <MDEditor.Markdown
-              source={ppqForm.otherCpoConsideration}
-              aria-label="Other CPO Consideration Textarea Input Preview"
-            />
           ) : (
-            <p>
-              <i>Not answered</i>
-            </p>
+            <i>Not answered</i>
           )}
         </div>
       </section>

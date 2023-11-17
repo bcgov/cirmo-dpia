@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MDEditor from '@uiw/react-md-editor';
 import {
   OtherFactor,
   MinistryList,
@@ -23,6 +22,7 @@ import { PiaTypesEnum } from '../../types/enums/pia-types.enum';
 import { DelegatedReviewTypesEnum } from '../../types/enums/delegated-review-types.enum';
 import Dropdown from '../../components/common/Dropdown';
 import { dateToString } from '../../utils/date';
+import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const PPQFormPage = () => {
   const navigate = useNavigate();
@@ -86,10 +86,6 @@ const PPQFormPage = () => {
 
   const handleReviewTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDelegatedReviewType(event.target.value);
-  };
-
-  const handleDescriptionChange = (newMessage: any) => {
-    setDescription(newMessage);
   };
 
   const handleSubmit = async (event: any) => {
@@ -295,11 +291,9 @@ const PPQFormPage = () => {
                   ? Messages.AdditionalInfoHeading.en2
                   : Messages.AdditionalInfoHeading.en}
               </h2>
-              <MDEditor
-                preview="edit"
-                defaultTabEnable={true}
-                value={description}
-                onChange={handleDescriptionChange}
+              <RichTextEditor
+                content={description}
+                setContent={setDescription}
               />
             </div>
             <div className="horizontal-divider"></div>
