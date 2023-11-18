@@ -73,8 +73,9 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
     await page
       .getByLabel('Comment Options Button')
+      .first()
       .waitFor({ state: 'visible' });
-    await page.getByLabel('Comment Options Button').click();
+    await page.getByLabel('Comment Options Button').first().click();
     await page
       .getByRole('list', { name: 'Comment Options Menu' })
       .locator('button')
