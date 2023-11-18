@@ -1,3 +1,5 @@
+import { RichTextContent } from '../types';
+
 export interface IPPQ {
   hasCommonProgram: boolean;
   hasDataLinking: boolean;
@@ -7,12 +9,12 @@ export interface IPPQ {
   hasBcServicesCardOnboarding: boolean;
   hasAiOrMl: boolean;
   hasInitiativeOther: boolean;
-  initiativeOtherDetails?: string;
+  initiativeOtherDetails?: RichTextContent;
   proposedDeadlineAvailable?: string;
   proposedDeadline?: string | null;
-  proposedDeadlineReason?: string;
-  otherCpoConsideration?: string;
-  pidInitiativeSummary?: string;
+  proposedDeadlineReason?: RichTextContent;
+  otherCpoConsideration?: RichTextContent;
+  pidInitiativeSummary?: RichTextContent;
   relatedOperationalPias?: string[];
   relatedEnactmentPias?: string[];
 }

@@ -179,12 +179,18 @@ const piaIntakeDataMock = {
     hasAiOrMl: true,
     hasContactOrLicenseReview: false,
     hasInitiativeOther: true,
-    initiativeOtherDetails: 'Extra details goes here...',
+    initiativeOtherDetails: { content: 'Extra details goes here...' },
     proposedDeadlineAvailable: YesNoInput.YES,
     proposedDeadline: '2022/06/20',
-    proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
-    otherCpoConsideration:
-      'Any related PIAs or CPO considerations goes here...',
+    proposedDeadlineReason: {
+      content: 'Reasons for proposed deadline goes here...',
+    },
+    otherCpoConsideration: {
+      content: 'Any related PIAs or CPO considerations goes here...',
+    },
+    pidInitiativeSummary: {
+      content: 'Any related PIAs initiative summary goes here...',
+    },
   },
   invitee: { ...inviteeEntityMock },
   review: null,
