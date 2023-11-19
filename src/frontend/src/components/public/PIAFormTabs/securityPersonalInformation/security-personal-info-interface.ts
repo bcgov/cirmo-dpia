@@ -1,3 +1,5 @@
+import { RichTextContent } from '../types';
+
 export interface ISecurityPersonalInformation {
   digitalToolsAndSystems: {
     toolsAndAssessment: {
@@ -6,14 +8,14 @@ export interface ISecurityPersonalInformation {
     };
     storage: {
       onGovServers: string;
-      whereDetails: string;
+      whereDetails: RichTextContent;
     };
   };
   accessToPersonalInformation: {
     onlyCertainRolesAccessInformation: string;
     accessApproved: string;
     useAuditLogs: string;
-    additionalStrategies: string;
+    additionalStrategies: RichTextContent;
   };
 }
 

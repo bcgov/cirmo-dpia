@@ -255,8 +255,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I do not have privilege to edit this',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I do not have privilege to edit this' },
           },
         },
       };
@@ -288,8 +288,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I now have privilege to edit this',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I now have privilege to edit this' },
           },
         },
       };
@@ -314,12 +314,18 @@ describe('PiaIntakeService', () => {
           hasAiOrMl: true,
           hasContactOrLicenseReview: false,
           hasInitiativeOther: true,
-          initiativeOtherDetails: 'Extra details goes here...',
+          initiativeOtherDetails: { content: 'Extra details goes here...' },
           proposedDeadlineAvailable: YesNoInput.YES,
           proposedDeadline: '2022/06/20',
-          proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
-          otherCpoConsideration:
-            'Any related PIAs or CPO considerations goes here...',
+          proposedDeadlineReason: {
+            content: 'Reasons for proposed deadline goes here...',
+          },
+          otherCpoConsideration: {
+            content: 'Any related PIAs or CPO considerations goes here...',
+          },
+          pidInitiativeSummary: {
+            content: 'Any related PIAs initiative summary goes here...',
+          },
         },
       };
 
@@ -349,12 +355,18 @@ describe('PiaIntakeService', () => {
           hasAiOrMl: true,
           hasContactOrLicenseReview: false,
           hasInitiativeOther: true,
-          initiativeOtherDetails: 'Extra details goes here...',
+          initiativeOtherDetails: { content: 'Extra details goes here...' },
           proposedDeadlineAvailable: YesNoInput.YES,
           proposedDeadline: '2022/06/20',
-          proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
-          otherCpoConsideration:
-            'Any related PIAs or CPO considerations goes here...',
+          proposedDeadlineReason: {
+            content: 'Reasons for proposed deadline goes here...',
+          },
+          otherCpoConsideration: {
+            content: 'Any related PIAs or CPO considerations goes here...',
+          },
+          pidInitiativeSummary: {
+            content: 'Any related PIAs initiative summary goes here...',
+          },
         },
       };
 
@@ -2395,8 +2407,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I do not have access to update this field',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I do not have access to update this field' },
           },
         },
         saveId: 10,
@@ -2444,8 +2456,8 @@ describe('PiaIntakeService', () => {
             },
           ],
           collectionNotice: {
-            drafterInput: 'Test Input',
-            mpoInput: 'I now DO have access to update this field',
+            drafterInput: { content: 'Test Input' },
+            mpoInput: { content: 'I now DO have access to update this field' },
           },
         },
         saveId: 10,
@@ -2652,10 +2664,10 @@ describe('PiaIntakeService', () => {
         ...{
           updatedAt: null,
           ministry: 'Tourism, Arts, Culture and Sport',
-          initiativeDescription: null,
-          initiativeScope: null,
-          dataElementsInvolved: null,
-          riskMitigation: null,
+          initiativeDescription: { content: null },
+          initiativeScope: { content: null },
+          dataElementsInvolved: { content: null },
+          riskMitigation: { content: null },
         },
       };
 

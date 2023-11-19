@@ -11,9 +11,14 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
   leadName: 'King Richard',
   leadTitle: 'Chief Guiding Officer',
   leadEmail: 'king@test.bc.gov.in',
-  initiativeDescription: `*King Richard* is a 2021 American biographical sports drama film directed by [Reinaldo Marcus Green](https://en.wikipedia.org/wiki/Reinaldo_Marcus_Green) and written by [Zach Baylin](https://en.wikipedia.org/wiki/Zach_Baylin). The film stars [Will Smith](https://en.wikipedia.org/wiki/Will_Smith) as Richard Williams, the father and coach of famed tennis players [Venus](https://en.wikipedia.org/wiki/Venus_Williams) and [Serena Williams](https://en.wikipedia.org/wiki/Serena_Williams) (both of whom served as executive producers on the film), with [Aunjanue Ellis](https://en.wikipedia.org/wiki/Aunjanue_Ellis), [Saniyya Sidney](https://en.wikipedia.org/wiki/Saniyya_Sidney), [Demi Singleton](https://en.wikipedia.org/wiki/Demi_Singleton), [Tony Goldwyn](https://en.wikipedia.org/wiki/Tony_Goldwyn), and [Jon Bernthal](https://en.wikipedia.org/wiki/Jon_Bernthal) in supporting roles.`,
-  initiativeScope: `Richard Williams lives in [Compton, California](https://en.wikipedia.org/wiki/Compton,_California), with his wife Brandy, his three step-daughters, and his two daughters, Venus and Serena. Richard aspires to turn Venus and Serena into professional tennis players; he has prepared a plan for success since before they were born. Richard and Brandy coach Venus and Serena on a daily basis, while also working as a security guard and a nurse, respectively. Richard works tirelessly to find a professional coach for the girls, creating brochures and videotapes to advertise their skills, but has not had success.`,
-  dataElementsInvolved: `Cast Involved:
+  initiativeDescription: {
+    content: `*King Richard* is a 2021 American biographical sports drama film directed by [Reinaldo Marcus Green](https://en.wikipedia.org/wiki/Reinaldo_Marcus_Green) and written by [Zach Baylin](https://en.wikipedia.org/wiki/Zach_Baylin). The film stars [Will Smith](https://en.wikipedia.org/wiki/Will_Smith) as Richard Williams, the father and coach of famed tennis players [Venus](https://en.wikipedia.org/wiki/Venus_Williams) and [Serena Williams](https://en.wikipedia.org/wiki/Serena_Williams) (both of whom served as executive producers on the film), with [Aunjanue Ellis](https://en.wikipedia.org/wiki/Aunjanue_Ellis), [Saniyya Sidney](https://en.wikipedia.org/wiki/Saniyya_Sidney), [Demi Singleton](https://en.wikipedia.org/wiki/Demi_Singleton), [Tony Goldwyn](https://en.wikipedia.org/wiki/Tony_Goldwyn), and [Jon Bernthal](https://en.wikipedia.org/wiki/Jon_Bernthal) in supporting roles.`,
+  },
+  initiativeScope: {
+    content: `Richard Williams lives in [Compton, California](https://en.wikipedia.org/wiki/Compton,_California), with his wife Brandy, his three step-daughters, and his two daughters, Venus and Serena. Richard aspires to turn Venus and Serena into professional tennis players; he has prepared a plan for success since before they were born. Richard and Brandy coach Venus and Serena on a daily basis, while also working as a security guard and a nurse, respectively. Richard works tirelessly to find a professional coach for the girls, creating brochures and videotapes to advertise their skills, but has not had success.`,
+  },
+  dataElementsInvolved: {
+    content: `Cast Involved:
       
     1. Will Smith as Richard Williams
     2. Aunjanue Ellis as Oracene "Brandy" Price
@@ -23,9 +28,12 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     6. Tony Goldwyn as Paul Cohen
     7. Mikayla LaShae Bartholomew as Tunde Price
     `,
+  },
   hasAddedPiToDataElements: false,
   submittedAt: new Date(),
-  riskMitigation: `The film was released on [Blu-ray](https://en.wikipedia.org/wiki/Blu-ray) and [DVD](https://en.wikipedia.org/wiki/DVD) February 8, 2022 by [Warner Bros. Home Entertainment](https://en.wikipedia.org/wiki/Warner_Bros._Home_Entertainment), with the 4K Ultra HD release through [Warner Archive Collection](https://en.wikipedia.org/wiki/Warner_Archive_Collection) on the same date.`,
+  riskMitigation: {
+    content: `The film was released on [Blu-ray](https://en.wikipedia.org/wiki/Blu-ray) and [DVD](https://en.wikipedia.org/wiki/DVD) February 8, 2022 by [Warner Bros. Home Entertainment](https://en.wikipedia.org/wiki/Warner_Bros._Home_Entertainment), with the 4K Ultra HD release through [Warner Archive Collection](https://en.wikipedia.org/wiki/Warner_Archive_Collection) on the same date.`,
+  },
   collectionUseAndDisclosure: {
     steps: [
       {
@@ -42,14 +50,14 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       },
     ],
     collectionNotice: {
-      drafterInput: 'Test Input',
-      mpoInput: null,
+      drafterInput: { content: 'Test Input' },
+      mpoInput: { content: null },
     },
   },
   storingPersonalInformation: {
     personalInformation: {
       storedOutsideCanada: YesNoInput.YES,
-      whereDetails: 'USA',
+      whereDetails: { content: 'USA' },
     },
     sensitivePersonalInformation: {
       doesInvolve: YesNoInput.YES,
@@ -65,18 +73,20 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
             details: 'Stored in cloud',
           },
         ],
-        disclosureDetails: 'S3 storage in us-east-1: US East (N. Virginia)',
-        contractualTerms: 'None',
+        disclosureDetails: {
+          content: 'S3 storage in us-east-1: US East (N. Virginia)',
+        },
+        contractualTerms: { content: 'None' },
       },
       contract: {
         relyOnExistingContract: YesNoInput.YES,
-        enterpriseServiceAccessDetails: 'S3',
+        enterpriseServiceAccessDetails: { content: 'S3' },
       },
       controls: {
-        unauthorizedAccessMeasures: 'IAM rules are in effect',
+        unauthorizedAccessMeasures: { content: 'IAM rules are in effect' },
       },
       trackAccess: {
-        trackAccessDetails: 'IAM',
+        trackAccessDetails: { content: 'IAM' },
       },
       risks: {
         privacyRisks: [
@@ -100,19 +110,19 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
       },
       storage: {
         onGovServers: YesNoInput.NO,
-        whereDetails: 'on AWS Cloud',
+        whereDetails: { content: 'on AWS Cloud' },
       },
     },
     accessToPersonalInformation: {
       onlyCertainRolesAccessInformation: YesNoInput.YES,
       accessApproved: YesNoInput.YES,
       useAuditLogs: YesNoInput.NO,
-      additionalStrategies: 'PEM file access',
+      additionalStrategies: { content: 'PEM file access' },
     },
   },
   accuracyCorrectionAndRetention: {
     accuracy: {
-      description: 'Integrate with 3rd party validators',
+      description: { content: 'Integrate with 3rd party validators' },
     },
     correction: {
       haveProcessInPlace: YesNoInput.YES,
@@ -122,13 +132,13 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     retention: {
       usePIForDecision: YesNoInput.YES,
       haveApprovedInfoSchedule: YesNoInput.NO,
-      describeRetention: 'will store in S3 Glacier Deep Archive',
+      describeRetention: { content: 'will store in S3 Glacier Deep Archive' },
     },
   },
   agreementsAndInformationBanks: {
     informationSharingAgreement: {
       doesInvolveISA: YesNoInput.YES,
-      description: 'Some cloud agreement',
+      description: { content: 'Some cloud agreement' },
       mainMinistryOrAgencyInvolved: 'Citizen Services',
       otherGroupsInvolved: 'Forests, Alpha',
       contactTitle: 'John Doe',
@@ -138,7 +148,7 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     },
     personalInformationBanks: {
       willResultInPIB: YesNoInput.YES,
-      description: 'Name and address of the user',
+      description: { content: 'Name and address of the user' },
       mainMinistryOrAgencyInvolved: 'Citizen Services',
       otherGroupsInvolved: 'Forests, Alpha',
       contactTitle: 'John Doe',
@@ -162,12 +172,18 @@ export const piaIntakeEntityMock: CreatePiaIntakeDto = {
     hasAiOrMl: true,
     hasContactOrLicenseReview: false,
     hasInitiativeOther: true,
-    initiativeOtherDetails: 'Extra details goes here...',
+    initiativeOtherDetails: { content: 'Extra details goes here...' },
     proposedDeadlineAvailable: YesNoInput.YES,
     proposedDeadline: '2022/06/20',
-    proposedDeadlineReason: 'Reasons for proposed deadline goes here...',
-    otherCpoConsideration:
-      'Any related PIAs or CPO considerations goes here...',
+    proposedDeadlineReason: {
+      content: 'Reasons for proposed deadline goes here...',
+    },
+    otherCpoConsideration: {
+      content: 'Any related PIAs or CPO considerations goes here...',
+    },
+    pidInitiativeSummary: {
+      content: 'Any related PIAs initiative summary goes here...',
+    },
   },
   review: {
     programArea: {

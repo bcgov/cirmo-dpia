@@ -5,12 +5,14 @@ import {
   IsString,
   IsArray,
   Validate,
+  IsObject,
 } from '@nestjs/class-validator';
 import { UserTypesEnum } from 'src/common/enums/users.enum';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
 import { IFormField } from 'src/common/interfaces/form-field.interface';
 import { DateStringValidator } from 'src/common/validators/date-string.validator';
 import { validateRoleForFormField } from 'src/common/validators/form-field-role.validator';
+import { RichTextContent } from '../rich-text-content';
 
 export class Ppq {
   @IsBoolean()
@@ -45,9 +47,9 @@ export class Ppq {
   @IsOptional()
   hasInitiativeOther?: boolean;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  initiativeOtherDetails?: string;
+  initiativeOtherDetails?: RichTextContent;
 
   @IsEnum(YesNoInput)
   @IsOptional()
@@ -58,17 +60,17 @@ export class Ppq {
   @Validate(DateStringValidator)
   proposedDeadline?: string;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  proposedDeadlineReason?: string;
+  proposedDeadlineReason?: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  otherCpoConsideration?: string;
+  otherCpoConsideration?: RichTextContent;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  pidInitiativeSummary?: string;
+  pidInitiativeSummary?: RichTextContent;
 
   @IsArray()
   @IsOptional()

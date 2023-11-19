@@ -1,7 +1,8 @@
-import { IsOptional, IsString } from '@nestjs/class-validator';
+import { IsObject, IsOptional } from '@nestjs/class-validator';
+import { RichTextContent } from '../../rich-text-content';
 
 export class DisclosureTrackAccess {
-  @IsString()
+  @IsObject()
   @IsOptional()
-  trackAccessDetails?: string;
+  trackAccessDetails?: RichTextContent;
 }

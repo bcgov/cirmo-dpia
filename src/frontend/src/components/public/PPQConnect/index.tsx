@@ -10,7 +10,6 @@ import Spinner from '../../common/Spinner';
 import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
-import MDEditor from '@uiw/react-md-editor';
 import { IComponentProps } from './interfaces';
 
 const PPQConnect = (props: IComponentProps) => {
@@ -73,9 +72,12 @@ const PPQConnect = (props: IComponentProps) => {
       </section>
       <section className="download-results">
         <h2>{Messages.Headings.StepTwo.en}</h2>
-        <p>
-          <MDEditor.Markdown source={Messages.StepDetails.StepTwo.en} />
-        </p>
+        <div>
+          <p>{Messages.StepDetails.StepTwo.en}</p>
+          <a href={Messages.StepDetails.StepTwo.mailToLink}>
+            {Messages.StepDetails.StepTwo.email}
+          </a>
+        </div>
       </section>
       <section className="email-results">
         <h2>{Messages.Headings.StepThree.en}</h2>

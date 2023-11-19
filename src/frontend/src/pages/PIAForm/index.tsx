@@ -113,6 +113,7 @@ const PIAFormPage = () => {
     value: any,
     key: keyof IPiaForm,
     isEager?: boolean,
+    nestedKey?: any,
   ) => {
     // DO NOT allow state changes in the view mode unless it is a review page
     if (mode === 'view' && !pathname?.split('/').includes('review')) return;
@@ -126,10 +127,19 @@ const PIAFormPage = () => {
     if (key === 'status')
       upsertAndUpdatePia({ status: value } as Partial<IPiaForm>);
 
-    setPia((latest) => ({
-      ...latest,
-      [key]: value,
-    }));
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (!!nestedKey) {
+      const existingValue = pia[key] as object;
+      setPia((latest) => ({
+        ...latest,
+        [key]: { ...existingValue, [nestedKey]: value },
+      }));
+    } else {
+      setPia((latest) => ({
+        ...latest,
+        [key]: value,
+      }));
+    }
   };
 
   useEffect(() => {
@@ -291,7 +301,7 @@ const PIAFormPage = () => {
    *
    * How it works: The function loops through the form fields and checks if they are valid.
    * If they are not valid, it adds the class 'is-invalid' to the field and scrolls to the first invalid field.
-   * If the field is a rich text editor <MD-Editor>, it adds the class 'form-control' to the field.
+   * If the field is a rich text editor, it adds the class 'form-control' to the field.
    * This is because the rich text editor is a div and not an input field.
    * The class 'is-invalid' is used to display the red border.
    *

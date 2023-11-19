@@ -1,6 +1,5 @@
 import Messages from '../../../pages/PIAActiveListPage/messages';
 import EmptyFolder from '../../../assets/empty.svg';
-import MDEditor from '@uiw/react-md-editor';
 
 const EmptyPIAList = () => {
   return (
@@ -14,7 +13,10 @@ const EmptyPIAList = () => {
         {Messages.NoPias.H2Text.en}
       </h2>
       <div className="text__align-center text__max-width--75ch margin-bottom--2em">
-        <MDEditor.Markdown source={Messages.NoPias.FirstParagraph.en} />
+        {Messages.NoPias.FirstParagraph.en}
+        <a href={Messages.NoPias.FirstParagraph.link}>
+          {Messages.NoPias.FirstParagraph.linkTextEn}
+        </a>
       </div>
       <p className="text__align-center text__max-width--75ch">
         {Messages.NoPias.SecondParagraph.en}

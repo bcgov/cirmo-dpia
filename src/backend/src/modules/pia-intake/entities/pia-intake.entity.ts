@@ -11,6 +11,7 @@ import { AgreementsAndInformationBanks } from '../jsonb-classes/agreements-and-i
 import { Ppq } from '../jsonb-classes/ppq';
 import { InviteeEntity } from 'src/modules/invitees/entities/invitee.entity';
 import { Review } from '../jsonb-classes/review';
+import { RichTextContent } from '../jsonb-classes/rich-text-content';
 
 @Entity('pia-intake')
 export class PiaIntakeEntity extends BaseEntity {
@@ -65,21 +66,24 @@ export class PiaIntakeEntity extends BaseEntity {
 
   @Column({
     name: 'initiative_description',
+    type: 'jsonb',
     nullable: true,
   })
-  initiativeDescription: string;
+  initiativeDescription: RichTextContent;
 
   @Column({
     name: 'initiative_scope',
+    type: 'jsonb',
     nullable: true,
   })
-  initiativeScope: string;
+  initiativeScope: RichTextContent;
 
   @Column({
     name: 'data_elements_involved',
+    type: 'jsonb',
     nullable: true,
   })
-  dataElementsInvolved: string;
+  dataElementsInvolved: RichTextContent;
 
   @Column({
     name: 'has_added_pi_to_data_elements',
@@ -89,9 +93,10 @@ export class PiaIntakeEntity extends BaseEntity {
 
   @Column({
     name: 'risk_mitigation',
+    type: 'jsonb',
     nullable: true /* null when user said NO to added_pi_to_data_elements */,
   })
-  riskMitigation: string;
+  riskMitigation: RichTextContent;
 
   @Column({
     name: 'status',

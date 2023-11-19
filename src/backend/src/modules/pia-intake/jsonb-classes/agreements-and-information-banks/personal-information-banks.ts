@@ -1,14 +1,20 @@
-import { IsEnum, IsOptional, IsString } from '@nestjs/class-validator';
+import {
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+} from '@nestjs/class-validator';
 import { YesNoInput } from 'src/common/enums/yes-no-input.enum';
+import { RichTextContent } from '../rich-text-content';
 
 export class PersonalInformationBanks {
   @IsEnum(YesNoInput)
   @IsOptional()
   willResultInPIB?: YesNoInput;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  description?: string;
+  description?: RichTextContent;
 
   @IsString()
   @IsOptional()

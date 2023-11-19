@@ -10,7 +10,6 @@ import Spinner from '../../common/Spinner';
 import { useState } from 'react';
 import Alert from '../../common/Alert';
 import Messages from './messages';
-import MDEditor from '@uiw/react-md-editor';
 import { IComponentProps } from './interfaces';
 
 const PIAIntakeResults = (props: IComponentProps) => {
@@ -53,9 +52,22 @@ const PIAIntakeResults = (props: IComponentProps) => {
       </div>
       <section className="form__section">
         <h2 className="form__h2">{Messages.Headings.StepOne.en}</h2>
-        <p>
-          <MDEditor.Markdown source={Messages.StepDetails.StepOne.en} />
-        </p>
+        <div>
+          <p>{Messages.StepDetails.StepOne.PartOne.en}</p>
+          <a href={Messages.StepDetails.StepOne.PartOne.link}>
+            {Messages.StepDetails.StepOne.PartOne.linkTextEn}
+          </a>
+          <br /> <br />
+          <p>{Messages.StepDetails.StepOne.PartTwo.en}</p>
+          <br />
+          <u>
+            <a href={Messages.StepDetails.StepOne.PartTwo.phoneHref}>
+              {Messages.StepDetails.StepOne.PartTwo.phoneText}
+            </a>
+          </u>
+          <br />
+          <p>{Messages.StepDetails.StepOne.PartTwo.helpLine}</p>
+        </div>
       </section>
       <section className="form__section download-results">
         <h2 className="form__h2">{Messages.Headings.StepTwo.en}</h2>

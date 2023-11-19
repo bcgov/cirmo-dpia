@@ -11,6 +11,7 @@ export type ValidationRule = {
   key: keyof IPiaForm;
   validationKey: string;
   msg: string;
+  richText?: boolean;
 };
 
 export type ResetUIProps = {
@@ -24,6 +25,7 @@ export type PiaStateChangeHandlerType = (
   value: any,
   key: keyof IPiaForm,
   isEager?: boolean,
+  nestedKey?: any,
 ) => any;
 
 export type PiaFormOpenMode = 'edit' | 'view';

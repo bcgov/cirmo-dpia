@@ -2,8 +2,8 @@ export const emptyJsonbValues = {
   collectionUseAndDisclosure: {
     steps: [],
     collectionNotice: {
-      drafterInput: null,
-      mpoInput: null,
+      drafterInput: { content: null },
+      mpoInput: { content: null },
     },
   },
   storingPersonalInformation: {
@@ -45,19 +45,19 @@ export const emptyJsonbValues = {
       },
       storage: {
         onGovServers: null,
-        whereDetails: null,
+        whereDetails: { content: null },
       },
     },
     accessToPersonalInformation: {
       onlyCertainRolesAccessInformation: null,
       accessApproved: null,
       useAuditLogs: null,
-      additionalStrategies: null,
+      additionalStrategies: { content: null },
     },
   },
   accuracyCorrectionAndRetention: {
     accuracy: {
-      description: null,
+      description: { content: null },
     },
     correction: {
       haveProcessInPlace: null,
@@ -67,7 +67,7 @@ export const emptyJsonbValues = {
     retention: {
       usePIForDecision: null,
       haveApprovedInfoSchedule: null,
-      describeRetention: null,
+      describeRetention: { content: null },
     },
   },
   agreementsAndInformationBanks: {

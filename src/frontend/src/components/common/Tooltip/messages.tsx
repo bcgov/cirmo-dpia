@@ -1,6 +1,6 @@
 const PIAStatusTooltipText = (
   <>
-    <b>Incomplete:</b>
+    <b>Drafting in Progress:</b>
     <p>
       This PIA has not been submitted and is only visible to its drafter. Submit
       at any time to get help or a review from the MPO.
