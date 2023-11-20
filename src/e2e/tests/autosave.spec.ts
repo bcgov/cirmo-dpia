@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { drafterLogin, mpoLogin, cpoLogin, logout } from './utils';
+import {
+  drafterLogin,
+  mpoLogin,
+  cpoLogin,
+  logout,
+  generateUUID,
+} from './utils';
 import { basicPiaFill } from './modules';
 
 // Define an array of user roles and their corresponding login and logout functions
@@ -8,6 +14,9 @@ const userRoles = [
   { role: 'MPO', login: mpoLogin, logout },
   { role: 'CPO', login: cpoLogin, logout },
 ];
+
+// Generate a unique identifier for the test run
+const uuid = generateUUID();
 
 test.describe.serial('Autosave Test', () => {
   // Loop over each user role
@@ -30,7 +39,7 @@ test.describe.serial('Autosave Test', () => {
       ]);
 
       // Fill out the basic PIA form
-      await basicPiaFill(page);
+      await basicPiaFill(page, uuid);
 
       // Wait for the URL to update to the next steps page
       await expect(page).toHaveURL(/\/nextSteps\/edit$/);
