@@ -87,16 +87,18 @@ export const InformationSharingAgreementSection: React.FC<
               ) : (
                 <h4> {Messages.InvolveISA.Section.DescriptionISA.en}</h4>
               )}
-              {showEditorIsaDescription ? (
-                <RichTextEditor
-                  content={isaDescription}
-                  setContent={setIsaDescription}
-                  readOnly={isReadOnly}
-                  aria-label="Information Sharing Agreement Textarea Input"
-                />
-              ) : (
-                <i>Not answered</i>
-              )}
+              <div className="richText" id="InformationSharingAgreement">
+                {showEditorIsaDescription ? (
+                  <RichTextEditor
+                    content={isaDescription}
+                    setContent={setIsaDescription}
+                    readOnly={isReadOnly}
+                    aria-label="Information Sharing Agreement Textarea Input"
+                  />
+                ) : (
+                  <i>Not answered</i>
+                )}
+              </div>
             </div>
             {!isReadOnly ? (
               <>

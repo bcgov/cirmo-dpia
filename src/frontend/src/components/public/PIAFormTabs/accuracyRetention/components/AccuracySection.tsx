@@ -66,7 +66,7 @@ export const AccuracySection: React.FC<AccuracySectionProps> = ({
         )}
 
         {/* Render the accuracy description */}
-        <div>
+        <div className="richText" id="AccuracyDescription">
           {showEditor ? (
             <RichTextEditor
               content={accuracyDescription}

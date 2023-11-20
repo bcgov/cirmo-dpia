@@ -190,16 +190,18 @@ export const PersonalInformationSection: React.FC<
                     </h4>
                   )}
                   {/* Render the MDEditor for describeRetention */}
-                  {showEditor ? (
-                    <RichTextEditor
-                      content={describeRetention}
-                      setContent={setDescribeRetention}
-                      readOnly={isReadOnly}
-                      aria-label="Describe Retention Textarea Input"
-                    />
-                  ) : (
-                    <i>Not answered</i>
-                  )}
+                  <div className="richText" id="DescribeRetention">
+                    {showEditor ? (
+                      <RichTextEditor
+                        content={describeRetention}
+                        setContent={setDescribeRetention}
+                        readOnly={isReadOnly}
+                        aria-label="Describe Retention Textarea Input"
+                      />
+                    ) : (
+                      <i>Not answered</i>
+                    )}
+                  </div>
                 </div>
               )}
           </div>

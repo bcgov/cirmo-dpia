@@ -88,16 +88,18 @@ const PersonalInformationBanksSection: React.FC<
                     {Messages.ResultingPIB.Section.QuestionPIBDescription.en}
                   </h4>
                 )}
-                {showEditorPlbDescription ? (
-                  <RichTextEditor
-                    content={plbDescription}
-                    setContent={setPlbDescription}
-                    readOnly={isReadOnly}
-                    aria-label="Personal Information Bank Textarea Input"
-                  />
-                ) : (
-                  <i>Not answered</i>
-                )}
+                <div className="richText" id="PersonalInformationBank">
+                  {showEditorPlbDescription ? (
+                    <RichTextEditor
+                      content={plbDescription}
+                      setContent={setPlbDescription}
+                      readOnly={isReadOnly}
+                      aria-label="Personal Information Bank Textarea Input"
+                    />
+                  ) : (
+                    <i>Not answered</i>
+                  )}
+                </div>
               </div>
               {!isReadOnly ? (
                 <>
