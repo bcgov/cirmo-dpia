@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CommentSidebarProps, { Comment } from './interfaces';
 import { getDateTime, stringToDate } from '../../../utils/date';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
@@ -29,6 +29,7 @@ const CommentSidebar = ({
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
   const [enableComments, setEnableComments] = useState<boolean>(false);
+  const commentsEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!pia?.status) return;
@@ -68,6 +69,16 @@ const CommentSidebar = ({
   useEffect(() => {
     setComments([]);
   }, [pathname]);
+
+  useEffect(() => {
+    if (commentsEndRef.current) {
+      const scrollHeight = commentsEndRef.current.scrollHeight;
+      commentsEndRef.current.scrollTo({
+        top: scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [comments]);
 
   const handleModalClose = async (event: any) => {
     event.preventDefault();
@@ -115,7 +126,10 @@ const CommentSidebar = ({
     <>
       <div className="bg-white comment-sidebar">
         <h3 className="ps-3">Comments</h3>
-        <div className="comment-sidebar__comments-container">
+        <div
+          className="comment-sidebar__comments-container"
+          ref={commentsEndRef}
+        >
           {comments &&
             comments?.map((comment) => (
               <div className="p-3" key={comment.id}>
