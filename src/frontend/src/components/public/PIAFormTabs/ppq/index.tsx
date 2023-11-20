@@ -138,9 +138,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
 
   // Show the editor unless isReadOnly, ppqForm?.hasInitiativeOther and initiativeOtherDetails is empty.
   const showEditorInitiativeOtherDetails = !(
-    isReadOnly &&
-    ppqForm?.hasInitiativeOther &&
-    initiativeOtherDetails === ''
+    isReadOnly && initiativeOtherDetails === ''
   );
   // Show the editor unless isReadOnly and proposedDeadlineReason is empty.
   const showEditorProposedDeadlineReason = !(
@@ -273,16 +271,17 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               readOnly={isReadOnly}
             />
           ))}
-          {showEditorInitiativeOtherDetails ? (
-            <RichTextEditor
-              content={initiativeOtherDetails}
-              setContent={setInitiativeOtherDetails}
-              readOnly={isReadOnly}
-              aria-label="Initiative Other Details Input"
-            />
-          ) : (
-            <i>Not answered</i>
-          )}
+          {ppqForm?.hasInitiativeOther &&
+            (showEditorInitiativeOtherDetails ? (
+              <RichTextEditor
+                content={initiativeOtherDetails}
+                setContent={setInitiativeOtherDetails}
+                readOnly={isReadOnly}
+                aria-label="Initiative Other Details Input"
+              />
+            ) : (
+              <i>Not answered</i>
+            ))}
         </div>
         {/* Render deadline info, conditional on printPreview and isReadOnly */}
         {!printPreview && (
