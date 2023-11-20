@@ -138,9 +138,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
 
   // Show the editor unless isReadOnly, ppqForm?.hasInitiativeOther and initiativeOtherDetails is empty.
   const showEditorInitiativeOtherDetails = !(
-    isReadOnly &&
-    ppqForm?.hasInitiativeOther &&
-    initiativeOtherDetails === ''
+    isReadOnly && initiativeOtherDetails === ''
   );
   // Show the editor unless isReadOnly and proposedDeadlineReason is empty.
   const showEditorProposedDeadlineReason = !(
