@@ -47,7 +47,10 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
 
           {/* Delete row */}
           {props.allowRowDelete && !props.readOnly && (
-            <div className="mt-4 d-flex justify-content-end">
+            <div
+              className="mt-4 d-flex justify-content-end"
+              id="delete-row-button"
+            >
               <button
                 className="bcgovbtn bcgovbtn__tertiary bold min-gap delete__btn"
                 onClick={(e) => {
@@ -66,7 +69,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
 
       {/* Add new rows */}
       {props.allowRowAdd && !props.readOnly && (
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center" id="add-row-button">
           <button
             onClick={(e) => {
               e.preventDefault();
