@@ -234,7 +234,7 @@ export async function mpoPiaFill(page: Page) {
       'Cloud technology (if no corporate PIA has been completed by the CPO)',
       'Data-linking',
       'BC Services Card and/or other digital identity credential onboarding',
-      // 'Other (Please provide additional details below)',
+      'Other (Please provide additional details below)',
     ];
 
     for (const label of labelsToCheck) {
@@ -244,16 +244,14 @@ export async function mpoPiaFill(page: Page) {
     }
   }
 
-  // async function fillPpqOther() {
-  //   const otherDetailsTextbox = page
-  //     .locator('#InitiativeOtherDetails div')
-  //     .nth(2);
-  //   await otherDetailsTextbox.waitFor({ state: 'visible' });
-  //   await otherDetailsTextbox.click();
-  //   await otherDetailsTextbox.fill(
-  //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper est ligula, sed viverra lacus sagittis vitae. Suspendisse ullamcorper, diam quis rhoncus semper, urna erat egestas nunc, eget tristique ipsum tortor vitae quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut est ante, congue vel fringilla at, sollicitudin vitae arcu. Mauris velit neque, tempor et arcu non, fermentum mollis massa. Nulla dignissim venenatis risus ac gravida. Fusce bibendum dolor diam, nec semper dolor malesuada ut. Duis in diam dapibus, suscipit massa at, aliquam sapien.',
-  //   );
-  // }
+  async function fillPpqOther() {
+    const otherDetailsTextbox = page.locator('.rt-content').first();
+    await otherDetailsTextbox.waitFor({ state: 'visible' });
+    await otherDetailsTextbox.click();
+    await otherDetailsTextbox.fill(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper est ligula, sed viverra lacus sagittis vitae. Suspendisse ullamcorper, diam quis rhoncus semper, urna erat egestas nunc, eget tristique ipsum tortor vitae quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut est ante, congue vel fringilla at, sollicitudin vitae arcu. Mauris velit neque, tempor et arcu non, fermentum mollis massa. Nulla dignissim venenatis risus ac gravida. Fusce bibendum dolor diam, nec semper dolor malesuada ut. Duis in diam dapibus, suscipit massa at, aliquam sapien.',
+    );
+  }
 
   async function fillPpqDates() {
     const datePickerPlaceholder = 'yyyy/mm/dd';
@@ -473,7 +471,7 @@ export async function mpoPiaFill(page: Page) {
   await fillAccuracyCorrectionRetentionComments();
   await accuracyCorrectionRetentionSubmit();
   await fillPpqChecks();
-  // await fillPpqOther();
+  await fillPpqOther();
   await fillPpqDates();
   await fillPpqReasonDeadline();
   await fillPpqReasonInitiativeSummary();
