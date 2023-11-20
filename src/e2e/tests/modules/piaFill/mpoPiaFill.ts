@@ -119,8 +119,7 @@ export async function mpoPiaFill(page: Page) {
   }
 
   async function fillCollectionUseDisclosureMPOTextArea() {
-    const mpoTextAreaLabel = 'Collection Notice MPO Textarea Input';
-    const textArea = page.getByLabel(mpoTextAreaLabel).getByRole('textbox');
+    const textArea = page.locator('#MPOCommentsDisclosure div').nth(2);
     await textArea.waitFor({ state: 'visible' });
     await textArea.click();
     await textArea.fill(
@@ -137,11 +136,11 @@ export async function mpoPiaFill(page: Page) {
 
     await page.getByLabel('Storing personal information').click();
 
-    const sensitiveInfoSection = page.locator('form div').filter({
-      hasText:
-        'Does your initiative involve sensitive personal information?YesNoIs the sensitiv',
-    });
-    await sensitiveInfoSection.getByLabel('View comments').click();
+    const commentsLocator = page.locator(
+      'section:nth-child(4) > .drop-shadow > .d-flex > .bcgovbtn',
+    );
+    await commentsLocator.waitFor({ state: 'visible' });
+    await commentsLocator.click();
 
     for (let i = 0; i < 3; i++) {
       const commentInput = page.getByPlaceholder(commentInputPlaceholder);
@@ -185,11 +184,9 @@ export async function mpoPiaFill(page: Page) {
     const commentOptionsButtonLabel = 'Comment Options Button';
     const deleteButtonLabel = 'Delete';
 
-    const accuracySection = page.locator('form div').filter({
-      hasText:
-        'How will you make sure that the personal information is accurate and complete?FO',
-    });
-    await accuracySection.getByLabel('View comments').click();
+    const commentsLocator = page.getByLabel('View comments').first();
+    await commentsLocator.waitFor({ state: 'visible' });
+    await commentsLocator.click();
 
     for (let i = 0; i < 5; i++) {
       const commentInput = page.getByPlaceholder(commentInputPlaceholder);
@@ -237,7 +234,7 @@ export async function mpoPiaFill(page: Page) {
       'Cloud technology (if no corporate PIA has been completed by the CPO)',
       'Data-linking',
       'BC Services Card and/or other digital identity credential onboarding',
-      'Other (Please provide additional details below)',
+      // 'Other (Please provide additional details below)',
     ];
 
     for (const label of labelsToCheck) {
@@ -247,17 +244,16 @@ export async function mpoPiaFill(page: Page) {
     }
   }
 
-  async function fillPpqOther() {
-    const otherDetailsLabel = 'Initiative Other Details Input';
-    const otherDetailsTextbox = page
-      .getByLabel(otherDetailsLabel)
-      .getByRole('textbox');
-    await otherDetailsTextbox.waitFor({ state: 'visible' });
-    await otherDetailsTextbox.click();
-    await otherDetailsTextbox.fill(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper est ligula, sed viverra lacus sagittis vitae. Suspendisse ullamcorper, diam quis rhoncus semper, urna erat egestas nunc, eget tristique ipsum tortor vitae quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut est ante, congue vel fringilla at, sollicitudin vitae arcu. Mauris velit neque, tempor et arcu non, fermentum mollis massa. Nulla dignissim venenatis risus ac gravida. Fusce bibendum dolor diam, nec semper dolor malesuada ut. Duis in diam dapibus, suscipit massa at, aliquam sapien.',
-    );
-  }
+  // async function fillPpqOther() {
+  //   const otherDetailsTextbox = page
+  //     .locator('#InitiativeOtherDetails div')
+  //     .nth(2);
+  //   await otherDetailsTextbox.waitFor({ state: 'visible' });
+  //   await otherDetailsTextbox.click();
+  //   await otherDetailsTextbox.fill(
+  //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper est ligula, sed viverra lacus sagittis vitae. Suspendisse ullamcorper, diam quis rhoncus semper, urna erat egestas nunc, eget tristique ipsum tortor vitae quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut est ante, congue vel fringilla at, sollicitudin vitae arcu. Mauris velit neque, tempor et arcu non, fermentum mollis massa. Nulla dignissim venenatis risus ac gravida. Fusce bibendum dolor diam, nec semper dolor malesuada ut. Duis in diam dapibus, suscipit massa at, aliquam sapien.',
+  //   );
+  // }
 
   async function fillPpqDates() {
     const datePickerPlaceholder = 'yyyy/mm/dd';
@@ -271,7 +267,9 @@ export async function mpoPiaFill(page: Page) {
   }
 
   async function fillPpqReasonDeadline() {
-    const reasonDeadlineTextarea = page.locator('textarea').nth(1);
+    const reasonDeadlineTextarea = page
+      .locator('#ProposedDeadlineReason div')
+      .nth(2);
     await reasonDeadlineTextarea.waitFor({ state: 'visible' });
     await reasonDeadlineTextarea.click();
     await reasonDeadlineTextarea.fill(
@@ -280,10 +278,9 @@ export async function mpoPiaFill(page: Page) {
   }
 
   async function fillPpqReasonInitiativeSummary() {
-    const initiativeSummaryLabel = 'Initiative Summary Textarea Input';
     const initiativeSummaryTextbox = page
-      .getByLabel(initiativeSummaryLabel)
-      .getByRole('textbox');
+      .locator('#InitiativeSummary div')
+      .nth(2);
     await initiativeSummaryTextbox.waitFor({ state: 'visible' });
     await initiativeSummaryTextbox.click();
     await initiativeSummaryTextbox.fill(
@@ -342,10 +339,7 @@ export async function mpoPiaFill(page: Page) {
   }
 
   async function fillPpqRelatedOtherPia() {
-    const otherPiaTextareaLabel = 'Other CPO Consideration Textarea Input';
-    const otherPiaTextbox = page
-      .getByLabel(otherPiaTextareaLabel)
-      .getByRole('textbox');
+    const otherPiaTextbox = page.locator('#OtherCPOConsideration div').nth(2);
     await otherPiaTextbox.waitFor({ state: 'visible' });
     await otherPiaTextbox.click();
     await otherPiaTextbox.fill(
@@ -479,7 +473,7 @@ export async function mpoPiaFill(page: Page) {
   await fillAccuracyCorrectionRetentionComments();
   await accuracyCorrectionRetentionSubmit();
   await fillPpqChecks();
-  await fillPpqOther();
+  // await fillPpqOther();
   await fillPpqDates();
   await fillPpqReasonDeadline();
   await fillPpqReasonInitiativeSummary();

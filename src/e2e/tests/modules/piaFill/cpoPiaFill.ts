@@ -52,12 +52,9 @@ export async function cpoPiaFill(page: Page, uuid: string) {
   // Storing Personal Information Form Tab
   async function fillStoringPersonalInformationComments() {
     // For the first set of comments
-    let locator = page.locator('form div').filter({
-      hasText:
-        'Is any personal information stored outside of Canada?YesWhere are you storing th',
-    });
-    await locator.getByLabel('View comments').waitFor({ state: 'visible' });
-    await locator.getByLabel('View comments').click();
+    const viewCommentslocator1 = page.getByText('View comments (0)').first();
+    await viewCommentslocator1.waitFor({ state: 'visible' });
+    await viewCommentslocator1.click();
 
     // Add and delete comments
     for (let i = 0; i < 2; i++) {
@@ -90,12 +87,9 @@ export async function cpoPiaFill(page: Page, uuid: string) {
     await page.getByLabel('Delete', { exact: true }).click();
 
     // For the second set of comments
-    locator = page.locator('form div').filter({
-      hasText:
-        'Provide details about how you will track access to sensitive personal informatio',
-    });
-    await locator.getByLabel('View comments').waitFor({ state: 'visible' });
-    await locator.getByLabel('View comments').click();
+    const viewCommentslocator2 = page.getByText('View comments (0)').nth(3);
+    await viewCommentslocator2.waitFor({ state: 'visible' });
+    await viewCommentslocator2.click();
 
     // Add comments
     for (let i = 0; i < 2; i++) {
@@ -160,12 +154,9 @@ export async function cpoPiaFill(page: Page, uuid: string) {
 
   // Accuracy, Correction and Retention Form Tab
   async function fillAccuracyCorrectionRetentionComments() {
-    const locator = page.locator('form div').filter({
-      hasText:
-        'Does your initiative use personal information to make decisions that directly af',
-    });
-    await locator.getByLabel('View comments').waitFor({ state: 'visible' });
-    await locator.getByLabel('View comments').click();
+    const locator = page.getByLabel('View comments').nth(2);
+    await locator.waitFor({ state: 'visible' });
+    await locator.click();
 
     for (let i = 0; i < 2; i++) {
       await page

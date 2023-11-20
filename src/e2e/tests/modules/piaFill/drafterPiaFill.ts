@@ -3,7 +3,7 @@ import { Page, expect } from '@playwright/test';
 /* 
 Test code for Drafter PIA form filling. This function fills out the full PIA Form. It then submits the form and checks if the page redirects to '/intake/view'.
 */
-export async function drafterPiaFill(page: Page, uuid?: string) {
+export async function drafterPiaFill(page: Page, uuid: string) {
   //PIA Intake Form Tab
   async function fillPIAIntakeInitiativeDetails() {
     await page
@@ -38,15 +38,13 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   async function fillPIAIntakeInitiativeDescriptionDetails() {
     await page
-      .getByLabel('Initiative Description Textarea Input')
+      .locator('#initiativeDescription div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#initiativeDescription div').nth(2).click();
     await page
-      .getByLabel('Initiative Description Textarea Input')
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel('Initiative Description Textarea Input')
-      .getByRole('textbox')
+      .locator('#initiativeDescription div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -54,15 +52,13 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   async function fillPIAIntakeInitiativeScopeDetails() {
     await page
-      .getByLabel('Initiative Scope Textarea Input')
+      .locator('#initiativeScope div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#initiativeScope div').nth(2).click();
     await page
-      .getByLabel('Initiative Scope Textarea Input')
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel('Initiative Scope Textarea Input')
-      .getByRole('textbox')
+      .locator('#initiativeScope div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -70,15 +66,13 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   async function fillPIAIntakeDataElementsInvolvedDetails() {
     await page
-      .getByLabel('Data Elements Involved Textarea Input')
+      .locator('#dataElementsInvolved div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#dataElementsInvolved div').nth(2).click();
     await page
-      .getByLabel('Data Elements Involved Textarea Input')
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel('Data Elements Involved Textarea Input')
-      .getByRole('textbox')
+      .locator('#dataElementsInvolved div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -144,15 +138,13 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   async function fillCollectionUseDisclosureNoticeDetails() {
     await page
-      .getByLabel('Collection Notice Drafter Textarea Input')
+      .locator('#drafterDisclosure div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#drafterDisclosure div').nth(2).click();
     await page
-      .getByLabel('Collection Notice Drafter Textarea Input')
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel('Collection Notice Drafter Textarea Input')
-      .getByRole('textbox')
+      .locator('#drafterDisclosure div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -165,10 +157,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   // Storing Personal Information Form Tab
   async function fillStoringPersonalInformationDetails() {
-    await page.getByRole('textbox').waitFor({ state: 'visible' });
-    await page.getByRole('textbox').click();
     await page
-      .getByRole('textbox')
+      .locator('#PersonalInformationStorage div')
+      .nth(2)
+      .waitFor({ state: 'visible' });
+    await page.locator('#PersonalInformationStorage div').nth(2).click();
+    await page
+      .locator('#PersonalInformationStorage div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -207,14 +203,15 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
 
-    const addMoreRowsLocator = page.locator('form div').filter({
-      hasText:
-        'Is the sensitive personal information stored by a service provider?YesNoName of ',
-    });
+    const addMoreRowsLocator = page
+      .locator('div')
+      .filter({ hasText: /^Add more rows$/ })
+      .first();
     await addMoreRowsLocator
       .getByLabel('Add more rows')
+      .first()
       .waitFor({ state: 'visible' });
-    await addMoreRowsLocator.getByLabel('Add more rows').click();
+    await addMoreRowsLocator.getByLabel('Add more rows').first().click();
   }
 
   async function fillStoringPersonalInformationSensitiveDetails2() {
@@ -253,14 +250,15 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
 
-    const addMoreRowsLocator = page.locator('form div').filter({
-      hasText:
-        'Is the sensitive personal information stored by a service provider?YesNoName of ',
-    });
+    const addMoreRowsLocator = page
+      .locator('div')
+      .filter({ hasText: /^Add more rows$/ })
+      .first();
     await addMoreRowsLocator
       .getByLabel('Add more rows')
+      .first()
       .waitFor({ state: 'visible' });
-    await addMoreRowsLocator.getByLabel('Add more rows').click();
+    await addMoreRowsLocator.getByLabel('Add more rows').first().click();
   }
 
   async function fillStoringPersonalInformationSensitiveDetails3() {
@@ -301,48 +299,37 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
   }
 
   async function fillStoringPersonalInformationContractualDetails() {
-    const contractualTermsSelector = 'Contractual Terms Textarea Input';
     await page
-      .getByLabel(contractualTermsSelector)
-      .getByRole('textbox')
+      .locator('#ContractualTerms div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#ContractualTerms div').nth(2).click();
     await page
-      .getByLabel(contractualTermsSelector)
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel(contractualTermsSelector)
-      .getByRole('textbox')
+      .locator('#ContractualTerms div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
   }
 
   async function fillStoringPersonalInformationAccessDetails() {
-    const accessDetailsSelector =
-      'Enterprise Service Access Details Textarea Input';
     await page
-      .getByLabel(accessDetailsSelector)
-      .getByRole('textbox')
+      .locator('#EnterpriseServiceAccess div')
+      .nth(2)
       .waitFor({ state: 'visible' });
-    await page.getByLabel(accessDetailsSelector).getByRole('textbox').click();
+    await page.locator('#EnterpriseServiceAccess div').nth(2).click();
     await page
-      .getByLabel(accessDetailsSelector)
-      .getByRole('textbox')
+      .locator('#EnterpriseServiceAccess div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
   }
 
   async function fillStoringPersonalInformationAccessComments() {
-    const commentsLocator = page.locator('form div').filter({
-      hasText:
-        'Are you relying on an existing contract, such as an enterprise offering from the',
-    });
-    await commentsLocator
-      .getByLabel('View comments')
-      .waitFor({ state: 'visible' });
-    await commentsLocator.getByLabel('View comments').click();
+    const commentsLocator = page.locator('.pt-5 > .d-flex > .bcgovbtn');
+    await commentsLocator.waitFor({ state: 'visible' });
+    await commentsLocator.click();
 
     for (let i = 0; i < 4; i++) {
       await page
@@ -375,37 +362,28 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
   }
 
   async function fillStoringPersonalInformationUnauthorizedAccessDetails() {
-    const unauthorizedAccessSelector =
-      'Unauthorized Access Measures Textarea Input';
     await page
-      .getByLabel(unauthorizedAccessSelector)
-      .getByRole('textbox')
+      .locator('#UnauthorizedAccessControls div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#UnauthorizedAccessControls div').nth(2).click();
     await page
-      .getByLabel(unauthorizedAccessSelector)
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel(unauthorizedAccessSelector)
-      .getByRole('textbox')
+      .locator('#UnauthorizedAccessControls div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
   }
 
   async function fillStoringPersonalInformationTrackAccess() {
-    const trackAccessDetailsSelector = 'Track Access Details Textarea Input';
     await page
-      .getByLabel(trackAccessDetailsSelector)
-      .getByRole('textbox')
+      .locator('#TrackAccessDetails div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#TrackAccessDetails div').nth(2).click();
     await page
-      .getByLabel(trackAccessDetailsSelector)
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel(trackAccessDetailsSelector)
-      .getByRole('textbox')
+      .locator('#TrackAccessDetails div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -488,14 +466,9 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
 
-    const addMoreRowsLocator = page.locator('form div').filter({
-      hasText:
-        'Describe the privacy risks for disclosure outside of Canada.Use the table below ',
-    });
-    await addMoreRowsLocator
-      .getByLabel('Add more rows')
-      .waitFor({ state: 'visible' });
-    await addMoreRowsLocator.getByLabel('Add more rows').click();
+    const addMoreRowsLocator = page.getByLabel('Add more rows').nth(1);
+    await addMoreRowsLocator.waitFor({ state: 'visible' });
+    await addMoreRowsLocator.click();
   }
 
   async function fillStoringPersonalInformationPrivacyRisksStep2() {
@@ -596,14 +569,9 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
       );
 
     // Wait and click 'Add more rows' in a specific section
-    const addMoreRowsLocator = page.locator('form div').filter({
-      hasText:
-        'Describe the privacy risks for disclosure outside of Canada.Use the table below ',
-    });
-    await addMoreRowsLocator
-      .getByLabel('Add more rows')
-      .waitFor({ state: 'visible' });
-    await addMoreRowsLocator.getByLabel('Add more rows').click();
+    const addMoreRowsLocator = page.getByLabel('Add more rows').nth(1);
+    await addMoreRowsLocator.waitFor({ state: 'visible' });
+    await addMoreRowsLocator.click();
   }
 
   async function fillStoringPersonalInformationPrivacyRisksStep3() {
@@ -739,10 +707,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
       .getByLabel('We use audit logs to see who accesses a file and when')
       .check();
 
-    await page.getByRole('textbox').waitFor({ state: 'visible' });
-    await page.getByRole('textbox').click();
     await page
-      .getByRole('textbox')
+      .locator('#PersonalInformationStrategies div')
+      .nth(2)
+      .waitFor({ state: 'visible' });
+    await page.locator('#PersonalInformationStrategies div').nth(2).click();
+    await page
+      .locator('#PersonalInformationStrategies div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
@@ -795,10 +767,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   // Accuracy, Correction and Retention Form Tab
   async function fillAccuracyCorrectionRetentionAccuracyDetails() {
-    await page.getByRole('textbox').waitFor({ state: 'visible' });
-    await page.getByRole('textbox').click();
     await page
-      .getByRole('textbox')
+      .locator('#AccuracyDescription div')
+      .nth(2)
+      .waitFor({ state: 'visible' });
+    await page.locator('#AccuracyDescription div').nth(2).click();
+    await page
+      .locator('#AccuracyDescription div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -829,15 +805,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
     await page.getByLabel(infoScheduleLabel).waitFor({ state: 'visible' });
     await page.getByLabel(infoScheduleLabel).check();
 
-    const retentionTextareaLabel = 'Describe Retention Textarea Input';
     await page
-      .getByLabel(retentionTextareaLabel)
-      .getByRole('textbox')
+      .locator('#DescribeRetention div')
+      .nth(2)
       .waitFor({ state: 'visible' });
-    await page.getByLabel(retentionTextareaLabel).getByRole('textbox').click();
+    await page.locator('#DescribeRetention div').nth(2).click();
     await page
-      .getByLabel(retentionTextareaLabel)
-      .getByRole('textbox')
+      .locator('#DescribeRetention div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -850,16 +825,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
 
   // Agreements and information banks Form Tab
   async function fillAgreementsInformationBanksAgreementsDetails() {
-    const agreementTextareaLabel =
-      'Information Sharing Agreement Textarea Input';
     await page
-      .getByLabel(agreementTextareaLabel)
-      .getByRole('textbox')
+      .locator('#InformationSharingAgreement div')
+      .nth(2)
       .waitFor({ state: 'visible' });
-    await page.getByLabel(agreementTextareaLabel).getByRole('textbox').click();
+    await page.locator('#InformationSharingAgreement div').nth(2).click();
     await page
-      .getByLabel(agreementTextareaLabel)
-      .getByRole('textbox')
+      .locator('#InformationSharingAgreement div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
@@ -946,19 +919,14 @@ export async function drafterPiaFill(page: Page, uuid?: string) {
   }
 
   async function fillAgreementsInformationBanksPersonalInformationDetails() {
-    const personalInfoBankTextareaLabel =
-      'Personal Information Bank Textarea Input';
     await page
-      .getByLabel(personalInfoBankTextareaLabel)
-      .getByRole('textbox')
+      .locator('#PersonalInformationBank div')
+      .nth(2)
       .waitFor({ state: 'visible' });
+    await page.locator('#PersonalInformationBank div').nth(2).click();
     await page
-      .getByLabel(personalInfoBankTextareaLabel)
-      .getByRole('textbox')
-      .click();
-    await page
-      .getByLabel(personalInfoBankTextareaLabel)
-      .getByRole('textbox')
+      .locator('#PersonalInformationBank div')
+      .nth(2)
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi. Etiam a condimentum eros. Quisque dolor diam, hendrerit eget mauris a, fringilla ultrices nulla. Proin at elit et justo pharetra malesuada quis et justo. Sed laoreet nec est sed tincidunt. Donec laoreet odio vitae lorem gravida, vel porta dui eleifend. Integer odio odio, eleifend id tincidunt in, facilisis non velit. Phasellus diam tortor, condimentum sit amet mauris sed, ultricies iaculis magna. Pellentesque at congue nunc, et tincidunt orci. Nulla eget placerat nunc, non dictum nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus nec vehicula nunc. Aliquam erat volutpat. Quisque vehicula purus a libero commodo, vel fringilla nisl iaculis. Pellentesque tellus ligula, rutrum in magna a, mollis ullamcorper tellus.',
       );
