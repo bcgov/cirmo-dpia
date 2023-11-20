@@ -232,91 +232,93 @@ function PIASubHeader({
   };
 
   return (
-    <div className="subheader-container wrapper">
-      <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
-      <div className="other__elements-container">
-        <div className="mx-1">
-          <StatusChangeDropDown
-            pia={pia}
-            mode={mode}
-            changeStatusFn={changeStatusFn}
-          />
-        </div>
-        {lastSaveAlertInfo?.show && !nextStepAction && (
+    <>
+      <div className="subheader-container wrapper">
+        <h1 className="title">{pia.title ? pia.title : 'New PIA'}</h1>
+        <div className="other__elements-container">
           <div className="mx-1">
-            <Alert
-              type={lastSaveAlertInfo.type}
-              message={lastSaveAlertInfo.message}
-              showInitialIcon={true}
-              showCloseIcon={false}
+            <StatusChangeDropDown
+              pia={pia}
+              mode={mode}
+              changeStatusFn={changeStatusFn}
             />
           </div>
-        )}
-        {showEditButton() && (
-          <div className="mx-1">
-            <button
-              onClick={onEditClick}
-              className="mx-1 bcgovbtn bcgovbtn__secondary"
-              aria-label="Edit Button"
-            >
-              Edit
-            </button>
-          </div>
-        )}
-        <div className="d-flex mx-1">
-          <button
-            className="mx-2 bcgovbtn bcgovbtn__secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded={false}
-            aria-label="More options"
-          >
-            <FontAwesomeIcon icon={faEllipsisH} />
-          </button>
-
-          <ul className="dropdown-menu">
-            <li role="button">
-              <a
-                className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={buildDynamicPath(routes.PIA_PRINT_PREVIEW, {
-                  id: pia.id,
-                })}
-                aria-label="Print Preview Link"
-              >
-                Print Preview
-              </a>
-            </li>
-            <li role="button">
-              <button
-                className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
-                aria-label="Generate access link button"
-                onClick={() => {
-                  handleGenerateInviteCode();
-                  populateGenerateInviteCodeModal();
-                  setShowModal(true);
-                }}
-              >
-                Generate access link
-              </button>
-            </li>
-          </ul>
-
-          {/* Submission button */}
-          {!nextStepAction && showSubmitButton() && (
-            <button
-              onClick={(e) => {
-                setAccessCode('');
-                onSubmitClick(e);
-              }}
-              className={`mx-1 bcgovbtn bcgovbtn__primary`}
-              disabled={disableSubmitButton}
-              aria-label="Submit Button"
-            >
-              {primaryButtonText}
-            </button>
+          {lastSaveAlertInfo?.show && !nextStepAction && (
+            <div className="mx-1">
+              <Alert
+                type={lastSaveAlertInfo.type}
+                message={lastSaveAlertInfo.message}
+                showInitialIcon={true}
+                showCloseIcon={false}
+              />
+            </div>
           )}
+          {showEditButton() && (
+            <div className="mx-1">
+              <button
+                onClick={onEditClick}
+                className="mx-1 bcgovbtn bcgovbtn__secondary"
+                aria-label="Edit Button"
+              >
+                Edit
+              </button>
+            </div>
+          )}
+          <div className="d-flex mx-1">
+            <button
+              className="mx-2 bcgovbtn bcgovbtn__secondary"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded={false}
+              aria-label="More options"
+            >
+              <FontAwesomeIcon icon={faEllipsisH} />
+            </button>
+
+            <ul className="dropdown-menu">
+              <li role="button">
+                <a
+                  className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={buildDynamicPath(routes.PIA_PRINT_PREVIEW, {
+                    id: pia.id,
+                  })}
+                  aria-label="Print Preview Link"
+                >
+                  Print Preview
+                </a>
+              </li>
+              <li role="button">
+                <button
+                  className={`dropdown-item ${!pia?.id ? 'disabled' : ''}`}
+                  aria-label="Generate access link button"
+                  onClick={() => {
+                    handleGenerateInviteCode();
+                    populateGenerateInviteCodeModal();
+                    setShowModal(true);
+                  }}
+                >
+                  Generate access link
+                </button>
+              </li>
+            </ul>
+
+            {/* Submission button */}
+            {!nextStepAction && showSubmitButton() && (
+              <button
+                onClick={(e) => {
+                  setAccessCode('');
+                  onSubmitClick(e);
+                }}
+                className={`mx-1 bcgovbtn bcgovbtn__primary`}
+                disabled={disableSubmitButton}
+                aria-label="Submit Button"
+              >
+                {primaryButtonText}
+              </button>
+            )}
+          </div>
         </div>
       </div>
       <Modal
@@ -335,7 +337,7 @@ function PIASubHeader({
       >
         <p className="modal-text">{modalParagraph}</p>
       </Modal>
-    </div>
+    </>
   );
 }
 

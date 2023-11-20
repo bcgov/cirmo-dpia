@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { IModal } from './interfaces';
 import InputText from '../InputText/InputText';
+import ReactDOM from 'react-dom';
 
 const Modal = ({
   confirmLabel,
@@ -70,13 +71,11 @@ const Modal = ({
     };
   }, [handleCancel, modalRefCurrent, show]);
 
-  const showHideClassName = show
-    ? 'modal display-block '
-    : 'modal display-none';
+  const showHideClassName = show ? 'modal display-block' : 'modal display-none';
 
   const handleFocusSelect = (e: any) => e.target.select();
 
-  return (
+  return ReactDOM.createPortal(
     <div className={showHideClassName} tabIndex={0} ref={modalRef}>
       <section className="modal-main">
         <h3 className="modal-title">{titleText}</h3>
@@ -120,7 +119,8 @@ const Modal = ({
           )}
         </div>
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
