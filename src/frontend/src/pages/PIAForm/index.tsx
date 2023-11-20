@@ -506,19 +506,18 @@ const PIAFormPage = () => {
             </Collapsible>
           </div>
         </div>
-
-        <Modal
-          confirmLabel={piaModalConfirmLabel}
-          cancelLabel={piaModalCancelLabel}
-          titleText={piaModalTitleText}
-          show={showPiaModal}
-          value={piaModalButtonValue}
-          handleClose={(e) => handleModalClose(e)}
-          handleCancel={handleModalCancel}
-        >
-          <p className="modal-text">{piaModalParagraph}</p>
-        </Modal>
       </div>
+      <Modal
+        confirmLabel={piaModalConfirmLabel}
+        cancelLabel={piaModalCancelLabel}
+        titleText={piaModalTitleText}
+        show={showPiaModal}
+        value={piaModalButtonValue}
+        handleClose={(e) => handleModalClose(e)}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{piaModalParagraph}</p>
+      </Modal>
     </>
   );
 };

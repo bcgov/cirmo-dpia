@@ -126,67 +126,67 @@ function Header() {
     setShowModal(false);
   };
   return (
-    <header className="header wrapper">
-      <div className="banner">
-        <a tabIndex={0} href="/">
-          <img
-            className="logo"
-            src={BCGovLogo}
-            alt="Go to the Government of British Columbia website"
-          />
-        </a>
-        <p>
-          <b>
-            Digital Privacy Impact Assessment (DPIA) <span>beta</span>
-          </b>
-        </p>
-      </div>
-
-      <div className="message">{message ? <p>{message}</p> : null}</div>
-
-      <div data-cy="login" className="d-flex flex-grow-1 flex-row-reverse">
-        {/* Login CTA */}
-        {!isAuthenticated() && (
-          <button
-            className="bcgovbtn bcgovbtn__secondary--dark"
-            onClick={() => login()}
-          >
-            <div className="d-none d-md-block">Log in with IDIR</div>
-            <FontAwesomeIcon className="icon" icon={faUser} />
-          </button>
-        )}
-
-        {/* Sign out Modal */}
-        <Modal
-          confirmLabel="Yes, sign out"
-          cancelLabel="Cancel"
-          titleText="Sign out confirmation"
-          show={showModal}
-          reversed={true}
-          handleClose={hideModalDialog}
-          handleCancel={cancelModalDialog}
-        >
-          <p className="modal-text">
-            Are you sure you would like to sign out of the platform? You will be
-            taken out to the landing page.
+    <>
+      <header className="header wrapper">
+        <div className="banner">
+          <a tabIndex={0} href="/">
+            <img
+              className="logo"
+              src={BCGovLogo}
+              alt="Go to the Government of British Columbia website"
+            />
+          </a>
+          <p>
+            <b>
+              Digital Privacy Impact Assessment (DPIA) <span>beta</span>
+            </b>
           </p>
-        </Modal>
+        </div>
 
-        {/* Sign out CTA */}
-        {isAuthenticated() && (
-          <button
-            tabIndex={0}
-            className="bcgovbtn bcgovbtn__secondary--dark"
-            onClick={() => showModalDialog()}
-          >
-            <div className="d-none d-md-block">Sign Out</div>
-            <div className="d-md-none">
-              <FontAwesomeIcon className="icon" icon={faSignOut} />
-            </div>
-          </button>
-        )}
-      </div>
-    </header>
+        <div className="message">{message ? <p>{message}</p> : null}</div>
+
+        <div data-cy="login" className="d-flex flex-grow-1 flex-row-reverse">
+          {/* Login CTA */}
+          {!isAuthenticated() && (
+            <button
+              className="bcgovbtn bcgovbtn__secondary--dark"
+              onClick={() => login()}
+            >
+              <div className="d-none d-md-block">Log in with IDIR</div>
+              <FontAwesomeIcon className="icon" icon={faUser} />
+            </button>
+          )}
+          {/* Sign out CTA */}
+          {isAuthenticated() && (
+            <button
+              tabIndex={0}
+              className="bcgovbtn bcgovbtn__secondary--dark"
+              onClick={() => showModalDialog()}
+            >
+              <div className="d-none d-md-block">Sign Out</div>
+              <div className="d-md-none">
+                <FontAwesomeIcon className="icon" icon={faSignOut} />
+              </div>
+            </button>
+          )}
+        </div>
+      </header>
+      {/* Sign out Modal */}
+      <Modal
+        confirmLabel="Yes, sign out"
+        cancelLabel="Cancel"
+        titleText="Sign out confirmation"
+        show={showModal}
+        reversed={true}
+        handleClose={hideModalDialog}
+        handleCancel={cancelModalDialog}
+      >
+        <p className="modal-text">
+          Are you sure you would like to sign out of the platform? You will be
+          taken out to the landing page.
+        </p>
+      </Modal>
+    </>
   );
 }
 
