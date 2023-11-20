@@ -274,16 +274,17 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             />
           ))}
           <div className="richText" id="InitiativeOtherDetails">
-            {showEditorInitiativeOtherDetails ? (
-              <RichTextEditor
-                content={initiativeOtherDetails}
-                setContent={setInitiativeOtherDetails}
-                readOnly={isReadOnly}
-                aria-label="Initiative Other Details Input"
-              />
-            ) : (
-              <i>Not answered</i>
-            )}
+            {ppqForm?.hasInitiativeOther &&
+              (showEditorInitiativeOtherDetails ? (
+                <RichTextEditor
+                  content={initiativeOtherDetails}
+                  setContent={setInitiativeOtherDetails}
+                  readOnly={isReadOnly}
+                  aria-label="Initiative Other Details Input"
+                />
+              ) : (
+                <i>Not answered</i>
+              ))}
           </div>
         </div>
         {/* Render deadline info, conditional on printPreview and isReadOnly */}
