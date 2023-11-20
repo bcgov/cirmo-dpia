@@ -447,16 +447,18 @@ export const SecurityPersonalInformation = ({
                       }
                     </h4>
                   )}
-                  {showEditorWhereDetails ? (
-                    <RichTextEditor
-                      content={whereDetails}
-                      setContent={setWhereDetails}
-                      readOnly={isReadOnly}
-                      aria-label="Digital Tools and Systems Storage Where Details Input"
-                    />
-                  ) : (
-                    <i>Not answered</i>
-                  )}
+                  <div className="richText" id="DigitalToolsStorage">
+                    {showEditorWhereDetails ? (
+                      <RichTextEditor
+                        content={whereDetails}
+                        setContent={setWhereDetails}
+                        readOnly={isReadOnly}
+                        aria-label="Digital Tools and Systems Storage Where Details Input"
+                      />
+                    ) : (
+                      <i>Not answered</i>
+                    )}
+                  </div>
                 </div>
               )}
               {showComments && (
@@ -575,16 +577,18 @@ export const SecurityPersonalInformation = ({
                   }
                 </h4>
               )}
-              {showEditorAdditionalStrategies ? (
-                <RichTextEditor
-                  content={additionalStrategies}
-                  setContent={setAdditionalStrategies}
-                  readOnly={isReadOnly}
-                  aria-label="Access to Personal Information Additional Strategies Input"
-                />
-              ) : (
-                <i>Not answered</i>
-              )}
+              <div className="richText" id="PersonalInformationStrategies">
+                {showEditorAdditionalStrategies ? (
+                  <RichTextEditor
+                    content={additionalStrategies}
+                    setContent={setAdditionalStrategies}
+                    readOnly={isReadOnly}
+                    aria-label="Access to Personal Information Additional Strategies Input"
+                  />
+                ) : (
+                  <i>Not answered</i>
+                )}
+              </div>
             </div>
             {showComments && (
               <ViewComments

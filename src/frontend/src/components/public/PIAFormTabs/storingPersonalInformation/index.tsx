@@ -471,16 +471,18 @@ const StoringPersonalInformation = ({
               ) : (
                 <h4>{Messages.PersonalInformation.StoredWhere.en}</h4>
               )}
-              {showEditorWhereDetails ? (
-                <RichTextEditor
-                  content={whereDetails}
-                  setContent={setWhereDetails}
-                  readOnly={isReadOnly}
-                  aria-label="Personal Information storage location details"
-                />
-              ) : (
-                <i>Not answered</i>
-              )}
+              <div className="richText" id="PersonalInformationStorage">
+                {showEditorWhereDetails ? (
+                  <RichTextEditor
+                    content={whereDetails}
+                    setContent={setWhereDetails}
+                    readOnly={isReadOnly}
+                    aria-label="Personal Information storage location details"
+                  />
+                ) : (
+                  <i>Not answered</i>
+                )}
+              </div>
             </div>
           )}
           {showComments && (
@@ -717,16 +719,18 @@ const StoringPersonalInformation = ({
                         {Messages.AssessmentOfDisclosures.DisclosureDetails.en}
                       </h4>
                     )}
-                    {showEditorDisclosureDetails ? (
-                      <RichTextEditor
-                        content={disclosureDetails}
-                        setContent={setDisclosureDetails}
-                        readOnly={!isMPORole() || isReadOnly}
-                        aria-label="Disclosures Details Input Preview"
-                      />
-                    ) : (
-                      <i>Not answered</i>
-                    )}
+                    <div className="richText" id="DisclosureDetails">
+                      {showEditorDisclosureDetails ? (
+                        <RichTextEditor
+                          content={disclosureDetails}
+                          setContent={setDisclosureDetails}
+                          readOnly={!isMPORole() || isReadOnly}
+                          aria-label="Disclosures Details Input Preview"
+                        />
+                      ) : (
+                        <i>Not answered</i>
+                      )}
+                    </div>
                   </div>
                 )}
                 <div className="pt-5">
@@ -802,16 +806,18 @@ const StoringPersonalInformation = ({
                       {Messages.AssessmentOfDisclosures.ContractualTerms.en}
                     </h4>
                   )}
-                  {showEditorContractualTerms ? (
-                    <RichTextEditor
-                      content={contractualTerms}
-                      setContent={setContractualTerms}
-                      readOnly={isReadOnly}
-                      aria-label="Contractual Terms Textarea Input"
-                    />
-                  ) : (
-                    <i>Not answered</i>
-                  )}
+                  <div className="richText" id="ContractualTerms">
+                    {showEditorContractualTerms ? (
+                      <RichTextEditor
+                        content={contractualTerms}
+                        setContent={setContractualTerms}
+                        readOnly={isReadOnly}
+                        aria-label="Contractual Terms Textarea Input"
+                      />
+                    ) : (
+                      <i>Not answered</i>
+                    )}
+                  </div>
                 </div>
                 {showComments && (
                   <ViewComments
@@ -874,16 +880,18 @@ const StoringPersonalInformation = ({
                     ) : (
                       <h4>{Messages.Contract.EnterpriseService.en}</h4>
                     )}
-                    {showEditorEnterpriseServiceAccessDetails ? (
-                      <RichTextEditor
-                        content={enterpriseServiceAccessDetails}
-                        setContent={setEnterpriseServiceAccessDetails}
-                        readOnly={isReadOnly}
-                        aria-label="Enterprise Service Access Details Preview"
-                      />
-                    ) : (
-                      <i>Not answered</i>
-                    )}
+                    <div className="richText" id="EnterpriseServiceAccess">
+                      {showEditorEnterpriseServiceAccessDetails ? (
+                        <RichTextEditor
+                          content={enterpriseServiceAccessDetails}
+                          setContent={setEnterpriseServiceAccessDetails}
+                          readOnly={isReadOnly}
+                          aria-label="Enterprise Service Access Details Preview"
+                        />
+                      ) : (
+                        <i>Not answered</i>
+                      )}
+                    </div>
                     {showComments && (
                       <ViewComments
                         count={
@@ -918,16 +926,18 @@ const StoringPersonalInformation = ({
                 ) : (
                   <h4>{Messages.Controls.WhatControlsAreInPlace.en}</h4>
                 )}
-                {showEditorUnauthorizedAccessMeasures ? (
-                  <RichTextEditor
-                    content={unauthorizedAccessMeasures}
-                    setContent={setUnauthorizedAccessMeasures}
-                    readOnly={isReadOnly}
-                    aria-label="Personal Information storage location details"
-                  />
-                ) : (
-                  <i>Not answered</i>
-                )}
+                <div className="richText" id="UnauthorizedAccessControls">
+                  {showEditorUnauthorizedAccessMeasures ? (
+                    <RichTextEditor
+                      content={unauthorizedAccessMeasures}
+                      setContent={setUnauthorizedAccessMeasures}
+                      readOnly={isReadOnly}
+                      aria-label="Unauthorized Access Controls for Sensitive Personal Information?"
+                    />
+                  ) : (
+                    <i>Not answered</i>
+                  )}
+                </div>
                 {showComments && (
                   <ViewComments
                     count={
@@ -960,16 +970,18 @@ const StoringPersonalInformation = ({
                 ) : (
                   <h4>{Messages.TrackAccess.TrackAccessDetails.en}</h4>
                 )}
-                {showEditorTrackAccessDetails ? (
-                  <RichTextEditor
-                    content={trackAccessDetails}
-                    setContent={setTrackAccessDetails}
-                    readOnly={isReadOnly}
-                    aria-label="Track Access Details Preview"
-                  />
-                ) : (
-                  <i>Not answered</i>
-                )}
+                <div className="richText" id="TrackAccessDetails">
+                  {showEditorTrackAccessDetails ? (
+                    <RichTextEditor
+                      content={trackAccessDetails}
+                      setContent={setTrackAccessDetails}
+                      readOnly={isReadOnly}
+                      aria-label="Track Access Details Preview"
+                    />
+                  ) : (
+                    <i>Not answered</i>
+                  )}
+                </div>
                 {showComments && (
                   <ViewComments
                     count={

@@ -5,14 +5,23 @@
   "scripts": {
     "lint": "eslint 'tests/**/*.ts{,x}'",
     "playwright-local": "BASE_URL=http://localhost:8080 playwright test",
+    "playwright-local:win": "set BASE_URL=http://localhost:8080& playwright test",
     "playwright-local-ui": "BASE_URL=http://localhost:8080 playwright test --ui",
+    "playwright-local-ui:win": "set BASE_URL=http://localhost:8080& playwright test --ui",
     "playwright-local-debug": "BASE_URL=http://localhost:8080 playwright test --debug",
+    "playwright-local-debug:win": "set BASE_URL=http://localhost:8080& playwright test --debug",
     "playwright-dev": "BASE_URL=https://dev.pia.gov.bc.ca playwright test",
+    "playwright-dev:win": "set BASE_URL=https://dev.pia.gov.bc.ca& playwright test",
     "playwright-dev-ui": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --ui",
+    "playwright-dev-ui:win": "set BASE_URL=https://dev.pia.gov.bc.ca& playwright test --ui",
     "playwright-dev-debug": "BASE_URL=https://dev.pia.gov.bc.ca playwright test --debug",
+    "playwright-dev-debug:win": "set BASE_URL=https://dev.pia.gov.bc.ca& playwright test --debug",
     "playwright-test": "BASE_URL=https://test.pia.gov.bc.ca playwright test",
+    "playwright-test:win": "set BASE_URL=https://test.pia.gov.bc.ca& playwright test",
     "playwright-test-ui": "BASE_URL=https://test.pia.gov.bc.ca playwright test --ui",
-    "playwright-test-debug": "BASE_URL=https://test.pia.gov.bc.ca playwright test --debug"
+    "playwright-test-ui:win": "set BASE_URL=https://test.pia.gov.bc.ca& playwright test --ui",
+    "playwright-test-debug": "BASE_URL=https://test.pia.gov.bc.ca playwright test --debug",
+    "playwright-test-debug:win": "set BASE_URL=https://test.pia.gov.bc.ca& playwright test --debug"
   },
   "dependencies": {
     "dotenv": "16.3.1"

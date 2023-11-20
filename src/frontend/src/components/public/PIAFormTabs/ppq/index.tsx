@@ -271,17 +271,19 @@ const PPQ = ({ printPreview }: IPPQProps) => {
               readOnly={isReadOnly}
             />
           ))}
-          {ppqForm?.hasInitiativeOther &&
-            (showEditorInitiativeOtherDetails ? (
-              <RichTextEditor
-                content={initiativeOtherDetails}
-                setContent={setInitiativeOtherDetails}
-                readOnly={isReadOnly}
-                aria-label="Initiative Other Details Input"
-              />
-            ) : (
-              <i>Not answered</i>
-            ))}
+          <div className="richText" id="InitiativeOtherDetails">
+            {ppqForm?.hasInitiativeOther &&
+              (showEditorInitiativeOtherDetails ? (
+                <RichTextEditor
+                  content={initiativeOtherDetails}
+                  setContent={setInitiativeOtherDetails}
+                  readOnly={isReadOnly}
+                  aria-label="Initiative Other Details Input"
+                />
+              ) : (
+                <i>Not answered</i>
+              ))}
+          </div>
         </div>
         {/* Render deadline info, conditional on printPreview and isReadOnly */}
         {!printPreview && (
@@ -366,16 +368,18 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 // Heading for the reason input in read-only mode
                 <h4> {Messages.DeadlineReasonHeading.en}</h4>
               )}
-              {showEditorProposedDeadlineReason ? (
-                <RichTextEditor
-                  content={proposedDeadlineReason}
-                  setContent={setProposedDeadlineReason}
-                  readOnly={isReadOnly}
-                  aria-label="Proposed Deadline Reason Textarea Input"
-                />
-              ) : (
-                <i>Not answered</i>
-              )}
+              <div className="richText" id="ProposedDeadlineReason">
+                {showEditorProposedDeadlineReason ? (
+                  <RichTextEditor
+                    content={proposedDeadlineReason}
+                    setContent={setProposedDeadlineReason}
+                    readOnly={isReadOnly}
+                    aria-label="Proposed Deadline Reason Textarea Input"
+                  />
+                ) : (
+                  <i>Not answered</i>
+                )}
+              </div>
             </div>
           </>
         )}
@@ -401,18 +405,20 @@ const PPQ = ({ printPreview }: IPPQProps) => {
             // Show heading for read-only mode
             <h4> {Messages.InitiativeSummaryHeading.en.fullText}</h4>
           )}
-          {showEditorPidInitiativeSummary ? (
-            <RichTextEditor
-              content={pidInitiativeSummary}
-              setContent={(content) => {
-                setPidInitiativeSummary(content);
-              }}
-              readOnly={isReadOnly}
-              aria-label="Initiative Summary Textarea Input"
-            />
-          ) : (
-            <i>Not answered</i>
-          )}
+          <div className="richText" id="InitiativeSummary">
+            {showEditorPidInitiativeSummary ? (
+              <RichTextEditor
+                content={pidInitiativeSummary}
+                setContent={(content) => {
+                  setPidInitiativeSummary(content);
+                }}
+                readOnly={isReadOnly}
+                aria-label="Initiative Summary Textarea Input"
+              />
+            ) : (
+              <i>Not answered</i>
+            )}
+          </div>
         </div>
         {/* Form Group for Related Operational PIAs */}
         <div className="form-group mt-4">
@@ -578,16 +584,18 @@ const PPQ = ({ printPreview }: IPPQProps) => {
           )}
 
           {/* Markdown editor for additional information */}
-          {showEditorOtherCpoConsideration ? (
-            <RichTextEditor
-              content={otherCpoConsideration}
-              setContent={setOtherCpoConsideration}
-              readOnly={isReadOnly}
-              aria-label="Other CPO Consideration Textarea Input"
-            />
-          ) : (
-            <i>Not answered</i>
-          )}
+          <div className="richText" id="OtherCPOConsideration">
+            {showEditorOtherCpoConsideration ? (
+              <RichTextEditor
+                content={otherCpoConsideration}
+                setContent={setOtherCpoConsideration}
+                readOnly={isReadOnly}
+                aria-label="Other CPO Consideration Textarea Input"
+              />
+            ) : (
+              <i>Not answered</i>
+            )}
+          </div>
         </div>
       </section>
     </>
