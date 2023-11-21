@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ImageMagnifierProps, ImagePosition } from './interfaces';
 import Plus from '../../../assets/plus.svg';
 import Minus from '../../../assets/minus.svg';
@@ -17,23 +17,30 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const dragPosition = useRef({ x: 0, y: 0 });
 
-  const updatePositionWithinBounds = (newX: number, newY: number) => {
-    if (containerRef.current && imageRef.current) {
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const imageRect = imageRef.current.getBoundingClientRect();
+  const updatePositionWithinBounds = useCallback(
+    (newX: number, newY: number) => {
+      if (containerRef.current && imageRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const imageRect = imageRef.current.getBoundingClientRect();
 
-      // Calculate bounds based on container and image sizes
-      const maxX = Math.max(0, (imageRect.width - containerRect.width) / 2);
-      const maxY = Math.max(0, (imageRect.height - containerRect.height) / 2);
+        // Adjust the bounds based on the zoom level
+        const scaledWidth = imageRect.width * zoomLevel;
+        const scaledHeight = imageRect.height * zoomLevel;
 
-      // Apply bounds with updated logic
-      const boundedX = Math.min(maxX, Math.max(-maxX, newX));
-      const boundedY = Math.min(maxY, Math.max(-maxY, newY));
+        // Calculate the maximum movement allowed (taking zoom into account)
+        const maxX = Math.max(0, (scaledWidth - containerRect.width) / 6);
+        const maxY = Math.max(0, (scaledHeight - containerRect.height) / 6);
 
-      // Update the local drag position
-      dragPosition.current = { x: boundedX, y: boundedY };
-    }
-  };
+        // Apply the bounds
+        const boundedX = Math.min(maxX, Math.max(-maxX, newX));
+        const boundedY = Math.min(maxY, Math.max(-maxY, newY));
+
+        // Update the local drag position
+        dragPosition.current = { x: boundedX, y: boundedY };
+      }
+    },
+    [zoomLevel],
+  );
 
   const openModal = () => {
     document.body.style.overflow = 'hidden';
@@ -58,7 +65,14 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
   };
 
   const zoomOut = () => {
-    setZoomLevel((prevZoom) => Math.max(prevZoom * 0.9, 1));
+    setZoomLevel((prevZoom) => {
+      const newZoomLevel = Math.max(prevZoom * 0.9, 1);
+      if (newZoomLevel === 1) {
+        setPosition({ x: 0, y: 0 });
+        dragPosition.current = { x: 0, y: 0 };
+      }
+      return newZoomLevel;
+    });
   };
 
   const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
@@ -85,7 +99,6 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
       const newY = event.clientY - startDragPosition.y;
       updatePositionWithinBounds(newX, newY);
 
-      // Apply the position immediately for smooth dragging
       if (imageRef.current) {
         imageRef.current.style.transform = `scale(${zoomLevel}) translate(${dragPosition.current.x}px, ${dragPosition.current.y}px)`;
       }
@@ -112,36 +125,33 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
 
       switch (event.key) {
         case 'ArrowUp':
-          if (event.shiftKey) {
-            // Zoom in
-            setZoomLevel((prevZoom) => Math.min(prevZoom + zoomAmount, 5));
-          } else {
-            // Pan up
-            offsetY += movementAmount;
-          }
+          offsetY += event.shiftKey ? 0 : movementAmount;
           break;
         case 'ArrowDown':
-          if (event.shiftKey) {
-            // Zoom out
-            setZoomLevel((prevZoom) => Math.max(prevZoom - zoomAmount, 1));
-          } else {
-            // Pan down
-            offsetY -= movementAmount;
-          }
+          offsetY -= event.shiftKey ? 0 : movementAmount;
           break;
         case 'ArrowLeft':
-          // Pan left
           offsetX += movementAmount;
           break;
         case 'ArrowRight':
-          // Pan right
           offsetX -= movementAmount;
           break;
         default:
-          break;
+          return;
       }
 
-      setPosition({ x: offsetX, y: offsetY });
+      if (event.shiftKey) {
+        // Zoom in or out
+        const newZoomLevel =
+          event.key === 'ArrowUp'
+            ? Math.min(zoomLevel + zoomAmount, 5)
+            : Math.max(zoomLevel - zoomAmount, 1);
+        setZoomLevel(newZoomLevel);
+      } else {
+        // Update position within bounds
+        updatePositionWithinBounds(offsetX, offsetY);
+        setPosition(dragPosition.current);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -149,7 +159,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [zoomLevel, position]);
+  }, [zoomLevel, position, updatePositionWithinBounds]);
 
   return (
     <>
