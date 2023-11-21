@@ -8,4 +8,42 @@
 
 .infographic-diagram {
   max-width: 100% !important;
+  cursor: pointer;
+}
+
+.nextSteps-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.nextSteps-modal-content {
+  width: 90%;
+  position: relative;
+}
+
+.nextSteps-close-button {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  border: none;
+  background: none;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.nextSteps-zoomable-image {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  transition: transform 0.1s ease-in-out;
+  width: 100%;
+  cursor: zoom-in;
 }
