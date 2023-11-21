@@ -93,9 +93,9 @@
   height: inherit;
   border-radius: 5px;
   max-height: 100svh;
+  background-color: white;
 
   .nextSteps-zoomable-image {
-    background-color: white;
     padding: 20px;
     width: 100%;
     transition: transform 0.1s ease-in-out;
