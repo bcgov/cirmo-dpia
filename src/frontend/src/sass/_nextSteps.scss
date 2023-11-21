@@ -7,5 +7,111 @@
 }
 
 .infographic-diagram {
-  max-width: 100% !important;
+  max-width: 100%;
+  cursor: url('../assets/search.svg'), pointer;
+}
+
+.nextSteps-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+}
+
+.nextSteps-modal-content {
+  width: 155svh;
+  height: fit-content;
+  max-width: 155svh;
+  max-height: 100svh;
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+
+  .nextSteps-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    width: 100%;
+
+    .nextSteps-toolbar-zoom {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nextSteps-tooltip-close {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+  }
+
+  .nextSteps-zoom-in-button,
+  .nextSteps-zoom-out-button,
+  .nextSteps-close-button {
+    position: relative;
+    border: none;
+    background: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    top: -55px;
+  }
+
+  .nextSteps-tooltip {
+    position: relative;
+    top: -55px;
+    cursor: pointer;
+  }
+
+  .nextSteps-zoom-in-button,
+  .nextSteps-zoom-out-button {
+    font-size: 2em;
+    padding-left: 10px;
+  }
+
+  .nextSteps-close-button {
+    font-size: 1.2em;
+    padding-right: 10px;
+  }
+}
+
+.nextSteps-toolbar-button {
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #606060b4;
+  }
+
+  &:active {
+    background-color: #cfcfcfbe;
+  }
+}
+
+.nextSteps-image-container {
+  overflow: hidden;
+  width: 100%;
+  height: inherit;
+  border-radius: 5px;
+  background-color: white;
+  cursor: grabbing;
+
+  .nextSteps-zoomable-image {
+    padding: 20px;
+    width: 100%;
+    transition: transform 0.1s ease-in-out;
+  }
 }
