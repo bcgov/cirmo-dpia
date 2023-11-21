@@ -68,7 +68,7 @@
     "vite": "4.5.0",
     "wdio-cucumberjs-json-reporter": "5.1.7",
     "wdio-geckodriver-service": "5.0.2",
-    "wdio-wait-for": "3.0.7"
+    "wdio-wait-for": "3.0.9"
   },
   "husky": {
     "hooks": {
