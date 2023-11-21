@@ -163,12 +163,13 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [zoomLevel, position, updatePositionWithinBounds]);
+    if (modalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [modalOpen, zoomLevel, position, updatePositionWithinBounds]);
 
   return (
     <>
