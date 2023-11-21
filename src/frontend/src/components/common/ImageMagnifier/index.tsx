@@ -7,6 +7,7 @@ import Minus from '../../../assets/minus.svg';
 import Close from '../../../assets/close.svg';
 
 const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
+  // State declarations for modal visibility, zoom level, image position, and drag status
   const [modalOpen, setModalOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [position, setPosition] = useState<ImagePosition>({ x: 0, y: 0 });
@@ -15,12 +16,18 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     x: 0,
     y: 0,
   });
+
+  // Refs for the container and image elements
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+
+  // Ref for tracking the drag position
   const dragPosition = useRef({ x: 0, y: 0 });
 
+  // useCallback to update the position of the image within the bounds of the container
   const updatePositionWithinBounds = useCallback(
     (newX: number, newY: number) => {
+      // Ensure refs are current before calculating bounds
       if (containerRef.current && imageRef.current) {
         const containerRect = containerRef.current.getBoundingClientRect();
         const imageRect = imageRef.current.getBoundingClientRect();
@@ -33,7 +40,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
         const maxX = Math.max(0, (scaledWidth - containerRect.width) / 6);
         const maxY = Math.max(0, (scaledHeight - containerRect.height) / 6);
 
-        // Apply the bounds
+        // Apply the bounds to ensure image stays within the container
         const boundedX = Math.min(maxX, Math.max(-maxX, newX));
         const boundedY = Math.min(maxY, Math.max(-maxY, newY));
 
@@ -44,6 +51,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     [zoomLevel],
   );
 
+  // Functions to handle modal open and close actions
   const openModal = () => {
     document.body.style.overflow = 'hidden';
     setModalOpen(true);
@@ -56,12 +64,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     setModalOpen(false);
   };
 
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
-
+  // Functions to handle zoom in and zoom out actions
   const zoomIn = () => {
     setZoomLevel((prevZoom) => Math.min(prevZoom * 1.1, 5));
   };
@@ -69,6 +72,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
   const zoomOut = () => {
     setZoomLevel((prevZoom) => {
       const newZoomLevel = Math.max(prevZoom * 0.9, 1);
+      // Reset position and drag position if zoomed out completely
       if (newZoomLevel === 1) {
         setPosition({ x: 0, y: 0 });
         dragPosition.current = { x: 0, y: 0 };
@@ -77,6 +81,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     });
   };
 
+  // Handle scroll events for zoom adjustments
   const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
     const zoomAdjustment = e.deltaY * 0.01;
@@ -84,6 +89,13 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     setZoomLevel(Math.min(Math.max(newZoomLevel, 1), 5));
   };
 
+  const handleMouseUp = () => {
+    // End dragging and update the position state
+    setIsDragging(false);
+    setPosition(dragPosition.current);
+  };
+
+  // Handlers for mouse down, move, up, and leave events to manage image dragging
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setIsDragging(true);
@@ -101,29 +113,35 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
       const newY = event.clientY - startDragPosition.y;
       updatePositionWithinBounds(newX, newY);
 
+      // Apply transformation to the image element
       if (imageRef.current) {
         imageRef.current.style.transform = `scale(${zoomLevel}) translate(${dragPosition.current.x}px, ${dragPosition.current.y}px)`;
       }
     }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setPosition(dragPosition.current);
-  };
-
   const handleMouseLeave = () => {
+    // Stop dragging if the mouse leaves the container
     if (isDragging) {
       setIsDragging(false);
     }
   };
 
+  // useEffect to reset the body overflow when the component unmounts
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  // useEffect to handle keyboard interactions
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Calculate new position based on arrow key presses
       let offsetX = position.x;
       let offsetY = position.y;
-      const movementAmount = 10;
-      const zoomAmount = 0.1;
+      const movementAmount = 10; // Amount to move the image per key press
+      const zoomAmount = 0.1; // Zoom factor per key press
 
       switch (event.key) {
         case 'ArrowUp':
@@ -139,18 +157,18 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
           offsetX -= movementAmount;
           break;
         default:
-          return;
+          return; // Ignore other keys
       }
 
       if (event.shiftKey) {
-        // Zoom in or out
+        // Adjust zoom level with shift + arrow keys
         const newZoomLevel =
           event.key === 'ArrowUp'
             ? Math.min(zoomLevel + zoomAmount, 5)
             : Math.max(zoomLevel - zoomAmount, 1);
 
+        // Reset position if zoom is completely out
         if (newZoomLevel === 1 && event.key === 'ArrowDown') {
-          // Reset position and drag position when fully zoomed out
           setPosition({ x: 0, y: 0 });
           dragPosition.current = { x: 0, y: 0 };
         }
@@ -163,6 +181,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
       }
     };
 
+    // Add and remove the event listener based on the modal state
     if (modalOpen) {
       window.addEventListener('keydown', handleKeyDown);
       return () => {
@@ -171,6 +190,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     }
   }, [modalOpen, zoomLevel, position, updatePositionWithinBounds]);
 
+  // Render the image and modal with control buttons
   return (
     <>
       <img
@@ -191,6 +211,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
             onMouseLeave={handleMouseLeave}
             onWheel={handleScroll}
           >
+            {/* Toolbar with zoom and close buttons */}
             <div className="nextSteps-toolbar">
               <div className="nextSteps-toolbar-zoom">
                 <button
@@ -240,6 +261,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                 </button>
               </div>
             </div>
+            {/* Image container for the magnified image */}
             <div className="nextSteps-image-container">
               <img
                 ref={imageRef}
