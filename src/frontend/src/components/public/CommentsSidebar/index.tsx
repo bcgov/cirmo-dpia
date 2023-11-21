@@ -132,7 +132,7 @@ const CommentSidebar = ({
         >
           {comments &&
             comments?.map((comment) => (
-              <div className="p-3" key={comment.id}>
+              <div className="p-3" key={comment.id} id="CommentSidebar">
                 <div className="position-relative">
                   <p className="fw-bold">
                     {comment.createdByDisplayName}
@@ -168,7 +168,7 @@ const CommentSidebar = ({
                     </div>
                   )}
                 </div>
-                <div>
+                <div id="CommentSidebarComment">
                   {comment.isActive ? (
                     comment.text
                   ) : (

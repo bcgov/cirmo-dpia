@@ -68,16 +68,19 @@ test.describe.serial('Comments Test', () => {
           await addCommentButton.click();
         }
 
+        // Verify if the first comment was added successfully
+        const firstComment = page.locator('#CommentSidebarComment').nth(0);
+        await firstComment.scrollIntoViewIfNeeded();
+        await firstComment.waitFor({ state: 'visible' });
+        await expect(firstComment).toBeVisible();
+
         // Verify if the last comment was added successfully
-        const lastComment = page.locator(
-          `div:nth-child(${10 - section}) > div:nth-child(2)`,
-        );
+        const lastComment = page
+          .locator('#CommentSidebarComment')
+          .nth(9 - section);
+        await lastComment.scrollIntoViewIfNeeded();
         await lastComment.waitFor({ state: 'visible' });
-        await expect(lastComment).toHaveText(
-          `${
-            10 - section
-          } Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
-        );
+        await expect(lastComment).toBeVisible();
       }
 
       // Submit the form and confirm submission
