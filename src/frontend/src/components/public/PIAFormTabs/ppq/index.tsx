@@ -61,16 +61,12 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   const [ppqForm, setPpqForm] = useState<IPPQ>(initialFormState);
 
   // Function to handle state changes for ppqForm
-  const stateChangeHandler = (value: any, key: keyof IPPQ) => {
-    setNestedReactState(setPpqForm, key, value);
-  };
-  // Function to handle text editor state changes for ppqForm
-  const textEditorStateChangeHandler = (value: any, path: string) => {
+  const stateChangeHandler = (value: any, path: string) => {
     setNestedReactState(setPpqForm, path, value);
   };
 
-  // State for character count
-  const [pidSummaryCharCount, setpidSummaryCharCount] = useState<number>(0);
+  // TEMPORARY: State for character count
+  const pidSummaryCharCount = 0;
 
   // State for rich text editors.
   const [initiativeOtherDetails, setInitiativeOtherDetails] = useState(
@@ -88,7 +84,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
 
   // Update form state on rich text editor changes.
   useEffect(() => {
-    textEditorStateChangeHandler(
+    stateChangeHandler(
       initiativeOtherDetails,
       'initiativeOtherDetails.content',
     );
@@ -96,7 +92,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   }, [initiativeOtherDetails]);
 
   useEffect(() => {
-    textEditorStateChangeHandler(
+    stateChangeHandler(
       proposedDeadlineReason,
       'proposedDeadlineReason.content',
     );
@@ -104,35 +100,13 @@ const PPQ = ({ printPreview }: IPPQProps) => {
   }, [proposedDeadlineReason]);
 
   useEffect(() => {
-    // Get the pidcurrent length of the pidInitiativeSummary state.
-    const currentLength = pidInitiativeSummary.length;
-
-    // If the current length is greater than 500.
-    if (currentLength > 500) {
-      // Truncate the string to 500 characters.
-      const truncatedSummary = pidInitiativeSummary.slice(0, 500);
-      // Set the truncated string as the new state.
-      setPidInitiativeSummary(truncatedSummary);
-      // Set the character count to 500.
-      setpidSummaryCharCount(500);
-    } else {
-      // If the current length is 500 or less, set the character count to the current length.
-      setpidSummaryCharCount(currentLength);
-    }
-
     // Call the stateChangeHandler to update the pidInitiativeSummary state.
-    textEditorStateChangeHandler(
-      pidInitiativeSummary,
-      'pidInitiativeSummary.content',
-    );
+    stateChangeHandler(pidInitiativeSummary, 'pidInitiativeSummary.content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pidInitiativeSummary]);
 
   useEffect(() => {
-    textEditorStateChangeHandler(
-      otherCpoConsideration,
-      'otherCpoConsideration.content',
-    );
+    stateChangeHandler(otherCpoConsideration, 'otherCpoConsideration.content');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otherCpoConsideration]);
 
