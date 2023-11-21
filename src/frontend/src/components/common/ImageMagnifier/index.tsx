@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ImageMagnifierProps, ImagePosition } from './interfaces';
+import { Tooltip } from '../Tooltip';
+import { ImageMagnifierTooltipText } from './messages';
 import Plus from '../../../assets/plus.svg';
 import Minus from '../../../assets/minus.svg';
 import Close from '../../../assets/close.svg';
@@ -215,18 +217,27 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                   />
                 </button>
               </div>
-              <button
-                className="nextSteps-close-button"
-                onClick={closeModal}
-                aria-label="Close Modal"
-              >
-                <img
-                  className="nextSteps-toolbar-button"
-                  src={Close}
-                  alt="Close"
-                  title="Close"
-                />
-              </button>
+              <div className="nextSteps-tooltip-close">
+                <div className="nextSteps-tooltip">
+                  <Tooltip
+                    content={ImageMagnifierTooltipText}
+                    direction="bottom"
+                    showIcon={true}
+                  />
+                </div>
+                <button
+                  className="nextSteps-close-button"
+                  onClick={closeModal}
+                  aria-label="Close Modal"
+                >
+                  <img
+                    className="nextSteps-toolbar-button"
+                    src={Close}
+                    alt="Close"
+                    title="Close"
+                  />
+                </button>
+              </div>
             </div>
             <div className="nextSteps-image-container">
               <img

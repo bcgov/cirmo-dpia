@@ -49,6 +49,12 @@
       align-items: center;
       gap: 10px;
     }
+
+    .nextSteps-tooltip-close {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
   }
 
   .nextSteps-zoom-in-button,
@@ -61,6 +67,12 @@
     font-weight: bold;
     cursor: pointer;
     top: -55px;
+  }
+
+  .nextSteps-tooltip {
+    position: relative;
+    top: -55px;
+    cursor: pointer;
   }
 
   .nextSteps-zoom-in-button,
