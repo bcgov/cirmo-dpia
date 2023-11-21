@@ -91,13 +91,15 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                 />
               </button>
             </div>
-            <img
-              className="nextSteps-zoomable-image"
-              src={src}
-              alt={alt}
-              onWheel={handleScroll}
-              style={{ transform: `scale(${zoomLevel})` }}
-            />
+            <div className="nextSteps-image-container">
+              <img
+                className="nextSteps-zoomable-image"
+                src={src}
+                alt={alt}
+                onWheel={handleScroll}
+                style={{ transform: `scale(${zoomLevel})` }}
+              />
+            </div>
           </div>
         </div>
       )}
