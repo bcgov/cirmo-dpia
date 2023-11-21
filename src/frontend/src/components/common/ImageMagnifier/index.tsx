@@ -65,6 +65,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                     className="nextSteps-toolbar-button"
                     src={Minus}
                     alt="Zoom Out"
+                    title="Zoom Out"
                   />
                 </button>
                 <button
@@ -76,6 +77,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                     className="nextSteps-toolbar-button"
                     src={Plus}
                     alt="Zoom In"
+                    title="Zoom In"
                   />
                 </button>
               </div>
@@ -88,6 +90,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                   className="nextSteps-toolbar-button"
                   src={Close}
                   alt="Close"
+                  title="Close"
                 />
               </button>
             </div>
