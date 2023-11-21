@@ -146,6 +146,13 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
           event.key === 'ArrowUp'
             ? Math.min(zoomLevel + zoomAmount, 5)
             : Math.max(zoomLevel - zoomAmount, 1);
+
+        if (newZoomLevel === 1 && event.key === 'ArrowDown') {
+          // Reset position and drag position when fully zoomed out
+          setPosition({ x: 0, y: 0 });
+          dragPosition.current = { x: 0, y: 0 };
+        }
+
         setZoomLevel(newZoomLevel);
       } else {
         // Update position within bounds
