@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ImageMagnifierProps, ImagePosition } from './interfaces';
 import Plus from '../../../assets/plus.svg';
 import Minus from '../../../assets/minus.svg';
@@ -13,6 +13,27 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     x: 0,
     y: 0,
   });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const dragPosition = useRef({ x: 0, y: 0 });
+
+  const updatePositionWithinBounds = (newX: number, newY: number) => {
+    if (containerRef.current && imageRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const imageRect = imageRef.current.getBoundingClientRect();
+
+      // Calculate bounds based on container and image sizes
+      const maxX = Math.max(0, (imageRect.width - containerRect.width) / 2);
+      const maxY = Math.max(0, (imageRect.height - containerRect.height) / 2);
+
+      // Apply bounds with updated logic
+      const boundedX = Math.min(maxX, Math.max(-maxX, newX));
+      const boundedY = Math.min(maxY, Math.max(-maxY, newY));
+
+      // Update the local drag position
+      dragPosition.current = { x: boundedX, y: boundedY };
+    }
+  };
 
   const openModal = () => {
     document.body.style.overflow = 'hidden';
@@ -22,6 +43,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
   const closeModal = () => {
     document.body.style.overflow = 'unset';
     setZoomLevel(1);
+    setPosition({ x: 0, y: 0 });
     setModalOpen(false);
   };
 
@@ -55,17 +77,24 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     });
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     if (isDragging) {
-      setPosition({
-        x: e.clientX - startDragPosition.x,
-        y: e.clientY - startDragPosition.y,
-      });
+      const newX = event.clientX - startDragPosition.x;
+      const newY = event.clientY - startDragPosition.y;
+      updatePositionWithinBounds(newX, newY);
+
+      // Apply the position immediately for smooth dragging
+      if (imageRef.current) {
+        imageRef.current.style.transform = `scale(${zoomLevel}) translate(${dragPosition.current.x}px, ${dragPosition.current.y}px)`;
+      }
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    setPosition(dragPosition.current);
   };
 
   const handleMouseLeave = () => {
@@ -78,8 +107,8 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       let offsetX = position.x;
       let offsetY = position.y;
-      const movementAmount = 10; // Adjust as needed for panning speed
-      const zoomAmount = 0.1; // Adjust as needed for zoom speed
+      const movementAmount = 10;
+      const zoomAmount = 0.1;
 
       switch (event.key) {
         case 'ArrowUp':
@@ -117,7 +146,6 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
 
     window.addEventListener('keydown', handleKeyDown);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -135,6 +163,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
         <div className="nextSteps-modal-overlay" onClick={closeModal}>
           <div
             className="nextSteps-modal-content"
+            ref={containerRef}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -145,7 +174,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
             <div className="nextSteps-toolbar">
               <div className="nextSteps-toolbar-zoom">
                 <button
-                  className="nextSteps-zoom-out"
+                  className="nextSteps-zoom-out-button"
                   onClick={zoomOut}
                   aria-label="Zoom Out"
                 >
@@ -157,7 +186,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                   />
                 </button>
                 <button
-                  className="nextSteps-zoom-in"
+                  className="nextSteps-zoom-in-button"
                   onClick={zoomIn}
                   aria-label="Zoom In"
                 >
@@ -184,13 +213,14 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
             </div>
             <div className="nextSteps-image-container">
               <img
+                ref={imageRef}
                 className="nextSteps-zoomable-image"
                 src={src}
                 alt={alt}
                 style={{
                   cursor: isDragging ? 'grabbing' : 'grab',
                   transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
-                  transition: 'transform 0.2s',
+                  transition: isDragging ? 'none' : 'transform 0.2s',
                   transformOrigin: 'center',
                   userSelect: 'none',
                   pointerEvents: isDragging ? 'none' : 'auto',
