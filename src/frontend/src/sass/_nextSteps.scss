@@ -7,7 +7,7 @@
 }
 
 .infographic-diagram {
-  max-width: 100% !important;
+  max-width: 100%;
   cursor: pointer;
 }
 
@@ -25,18 +25,20 @@
 .nextSteps-modal-content {
   width: 90%;
   position: relative;
-}
+  background-color: transparent;
+  padding: 30px;
 
-.nextSteps-close-button {
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  border: none;
-  background: none;
-  color: white;
-  font-weight: bold;
-  font-size: 25px;
-  cursor: pointer;
+  .nextSteps-close-button {
+    position: absolute;
+    top: -5px;
+    right: 25px;
+    border: none;
+    background: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+  }
 }
 
 .nextSteps-zoomable-image {

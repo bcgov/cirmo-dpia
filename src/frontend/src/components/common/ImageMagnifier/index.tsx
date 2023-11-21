@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageMagnifierProps } from './interfaces';
 
 const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const openModal = () => {
+    document.body.style.overflow = 'hidden';
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    document.body.style.overflow = 'unset';
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const handleScroll = (e: React.WheelEvent<HTMLImageElement>) => {
     const zoomAdjustment = e.deltaY * -0.01;
@@ -30,7 +43,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
             onClick={(e) => e.stopPropagation()}
           >
             <button className="nextSteps-close-button" onClick={closeModal}>
-              X
+              Close
             </button>
             <img
               className="nextSteps-zoomable-image"
