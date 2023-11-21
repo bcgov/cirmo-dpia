@@ -15,6 +15,7 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
 
   const closeModal = () => {
     document.body.style.overflow = 'unset';
+    setZoomLevel(1);
     setModalOpen(false);
   };
 
