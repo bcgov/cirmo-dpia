@@ -60,8 +60,8 @@ export const PIAFormIntake = () => {
       event.target.value === 'Yes'
         ? true
         : event.target.value === "I'm not sure"
-        ? null
-        : false;
+          ? null
+          : false;
     stateChangeHandler(value, 'hasAddedPiToDataElements');
   };
 

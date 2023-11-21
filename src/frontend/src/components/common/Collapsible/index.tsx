@@ -60,8 +60,8 @@ const Collapsible = ({
             isVisible && alignment === 'left'
               ? faChevronLeft
               : isVisible && alignment === 'right'
-              ? faChevronRight
-              : icon
+                ? faChevronRight
+                : icon
           }
           className={`
             text-muted 

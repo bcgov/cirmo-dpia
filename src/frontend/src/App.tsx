@@ -13,9 +13,8 @@ import { isAuthenticated } from './utils/auth';
 import AppActivityManager from './components/common/AppActivityManager';
 function App() {
   const { pathname } = useLocation();
-  const [authenticated, setAuthenticated] = useState<boolean>(
-    isAuthenticated(),
-  );
+  const [authenticated, setAuthenticated] =
+    useState<boolean>(isAuthenticated());
 
   const mainContentRef = useRef<HTMLDivElement>(null); // Create a reference for the main content container
 
