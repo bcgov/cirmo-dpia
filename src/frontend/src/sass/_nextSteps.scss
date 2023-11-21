@@ -42,10 +42,8 @@
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    top: -40px;
+    top: 20px;
     width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
 
     .nextSteps-toolbar-zoom {
       display: flex;
@@ -54,23 +52,27 @@
     }
   }
 
-  .nextSteps-zoom-in,
-  .nextSteps-zoom-out,
+  .nextSteps-zoom-in-button,
+  .nextSteps-zoom-out-button,
   .nextSteps-close-button {
+    position: relative;
     border: none;
     background: none;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    top: -55px;
   }
 
-  .nextSteps-zoom-in,
-  .nextSteps-zoom-out {
+  .nextSteps-zoom-in-button,
+  .nextSteps-zoom-out-button {
     font-size: 2em;
+    padding-left: 10px;
   }
 
   .nextSteps-close-button {
     font-size: 1.2em;
+    padding-right: 10px;
   }
 }
 
