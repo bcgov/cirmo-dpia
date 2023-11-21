@@ -34,8 +34,8 @@ export const PiaFormSideNavPages = (
   const intakeLink = isNewForm
     ? routes.PIA_NEW
     : isEditMode
-    ? routes.PIA_INTAKE_EDIT
-    : routes.PIA_INTAKE_VIEW;
+      ? routes.PIA_INTAKE_EDIT
+      : routes.PIA_INTAKE_VIEW;
 
   const NextStepsDefaultPage = () => {
     if (checkPIANonDelegateFlow()) {
@@ -95,8 +95,8 @@ export const PiaFormSideNavPages = (
             pia.hasAddedPiToDataElements == false
               ? 'Review'
               : accessControl('collectionUseAndDisclosure')
-              ? 'Collection, use and disclosure'
-              : 'Next steps',
+                ? 'Collection, use and disclosure'
+                : 'Next steps',
         },
         prev: {
           condition: true,

@@ -20,8 +20,8 @@ const TableOrdering = (props: ITableOrderingProps) => {
       currentState === PiaSorting.INACTIVE
         ? 'sort by'
         : currentState === PiaSorting.DESCENDING
-        ? 'sort descending'
-        : 'sort ascending',
+          ? 'sort descending'
+          : 'sort ascending',
     );
   }, [currentState]);
   function sortingState(sortOrder: number) {
