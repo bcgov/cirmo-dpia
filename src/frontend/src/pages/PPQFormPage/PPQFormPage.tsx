@@ -120,10 +120,7 @@ const PPQFormPage = () => {
     <div className="bcgovPageContainer background bcgovPageContainer__with-controls wrapper">
       <section className="ppq-form-section">
         <div>
-          <form
-            className="container__padding-inline"
-            onSubmit={(e) => handleSubmit(e)}
-          >
+          <div className="container__padding-inline">
             <div className="form-header">
               <h1>PIA Pathways Questionnaire</h1>
               <p>{Messages.FillPpqDescriptionText.en}</p>
@@ -305,7 +302,7 @@ const PPQFormPage = () => {
                 Back
               </button>
               <button
-                type="submit"
+                onClick={(e) => handleSubmit(e)}
                 className="bcgovbtn bcgovbtn__primary btn-next"
               >
                 Submit
@@ -319,7 +316,7 @@ const PPQFormPage = () => {
                 onClose={() => setMessage('')}
               />
             )}
-          </form>
+          </div>
         </div>
       </section>
     </div>
