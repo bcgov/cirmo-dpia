@@ -8,7 +8,15 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
  * @param {TooltipProps} props - Props for the Tooltip component.
  */
 export const Tooltip = (props: TooltipProps) => {
-  const { label, children, content, direction, showIcon, color, size } = props;
+  const {
+    label,
+    children,
+    content,
+    direction,
+    showIcon,
+    color = '#1a5a96',
+    size = '1x',
+  } = props;
   const [visible, setVisible] = useState(false);
   const tooltipContainerRef = useRef(null);
   const tooltipContentRef = useRef<HTMLDivElement>(null);
@@ -74,8 +82,8 @@ export const Tooltip = (props: TooltipProps) => {
             data-for={label}
             className="tooltipIcon"
             icon={faInfoCircle}
-            size={size ? size : '1x'}
-            color={color ? color : '#1a5a96'}
+            size={size}
+            color={color}
           />
         )}
         {children}
