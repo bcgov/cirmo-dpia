@@ -268,7 +268,7 @@ const PPQFormPage = () => {
                   </div>
                 </div>
                 {containsStartDate === 'Yes' && (
-                  <div className="form-group">
+                  <div className="form-group" style={{ zIndex: 11 }}>
                     <label id="start-date-label">
                       Proposed go-live or start date
                     </label>
