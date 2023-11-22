@@ -358,23 +358,23 @@ export async function mpoPiaFill(page: Page) {
   // Review Form Tab
   async function fillReviewRoles() {
     const reviewTab = page.getByLabel('Review', { exact: true });
-    await reviewTab.waitFor({ state: 'visible', timeout: 60000 });
+    await reviewTab.waitFor({ state: 'visible' });
     await reviewTab.click();
 
     const addButton = page.getByRole('button', { name: 'Add a role' });
-    await addButton.waitFor({ state: 'visible', timeout: 60000 });
+    await addButton.waitFor({ state: 'visible' });
     await addButton.click();
 
     const roleSelector = page.getByLabel('Select a role from the list');
-    await roleSelector.waitFor({ state: 'visible', timeout: 60000 });
+    await roleSelector.waitFor({ state: 'visible' });
     await roleSelector.selectOption('DIRECTOR');
 
     const addRoleButton = page.getByRole('button', { name: 'Add' }).first();
-    await addRoleButton.waitFor({ state: 'visible', timeout: 60000 });
+    await addRoleButton.waitFor({ state: 'visible' });
     await addRoleButton.click();
 
     const enterRoleInput = page.getByLabel('Enter a role not in list');
-    await enterRoleInput.waitFor({ state: 'visible', timeout: 60000 });
+    await enterRoleInput.waitFor({ state: 'visible' });
     await enterRoleInput.click();
     await enterRoleInput.fill('Tester');
 
@@ -382,7 +382,7 @@ export async function mpoPiaFill(page: Page) {
       .locator('div')
       .filter({ hasText: /^Enter a role not in listAdd$/ })
       .getByRole('button');
-    await addTesterButton.waitFor({ state: 'visible', timeout: 60000 });
+    await addTesterButton.waitFor({ state: 'visible' });
     await addTesterButton.click();
     await enterRoleInput.fill('Tester 2');
 
@@ -390,14 +390,14 @@ export async function mpoPiaFill(page: Page) {
       .locator('div')
       .filter({ hasText: /^Enter a role not in listAdd$/ })
       .getByRole('button');
-    await addTester2Button.waitFor({ state: 'visible', timeout: 60000 });
+    await addTester2Button.waitFor({ state: 'visible' });
     await addTester2Button.click();
 
     const removeTester2Button = page
       .locator('div')
       .filter({ hasText: /^Tester 2$/ })
       .getByRole('button');
-    await removeTester2Button.waitFor({ state: 'visible', timeout: 60000 });
+    await removeTester2Button.waitFor({ state: 'visible' });
     await removeTester2Button.click();
   }
 
@@ -426,7 +426,7 @@ export async function mpoPiaFill(page: Page) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await autosaveLocator.waitFor({ state: 'visible', timeout: 80000 });
+    await autosaveLocator.waitFor({ state: 'visible' });
     await expect(autosaveLocator).toHaveText(/^Saved at/);
   }
 

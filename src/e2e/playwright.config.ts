@@ -27,8 +27,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
     screenshot: 'only-on-failure',
-    actionTimeout: 30 * 1000,
-    navigationTimeout: 30 * 1000,
+    actionTimeout: 60 * 1000,
+    navigationTimeout: 60 * 1000,
   },
 
   /* Timeout for test functions */

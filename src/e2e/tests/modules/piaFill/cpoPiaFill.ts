@@ -300,7 +300,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await locator.waitFor({ state: 'visible', timeout: 80000 });
+    await locator.waitFor({ state: 'visible' });
     await expect(locator).toHaveText(/^Saved at/);
   }
 
@@ -455,7 +455,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await locator.waitFor({ state: 'visible', timeout: 80000 });
+    await locator.waitFor({ state: 'visible' });
     await expect(locator).toHaveText(/^Saved at/);
   }
 
@@ -479,7 +479,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await locator.waitFor({ state: 'visible', timeout: 80000 });
+    await locator.waitFor({ state: 'visible' });
     await expect(locator).toHaveText(/^Saved at/);
   }
 
@@ -492,9 +492,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
     await page.goto('/pia/completed?filterByStatus=COMPLETE');
 
     // Verify that the page URL is as expected
-    await expect(page).toHaveURL('/pia/completed?filterByStatus=COMPLETE', {
-      timeout: 80000,
-    });
+    await expect(page).toHaveURL('/pia/completed?filterByStatus=COMPLETE');
   }
 
   async function verifyPIAIntake() {
@@ -519,7 +517,7 @@ export async function cpoPiaFill(page: Page, uuid: string) {
     await cellLocator.click();
 
     // Check and expect the URL to be on the PIA intake view page
-    await expect(page).toHaveURL(/\/intake\/view$/, { timeout: 80000 });
+    await expect(page).toHaveURL(/\/intake\/view$/);
 
     // Check and expect the heading (title) to match the unique identifier
     const headingLocator = page.getByRole('heading', { name: `TEST_${uuid}` });

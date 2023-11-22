@@ -83,7 +83,7 @@ export async function drafterPiaFill(page: Page, uuid: string) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await locator.waitFor({ state: 'visible', timeout: 80000 });
+    await locator.waitFor({ state: 'visible' });
     await expect(locator).toHaveText(/^Saved at/);
 
     await page.getByLabel('Submit Button').waitFor({ state: 'visible' });
@@ -1112,7 +1112,7 @@ export async function drafterPiaFill(page: Page, uuid: string) {
       .locator('div')
       .filter({ hasText: /^Saved at/ })
       .nth(1);
-    await locator.waitFor({ state: 'visible', timeout: 80000 });
+    await locator.waitFor({ state: 'visible' });
     await expect(locator).toHaveText(/^Saved at/);
   }
 
@@ -1123,7 +1123,7 @@ export async function drafterPiaFill(page: Page, uuid: string) {
     await page.getByLabel('Yes, submit').waitFor({ state: 'visible' });
     await page.getByLabel('Yes, submit').click();
 
-    await expect(page).toHaveURL(/\/intake\/view$/, { timeout: 80000 });
+    await expect(page).toHaveURL(/\/intake\/view$/);
   }
 
   await fillPIAIntakeInitiativeDetails();
