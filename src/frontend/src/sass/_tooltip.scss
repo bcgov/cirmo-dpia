@@ -1,13 +1,13 @@
 /* Styling for the tooltip icon */
 .tooltipIcon {
-  margin-top: 0.5em;
-  color: #1a5a96 !important;
+  cursor: pointer;
 }
 
 .tooltip-container {
   position: relative;
   display: inline-block;
   margin-left: 3px;
+  margin-right: 3px;
 }
 
 .tooltip-content {

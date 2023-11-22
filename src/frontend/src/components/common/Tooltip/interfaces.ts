@@ -15,4 +15,6 @@ export type TooltipProps = {
   content?: ReactNode;
   direction: TooltipDirection;
   showIcon?: boolean;
+  size?: '2xs' | 'xs' | 'sm' | 'lg' | 'xl' | '1x' | '2x' | '3x' | '4x' | '5x';
+  color?: string;
 };

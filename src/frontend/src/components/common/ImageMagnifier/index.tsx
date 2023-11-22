@@ -254,6 +254,8 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
                     content={ImageMagnifierTooltipText}
                     direction="bottom"
                     showIcon={true}
+                    color="#ffffff"
+                    size="lg"
                   />
                 </div>
                 <button
