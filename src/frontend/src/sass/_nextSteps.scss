@@ -72,7 +72,13 @@
   .nextSteps-tooltip {
     position: relative;
     top: -55px;
-    cursor: pointer;
+    padding: 13px 10px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #606060b4;
+    }
   }
 
   .nextSteps-zoom-in-button,
