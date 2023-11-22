@@ -1,9 +1,5 @@
 {
-    "compilerOptions": {
-        "types": [
-            "node",
-            "@wdio/globals/types",
-            "@wdio/mocha-framework"
-        ]
-    }
+  "compilerOptions": {
+    "types": ["node"]
+  }
 }
