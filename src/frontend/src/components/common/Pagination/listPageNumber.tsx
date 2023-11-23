@@ -1,53 +1,115 @@
 import { ListPageNumberProps } from './helpers/interfaces';
 import { PaginationDirection } from './helpers/enums';
 import PaginationButton from './button';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-
+import {
+  faAngleLeft,
+  faAngleRight,
+  faAnglesLeft,
+  faAnglesRight,
+} from '@fortawesome/free-solid-svg-icons';
 const ListPageNumber = (props: ListPageNumberProps) => {
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(props.totalEntries / props.pageSize);
+  // Define the number of page numbers to show at once
+  const pageNumbersToShow = 10;
+
+  // Function to get the range of page numbers to display
+  const getPaginationRange = () => {
+    const halfRange = Math.floor(pageNumbersToShow / 2);
+    let start = Math.max(1, props.currentPage - halfRange);
+    const end = Math.min(totalPages, start + pageNumbersToShow - 1);
+
+    // Adjust the start and end to ensure the range length is consistent
+    if (end - start + 1 < pageNumbersToShow) {
+      start = Math.max(1, end - pageNumbersToShow + 1);
+    }
+
+    // Create an array from the start to end page numbers
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  // Handlers for page changes
+  const handleLeftPageChange = () => {
+    props.changePage(Math.max(1, props.currentPage - 1));
+  };
+
+  const handleRightPageChange = () => {
+    props.changePage(Math.min(totalPages, props.currentPage + 1));
+  };
+
+  const handleFirstPageChange = () => {
+    props.changePage(1); // Go to the first page
+  };
+
+  const handleLastPageChange = () => {
+    props.changePage(totalPages); // Go to the last page
+  };
+
+  // Handler for clicking on a specific page number
+  const handlePageNumberClick = (pageNumber: number) => {
+    props.changePage(pageNumber);
+  };
+
+  // Key down handler for keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent, pageNumber: number) => {
+    if (e.key === 'Enter') {
+      handlePageNumberClick(pageNumber); // Handle 'Enter' key as click
+    }
+  };
+
+  const paginationRange = getPaginationRange();
+
   return (
     <nav role="navigation" aria-label="Pagination Navigation">
       <ul className="page__enumeration__container">
+        {/* Buttons for navigating to the first and previous pages */}
         <PaginationButton
           currentPage={props.currentPage}
           totalEntries={props.totalEntries}
           pageSize={props.pageSize}
-          changePage={props.changePage}
+          changePage={handleFirstPageChange}
+          icon={faAnglesLeft}
+          direction={PaginationDirection.left}
+        />
+        <PaginationButton
+          currentPage={props.currentPage}
+          totalEntries={props.totalEntries}
+          pageSize={props.pageSize}
+          changePage={handleLeftPageChange}
           icon={faAngleLeft}
           direction={PaginationDirection.left}
         />
-        {props.totalEntries > props.pageSize ? (
-          Array.from(
-            Array(Math.ceil(props.totalEntries / props.pageSize)),
-            (e, i) => {
-              return (
-                <li
-                  tabIndex={0}
-                  aria-label={'Go to Page ' + (i + 1)}
-                  key={i}
-                  onClick={() => {
-                    props.changePage(i + 1);
-                  }}
-                  aria-current={i + 1 === props.currentPage}
-                  className={`page__enumeration ${
-                    i + 1 === props.currentPage ? 'pageActive' : ' '
-                  }`}
-                >
-                  {i + 1}
-                </li>
-              );
-            },
-          )
-        ) : (
-          <li tabIndex={0} aria-current="true" aria-label={'Goto Page 1'}>
-            {props.currentPage}
+        {/* Page number buttons */}
+        {paginationRange.map((pageNumber) => (
+          <li
+            tabIndex={0}
+            aria-label={'Go to Page ' + pageNumber}
+            key={pageNumber}
+            onClick={() => handlePageNumberClick(pageNumber)}
+            onKeyDown={(e) => handleKeyDown(e, pageNumber)}
+            aria-current={pageNumber === props.currentPage}
+            className={`page__enumeration ${
+              pageNumber === props.currentPage ? 'pageActive' : ''
+            }`}
+          >
+            {pageNumber}
           </li>
-        )}
+        ))}
+        {/* Buttons for navigating to the next and last pages */}
         <PaginationButton
           currentPage={props.currentPage}
           totalEntries={props.totalEntries}
           pageSize={props.pageSize}
-          changePage={props.changePage}
+          changePage={handleRightPageChange}
           icon={faAngleRight}
+          direction={PaginationDirection.right}
+        />
+        <PaginationButton
+          currentPage={props.currentPage}
+          totalEntries={props.totalEntries}
+          pageSize={props.pageSize}
+          changePage={handleLastPageChange}
+          icon={faAnglesRight}
           direction={PaginationDirection.right}
         />
       </ul>
