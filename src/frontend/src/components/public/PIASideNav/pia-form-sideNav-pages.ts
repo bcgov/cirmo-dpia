@@ -19,7 +19,9 @@ export const PiaFormSideNavPages = (
   const showPostIntakeTabs = (): boolean => {
     return (
       pia?.hasAddedPiToDataElements !== false &&
-      !window.location.pathname.includes('new/intake')
+      !window.location.pathname.includes('new/intake') &&
+      pia?.submittedAt !== null &&
+      pia?.status !== 'DRAFTING_IN_PROGRESS'
     );
   };
 
