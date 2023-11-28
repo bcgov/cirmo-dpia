@@ -6,7 +6,7 @@ updates:
     open-pull-requests-limit: 4
     schedule:
       interval: "weekly"
-      day: "tuesday"
+      day: "wednesday"
       time: "05:00"
 # npm dependencies - WebApp
   - package-ecosystem: "npm"
@@ -14,5 +14,5 @@ updates:
     open-pull-requests-limit: 4
     schedule:
       interval: "weekly"
-      day: "tuesday"
+      day: "wednesday"
       time: "05:15"
