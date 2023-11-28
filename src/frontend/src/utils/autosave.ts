@@ -50,51 +50,62 @@ const useAutoSave = () => {
   );
 
   // Upsert and update PIA form
-  const upsertAndUpdatePia = async (changes: Partial<IPiaForm> = {}) => {
-    const hasExplicitChanges = Object.keys(changes).length > 0;
-    if (!hasExplicitChanges && !hasFormChanged()) return pia;
+  const upsertAndUpdatePia = useCallback(
+    async (changes: Partial<IPiaForm> = {}) => {
+      console.log('Upsert and update PIA called with changes:', changes);
+      const hasExplicitChanges = Object.keys(changes).length > 0;
+      if (!hasExplicitChanges && !hasFormChanged()) return pia;
 
-    if (changes.status !== undefined && pia.status !== changes.status) {
-      sendSnowplowStatusChangeCall(true);
-    }
-
-    const apiUrl = pia?.id
-      ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
-      : API_ROUTES.PIA_INTAKE;
-    const requestData = { ...pia, ...changes };
-    const updatedPia = pia?.id
-      ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
-      : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
-
-    // Show success message
-    setLastSaveAlertInfo({
-      type: 'success',
-      message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
-      show: true,
-    });
-
-    // Update stale PIA form
-    if (isFirstSave) {
-      setStalePia(updatedPia);
-      setIsFirstSave(false);
-      if (!pia?.id) {
-        navigate(
-          buildDynamicPath(pathname.replace('/view', '/edit'), {
-            id: updatedPia.id,
-          }),
-        );
+      if (changes.status !== undefined && pia.status !== changes.status) {
+        sendSnowplowStatusChangeCall(true);
       }
-    } else {
-      setStalePia(pia);
-    }
 
-    // Update PIA form and reset state variables
-    setPia(updatedPia);
-    setIsAutoSaveFailedPopupShown(false);
-    setIsConflict(false);
+      const apiUrl = pia?.id
+        ? API_ROUTES.PATCH_PIA_INTAKE.replace(':id', `${pia.id}`)
+        : API_ROUTES.PIA_INTAKE;
+      const requestData = { ...pia, ...changes };
+      const updatedPia = pia?.id
+        ? await HttpRequest.patch<IPiaForm>(apiUrl, requestData)
+        : await HttpRequest.post<IPiaForm>(apiUrl, requestData);
 
-    return updatedPia;
-  };
+      // Show success message
+      setLastSaveAlertInfo({
+        type: 'success',
+        message: `Saved at ${getShortTime(updatedPia.updatedAt)}.`,
+        show: true,
+      });
+
+      // Update stale PIA form
+      if (isFirstSave) {
+        setStalePia(updatedPia);
+        setIsFirstSave(false);
+        if (!pia?.id) {
+          navigate(
+            buildDynamicPath(pathname.replace('/view', '/edit'), {
+              id: updatedPia.id,
+            }),
+          );
+        }
+      } else {
+        setStalePia(pia);
+      }
+
+      // Update PIA form and reset state variables
+      setPia(updatedPia);
+      setIsAutoSaveFailedPopupShown(false);
+      setIsConflict(false);
+
+      return updatedPia;
+    },
+    [
+      hasFormChanged,
+      isFirstSave,
+      navigate,
+      pathname,
+      pia,
+      sendSnowplowStatusChangeCall,
+    ],
+  );
 
   // Handle modals
   const { handleShowModal } = useHandleModal({ pia, upsertAndUpdatePia });
@@ -159,7 +170,14 @@ const useAutoSave = () => {
 
       return () => clearTimeout(autoSaveTimer);
     }
-  });
+  }, [
+    pia,
+    isEagerSave,
+    isConflict,
+    upsertAndUpdatePia,
+    isAutoSaveFailedPopupShown,
+    handleShowModal,
+  ]);
 
   // Return state variables and functions
   return {
