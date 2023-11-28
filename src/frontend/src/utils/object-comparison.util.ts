@@ -11,6 +11,9 @@ export const deepEqual = (
   object2: any,
   skipKeys: Array<string> = [],
 ) => {
+  const trimString = (value: any) =>
+    typeof value === 'string' ? value.trim() : value;
+
   if (
     typeof object1 !== 'object' ||
     typeof object2 !== 'object' ||
@@ -24,7 +27,7 @@ export const deepEqual = (
       object2 = convertToISODate(object2);
     }
 
-    return object1 === object2;
+    return trimString(object1) === trimString(object2);
   }
 
   const keys1 = Object.keys(object1);
@@ -38,21 +41,21 @@ export const deepEqual = (
     if (skipKeys.includes(key)) continue;
 
     // recursive check for nested values [objects]
-    if (
-      typeof object1[key] === typeof object2[key] &&
-      typeof object1[key] === 'object' &&
-      object1[key] !== null &&
-      object1[key] !== undefined &&
-      object2[key] !== null &&
-      object2[key] !== undefined
-    ) {
-      if (deepEqual(object1[key], object2[key])) continue;
+    const val1 = trimString(object1[key]);
+    const val2 = trimString(object2[key]);
 
+    if (
+      typeof val1 === 'object' &&
+      val1 !== null &&
+      typeof val2 === 'object' &&
+      val2 !== null
+    ) {
+      if (deepEqual(val1, val2, skipKeys)) continue;
       return false;
     }
 
     // check for primitive values
-    if (object1[key] !== object2[key]) {
+    if (val1 !== val2) {
       return false;
     }
   }
