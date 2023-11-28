@@ -13,13 +13,28 @@ import { deepEqual } from './object-comparison.util';
 import useSnowPlow from './snowplow';
 import { PiaStatuses } from '../constant/constant';
 import useHandleModal from '../pages/PIAForm/utils/handleModal';
+import { RichTextContent } from '../components/public/PIAFormTabs/types';
 
 const useAutoSave = () => {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
   // Define initial state
+  const emptyRichTextContent: RichTextContent = { content: '' };
   const emptyState: IPiaForm = {
+    id: undefined,
+    title: '',
+    ministry: undefined,
+    branch: '',
+    leadName: '',
+    leadTitle: '',
+    leadEmail: '',
+    mpoName: '',
+    mpoEmail: '',
+    initiativeDescription: emptyRichTextContent,
+    initiativeScope: emptyRichTextContent,
+    dataElementsInvolved: emptyRichTextContent,
+    riskMitigation: emptyRichTextContent,
     hasAddedPiToDataElements: true,
     status: PiaStatuses.DRAFTING_IN_PROGRESS,
   };
@@ -52,7 +67,6 @@ const useAutoSave = () => {
   // Upsert and update PIA form
   const upsertAndUpdatePia = useCallback(
     async (changes: Partial<IPiaForm> = {}) => {
-      console.log('Upsert and update PIA called with changes:', changes);
       const hasExplicitChanges = Object.keys(changes).length > 0;
       if (!hasExplicitChanges && !hasFormChanged()) return pia;
 
