@@ -18,7 +18,7 @@
   "dependencies": {
     "@bcgov/bc-sans": "2.1.0",
     "@bcgov/citz-imb-richtexteditor": "https://github.com/bcgov/citz-imb-richtexteditor/releases/download/v1.9.2/bcgov-citz-imb-richtexteditor-1.9.2.tgz",
-    "@fortawesome/fontawesome-svg-core": "6.4.2",
+    "@fortawesome/fontawesome-svg-core": "6.5.0",
     "@fortawesome/free-solid-svg-icons": "6.4.2",
     "@fortawesome/react-fontawesome": "0.2.0",
     "breakpoint-sass": "3.0.0",
