@@ -94,6 +94,12 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
           onChange={(e) => stateChangeHandler(e.target.value, 'title')}
           required={true}
           autoFocus={true}
+          tooltipShowIcon={true}
+          tooltipLabel="Initiative title"
+          tooltipContent={
+            <p>{Messages.GeneralInfoSection.TooltipContent.en}</p>
+          }
+          tooltipDirection="right"
         />
         {/* Error message for initiative title */}
         {validationMessage.piaTitle && (

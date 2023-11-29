@@ -4,6 +4,7 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputEnum } from '../../../constant/constant';
 import { InputTextProps } from './interfaces';
+import { Tooltip } from '../Tooltip';
 
 const InputText = ({
   id = '',
@@ -26,6 +27,10 @@ const InputText = ({
   isAccessLink = false,
   maxLength,
   autoFocus = false,
+  tooltipLabel = '',
+  tooltipDirection = 'right',
+  tooltipShowIcon = false,
+  tooltipContent = '',
 }: InputTextProps) => {
   // Generating an input ID from the label, or using a provided ID
   const inputId = id || (label && convertLabelToId(label)) || '';
@@ -113,6 +118,12 @@ const InputText = ({
         <label className={labelSide === 'left' ? 'mt-0' : ''} htmlFor={inputId}>
           {label}
           {required && <span className="error-text "> (required)</span>}
+          <Tooltip
+            label={tooltipLabel}
+            direction={tooltipDirection}
+            showIcon={tooltipShowIcon}
+            content={tooltipContent}
+          />
         </label>
       )}
       {/* Helper text and optional link rendering */}
