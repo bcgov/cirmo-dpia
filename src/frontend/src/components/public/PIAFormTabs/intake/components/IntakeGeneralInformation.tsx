@@ -92,6 +92,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
           value={intakeForm?.title}
           onChange={(e) => stateChangeHandler(e.target.value, 'title')}
           required={true}
+          autoFocus={true}
         />
         {/* Error message for initiative title */}
         {validationMessage.piaTitle && (

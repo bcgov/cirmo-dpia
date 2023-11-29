@@ -25,4 +25,5 @@ export interface InputTextProps {
   readOnly?: boolean;
   isAccessLink?: boolean;
   maxLength?: number;
+  autoFocus?: boolean;
 }
