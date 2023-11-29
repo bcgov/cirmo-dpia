@@ -36,7 +36,7 @@ export default {
     },
     MPOLinkHref: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers`,
     TooltipContent: {
-      en: `To enable saving, please enter a title.`,
+      en: `Please enter a title to enable saving.`,
     },
   },
   InitiativeDescriptionSection: {
