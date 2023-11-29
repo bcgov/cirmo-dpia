@@ -61,6 +61,7 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
               content={dataElementsInvolved}
               setContent={setDataElementsInvolved}
               readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Data Elements Involved Textarea Input"
             />
           ) : (

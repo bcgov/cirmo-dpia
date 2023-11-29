@@ -477,6 +477,7 @@ const StoringPersonalInformation = ({
                     content={whereDetails}
                     setContent={setWhereDetails}
                     readOnly={isReadOnly}
+                    textOnlyReadOnly={true}
                     aria-label="Personal Information storage location details"
                   />
                 ) : (
@@ -725,6 +726,7 @@ const StoringPersonalInformation = ({
                           content={disclosureDetails}
                           setContent={setDisclosureDetails}
                           readOnly={!isMPORole() || isReadOnly}
+                          textOnlyReadOnly={true}
                           aria-label="Disclosures Details Input Preview"
                         />
                       ) : (
@@ -812,6 +814,7 @@ const StoringPersonalInformation = ({
                         content={contractualTerms}
                         setContent={setContractualTerms}
                         readOnly={isReadOnly}
+                        textOnlyReadOnly={true}
                         aria-label="Contractual Terms Textarea Input"
                       />
                     ) : (
@@ -886,6 +889,7 @@ const StoringPersonalInformation = ({
                           content={enterpriseServiceAccessDetails}
                           setContent={setEnterpriseServiceAccessDetails}
                           readOnly={isReadOnly}
+                          textOnlyReadOnly={true}
                           aria-label="Enterprise Service Access Details Preview"
                         />
                       ) : (
@@ -932,6 +936,7 @@ const StoringPersonalInformation = ({
                       content={unauthorizedAccessMeasures}
                       setContent={setUnauthorizedAccessMeasures}
                       readOnly={isReadOnly}
+                      textOnlyReadOnly={true}
                       aria-label="Unauthorized Access Controls for Sensitive Personal Information?"
                     />
                   ) : (
@@ -976,6 +981,7 @@ const StoringPersonalInformation = ({
                       content={trackAccessDetails}
                       setContent={setTrackAccessDetails}
                       readOnly={isReadOnly}
+                      textOnlyReadOnly={true}
                       aria-label="Track Access Details Preview"
                     />
                   ) : (

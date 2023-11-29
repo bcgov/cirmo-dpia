@@ -116,6 +116,7 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
                   content={riskMitigation}
                   setContent={setRiskMitigation}
                   readOnly={isReadOnly}
+                  textOnlyReadOnly={true}
                   aria-label="Risk Mitigation Textarea Input"
                 />
               ) : (

@@ -251,6 +251,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 content={initiativeOtherDetails}
                 setContent={setInitiativeOtherDetails}
                 readOnly={isReadOnly}
+                textOnlyReadOnly={true}
                 aria-label="Initiative Other Details Input"
               />
             ) : (
@@ -346,6 +347,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                     content={proposedDeadlineReason}
                     setContent={setProposedDeadlineReason}
                     readOnly={isReadOnly}
+                    textOnlyReadOnly={true}
                     aria-label="Proposed Deadline Reason Textarea Input"
                   />
                 ) : (
@@ -385,6 +387,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                   setPidInitiativeSummary(content);
                 }}
                 readOnly={isReadOnly}
+                textOnlyReadOnly={true}
                 aria-label="Initiative Summary Textarea Input"
               />
             ) : (
@@ -562,6 +565,7 @@ const PPQ = ({ printPreview }: IPPQProps) => {
                 content={otherCpoConsideration}
                 setContent={setOtherCpoConsideration}
                 readOnly={isReadOnly}
+                textOnlyReadOnly={true}
                 aria-label="Other CPO Consideration Textarea Input"
               />
             ) : (

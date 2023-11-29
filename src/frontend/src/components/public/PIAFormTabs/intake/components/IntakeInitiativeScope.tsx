@@ -59,6 +59,7 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
               content={initiativeScope}
               setContent={setInitiativeScope}
               readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Initiative Scope Textarea Input"
             />
           ) : (

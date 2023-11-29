@@ -22,6 +22,7 @@ const IntakeDetails = (pia: IPiaForm) => {
           <RichTextEditor
             content={pia?.initiativeDescription?.content ?? ''}
             readOnly={true}
+            textOnlyReadOnly={true}
           />
         </p>
       </div>
@@ -31,6 +32,7 @@ const IntakeDetails = (pia: IPiaForm) => {
           <RichTextEditor
             content={pia?.initiativeScope?.content ?? ''}
             readOnly={true}
+            textOnlyReadOnly={true}
           />
         </p>
       </div>
@@ -40,6 +42,7 @@ const IntakeDetails = (pia: IPiaForm) => {
           <RichTextEditor
             content={pia?.dataElementsInvolved?.content ?? ''}
             readOnly={true}
+            textOnlyReadOnly={true}
           />
         </p>
       </div>
@@ -60,6 +63,7 @@ const IntakeDetails = (pia: IPiaForm) => {
           <RichTextEditor
             content={pia?.riskMitigation?.content ?? ''}
             readOnly={true}
+            textOnlyReadOnly={true}
           />
         </p>
       </div>
