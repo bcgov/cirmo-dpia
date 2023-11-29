@@ -73,6 +73,7 @@ const IntakeInitiativeDescription: React.FC<
               content={initiativeDescription}
               setContent={setInitiativeDescription}
               readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Initiative Description Textarea Input"
             />
           ) : (
