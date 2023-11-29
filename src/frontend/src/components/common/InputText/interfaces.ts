@@ -4,6 +4,7 @@ import {
   FocusEventHandler,
 } from 'react';
 import { TextType } from '../../../types/types/text.type';
+import { TooltipProps } from '../Tooltip/interfaces';
 
 export interface InputTextProps {
   id?: string;
@@ -25,4 +26,9 @@ export interface InputTextProps {
   readOnly?: boolean;
   isAccessLink?: boolean;
   maxLength?: number;
+  autoFocus?: boolean;
+  tooltipLabel?: TooltipProps['label'];
+  tooltipDirection?: TooltipProps['direction'];
+  tooltipShowIcon?: TooltipProps['showIcon'];
+  tooltipContent?: TooltipProps['content'];
 }

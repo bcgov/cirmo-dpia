@@ -17,6 +17,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
   validationMessage,
   pia,
   path,
+  disabled,
 }) => {
   // State to hold the full name of the selected ministry
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,6 +93,13 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
           value={intakeForm?.title}
           onChange={(e) => stateChangeHandler(e.target.value, 'title')}
           required={true}
+          autoFocus={true}
+          tooltipShowIcon={true}
+          tooltipLabel="Initiative title"
+          tooltipContent={
+            <p>{Messages.GeneralInfoSection.TooltipContent.en}</p>
+          }
+          tooltipDirection="right"
         />
         {/* Error message for initiative title */}
         {validationMessage.piaTitle && (
@@ -111,6 +119,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
               (e) => stateChangeHandler(e?.target?.value || null, 'ministry') // empty string to null conversion
             }
             required={true}
+            disabled={disabled}
           />
           {/* Error message for ministry */}
           {validationMessage.piaMinistry && (
@@ -124,6 +133,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
             value={intakeForm?.branch}
             required={true}
             onChange={(e) => stateChangeHandler(e.target.value, 'branch')}
+            isDisabled={disabled}
           />
           {/* Error message for branch */}
           {validationMessage.piaBranch && (
@@ -140,6 +150,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
             value={intakeForm?.leadName}
             onChange={(e) => stateChangeHandler(e.target.value, 'leadName')}
             required={false}
+            isDisabled={disabled}
           />
         </div>
         <div className="col">
@@ -151,6 +162,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
             onChange={(e) => stateChangeHandler(e.target.value, 'leadEmail')}
             required={false}
             type="email"
+            isDisabled={disabled}
           />
         </div>
       </div>
@@ -163,6 +175,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
             value={intakeForm?.leadTitle}
             onChange={(e) => stateChangeHandler(e.target.value, 'leadTitle')}
             required={false}
+            isDisabled={disabled}
           />
         </div>
       </div>
@@ -170,6 +183,7 @@ const IntakeGeneralInformation: React.FC<IntakeGeneralInformationProps> = ({
       <ViewComments
         count={commentCount?.[PiaSections.INTAKE_GENERAL_INFORMATION]}
         path={PiaSections.INTAKE_GENERAL_INFORMATION}
+        disabled={disabled}
       />
     </div>
   );

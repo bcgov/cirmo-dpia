@@ -20,6 +20,7 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
   commentCount,
   pia,
   handlePIOptionChange,
+  disabled,
 }) => {
   // Determine the class to apply for section focus
   const sectionClass =
@@ -74,7 +75,7 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
           PIOptions.map((option, index) => (
             <label key={index} className="form__input-label input-label-row">
               <input
-                disabled={isReadOnly}
+                disabled={isReadOnly || disabled}
                 type="radio"
                 name="pi-options-radio"
                 aria-label={`Did you list personal information in the last question? ${option.key}`}
@@ -130,6 +131,7 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
         <ViewComments
           count={commentCount?.[PiaSections.INTAKE_PERSONAL_INFORMATION]}
           path={PiaSections.INTAKE_PERSONAL_INFORMATION}
+          disabled={disabled}
         />
       </div>
     </section>

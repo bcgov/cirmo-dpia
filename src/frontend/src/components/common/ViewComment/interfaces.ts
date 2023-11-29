@@ -4,6 +4,7 @@ export default interface ViewCommentProps {
   comments?: Comment[];
   path: PiaSections | undefined;
   count?: number;
+  disabled?: boolean;
 }
 
 export interface CommentCount {

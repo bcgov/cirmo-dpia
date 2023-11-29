@@ -35,6 +35,7 @@ export interface IntakeInitiativeScopeProps extends PIAInformationProps {
     nestedKey?: keyof RichTextContent,
   ) => void;
   commentCount?: IPiaFormContext['commentCount'];
+  disabled?: boolean;
 }
 
 export interface IntakeGeneralInformationProps

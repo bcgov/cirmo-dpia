@@ -5,7 +5,11 @@ import {
   PiaFormContext,
 } from '../../../contexts/PiaFormContext';
 
-const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
+const ViewComments = ({
+  path,
+  count = 0,
+  disabled = false,
+}: ViewCommentProps) => {
   const { piaCollapsibleChangeHandler, piaCommentPathHandler } =
     useContext<IPiaFormContext>(PiaFormContext);
 
@@ -21,6 +25,7 @@ const ViewComments = ({ path, count = 0 }: ViewCommentProps) => {
         aria-label="View comments"
         className="bcgovbtn bcgovbtn__tertiary bold"
         onClick={openSidebar}
+        disabled={disabled}
       >
         View comments ({count ? +count : 0})
       </button>

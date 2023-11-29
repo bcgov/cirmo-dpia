@@ -35,6 +35,9 @@ export default {
       en: `Ministry Privacy Officer (MPO) Directory`,
     },
     MPOLinkHref: `https://www2.gov.bc.ca/gov/content/governments/services-for-government/information-management-technology/privacy/resources/privacy-officers`,
+    TooltipContent: {
+      en: `Please enter a title to enable saving.`,
+    },
   },
   InitiativeDescriptionSection: {
     SectionHeading: {

@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { exportIntakeFromPia } from './helper/extract-intake-from-pia.helper';
 import { IPiaFormIntake } from './helper/pia-form-intake.interface';
 import {
@@ -32,6 +32,15 @@ export const PIAFormIntake = () => {
   const [intakeForm, setIntakeForm] = useState<IPiaFormIntake>(
     exportIntakeFromPia(pia),
   );
+
+  // State to manage the disabled status
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    // Check if pia.title exists and is not just empty spaces.
+    // If there's no text, set 'disabled' to true, otherwise false.
+    setDisabled(pia?.title?.trim().length === 0);
+  }, [pia?.title]);
 
   // Handle changes to the intake form state
   const stateChangeHandler = (
@@ -80,6 +89,7 @@ export const PIAFormIntake = () => {
         commentCount={commentCount}
         pia={pia}
         path={selectedSection}
+        disabled={disabled}
       />
 
       {/* Render the intake initiative description section */}
@@ -90,6 +100,7 @@ export const PIAFormIntake = () => {
         validationMessage={validationMessage}
         selectedSection={selectedSection}
         commentCount={commentCount}
+        disabled={disabled}
       />
 
       {/* Render the intake initiative scope section */}
@@ -99,6 +110,7 @@ export const PIAFormIntake = () => {
         stateChangeHandler={stateChangeHandler}
         selectedSection={selectedSection}
         commentCount={commentCount}
+        disabled={disabled}
       />
 
       {/* Render the intake initiative details section */}
@@ -108,6 +120,7 @@ export const PIAFormIntake = () => {
         stateChangeHandler={stateChangeHandler}
         selectedSection={selectedSection}
         commentCount={commentCount}
+        disabled={disabled}
       />
 
       {/* Render the intake personal information section */}
@@ -118,6 +131,7 @@ export const PIAFormIntake = () => {
         stateChangeHandler={stateChangeHandler}
         commentCount={commentCount}
         handlePIOptionChange={handlePIOptionChange}
+        disabled={disabled}
       />
     </>
   );

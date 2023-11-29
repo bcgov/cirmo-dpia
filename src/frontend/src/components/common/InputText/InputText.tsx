@@ -4,6 +4,7 @@ import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextInputEnum } from '../../../constant/constant';
 import { InputTextProps } from './interfaces';
+import { Tooltip } from '../Tooltip';
 
 const InputText = ({
   id = '',
@@ -25,16 +26,25 @@ const InputText = ({
   readOnly = false,
   isAccessLink = false,
   maxLength,
+  autoFocus = false,
+  tooltipLabel = '',
+  tooltipDirection = 'right',
+  tooltipShowIcon = false,
+  tooltipContent = '',
 }: InputTextProps) => {
-  // default to converted id from label if "id" is not provided
+  // Generating an input ID from the label, or using a provided ID
   const inputId = id || (label && convertLabelToId(label)) || '';
 
+  // Constructing CSS classes based on the label position
   let labelSideClasses = ' ';
   labelSideClasses += labelSide === 'top' ? 'flex-column ' : 'flex-row ';
   labelSideClasses += labelSide === 'left' ? 'align-items-center ' : ' ';
 
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  // Refs for input and textarea elements
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Callback for handling 'Enter' key events
   const keydownListener = useCallback(
     (e: any) => {
       if (e.code === 'Enter' || e.code === 'NumpadEnter') {
@@ -44,8 +54,9 @@ const InputText = ({
     [onEnter],
   );
 
+  // Effect for attaching the 'Enter' keydown event listener
   useEffect(() => {
-    const currentInput = inputRef.current;
+    const currentInput = inputRef.current || textareaRef.current;
 
     if (!currentInput) return;
 
@@ -56,10 +67,23 @@ const InputText = ({
     };
   }, [keydownListener]);
 
+  // Effect for auto-focusing the input or textarea when the component mounts
+  useEffect(() => {
+    if (autoFocus) {
+      if (type === TextInputEnum.INPUT_TEXT_AREA && textareaRef.current) {
+        textareaRef.current.focus();
+      } else if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  }, [autoFocus, type]);
+
+  // Function to check if the current type is a textarea
   const checkTextArea = () => {
     return type === TextInputEnum.INPUT_TEXT_AREA;
   };
 
+  // Common properties for input and textarea elements
   const commonProps = {
     id: inputId,
     value: value || '',
@@ -74,11 +98,13 @@ const InputText = ({
     maxLength,
   };
 
+  // Properties specific to input elements
   const inputProps = {
     ...commonProps,
     type,
   };
 
+  // Properties specific to textarea elements
   const textareaProps = {
     ...commonProps,
   };
@@ -87,12 +113,20 @@ const InputText = ({
     <div
       className={`input-text-container form-group d-flex ${labelSideClasses} ${className}`}
     >
+      {/* Label rendering with conditional requirement indicator */}
       {label && (
         <label className={labelSide === 'left' ? 'mt-0' : ''} htmlFor={inputId}>
           {label}
           {required && <span className="error-text "> (required)</span>}
+          <Tooltip
+            label={tooltipLabel}
+            direction={tooltipDirection}
+            showIcon={tooltipShowIcon}
+            content={tooltipContent}
+          />
         </label>
       )}
+      {/* Helper text and optional link rendering */}
       {helperText !== '' && (
         <p className="form-group__p--margin-zero">
           <span className="pe-1">{helperText}</span>
@@ -107,11 +141,12 @@ const InputText = ({
           </a>
         </p>
       )}
+      {/* Conditional rendering for editable and read-only states */}
       {!readOnly ? (
         checkTextArea() ? (
-          <textarea {...textareaProps} />
+          <textarea ref={textareaRef} {...textareaProps} />
         ) : (
-          <input {...inputProps} />
+          <input ref={inputRef} {...inputProps} />
         )
       ) : value ? (
         <p>{value}</p>
