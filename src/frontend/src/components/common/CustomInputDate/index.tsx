@@ -11,6 +11,7 @@ const CustomInputDate = (props: any) => {
         placeholderText="yyyy/mm/dd"
         dateFormat="yyyy/MM/dd"
         {...props}
+        zIndex={15}
       />
       <FontAwesomeIcon className="end-icon" icon={faCalendar} />
     </div>
