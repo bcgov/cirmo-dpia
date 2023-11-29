@@ -17,34 +17,43 @@ const IntakeDetails = (pia: IPiaForm) => {
         <p>{pia?.branch}</p>
       </div>
       <div>
-        <h4>What is the initiative</h4>
-        <p>
+        <h4>What is the initiative?</h4>
+        {pia?.initiativeDescription?.content !== '' ? (
           <RichTextEditor
             content={pia?.initiativeDescription?.content ?? ''}
             readOnly={true}
             textOnlyReadOnly={true}
           />
-        </p>
+        ) : (
+          <p>Not answered</p>
+        )}
+        <br />
       </div>
       <div>
         <h4>PIA Scope</h4>
-        <p>
+        {pia?.initiativeScope?.content !== '' ? (
           <RichTextEditor
             content={pia?.initiativeScope?.content ?? ''}
             readOnly={true}
             textOnlyReadOnly={true}
           />
-        </p>
+        ) : (
+          <p>Not answered</p>
+        )}
+        <br />
       </div>
       <div>
         <h4>Data or information elements invovled in the initiative</h4>
-        <p>
+        {pia?.dataElementsInvolved?.content !== '' ? (
           <RichTextEditor
             content={pia?.dataElementsInvolved?.content ?? ''}
             readOnly={true}
             textOnlyReadOnly={true}
           />
-        </p>
+        ) : (
+          <p>Not answered</p>
+        )}
+        <br />
       </div>
       <div>
         <h4>Contains personal information?</h4>
@@ -57,15 +66,18 @@ const IntakeDetails = (pia: IPiaForm) => {
       <div>
         <h4>
           How will the risk of unintentionally collecting personal information
-          be reduced
+          be reduced?
         </h4>
-        <p>
+        {pia?.riskMitigation?.content !== '' ? (
           <RichTextEditor
             content={pia?.riskMitigation?.content ?? ''}
             readOnly={true}
             textOnlyReadOnly={true}
           />
-        </p>
+        ) : (
+          <p>Not answered</p>
+        )}
+        <br />
       </div>
     </>
   );
