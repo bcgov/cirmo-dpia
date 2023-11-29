@@ -116,8 +116,8 @@ const IntakePersonalInformation: React.FC<IntakePersonalInformationProps> = ({
                 <RichTextEditor
                   content={riskMitigation}
                   setContent={setRiskMitigation}
-                  readOnly={isReadOnly}
-                  textOnlyReadOnly={true}
+                  readOnly={isReadOnly ? true : disabled}
+                  textOnlyReadOnly={isReadOnly}
                   aria-label="Risk Mitigation Textarea Input"
                 />
               ) : (

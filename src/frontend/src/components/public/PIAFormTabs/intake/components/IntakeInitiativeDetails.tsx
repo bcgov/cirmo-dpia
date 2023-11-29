@@ -61,8 +61,8 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
             <RichTextEditor
               content={dataElementsInvolved}
               setContent={setDataElementsInvolved}
-              readOnly={isReadOnly}
-              textOnlyReadOnly={true}
+              readOnly={isReadOnly ? true : disabled}
+              textOnlyReadOnly={isReadOnly}
               aria-label="Data Elements Involved Textarea Input"
             />
           ) : (
