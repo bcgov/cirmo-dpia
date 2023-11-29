@@ -11,6 +11,7 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
   intakeForm,
   stateChangeHandler,
   commentCount,
+  disabled,
 }) => {
   // Determine section focus based on selectedSection
   const sectionFocus =
@@ -58,7 +59,7 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
             <RichTextEditor
               content={initiativeScope}
               setContent={setInitiativeScope}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || disabled}
               aria-label="Initiative Scope Textarea Input"
             />
           ) : (
@@ -70,6 +71,7 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
         <ViewComments
           count={commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE]}
           path={PiaSections.INTAKE_INITIATIVE_DETAILS_SCOPE}
+          disabled={disabled}
         />
       </div>
     </section>

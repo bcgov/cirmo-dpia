@@ -19,6 +19,7 @@ const IntakeInitiativeDescription: React.FC<
   validationMessage,
   selectedSection,
   commentCount,
+  disabled,
 }) => {
   // State for initiativeDescription text editor.
   const [initiativeDescription, setInitiativeDescription] = useState(
@@ -72,7 +73,7 @@ const IntakeInitiativeDescription: React.FC<
             <RichTextEditor
               content={initiativeDescription}
               setContent={setInitiativeDescription}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || disabled}
               aria-label="Initiative Description Textarea Input"
             />
           ) : (
@@ -93,6 +94,7 @@ const IntakeInitiativeDescription: React.FC<
             commentCount?.[PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION]
           }
           path={PiaSections.INTAKE_INITIATIVE_DETAILS_DESCRIPTION}
+          disabled={disabled}
         />
       </div>
     </section>

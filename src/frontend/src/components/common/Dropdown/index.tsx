@@ -9,6 +9,7 @@ const Dropdown = ({
   changeHandler,
   required,
   readOnly = false,
+  disabled = false,
 }: IDropdown) => {
   return (
     <div className={`form-group ${optionalClass}`}>
@@ -26,6 +27,7 @@ const Dropdown = ({
             onChange={changeHandler}
             required={required}
             aria-label={label ?? id}
+            disabled={disabled}
           >
             <option key={id} value="">
               {placeholder || 'Select one'}
