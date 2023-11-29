@@ -94,6 +94,7 @@ const PersonalInformationBanksSection: React.FC<
                       content={plbDescription}
                       setContent={setPlbDescription}
                       readOnly={isReadOnly}
+                      textOnlyReadOnly={true}
                       aria-label="Personal Information Bank Textarea Input"
                     />
                   ) : (

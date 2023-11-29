@@ -72,6 +72,7 @@ export const AccuracySection: React.FC<AccuracySectionProps> = ({
               content={accuracyDescription}
               setContent={setAccuracyDescription}
               readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Accuracy Description Textarea Input"
             />
           ) : (

@@ -453,6 +453,7 @@ export const SecurityPersonalInformation = ({
                         content={whereDetails}
                         setContent={setWhereDetails}
                         readOnly={isReadOnly}
+                        textOnlyReadOnly={true}
                         aria-label="Digital Tools and Systems Storage Where Details Input"
                       />
                     ) : (
@@ -583,6 +584,7 @@ export const SecurityPersonalInformation = ({
                     content={additionalStrategies}
                     setContent={setAdditionalStrategies}
                     readOnly={isReadOnly}
+                    textOnlyReadOnly={true}
                     aria-label="Access to Personal Information Additional Strategies Input"
                   />
                 ) : (

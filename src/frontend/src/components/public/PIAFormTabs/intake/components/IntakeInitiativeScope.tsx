@@ -59,7 +59,8 @@ const IntakeInitiativeScope: React.FC<IntakeInitiativeScopeProps> = ({
             <RichTextEditor
               content={initiativeScope}
               setContent={setInitiativeScope}
-              readOnly={isReadOnly || disabled}
+              readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Initiative Scope Textarea Input"
             />
           ) : (

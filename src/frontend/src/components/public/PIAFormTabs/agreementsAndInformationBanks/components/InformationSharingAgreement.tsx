@@ -93,6 +93,7 @@ export const InformationSharingAgreementSection: React.FC<
                     content={isaDescription}
                     setContent={setIsaDescription}
                     readOnly={isReadOnly}
+                    textOnlyReadOnly={true}
                     aria-label="Information Sharing Agreement Textarea Input"
                   />
                 ) : (

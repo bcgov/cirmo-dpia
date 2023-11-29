@@ -210,6 +210,7 @@ const PIACollectionUseAndDisclosure = ({
                 content={drafterCollectionNotice}
                 setContent={setDrafterCollectionNotice}
                 readOnly={isReadOnly}
+                textOnlyReadOnly={true}
                 aria-label="Collection Notice Drafter Textarea Input"
               />
             ) : (
@@ -233,6 +234,7 @@ const PIACollectionUseAndDisclosure = ({
                 content={mpoCollectionNotice}
                 setContent={setMpoCollectionNotice}
                 readOnly={!isMPORole() || isReadOnly}
+                textOnlyReadOnly={true}
                 aria-label="Collection Notice MPO Textarea Input"
               />
             ) : (

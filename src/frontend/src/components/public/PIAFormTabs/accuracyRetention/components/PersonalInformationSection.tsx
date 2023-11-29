@@ -196,6 +196,7 @@ export const PersonalInformationSection: React.FC<
                         content={describeRetention}
                         setContent={setDescribeRetention}
                         readOnly={isReadOnly}
+                        textOnlyReadOnly={true}
                         aria-label="Describe Retention Textarea Input"
                       />
                     ) : (

@@ -73,7 +73,8 @@ const IntakeInitiativeDescription: React.FC<
             <RichTextEditor
               content={initiativeDescription}
               setContent={setInitiativeDescription}
-              readOnly={isReadOnly || disabled}
+              readOnly={isReadOnly}
+              textOnlyReadOnly={true}
               aria-label="Initiative Description Textarea Input"
             />
           ) : (
