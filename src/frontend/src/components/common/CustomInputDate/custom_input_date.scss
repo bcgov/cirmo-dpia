@@ -20,3 +20,7 @@
     pointer-events: none;
   }
 }
+
+.react-datepicker-popper {
+  z-index: 15 !important;
+}
