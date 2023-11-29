@@ -1,13 +1,11 @@
 import { IPiaForm } from '../../../../../types/interfaces/pia-form.interface';
 import { MinistryList, PIOptions } from '../../../../../constant/constant';
-import { useState } from 'react';
 import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
 
 const IntakeDetails = (pia: IPiaForm) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [piaMinistryFullName, setPiaMinistryFullName] = useState(
-    MinistryList.find((item) => item.value === pia.ministry)?.label || '',
-  );
+  const piaMinistryFullName =
+    MinistryList.find((item) => item.value === pia.ministry)?.label || '';
   return (
     <>
       <div>
@@ -23,7 +21,6 @@ const IntakeDetails = (pia: IPiaForm) => {
         <p>
           <RichTextEditor
             content={pia?.initiativeDescription?.content ?? ''}
-            setContent={setPiaMinistryFullName}
             readOnly={true}
           />
         </p>
@@ -33,7 +30,6 @@ const IntakeDetails = (pia: IPiaForm) => {
         <p>
           <RichTextEditor
             content={pia?.initiativeScope?.content ?? ''}
-            setContent={setPiaMinistryFullName}
             readOnly={true}
           />
         </p>
@@ -43,7 +39,6 @@ const IntakeDetails = (pia: IPiaForm) => {
         <p>
           <RichTextEditor
             content={pia?.dataElementsInvolved?.content ?? ''}
-            setContent={setPiaMinistryFullName}
             readOnly={true}
           />
         </p>
@@ -64,7 +59,6 @@ const IntakeDetails = (pia: IPiaForm) => {
         <p>
           <RichTextEditor
             content={pia?.riskMitigation?.content ?? ''}
-            setContent={setPiaMinistryFullName}
             readOnly={true}
           />
         </p>
