@@ -15,6 +15,7 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
   intakeForm,
   stateChangeHandler,
   commentCount,
+  disabled,
 }) => {
   // Calculate if the current section is focused
   const isSectionFocused =
@@ -60,7 +61,7 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
             <RichTextEditor
               content={dataElementsInvolved}
               setContent={setDataElementsInvolved}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || disabled}
               aria-label="Data Elements Involved Textarea Input"
             />
           ) : (
@@ -76,6 +77,7 @@ const IntakeInitiativeDetails: React.FC<IntakeInitiativeDetailsProps> = ({
             ]
           }
           path={PiaSections.INTAKE_INITIATIVE_DETAILS_DATA_ELEMENTS_INVOLVED}
+          disabled={disabled}
         />
       </div>
     </section>
