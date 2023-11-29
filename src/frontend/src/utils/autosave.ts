@@ -156,6 +156,7 @@ const useAutoSave = () => {
     const autoSave = async () => {
       setIsEagerSave(false);
       if (isConflict) return;
+      if (pia?.title?.trim().length === 0) return;
 
       try {
         await upsertAndUpdatePia();
