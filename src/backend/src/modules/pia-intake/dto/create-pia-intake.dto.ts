@@ -145,6 +145,14 @@ export class CreatePiaIntakeDto {
   })
   submittedAt: Date;
 
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    type: Boolean,
+    required: false,
+  })
+  newIntake: boolean;
+
   @IsObject()
   @IsOptional()
   @IsNotEmptyObject()

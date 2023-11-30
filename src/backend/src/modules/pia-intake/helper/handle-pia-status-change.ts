@@ -37,7 +37,9 @@ export const handlePiaStatusChange = (
     storedStatus === null &&
     updatedStatus !== PiaIntakeStatusEnum.DRAFTING_IN_PROGRESS
   ) {
-    throwStatusChangeError('Cannot move a fresh PIA to an Incomplete status');
+    throwStatusChangeError(
+      'Cannot move a fresh PIA to a Drafting in Progress status',
+    );
   }
 
   // handle status change actions

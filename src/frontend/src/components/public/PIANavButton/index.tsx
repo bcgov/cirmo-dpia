@@ -1,64 +1,60 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { INavButton } from './interface';
-import HandleState from './handleState';
 
 const PIANavButton = ({ pages }: INavButton) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  // Filter out dividers, leaving only pages
+  const pagesFiltered = pages.filter((item) => !item.isDivider);
+
+  const currentPageIndex = pagesFiltered.findIndex((page) =>
+    pathname.includes(page.id),
+  );
+  const previousPage = pagesFiltered[currentPageIndex - 1];
+  const nextPage = pagesFiltered[currentPageIndex + 1];
+
+  // Position of current page in array
+  const isFirstPage = currentPageIndex === 0;
+  const isLastPage = pagesFiltered.length - 1 === currentPageIndex;
+
   const handleBack = () => {
-    const backLink = HandleState(pages, pathname, 'prev');
-    if (backLink !== undefined && typeof backLink !== 'object')
-      navigate(backLink);
-    else {
-      if (backLink !== undefined && typeof backLink === 'object') {
-        if (Object(backLink).link !== undefined)
-          navigate(Object(backLink).link);
-      }
-    }
+    // No back button for intake page.
+    if (isFirstPage) return;
+    navigate(previousPage.link);
   };
 
   const handleNext = () => {
-    const nextLink = HandleState(pages, pathname, 'next');
-    if (nextLink !== undefined && typeof nextLink !== 'object')
-      navigate(nextLink);
-    else {
-      if (nextLink !== undefined && typeof nextLink === 'object') {
-        if (Object(nextLink).link !== undefined)
-          navigate(Object(nextLink).link);
-      }
-    }
+    // No next button if only 1 page.
+    if (pagesFiltered.length === 1) return;
+
+    // Return to intake when at end of pages.
+    if (isLastPage) navigate(pagesFiltered[0].link);
+    navigate(nextPage.link);
   };
 
   return (
     <>
-      {(HandleState(pages, pathname, 'prev') ||
-        HandleState(pages, pathname, 'next')) && (
-        <div className="horizontal-divider "></div>
-      )}
+      {pagesFiltered.length > 1 && <div className="horizontal-divider "></div>}
       <div className="form-buttons ">
-        {HandleState(pages, pathname, 'prev') && (
+        {!isFirstPage && (
           <button
             className="bcgovbtn bcgovbtn__secondary btn-back"
             onClick={handleBack}
             type="button"
             aria-label="Back Button"
           >
-            {typeof HandleState(pages, pathname, 'prev') === 'object'
-              ? Object(HandleState(pages, pathname, 'next'))?.title
-              : 'Back'}
+            Back
           </button>
         )}
-        {HandleState(pages, pathname, 'next') && (
+        {pagesFiltered.length > 1 && (
           <button
             className="bcgovbtn bcgovbtn__secondary btn-next ms-auto"
             onClick={handleNext}
             type="button"
             aria-label="Next Button"
           >
-            {typeof HandleState(pages, pathname, 'next') === 'object'
-              ? Object(HandleState(pages, pathname, 'next'))?.title
-              : 'Next'}
+            Next
           </button>
         )}
       </div>

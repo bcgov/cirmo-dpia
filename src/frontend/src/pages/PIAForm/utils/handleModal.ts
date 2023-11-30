@@ -122,6 +122,7 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
             pia?.hasAddedPiToDataElements === false
               ? PiaStatuses.MPO_REVIEW
               : PiaStatuses.DRAFTING_IN_PROGRESS,
+          newIntake: false,
         });
         // Navigate to the appropriate page based on the updated PIA status
         if (

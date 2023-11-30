@@ -59,7 +59,6 @@ export class PiaIntakeService {
   ): Promise<GetPiaIntakeRO> {
     // update submittedAt column if it is first time submit
     this.updateSubmittedAt(createPiaIntakeDto);
-
     // Get User role access type
     const accessType = this.getRoleAccess(userRoles);
 
@@ -630,8 +629,7 @@ export class PiaIntakeService {
    * This method will update submittedAt column in pia-intake table for the first time the drafter submit their pia
    */
   updateSubmittedAt = (dto: CreatePiaIntakeDto | UpdatePiaIntakeDto) => {
-    if (!dto.submittedAt && dto.status === PiaIntakeStatusEnum.MPO_REVIEW)
-      dto.submittedAt = new Date();
+    if (!dto.submittedAt) dto.submittedAt = new Date();
   };
 
   updateReviewField = (

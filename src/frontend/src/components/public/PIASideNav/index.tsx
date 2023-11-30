@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../../common/Navbar';
-import { PiaFormSideNavPages } from './pia-form-sideNav-pages';
+import { PiaFormSideNavPages } from './PiaFormSideNavPages';
 import { SideNavProps } from './interfaces';
 
 const PiaSideNav = ({ pia, isNewForm, isReadOnly }: SideNavProps) => {
