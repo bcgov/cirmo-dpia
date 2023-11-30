@@ -1,4 +1,4 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AddHideRolesToggleProps } from '../helpers/types';
 
@@ -10,8 +10,11 @@ export const AddHideRolesToggle = (props: AddHideRolesToggleProps) => {
         className="bcgovbtn bcgovbtn__tertiary bold"
         onClick={() => setShowAddRolesArea(!showAddRolesArea)}
       >
-        {!showAddRolesArea ? 'Add a role' : 'Hide Roles'}
-        <FontAwesomeIcon icon={faPlus} className="ml-2" />
+        {!showAddRolesArea ? 'Add a role' : 'Hide roles'}
+        <FontAwesomeIcon
+          icon={!showAddRolesArea ? faPlus : faMinus}
+          className="ml-2"
+        />
       </button>
     </section>
   );
