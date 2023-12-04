@@ -11,6 +11,8 @@ import { AuthContext } from './hooks/useAuth';
 import { useEffect, useRef, useState } from 'react';
 import { isAuthenticated } from './utils/auth';
 import AppActivityManager from './components/common/AppActivityManager';
+import KeyboardAccessibility from './utils/keyboardAccessibility';
+
 function App() {
   const { pathname } = useLocation();
   const [authenticated, setAuthenticated] =
@@ -28,23 +30,25 @@ function App() {
   return (
     <div className="App" data-color-mode="light">
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
-        <div>
-          <span ref={mainContentRef} tabIndex={-1} />
-          <a href="#main-content" className="skip-to-main">
-            Skip to main content
-          </a>
-        </div>
-        <Header />
+        <KeyboardAccessibility>
+          <div>
+            <span ref={mainContentRef} tabIndex={-1} />
+            <a href="#main-content" className="skip-to-main">
+              Skip to main content
+            </a>
+          </div>
+          <Header />
 
-        {pathname.startsWith('/') && !isAuthenticated() ? null : (
-          <>
-            <NavBar pages={pages} CSSclass="navbar-container wrapper" />
-            <AppActivityManager />
-          </>
-        )}
-        <div id="main-content">
-          <Router />
-        </div>
+          {pathname.startsWith('/') && !isAuthenticated() ? null : (
+            <>
+              <NavBar pages={pages} CSSclass="navbar-container wrapper" />
+              <AppActivityManager />
+            </>
+          )}
+          <div id="main-content">
+            <Router />
+          </div>
+        </KeyboardAccessibility>
       </AuthContext.Provider>
       <Footer />
     </div>
