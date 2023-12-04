@@ -1,13 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, ReactNode } from 'react';
 
 interface KeyboardAccessibilityProps {
   // Prop to accept React nodes as children
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-const KeyboardAccessibility: React.FC<KeyboardAccessibilityProps> = ({
-  children,
-}) => {
+const KeyboardAccessibility = ({ children }: KeyboardAccessibilityProps) => {
   // Custom hook to handle the 'Enter' key as a click event
   const handleEnterAsClick = useCallback((event: KeyboardEvent) => {
     // Trigger only if the 'Enter' key is pressed
