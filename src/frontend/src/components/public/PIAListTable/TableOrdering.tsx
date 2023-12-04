@@ -42,12 +42,6 @@ const TableOrdering = (props: ITableOrderingProps) => {
       src={sortingState(currentState)}
       aria-label={title + ' ' + sortingLabel + ' ' + 'button'}
       onClick={() => sorting(heading)}
-      onKeyDown={(event) => {
-        if (event.code === 'Enter') {
-          event.preventDefault();
-          sorting(heading);
-        }
-      }}
     ></img>
   );
 };

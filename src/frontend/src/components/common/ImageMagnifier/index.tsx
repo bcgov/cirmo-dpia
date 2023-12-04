@@ -127,13 +127,6 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
     }
   };
 
-  // Function to open the modal when the image is clicked using the keyboard
-  const handleImageKeyDown = (event: React.KeyboardEvent<HTMLImageElement>) => {
-    if (event.key === 'Enter') {
-      openModal();
-    }
-  };
-
   // useEffect to reset the body overflow when the component unmounts
   useEffect(() => {
     return () => {
@@ -206,7 +199,6 @@ const ImageMagnifier = ({ src, alt }: ImageMagnifierProps) => {
         alt={alt}
         onClick={openModal}
         tabIndex={0}
-        onKeyDown={handleImageKeyDown}
       />
       {modalOpen && (
         <div className="nextSteps-modal-overlay" onClick={closeModal}>
