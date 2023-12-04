@@ -23,13 +23,6 @@ const Collapsible = ({
     onOpenHandler?.();
   };
 
-  const handleKeyDown = (event: any) => {
-    if (event.code === 'Enter') {
-      event.preventDefault();
-      handleToggle();
-    }
-  };
-
   // The intent of this useEffect is to bring Toggle button to focus. This can happen under two circumstances:
   // 1. when the collapsible bar is made visible
   // 2. when bringToFocus is changed :: changing this number is a hack to retrigger useEffect, bringing the collapsible bar to focus when required by the parent
@@ -51,7 +44,6 @@ const Collapsible = ({
         }`}
         tabIndex={0}
         onClick={handleToggle}
-        onKeyDown={handleKeyDown}
         role="button"
         ref={toggleButtonRef}
       >

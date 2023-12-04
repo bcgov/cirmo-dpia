@@ -78,12 +78,6 @@ const PIAListTable = ({ headings, pias, sorting }: IDataTable) => {
                 tabIndex={0}
                 className="clickable"
                 onClick={() => onTitleClick(pia.id)}
-                onKeyDown={(event) => {
-                  if (event.code === 'Enter') {
-                    event.preventDefault();
-                    onTitleClick(pia.id);
-                  }
-                }}
               >
                 {pia.title}
               </td>
