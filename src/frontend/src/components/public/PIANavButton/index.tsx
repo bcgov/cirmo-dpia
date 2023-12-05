@@ -21,7 +21,7 @@ const PIANavButton = ({ pages }: INavButton) => {
   const handleBack = () => {
     // No back button for intake page.
     if (isFirstPage) return;
-    navigate(previousPage.link);
+    navigate(previousPage.link ?? '');
   };
 
   const handleNext = () => {
@@ -29,8 +29,8 @@ const PIANavButton = ({ pages }: INavButton) => {
     if (pagesFiltered.length === 1) return;
 
     // Return to intake when at end of pages.
-    if (isLastPage) navigate(pagesFiltered[0].link);
-    navigate(nextPage.link);
+    if (isLastPage) navigate(pagesFiltered[0].link ?? '');
+    navigate(nextPage.link ?? '');
   };
 
   return (
