@@ -7,7 +7,7 @@ export class CommentEntity extends BaseEntity {
   @ManyToOne(() => PiaIntakeEntity, (pia) => pia.id, {
     createForeignKeyConstraints: true,
     nullable: false,
-    onDelete: 'CASCADE',
+    onDelete: 'CASCADE', // If a pia is deleted, all its comments are also deleted
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'pia_id' })
