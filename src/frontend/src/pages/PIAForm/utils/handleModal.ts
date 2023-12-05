@@ -117,13 +117,14 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     try {
       // Handle each button value separately
       if (buttonValue === 'submitPiaIntake') {
-        const updatedPia = await upsertAndUpdatePia({
-          status:
-            pia?.hasAddedPiToDataElements === false
-              ? PiaStatuses.MPO_REVIEW
-              : PiaStatuses.DRAFTING_IN_PROGRESS,
-          newIntake: false,
-        });
+        const updatedPia = await upsertAndUpdatePia(
+          pia?.hasAddedPiToDataElements
+            ? {
+                status: PiaStatuses.DRAFTING_IN_PROGRESS,
+                newIntake: false,
+              }
+            : { status: PiaStatuses.MPO_REVIEW },
+        );
         // Navigate to the appropriate page based on the updated PIA status
         if (
           (updatedPia?.id &&

@@ -288,6 +288,8 @@ const PIAFormPage = () => {
       pia.newIntake ||
       !pia.status
     ) {
+      // pia.newIntake will be true when in Drafting_In_Progress status on a
+      // PI (non-delegated) PIA after it is submitted once.
       handleShowModal('submitPiaIntake');
     } else {
       handleShowModal(
