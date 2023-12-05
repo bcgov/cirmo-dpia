@@ -16,9 +16,9 @@ export const PiaFormSideNavPages = (
   isEditMode = false,
   isNewForm = false,
 ): NavbarItem[] => {
+  const isDelegated = pia?.hasAddedPiToDataElements !== true;
   // Post intake tabs are hidden before the user first submits in Drafting in Progress
-  const showPostIntakeTabs = !pia?.newIntake;
-  const isDelegated = !pia?.hasAddedPiToDataElements;
+  const showPostIntakeTabs = !isDelegated ? !pia?.newIntake : true;
 
   // Does the user have access to the page.
   const accessControl = (page: Page): boolean => {
@@ -48,7 +48,7 @@ export const PiaFormSideNavPages = (
     {
       id: 'divider1',
       isDivider: true, // DIVIDER
-      enable: showPostIntakeTabs,
+      enable: showPostIntakeTabs && !isDelegated,
     },
     {
       id: 'collectionUseAndDisclosure',
@@ -144,7 +144,8 @@ export const PiaFormSideNavPages = (
       id: 'divider2',
       isDivider: true, // DIVIDER
       enable:
-        (accessControl('ppq') || accessControl('review')) && showPostIntakeTabs,
+        ((accessControl('ppq') && !isDelegated) || accessControl('review')) &&
+        showPostIntakeTabs,
     },
     {
       id: 'ppq',
