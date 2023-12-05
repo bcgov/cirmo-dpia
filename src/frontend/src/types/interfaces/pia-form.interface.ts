@@ -17,7 +17,7 @@ export interface IPiaForm extends IPiaFormIntake {
   isActive?: boolean;
   saveId?: number;
   submittedAt?: Date | null;
-  newIntake: boolean;
+  newIntake?: boolean;
   accuracyCorrectionAndRetention?: IAccuracyCorrectionAndRetention;
   additionalRisks?: IAdditionalRisks;
   ppq?: IPPQ;

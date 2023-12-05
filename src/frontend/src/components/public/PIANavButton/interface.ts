@@ -1,5 +1,5 @@
-import { INavbarItem } from '../../common/Navbar/interfaces';
+import { NavbarItem } from '../../common/Navbar/interfaces';
 
 export interface INavButton {
-  pages: INavbarItem[];
+  pages: NavbarItem[];
 }
