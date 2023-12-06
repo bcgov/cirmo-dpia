@@ -18,29 +18,50 @@ const CommentSidebar = ({
 }: CommentSidebarProps) => {
   const { pathname } = useLocation();
   const [comments, setComments] = useState<Comment[]>([]);
-  const [deleteCommentId, setDeleteCommentId] = useState<number>(0);
-  //
+
   // Modal State
-  //
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
   const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
   const [modalTitleText, setModalTitleText] = useState<string>('');
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
-  const [enableComments, setEnableComments] = useState<boolean>(false);
+
+  // Delete comment and reply state
+  const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
+  const [deleteCommentReplyId, setDeleteCommentReplyId] = useState<
+    number | null
+  >(null);
+
+  // Enable comments
+  const enableComments = pia.status
+    ? statusList(pia)?.[pia.status]?.comments ?? false
+    : false;
+
+  // Ref for controlling auto scroll to latest comment
   const commentsEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!pia?.status) return;
+  // ID of the comment that the user wants to reply to.
+  // null when no comment is being replied to.
+  const [replyCommentId, setReplyCommentId] = useState<number | null>(null);
 
-    // Allow adding new comments and use of "more" menu including delete comment.
-    const allowComment = statusList(pia)?.[pia.status]?.comments || false;
-    setEnableComments(allowComment);
-  }, [pia]);
-  /**
-   * Async callback for getting comments within a useEffect hook
-   */
+  // New comment content
+  const [newCommentContent, setNewCommentContent] = useState<string>('');
+  const [newCommentReplyContent, setNewCommentReplyContent] =
+    useState<string>('');
+
+  // Focus and scroll into view the reply input
+  useEffect(() => {
+    const inputElement = document.getElementById('commentReplyInput');
+    if (inputElement) {
+      // Focus
+      inputElement.focus();
+      // Scroll into view
+      inputElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [replyCommentId]);
+
+  // Async callback for getting comments within a useEffect hook
   const getComments = useCallback(async () => {
     const commentArr: Comment[] = await HttpRequest.get(
       API_ROUTES.PIA_COMMENTS,
@@ -55,6 +76,16 @@ const CommentSidebar = ({
     setComments(commentArr);
   }, [piaId, path]);
 
+  // Fetch comments when pia ID or path changes
+  useEffect(() => {
+    try {
+      getComments();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [piaId, path, getComments]);
+
+  // Delete comment
   const deleteComment = async (commentId: number) => {
     await HttpRequest.delete(
       API_ROUTES.DELETE_COMMENT.replace(':id', `${commentId}`),
@@ -66,32 +97,21 @@ const CommentSidebar = ({
     handleStatusChange();
   };
 
-  useEffect(() => {
-    setComments([]);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (commentsEndRef.current) {
-      const scrollHeight = commentsEndRef.current.scrollHeight;
-      commentsEndRef.current.scrollTo({
-        top: scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  }, [comments]);
-
-  const handleModalClose = async (event: any) => {
-    event.preventDefault();
-    setShowModal(false);
-    await deleteComment(deleteCommentId);
+  // Delete reply
+  const deleteCommentReply = async (replyId: number) => {
+    // TODO
+    // await HttpRequest.delete(
+    //   API_ROUTES.DELETE_COMMENT.replace(':id', `${replyId}`),
+    //   {},
+    //   {},
+    //   true,
+    // );
+    console.log(`REMOVE ME when implemented ${replyId}`);
+    getComments();
+    handleStatusChange();
   };
 
-  const handleModalCancel = () => {
-    setShowModal(false);
-  };
-
-  const [newCommentContent, setNewCommentContent] = useState('');
-
+  // Add new comment
   const addComment = async () => {
     await HttpRequest.post(
       API_ROUTES.PIA_COMMENTS,
@@ -104,6 +124,50 @@ const CommentSidebar = ({
     handleStatusChange();
   };
 
+  // Add new reply
+  const addCommentReply = async () => {
+    // TODO
+    // await HttpRequest.post(
+    //   API_ROUTES.PIA_COMMENTS,
+    //   { piaId: piaId, path: path, text: `${newCommentReplyContent}` },
+    //   {},
+    //   {},
+    //   true,
+    // );
+    getComments();
+    handleStatusChange();
+  };
+
+  // Clean comments state when page changes
+  useEffect(() => {
+    setComments([]);
+  }, [pathname]);
+
+  // Scroll latest comment into focus
+  useEffect(() => {
+    if (commentsEndRef.current) {
+      const scrollHeight = commentsEndRef.current.scrollHeight;
+      commentsEndRef.current.scrollTo({
+        top: scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [comments]);
+
+  // Modal close
+  const handleModalClose = async (event: any) => {
+    event.preventDefault();
+    setShowModal(false);
+    if (deleteCommentId) await deleteComment(deleteCommentId);
+    if (deleteCommentReplyId) await deleteCommentReply(deleteCommentReplyId);
+  };
+
+  // Modal cancel
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
+
+  // Handle deleting comments
   const handleDeleteComment = (commentId: number) => {
     setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
     setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
@@ -114,13 +178,16 @@ const CommentSidebar = ({
     setShowModal(true);
   };
 
-  useEffect(() => {
-    try {
-      getComments();
-    } catch (err) {
-      console.error(err);
-    }
-  }, [piaId, path, getComments]);
+  // Handle deleting replies
+  const handleDeleteCommentReply = (replyId: number) => {
+    setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
+    setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
+    setModalTitleText(Messages.Modal.Delete.TitleText.en);
+    setModalParagraph(Messages.Modal.Delete.ParagraphText.en);
+    setModalButtonValue('deleteComments');
+    setDeleteCommentReplyId(replyId);
+    setShowModal(true);
+  };
 
   return (
     <>
@@ -134,22 +201,31 @@ const CommentSidebar = ({
             comments?.map((comment) => (
               <div className="p-3" key={comment.id} id="CommentSidebar">
                 <div className="position-relative">
-                  <p className="fw-bold">
+                  <p className="commentHeader fw-bold">
                     {comment.createdByDisplayName}
                     <span className="ps-1 pe-2 text-muted fw-normal">
                       {getDateTime(stringToDate(comment.updatedAt))}
                     </span>
                   </p>
                   {enableComments && (
-                    <div className="d-flex mx-1 position-absolute top-0 start-100 translate-middle-x">
+                    <div className="commentActions">
                       <button
-                        className="mx-2 bcgovbtn bcgovbtn__tertiary"
+                        className="commentActionBtn bcgovbtn bcgovbtn__tertiary"
+                        type="button"
+                        aria-label="Comment Reply Button"
+                        id="commentReplyBtn"
+                        onClick={() => setReplyCommentId(comment.id)}
+                      >
+                        <b style={{ fontSize: 'small' }}>Reply</b>
+                      </button>
+                      <button
+                        className="commentActionBtn bcgovbtn bcgovbtn__tertiary"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded={false}
                         aria-label="Comment Options Button"
                       >
-                        <FontAwesomeIcon icon={faEllipsisH} fontSize="large" />
+                        <FontAwesomeIcon icon={faEllipsisH} fontSize="medium" />
                       </button>
                       <ul
                         aria-label="Comment Options Menu"
@@ -175,21 +251,115 @@ const CommentSidebar = ({
                     <i>[this comment has been deleted]</i>
                   )}
                 </div>
-                {comment.replies && comment.replies.length > 0 && (
-                  <div className="ml-3">
-                    {comment.replies.map((reply) => (
-                      <div className="p-2" key={reply.id}>
-                        <div className="font-weight-bold">
-                          {reply.createdByDisplayName}
-                          <span className="ps-1 text-muted">
-                            {getDateTime(stringToDate(reply.updatedAt))}
-                          </span>
+
+                {/* REPLIES */}
+                <>
+                  {comment.replies &&
+                    comment.replies.length > 0 &&
+                    comment.replies.map((reply) => (
+                      <div className="commentReply" key={reply.id}>
+                        <div className="vr" />
+                        <div className="px-2">
+                          <p className="commentHeader fw-bold">
+                            {reply.createdByDisplayName}
+                            <span className="ps-1 pe-2 text-muted fw-normal">
+                              {getDateTime(stringToDate(reply.updatedAt))}
+                            </span>
+                          </p>
+                          {enableComments && (
+                            <div className="commentReplyActions">
+                              <button
+                                className="commentActionBtn bcgovbtn bcgovbtn__tertiary"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded={false}
+                                aria-label="Comment Options Button"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEllipsisH}
+                                  fontSize="medium"
+                                />
+                              </button>
+                              <ul
+                                aria-label="Comment Options Menu"
+                                className="dropdown-menu border-1 shadow-sm"
+                              >
+                                <li role="button">
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteCommentReply(reply.id)
+                                    }
+                                    className="dropdown-item"
+                                    disabled={reply.createdByGuid !== getGUID()}
+                                  >
+                                    Delete
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          )}
+                          <div id="CommentSidebarCommentReply">
+                            {reply.isActive ? (
+                              reply.text
+                            ) : (
+                              <i>[this comment has been deleted]</i>
+                            )}
+                          </div>
                         </div>
-                        <div>{reply.text}</div>
                       </div>
                     ))}
-                  </div>
-                )}
+
+                  {/* NEW REPLY INPUT */}
+                  {replyCommentId === comment.id && enableComments && (
+                    <div className="commentReply">
+                      <div className="vr commentReplyInputDivider" />
+                      <div className="d-flex flex-column ms-3 mt-auto gap-3 w-100 justify-self-end">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Write a reply..."
+                          value={newCommentReplyContent}
+                          onChange={(e) =>
+                            setNewCommentReplyContent(e.target.value)
+                          }
+                          aria-label="Comment reply text input"
+                          id="commentReplyInput"
+                        />
+                        <div
+                          className="d-flex gap-2 btn-group justify-content-end"
+                          role="group"
+                          aria-label="Comment reply button group"
+                        >
+                          <button
+                            type="button"
+                            className="bcgovbtn bcgovbtn__tertiary mr-2"
+                            onClick={() => {
+                              setNewCommentReplyContent('');
+                              setReplyCommentId(null);
+                            }}
+                            aria-label="Cancel Comment Reply Button"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            className="bcgovbtn bcgovbtn__secondary"
+                            onClick={() => {
+                              addCommentReply();
+                              setNewCommentReplyContent('');
+                            }}
+                            aria-label="Add New Comment Reply Button"
+                            disabled={
+                              (newCommentReplyContent || '').trim() === ''
+                            }
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               </div>
             ))}
           {!path && (
@@ -202,6 +372,8 @@ const CommentSidebar = ({
             <p className="p-3">No comments yet.</p>
           )}
         </div>
+
+        {/* NEW COMMENT INPUT */}
         {enableComments && path && comments && (
           <div className="d-flex flex-column ms-3 pe-5 mt-auto gap-3 w-100 justify-self-end comment-sidebar__add-comment">
             <input
