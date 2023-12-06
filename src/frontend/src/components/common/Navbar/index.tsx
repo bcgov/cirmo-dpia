@@ -34,20 +34,20 @@ function NavBar({
           .map((page, index) => {
             return (
               <li key={page.id}>
-                {page.isDivider ? (
+                {page?.isDivider ? (
                   <hr />
                 ) : (
                   <NavLink
-                    id={page.navId}
+                    id={page.id}
                     role="navItem"
-                    aria-label={page.label}
+                    aria-label={page?.label}
                     tabIndex={rovingTabIndex && index > 0 ? -1 : 0}
                     className={`bcgovbtn bcgovbtn__tertiary bcgovbtn__tertiary--dark ${
                       page.link === currentPath ? 'active' : ''
                     }`}
-                    to={page.link}
+                    to={page?.link ?? ''}
                   >
-                    {page.label}
+                    {page?.label ?? ''}
                   </NavLink>
                 )}
               </li>

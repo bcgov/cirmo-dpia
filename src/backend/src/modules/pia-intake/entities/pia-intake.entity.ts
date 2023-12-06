@@ -127,6 +127,13 @@ export class PiaIntakeEntity extends BaseEntity {
   submittedAt: Date;
 
   @Column({
+    name: 'new_intake',
+    type: 'boolean',
+    nullable: true,
+  })
+  newIntake: boolean;
+
+  @Column({
     name: 'collection_use_and_disclosure',
     type: 'jsonb',
     nullable: true,

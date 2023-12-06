@@ -1,5 +1,5 @@
 export interface INavbarPages {
-  pages: INavbarItem[];
+  pages: NavbarItem[];
   CSSclass: string;
   rovingTabIndex?: boolean;
 }
@@ -29,37 +29,10 @@ If the action is a string then we navigate to the page with the label that match
 If the action is an object then we navigate to the page with the link that matches the object link.
 */
 
-export interface INavbarItem {
-  id: number;
-  label: string;
-  link: string;
-  enable?: boolean;
-  onclick?: () => void;
-  isDivider?: true;
-
-  state?: {
-    [prev: string]: {
-      condition: boolean | null | undefined;
-      action?:
-        | {
-            link: string | null;
-            title: string | null;
-          }
-        | number
-        | string
-        | null;
-      actionFalse?:
-        | {
-            link: string | null;
-            title: string | null;
-          }
-        | number
-        | string
-        | null;
-    };
-  };
-
-  navDown?: string;
-  navUp?: string;
-  navId?: string;
-}
+export type NavbarItem = {
+  id: string;
+  label?: string;
+  link?: string;
+  isDivider?: boolean;
+  enable: boolean;
+};
