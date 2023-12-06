@@ -81,6 +81,7 @@ const PIAAdditionalRisks = ({
           addRowBtnLabel="Add more risks"
           format="row"
           readOnly={isReadOnly}
+          enableComments={false}
         />
         {showComments && (
           <ViewComments

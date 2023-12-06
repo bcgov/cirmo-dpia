@@ -12,7 +12,7 @@ export interface IPiaFormContext {
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;
   accessControl?: () => void;
-  piaCommentPathHandler?: (path: PiaSections | undefined) => void;
+  piaCommentPathHandler?: (path: PiaSections | string | undefined) => void;
   validationMessage: PiaValidationMessage;
 }
 

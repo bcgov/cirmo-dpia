@@ -1,4 +1,5 @@
 import { TextType } from '../../../types/types/text.type';
+import { CommentCount } from '../ViewComment/interfaces';
 
 export interface ColumnMetaData {
   key: string;
@@ -25,4 +26,6 @@ export interface TableProps {
   numberedLabelPrefix?: string;
   onChangeHandler?: (updatedData: TabularData) => void;
   format?: 'standard' | 'row';
+  enableComments?: boolean;
+  commentCount?: CommentCount;
 }

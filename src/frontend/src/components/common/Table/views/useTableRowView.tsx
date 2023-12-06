@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import InputText from '../../InputText/InputText';
 import { TableViewProps } from './table-view-props.interface';
 import { TextInputEnum } from '../../../../constant/constant';
-
+import ViewComments from '../../../../components/common/ViewComment';
+import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import { generateUID } from '../../../../utils/generateUID';
 type UseTableRowViewProps = TableViewProps;
 
 export const UseTableRowView = (props: UseTableRowViewProps) => {
@@ -33,9 +35,20 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               {!props.readOnly && (
                 <InputText
                   type={column.type ? column.type : TextInputEnum.INPUT_TEXT}
-                  value={rowData[column.key]}
+                  value={
+                    rowData[column.key] ||
+                    (column.key == 'uid'
+                      ? (rowData[column.key] = generateUID())
+                      : '')
+                  }
                   labelSide="top"
-                  label={column.label}
+                  label={
+                    PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
+                    '-' +
+                    (index + 1) +
+                    '-' +
+                    rowData.uid
+                  }
                   isDisabled={column.isDisable}
                   onChange={(e) =>
                     props.handleDataChange(e, `${index}.${column.key}`)
@@ -44,6 +57,25 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               )}
             </div>
           ))}
+
+          {props.showComments ? (
+            <ViewComments
+              count={
+                props.commentCount?.[
+                  PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
+                    '-' +
+                    rowData.uid
+                ]
+              }
+              path={
+                PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
+                '-' +
+                rowData.uid
+              }
+            />
+          ) : (
+            ''
+          )}
 
           {/* Delete row */}
           {props.allowRowDelete && !props.readOnly && (

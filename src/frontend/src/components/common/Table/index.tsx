@@ -16,6 +16,8 @@ export const Table = ({
   numberedLabelPrefix,
   onChangeHandler,
   format = 'standard',
+  enableComments = false, //
+  commentCount = {},
 }: TableProps) => {
   const [data, setData] = useState<TabularData>(initialData);
 
@@ -63,12 +65,16 @@ export const Table = ({
     addRowBtnLabel,
     allowRowDelete,
     removeRow,
+    showComments: enableComments,
+    commentCount: commentCount,
   };
 
   return (
-    <div className="data-table__container">
-      {format === 'row' && UseTableRowView(viewProps)}
-      {format === 'standard' && UseTableStandardView(viewProps)}
-    </div>
+    <>
+      <div className="data-table__container">
+        {format === 'row' && UseTableRowView(viewProps)}
+        {format === 'standard' && UseTableStandardView(viewProps)}
+      </div>
+    </>
   );
 };

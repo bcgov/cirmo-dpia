@@ -70,6 +70,12 @@ const PIACollectionUseAndDisclosure = ({
 
   const columns: Array<ColumnMetaData> = [
     {
+      key: 'uid',
+      label: 'uid',
+      type: TextInputEnum.INPUT_TEXT,
+      //type: TextInputEnum.INPUT_HIDDEN
+    },
+    {
       key: 'drafterInput',
       label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
       type: TextInputEnum.INPUT_TEXT_AREA,
@@ -126,7 +132,7 @@ const PIACollectionUseAndDisclosure = ({
       );
     }
   }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
-
+  console.log('collection page: ' + showComments);
   return (
     <>
       <h2 className="results-header">
@@ -153,18 +159,20 @@ const PIACollectionUseAndDisclosure = ({
           numberedLabelPrefix="Step"
           addRowBtnLabel="Add more steps"
           format="row"
+          enableComments={showComments}
+          commentCount={commentCount}
         />
-        {showComments && (
+        {/* {showComments && (
           <ViewComments
             count={
               commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
             }
             path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
           />
-        )}
+        )} */}
       </section>
 
-      <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
+      <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en} 히히히</h3>
 
       <section
         className={`drop-shadow card p-4 p-md-5  ${

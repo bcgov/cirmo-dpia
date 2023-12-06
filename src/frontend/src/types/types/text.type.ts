@@ -1,1 +1,1 @@
-export type TextType = 'text' | 'textarea' | 'email';
+export type TextType = 'text' | 'textarea' | 'email' | 'hidden';

@@ -1,3 +1,4 @@
+import { CommentCount } from '../../../../components/common/ViewComment/interfaces';
 import { ColumnMetaData, TabularData } from '../interfaces';
 
 export interface TableViewProps {
@@ -16,4 +17,6 @@ export interface TableViewProps {
   removeRow: (index: number) => void;
 
   numberedLabelPrefix?: string;
+  showComments?: boolean;
+  commentCount?: CommentCount;
 }
