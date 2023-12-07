@@ -38,7 +38,13 @@ const PIACollectionUseAndDisclosure = ({
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
       steps: [
-        { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
+        {
+          uid: '',
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
       ],
       collectionNotice: {
         drafterInput: { content: '' },
@@ -172,7 +178,7 @@ const PIACollectionUseAndDisclosure = ({
         )} */}
       </section>
 
-      <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en} 히히히</h3>
+      <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>
 
       <section
         className={`drop-shadow card p-4 p-md-5  ${

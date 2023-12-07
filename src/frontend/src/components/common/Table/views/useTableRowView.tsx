@@ -5,7 +5,7 @@ import { TableViewProps } from './table-view-props.interface';
 import { TextInputEnum } from '../../../../constant/constant';
 import ViewComments from '../../../../components/common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
-import { generateUID } from '../../../../utils/generateUID';
+
 type UseTableRowViewProps = TableViewProps;
 
 export const UseTableRowView = (props: UseTableRowViewProps) => {
@@ -35,20 +35,9 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
               {!props.readOnly && (
                 <InputText
                   type={column.type ? column.type : TextInputEnum.INPUT_TEXT}
-                  value={
-                    rowData[column.key] ||
-                    (column.key == 'uid'
-                      ? (rowData[column.key] = generateUID())
-                      : '')
-                  }
+                  value={rowData[column.key]}
                   labelSide="top"
-                  label={
-                    PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
-                    '-' +
-                    (index + 1) +
-                    '-' +
-                    rowData.uid
-                  }
+                  label={column.label}
                   isDisabled={column.isDisable}
                   onChange={(e) =>
                     props.handleDataChange(e, `${index}.${column.key}`)

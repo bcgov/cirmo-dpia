@@ -6,6 +6,10 @@ import { validateRoleForFormField } from 'src/common/validators/form-field-role.
 export class StepWalkthrough {
   @IsString()
   @IsOptional()
+  uid?: string;
+
+  @IsString()
+  @IsOptional()
   drafterInput?: string;
 
   @IsString()
@@ -22,6 +26,12 @@ export class StepWalkthrough {
 }
 
 export const StepWalkthroughMetadata: Array<IFormField<StepWalkthrough>> = [
+  {
+    key: 'uid',
+    type: 'text',
+    isRichText: false,
+    allowedUserTypesEdit: null,
+  },
   {
     key: 'drafterInput',
     type: 'text',

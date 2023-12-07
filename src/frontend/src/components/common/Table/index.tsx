@@ -5,6 +5,7 @@ import { RowData, TableProps, TabularData } from './interfaces';
 import { TableViewProps } from './views/table-view-props.interface';
 import { UseTableRowView } from './views/useTableRowView';
 import { UseTableStandardView } from './views/useTableStandardView';
+import { generateUID } from '../../../utils/generateUID';
 
 export const Table = ({
   columnsMeta = [],
@@ -30,6 +31,10 @@ export const Table = ({
     const emptyRow = columnsMeta.reduce((acc, column) => {
       return { ...acc, [column.key]: column.defaultValue || '' };
     }, {} as RowData);
+
+    // Generate a unique identifier (uid)
+    const uid = generateUID();
+    emptyRow.uid = uid;
 
     setData((prevData) => [...prevData, emptyRow]);
   };
