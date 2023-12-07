@@ -50,13 +50,6 @@ const ListPageNumber = (props: ListPageNumberProps) => {
     props.changePage(pageNumber);
   };
 
-  // Key down handler for keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent, pageNumber: number) => {
-    if (e.key === 'Enter') {
-      handlePageNumberClick(pageNumber); // Handle 'Enter' key as click
-    }
-  };
-
   const paginationRange = getPaginationRange();
 
   return (
@@ -86,7 +79,6 @@ const ListPageNumber = (props: ListPageNumberProps) => {
             aria-label={'Go to Page ' + pageNumber}
             key={pageNumber}
             onClick={() => handlePageNumberClick(pageNumber)}
-            onKeyDown={(e) => handleKeyDown(e, pageNumber)}
             aria-current={pageNumber === props.currentPage}
             className={`page__enumeration ${
               pageNumber === props.currentPage ? 'pageActive' : ''

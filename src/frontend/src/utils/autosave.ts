@@ -31,6 +31,8 @@ const useAutoSave = () => {
     leadEmail: '',
     mpoName: '',
     mpoEmail: '',
+    submittedAt: null,
+    newIntake: true,
     initiativeDescription: emptyRichTextContent,
     initiativeScope: emptyRichTextContent,
     dataElementsInvolved: emptyRichTextContent,

@@ -4,7 +4,7 @@ import { getShortTime } from '../../../utils/date';
 import { buildDynamicPath } from '../../../utils/path';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routes } from '../../../constant/routes';
-import { PiaStatuses, PIOptions } from '../../../constant/constant';
+import { PiaStatuses } from '../../../constant/constant';
 import { IPiaForm } from '../../../types/interfaces/pia-form.interface';
 
 type HandleModalProps = {
@@ -117,47 +117,33 @@ const useHandleModal = ({ pia, upsertAndUpdatePia }: HandleModalProps) => {
     try {
       // Handle each button value separately
       if (buttonValue === 'submitPiaIntake') {
-        const updatedPia = await upsertAndUpdatePia({
-          status:
-            pia?.hasAddedPiToDataElements === false
-              ? PiaStatuses.MPO_REVIEW
-              : PiaStatuses.DRAFTING_IN_PROGRESS,
-        });
-        // Navigate to the appropriate page based on the updated PIA status
-        if (
-          (updatedPia?.id &&
-            !window.location.pathname.includes('new/intake') &&
-            (updatedPia?.hasAddedPiToDataElements === PIOptions[0].value || //  key: "yes", value: true
-              updatedPia?.hasAddedPiToDataElements === PIOptions[2].value)) || //  key: "I'm not sure", value: null
-          (updatedPia?.id &&
-            !window.location.pathname.includes('new/intake') &&
-            updatedPia?.hasAddedPiToDataElements === PIOptions[1].value)
-        ) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        } else {
-          navigate(
-            buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
-              id: updatedPia.id,
-              title: updatedPia.title,
-            }),
-          );
-        }
+        const updatedPia = await upsertAndUpdatePia(
+          pia?.hasAddedPiToDataElements
+            ? {
+                status: PiaStatuses.DRAFTING_IN_PROGRESS,
+                newIntake: false,
+              }
+            : { status: PiaStatuses.MPO_REVIEW },
+        );
+        // Navigate to Next Steps page
+        navigate(
+          buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
+            id: updatedPia.id,
+            title: updatedPia.title,
+          }),
+        );
       } else if (buttonValue === 'submitPiaForm') {
         const updatedPia = await upsertAndUpdatePia({
           status: PiaStatuses.MPO_REVIEW,
         });
 
-        if (updatedPia?.id) {
-          navigate(
-            buildDynamicPath(routes.PIA_VIEW, {
-              id: updatedPia.id,
-            }),
-          );
-        }
+        // Navigate to Next Steps page
+        navigate(
+          buildDynamicPath(routes.PIA_NEXT_STEPS_EDIT, {
+            id: updatedPia.id,
+            title: updatedPia.title,
+          }),
+        );
       } else if (buttonValue === 'edit') {
         await upsertAndUpdatePia({
           status:

@@ -81,6 +81,9 @@ export const editInProgressStatus = () => {
           review: {
             accessControl: false,
           },
+          ppq: {
+            accessControl: false,
+          },
           nextSteps: {
             accessControl: true,
             readOnly: true,
