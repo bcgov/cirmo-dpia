@@ -51,6 +51,19 @@ export class CommentsService {
     return comment;
   }
 
+  async findOneReplyBy(
+    where: FindOptionsWhere<ReplyEntity>,
+  ): Promise<ReplyEntity> {
+    const reply: ReplyEntity = await this.replyRepository.findOneBy(where);
+
+    // If the record is not found, throw an exception
+    if (!reply) {
+      throw new NotFoundException();
+    }
+
+    return reply;
+  }
+
   async create(
     createCommentDto: CreateCommentDto,
     user: KeycloakUser,
@@ -113,7 +126,7 @@ export class CommentsService {
   ): Promise<ReplyRO> {
     // extract user input dto
     const { commentId, text } = createReplyDto;
-    const parentComment = await this.findById(commentId);
+    const parentComment = await this.findOneBy({ id: commentId });
 
     // validate comment exists
     if (!parentComment)
@@ -192,18 +205,6 @@ export class CommentsService {
     return getFormattedComments(comments);
   }
 
-  async findById(id: number): Promise<CommentRO> {
-    const comment = await this.commentRepository.findOne({
-      where: { id },
-    });
-
-    if (!comment) {
-      throw new NotFoundException(`Comment with ID ${id} not found.`);
-    }
-
-    return getFormattedComment(comment);
-  }
-
   async findCountByPia(
     piaId: number,
     user: KeycloakUser,
@@ -236,7 +237,7 @@ export class CommentsService {
     // if the comment person who created the comment is not the one deleting, throw error
     if (user.idir_user_guid !== comment.createdByGuid) {
       throw new ForbiddenException({
-        message: "Forbidden: You're are not authorized to remoe this comment",
+        message: "Forbidden: You're are not authorized to remove this comment",
       });
     }
 
@@ -274,6 +275,59 @@ export class CommentsService {
     });
 
     return getFormattedComment(updatedComment);
+  }
+
+  // Remove Reply
+  async removeReply(
+    id: number,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ): Promise<ReplyRO> {
+    // fetch reply
+    const reply = await this.findOneReplyBy({ id });
+    const parentComment = await this.findOneBy({ id: reply.commentId });
+
+    // if the comment person who created the comment is not the one deleting, throw error
+    if (user.idir_user_guid !== reply.createdByGuid) {
+      throw new ForbiddenException({
+        message: "Forbidden: You're are not authorized to remove this reply",
+      });
+    }
+
+    // validate access to PIA. Throw error if not
+    const pia = await this.piaService.validatePiaAccess(
+      parentComment.piaId,
+      user,
+      userRoles,
+    );
+
+    // check if deleting comments to this PIA allowed
+    const isActionAllowed = checkUpdatePermissions({
+      status: pia?.status,
+      entityType: 'comment',
+      entityAction: 'remove',
+    });
+
+    if (!isActionAllowed) {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message: 'Forbidden: Failed to remove comment reply of the PIA',
+      });
+    }
+
+    // throw error if comment already deleted
+    if (reply.isActive === false) {
+      throw new BadRequestException('Reply already deleted');
+    }
+
+    // soft delete
+    const updatedReply = await this.replyRepository.save({
+      ...reply,
+      isActive: false,
+      text: null,
+    });
+
+    return getFormattedReply(updatedReply);
   }
 
   // TODO

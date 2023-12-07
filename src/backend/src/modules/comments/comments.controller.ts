@@ -176,6 +176,31 @@ export class CommentsController {
     return this.commentsService.remove(+id, req.user, req.userRoles);
   }
 
+  // Delete Reply
+  @Delete('reply/:id')
+  @ApiOperation({
+    description: 'Deletes a comment reply',
+  })
+  @ApiOkResponse({
+    description: 'Successfully deleted a comment reply',
+  })
+  @ApiBadRequestResponse({
+    description: 'Failed to delete comment reply: Invalid request',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to delete comment: User lacks permission to delete comment reply of this PIA',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to delete comment reply: Comment not found',
+  })
+  @ApiGoneResponse({
+    description: 'Failed to delete comment reply: The PIA is not active',
+  })
+  removeReply(@Param('id') id: string, @Req() req: IRequest): Promise<ReplyRO> {
+    return this.commentsService.removeReply(+id, req.user, req.userRoles);
+  }
+
   @Post(':id/resolve')
   resolve(@Param('id') id: string) {
     return this.commentsService.resolve(+id);
