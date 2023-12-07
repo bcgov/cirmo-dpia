@@ -20,15 +20,20 @@ import {
 } from './ro/comments-count-ro';
 import {
   CommentRO,
+  ReplyRO,
   getFormattedComment,
   getFormattedComments,
+  getFormattedReply,
 } from './ro/get-comment.ro';
+import { CreateReplyDto } from './dto/create-reply.dto';
+import { ReplyEntity } from './entities/reply.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
+    private replyRepository: Repository<ReplyEntity>,
     private readonly piaService: PiaIntakeService,
   ) {}
 
@@ -101,6 +106,68 @@ export class CommentsService {
     return getFormattedComment(comment);
   }
 
+  async createReply(
+    createReplyDto: CreateReplyDto,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ): Promise<ReplyRO> {
+    // extract user input dto
+    const { commentId, text } = createReplyDto;
+    const parentComment = await this.findById(commentId);
+
+    // validate comment exists
+    if (!parentComment)
+      throw new NotFoundException({
+        commentId,
+        message: 'No comment found by the id provided.',
+      });
+
+    // validate access to PIA. Throw error if not
+    const pia = await this.piaService.validatePiaAccess(
+      parentComment.piaId,
+      user,
+      userRoles,
+    );
+
+    // validate blank text
+    if ((text || '').trim() === '') {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message:
+          'Forbidden: Failed to add comment reply to the PIA. Text cannot be blank.',
+      });
+    }
+
+    // check if adding comments to this PIA allowed
+    const isActionAllowed = checkUpdatePermissions({
+      status: pia?.status,
+      entityType: 'comment',
+      entityAction: 'add',
+    });
+
+    if (!isActionAllowed) {
+      throw new ForbiddenException({
+        piaId: pia.id,
+        message: 'Forbidden: Failed to add comment reply to the PIA',
+      });
+    }
+
+    // create resource
+    const reply: ReplyEntity = await this.replyRepository.save({
+      comment: parentComment,
+      text,
+      isResolved: false,
+      createdByGuid: user.idir_user_guid,
+      createdByUsername: user.idir_username,
+      updatedByGuid: user.idir_user_guid,
+      updatedByUsername: user.idir_username,
+      createdByDisplayName: user.display_name,
+    });
+
+    // return formatted object
+    return getFormattedReply(reply);
+  }
+
   async findByPiaAndPath(
     piaId: number,
     path: AllowedCommentPaths,
@@ -123,6 +190,18 @@ export class CommentsService {
 
     // return formatted objects
     return getFormattedComments(comments);
+  }
+
+  async findById(id: number): Promise<CommentRO> {
+    const comment = await this.commentRepository.findOne({
+      where: { id },
+    });
+
+    if (!comment) {
+      throw new NotFoundException(`Comment with ID ${id} not found.`);
+    }
+
+    return getFormattedComment(comment);
   }
 
   async findCountByPia(
