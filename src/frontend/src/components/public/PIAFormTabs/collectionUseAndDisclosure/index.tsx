@@ -20,6 +20,7 @@ import ViewComments from '../../../common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
 import { TextInputEnum } from '../../../../constant/constant';
 import { RichTextEditor } from '@bcgov/citz-imb-richtexteditor';
+import { generateUID } from '../../../../utils/generateUID';
 
 const PIACollectionUseAndDisclosure = ({
   showComments = true,
@@ -39,7 +40,7 @@ const PIACollectionUseAndDisclosure = ({
     () => ({
       steps: [
         {
-          uid: '',
+          uid: generateUID(),
           drafterInput: '',
           mpoInput: '',
           foippaInput: '',
