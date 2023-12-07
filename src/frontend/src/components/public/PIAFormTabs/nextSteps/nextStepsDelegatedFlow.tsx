@@ -24,7 +24,7 @@ const NextStepsDelegatedFlow: React.FC<NextStepsDelegatedFlowProps> = ({
           </a>
           {messages.Delegated.description.desc2.en}
         </p>
-        <p>
+        <>
           <div>{messages.Delegated.helpline.title.en}</div>
           <div>
             <a href={`tel:${messages.Delegated.helpline.telephone.en} `}>
@@ -36,7 +36,7 @@ const NextStepsDelegatedFlow: React.FC<NextStepsDelegatedFlowProps> = ({
               {messages.Delegated.helpline.email.en}
             </a>
           </div>
-        </p>
+        </>
       </section>
       <PIALifecycle hasAddedPiToDataElements={hasAddedPiToDataElements} />
     </>
