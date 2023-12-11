@@ -14,5 +14,6 @@ export const API_ROUTES = {
   PIA_COMMENTS: '/api/comments',
   GET_COMMENTS_COUNT: '/api/comments/count',
   DELETE_COMMENT: '/api/comments/:id',
+  DELETE_COMMENTS_BY_PATH: '/api/comments/deleteAll/:path',
   GET_INVITE_CODE: '/api/invite',
 };

@@ -7,7 +7,7 @@ import { PiaSections } from '../types/enums/pia-sections.enum';
 export interface IPiaFormContext {
   pia: IPiaForm;
   commentCount?: CommentCount;
-  selectedSection?: PiaSections;
+  selectedSection?: PiaSections | string | undefined;
   piaStateChangeHandler: PiaStateChangeHandlerType;
   piaCollapsibleChangeHandler?: (isOpen: boolean) => void;
   isReadOnly: boolean;

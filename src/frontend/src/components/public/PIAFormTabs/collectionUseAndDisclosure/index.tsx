@@ -78,9 +78,8 @@ const PIACollectionUseAndDisclosure = ({
   const columns: Array<ColumnMetaData> = [
     {
       key: 'uid',
-      label: 'uid',
-      type: TextInputEnum.INPUT_TEXT,
-      //type: TextInputEnum.INPUT_HIDDEN
+      label: '',
+      type: TextInputEnum.INPUT_HIDDEN,
     },
     {
       key: 'drafterInput',
@@ -139,7 +138,7 @@ const PIACollectionUseAndDisclosure = ({
       );
     }
   }, [piaStateChangeHandler, collectionUseAndDisclosureForm, initialFormState]);
-  console.log('collection page: ' + showComments);
+
   return (
     <>
       <h2 className="results-header">

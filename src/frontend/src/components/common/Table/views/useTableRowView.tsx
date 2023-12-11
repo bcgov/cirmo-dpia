@@ -5,10 +5,63 @@ import { TableViewProps } from './table-view-props.interface';
 import { TextInputEnum } from '../../../../constant/constant';
 import ViewComments from '../../../../components/common/ViewComment';
 import { PiaSections } from '../../../../types/enums/pia-sections.enum';
+import Modal from '../../../../components/common/Modal';
+import { useState } from 'react';
+import Messages from './messages';
+import { API_ROUTES } from '../../../../constant/apiRoutes';
+import { HttpRequest } from '../../../../utils/http-request.util';
 
 type UseTableRowViewProps = TableViewProps;
 
 export const UseTableRowView = (props: UseTableRowViewProps) => {
+  // State variables to manage the delete modal and its content
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [modalConfirmLabel, setModalConfirmLabel] = useState<string>('');
+  const [modalCancelLabel, setModalCancelLabel] = useState<string>('');
+  const [modalTitleText, setModalTitleText] = useState<string>('');
+  const [modalParagraph, setModalParagraph] = useState<string>('');
+  const [modalButtonValue, setModalButtonValue] = useState<string>('');
+  const [deleteCommentPath, setDeleteCommentPath] = useState<string>('');
+
+  // Function to delete comments based on the provided path
+  const deleteCommentsByPath = async (path: PiaSections | string) => {
+    // Make a DELETE request to the backend API to delete comments based on the path
+
+    await HttpRequest.delete(
+      API_ROUTES.DELETE_COMMENTS_BY_PATH.replace(':path', `${path}`),
+      {},
+      {},
+      true,
+    );
+  };
+
+  // Function to handle closing the modal
+  const handleModalClose = async (event: any) => {
+    event.preventDefault();
+    setShowDeleteModal(false);
+    // Initiate the deletion of comments associated with the specified path
+    await deleteCommentsByPath(deleteCommentPath);
+  };
+
+  // Function to handle canceling the modal
+  const handleModalCancel = async (event: any) => {
+    event?.preventDefault();
+    setShowDeleteModal(false);
+  };
+
+  // Function to initiate the deletion of a step along with its comments
+  const handleDeleteStepwithComments = async (path: PiaSections | string) => {
+    setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
+    setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
+    setModalTitleText(Messages.Modal.Delete.TitleText.en);
+    setModalParagraph(Messages.Modal.Delete.ParagraphText.en);
+    setShowDeleteModal(true);
+    setModalButtonValue('deleteStepwithComments');
+    setDeleteCommentPath(path);
+    // Show the delete modal
+    setShowDeleteModal(true);
+  };
+
   return (
     <>
       {props.data.map((rowData, index) => (
@@ -76,6 +129,11 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
                 className="bcgovbtn bcgovbtn__tertiary bold min-gap delete__btn"
                 onClick={(e) => {
                   e.preventDefault();
+                  handleDeleteStepwithComments(
+                    PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
+                      '-' +
+                      rowData.uid,
+                  );
                   props.removeRow(index);
                 }}
                 aria-label="Delete row button"
@@ -104,6 +162,18 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
           </button>
         </div>
       )}
+      {/* Rendering a Delete Modal component*/}
+      <Modal
+        confirmLabel={modalConfirmLabel}
+        cancelLabel={modalCancelLabel}
+        titleText={modalTitleText}
+        show={showDeleteModal}
+        value={modalButtonValue}
+        handleClose={(e) => handleModalClose(e)}
+        handleCancel={handleModalCancel}
+      >
+        <p className="modal-text">{modalParagraph}</p>
+      </Modal>
     </>
   );
 };

@@ -201,4 +201,85 @@ export class CommentsService {
   async resolve(id: number) {
     return `This is a resolve method yet to be developed for comment ${id}`;
   }
+
+  /**
+   * Asynchronously finds all comments based on the specified path.
+   *
+   * @param where - The options to filter the comments.
+   * @returns A promise that resolves to an array of CommentEntity objects.
+   */
+  async findAllByPath(
+    where: FindOptionsWhere<CommentEntity>,
+  ): Promise<CommentEntity[]> {
+    // Retrieve comments from the repository based on the provided filter options
+    const comments: CommentEntity[] =
+      await this.commentRepository.findBy(where);
+
+    // If no comments are found, throw a NotFoundException
+    if (!comments) {
+      throw new NotFoundException();
+    }
+
+    // Return the found comments
+    return comments;
+  }
+
+  /**
+   * Asynchronously removes comments associated with a specified path.
+   *
+   * @param path - The path identifier for which comments are to be removed.
+   * @param user - The Keycloak user initiating the removal.
+   * @param userRoles - An array of roles assigned to the user.
+   * @returns A promise resolving to an array of CommentRO (formatted comment objects).
+   */
+  async removeCommentsByPath(
+    path: string,
+    user: KeycloakUser,
+    userRoles: Array<RolesEnum>,
+  ): Promise<Array<CommentRO>> {
+    // Fetch comments for the specified path
+    const comments: CommentEntity[] = await this.commentRepository.find({
+      where: {
+        path,
+      },
+      order: { createdAt: 1 },
+    });
+
+    const updatedComments: CommentEntity[] = [];
+    // Iterate through each comment and perform removal logic
+    comments.forEach(async (comment) => {
+      // Validate access to the associated PIA. Throw an error if not allowed.
+      const pia = await this.piaService.validatePiaAccess(
+        comment.piaId,
+        user,
+        userRoles,
+      );
+
+      // Check if deleting comments for this PIA is allowed
+      const isActionAllowed = checkUpdatePermissions({
+        status: pia?.status,
+        entityType: 'comment',
+        entityAction: 'remove',
+      });
+
+      if (!isActionAllowed) {
+        throw new ForbiddenException({
+          piaId: pia.id,
+          message: 'Forbidden: Failed to remove comments of the PIA',
+        });
+      }
+
+      // Soft delete the comment
+      updatedComments.push(
+        await this.commentRepository.save({
+          ...comment,
+          isActive: false,
+          text: null,
+        }),
+      );
+    });
+
+    // Return formatted comment objects
+    return getFormattedComments(comments);
+  }
 }

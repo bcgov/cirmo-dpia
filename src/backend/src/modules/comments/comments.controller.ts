@@ -148,4 +148,36 @@ export class CommentsController {
   resolve(@Param('id') id: string) {
     return this.commentsService.resolve(+id);
   }
+
+  @Delete('/deleteAll/:path') // HTTP DELETE endpoint to handle comment deletion based on the provided 'path'
+  @ApiOperation({
+    description: 'Delete comments based on step',
+  })
+  @ApiOkResponse({
+    description: 'Successfully deleted comments',
+  })
+  @ApiBadRequestResponse({
+    description: 'Failed to delete comments: Invalid request',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to delete comments: User lacks permission to delete comment of this PIA',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to delete comments: Comments not found',
+  })
+  @ApiGoneResponse({
+    description: 'Failed to delete comments: The PIA is not active',
+  })
+  removeCommentsByPath(
+    @Param('path') path: string,
+    @Req() req: IRequest,
+  ): Promise<Array<CommentRO>> {
+    // Delegate the comment removal logic to the commentsService, passing required parameters
+    return this.commentsService.removeCommentsByPath(
+      path,
+      req.user,
+      req.userRoles,
+    );
+  }
 }
