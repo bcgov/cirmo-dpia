@@ -28,6 +28,7 @@ import { PiaValidationMessage } from './helpers/interfaces';
 import { HandleValidationProps, PiaFormOpenMode } from './helpers/types';
 import useSnowPlow from '../../utils/snowplow';
 import useHandleModal from './utils/handleModal';
+import { PiaSections } from '../../types/enums/pia-sections.enum';
 
 const PIAFormPage = () => {
   const navigate = useNavigate();
@@ -191,7 +192,7 @@ const PIAFormPage = () => {
       setBringCommentsSidebarToFocus((prev) => prev + 1);
     }
   };
-  const piaCommentPathHandler = (path: string | undefined) => {
+  const piaCommentPathHandler = (path: PiaSections | string | undefined) => {
     setSelectedSection(path);
   };
   const commentChangeHandler = () => {
