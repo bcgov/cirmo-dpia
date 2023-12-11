@@ -168,14 +168,6 @@ const PIACollectionUseAndDisclosure = ({
           enableComments={showComments}
           commentCount={commentCount}
         />
-        {/* {showComments && (
-          <ViewComments
-            count={
-              commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
-            }
-            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
-          />
-        )} */}
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>

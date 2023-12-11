@@ -77,7 +77,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
           {props.columnsMeta.map((column) => (
             <div key={column.key + '-' + index} className={column.className}>
               {/* Readonly */}
-              {props.readOnly && (
+              {props.readOnly && column.key !== 'uid' && (
                 <>
                   <p className="fw-bold mb-0">{column.label}</p>
                   <p>{rowData[column.key] || <i>Not answered</i>}</p>
