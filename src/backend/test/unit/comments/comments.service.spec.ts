@@ -32,6 +32,7 @@ import { CreateCommentDto } from 'src/modules/comments/dto/create-comment.dto';
 import { AllowedCommentPaths } from 'src/modules/comments/enums/allowed-comment-paths.enum';
 import { piaIntakeServiceMock } from 'test/util/mocks/services/pia-intake.service.mock';
 import * as checkUpdatePermissions from 'src/modules/pia-intake/helper/check-update-permissions';
+import { ReplyEntity } from 'src/modules/comments/entities/reply.entity';
 
 /**
  * @Description
@@ -40,7 +41,7 @@ import * as checkUpdatePermissions from 'src/modules/pia-intake/helper/check-upd
 describe('CommentsService', () => {
   let commentsService: CommentsService;
   let piaService: PiaIntakeService;
-  let commentRepository;
+  let commentRepository, replyRepository;
 
   const checkUpdatePermissionsSpy = jest
     .spyOn(checkUpdatePermissions, 'checkUpdatePermissions')
@@ -61,6 +62,10 @@ describe('CommentsService', () => {
           useValue: { ...repositoryMock },
         },
         {
+          provide: getRepositoryToken(ReplyEntity),
+          useValue: { ...repositoryMock },
+        },
+        {
           provide: getRepositoryToken(PiaIntakeEntity),
           useValue: { ...repositoryMock },
         },
@@ -70,6 +75,7 @@ describe('CommentsService', () => {
     commentsService = module.get<CommentsService>(CommentsService);
     piaService = module.get<PiaIntakeService>(PiaIntakeService);
     commentRepository = module.get(getRepositoryToken(CommentEntity));
+    replyRepository = module.get(getRepositoryToken(ReplyEntity));
 
     checkUpdatePermissionsSpy.mockClear();
   });
@@ -192,6 +198,71 @@ describe('CommentsService', () => {
       });
 
       expect(commentRepository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  /**
+   * @Description
+   * These set of tests validates that the method passes the correct values to the repository,
+   * mocking the database save operation.
+   *
+   * @method createReply
+   */
+  describe('`createReply` method', () => {
+    it('should be defined', () => {
+      expect(commentsService.createReply).toBeDefined();
+    });
+
+    it('succeeds creating a reply to a comment', async () => {
+      const createReplyDto = {
+        commentId: commentEntityMock.id,
+        text: 'This is a test reply',
+      };
+      const user = { ...keycloakUserMock };
+      const userRoles = [];
+
+      commentsService.findOneBy = jest
+        .fn()
+        .mockResolvedValue(commentEntityMock);
+
+      piaService.validatePiaAccess = jest.fn(async () => ({
+        ...piaIntakeEntityMock,
+      }));
+
+      checkUpdatePermissionsSpy.mockReturnValue(true); // Allow adding a reply
+
+      const mockReply = {
+        id: 101,
+        commentId: commentEntityMock.id,
+        text: 'This is a test reply',
+        createdByDisplayName: user.display_name,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      replyRepository.save = jest.fn().mockResolvedValue(mockReply);
+
+      const result = await commentsService.createReply(
+        createReplyDto,
+        user,
+        userRoles,
+      );
+
+      expect(commentsService.findOneBy).toHaveBeenCalledWith({
+        id: createReplyDto.commentId,
+      });
+      expect(piaService.validatePiaAccess).toHaveBeenCalledWith(
+        commentEntityMock.piaId,
+        user,
+        userRoles,
+      );
+      expect(checkUpdatePermissionsSpy).toHaveBeenCalledWith({
+        status: piaIntakeEntityMock.status,
+        entityType: 'comment',
+        entityAction: 'add',
+      });
+      expect(replyRepository.save).toHaveBeenCalledWith(expect.any(Object));
+      expect(result).toEqual(mockReply);
     });
   });
 
@@ -488,6 +559,48 @@ describe('CommentsService', () => {
         isActive: false,
         text: null,
       });
+    });
+  });
+
+  /**
+   * @Description
+   * These set of tests validates that the method passes the correct values to the repository,
+   * removes the comment, mocking the database delete operation.
+   *
+   * @method removeReply
+   */
+  describe('`removeReply` method', () => {
+    it('should be defined', () => {
+      expect(commentsService.removeReply).toBeDefined();
+    });
+
+    it('succeeds in removing a reply', async () => {
+      const id = 101; // example reply ID
+      const user = { ...keycloakUserMock };
+      const userRoles = [];
+
+      const mockReply = {
+        id,
+        commentId: commentEntityMock.id,
+        createdByGuid: user.idir_user_guid,
+      };
+
+      commentsService.findOneReplyBy = jest.fn().mockResolvedValue(mockReply);
+      commentsService.findOneBy = jest
+        .fn()
+        .mockResolvedValue(commentEntityMock);
+
+      const updatedMockReply = { ...mockReply, isActive: false, text: null };
+      replyRepository.save = jest.fn().mockResolvedValue(updatedMockReply);
+
+      const result = await commentsService.removeReply(id, user, userRoles);
+
+      expect(commentsService.findOneReplyBy).toHaveBeenCalledWith({ id });
+      expect(commentsService.findOneBy).toHaveBeenCalledWith({
+        id: mockReply.commentId,
+      });
+      expect(replyRepository.save).toHaveBeenCalledWith(expect.any(Object));
+      expect(result).toEqual(updatedMockReply);
     });
   });
 

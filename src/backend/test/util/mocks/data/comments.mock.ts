@@ -5,9 +5,10 @@ import {
   CommentsCountDbRO,
   CommentsCountRO,
 } from 'src/modules/comments/ro/comments-count-ro';
-import { CommentRO } from 'src/modules/comments/ro/get-comment.ro';
+import { CommentRO, ReplyRO } from 'src/modules/comments/ro/get-comment.ro';
 import { keycloakUserMock } from './auth.mock';
 import { piaIntakeEntityMock } from './pia-intake.mock';
+import { CreateReplyDto } from 'src/modules/comments/dto/create-reply.dto';
 
 export const createCommentDtoMock: CreateCommentDto = {
   path: AllowedCommentPaths['accuracyCorrectionAndRetention.accuracy'],
@@ -67,4 +68,21 @@ export const commentsCountDbRO: CommentsCountDbRO = {
 
 export const commentsCountROMock: Partial<CommentsCountRO> = {
   [commentsCountDbRO.path]: +commentsCountDbRO.count,
+};
+
+export const createReplyDtoMock: CreateReplyDto = {
+  commentId: 1,
+  text: 'This is a test reply',
+};
+
+export const replyROMock: ReplyRO = {
+  id: 101,
+  commentId: 1,
+  text: 'Test Reply 1',
+  createdByDisplayName: 'Test User',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isResolved: false,
+  isActive: true,
+  createdByGuid: keycloakUserMock.idir_user_guid,
 };

@@ -33,6 +33,7 @@ export class CommentsService {
   constructor(
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
+    @InjectRepository(ReplyEntity)
     private replyRepository: Repository<ReplyEntity>,
     private readonly piaService: PiaIntakeService,
   ) {}
