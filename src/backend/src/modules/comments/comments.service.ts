@@ -202,8 +202,21 @@ export class CommentsService {
       order: { createdAt: 1 },
     });
 
+    // Add replies
+    const commentsWithReplies = [];
+    for (const comment of comments) {
+      // Fetch reply
+      const replies = await this.replyRepository.find({
+        where: {
+          commentId: comment.id,
+        },
+        order: { createdAt: 1 },
+      });
+      commentsWithReplies.push({ ...comment, replies });
+    }
+
     // return formatted objects
-    return getFormattedComments(comments);
+    return getFormattedComments(commentsWithReplies);
   }
 
   async findCountByPia(
