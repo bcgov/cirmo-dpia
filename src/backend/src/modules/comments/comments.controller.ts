@@ -26,7 +26,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { FindCommentsCountDto } from './dto/find-comments-count.dto';
 import { FindCommentsDto } from './dto/find-comments.dto';
 import { CommentsCountRO } from './ro/comments-count-ro';
-import { CommentRO } from './ro/get-comment.ro';
+import { CommentRO, ReplyRO } from './ro/get-comment.ro';
+import { CreateReplyDto } from './dto/create-reply.dto';
 
 @Controller('comments')
 @ApiTags('Comments')
@@ -58,6 +59,37 @@ export class CommentsController {
   ): Promise<CommentRO> {
     return this.commentsService.create(
       createCommentDto,
+      req.user,
+      req.userRoles,
+    );
+  }
+
+  // Create Reply
+  @Post('reply')
+  @HttpCode(201)
+  @ApiOperation({
+    description: 'Create a new comment reply',
+  })
+  @ApiCreatedResponse({
+    description: 'Successfully created a new comment reply',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to create comment reply: User lacks permission to create comment reply to this PIA',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Failed to create comment reply: Comment for the id provided not found',
+  })
+  @ApiGoneResponse({
+    description: 'Failed to create comment reply: The PIA is not active',
+  })
+  createReply(
+    @Body() createReplyDto: CreateReplyDto,
+    @Req() req: IRequest,
+  ): Promise<ReplyRO> {
+    return this.commentsService.createReply(
+      createReplyDto,
       req.user,
       req.userRoles,
     );
@@ -142,6 +174,31 @@ export class CommentsController {
   })
   remove(@Param('id') id: string, @Req() req: IRequest): Promise<CommentRO> {
     return this.commentsService.remove(+id, req.user, req.userRoles);
+  }
+
+  // Delete Reply
+  @Delete('reply/:id')
+  @ApiOperation({
+    description: 'Deletes a comment reply',
+  })
+  @ApiOkResponse({
+    description: 'Successfully deleted a comment reply',
+  })
+  @ApiBadRequestResponse({
+    description: 'Failed to delete comment reply: Invalid request',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Failed to delete comment: User lacks permission to delete comment reply of this PIA',
+  })
+  @ApiNotFoundResponse({
+    description: 'Failed to delete comment reply: Comment not found',
+  })
+  @ApiGoneResponse({
+    description: 'Failed to delete comment reply: The PIA is not active',
+  })
+  removeReply(@Param('id') id: string, @Req() req: IRequest): Promise<ReplyRO> {
+    return this.commentsService.removeReply(+id, req.user, req.userRoles);
   }
 
   @Post(':id/resolve')

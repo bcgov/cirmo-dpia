@@ -14,11 +14,15 @@ import {
   commentROMock,
   commentsCountROMock,
   createCommentDtoMock,
+  createReplyDtoMock,
   findCommentsROMock,
+  replyROMock,
 } from 'test/util/mocks/data/comments.mock';
 import { FindCommentsDto } from 'src/modules/comments/dto/find-comments.dto';
 import { AllowedCommentPaths } from 'src/modules/comments/enums/allowed-comment-paths.enum';
 import { FindCommentsCountDto } from 'src/modules/comments/dto/find-comments-count.dto';
+import { CreateReplyDto } from 'src/modules/comments/dto/create-reply.dto';
+import { ReplyRO } from 'src/modules/comments/ro/get-comment.ro';
 
 /**
  * @Description
@@ -99,6 +103,42 @@ describe('CommentsController', () => {
       );
 
       expect(result).toBe(commentROMock);
+    });
+  });
+
+  /**
+   * @method createReply
+   *
+   * @description
+   * This test suite validates that the method passes the correct values to the service,
+   * mock the service result and return correct result to the user
+   */
+  describe('`createReply` method', () => {
+    it('should be defined', () => {
+      expect(controller.createReply).toBeDefined();
+    });
+
+    it('succeeds with correct data : Happy flow', async () => {
+      const createReplyDto: CreateReplyDto = { ...createReplyDtoMock };
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [],
+      };
+
+      service.createReply = jest.fn(async () => {
+        delay(10);
+        return replyROMock;
+      });
+
+      const result = await controller.createReply(createReplyDto, mockReq);
+
+      expect(service.createReply).toHaveBeenCalledWith(
+        createReplyDto,
+        mockReq.user,
+        mockReq.userRoles,
+      );
+
+      expect(result).toStrictEqual(replyROMock);
     });
   });
 
@@ -242,6 +282,48 @@ describe('CommentsController', () => {
       );
 
       expect(result).toStrictEqual(commentROMock);
+    });
+  });
+
+  /**
+   * @method removeReply
+   *
+   * @description
+   * This test suite validates that the method passes the correct values to the service,
+   * mock the service result and return correct result to the user
+   */
+  describe('`removeReply` method', () => {
+    it('should be defined', () => {
+      expect(controller.removeReply).toBeDefined();
+    });
+
+    it('succeeds with correct data', async () => {
+      const replyId = '101'; // Example ID
+      const mockReq: any = {
+        user: { ...keycloakUserMock },
+        userRoles: [],
+      };
+
+      const expectedResponse: ReplyRO = {
+        ...replyROMock,
+        isActive: false,
+        text: null,
+      };
+
+      service.removeReply = jest.fn(async () => {
+        delay(10);
+        return expectedResponse;
+      });
+
+      const result = await controller.removeReply(replyId, mockReq);
+
+      expect(service.removeReply).toHaveBeenCalledWith(
+        +replyId,
+        mockReq.user,
+        mockReq.userRoles,
+      );
+
+      expect(result).toStrictEqual(expectedResponse);
     });
   });
 
