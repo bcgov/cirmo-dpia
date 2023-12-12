@@ -99,14 +99,12 @@ const CommentSidebar = ({
 
   // Delete reply
   const deleteCommentReply = async (replyId: number) => {
-    // TODO
-    // await HttpRequest.delete(
-    //   API_ROUTES.DELETE_COMMENT.replace(':id', `${replyId}`),
-    //   {},
-    //   {},
-    //   true,
-    // );
-    console.log(`REMOVE ME when implemented ${replyId}`);
+    await HttpRequest.delete(
+      API_ROUTES.DELETE_COMMENT_REPLY.replace(':id', `${replyId}`),
+      {},
+      {},
+      true,
+    );
     getComments();
     handleStatusChange();
   };
@@ -125,15 +123,14 @@ const CommentSidebar = ({
   };
 
   // Add new reply
-  const addCommentReply = async () => {
-    // TODO
-    // await HttpRequest.post(
-    //   API_ROUTES.PIA_COMMENTS,
-    //   { piaId: piaId, path: path, text: `${newCommentReplyContent}` },
-    //   {},
-    //   {},
-    //   true,
-    // );
+  const addCommentReply = async (commentId: number) => {
+    await HttpRequest.post(
+      API_ROUTES.COMMENT_REPLY,
+      { commentId, text: `${newCommentReplyContent}` },
+      {},
+      {},
+      true,
+    );
     getComments();
     handleStatusChange();
   };
@@ -345,7 +342,7 @@ const CommentSidebar = ({
                             type="button"
                             className="bcgovbtn bcgovbtn__secondary"
                             onClick={() => {
-                              addCommentReply();
+                              addCommentReply(comment.id);
                               setNewCommentReplyContent('');
                             }}
                             aria-label="Add New Comment Reply Button"
