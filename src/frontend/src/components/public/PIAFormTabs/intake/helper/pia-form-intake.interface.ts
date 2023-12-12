@@ -42,7 +42,7 @@ export interface IntakeGeneralInformationProps
   extends IntakeInitiativeScopeProps {
   validationMessage: IPiaFormContext['validationMessage'];
   pia: IPiaFormContext['pia'];
-  path?: PiaSections;
+  path?: PiaSections | string;
 }
 
 export interface IntakeInitiativeDescriptionProps
