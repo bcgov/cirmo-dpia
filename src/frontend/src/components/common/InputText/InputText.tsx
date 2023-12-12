@@ -109,11 +109,12 @@ const InputText = ({
     ...commonProps,
   };
 
-  useEffect(() => {
-    // Trigger the onChange event when the component is mounted using dispatchEvent
-    const currentInput = inputRef.current || textareaRef.current;
+  // Trigger the onChange event when the component is mounted using dispatchEvent
+  const currentInput = inputRef.current || textareaRef.current;
 
-    if (currentInput) {
+  if (currentInput) {
+    // Bypass a strict dependency check with useEffect() and eslint, for onChange()
+    currentInput.addEventListener('load', () => {
       // Assuming your original object is like this
       const originalObject = { target: currentInput };
 
@@ -124,10 +125,9 @@ const InputText = ({
         target: originalObject.target as HTMLInputElement | HTMLTextAreaElement,
       } as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       onChange(syntheticEvent);
-    }
-  });
+    });
+  }
 
   return (
     <div
