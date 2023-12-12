@@ -22,50 +22,76 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-
-<!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
-
 ## Migrations
 
-<p>Migrations run every time before the app starts</p>
+Migrations run every time before the app starts. You can also run them manually as shown here:
+
+Start by entering into the API container:
 
 ```bash
-# get inside the api workspace
+# get inside the api workspace. Run from root directory.
 $ make api-workspace
+```
 
-# generate a migration once entity changes are done
-$ npm run migration:generate src/migrations/<your-migration-name>
+Then run or revert a migration:
 
+```bash
 # run a migration after validating the generated file to make changes to the Database
 $ npm run migration:run
 
 # revert an erroneous migration
 $ npm run migration:revert
+```
 
+---
+
+### Generate a migration after you have changed an Entity
+
+Start by entering into the API container:
+
+```bash
+# get inside the api workspace. Run from root directory.
+$ make api-workspace
+```
+
+Then generate the migration:
+
+```bash
+# generate a migration once entity changes are done
+$ npm run migration:generate src/migrations/<your-migration-name>
+```
+
+---
+
+### Create an empty migration
+
+Start by entering into the API container:
+
+```bash
+# get inside the api workspace. Run from root directory.
+$ make api-workspace
+```
+
+Then create the migration:
+
+```bash
 # create an empty migration
 $ npm run migration:create src/migrations/<your-migration-name>
 ```
+
+---
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ npm test
 
-# e2e tests
-$ npm run test:e2e
+# unit test by folder
+$ npm test <folder>
 
 # test coverage
 $ npm run test:cov
 ```
 
-## Support
-
-<!-- Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support). -->
-
-## License
-
-## diff
-
-turn me off
+---
