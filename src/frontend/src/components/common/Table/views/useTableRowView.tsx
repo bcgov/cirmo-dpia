@@ -23,6 +23,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
   const [modalParagraph, setModalParagraph] = useState<string>('');
   const [modalButtonValue, setModalButtonValue] = useState<string>('');
   const [deleteCommentPath, setDeleteCommentPath] = useState<string>('');
+  const [stepIndex, setStepIndex] = useState<number>(0);
 
   // Function to delete comments based on the provided path
   const deleteCommentsByPath = async (path: PiaSections | string) => {
@@ -42,6 +43,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
     setShowDeleteModal(false);
     // Initiate the deletion of comments associated with the specified path
     await deleteCommentsByPath(deleteCommentPath);
+    props.removeRow(stepIndex);
   };
 
   // Function to handle canceling the modal
@@ -51,7 +53,10 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
   };
 
   // Function to initiate the deletion of a step along with its comments
-  const handleDeleteStepwithComments = async (path: PiaSections | string) => {
+  const handleDeleteStepwithComments = async (
+    path: PiaSections | string,
+    index: number,
+  ) => {
     setModalConfirmLabel(Messages.Modal.Delete.ConfirmLabel.en);
     setModalCancelLabel(Messages.Modal.Delete.CancelLabel.en);
     setModalTitleText(Messages.Modal.Delete.TitleText.en);
@@ -59,6 +64,7 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
     setShowDeleteModal(true);
     setModalButtonValue('deleteStepwithComments');
     setDeleteCommentPath(path);
+    setStepIndex(index);
     // Show the delete modal
     setShowDeleteModal(true);
   };
@@ -139,8 +145,8 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
                     PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS +
                       '-' +
                       rowData.uid,
+                    index,
                   );
-                  props.removeRow(index);
                 }}
                 aria-label="Delete row button"
               >
