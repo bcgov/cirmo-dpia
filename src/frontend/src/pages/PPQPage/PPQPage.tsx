@@ -14,6 +14,34 @@ function PPQLandingPage(props: IComponentProps) {
   useEffect(() => {
     document.title = 'Create new - Digital Privacy Impact Assessment (DPIA)';
   }, []); // Empty array ensures this runs once on mount and unmount
+
+  // remove this if app is reactivated
+  const isSunset = true;
+  if (isSunset) {
+    return (
+      <div className="bcgovPageContainer wrapper">
+        <div className="alert alert-warning" role="alert">
+          <h1 className="alert-heading">App Sunset Notice</h1>
+          <h3>
+            This application is being sunsetted. New PIAs will not be possible
+            to create, but existing ones will remain accessible.
+            <br />
+            <br />
+            Please visit the{' '}
+            <a
+              href="https://www2.gov.bc.ca/gov/content?id=BA30DD63C55342D8A32E6355D7451A13"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Corporate Privacy Office
+            </a>{' '}
+            website for creating new PIAs.
+          </h3>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bcgovPageContainer wrapper">
       <Breadcrumbs />
