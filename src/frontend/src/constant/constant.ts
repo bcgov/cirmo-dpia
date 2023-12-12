@@ -281,6 +281,7 @@ export enum TextInputEnum {
   INPUT_TEXT = 'text',
   INPUT_TEXT_AREA = 'textarea',
   INPUT_EMAIL = 'email',
+  INPUT_HIDDEN = 'hidden',
 }
 
 export enum SubmitButtonTextEnum {

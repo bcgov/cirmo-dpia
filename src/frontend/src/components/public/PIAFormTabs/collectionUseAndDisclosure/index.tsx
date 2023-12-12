@@ -38,7 +38,13 @@ const PIACollectionUseAndDisclosure = ({
   const defaultState: ICollectionUseAndDisclosure = useMemo(
     () => ({
       steps: [
-        { drafterInput: '', mpoInput: '', foippaInput: '', OtherInput: '' },
+        {
+          uid: '',
+          drafterInput: '',
+          mpoInput: '',
+          foippaInput: '',
+          OtherInput: '',
+        },
       ],
       collectionNotice: {
         drafterInput: { content: '' },
@@ -69,6 +75,11 @@ const PIACollectionUseAndDisclosure = ({
   );
 
   const columns: Array<ColumnMetaData> = [
+    {
+      key: 'uid',
+      label: '',
+      type: TextInputEnum.INPUT_HIDDEN,
+    },
     {
       key: 'drafterInput',
       label: Messages.WorkThroughDetails.ColumnDrafterInput.en,
@@ -153,15 +164,9 @@ const PIACollectionUseAndDisclosure = ({
           numberedLabelPrefix="Step"
           addRowBtnLabel="Add more steps"
           format="row"
+          enableComments={showComments}
+          commentCount={commentCount}
         />
-        {showComments && (
-          <ViewComments
-            count={
-              commentCount?.[PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS]
-            }
-            path={PiaSections.COLLECTION_USE_AND_DISCLOSURE_STEPS}
-          />
-        )}
       </section>
 
       <h3 className="pt-5 pb-2">{Messages.CollectionNotice.Title.en}</h3>

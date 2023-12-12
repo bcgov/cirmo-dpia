@@ -18,7 +18,6 @@ import Collapsible from '../../components/common/Collapsible';
 import { PiaFormContext } from '../../contexts/PiaFormContext';
 import { faBars, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import CommentSidebar from '../../components/public/CommentsSidebar';
-import { PiaSections } from '../../types/enums/pia-sections.enum';
 import { CommentCount } from '../../components/common/ViewComment/interfaces';
 import { isCPORole } from '../../utils/user';
 import { statusList } from '../../utils/statusList/statusList';
@@ -29,6 +28,7 @@ import { PiaValidationMessage } from './helpers/interfaces';
 import { HandleValidationProps, PiaFormOpenMode } from './helpers/types';
 import useSnowPlow from '../../utils/snowplow';
 import useHandleModal from './utils/handleModal';
+import { PiaSections } from '../../types/enums/pia-sections.enum';
 
 const PIAFormPage = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const PIAFormPage = () => {
   const [isRightOpen, setIsRightOpen] = useState(false);
   const [isLeftOpen, setIsLeftOpen] = useState(true);
   const [commentCount, setCommentCount] = useState<CommentCount>({});
-  const [selectedSection, setSelectedSection] = useState<PiaSections>();
+  const [selectedSection, setSelectedSection] = useState<string>();
   const [bringCommentsSidebarToFocus, setBringCommentsSidebarToFocus] =
     useState(0);
 
@@ -192,7 +192,7 @@ const PIAFormPage = () => {
       setBringCommentsSidebarToFocus((prev) => prev + 1);
     }
   };
-  const piaCommentPathHandler = (path: PiaSections | undefined) => {
+  const piaCommentPathHandler = (path: PiaSections | string | undefined) => {
     setSelectedSection(path);
   };
   const commentChangeHandler = () => {

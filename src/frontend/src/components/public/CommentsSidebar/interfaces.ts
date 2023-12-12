@@ -29,6 +29,6 @@ export default interface CommentSidebarProps {
   pia: IPiaForm;
   comments?: Comment[];
   piaId?: number;
-  path: PiaSections | undefined;
+  path: PiaSections | string | undefined;
   handleStatusChange: () => void;
 }
