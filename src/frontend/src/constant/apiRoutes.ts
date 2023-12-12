@@ -12,7 +12,9 @@ export const API_ROUTES = {
   GET_PIA_INTAKE: '/api/pia-intake/:id',
   PATCH_PIA_INTAKE: '/api/pia-intake/:id',
   PIA_COMMENTS: '/api/comments',
+  COMMENT_REPLY: '/api/comments/reply',
   GET_COMMENTS_COUNT: '/api/comments/count',
   DELETE_COMMENT: '/api/comments/:id',
+  DELETE_COMMENT_REPLY: '/api/comments/reply/:id',
   GET_INVITE_CODE: '/api/invite',
 };

@@ -208,7 +208,9 @@ export class CommentsService {
       // Fetch reply
       const replies = await this.replyRepository.find({
         where: {
-          commentId: comment.id,
+          comment: {
+            id: comment.id,
+          },
         },
         order: { createdAt: 1 },
       });

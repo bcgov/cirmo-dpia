@@ -4,9 +4,13 @@ import { CommentsController } from './comments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentEntity } from './entities/comment.entity';
 import { PiaIntakeModule } from '../pia-intake/pia-intake.module';
+import { ReplyEntity } from './entities/reply.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CommentEntity]), PiaIntakeModule],
+  imports: [
+    TypeOrmModule.forFeature([CommentEntity, ReplyEntity]),
+    PiaIntakeModule,
+  ],
   controllers: [CommentsController],
   providers: [CommentsService],
 })
