@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Messages from './messages';
 import { API_ROUTES } from '../../../../constant/apiRoutes';
 import { HttpRequest } from '../../../../utils/http-request.util';
+import { generateUID } from '../../../../utils/generateUID';
 
 type UseTableRowViewProps = TableViewProps;
 
@@ -86,16 +87,21 @@ export const UseTableRowView = (props: UseTableRowViewProps) => {
 
               {/* Input Text */}
               {!props.readOnly && (
-                <InputText
-                  type={column.type ? column.type : TextInputEnum.INPUT_TEXT}
-                  value={rowData[column.key]}
-                  labelSide="top"
-                  label={column.label}
-                  isDisabled={column.isDisable}
-                  onChange={(e) =>
-                    props.handleDataChange(e, `${index}.${column.key}`)
-                  }
-                />
+                <>
+                  <InputText
+                    type={column.type ? column.type : TextInputEnum.INPUT_TEXT}
+                    value={rowData[column.key]}
+                    labelSide="top"
+                    label={column.label}
+                    isDisabled={column.isDisable}
+                    onChange={(e) => {
+                      if (column.key == 'uid' && !e.target.value) {
+                        e.target.value = generateUID();
+                      }
+                      props.handleDataChange(e, `${index}.${column.key}`);
+                    }}
+                  />
+                </>
               )}
             </div>
           ))}
