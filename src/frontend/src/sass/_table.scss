@@ -2,6 +2,8 @@
   padding: 0;
 
   & > .data-table {
+    width: 100%;
+    table-layout: fixed;
     margin-bottom: 0;
 
     & > * > tr > * {
