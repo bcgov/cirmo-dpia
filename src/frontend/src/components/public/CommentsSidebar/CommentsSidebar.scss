@@ -1,0 +1,43 @@
+.commentHeader {
+  font-size: small;
+  margin-bottom: 3px;
+}
+
+.commentActions {
+  position: absolute;
+  left: 82.5%;
+  top: -5px;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.commentReplyActions {
+  position: relative;
+  left: 111%;
+  top: -22px;
+  margin-bottom: -22px;
+}
+
+.commentActionBtn {
+  margin: 0;
+  padding: 0;
+}
+
+.commentReplyButton {
+  font-size: small;
+  margin: 0;
+}
+
+.commentReply {
+  display: flex;
+  flex-direction: row;
+  margin-top: 25px;
+  margin-left: 2.5em;
+}
+
+.commentReplyInputDivider {
+  width: 1.5px;
+  height: 40px;
+}
