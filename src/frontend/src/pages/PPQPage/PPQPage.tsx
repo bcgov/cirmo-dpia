@@ -35,7 +35,7 @@ function PPQLandingPage(props: IComponentProps) {
             >
               Corporate Privacy Office
             </a>{' '}
-            website for creating new PIAs.
+            website for help with creating new PIAs.
           </h3>
         </div>
       </div>
