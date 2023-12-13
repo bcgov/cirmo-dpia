@@ -28,7 +28,7 @@ jobs:
       # Setup environment variables
       - name: Setup environment
         run: |
-          make api-setup-env
+          npm run api-setup-env
           
       - name: Navigate to Backend, run npm tests
         run: | 

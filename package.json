@@ -1,0 +1,30 @@
+{
+  "name": "cirmo-dpia",
+  "version": "1.0.0",
+  "description": "Digital Privacy Impact Assessment",
+  "license": "Apache-2.0",
+  "//": [
+    "THIS IS A COMMENT: Use the scripts below by running 'npm run <script>'.",
+    "'up' and 'down' to start and stop containers.",
+    "'prune' to remove all containers, images and volumes.",
+    "'rebuild' to remove containers, images, and volumes and restart.",
+    "'npm-clean' to install clean versions of npm dependencies (still requires rebuild).",
+    "'shell' to execute commands from with a container (type 'exit' to leave)."
+  ],
+  "scripts": {
+    "up": "docker compose -f docker-compose.local.yaml up -d",
+    "down": "docker compose -f docker-compose.local.yaml down",
+    "prune": "docker compose -f docker-compose.local.yaml down --rmi all --volumes",
+    "rebuild": "docker rm --force dpia-webapp && docker rm --force dpia-api && docker rm --force dpia-db && docker rmi --force cirmo-dpia-dpia-webapp && docker rmi --force cirmo-dpia-dpia-api && docker rmi --force cirmo-dpia-dpia-db && npm run up",
+    "rebuild:frontend": "docker rm --force dpia-webapp && docker rmi --force cirmo-dpia-dpia-webapp && npm run up",
+    "rebuild:backend": "docker rm --force dpia-api && docker rmi --force cirmo-dpia-dpia-api && npm run up",
+    "rebuild:database": "docker rm --force dpia-db && docker rmi --force cirmo-dpia-dpia-db && npm run up",
+    "npm-clean:frontend": "cd src/frontend && rm -rf node_modules package-lock.json && npm i",
+    "npm-clean:backend": "cd src/backend && rm -rf node_modules package-lock.json && npm i",
+    "npm-clean:e2e": "cd src/e2e && rm -rf node_modules package-lock.json && npm i",
+    "shell:frontend": "docker exec -it dpia-webapp sh",
+    "shell:backend": "docker exec -it dpia-api sh",
+    "shell:database": "docker exec -it dpia-db sh",
+    "api-setup-env": "cp src/backend/.config/.env.local src/backend/.env"
+  }
+}
