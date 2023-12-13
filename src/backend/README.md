@@ -30,7 +30,7 @@ Start by entering into the API container:
 
 ```bash
 # get inside the api workspace. Run from root directory.
-$ make api-workspace
+$ npm run shell:backend
 ```
 
 Then run or revert a migration:
@@ -51,7 +51,7 @@ Start by entering into the API container:
 
 ```bash
 # get inside the api workspace. Run from root directory.
-$ make api-workspace
+$ npm run shell:backend
 ```
 
 Then generate the migration:
@@ -69,7 +69,7 @@ Start by entering into the API container:
 
 ```bash
 # get inside the api workspace. Run from root directory.
-$ make api-workspace
+$ npm run shell:backend
 ```
 
 Then create the migration:
