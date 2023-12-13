@@ -48,8 +48,7 @@ export async function basicPiaFill(page: Page, uuid: string) {
     //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
     // );
     await page
-      
-          .locator('.rt-content').first()
+      .locator('.rt-content').first()      
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
