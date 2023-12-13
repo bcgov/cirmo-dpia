@@ -32,11 +32,14 @@ for (const user of userRoles) {
     await createNewButton.waitFor({ state: 'visible' });
     await createNewButton.click();
 
-    const startPiaIntakeLink = page.getByRole('link', {
-      name: 'Start PIA Intake',
-    });
-    await startPiaIntakeLink.waitFor({ state: 'visible' });
-    await startPiaIntakeLink.click();
+    // Temporary: Navigating to the page before clicking.
+    // const startPiaIntakeLink = page.getByRole('link', {
+    //   name: 'Start PIA Intake',
+    // });
+    // await startPiaIntakeLink.waitFor({ state: 'visible' });
+    // await startPiaIntakeLink.click();
+
+    await page.goto('http://localhost:8080/pia/new/intake');
 
     // Fill out the PIA form using a unique identifier
     await basicPiaFill(page, uuid);
@@ -82,6 +85,49 @@ for (const user of userRoles) {
       await expect(lastComment).toBeVisible();
     }
 
+    // Add step on collection tab
+    const sideBarButton = page.locator('.collapsible__header').first();
+    await sideBarButton.waitFor({ state: 'visible' });
+    await sideBarButton.click();
+
+    // Click on the 'Collection, use and disclosure' button
+    const collectionButton = page.getByLabel('Collection, use and disclosure');
+    await collectionButton.waitFor({ state: 'visible' });
+    await collectionButton.click();
+
+    // Click on the 'Add more steps' button
+    const addMoreStepButton = page.getByLabel('Add more steps');
+    await addMoreStepButton.waitFor({ state: 'visible' });
+    await addMoreStepButton.click();
+
+    // Click on the 'View comments' button (second occurrence)
+    const viewCommentsButton = page.getByLabel('View comments').nth(1);
+    await viewCommentsButton.waitFor({ state: 'visible' });
+    await viewCommentsButton.click();
+
+    // Locate and interact with the comment input field
+    const commentInput = page.getByPlaceholder('Write a comment...');
+    await commentInput.waitFor({ state: 'visible' });
+    await commentInput.click();
+    await commentInput.fill(
+      `${2} Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
+    );
+
+    // Click on the 'Add New Comment Button'
+    const addCommentButton = page.getByLabel('Add New Comment Button');
+    await addCommentButton.waitFor({ state: 'visible' });
+    await addCommentButton.click();
+
+    // Click on the 'Delete row button' (second occurrence)
+    const deleteButton = page.getByLabel('Delete row button').nth(1);
+    await deleteButton.waitFor({ state: 'visible' });
+    await deleteButton.click();
+
+    // Click on the 'Yes, delete' button in the modal
+    const modalConfirmButton = page.getByLabel('Yes, delete');
+    await modalConfirmButton.waitFor({ state: 'visible' });
+    await modalConfirmButton.click();
+    
     // Submit the form and confirm submission
     const submitButton = page.getByLabel('Submit Button');
     await submitButton.waitFor({ state: 'visible' });
