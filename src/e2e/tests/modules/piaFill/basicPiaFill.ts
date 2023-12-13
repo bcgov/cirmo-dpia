@@ -36,34 +36,58 @@ export async function basicPiaFill(page: Page, uuid: string) {
   }
 
   async function fillInitiativeDescriptionDetails() {
+    // await page
+    //   .locator('#initiativeDescription div')
+    //   .nth(2)
+    //   .waitFor({ state: 'visible' });
+    // await page.locator('#initiativeDescription div').nth(2).click();
+    // await page
+    // .locator('#initiativeDescription div')
+    // .nth(2)
+    // .fill(
+    //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
+    // );
     await page
-      .locator('#initiativeDescription div')
-      .nth(2)
-      .waitFor({ state: 'visible' });
-    await page.locator('#initiativeDescription div').nth(2).click();
-    await page
-      .locator('#initiativeDescription div')
-      .nth(2)
+      .locator('.rt-content')
+      .first()
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
   }
 
   async function fillInitiativeScopeDetails() {
+    // await page
+    //   .locator('#initiativeScope div')
+    //   .nth(2)
+    //   .waitFor({ state: 'visible' });
+    // await page.locator('#initiativeScope div').nth(2).click();
+    // await page
+    //   .locator('#initiativeScope div')
+    //   .nth(2)
+    //   .locator('#initiativeScope > .rt-container > .rt-content')
+    //   .fill(
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
+    //   );
     await page
-      .locator('#initiativeScope div')
-      .nth(2)
-      .waitFor({ state: 'visible' });
-    await page.locator('#initiativeScope div').nth(2).click();
-    await page
-      .locator('#initiativeScope div')
-      .nth(2)
+      .locator('#initiativeScope > .rt-container > .rt-content')
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );
   }
 
   async function fillDataElementsInvolvedDetails() {
+    // await page
+    //   .locator('#dataElementsInvolved div')
+    //   .nth(2)
+    //   .waitFor({ state: 'visible' });
+    // await page.locator('#dataElementsInvolved div').nth(2).click();
+    // await page
+    //   .locator('#dataElementsInvolved div')
+    //   .nth(2)
+    //   .locator('#dataElementsInvolved > .rt-container > .rt-content')
+    //   .fill(
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
+    //   );
     await page
       .locator('#dataElementsInvolved div')
       .nth(2)
@@ -72,6 +96,7 @@ export async function basicPiaFill(page: Page, uuid: string) {
     await page
       .locator('#dataElementsInvolved div')
       .nth(2)
+      .locator('#dataElementsInvolved > .rt-container > .rt-content')
       .fill(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec magna sem, pharetra ac dolor et, elementum pellentesque nisi.',
       );

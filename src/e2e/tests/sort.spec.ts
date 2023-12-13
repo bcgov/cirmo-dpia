@@ -33,31 +33,23 @@ for (const user of userRoles) {
     await defaultDrafterSortButton.waitFor({ state: 'visible' });
     await expect(defaultDrafterSortButton).toBeVisible();
 
-    // click last modified, expect no sort and expect drafter default
-    const lastModifiedButton = page.getByLabel('Last modified', {
-      exact: true,
-    });
-    await lastModifiedButton.click();
-    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
-    await expect(defaultDrafterSortButton).toBeVisible();
-
     // click last modified, expect ascending and expect drafter default
-    await lastModifiedButton.click();
+    await page.getByLabel('Last modified sort descending button').click();
     await expect(
       page.getByLabel('Last modified sort ascending button'),
     ).toBeVisible();
     await expect(defaultDrafterSortButton).toBeVisible();
 
+    // click last modified, expect no sort and expect drafter default
+    await page.getByLabel('Last modified sort ascending button').click();
+    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
+    await expect(defaultDrafterSortButton).toBeVisible();
+
     // click last modified, expect descending and expect drafter default
-    await lastModifiedButton.click();
+    await page.getByLabel('Last modified sort by button').click();
     await expect(
       page.getByLabel('Last modified sort descending button'),
     ).toBeVisible();
-    await expect(defaultDrafterSortButton).toBeVisible();
-
-    // click last modified, expect no sort and expect drafter default
-    await lastModifiedButton.click();
-    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
     await expect(defaultDrafterSortButton).toBeVisible();
 
     // Refresh the page
@@ -69,25 +61,27 @@ for (const user of userRoles) {
     await expect(lastModifiedSortButton).toBeVisible();
     await expect(defaultDrafterSortButton).toBeVisible();
 
-    // click drafter, expect ascending and expect last modified default
-    const drafterButton = page.getByLabel('Drafter', { exact: true });
-    await drafterButton.click();
-    await expect(
-      page.getByLabel('Drafter sort ascending button'),
-    ).toBeVisible();
-    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
-
     // click drafter, expect descending and expect last modified default
-    await drafterButton.click();
+    const defaultLastModifiedSortButton = page.getByLabel(
+      'Last modified sort by button',
+    );
+    await page.getByLabel('Drafter sort by button').click();
     await expect(
       page.getByLabel('Drafter sort descending button'),
     ).toBeVisible();
-    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
+    await expect(defaultLastModifiedSortButton).toBeVisible();
+
+    // click drafter, expect ascending and expect last modified default
+    await page.getByLabel('Drafter sort descending button').click();
+    await expect(
+      page.getByLabel('Drafter sort ascending button'),
+    ).toBeVisible();
+    await expect(defaultLastModifiedSortButton).toBeVisible();
 
     // click drafter, expect no sort and expect last modified default
-    await drafterButton.click();
+    await page.getByLabel('Drafter sort ascending button').click();
     await expect(page.getByLabel('Drafter sort by button')).toBeVisible();
-    await expect(page.getByLabel('Last modified sort by button')).toBeVisible();
+    await expect(defaultLastModifiedSortButton).toBeVisible();
 
     // Refresh the page
     await page.goto('/pia/list');
