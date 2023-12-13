@@ -127,7 +127,7 @@ for (const user of userRoles) {
     const modalConfirmButton = page.getByLabel('Yes, delete');
     await modalConfirmButton.waitFor({ state: 'visible' });
     await modalConfirmButton.click();
-    
+
     // Submit the form and confirm submission
     const submitButton = page.getByLabel('Submit Button');
     await submitButton.waitFor({ state: 'visible' });
