@@ -1,8 +1,8 @@
 name: App NPM Dependency Report
 
 on:
-  schedule:
-    - cron: '0 16 * * 2' # Every Tuesday at 8:00-9:00am Pacific Time.
+  # schedule:
+  #   - cron: '0 16 * * 2' # Every Tuesday at 8:00-9:00am Pacific Time.
   workflow_dispatch:
 
 # START HERE! v
