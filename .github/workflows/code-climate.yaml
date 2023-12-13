@@ -50,7 +50,7 @@ jobs:
       # Setup environment variables
       - name: Setup environment
         run: |
-          make api-setup-env
+          npm run api-setup-env
 
       # Generate Test Report
       - name: Generate APi Test Coverage report

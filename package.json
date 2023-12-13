@@ -24,6 +24,7 @@
     "npm-clean:e2e": "cd src/e2e && rm -rf node_modules package-lock.json && npm i",
     "shell:frontend": "docker exec -it dpia-webapp sh",
     "shell:backend": "docker exec -it dpia-api sh",
-    "shell:database": "docker exec -it dpia-db sh"
+    "shell:database": "docker exec -it dpia-db sh",
+    "api-setup-env": "cp src/backend/.config/.env.local src/backend/.env"
   }
 }

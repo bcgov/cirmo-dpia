@@ -37,7 +37,7 @@ jobs:
       # Setup environment variables
       - name: Setup environment
         run: |
-          make api-setup-env
+          npm run api-setup-env
       
       # Build the DPIA API Application Image via docker-compose
       - name: Build the Docker image
