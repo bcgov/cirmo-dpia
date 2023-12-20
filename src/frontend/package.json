@@ -23,7 +23,7 @@
     "@fortawesome/react-fontawesome": "0.2.0",
     "breakpoint-sass": "3.0.0",
     "react": "18.2.0",
-    "react-datepicker": "4.24.0",
+    "react-datepicker": "4.25.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.20.1",
     "sass": "1.69.5"
