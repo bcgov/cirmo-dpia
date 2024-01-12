@@ -1,18 +1,18 @@
-version: 2
-updates:
-  # npm dependencies - API
-  - package-ecosystem: "npm"
-    directory: "/src/backend"
-    open-pull-requests-limit: 4
-    schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "05:00"
-# npm dependencies - WebApp
-  - package-ecosystem: "npm"
-    directory: "/src/frontend"
-    open-pull-requests-limit: 4
-    schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "05:15"
+# version: 2
+# updates:
+#   # npm dependencies - API
+#   - package-ecosystem: "npm"
+#     directory: "/src/backend"
+#     open-pull-requests-limit: 4
+#     schedule:
+#       interval: "weekly"
+#       day: "wednesday"
+#       time: "05:00"
+# # npm dependencies - WebApp
+#   - package-ecosystem: "npm"
+#     directory: "/src/frontend"
+#     open-pull-requests-limit: 4
+#     schedule:
+#       interval: "weekly"
+#       day: "wednesday"
+#       time: "05:15"
