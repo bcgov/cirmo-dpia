@@ -16,7 +16,7 @@ function PPQLandingPage(props: IComponentProps) {
   }, []); // Empty array ensures this runs once on mount and unmount
 
   // remove this if app is reactivated
-  const isSunset = true;
+  const isSunset = false;
   if (isSunset) {
     return (
       <div className="bcgovPageContainer wrapper">
