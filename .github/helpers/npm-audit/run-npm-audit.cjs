@@ -17,6 +17,7 @@ const parseDetails = (auditData) => {
       severity: vuln.severity,
       isDirect: vuln.isDirect,
       via: vuln.via.map((v) => {
+        if (typeof v === "string") return v;
         return {
           title: v?.title,
           severity: v?.severity,

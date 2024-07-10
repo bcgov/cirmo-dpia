@@ -8,7 +8,7 @@ const fs = require("fs");
 // Requires semver dependency to run.
 
 const LOCAL_TEST = false;
-const TEST_DIR_PATHS = ["."];
+const TEST_DIR_PATHS = ["src/backend"];
 
 /**
  * THIS FILE DOES NOT REQUIRE ANY EDITING.
