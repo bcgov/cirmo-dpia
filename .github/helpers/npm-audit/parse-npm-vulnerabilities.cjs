@@ -1,11 +1,12 @@
-const enhanceVulnerabilityList = require('./enhance-vulnerability-list.cjs');
-const findIndirectVulnerableDependencies = require('./find-indirect-vulnerable-deps.cjs');
-const runNpmAudit = require('./run-npm-audit.cjs');
+const enhanceVulnerabilityList = require("./enhance-vulnerability-list.cjs");
+const findIndirectVulnerableDependencies = require("./find-indirect-vulnerable-deps.cjs");
+const runNpmAudit = require("./run-npm-audit.cjs");
+const { execSync } = require("child_process");
 
 // Requires semver dependency to run.
 
 const LOCAL_TEST = false;
-const TEST_DIR_PATHS = ['.'];
+const TEST_DIR_PATHS = ["."];
 
 /**
  * THIS FILE DOES NOT REQUIRE ANY EDITING.
@@ -19,7 +20,9 @@ const TEST_DIR_PATHS = ['.'];
  */
 
 // Get directory paths from env.
-const directoryPaths = LOCAL_TEST ? TEST_DIR_PATHS : JSON.parse(process.env.directoryPaths);
+const directoryPaths = LOCAL_TEST
+  ? TEST_DIR_PATHS
+  : JSON.parse(process.env.directoryPaths);
 
 // Save results to json.
 let results = {};
@@ -27,17 +30,22 @@ let results = {};
 (async () => {
   // Create an array of promises for each dirPath.
   const promises = directoryPaths.map(async (dirPath) => {
+    execSync("npm i", {
+      cwd: path.resolve(__dirname, `../../../${dirPath}`),
+    });
+
     try {
       const auditResult = await runNpmAudit(dirPath);
-      const auditResultWithParentDeps = await findIndirectVulnerableDependencies(
-        auditResult,
-        dirPath,
+      const auditResultWithParentDeps =
+        await findIndirectVulnerableDependencies(auditResult, dirPath);
+      const summary = await enhanceVulnerabilityList(
+        auditResultWithParentDeps,
+        dirPath
       );
-      const summary = await enhanceVulnerabilityList(auditResultWithParentDeps, dirPath);
 
       results[dirPath] = summary;
     } catch (error) {
-      console.error('Error enhancing vulnerabilities:', error);
+      console.error("Error enhancing vulnerabilities:", error);
     }
   });
 

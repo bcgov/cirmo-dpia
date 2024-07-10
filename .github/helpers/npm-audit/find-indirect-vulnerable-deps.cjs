@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
 
 // Runs runNpmAudit and adds parent dependencies if they can be found in the package-lock.json
 const findIndirectVulnerableDependencies = async (
@@ -9,10 +8,6 @@ const findIndirectVulnerableDependencies = async (
 ) => {
   try {
     const { vulnerabilities } = auditResult;
-
-    execSync("npm i", {
-      cwd: path.resolve(__dirname, `../../../${directoryPath}`),
-    });
 
     if (vulnerabilities.length === 0) {
       // No vulnerabilities found
