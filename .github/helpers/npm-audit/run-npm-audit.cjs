@@ -1,4 +1,5 @@
 const path = require("path");
+const { execSync } = require("child_process");
 
 const parseDetails = (auditData) => {
   if (!auditData.vulnerabilities) {
