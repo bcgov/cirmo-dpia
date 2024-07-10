@@ -64,11 +64,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Temp
-        run: |
-          node .github/helpers/npm-audit/temp.cjs > temp.txt
-          cat temp.txt
-
       # Run NodeJS script to check for latest npm dependency versions and capture output.
       - name: Run NPM DEP Check Node.js script
         id: check_versions
