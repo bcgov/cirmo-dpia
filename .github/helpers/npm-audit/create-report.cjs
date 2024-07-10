@@ -138,6 +138,8 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
         }
       });
 
+      results[dirPath] += `\n${lineBreak()}\n`;
+
       // Output end of spoiler.
       results[dirPath] += `${line(`</details>\n`)}`;
     }
