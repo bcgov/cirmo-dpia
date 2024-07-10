@@ -79,11 +79,8 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
     const {
       name,
       severity,
-      title,
-      cvss,
       range,
-      cwe,
-      url,
+      via,
       isDirect,
       fixAvailable,
       latestVersion,
@@ -103,17 +100,23 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
     results[dirPath] += `${lineBreak()}\n`;
     results[dirPath] += `${line(`![${name}_header]`)}\n\n`;
 
-    // Output summary.
-    results[dirPath] += `${line(`${title}.`)}`;
-
     // Output details.
     results[dirPath] += `\n${line(`**Severity**: \`${severity}\``)}`;
-    results[dirPath] += `${line(`**CVSS Score**: \`${cvss} / 10\``)}`;
     results[dirPath] += `${line(`**Vulnerable Range**: \`${range}\``)}`;
-    results[dirPath] += `${line(`**Weaknesses**: \`${cwe}\``)}`;
 
-    // Output advisory link.
-    results[dirPath] += `\n${link('GitHub Advisory', url)}`;
+    if (via.length > 0) results[dirPath] += `${line(`**Via**:`)}`;
+
+    //Output via details
+    via.forEach((v, index) => {
+      results[dirPath] += `\n${line(`${index + 1}: ${v.title}.`)}`;
+
+      results[dirPath] += `\n${line(`**Severity**: \`${v.severity}\``)}`;
+      results[dirPath] += `${line(`**Vulnerable Range**: \`${v.range}\``)}`;
+      results[dirPath] += `${line(`**CVSS Score**: \`${v.cvss} / 10\``)}`;
+      results[dirPath] += `${line(`**Weaknesses**: \`${v.cwe}\``)}`;
+
+      results[dirPath] += `\n${link('GitHub Advisory', v.url)}`;
+    });
 
     // Output latest version.
     results[dirPath] += `\n${line(`**Latest Available Version**: \`${latestVersion}\``)}`;
@@ -196,7 +199,7 @@ const escapeForGitHubActions = (str) =>
     else if (highestSeverity === 'moderate') highestSeverityColor = yellow; // Moderate
 
     // Output summary.
-    if (total ? total === 0 : metadata.vulnerabilities === 0) {
+    if ((total && total === 0) || metadata.vulnerabilities === 0) {
       results[dirPath] += `${line(noVulnerabilities)}`;
     } else {
       // Output highest severity.
