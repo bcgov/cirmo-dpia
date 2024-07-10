@@ -3,6 +3,7 @@ const findIndirectVulnerableDependencies = require("./find-indirect-vulnerable-d
 const runNpmAudit = require("./run-npm-audit.cjs");
 const { execSync } = require("child_process");
 const path = require("path");
+const fs = require("fs");
 
 // Requires semver dependency to run.
 
