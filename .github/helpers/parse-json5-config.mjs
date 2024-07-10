@@ -1,5 +1,5 @@
-const fs = require("fs");
-const json5 = require("json5");
+import fs from "fs";
+import json5 from "json5";
 
 /**
  * THIS FILE DOES NOT REQUIRE ANY EDITING.
