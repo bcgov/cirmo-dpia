@@ -31,9 +31,13 @@ let results = {};
 (async () => {
   // Create an array of promises for each dirPath.
   const promises = directoryPaths.map(async (dirPath) => {
-    execSync("npm i", {
-      cwd: path.resolve(__dirname, `../../../${dirPath}`),
-    });
+    const resolvedPath = path.resolve(__dirname, `../../../${dirPath}`);
+    execSync("npm i", { cwd: resolvedPath });
+
+    if (!fs.existsSync(path.join(resolvedPath, "package-lock.json"))) {
+      console.error(`package-lock.json not found in ${resolvedPath}`);
+      return;
+    }
 
     try {
       const auditResult = await runNpmAudit(dirPath);
