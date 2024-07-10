@@ -184,15 +184,15 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
             )}`;
         }
         parent.directDependencies.forEach((directDep) => {
-          const { name, possibleFixAvailable, latestVersion, currentVersion } =
+          const { name, fixAvailable, latestVersion, currentVersion } =
             directDep;
 
-          if (!possibleFixAvailable)
+          if (!fixAvailable)
             results[dirPath] += `${line(
               `- Direct dependency \`${name}\` does NOT have a fix available.\n\n`
             )}`;
 
-          if (possibleFixAvailable) {
+          if (fixAvailable) {
             results[dirPath] += `${line(
               `- Direct dependency \`${name}\` may have a fix available because one of it's nested child dependencies fixes the vulnerability and there is a new version of \`${name}\` available.\n\n`
             )}`;
