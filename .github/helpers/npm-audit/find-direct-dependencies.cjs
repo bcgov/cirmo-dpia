@@ -42,12 +42,12 @@ const findDirectDependencies = (dependencyName, directoryPath) => {
       if (!currentPackage || !currentPackage.dependencies) continue;
 
       for (const name of Object.keys(currentPackage.dependencies)) {
-        if (name !== dependencyName && dependencies.hasOwnProperty(name)) {
-          directDependencies.add(name);
-        }
         const packageKey = `node_modules/${name}`;
         if (!visited.has(packageKey)) {
           stack.push({ packageName: packageKey, path: [...path, name] });
+        }
+        if (name !== dependencyName && dependencies.hasOwnProperty(name)) {
+          directDependencies.add(name);
         }
       }
     }
@@ -61,9 +61,7 @@ const findDirectDependencies = (dependencyName, directoryPath) => {
   };
 
   // If the specified dependency is a direct dependency, do nothing
-  if (rootDependencies && rootDependencies[dependencyName]) {
-    // Do not add dependencyName to directDependencies here
-  } else {
+  if (!isDirect) {
     // Iterate through each root dependency and find the specified dependency
     for (const rootDep in rootDependencies) {
       const packageKey = `node_modules/${rootDep}`;
