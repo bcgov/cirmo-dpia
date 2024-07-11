@@ -17,11 +17,16 @@ const findDirectDependencies = (dependencyName, directoryPath) => {
     )
   );
 
+  const dependencies = {
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies,
+  };
+
   const packages = packageLock.packages || {};
   const directDependencies = new Set();
-  const isDirect =
-    Object(packageJson.dependencies).hasOwnProperty(dependencyName) ||
-    Object(packageJson.devDependencies).hasOwnProperty(dependencyName);
+
+  // Check if the specified dependency is a direct dependency
+  const isDirect = dependencies.hasOwnProperty(dependencyName);
 
   // Function to find dependencies iteratively using a stack
   const findDependencies = (startPackage) => {
@@ -36,14 +41,14 @@ const findDirectDependencies = (dependencyName, directoryPath) => {
       const currentPackage = packages[packageName];
       if (!currentPackage || !currentPackage.dependencies) continue;
 
-      for (const [name] of Object.entries(currentPackage.dependencies)) {
-        const newPath = [...path, name];
-        const packageKey = `node_modules/${name}`;
-        if (name === dependencyName) {
-          // Add the top-level dependency to the set if it leads to the specified dependency
-          directDependencies.add(path[0]);
+      for (const name of Object.keys(currentPackage.dependencies)) {
+        if (name !== dependencyName && dependencies.hasOwnProperty(name)) {
+          directDependencies.add(name);
         }
-        stack.push({ packageName: packageKey, path: newPath });
+        const packageKey = `node_modules/${name}`;
+        if (!visited.has(packageKey)) {
+          stack.push({ packageName: packageKey, path: [...path, name] });
+        }
       }
     }
   };
@@ -55,9 +60,9 @@ const findDirectDependencies = (dependencyName, directoryPath) => {
     ...rootPackage.devDependencies,
   };
 
-  // If the specified dependency is a direct dependency, set the flag and add to the set
+  // If the specified dependency is a direct dependency, do nothing
   if (rootDependencies && rootDependencies[dependencyName]) {
-    directDependencies.add(dependencyName);
+    // Do not add dependencyName to directDependencies here
   } else {
     // Iterate through each root dependency and find the specified dependency
     for (const rootDep in rootDependencies) {
