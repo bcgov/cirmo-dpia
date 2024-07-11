@@ -170,6 +170,8 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
       )}`;
       results[dirPath] += `${line(`</summary>\n`)}`;
 
+      const directDepsRead = [];
+
       // Output possible fixes:
       parentDependencies.forEach((parent) => {
         if (parent.isDirect) {
@@ -186,6 +188,10 @@ const outputVulnerabilities = (vulnerabilitiesArray, dirPath) => {
         parent.directDependencies.forEach((directDep) => {
           const { name, possibleFixAvailable, latestVersion, currentVersion } =
             directDep;
+
+          // Avoid repeat directDeps
+          if (directDepsRead.includes(name)) return;
+          directDepsRead.push(name);
 
           if (!possibleFixAvailable)
             results[dirPath] += `${line(
