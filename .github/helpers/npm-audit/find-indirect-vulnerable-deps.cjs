@@ -11,7 +11,7 @@ const findIndirectVulnerableDependencies = async (
 
     if (vulnerabilities.length === 0) {
       // No vulnerabilities found
-      return { ...auditResult, parentDependencies: {} };
+      return { ...auditResult, parentDependencies: [] };
     }
 
     const packageLockPath = path.resolve(
@@ -28,7 +28,7 @@ const findIndirectVulnerableDependencies = async (
       .filter((vuln) => !vuln.isDirect)
       .map((vuln) => vuln.name);
 
-    const parentDependencies = {};
+    const parentDependencies = [];
 
     const cleanDependencyName = (name) => name.replace(/^node_modules\//, "");
 
