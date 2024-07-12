@@ -2,7 +2,7 @@ name: NPM Vulnerability Reports
 
 on:
   schedule:
-    - cron: '0 15 * * 2' # Tuesday morning at 7:00-8:00am Pacific Time.
+    - cron: "0 15 * * 2" # Tuesday morning at 7:00-8:00am Pacific Time.
   workflow_dispatch:
 
 # START HERE! v
@@ -31,23 +31,23 @@ env:
 jobs:
   # Parse Vars from config.
   parse-json5-config:
-      runs-on: ubuntu-22.04
-      outputs:
-        directoryPaths: ${{ steps.parse_config.outputs.directoryPaths }}
+    runs-on: ubuntu-22.04
+    outputs:
+      directoryPaths: ${{ steps.parse_config.outputs.directoryPaths }}
 
-      steps:
-        # Checkout branch.
-        - name: Checkout Repository
-          uses: actions/checkout@v4
+    steps:
+      # Checkout branch.
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        # Install json5 npm package for parsing config.
-        - name: Install Dependencies
-          run: npm install json5
+      # Install json5 npm package for parsing config.
+      - name: Install Dependencies
+        run: npm install json5
 
-        # Run script to convert json5 config to Output Vars.
-        - name: Run Script
-          id: parse_config
-          run: node .github/helpers/parse-json5-config.mjs .github/config/vulnerability-report.json5
+      # Run script to convert json5 config to Output Vars.
+      - name: Run Script
+        id: parse_config
+        run: node .github/helpers/parse-json5-config.mjs .github/config/vulnerability-report.json5
 
   # Check package versions for updates.
   parse-vulnerabilities:
@@ -70,6 +70,7 @@ jobs:
         run: |
           npm i -D semver
           node .github/helpers/npm-audit/parse-npm-vulnerabilities.cjs > vulnerabilities.json
+          cat vulnerabilities.json
 
       # Upload the output as an artifact.
       - name: Upload output
@@ -80,7 +81,7 @@ jobs:
 
   # Write the output text for the GitHub Issue.
   write-output:
-    needs: 
+    needs:
       - parse-json5-config
       - parse-vulnerabilities
     runs-on: ubuntu-22.04
@@ -89,7 +90,7 @@ jobs:
     container:
       # Lightweight NodeJS Image
       image: node:21.5-bullseye-slim
-    
+
     steps:
       # Checkout branch.
       - name: Checkout repository
@@ -117,7 +118,7 @@ jobs:
 
   # Create the GitHub Issues.
   create-issues:
-    needs: 
+    needs:
       - parse-json5-config
       - write-output
     runs-on: ubuntu-22.04

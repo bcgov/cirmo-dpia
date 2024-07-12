@@ -1,4 +1,4 @@
-const semver = require('semver');
+const semver = require("semver");
 
 /**
  * Determines if a fix is available in a parent package for a vulnerable child dependency.
@@ -9,14 +9,12 @@ const semver = require('semver');
  */
 const isFixAvailable = (latestVersion, vulnerableRange, childDepVersion) => {
   // Check if the latest version is within the vulnerable range
-  if (semver.satisfies(latestVersion, vulnerableRange)) {
-    return false;
-  }
+  if (semver.satisfies(latestVersion, vulnerableRange)) return false;
 
   // Check if the child dependency version is outside the vulnerable range
   const resolvedVersion = semver.maxSatisfying(
-    [latestVersion, childDepVersion.replace(/^[^\d]*/, '')],
-    childDepVersion,
+    [latestVersion, childDepVersion.replace(/^[^\d]*/, "")],
+    childDepVersion
   );
 
   return !semver.satisfies(resolvedVersion, vulnerableRange);
